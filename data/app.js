@@ -53,6 +53,10 @@ function formatUptime(totalSeconds) {
       document.getElementById(
         "systemStatus"
       ).textContent = data.system;
+
+      document.getElementById(
+        "systemIndicator"
+      ).classList.remove("is-offline");
   
       document.getElementById(
         "clients"
@@ -112,6 +116,10 @@ function formatUptime(totalSeconds) {
       document.getElementById(
         "systemStatus"
       ).textContent = "CONNECTION LOST";
+
+      document.getElementById(
+        "systemIndicator"
+      ).classList.add("is-offline");
   
       document.getElementById(
         "lastUpdated"

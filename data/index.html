@@ -2,247 +2,128 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#071014">
   <title>FALCON-01 Dashboard</title>
-
   <link rel="stylesheet" href="/style.css">
 </head>
-
 <body>
-  <div class="background-glow glow-one"></div>
-  <div class="background-glow glow-two"></div>
-
   <main class="dashboard">
-
     <header class="topbar">
       <div class="brand-lockup">
-        <img
-          class="brand-logo"
-          src="/falcon-logo.jpg"
-          alt="Project FALCON emblem"
-          width="80"
-          height="80"
-        >
-
+        <img class="brand-logo" src="/falcon-logo.jpg"
+          alt="Project FALCON emblem" width="64" height="64">
         <div class="brand-copy">
           <p class="eyebrow">PROJECT FALCON</p>
           <h1>FALCON-01</h1>
-
-          <p class="subtitle">
-            Fullbright College's AI-powered Live Coastal Observation Network
-          </p>
+          <p class="subtitle">Fullbright College's AI-powered Live Coastal Observation Network</p>
         </div>
       </div>
-
-      <div class="status-pill">
+      <div class="status-pill" id="systemIndicator">
         <span class="status-dot"></span>
         <span id="systemStatus">ONLINE</span>
       </div>
     </header>
 
-    <section class="hero-panel">
-      <div>
-        <p class="section-label">LOCAL BUOY SYSTEM</p>
-
-        <h2>
-          Coastal monitoring,
-          available directly from the buoy.
-        </h2>
-
-        <p class="hero-description">
-          Connect locally to view system health, sensor data,
-          security status, and buoy activity without internet.
-        </p>
+    <section class="overview" aria-labelledby="overviewTitle">
+      <div class="overview-heading">
+        <div>
+          <p class="section-label">LOCAL BUOY SYSTEM</p>
+          <h2 id="overviewTitle">Station overview</h2>
+        </div>
+        <span class="demo-badge">SIMULATED SENSOR DATA</span>
       </div>
-
-      <div class="connection-card">
-        <p>Connected Devices</p>
-        <strong id="clients">0</strong>
-        <span>active connection</span>
+      <div class="quick-stats">
+        <div class="quick-stat"><span>Monitoring</span><strong id="monitoringStatus">ACTIVE</strong></div>
+        <div class="quick-stat"><span>System uptime</span><strong id="uptime">0h 0m 0s</strong></div>
+        <div class="quick-stat"><span>Connected devices</span><strong><b id="clients">0</b> active</strong></div>
+        <div class="quick-stat"><span>Local network</span><strong>FALCON-01</strong></div>
       </div>
     </section>
 
-    <section class="dashboard-grid">
-
-      <article class="card card-highlight">
+    <section class="dashboard-grid" aria-label="Live buoy readings">
+      <article class="metric-card battery-card">
         <div class="card-heading">
-          <div>
-            <p class="card-label">Battery</p>
-            <h3>Power Reserve</h3>
-          </div>
-
-          <span class="card-icon">BAT</span>
+          <div><p class="card-label">POWER</p><h3>Battery reserve</h3></div>
+          <span class="state-tag state-good">NOMINAL</span>
         </div>
-
-        <div class="gauge-wrapper">
+        <div class="battery-layout">
           <div class="battery-ring">
-            <div class="battery-ring-inner">
-              <strong id="batteryValue">0%</strong>
-              <span>remaining</span>
-            </div>
+            <div class="battery-ring-inner"><strong id="batteryValue">0%</strong><span>remaining</span></div>
           </div>
-        </div>
-
-        <div class="progress-track">
-          <div id="batteryBar" class="progress-fill"></div>
+          <div class="battery-detail">
+            <span>Available capacity</span>
+            <div class="progress-track"><div id="batteryBar" class="progress-fill"></div></div>
+            <p>Demo estimate until the power monitor is connected.</p>
+          </div>
         </div>
       </article>
 
-      <article class="card">
+      <article class="metric-card condition-card">
         <div class="card-heading">
-          <div>
-            <p class="card-label">Water</p>
-            <h3>Temperature</h3>
-          </div>
-
-          <span class="card-icon">TEMP</span>
+          <div><p class="card-label">MOTION</p><h3>Sea condition</h3></div>
+          <span class="signal-mark" aria-hidden="true"></span>
         </div>
-
-        <div class="metric-row">
-          <strong id="temperature">--</strong>
-          <span>°C</span>
-        </div>
-
-        <p class="card-note">
-          Demo reading until waterproof temperature sensor is connected.
-        </p>
-      </article>
-
-      <article class="card">
-        <div class="card-heading">
-          <div>
-            <p class="card-label">Motion</p>
-            <h3>Sea Condition</h3>
-          </div>
-
-          <span class="card-icon">WAVE</span>
-        </div>
-
         <div class="condition-value" id="seaCondition">NO DATA</div>
-
-        <div class="mini-grid">
-          <div>
-            <span>Tilt</span>
-            <strong id="tilt">--°</strong>
-          </div>
-
-          <div>
-            <span>Wave Level</span>
-            <strong id="waveLevel">-- m</strong>
-          </div>
+        <div class="split-metrics">
+          <div><span>Tilt</span><strong id="tilt">--&deg;</strong></div>
+          <div><span>Wave activity</span><strong id="waveLevel">-- m</strong></div>
         </div>
       </article>
 
-      <article class="card">
+      <article class="metric-card temperature-card">
         <div class="card-heading">
-          <div>
-            <p class="card-label">Navigation</p>
-            <h3>GPS Status</h3>
-          </div>
-
-          <span class="card-icon">GPS</span>
+          <div><p class="card-label">WATER</p><h3>Temperature</h3></div>
+          <span class="state-tag">DEMO</span>
         </div>
-
-        <div class="large-status" id="gpsStatus">
-          WAITING
-        </div>
-
-        <p class="card-note">
-          Coordinates will appear once the GPS module is connected.
-        </p>
+        <div class="metric-value"><strong id="temperature">--</strong><span>&deg;C</span></div>
+        <p class="card-note">Waterproof probe not connected</p>
       </article>
 
-      <article class="card">
+      <article class="metric-card compact-card">
         <div class="card-heading">
-          <div>
-            <p class="card-label">Energy</p>
-            <h3>Solar System</h3>
-          </div>
-
-          <span class="card-icon">SOLAR</span>
+          <div><p class="card-label">NAVIGATION</p><h3>GPS</h3></div>
+          <span class="status-line status-waiting"></span>
         </div>
-
-        <div class="large-status" id="solarStatus">
-          STANDBY
-        </div>
-
-        <p class="card-note">
-          Solar voltage and charging data will be added later.
-        </p>
+        <div class="large-status" id="gpsStatus">WAITING</div>
+        <p class="card-note">Coordinates unavailable</p>
       </article>
 
-      <article class="card">
+      <article class="metric-card compact-card">
         <div class="card-heading">
-          <div>
-            <p class="card-label">Security</p>
-            <h3>Anti-Theft</h3>
-          </div>
-
-          <span class="card-icon">SAFE</span>
+          <div><p class="card-label">ENERGY</p><h3>Solar input</h3></div>
+          <span class="status-line status-idle"></span>
         </div>
-
-        <div class="security-status">
-          <span class="security-light"></span>
-          <strong id="securityStatus">ARMED</strong>
-        </div>
-
-        <p class="card-note">
-          Geofence and movement alerts will activate after GPS integration.
-        </p>
+        <div class="large-status" id="solarStatus">STANDBY</div>
+        <p class="card-note">Charge monitor unavailable</p>
       </article>
 
+      <article class="metric-card compact-card security-card">
+        <div class="card-heading">
+          <div><p class="card-label">SECURITY</p><h3>Anti-theft</h3></div>
+          <span class="status-line status-secure"></span>
+        </div>
+        <div class="security-status"><span class="security-light"></span><strong id="securityStatus">ARMED</strong></div>
+        <p class="card-note">Local protection state</p>
+      </article>
     </section>
 
-    <section class="system-panel">
-
-      <div class="system-info">
-        <div>
-          <span>Monitoring</span>
-          <strong id="monitoringStatus">ACTIVE</strong>
-        </div>
-
-        <div>
-          <span>System Uptime</span>
-          <strong id="uptime">0h 0m 0s</strong>
-        </div>
-
-        <div>
-          <span>Wi-Fi Network</span>
-          <strong>FALCON-01</strong>
-        </div>
+    <section class="control-panel" aria-labelledby="controlsTitle">
+      <div class="control-copy">
+        <p class="section-label">DEVICE CONTROL</p>
+        <h2 id="controlsTitle">System operations</h2>
+        <p id="lastUpdated">Waiting for update...</p>
       </div>
-
       <div class="control-buttons">
-        <button
-          id="monitoringButton"
-          class="button button-primary"
-          onclick="toggleMonitoring()"
-        >
-          Stop Monitoring
-        </button>
-
-        <button
-          class="button button-danger"
-          onclick="restartDevice()"
-        >
-          Restart ESP32
-        </button>
+        <button id="monitoringButton" class="button button-primary" type="button"
+          onclick="toggleMonitoring()">Stop Monitoring</button>
+        <button class="button button-danger" type="button"
+          onclick="restartDevice()">Restart ESP32</button>
       </div>
-
     </section>
 
-    <footer>
-      <span>FALCON Local Dashboard v2.0</span>
-      <span id="lastUpdated">Waiting for update...</span>
-    </footer>
-
+    <footer><span>FALCON Local Dashboard v2.1</span><span>Offline station interface</span></footer>
   </main>
-
   <script src="/app.js"></script>
 </body>
 </html>
