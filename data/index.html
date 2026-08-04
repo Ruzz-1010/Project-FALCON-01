@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>FALCON-01 Dashboard</title>
+
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+  <div class="background-glow glow-one"></div>
+  <div class="background-glow glow-two"></div>
+
+  <main class="dashboard">
+
+    <header class="topbar">
+      <div class="brand-lockup">
+        <img
+          class="brand-logo"
+          src="/falcon-logo.jpg"
+          alt="Project FALCON emblem"
+          width="80"
+          height="80"
+        >
+
+        <div class="brand-copy">
+          <p class="eyebrow">PROJECT FALCON</p>
+          <h1>FALCON-01</h1>
+
+          <p class="subtitle">
+            Fullbright College's AI-powered Live Coastal Observation Network
+          </p>
+        </div>
+      </div>
+
+      <div class="status-pill">
+        <span class="status-dot"></span>
+        <span id="systemStatus">ONLINE</span>
+      </div>
+    </header>
+
+    <section class="hero-panel">
+      <div>
+        <p class="section-label">LOCAL BUOY SYSTEM</p>
+
+        <h2>
+          Coastal monitoring,
+          available directly from the buoy.
+        </h2>
+
+        <p class="hero-description">
+          Connect locally to view system health, sensor data,
+          security status, and buoy activity without internet.
+        </p>
+      </div>
+
+      <div class="connection-card">
+        <p>Connected Devices</p>
+        <strong id="clients">0</strong>
+        <span>active connection</span>
+      </div>
+    </section>
+
+    <section class="dashboard-grid">
+
+      <article class="card card-highlight">
+        <div class="card-heading">
+          <div>
+            <p class="card-label">Battery</p>
+            <h3>Power Reserve</h3>
+          </div>
+
+          <span class="card-icon">BAT</span>
+        </div>
+
+        <div class="gauge-wrapper">
+          <div class="battery-ring">
+            <div class="battery-ring-inner">
+              <strong id="batteryValue">0%</strong>
+              <span>remaining</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="progress-track">
+          <div id="batteryBar" class="progress-fill"></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-heading">
+          <div>
+            <p class="card-label">Water</p>
+            <h3>Temperature</h3>
+          </div>
+
+          <span class="card-icon">TEMP</span>
+        </div>
+
+        <div class="metric-row">
+          <strong id="temperature">--</strong>
+          <span>°C</span>
+        </div>
+
+        <p class="card-note">
+          Demo reading until waterproof temperature sensor is connected.
+        </p>
+      </article>
+
+      <article class="card">
+        <div class="card-heading">
+          <div>
+            <p class="card-label">Motion</p>
+            <h3>Sea Condition</h3>
+          </div>
+
+          <span class="card-icon">WAVE</span>
+        </div>
+
+        <div class="condition-value" id="seaCondition">NO DATA</div>
+
+        <div class="mini-grid">
+          <div>
+            <span>Tilt</span>
+            <strong id="tilt">--°</strong>
+          </div>
+
+          <div>
+            <span>Wave Level</span>
+            <strong id="waveLevel">-- m</strong>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-heading">
+          <div>
+            <p class="card-label">Navigation</p>
+            <h3>GPS Status</h3>
+          </div>
+
+          <span class="card-icon">GPS</span>
+        </div>
+
+        <div class="large-status" id="gpsStatus">
+          WAITING
+        </div>
+
+        <p class="card-note">
+          Coordinates will appear once the GPS module is connected.
+        </p>
+      </article>
+
+      <article class="card">
+        <div class="card-heading">
+          <div>
+            <p class="card-label">Energy</p>
+            <h3>Solar System</h3>
+          </div>
+
+          <span class="card-icon">SOLAR</span>
+        </div>
+
+        <div class="large-status" id="solarStatus">
+          STANDBY
+        </div>
+
+        <p class="card-note">
+          Solar voltage and charging data will be added later.
+        </p>
+      </article>
+
+      <article class="card">
+        <div class="card-heading">
+          <div>
+            <p class="card-label">Security</p>
+            <h3>Anti-Theft</h3>
+          </div>
+
+          <span class="card-icon">SAFE</span>
+        </div>
+
+        <div class="security-status">
+          <span class="security-light"></span>
+          <strong id="securityStatus">ARMED</strong>
+        </div>
+
+        <p class="card-note">
+          Geofence and movement alerts will activate after GPS integration.
+        </p>
+      </article>
+
+    </section>
+
+    <section class="system-panel">
+
+      <div class="system-info">
+        <div>
+          <span>Monitoring</span>
+          <strong id="monitoringStatus">ACTIVE</strong>
+        </div>
+
+        <div>
+          <span>System Uptime</span>
+          <strong id="uptime">0h 0m 0s</strong>
+        </div>
+
+        <div>
+          <span>Wi-Fi Network</span>
+          <strong>FALCON-01</strong>
+        </div>
+      </div>
+
+      <div class="control-buttons">
+        <button
+          id="monitoringButton"
+          class="button button-primary"
+          onclick="toggleMonitoring()"
+        >
+          Stop Monitoring
+        </button>
+
+        <button
+          class="button button-danger"
+          onclick="restartDevice()"
+        >
+          Restart ESP32
+        </button>
+      </div>
+
+    </section>
+
+    <footer>
+      <span>FALCON Local Dashboard v2.0</span>
+      <span id="lastUpdated">Waiting for update...</span>
+    </footer>
+
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
