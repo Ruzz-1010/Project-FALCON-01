@@ -3,248 +3,143 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#071014">
-  <title>FALCON-01 Dashboard</title>
+  <meta name="theme-color" content="#081216">
+  <title>FALCON-01 Operations</title>
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <main class="dashboard">
-    <header class="topbar">
-      <div class="brand-lockup">
-        <img class="brand-logo" src="/falcon-logo.jpg"
-          alt="Project FALCON emblem" width="64" height="64">
-        <div class="brand-copy">
-          <p class="eyebrow">PROJECT FALCON</p>
-          <h1>FALCON-01</h1>
-          <p class="subtitle">Fullbright College's AI-powered Live Coastal Observation Network</p>
-        </div>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <img src="/falcon-logo.jpg" alt="Project FALCON emblem" width="48" height="48">
+        <div><strong>FALCON-01</strong><span>Coastal station</span></div>
       </div>
-      <div class="status-pill" id="systemIndicator">
-        <span class="status-dot"></span>
-        <span id="systemStatus">ONLINE</span>
+
+      <nav class="side-nav" aria-label="Dashboard sections">
+        <button class="nav-item is-active" data-view="overview" type="button"><span class="nav-icon">OV</span><b>Overview</b></button>
+        <button class="nav-item" data-view="environment" type="button"><span class="nav-icon">EN</span><b>Environment</b></button>
+        <button class="nav-item" data-view="motion" type="button"><span class="nav-icon">MO</span><b>Motion</b></button>
+        <button class="nav-item" data-view="navigation" type="button"><span class="nav-icon">NV</span><b>Navigation</b></button>
+        <button class="nav-item" data-view="power" type="button"><span class="nav-icon">PW</span><b>Power</b></button>
+        <button class="nav-item" data-view="cooling" type="button"><span class="nav-icon">CL</span><b>Cooling</b></button>
+        <button class="nav-item" data-view="diagnostics" type="button"><span class="nav-icon">DG</span><b>Diagnostics</b></button>
+        <button class="nav-item" data-view="activity" type="button"><span class="nav-icon">LG</span><b>Activity</b></button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="connection-state"><span class="status-dot"></span><div><b id="systemStatus">CONNECTING</b><small>ESP32 local link</small></div></div>
+        <span>Dashboard v3.0</span>
       </div>
-    </header>
+    </aside>
 
-    <section class="overview" aria-labelledby="overviewTitle">
-      <div class="overview-heading">
-        <div>
-          <p class="section-label">LOCAL BUOY SYSTEM</p>
-          <h2 id="overviewTitle">Station overview</h2>
-        </div>
-        <span class="demo-badge">SIMULATED SENSOR DATA</span>
-      </div>
-      <div class="quick-stats">
-        <div class="quick-stat"><span>Monitoring</span><strong id="monitoringStatus">ACTIVE</strong></div>
-        <div class="quick-stat"><span>System uptime</span><strong id="uptime">0h 0m 0s</strong></div>
-        <div class="quick-stat"><span>Connected devices</span><strong><b id="clients">0</b> active</strong></div>
-        <div class="quick-stat"><span>Local network</span><strong>FALCON-01</strong></div>
-        <div class="quick-stat"><span>Last update</span><strong id="lastUpdated">Waiting...</strong></div>
-      </div>
-    </section>
+    <button class="sidebar-scrim" id="sidebarScrim" type="button" aria-label="Close navigation"></button>
 
-    <section class="dashboard-grid" aria-label="Live buoy readings">
-      <article class="metric-card battery-card">
-        <div class="card-heading">
-          <div><p class="card-label">POWER</p><h3>Battery reserve</h3></div>
-          <span class="state-tag state-good">NOMINAL</span>
+    <main class="workspace">
+      <header class="topbar">
+        <div class="title-row">
+          <button class="menu-button" id="menuButton" type="button" aria-label="Open navigation"><span></span><span></span><span></span></button>
+          <div><p class="eyebrow">PROJECT FALCON OPERATIONS</p><h1 id="viewTitle">Station overview</h1></div>
         </div>
-        <div class="battery-layout">
-          <div class="battery-ring">
-            <div class="battery-ring-inner"><strong id="batteryValue">0%</strong><span>remaining</span></div>
-          </div>
-          <div class="battery-detail">
-            <span>Available capacity</span>
-            <div class="progress-track"><div id="batteryBar" class="progress-fill"></div></div>
-            <p>Demo estimate until the power monitor is connected.</p>
-          </div>
+        <div class="header-status">
+          <div><span>Last update</span><strong id="lastUpdated">Waiting...</strong></div>
+          <div><span>Clients</span><strong id="clients">0</strong></div>
+          <span class="live-badge" id="systemIndicator"><i></i>LOCAL</span>
         </div>
-      </article>
+      </header>
 
-      <article class="metric-card condition-card">
-        <div class="card-heading">
-          <div><p class="card-label">MOTION</p><h3>Sea condition</h3></div>
-          <span class="signal-mark" aria-hidden="true"></span>
+      <section class="view is-active" data-page="overview">
+        <div class="summary-strip">
+          <article><span>Monitoring</span><strong id="monitoringStatus">--</strong><small>Sampling state</small></article>
+          <article><span>Water temperature</span><strong><b id="temperature">--</b> &deg;C</strong><small>Simulated input</small></article>
+          <article><span>Battery reserve</span><strong id="batteryValue">--%</strong><small>Simulated estimate</small></article>
+          <article><span>Sea condition</span><strong id="seaCondition">--</strong><small>Local classification</small></article>
         </div>
-        <div class="condition-value" id="seaCondition">NO DATA</div>
-        <div class="split-metrics">
-          <div><span>Tilt</span><strong id="tilt">--&deg;</strong></div>
-          <div><span>Wave activity</span><strong id="waveLevel">-- m</strong></div>
-        </div>
-      </article>
 
-      <article class="metric-card temperature-card">
-        <div class="card-heading">
-          <div><p class="card-label">WATER</p><h3>Temperature</h3></div>
-          <span class="state-tag">DEMO</span>
-        </div>
-        <div class="metric-value"><strong id="temperature">--</strong><span>&deg;C</span></div>
-        <p class="card-note">Waterproof probe not connected</p>
-      </article>
+        <div class="overview-grid">
+          <article class="panel trend-panel">
+            <div class="panel-heading"><div><p class="section-label">LIVE SESSION</p><h2>Environmental trend</h2></div><span class="tag">2 SEC SAMPLE</span></div>
+            <div class="chart-legend"><span><i class="legend-temp"></i>Temperature</span><span><i class="legend-wave"></i>Wave activity</span></div>
+            <div class="chart-wrap"><canvas id="trendChart" aria-label="Live temperature and wave activity chart"></canvas><div id="chartEmpty" class="chart-empty">Collecting readings...</div></div>
+          </article>
 
-      <article class="metric-card compact-card">
-        <div class="card-heading">
-          <div><p class="card-label">NAVIGATION</p><h3>GPS</h3></div>
-          <span class="status-line status-waiting"></span>
-        </div>
-        <div class="large-status" id="gpsStatus">WAITING</div>
-        <p class="card-note">Coordinates unavailable</p>
-      </article>
+          <article class="panel station-panel">
+            <div class="panel-heading"><div><p class="section-label">STATION STATE</p><h2>Local controller</h2></div><span class="tag tag-good">ONLINE</span></div>
+            <dl class="data-list">
+              <div><dt>System uptime</dt><dd id="uptime">0h 0m 0s</dd></div>
+              <div><dt>Wi-Fi network</dt><dd>FALCON-01</dd></div>
+              <div><dt>Access point</dt><dd>192.168.4.1</dd></div>
+              <div><dt>Data source</dt><dd>ESP32 demo telemetry</dd></div>
+            </dl>
+          </article>
 
-      <article class="metric-card compact-card">
-        <div class="card-heading">
-          <div><p class="card-label">ENERGY</p><h3>Solar input</h3></div>
-          <span class="status-line status-idle"></span>
-        </div>
-        <div class="large-status" id="solarStatus">STANDBY</div>
-        <p class="card-note">Charge monitor unavailable</p>
-      </article>
+          <article class="panel motion-snapshot">
+            <div class="panel-heading"><div><p class="section-label">MOTION SNAPSHOT</p><h2>Current movement</h2></div></div>
+            <div class="dual-reading"><div><span>Tilt</span><strong id="tilt">--&deg;</strong></div><div><span>Wave activity</span><strong id="waveLevel">-- m</strong></div></div>
+          </article>
 
-      <article class="metric-card compact-card security-card">
-        <div class="card-heading">
-          <div><p class="card-label">SECURITY</p><h3>Anti-theft</h3></div>
-          <span class="status-line status-secure"></span>
+          <article class="panel cloud-panel">
+            <div class="panel-heading"><div><p class="section-label">DATA PIPELINE</p><h2>Cloud relay</h2></div><span class="tag tag-warn">NOT CONFIGURED</span></div>
+            <p>The ESP32 is operating locally. No cloud endpoint or remote synchronization is implemented.</p>
+            <div class="pipeline"><span>ESP32</span><i></i><span>Local API</span><i class="is-off"></i><span class="is-muted">Cloud</span></div>
+          </article>
         </div>
-        <div class="security-status"><span class="security-light"></span><strong id="securityStatus">ARMED</strong></div>
-        <p class="card-note">Local protection state</p>
-      </article>
-    </section>
+      </section>
 
-    <section class="system-section" aria-labelledby="environmentTitle">
-      <div class="section-heading">
-        <div>
-          <p class="section-label">ENVIRONMENTAL SENSORS</p>
-          <h2 id="environmentTitle">Water and weather</h2>
+      <section class="view" data-page="environment">
+        <div class="page-heading"><div><p class="section-label">LIVE SENSORS</p><h2>Environmental monitoring</h2></div><span class="tag tag-warn">HARDWARE PENDING</span></div>
+        <div class="module-grid">
+          <article class="module"><span>Water temperature</span><strong><b id="environmentTemperature">--</b> &deg;C</strong><small>SIMULATED</small></article>
+          <article class="module is-pending"><span>Water salinity</span><strong>-- ppt</strong><small>NOT INSTALLED</small></article>
+          <article class="module is-pending"><span>Air temperature</span><strong>-- &deg;C</strong><small>NOT INSTALLED</small></article>
+          <article class="module is-pending"><span>Humidity</span><strong>-- % RH</strong><small>NOT INSTALLED</small></article>
+          <article class="module is-pending"><span>Atmospheric pressure</span><strong>-- hPa</strong><small>NOT INSTALLED</small></article>
+          <article class="module is-pending"><span>Water level</span><strong>-- m</strong><small>NOT INSTALLED</small></article>
+          <article class="module is-pending"><span>Wind speed</span><strong>-- m/s</strong><small>PHASE 2</small></article>
+          <article class="module is-pending"><span>Wind direction</span><strong>--</strong><small>PHASE 2</small></article>
         </div>
-        <span class="state-tag">INSTALLATION PENDING</span>
-      </div>
-      <div class="sensor-matrix">
-        <article class="sensor-tile sensor-featured">
-          <div><span>Water salinity</span><strong>-- <small>ppt</small></strong></div>
-          <b class="availability">NOT INSTALLED</b>
-        </article>
-        <article class="sensor-tile">
-          <div><span>Air temperature</span><strong>-- <small>&deg;C</small></strong></div>
-          <b class="availability">NOT INSTALLED</b>
-        </article>
-        <article class="sensor-tile">
-          <div><span>Humidity</span><strong>-- <small>% RH</small></strong></div>
-          <b class="availability">NOT INSTALLED</b>
-        </article>
-        <article class="sensor-tile">
-          <div><span>Atmospheric pressure</span><strong>-- <small>hPa</small></strong></div>
-          <b class="availability">NOT INSTALLED</b>
-        </article>
-        <article class="sensor-tile">
-          <div><span>Water level</span><strong>-- <small>m</small></strong></div>
-          <b class="availability">NOT INSTALLED</b>
-        </article>
-        <article class="sensor-tile">
-          <div><span>Wind</span><strong>-- <small>m/s</small></strong></div>
-          <b class="availability">PHASE 2</b>
-        </article>
-      </div>
-    </section>
+      </section>
 
-    <section class="operations-grid" aria-label="Buoy subsystems">
-      <article class="subsystem-panel cooling-panel">
-        <div class="section-heading">
-          <div><p class="section-label">THERMAL MANAGEMENT</p><h2>Cooling system</h2></div>
-          <span class="state-tag">HARDWARE PENDING</span>
+      <section class="view" data-page="motion">
+        <div class="page-heading"><div><p class="section-label">IMU &amp; SEA STATE</p><h2>Motion monitoring</h2></div><span class="tag">DEMO DATA</span></div>
+        <div class="detail-layout">
+          <article class="panel"><div class="large-reading"><span>Sea condition</span><strong id="motionSeaCondition">--</strong></div><div class="dual-reading"><div><span>Tilt</span><strong id="motionTilt">--&deg;</strong></div><div><span>Wave activity</span><strong id="motionWave">-- m</strong></div></div></article>
+          <article class="panel"><div class="panel-heading"><div><p class="section-label">6-AXIS IMU</p><h2>Orientation</h2></div><span class="tag tag-warn">NOT INSTALLED</span></div><dl class="data-list"><div><dt>Roll</dt><dd>Not reported</dd></div><div><dt>Pitch</dt><dd>Not reported</dd></div><div><dt>Yaw</dt><dd>Not reported</dd></div><div><dt>Impact events</dt><dd>Unavailable</dd></div></dl></article>
         </div>
-        <div class="system-rows">
-          <div><span>Enclosure temperature</span><strong>NOT REPORTED</strong></div>
-          <div><span>Battery temperature</span><strong>NOT REPORTED</strong></div>
-          <div><span>Intake fan</span><strong>NOT INSTALLED</strong></div>
-          <div><span>Exhaust fan</span><strong>NOT INSTALLED</strong></div>
-          <div><span>Automatic cooling</span><strong>UNAVAILABLE</strong></div>
-        </div>
-      </article>
+      </section>
 
-      <article class="subsystem-panel power-panel">
-        <div class="section-heading">
-          <div><p class="section-label">POWER TELEMETRY</p><h2>Energy system</h2></div>
-          <span class="state-tag">USB POWER</span>
-        </div>
-        <div class="system-rows">
-          <div><span>Battery voltage</span><strong>NOT REPORTED</strong></div>
-          <div><span>Battery current</span><strong>NOT REPORTED</strong></div>
-          <div><span>Solar voltage</span><strong>NOT REPORTED</strong></div>
-          <div><span>Charging current</span><strong>NOT REPORTED</strong></div>
-          <div><span>MPPT controller</span><strong>NOT INSTALLED</strong></div>
-        </div>
-      </article>
+      <section class="view" data-page="navigation">
+        <div class="page-heading"><div><p class="section-label">GPS &amp; GEOFENCE</p><h2>Navigation</h2></div><span class="tag tag-warn" id="gpsStatus">WAITING FOR GPS</span></div>
+        <div class="detail-layout"><article class="panel map-placeholder"><div class="map-crosshair"></div><strong>NO POSITION FIX</strong><span>Map available after GPS integration</span></article><article class="panel"><dl class="data-list"><div><dt>Coordinates</dt><dd>Not reported</dd></div><div><dt>Deployment location</dt><dd>Not set</dd></div><div><dt>Anchor distance</dt><dd>Not reported</dd></div><div><dt>Drift status</dt><dd>Unavailable</dd></div><div><dt>Speed</dt><dd>Not reported</dd></div></dl></article></div>
+      </section>
 
-      <article class="subsystem-panel navigation-panel">
-        <div class="section-heading">
-          <div><p class="section-label">POSITION &amp; MOTION</p><h2>Navigation detail</h2></div>
-          <span class="state-tag">GPS PENDING</span>
-        </div>
-        <div class="system-rows">
-          <div><span>Coordinates</span><strong>NO FIX</strong></div>
-          <div><span>Deployment location</span><strong>NOT SET</strong></div>
-          <div><span>Anchor distance</span><strong>NOT REPORTED</strong></div>
-          <div><span>Drift status</span><strong>UNAVAILABLE</strong></div>
-          <div><span>Roll / pitch / yaw</span><strong>IMU PENDING</strong></div>
-        </div>
-      </article>
+      <section class="view" data-page="power">
+        <div class="page-heading"><div><p class="section-label">ENERGY SYSTEM</p><h2>Power monitoring</h2></div><span class="tag" id="solarStatus">STANDBY</span></div>
+        <div class="detail-layout"><article class="panel battery-panel"><div class="battery-gauge"><span id="powerBatteryBar"></span></div><div class="large-reading"><span>Battery reserve</span><strong id="powerBattery">--%</strong></div><p>Simulated estimate until the battery monitor is connected.</p></article><article class="panel"><dl class="data-list"><div><dt>Battery voltage</dt><dd>Not reported</dd></div><div><dt>Battery current</dt><dd>Not reported</dd></div><div><dt>Solar voltage</dt><dd>Not reported</dd></div><div><dt>Charging current</dt><dd>Not reported</dd></div><div><dt>MPPT controller</dt><dd>Not installed</dd></div></dl></article></div>
+      </section>
 
-      <article class="subsystem-panel diagnostics-panel">
-        <div class="section-heading">
-          <div><p class="section-label">DIAGNOSTICS</p><h2>Controller health</h2></div>
-          <span class="state-tag state-good">ESP32 ONLINE</span>
-        </div>
-        <div class="system-rows">
-          <div><span>Sensor health</span><strong>SIMULATION ONLY</strong></div>
-          <div><span>Edge AI computer</span><strong>NOT CONNECTED</strong></div>
-          <div><span>Storage / memory / CPU</span><strong>NOT REPORTED</strong></div>
-          <div><span>Leak detector</span><strong>NOT INSTALLED</strong></div>
-          <div><span>Firmware channel</span><strong>LOCAL BUILD</strong></div>
-        </div>
-      </article>
-    </section>
+      <section class="view" data-page="cooling">
+        <div class="page-heading"><div><p class="section-label">THERMAL MANAGEMENT</p><h2>Cooling system</h2></div><span class="tag tag-warn">HARDWARE PENDING</span></div>
+        <div class="module-grid"><article class="module is-pending"><span>Enclosure temperature</span><strong>-- &deg;C</strong><small>NOT REPORTED</small></article><article class="module is-pending"><span>Battery temperature</span><strong>-- &deg;C</strong><small>NOT REPORTED</small></article><article class="module is-pending"><span>Intake fan</span><strong>OFFLINE</strong><small>NOT INSTALLED</small></article><article class="module is-pending"><span>Exhaust fan</span><strong>OFFLINE</strong><small>NOT INSTALLED</small></article></div>
+        <article class="panel policy-panel"><div><p class="section-label">AUTOMATIC CONTROL</p><h2>Cooling policy</h2></div><p>Fan control will activate from enclosure-temperature thresholds after the cooling hardware and temperature sensors are approved and installed.</p><button type="button" disabled>Configure thresholds</button></article>
+      </section>
 
-    <section class="activity-panel" aria-labelledby="activityTitle">
-      <div class="section-heading">
-        <div><p class="section-label">ALERTS &amp; MAINTENANCE</p><h2 id="activityTitle">Station activity</h2></div>
-        <span class="state-tag">ALERT ENGINE PENDING</span>
-      </div>
-      <div class="activity-grid">
-        <div><span>Recent alerts</span><strong>Logging not implemented</strong></div>
-        <div><span>Fault history</span><strong>Storage not implemented</strong></div>
-        <div><span>Restart history</span><strong>Storage not implemented</strong></div>
-        <div><span>Maintenance events</span><strong>Storage not implemented</strong></div>
-      </div>
-    </section>
+      <section class="view" data-page="diagnostics">
+        <div class="page-heading"><div><p class="section-label">SYSTEM HEALTH</p><h2>Diagnostics</h2></div><span class="tag tag-good">ESP32 ONLINE</span></div>
+        <div class="detail-layout"><article class="panel"><dl class="data-list"><div><dt>Sensor health</dt><dd>Simulation only</dd></div><div><dt>Communication</dt><dd>Local AP active</dd></div><div><dt>Edge AI computer</dt><dd>Not connected</dd></div><div><dt>Leak detector</dt><dd>Not installed</dd></div><div><dt>Anti-theft</dt><dd id="securityStatus">--</dd></div></dl></article><article class="panel"><dl class="data-list"><div><dt>Storage usage</dt><dd>Not reported</dd></div><div><dt>Memory usage</dt><dd>Not reported</dd></div><div><dt>CPU load</dt><dd>Not reported</dd></div><div><dt>Last reboot reason</dt><dd>Not reported</dd></div><div><dt>Firmware channel</dt><dd>Local build</dd></div></dl></article></div>
+      </section>
 
-    <section class="readiness-panel" aria-labelledby="readinessTitle">
-      <div class="readiness-heading">
-        <div><p class="section-label">MODULE READINESS</p><h2 id="readinessTitle">Expansion systems</h2></div>
-        <span class="state-tag">HARDWARE PENDING</span>
-      </div>
-      <div class="readiness-list">
-        <div><span>Sensor calibration</span><strong>Requires hardware</strong></div>
-        <div><span>Log export</span><strong>Requires storage</strong></div>
-        <div><span>Alarm test</span><strong>Requires alert module</strong></div>
-        <div><span>OTA update</span><strong>Requires authentication</strong></div>
-      </div>
-    </section>
+      <section class="view" data-page="activity">
+        <div class="page-heading"><div><p class="section-label">ALERTS &amp; MAINTENANCE</p><h2>Station activity</h2></div><span class="tag tag-warn">LOGGING PENDING</span></div>
+        <article class="panel empty-state"><strong>No event store available</strong><p>Recent alerts, fault history, restart history, and maintenance events will appear here after persistent logging is implemented.</p></article>
+      </section>
 
-    <section class="control-panel" aria-labelledby="controlsTitle">
-      <div class="control-copy">
-        <p class="section-label">DEVICE CONTROL</p>
-        <h2 id="controlsTitle">System operations</h2>
-        <p>Commands are processed locally by the ESP32.</p>
-      </div>
-      <div class="control-buttons">
-        <button id="monitoringButton" class="button button-primary" type="button">Stop Monitoring</button>
-        <button id="restartButton" class="button button-danger" type="button">Restart ESP32</button>
-      </div>
-    </section>
-
-    <div id="actionMessage" class="action-message" role="status" aria-live="polite"></div>
-
-    <footer><span>FALCON Local Dashboard v2.3</span><span>Offline station interface</span></footer>
-  </main>
+      <section class="control-dock">
+        <div><span>Local device control</span><small>Commands run directly on the ESP32</small></div>
+        <div><button id="monitoringButton" class="button button-primary" type="button">Toggle monitoring</button><button id="restartButton" class="button button-danger" type="button">Restart ESP32</button></div>
+      </section>
+    </main>
+  </div>
+  <div id="actionMessage" class="toast" role="status" aria-live="polite"></div>
   <script src="/app.js"></script>
 </body>
 </html>
