@@ -38,6 +38,7 @@
         <div class="quick-stat"><span>System uptime</span><strong id="uptime">0h 0m 0s</strong></div>
         <div class="quick-stat"><span>Connected devices</span><strong><b id="clients">0</b> active</strong></div>
         <div class="quick-stat"><span>Local network</span><strong>FALCON-01</strong></div>
+        <div class="quick-stat"><span>Last update</span><strong id="lastUpdated">Waiting...</strong></div>
       </div>
     </section>
 
@@ -108,21 +109,34 @@
       </article>
     </section>
 
+    <section class="readiness-panel" aria-labelledby="readinessTitle">
+      <div class="readiness-heading">
+        <div><p class="section-label">MODULE READINESS</p><h2 id="readinessTitle">Expansion systems</h2></div>
+        <span class="state-tag">HARDWARE PENDING</span>
+      </div>
+      <div class="readiness-list">
+        <div><span>Weather station</span><strong>Coming soon</strong></div>
+        <div><span>Drift tracking</span><strong>Coming soon</strong></div>
+        <div><span>Leak detection</span><strong>Coming soon</strong></div>
+        <div><span>Tamper alerts</span><strong>Coming soon</strong></div>
+      </div>
+    </section>
+
     <section class="control-panel" aria-labelledby="controlsTitle">
       <div class="control-copy">
         <p class="section-label">DEVICE CONTROL</p>
         <h2 id="controlsTitle">System operations</h2>
-        <p id="lastUpdated">Waiting for update...</p>
+        <p>Commands are processed locally by the ESP32.</p>
       </div>
       <div class="control-buttons">
-        <button id="monitoringButton" class="button button-primary" type="button"
-          onclick="toggleMonitoring()">Stop Monitoring</button>
-        <button class="button button-danger" type="button"
-          onclick="restartDevice()">Restart ESP32</button>
+        <button id="monitoringButton" class="button button-primary" type="button">Stop Monitoring</button>
+        <button id="restartButton" class="button button-danger" type="button">Restart ESP32</button>
       </div>
     </section>
 
-    <footer><span>FALCON Local Dashboard v2.1</span><span>Offline station interface</span></footer>
+    <div id="actionMessage" class="action-message" role="status" aria-live="polite"></div>
+
+    <footer><span>FALCON Local Dashboard v2.2</span><span>Offline station interface</span></footer>
   </main>
   <script src="/app.js"></script>
 </body>

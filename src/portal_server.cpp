@@ -7,7 +7,7 @@
 
 namespace {
 
-constexpr char kNoCache[] = "no-store";
+constexpr char kNoCache[] = "no-store, no-cache, must-revalidate, max-age=0";
 constexpr char kStaticCache[] = "public, max-age=3600";
 
 }  // namespace
@@ -15,7 +15,7 @@ constexpr char kStaticCache[] = "public, max-age=3600";
 PortalServer::PortalServer() : webServer_(FalconConfig::kHttpPort) {}
 
 bool PortalServer::begin() {
-  bootTime_ = millis();
+  systemState_.begin(millis());
 
   if (!LittleFS.begin(true)) {
     Serial.println(F("ERROR: LittleFS mount failed."));
@@ -75,6 +75,11 @@ void PortalServer::handleClient() {
   }
   dnsServer_.processNextRequest();
   webServer_.handleClient();
+
+  if (restartPending_ &&
+      static_cast<int32_t>(millis() - restartAtMs_) >= 0) {
+    ESP.restart();
+  }
 }
 
 void PortalServer::configureRoutes() {
@@ -90,10 +95,12 @@ void PortalServer::configureRoutes() {
     sendFile(FalconConfig::kLogoPath, "image/jpeg", kStaticCache);
   });
 
-  webServer_.on("/api/status", HTTP_GET, [this]() { handleStatus(); });
-  webServer_.on("/api/monitoring/toggle", HTTP_POST,
+  webServer_.on(FalconConfig::kStatusApiPath, HTTP_GET,
+                [this]() { handleStatus(); });
+  webServer_.on(FalconConfig::kMonitoringApiPath, HTTP_POST,
                 [this]() { handleMonitoringToggle(); });
-  webServer_.on("/api/restart", HTTP_POST, [this]() { handleRestart(); });
+  webServer_.on(FalconConfig::kRestartApiPath, HTTP_POST,
+                [this]() { handleRestart(); });
 
   const char* captivePaths[] = {
       "/generate_204",          "/gen_204",
@@ -110,61 +117,60 @@ void PortalServer::configureRoutes() {
 }
 
 void PortalServer::handleStatus() {
-  const unsigned long uptimeSeconds = (millis() - bootTime_) / 1000UL;
-
-  // Simulated values remain in one place until physical sensors are connected.
-  constexpr float kDemoBattery = 94.0F;
-  constexpr float kDemoTemperature = 28.6F;
-  constexpr float kDemoTilt = 2.4F;
-  constexpr float kDemoWaveLevel = 0.3F;
+  const DashboardSnapshot state = systemState_.snapshot(
+      millis(), static_cast<uint8_t>(WiFi.softAPgetStationNum()));
 
   String json;
   json.reserve(256);
-  json += F("{\"system\":\"ONLINE\",\"clients\":");
-  json += WiFi.softAPgetStationNum();
+  json += F("{\"system\":\"");
+  json += escapeJson(state.system);
+  json += F("\",\"clients\":");
+  json += state.clients;
   json += F(",\"uptime\":");
-  json += uptimeSeconds;
+  json += state.uptimeSeconds;
   json += F(",\"monitoring\":");
-  json += monitoringEnabled_ ? F("true") : F("false");
+  json += state.monitoring ? F("true") : F("false");
   json += F(",\"battery\":");
-  json += String(kDemoBattery, 0);
+  json += String(state.battery, 0);
   json += F(",\"temperature\":");
-  json += String(kDemoTemperature, 1);
+  json += String(state.temperature, 1);
   json += F(",\"tilt\":");
-  json += String(kDemoTilt, 1);
+  json += String(state.tilt, 1);
   json += F(",\"waveLevel\":");
-  json += String(kDemoWaveLevel, 1);
+  json += String(state.waveLevel, 1);
   json += F(",\"seaCondition\":\"");
-  json += escapeJson("CALM");
+  json += escapeJson(state.seaCondition);
   json += F("\",\"gps\":\"");
-  json += escapeJson("WAITING FOR GPS");
+  json += escapeJson(state.gps);
   json += F("\",\"solar\":\"");
-  json += escapeJson("STANDBY");
+  json += escapeJson(state.solar);
   json += F("\",\"security\":\"");
-  json += escapeJson("ARMED");
+  json += escapeJson(state.security);
   json += F("\"}");
 
-  webServer_.sendHeader("Cache-Control", kNoCache);
-  webServer_.send(200, "application/json", json);
+  sendJson(200, json);
 }
 
 void PortalServer::handleMonitoringToggle() {
-  monitoringEnabled_ = !monitoringEnabled_;
-  const String json = monitoringEnabled_
+  const bool monitoringEnabled = systemState_.toggleMonitoring();
+  const String json = monitoringEnabled
                           ? F("{\"monitoring\":true}")
                           : F("{\"monitoring\":false}");
-  webServer_.sendHeader("Cache-Control", kNoCache);
-  webServer_.send(200, "application/json", json);
+  sendJson(200, json);
 }
 
 void PortalServer::handleRestart() {
-  webServer_.sendHeader("Cache-Control", kNoCache);
-  webServer_.send(200, "application/json", F("{\"restarting\":true}"));
-  delay(700);
-  ESP.restart();
+  restartPending_ = true;
+  restartAtMs_ = millis() + FalconConfig::kRestartDelayMs;
+  sendJson(200, F("{\"restarting\":true}"));
 }
 
 void PortalServer::handleNotFound() {
+  if (webServer_.uri() == "/api" || webServer_.uri().startsWith("/api/")) {
+    sendJson(404, F("{\"success\":false,\"error\":\"NOT_FOUND\"}"));
+    return;
+  }
+
   String host = webServer_.hostHeader();
   const int portSeparator = host.indexOf(':');
   if (portSeparator >= 0) {
@@ -199,6 +205,17 @@ void PortalServer::sendFile(const char* path, const char* contentType,
   webServer_.sendHeader("Cache-Control", cacheControl);
   webServer_.streamFile(file, contentType);
   file.close();
+}
+
+void PortalServer::sendJson(int statusCode, const String& body) {
+  sendNoCacheHeaders();
+  webServer_.send(statusCode, "application/json", body);
+}
+
+void PortalServer::sendNoCacheHeaders() {
+  webServer_.sendHeader("Cache-Control", kNoCache);
+  webServer_.sendHeader("Pragma", "no-cache");
+  webServer_.sendHeader("Expires", "0");
 }
 
 void PortalServer::redirectToDashboard() {

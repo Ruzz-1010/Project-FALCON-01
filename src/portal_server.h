@@ -4,6 +4,8 @@
 #include <DNSServer.h>
 #include <WebServer.h>
 
+#include "system_state.h"
+
 class PortalServer {
  public:
   PortalServer();
@@ -20,14 +22,17 @@ class PortalServer {
   void sendDashboard();
   void sendFile(const char* path, const char* contentType,
                 const char* cacheControl);
+  void sendJson(int statusCode, const String& body);
+  void sendNoCacheHeaders();
   void redirectToDashboard();
   bool validateWebAssets() const;
   static String escapeJson(const String& value);
 
   DNSServer dnsServer_;
   WebServer webServer_;
+  SystemState systemState_;
   bool running_ = false;
-  bool monitoringEnabled_ = true;
   bool webAssetsReady_ = false;
-  unsigned long bootTime_ = 0;
+  bool restartPending_ = false;
+  uint32_t restartAtMs_ = 0;
 };

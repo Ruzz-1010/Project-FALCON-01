@@ -16,4 +16,9 @@ constexpr char kStylePath[] = "/style.css";
 constexpr char kScriptPath[] = "/app.js";
 constexpr char kLogoPath[] = "/falcon-logo.jpg";
 
+constexpr char kStatusApiPath[] = "/api/status";
+constexpr char kMonitoringApiPath[] = "/api/monitoring/toggle";
+constexpr char kRestartApiPath[] = "/api/restart";
+constexpr uint32_t kRestartDelayMs = 700;
+
 }  // namespace FalconConfig
