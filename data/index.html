@@ -109,16 +109,123 @@
       </article>
     </section>
 
+    <section class="system-section" aria-labelledby="environmentTitle">
+      <div class="section-heading">
+        <div>
+          <p class="section-label">ENVIRONMENTAL SENSORS</p>
+          <h2 id="environmentTitle">Water and weather</h2>
+        </div>
+        <span class="state-tag">INSTALLATION PENDING</span>
+      </div>
+      <div class="sensor-matrix">
+        <article class="sensor-tile sensor-featured">
+          <div><span>Water salinity</span><strong>-- <small>ppt</small></strong></div>
+          <b class="availability">NOT INSTALLED</b>
+        </article>
+        <article class="sensor-tile">
+          <div><span>Air temperature</span><strong>-- <small>&deg;C</small></strong></div>
+          <b class="availability">NOT INSTALLED</b>
+        </article>
+        <article class="sensor-tile">
+          <div><span>Humidity</span><strong>-- <small>% RH</small></strong></div>
+          <b class="availability">NOT INSTALLED</b>
+        </article>
+        <article class="sensor-tile">
+          <div><span>Atmospheric pressure</span><strong>-- <small>hPa</small></strong></div>
+          <b class="availability">NOT INSTALLED</b>
+        </article>
+        <article class="sensor-tile">
+          <div><span>Water level</span><strong>-- <small>m</small></strong></div>
+          <b class="availability">NOT INSTALLED</b>
+        </article>
+        <article class="sensor-tile">
+          <div><span>Wind</span><strong>-- <small>m/s</small></strong></div>
+          <b class="availability">PHASE 2</b>
+        </article>
+      </div>
+    </section>
+
+    <section class="operations-grid" aria-label="Buoy subsystems">
+      <article class="subsystem-panel cooling-panel">
+        <div class="section-heading">
+          <div><p class="section-label">THERMAL MANAGEMENT</p><h2>Cooling system</h2></div>
+          <span class="state-tag">HARDWARE PENDING</span>
+        </div>
+        <div class="system-rows">
+          <div><span>Enclosure temperature</span><strong>NOT REPORTED</strong></div>
+          <div><span>Battery temperature</span><strong>NOT REPORTED</strong></div>
+          <div><span>Intake fan</span><strong>NOT INSTALLED</strong></div>
+          <div><span>Exhaust fan</span><strong>NOT INSTALLED</strong></div>
+          <div><span>Automatic cooling</span><strong>UNAVAILABLE</strong></div>
+        </div>
+      </article>
+
+      <article class="subsystem-panel power-panel">
+        <div class="section-heading">
+          <div><p class="section-label">POWER TELEMETRY</p><h2>Energy system</h2></div>
+          <span class="state-tag">USB POWER</span>
+        </div>
+        <div class="system-rows">
+          <div><span>Battery voltage</span><strong>NOT REPORTED</strong></div>
+          <div><span>Battery current</span><strong>NOT REPORTED</strong></div>
+          <div><span>Solar voltage</span><strong>NOT REPORTED</strong></div>
+          <div><span>Charging current</span><strong>NOT REPORTED</strong></div>
+          <div><span>MPPT controller</span><strong>NOT INSTALLED</strong></div>
+        </div>
+      </article>
+
+      <article class="subsystem-panel navigation-panel">
+        <div class="section-heading">
+          <div><p class="section-label">POSITION &amp; MOTION</p><h2>Navigation detail</h2></div>
+          <span class="state-tag">GPS PENDING</span>
+        </div>
+        <div class="system-rows">
+          <div><span>Coordinates</span><strong>NO FIX</strong></div>
+          <div><span>Deployment location</span><strong>NOT SET</strong></div>
+          <div><span>Anchor distance</span><strong>NOT REPORTED</strong></div>
+          <div><span>Drift status</span><strong>UNAVAILABLE</strong></div>
+          <div><span>Roll / pitch / yaw</span><strong>IMU PENDING</strong></div>
+        </div>
+      </article>
+
+      <article class="subsystem-panel diagnostics-panel">
+        <div class="section-heading">
+          <div><p class="section-label">DIAGNOSTICS</p><h2>Controller health</h2></div>
+          <span class="state-tag state-good">ESP32 ONLINE</span>
+        </div>
+        <div class="system-rows">
+          <div><span>Sensor health</span><strong>SIMULATION ONLY</strong></div>
+          <div><span>Edge AI computer</span><strong>NOT CONNECTED</strong></div>
+          <div><span>Storage / memory / CPU</span><strong>NOT REPORTED</strong></div>
+          <div><span>Leak detector</span><strong>NOT INSTALLED</strong></div>
+          <div><span>Firmware channel</span><strong>LOCAL BUILD</strong></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="activity-panel" aria-labelledby="activityTitle">
+      <div class="section-heading">
+        <div><p class="section-label">ALERTS &amp; MAINTENANCE</p><h2 id="activityTitle">Station activity</h2></div>
+        <span class="state-tag">ALERT ENGINE PENDING</span>
+      </div>
+      <div class="activity-grid">
+        <div><span>Recent alerts</span><strong>Logging not implemented</strong></div>
+        <div><span>Fault history</span><strong>Storage not implemented</strong></div>
+        <div><span>Restart history</span><strong>Storage not implemented</strong></div>
+        <div><span>Maintenance events</span><strong>Storage not implemented</strong></div>
+      </div>
+    </section>
+
     <section class="readiness-panel" aria-labelledby="readinessTitle">
       <div class="readiness-heading">
         <div><p class="section-label">MODULE READINESS</p><h2 id="readinessTitle">Expansion systems</h2></div>
         <span class="state-tag">HARDWARE PENDING</span>
       </div>
       <div class="readiness-list">
-        <div><span>Weather station</span><strong>Coming soon</strong></div>
-        <div><span>Drift tracking</span><strong>Coming soon</strong></div>
-        <div><span>Leak detection</span><strong>Coming soon</strong></div>
-        <div><span>Tamper alerts</span><strong>Coming soon</strong></div>
+        <div><span>Sensor calibration</span><strong>Requires hardware</strong></div>
+        <div><span>Log export</span><strong>Requires storage</strong></div>
+        <div><span>Alarm test</span><strong>Requires alert module</strong></div>
+        <div><span>OTA update</span><strong>Requires authentication</strong></div>
       </div>
     </section>
 
@@ -136,7 +243,7 @@
 
     <div id="actionMessage" class="action-message" role="status" aria-live="polite"></div>
 
-    <footer><span>FALCON Local Dashboard v2.2</span><span>Offline station interface</span></footer>
+    <footer><span>FALCON Local Dashboard v2.3</span><span>Offline station interface</span></footer>
   </main>
   <script src="/app.js"></script>
 </body>
