@@ -1,5 +1,10 @@
 # Project FALCON-01 Development Roadmap
 
+> **Validated status notice (2026-08-05):** The ESP32 portal foundation is
+> implemented. Dashboard modules that depend on sensors, diagnostics, history,
+> settings, authentication, OTA, AI, edge computing, or remote services remain
+> In Progress, Planned, or Future Expansion even when listed under a phase.
+
 **Project Name:** Project FALCON
 
 **Meaning:** **Fullbright College's AI-powered Live Coastal Observation Network**
@@ -509,3 +514,22 @@ Project FALCON will be considered successful when it demonstrates:
 **Status:** Approved Development Roadmap
 
 This roadmap defines the official development sequence for Project FALCON-01. All hardware, firmware, AI, mechanical, and documentation work should follow this roadmap unless superseded by a newer approved version.
+
+## Purpose
+Define staged delivery and future milestones.
+## Scope
+Dashboard, firmware, hardware, sensors, AI, communications, mobile, and field validation.
+## Current Status
+Portal foundation is Implemented; dashboard development is In Progress; other phases are Planned or Future.
+## Architecture
+Development proceeds from stable local controller to validated sensing, data, AI, remote services, and marine deployment.
+## Implementation
+Only source-backed Phase 1 portal deliverables count as implemented.
+## Future Expansion
+Long-term items remain conditional on completed lower-level validation gates.
+## Engineering Notes
+Phase placement does not itself prove implementation.
+## Revision History
+| Version | Date | Change |
+| --- | --- | --- |
+| 3.1 | 2026-08-05 | Added verified status notice and document controls. |

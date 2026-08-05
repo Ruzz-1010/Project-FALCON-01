@@ -1,5 +1,13 @@
 # Project FALCON-01 Hardware Documentation
 
+> **Validated hardware notice (2026-08-05):** Confirmed available hardware is
+> limited to the ESP32 DevKit/ESP-WROOM-32 class board, CH340 interface, jumper
+> wires, LM2596, relay, and miscellaneous power modules. No sensor, GPS, edge
+> computer, solar/battery system, or marine assembly is verified as installed.
+> Exact models, capacities, dimensions, and the Dell/Raspberry Pi selection are
+> **Status: Not Yet Finalized** unless confirmed in a later revision. The
+> remainder of this document is an engineering planning baseline.
+
 **Project Name:** Project FALCON
 
 **Prototype:** FALCON-01
@@ -629,3 +637,18 @@ Project FALCON hardware follows these principles:
 **Status:** Approved Phase 1 Hardware Baseline
 
 This document defines the official hardware configuration for Project FALCON-01 and should be used as the baseline for mechanical design, electronics integration, firmware development, and future hardware revisions unless superseded by a newer approved version.
+
+## Scope
+Confirmed prototype parts and proposed controller, power, sensor, communication, enclosure, and mechanical systems.
+## Current Status
+Only hardware named in the validated notice is confirmed available; the remainder is planning.
+## Architecture
+Future power feeds a protected ESP32-centered sensor system with an optional, unfinalized edge computer.
+## Implementation
+No external hardware interface or GPIO assignment exists in current firmware.
+## Engineering Notes
+Planning values require calculation, procurement confirmation, electrical review, calibration, and physical testing.
+## Revision History
+| Version | Date | Change |
+| --- | --- | --- |
+| 3.1 | 2026-08-05 | Added verified hardware status and document controls. |

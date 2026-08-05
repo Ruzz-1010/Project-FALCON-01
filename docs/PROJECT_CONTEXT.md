@@ -1,4 +1,13 @@
-PROJECT_CONTEXT.md v3 (Part 1/4)
+# PROJECT_CONTEXT.md v3
+
+> **Validated implementation notice (2026-08-05):** Working source code has
+> priority over this planning document. The only implemented product layer is
+> the ESP32 local system: Wi-Fi AP, captive portal, LittleFS dashboard, and the
+> three API routes documented in `API.md`. Sensors, GPIO assignments, logging,
+> OTA, edge AI, remote telemetry, cloud services, power autonomy, and marine
+> hardware are Planned or Future Expansion. Raspberry Pi versus Dell OptiPlex
+> edge compute is **Status: Not Yet Finalized**. Later references to these items
+> describe design direction, not current implementation or hardware possession.
 
 Project: Project FALCON
 Version: 3.0 Master Context
@@ -1754,3 +1763,22 @@ Research
 shall align with the specifications defined in this document.
 
 Any proposed design changes should be documented through version control and reviewed before becoming part of the official baseline.
+
+## Purpose
+Serve as the master planning context after working source code.
+## Scope
+Firmware, dashboard, hardware, mechanical, sensor, AI, remote, and research direction.
+## Current Status
+Phase 1 ESP32 portal prototype; all non-source-backed subsystems remain Planned or Future Expansion.
+## Architecture
+ESP32 is the independent local controller; sensors, edge compute, and cloud are optional future layers.
+## Implementation
+Implemented behavior is limited to the source-backed AP, captive portal, LittleFS dashboard, and three API routes.
+## Future Expansion
+The body of this document records long-term design direction subject to validation gates.
+## Engineering Notes
+When any statement conflicts with source or the validated notice, source and the notice take priority.
+## Revision History
+| Version | Date | Change |
+| --- | --- | --- |
+| 3.1 | 2026-08-05 | Added verified implementation notice and document controls. |

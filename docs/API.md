@@ -1,5 +1,9 @@
 # FALCON-01 Local API
 
+> **Validated API notice (2026-08-05):** Only `GET /api/status`,
+> `POST /api/monitoring/toggle`, and `POST /api/restart` are implemented. Every
+> other endpoint or schema below is Planned and not callable in current firmware.
+
 **Project:** Project FALCON
 
 **Prototype:** FALCON-01
@@ -480,3 +484,22 @@ All other endpoints described in this document are planned for future developmen
 **Status:** Phase 1 Development
 
 This document defines the official local REST API for Project FALCON-01 and serves as the reference for dashboard, firmware, AI, and future mobile application development.
+
+## Purpose
+Define implemented API compatibility and the proposed endpoint roadmap.
+## Scope
+Local ESP32 HTTP endpoints only.
+## Current Status
+Three endpoints are implemented; every other endpoint in this document is Planned.
+## Architecture
+Arduino `WebServer` handlers in `src/portal_server.cpp` serve JSON to the LittleFS dashboard.
+## Implementation
+The authoritative routes are listed under **Current Implementation** above.
+## Future Expansion
+Planned schemas require source, validation, security review, and tests before becoming contracts.
+## Engineering Notes
+Do not infer implementation from an example response.
+## Revision History
+| Version | Date | Change |
+| --- | --- | --- |
+| 3.1 | 2026-08-05 | Added source-verified implementation notice and document controls. |
