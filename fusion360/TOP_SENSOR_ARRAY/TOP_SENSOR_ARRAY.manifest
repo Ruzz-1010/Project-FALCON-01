@@ -1,0 +1,9 @@
+{
+  "autodeskProduct": "Fusion360",
+  "type": "script",
+  "author": "PROJECT FALCON-01",
+  "description": {
+    "": "Editable GNSS, LTE, Wi-Fi, wind sensor, and lightning equipment for the upper deck"
+  },
+  "supportedOS": "windows|mac"
+}

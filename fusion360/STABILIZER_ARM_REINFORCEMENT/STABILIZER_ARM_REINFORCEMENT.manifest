@@ -1,0 +1,9 @@
+{
+  "autodeskProduct": "Fusion360",
+  "type": "script",
+  "author": "PROJECT FALCON-01",
+  "description": {
+    "": "Non-destructive twin-gusset reinforcement for the first stabilizer arm"
+  },
+  "supportedOS": "windows|mac"
+}

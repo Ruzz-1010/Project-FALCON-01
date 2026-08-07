@@ -1,0 +1,9 @@
+{
+  "autodeskProduct": "Fusion360",
+  "type": "script",
+  "author": "PROJECT FALCON-01",
+  "description": {
+    "": "Separate editable upper and lower rounded marine fairings for the main float"
+  },
+  "supportedOS": "windows|mac"
+}

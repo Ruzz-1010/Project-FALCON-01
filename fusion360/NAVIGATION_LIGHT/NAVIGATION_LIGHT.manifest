@@ -1,0 +1,9 @@
+{
+  "autodeskProduct": "Fusion360",
+  "type": "script",
+  "author": "PROJECT FALCON-01",
+  "description": {
+    "": "Editable 360-degree all-round LED marine navigation light for the upper deck"
+  },
+  "supportedOS": "windows|mac"
+}

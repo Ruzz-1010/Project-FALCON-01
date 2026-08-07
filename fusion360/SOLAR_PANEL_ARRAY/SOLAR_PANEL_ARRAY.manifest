@@ -1,0 +1,9 @@
+{
+  "autodeskProduct": "Fusion360",
+  "type": "script",
+  "author": "PROJECT FALCON-01",
+  "description": {
+    "": "Four separate editable 25 W vertical solar panels around the upper frame"
+  },
+  "supportedOS": "windows|mac"
+}

@@ -1,0 +1,9 @@
+{
+  "autodeskProduct": "Fusion360",
+  "type": "script",
+  "author": "PROJECT FALCON-01",
+  "description": {
+    "": "First hollow 240 mm marine HDPE stabilizer buoy"
+  },
+  "supportedOS": "windows|mac"
+}

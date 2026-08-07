@@ -1,0 +1,10 @@
+{
+  "autodeskProduct": "Fusion360",
+  "type": "script",
+  "author": "PROJECT FALCON-01",
+  "description": {
+    "": "Creates a non-destructive V2 electronics box with native fan ports."
+  },
+  "supportedOS": "windows|mac",
+  "editEnabled": true
+}

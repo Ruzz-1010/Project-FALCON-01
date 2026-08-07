@@ -1,0 +1,10 @@
+{
+  "autodeskProduct": "Fusion360",
+  "type": "script",
+  "author": "PROJECT FALCON-01",
+  "description": {
+    "": "Creates the separate removable TOP_CAP with locating skirt and gasket groove."
+  },
+  "supportedOS": "windows|mac",
+  "editEnabled": true
+}

@@ -1,0 +1,9 @@
+{
+  "autodeskProduct": "Fusion360",
+  "type": "script",
+  "author": "PROJECT FALCON-01",
+  "description": {
+    "": "Parametrically upscale the four stabilizer buoys and their cradles to 320 mm"
+  },
+  "supportedOS": "windows|mac"
+}

@@ -1,0 +1,9 @@
+{
+  "autodeskProduct": "Fusion360",
+  "type": "script",
+  "author": "PROJECT FALCON-01",
+  "description": {
+    "": "Four editable HDPE stabilizer buoys with four separate aluminum cradle frames"
+  },
+  "supportedOS": "windows|mac"
+}

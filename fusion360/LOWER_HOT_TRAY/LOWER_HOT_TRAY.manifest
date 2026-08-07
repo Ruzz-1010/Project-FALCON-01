@@ -1,0 +1,10 @@
+{
+  "autodeskProduct": "Fusion360",
+  "type": "script",
+  "author": "PROJECT FALCON-01",
+  "description": {
+    "": "Creates the partitioned lower battery and hot-electronics tray."
+  },
+  "supportedOS": "windows|mac",
+  "editEnabled": true
+}

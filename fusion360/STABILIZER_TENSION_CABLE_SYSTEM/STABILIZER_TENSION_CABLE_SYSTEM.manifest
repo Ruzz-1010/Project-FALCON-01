@@ -1,0 +1,9 @@
+{
+  "autodeskProduct": "Fusion360",
+  "type": "script",
+  "author": "PROJECT FALCON-01",
+  "description": {
+    "": "Four editable 316 stainless tension cables from ballast to stabilizer cradles"
+  },
+  "supportedOS": "windows|mac"
+}

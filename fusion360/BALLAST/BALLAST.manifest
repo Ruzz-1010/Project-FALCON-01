@@ -1,0 +1,9 @@
+{
+  "autodeskProduct": "Fusion360",
+  "type": "script",
+  "author": "PROJECT FALCON-01",
+  "description": {
+    "": "Central 25 kg marine ballast with four stabilizer-cable attachment lugs"
+  },
+  "supportedOS": "windows|mac"
+}

@@ -1,0 +1,10 @@
+{
+  "autodeskProduct": "Fusion360",
+  "type": "script",
+  "author": "PROJECT FALCON-01",
+  "description": {
+    "": "Creates the removable isolated hot-electronics cooling duct baffle."
+  },
+  "supportedOS": "windows|mac",
+  "editEnabled": true
+}

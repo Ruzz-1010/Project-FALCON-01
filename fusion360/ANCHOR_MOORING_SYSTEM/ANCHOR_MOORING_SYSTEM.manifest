@@ -1,0 +1,9 @@
+{
+  "autodeskProduct": "Fusion360",
+  "type": "script",
+  "author": "PROJECT FALCON-01",
+  "description": {
+    "": "Editable concrete mooring anchor and 316 stainless chain below the ballast"
+  },
+  "supportedOS": "windows|mac"
+}

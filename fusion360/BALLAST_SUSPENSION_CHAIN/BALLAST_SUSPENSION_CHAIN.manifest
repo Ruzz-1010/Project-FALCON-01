@@ -1,0 +1,9 @@
+{
+  "autodeskProduct": "Fusion360",
+  "type": "script",
+  "author": "PROJECT FALCON-01",
+  "description": {
+    "": "Editable bottom mount and 316 stainless chain connecting the main float to ballast"
+  },
+  "supportedOS": "windows|mac"
+}
