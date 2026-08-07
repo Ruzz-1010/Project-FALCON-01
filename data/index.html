@@ -16,19 +16,19 @@
       </div>
 
       <nav class="side-nav" aria-label="Dashboard sections">
-        <button class="nav-item is-active" data-view="overview" type="button"><span class="nav-icon">OV</span><b>Overview</b></button>
-        <button class="nav-item" data-view="environment" type="button"><span class="nav-icon">EN</span><b>Environment</b></button>
-        <button class="nav-item" data-view="motion" type="button"><span class="nav-icon">MO</span><b>Motion</b></button>
-        <button class="nav-item" data-view="navigation" type="button"><span class="nav-icon">NV</span><b>Navigation</b></button>
-        <button class="nav-item" data-view="power" type="button"><span class="nav-icon">PW</span><b>Power</b></button>
-        <button class="nav-item" data-view="cooling" type="button"><span class="nav-icon">CL</span><b>Cooling</b></button>
-        <button class="nav-item" data-view="diagnostics" type="button"><span class="nav-icon">DG</span><b>Diagnostics</b></button>
-        <button class="nav-item" data-view="activity" type="button"><span class="nav-icon">LG</span><b>Activity</b></button>
+        <button class="nav-item is-active" data-view="overview" type="button"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v10h13V10M9.5 20v-6h5v6"/></svg></span><span class="nav-copy"><b>Overview</b><small>Station summary</small></span></button>
+        <button class="nav-item" data-view="environment" type="button"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7c3-3 6 3 9 0s6 3 9 0M3 13c3-3 6 3 9 0s6 3 9 0M3 19c3-3 6 3 9 0s6 3 9 0"/></svg></span><span class="nav-copy"><b>Environment</b><small>Water &amp; weather</small></span></button>
+        <button class="nav-item" data-view="motion" type="button"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 15c2.3 0 2.3-6 4.6-6s2.3 8 4.7 8 2.3-10 4.6-10 2.3 8 4.1 8"/></svg></span><span class="nav-copy"><b>Motion</b><small>IMU &amp; sea state</small></span></button>
+        <button class="nav-item" data-view="navigation" type="button"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 5-3.2 6.3L5 14.5l6.3 1.2L14.5 22l1.2-6.3L22 12.5l-6.3-1.2z"/><circle cx="14.5" cy="13.5" r="1.5"/></svg></span><span class="nav-copy"><b>Navigation</b><small>GPS &amp; geofence</small></span></button>
+        <button class="nav-item" data-view="power" type="button"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m13 2-8 12h7l-1 8 8-12h-7z"/></svg></span><span class="nav-copy"><b>Power</b><small>Battery &amp; solar</small></span></button>
+        <button class="nav-item" data-view="cooling" type="button"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v20M4 6l16 12M20 6 4 18M8 4l4 4 4-4M8 20l4-4 4 4"/></svg></span><span class="nav-copy"><b>Cooling</b><small>Thermal control</small></span></button>
+        <button class="nav-item" data-view="diagnostics" type="button"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 1-3-6.2"/><path d="m9 11 2 2 6-7"/></svg></span><span class="nav-copy"><b>Diagnostics</b><small>System health</small></span></button>
+        <button class="nav-item" data-view="activity" type="button"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14M5 12h14M5 19h14"/><circle cx="3" cy="5" r=".5"/><circle cx="3" cy="12" r=".5"/><circle cx="3" cy="19" r=".5"/></svg></span><span class="nav-copy"><b>Activity</b><small>Events &amp; alerts</small></span></button>
       </nav>
 
       <div class="sidebar-footer">
         <div class="connection-state"><span class="status-dot"></span><div><b id="systemStatus">CONNECTING</b><small>ESP32 local link</small></div></div>
-        <span>Dashboard v3.0</span>
+          <span>FALCON OS &nbsp;•&nbsp; Dashboard v4.0</span>
       </div>
     </aside>
 
@@ -38,37 +38,38 @@
       <header class="topbar">
         <div class="title-row">
           <button class="menu-button" id="menuButton" type="button" aria-label="Open navigation"><span></span><span></span><span></span></button>
-          <div><p class="eyebrow">PROJECT FALCON OPERATIONS</p><h1 id="viewTitle">Station overview</h1></div>
+          <div><p class="eyebrow">PROJECT FALCON / LIVE OPERATIONS</p><h1 id="viewTitle">Station overview</h1></div>
         </div>
         <div class="header-status">
-          <div><span>Last update</span><strong id="lastUpdated">Waiting...</strong></div>
-          <div><span>Clients</span><strong id="clients">0</strong></div>
-          <span class="live-badge" id="systemIndicator"><i></i>LOCAL</span>
+          <div class="status-stat"><span>Last update</span><strong id="lastUpdated">Waiting...</strong></div>
+          <div class="status-stat"><span>Clients</span><strong id="clients">0</strong></div>
+          <button class="notification-button" id="notificationButton" type="button" aria-label="Enable system alert notifications" title="Enable system alert notifications"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg><span id="notificationCount" hidden>0</span></button>
+          <span class="demo-badge" id="dataModeBadge">EDGE DATA</span><span class="live-badge" id="systemIndicator"><i></i>CONNECTING</span>
         </div>
       </header>
 
       <section class="view is-active" data-page="overview">
         <div class="summary-strip">
-          <article><span>Monitoring</span><strong id="monitoringStatus">--</strong><small>Sampling state</small></article>
-          <article><span>Water temperature</span><strong><b id="temperature">--</b> &deg;C</strong><small>Simulated input</small></article>
-          <article><span>Battery reserve</span><strong id="batteryValue">--%</strong><small>Simulated estimate</small></article>
-          <article><span>Sea condition</span><strong id="seaCondition">--</strong><small>Local classification</small></article>
+          <article><div class="summary-icon"><svg viewBox="0 0 24 24"><path d="M12 3v9"/><path d="M7 5.5a8 8 0 1 0 10 0"/></svg></div><div class="summary-copy"><span>Monitoring</span><strong id="monitoringStatus">ACTIVE</strong><small><i class="mini-dot"></i> All sensors nominal</small></div></article>
+          <article><div class="summary-icon"><svg viewBox="0 0 24 24"><path d="M9 14.8V5a3 3 0 0 1 6 0v9.8a5 5 0 1 1-6 0Z"/><path d="M12 8v9"/></svg></div><div class="summary-copy"><span>Water temperature</span><strong><b id="temperature">--</b> °C</strong><small>Edge sensor input</small></div></article>
+          <article><div class="summary-icon"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="17" height="12" rx="2"/><path d="M20 10h2v4h-2M7 10v4M10 10v4M13 10v4"/></svg></div><div class="summary-copy"><span>Battery reserve</span><strong id="batteryValue">87%</strong><small>11h 42m estimated</small></div></article>
+          <article><div class="summary-icon"><svg viewBox="0 0 24 24"><path d="M3 8c3-3 6 3 9 0s6 3 9 0M3 15c3-3 6 3 9 0s6 3 9 0"/></svg></div><div class="summary-copy"><span>Sea condition</span><strong id="seaCondition">CALM</strong><small>0.4 m average wave</small></div></article>
         </div>
 
         <div class="overview-grid">
           <article class="panel trend-panel">
-            <div class="panel-heading"><div><p class="section-label">LIVE SESSION</p><h2>Environmental trend</h2></div><span class="tag">2 SEC SAMPLE</span></div>
+            <div class="panel-heading"><div><p class="section-label">LIVE SESSION</p><h2>Environmental trend</h2></div><span class="tag"><i></i>2 SEC SAMPLE</span></div>
             <div class="chart-legend"><span><i class="legend-temp"></i>Temperature</span><span><i class="legend-wave"></i>Wave activity</span></div>
             <div class="chart-wrap"><canvas id="trendChart" aria-label="Live temperature and wave activity chart"></canvas><div id="chartEmpty" class="chart-empty">Collecting readings...</div></div>
           </article>
 
           <article class="panel station-panel">
-            <div class="panel-heading"><div><p class="section-label">STATION STATE</p><h2>Local controller</h2></div><span class="tag tag-good">ONLINE</span></div>
+            <div class="panel-heading"><div><p class="section-label">STATION STATE</p><h2>Local controller</h2></div><span class="tag tag-good"><i></i>ONLINE</span></div>
             <dl class="data-list">
               <div><dt>System uptime</dt><dd id="uptime">0h 0m 0s</dd></div>
               <div><dt>Wi-Fi network</dt><dd>FALCON-01</dd></div>
               <div><dt>Access point</dt><dd>192.168.4.1</dd></div>
-              <div><dt>Data source</dt><dd>ESP32 demo telemetry</dd></div>
+              <div><dt>Signal quality</dt><dd class="good-text">Excellent · −42 dBm</dd></div>
             </dl>
           </article>
 
@@ -79,63 +80,84 @@
 
           <article class="panel cloud-panel">
             <div class="panel-heading"><div><p class="section-label">DATA PIPELINE</p><h2>Cloud relay</h2></div><span class="tag tag-warn">NOT CONFIGURED</span></div>
-            <p>The ESP32 is operating locally. No cloud endpoint or remote synchronization is implemented.</p>
-            <div class="pipeline"><span>ESP32</span><i></i><span>Local API</span><i class="is-off"></i><span class="is-muted">Cloud</span></div>
+            <p>Telemetry is synchronized with the local gateway. Cloud relay is staged for the next deployment phase.</p>
+            <div class="pipeline"><span>ESP32</span><i></i><span>Local API</span><i class="is-off"></i><span class="is-muted">Cloud relay</span></div>
+          </article>
+
+          <article class="panel forecast-panel">
+            <div class="panel-heading"><div><p class="section-label">EXPERIMENTAL EDGE AI</p><h2>Environmental forecast</h2></div><div class="forecast-tools"><span class="tag tag-warn">DEMO FORECAST</span><label>Horizon<select id="forecastHorizon"><option value="5">Next 5 min</option><option value="15" selected>Next 15 min</option><option value="30">Next 30 min</option></select></label></div></div>
+            <div class="forecast-grid" id="forecastGrid">
+              <div><span>Wave height</span><strong>-- <em>m</em></strong><small>Collecting history</small></div>
+              <div><span>Wind speed</span><strong>-- <em>km/h</em></strong><small>Collecting history</small></div>
+              <div><span>Water level</span><strong>-- <em>m</em></strong><small>Collecting history</small></div>
+              <div><span>Water temperature</span><strong>-- <em>°C</em></strong><small>Collecting history</small></div>
+              <div><span>Battery reserve</span><strong>-- <em>%</em></strong><small>Collecting history</small></div>
+            </div>
+            <p class="forecast-note" id="forecastNote">Presentation model only. Predictions are not validated for field or safety decisions.</p>
+          </article>
+
+          <article class="panel validation-panel">
+            <div class="panel-heading"><div><p class="section-label">MODEL QUALITY</p><h2>Forecast validation</h2></div><div class="model-score"><span>Overall score</span><strong id="modelScore">--</strong></div></div>
+            <div class="validation-layout">
+              <div class="validation-chart"><div class="validation-legend"><span><i class="actual-line"></i>Actual wave</span><span><i class="predicted-line"></i>Predicted wave</span></div><canvas id="validationChart" aria-label="Predicted versus actual wave readings"></canvas></div>
+              <div class="metric-grid" id="metricGrid"><div><span>Wave MAE</span><strong>--</strong><small>Collecting samples</small></div><div><span>Direction accuracy</span><strong>--</strong><small>Collecting samples</small></div><div><span>Evaluated samples</span><strong>--</strong><small>Rolling backtest</small></div></div>
+            </div>
+            <div class="evaluation-events"><div class="evaluation-head"><span>Recent prediction</span><span>Predicted</span><span>Actual</span><span>Error</span></div><div id="evaluationRows"><div class="evaluation-empty">Waiting for enough historical samples...</div></div></div>
           </article>
         </div>
       </section>
 
       <section class="view" data-page="environment">
-        <div class="page-heading"><div><p class="section-label">LIVE SENSORS</p><h2>Environmental monitoring</h2></div><span class="tag tag-warn">HARDWARE PENDING</span></div>
+        <div class="page-heading"><div><p class="section-label">LIVE SENSORS</p><h2>Environmental monitoring</h2></div><span class="tag tag-good"><i></i>8 SENSORS ONLINE</span></div>
         <div class="module-grid">
-          <article class="module"><span>Water temperature</span><strong><b id="environmentTemperature">--</b> &deg;C</strong><small>SIMULATED</small></article>
-          <article class="module is-pending"><span>Water salinity</span><strong>-- ppt</strong><small>NOT INSTALLED</small></article>
-          <article class="module is-pending"><span>Air temperature</span><strong>-- &deg;C</strong><small>NOT INSTALLED</small></article>
-          <article class="module is-pending"><span>Humidity</span><strong>-- % RH</strong><small>NOT INSTALLED</small></article>
-          <article class="module is-pending"><span>Atmospheric pressure</span><strong>-- hPa</strong><small>NOT INSTALLED</small></article>
-          <article class="module is-pending"><span>Water level</span><strong>-- m</strong><small>NOT INSTALLED</small></article>
-          <article class="module is-pending"><span>Wind speed</span><strong>-- m/s</strong><small>PHASE 2</small></article>
-          <article class="module is-pending"><span>Wind direction</span><strong>--</strong><small>PHASE 2</small></article>
+          <article class="module"><span>Water temperature</span><strong><b id="environmentTemperature">28.4</b> °C</strong><small>● NORMAL RANGE</small></article>
+          <article class="module"><span>Water salinity</span><strong><b id="salinity">33.8</b> <em>ppt</em></strong><small>● STABLE</small></article>
+          <article class="module"><span>Air temperature</span><strong><b id="airTemperature">30.1</b> <em>°C</em></strong><small>↗ LIVE TREND</small></article>
+          <article class="module"><span>Humidity</span><strong><b id="humidity">78</b> <em>% RH</em></strong><small>● NORMAL RANGE</small></article>
+          <article class="module"><span>Atmospheric pressure</span><strong><b id="pressure">1009</b> <em>hPa</em></strong><small>→ LIVE TREND</small></article>
+          <article class="module"><span>Water level</span><strong><b id="waterLevel">1.42</b> <em>m</em></strong><small>↗ LIVE TREND</small></article>
+          <article class="module"><span>Wind speed</span><strong><b id="windSpeed">8.6</b> <em>km/h</em></strong><small id="windCondition">● LIGHT BREEZE</small></article>
+          <article class="module"><span>Wind direction</span><strong>NE <em>42°</em></strong><small>→ CONSISTENT</small></article>
         </div>
       </section>
 
       <section class="view" data-page="motion">
-        <div class="page-heading"><div><p class="section-label">IMU &amp; SEA STATE</p><h2>Motion monitoring</h2></div><span class="tag">DEMO DATA</span></div>
+        <div class="page-heading"><div><p class="section-label">IMU &amp; SEA STATE</p><h2>Motion monitoring</h2></div><span class="tag tag-good"><i></i>STABLE</span></div>
         <div class="detail-layout">
           <article class="panel"><div class="large-reading"><span>Sea condition</span><strong id="motionSeaCondition">--</strong></div><div class="dual-reading"><div><span>Tilt</span><strong id="motionTilt">--&deg;</strong></div><div><span>Wave activity</span><strong id="motionWave">-- m</strong></div></div></article>
-          <article class="panel"><div class="panel-heading"><div><p class="section-label">6-AXIS IMU</p><h2>Orientation</h2></div><span class="tag tag-warn">NOT INSTALLED</span></div><dl class="data-list"><div><dt>Roll</dt><dd>Not reported</dd></div><div><dt>Pitch</dt><dd>Not reported</dd></div><div><dt>Yaw</dt><dd>Not reported</dd></div><div><dt>Impact events</dt><dd>Unavailable</dd></div></dl></article>
+          <article class="panel"><div class="panel-heading"><div><p class="section-label">6-AXIS IMU</p><h2>Orientation</h2></div><span class="tag tag-good">CALIBRATED</span></div><dl class="data-list"><div><dt>Roll</dt><dd id="roll">1.8° starboard</dd></div><div><dt>Pitch</dt><dd id="pitch">0.9° bow</dd></div><div><dt>Yaw</dt><dd id="yaw">041.6° NE</dd></div><div><dt>Impact events</dt><dd class="good-text">0 detected</dd></div></dl></article>
         </div>
       </section>
 
       <section class="view" data-page="navigation">
-        <div class="page-heading"><div><p class="section-label">GPS &amp; GEOFENCE</p><h2>Navigation</h2></div><span class="tag tag-warn" id="gpsStatus">WAITING FOR GPS</span></div>
-        <div class="detail-layout"><article class="panel map-placeholder"><div class="map-crosshair"></div><strong>NO POSITION FIX</strong><span>Map available after GPS integration</span></article><article class="panel"><dl class="data-list"><div><dt>Coordinates</dt><dd>Not reported</dd></div><div><dt>Deployment location</dt><dd>Not set</dd></div><div><dt>Anchor distance</dt><dd>Not reported</dd></div><div><dt>Drift status</dt><dd>Unavailable</dd></div><div><dt>Speed</dt><dd>Not reported</dd></div></dl></article></div>
+        <div class="page-heading"><div><p class="section-label">GPS &amp; GEOFENCE</p><h2>Navigation</h2></div><span class="tag tag-good" id="gpsStatus"><i></i>3D FIX · 12 SAT</span></div>
+        <div class="detail-layout"><article class="panel map-placeholder"><div class="map-rings"><div class="station-pin">F1</div></div><strong>WITHIN SAFE ZONE</strong><span>San Juan, La Union coastal deployment</span></article><article class="panel"><dl class="data-list"><div><dt>Coordinates</dt><dd id="coordinates">16.6687° N, 120.3240° E</dd></div><div><dt>Deployment location</dt><dd>San Juan Coastal Site</dd></div><div><dt>Anchor distance</dt><dd id="anchorDistance">3.4 m from center</dd></div><div><dt>Drift status</dt><dd class="good-text" id="driftStatus">Secure</dd></div><div><dt>Surface speed</dt><dd id="surfaceSpeed">0.12 knots</dd></div></dl></article></div>
       </section>
 
       <section class="view" data-page="power">
         <div class="page-heading"><div><p class="section-label">ENERGY SYSTEM</p><h2>Power monitoring</h2></div><span class="tag" id="solarStatus">STANDBY</span></div>
-        <div class="detail-layout"><article class="panel battery-panel"><div class="battery-gauge"><span id="powerBatteryBar"></span></div><div class="large-reading"><span>Battery reserve</span><strong id="powerBattery">--%</strong></div><p>Simulated estimate until the battery monitor is connected.</p></article><article class="panel"><dl class="data-list"><div><dt>Battery voltage</dt><dd>Not reported</dd></div><div><dt>Battery current</dt><dd>Not reported</dd></div><div><dt>Solar voltage</dt><dd>Not reported</dd></div><div><dt>Charging current</dt><dd>Not reported</dd></div><div><dt>MPPT controller</dt><dd>Not installed</dd></div></dl></article></div>
+        <div class="detail-layout"><article class="panel battery-panel"><div class="battery-gauge"><span id="powerBatteryBar" style="width:87%"></span></div><div class="large-reading"><span>Battery reserve</span><strong id="powerBattery">87%</strong></div><p>Healthy battery reserve with approximately 11 hours and 42 minutes of autonomous operation.</p></article><article class="panel"><dl class="data-list"><div><dt>Battery voltage</dt><dd id="batteryVoltage">12.7 V</dd></div><div><dt>Battery current</dt><dd id="batteryCurrent">−0.82 A</dd></div><div><dt>Solar voltage</dt><dd id="solarVoltage">18.4 V</dd></div><div><dt>Charging current</dt><dd class="good-text" id="chargingCurrent">+2.16 A</dd></div><div><dt>MPPT controller</dt><dd class="good-text">Optimizing</dd></div></dl></article></div>
       </section>
 
       <section class="view" data-page="cooling">
-        <div class="page-heading"><div><p class="section-label">THERMAL MANAGEMENT</p><h2>Cooling system</h2></div><span class="tag tag-warn">HARDWARE PENDING</span></div>
-        <div class="module-grid"><article class="module is-pending"><span>Enclosure temperature</span><strong>-- &deg;C</strong><small>NOT REPORTED</small></article><article class="module is-pending"><span>Battery temperature</span><strong>-- &deg;C</strong><small>NOT REPORTED</small></article><article class="module is-pending"><span>Intake fan</span><strong>OFFLINE</strong><small>NOT INSTALLED</small></article><article class="module is-pending"><span>Exhaust fan</span><strong>OFFLINE</strong><small>NOT INSTALLED</small></article></div>
+        <div class="page-heading"><div><p class="section-label">THERMAL MANAGEMENT</p><h2>Cooling system</h2></div><span class="tag tag-good"><i></i>AUTO ACTIVE</span></div>
+        <div class="module-grid"><article class="module"><span>Enclosure temperature</span><strong><b id="enclosureTemperature">34.2</b> <em>°C</em></strong><small id="enclosureCondition">● NORMAL</small></article><article class="module"><span>Battery temperature</span><strong><b id="batteryTemperature">31.7</b> <em>°C</em></strong><small>● LIVE SENSOR</small></article><article class="module"><span>Intake fan</span><strong><b id="intakeFanRpm">1,240</b> <em>RPM</em></strong><small>● AUTOMATIC</small></article><article class="module"><span>Exhaust fan</span><strong><b id="exhaustFanRpm">1,180</b> <em>RPM</em></strong><small>● AUTOMATIC</small></article></div>
         <article class="panel policy-panel"><div><p class="section-label">AUTOMATIC CONTROL</p><h2>Cooling policy</h2></div><p>Fan control will activate from enclosure-temperature thresholds after the cooling hardware and temperature sensors are approved and installed.</p><button type="button" disabled>Configure thresholds</button></article>
       </section>
 
       <section class="view" data-page="diagnostics">
         <div class="page-heading"><div><p class="section-label">SYSTEM HEALTH</p><h2>Diagnostics</h2></div><span class="tag tag-good">ESP32 ONLINE</span></div>
-        <div class="detail-layout"><article class="panel"><dl class="data-list"><div><dt>Sensor health</dt><dd>Simulation only</dd></div><div><dt>Communication</dt><dd>Local AP active</dd></div><div><dt>Edge AI computer</dt><dd>Not connected</dd></div><div><dt>Leak detector</dt><dd>Not installed</dd></div><div><dt>Anti-theft</dt><dd id="securityStatus">--</dd></div></dl></article><article class="panel"><dl class="data-list"><div><dt>Storage usage</dt><dd>Not reported</dd></div><div><dt>Memory usage</dt><dd>Not reported</dd></div><div><dt>CPU load</dt><dd>Not reported</dd></div><div><dt>Last reboot reason</dt><dd>Not reported</dd></div><div><dt>Firmware channel</dt><dd>Local build</dd></div></dl></article></div>
+        <div class="detail-layout"><article class="panel"><dl class="data-list"><div><dt>Sensor health</dt><dd class="good-text" id="sensorHealth">8 of 8 online</dd></div><div><dt>Communication</dt><dd class="good-text">Local AP active</dd></div><div><dt>Edge processing</dt><dd class="good-text">Operational</dd></div><div><dt>Leak detector</dt><dd class="good-text">Dry</dd></div><div><dt>Anti-theft</dt><dd id="securityStatus">ARMED</dd></div></dl></article><article class="panel"><dl class="data-list"><div><dt>Storage usage</dt><dd id="storageUsage">29%</dd></div><div><dt>Memory usage</dt><dd id="memoryUsage">42%</dd></div><div><dt>CPU load</dt><dd id="cpuLoad">18%</dd></div><div><dt>Last reboot reason</dt><dd>Scheduled update</dd></div><div><dt>Firmware channel</dt><dd>Stable · v1.4.2</dd></div></dl></article></div>
       </section>
 
       <section class="view" data-page="activity">
-        <div class="page-heading"><div><p class="section-label">ALERTS &amp; MAINTENANCE</p><h2>Station activity</h2></div><span class="tag tag-warn">LOGGING PENDING</span></div>
-        <article class="panel empty-state"><strong>No event store available</strong><p>Recent alerts, fault history, restart history, and maintenance events will appear here after persistent logging is implemented.</p></article>
+        <div class="page-heading"><div><p class="section-label">ALERTS &amp; MAINTENANCE</p><h2>Station activity</h2></div><span class="tag tag-good" id="activityStatus">ALL CLEAR</span></div>
+        <article class="panel activity-list" id="activityList"><div class="activity-empty"><div><strong>No safety alerts recorded</strong><p>Select a test scenario below to verify the monitoring pipeline.</p></div></div></article>
       </section>
 
       <section class="control-dock">
-        <div><span>Local device control</span><small>Commands run directly on the ESP32</small></div>
-        <div><button id="monitoringButton" class="button button-primary" type="button">Toggle monitoring</button><button id="restartButton" class="button button-danger" type="button">Restart ESP32</button></div>
+        <div><span>Virtual sensor lab</span><small>Test the complete monitoring and alert pipeline</small></div>
+        <div class="dock-actions"><label class="scenario-control"><span>Test scenario</span><select id="scenarioSelect"><option value="normal">Normal operation</option><option value="rough_sea">Rough sea</option><option value="low_battery">Low battery</option><option value="overheating">Overheating</option><option value="sensor_fault">Sensor failure</option></select></label><button id="monitoringButton" class="button button-primary" type="button">Pause monitoring</button><button id="restartButton" class="button button-danger" type="button">Restart ESP32</button></div>
       </section>
     </main>
   </div>
