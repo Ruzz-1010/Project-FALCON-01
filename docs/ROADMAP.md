@@ -1,535 +1,425 @@
-# Project FALCON-01 Development Roadmap
+# Project FALCON Development Roadmap v4.0
 
-> **Validated status notice (2026-08-05):** The ESP32 portal foundation is
-> implemented. Dashboard modules that depend on sensors, diagnostics, history,
-> settings, authentication, OTA, AI, edge computing, or remote services remain
-> In Progress, Planned, or Future Expansion even when listed under a phase.
+## Document Control
 
-**Project Name:** Project FALCON
+| Field | Value |
+| --- | --- |
+| Project | Project FALCON-01 |
+| Status | Phase 1 Prototype |
+| Authority | PROJECT_CONTEXT.md v4.0 |
+| Scope | Real-time coastal monitoring and 5–15 minute wave-height prediction |
+| Updated | 2026-08-09 |
 
-**Meaning:** **Fullbright College's AI-powered Live Coastal Observation Network**
+## Roadmap Rules
 
-**Prototype:** FALCON-01
+- A phase is complete only when its exit criteria have evidence.
+- Source-backed behavior may be labeled Implemented.
+- Approved but unfinished work shall be labeled Planned or In Progress.
+- Simulator results shall not satisfy physical-sensor or field-validation gates.
+- Future Expansion shall not be inserted into Phase 1 deliverables.
+- The AI remains limited to short-term wave-height prediction and Calm, Moderate, or Rough classification.
 
-**Document Version:** Roadmap v3.0
+## Current Baseline
 
-**Status:** Active Development
+Implemented:
 
-**Related Documents:**
+- ESP32 PlatformIO firmware foundation;
+- Wi-Fi access point and captive portal;
+- LittleFS fallback dashboard;
+- basic ESP32 status, monitoring, and restart routes;
+- laptop-hosted edge-service prototype;
+- local SQLite storage;
+- simulated telemetry and alert scenarios;
+- presentation forecasting and backtesting;
+- responsive dashboard with light/dark themes;
+- current-versus-predicted UI;
+- and an interactive Fusion-derived digital twin.
 
-* PROJECT_CONTEXT.md v3 *(Master Source of Truth)*
-* Hardware_Documentation.md
-* README.md
-* SYSTEM_ARCHITECTURE.md *(Planned)*
-* FIRMWARE_SPEC.md *(Planned)*
-* AI_SPEC.md *(Planned)*
+Not yet complete:
 
----
+- acquisition and installation of all approved sensors;
+- final UART protocol and physical ESP32-to-mini-PC link;
+- final mini-PC installation;
+- calibrated wave-height estimation;
+- physical coastal dataset;
+- final trained/selected wave-prediction model;
+- field AI validation;
+- measured solar endurance;
+- and controlled coastal deployment.
 
-# Project Mission
-
-Project FALCON aims to develop an affordable, AI-assisted, solar-powered smart coastal observation buoy capable of autonomous environmental monitoring, intelligent diagnostics, and future coastal decision support for research institutions, local government units, and environmental agencies.
-
-The project follows a **documentation-first** and **modular engineering** approach to ensure scalability, maintainability, and long-term development.
-
----
-
-# Development Principles
-
-Every phase follows these engineering principles:
-
-* Modular architecture
-* Incremental development
-* Documentation-first workflow
-* Hardware abstraction
-* Field-serviceable design
-* Solar-powered autonomy
-* Fault tolerance
-* AI-assisted diagnostics
-* Marine-grade reliability
-
----
-
-# Phase 1 — Foundation & Local System ✅
-
-**Status:** Completed
-
-## Objectives
-
-* ESP32 development environment
-* PlatformIO configuration
-* Git repository setup
-* LittleFS integration
-* Wi-Fi Access Point
-* Captive Portal
-* Local Web Dashboard
-* REST API framework
-* Initial documentation
-* Firmware project structure
-
-## Completed Deliverables
-
-* ESP32 firmware foundation
-* LittleFS filesystem
-* Captive Portal
-* Local Dashboard
-* REST API framework
-* GitHub-ready project structure
-* PROJECT_CONTEXT.md
-* Hardware documentation
-* README
-
----
-
-# Phase 2 — Local Dashboard Development 🚧
+## Gate 1 — Documentation Baseline
 
 **Status:** In Progress
 
-## Objectives
+### Deliverables
 
-Develop a professional marine maintenance dashboard hosted entirely on the ESP32.
+- PROJECT_CONTEXT.md v4.0;
+- README.md v4 alignment;
+- ROADMAP.md v4 alignment;
+- HARDWARE.md v4 alignment;
+- SOFTWARE.md v4 alignment;
+- AI.md v4 alignment;
+- DASHBOARD.md v4 alignment;
+- API.md v4 alignment;
+- MECHANICAL.md v4 alignment;
+- and updated documentation index.
 
-## Dashboard Modules
+### Exit Criteria
 
-### System Overview
+- all documents use the focused research scope;
+- all documents use the approved sensor set;
+- all documents use the final Phase 1 architecture;
+- all documents limit AI to two responsibilities;
+- removed features appear only under delimitations or Future Expansion;
+- and no document presents planned hardware as installed.
 
-* Overall Health Score
-* AI Status
-* System Status
-* Device Information
+## Gate 2 — Mechanical Readiness
 
-### Environmental Monitoring
+**Status:** In Progress / Planned Validation
 
-* Water Temperature
-* Air Temperature
-* Humidity
-* Pressure
-* Salinity
-* Water Level
+### Approved Baseline
 
-### Navigation
+- HDPE main float;
+- four HDPE stabilizer buoys;
+- marine aluminum arms;
+- stainless steel tension cables;
+- central ballast;
+- single anchor;
+- waterproof electronics enclosure;
+- and tilted solar-panel assembly where represented by the approved CAD revision.
 
-* GPS Position
-* Drift Monitoring
-* Anchor Radius
-* Deployment Coordinates
+### Deliverables
 
-### Motion
+- controlled CAD assembly;
+- archived source and exchange files;
+- component naming convention;
+- mechanical bill of materials;
+- assembly sequence;
+- inspection checklist;
+- and test-ready prototype.
 
-* IMU
-* Roll
-* Pitch
-* Motion Detection
+### Exit Criteria
 
-### Power
+- all structural parts are identified;
+- ballast and anchor attachments have retention provisions;
+- sensor and antenna clearances are verified;
+- solar tilt does not create interference;
+- cable routes and service access are documented;
+- and mechanical test plan is approved.
 
-* Battery Voltage
-* Battery Current
-* Solar Voltage
-* Solar Current
-* Charging Status
-
-### Diagnostics
-
-* Leak Detection
-* Internal Temperature
-* Enclosure Humidity
-* Communication Status
-* Sensor Health
-
-### Logs
-
-* Event History
-* Alerts
-* Maintenance Records
-
-### Settings
-
-* Wi-Fi Configuration
-* Calibration
-* OTA Updates
-* Restart Controls
-
-## Deliverables
-
-* Dashboard v3
-* Responsive marine UI
-* REST API integration
-* Error handling
-* Live data refresh
-* Offline operation
-
----
-
-# Phase 3 — Mechanical Design
+## Gate 3 — Electrical and Power Readiness
 
 **Status:** Planned
 
-## Objectives
+### Deliverables
 
-Design the complete FALCON-01 buoy using Fusion 360.
+- final power schematic;
+- solar-panel selection;
+- MPPT selection;
+- 12 V LiFePO4 selection;
+- protected power distribution;
+- regulator selection;
+- fuse schedule;
+- connector schedule;
+- grounding strategy;
+- and measured energy budget.
 
-## Mechanical Components
+### Exit Criteria
 
-* Modified HDPE Drum
-* Waterproof Top Cover
-* Waterproof Bottom Cover
-* Electronics Bay
-* Power Bay
-* Battery Bay
-* Ballast Assembly
-* Waterline Indicator
-* Solar Mount
-* Antenna Mount
+- polarity and continuity tests pass;
+- regulated outputs remain within tolerance;
+- peak loads do not trigger brownout;
+- charging is compatible with the battery;
+- essential monitoring survives the defined low-power state;
+- and runtime claims are supported by measurements.
 
-## Stabilization System
-
-* Four HDPE Stabilizer Buoys
-* Aluminum 6061-T6 Support Arms
-* Stainless Steel 316 Tension Cables
-* Stainless Steel Brackets
-* Central Ballast
-* Single Mooring Line
-* Marine Anchor
-
-## Deliverables
-
-* Complete 3D CAD Model
-* Assembly Model
-* Exploded View
-* Engineering Drawings
-* Assembly Animation
-* Parts List
-
----
-
-# Phase 4 — Hardware Assembly
+## Gate 4 — Core Sensor Acquisition
 
 **Status:** Planned
 
-## Objectives
+### Approved Sensors
 
-Assemble the first fully integrated FALCON-01 prototype.
+- BNO085 IMU;
+- water-pressure sensor;
+- wind-speed sensor;
+- wind-direction sensor;
+- GPS module;
+- battery monitor;
+- solar monitor;
+- internal-temperature sensor;
+- and optional water-temperature sensor.
 
-## Electronics
+### Deliverables
 
-* ESP32 DevKit
-* Dell OptiPlex 3050 Micro (Development AI Computer)
-* GPS Module
-* LTE Module
-* MPPT Charge Controller
-* 12V 60Ah LiFePO₄ Battery
-* 150W Solar Panel
-* Cooling System
-* Power Distribution Board
+- final part selections;
+- wiring and pin assignments;
+- modular sensor drivers;
+- calibration procedures;
+- sensor-health output;
+- test fixtures;
+- and acquisition logs.
 
-## Deliverables
+### Exit Criteria
 
-* Internal Wiring
-* Waterproof Assembly
-* Electronics Integration
-* Bench Testing
+- each sensor initializes reliably;
+- each sensor reports units and timestamps;
+- disconnect and reconnect behavior is tested;
+- invalid values are not converted to zero;
+- calibration records exist;
+- and reference comparisons meet approved tolerances.
 
----
-
-# Phase 5 — Sensor Integration
-
-**Status:** Planned
-
-## Marine Sensors
-
-* Water Temperature
-* Salinity
-* pH
-* Turbidity
-* Dissolved Oxygen *(Optional)*
-
-## Weather Sensors
-
-* Wind Speed
-* Wind Direction
-* Air Temperature
-* Humidity
-* Atmospheric Pressure
-
-## Motion Sensors
-
-* BNO085 IMU
-* GPS
-* Waterline Monitoring
-
-## Power Monitoring
-
-* Battery Voltage
-* Battery Current
-* Solar Voltage
-* Solar Current
-
-## Safety Sensors
-
-* Internal Temperature
-* Enclosure Humidity
-* Water Leak Sensor
-* Tamper Switch
-* RTC DS3231
-
-## Deliverables
-
-* Sensor Integration
-* Sensor Calibration
-* Live Dashboard Data
-* Hardware Validation
-
----
-
-# Phase 6 — AI Development
+## Gate 5 — UART and Mini-PC Integration
 
 **Status:** Planned
 
-## Objectives
+### Deliverables
 
-Develop the Project FALCON Edge AI Engine.
+- UART electrical interface;
+- frame format;
+- message types;
+- sequence numbers;
+- checksum or CRC;
+- reconnect logic;
+- mini-PC ingestion service;
+- validation service;
+- and end-to-end communication tests.
 
-## AI Inputs
+### Exit Criteria
 
-* Wind Speed
-* Wind Direction
-* Air Temperature
-* Humidity
-* Atmospheric Pressure
-* Water Temperature
-* Salinity
-* Water Level
-* IMU
-* GPS Drift
-* Battery Status
-* Solar Status
-* Leak Detection
+- valid messages are delivered consistently;
+- corrupted messages are rejected;
+- sequence gaps are detected;
+- ESP32 acquisition continues during mini-PC restart;
+- mini-PC reconnects automatically;
+- and communication state is visible through `/status`.
 
-## AI Outputs
-
-* Sea State Classification
-* Wave Activity Classification
-* Tidal Awareness
-* High Tide Detection
-* Low Tide Detection
-* Strong Wind Warning
-* Abnormal Motion Detection
-* Drift Analysis
-* Buoy Health Score
-* Maintenance Recommendation
-
-## Deliverables
-
-* AI Dataset
-* Feature Engineering
-* Model Training
-* Validation Report
-* Local Edge Inference
-
----
-
-# Phase 7 — Cloud Communication
+## Gate 6 — Wave-Height Estimation
 
 **Status:** Planned
 
-## Objectives
+### Deliverables
 
-Connect FALCON to cloud infrastructure for remote monitoring.
+- pressure calibration;
+- sensor-depth documentation;
+- synchronized pressure and IMU samples;
+- baseline-removal method;
+- wave-feature extraction;
+- documented wave-height definition;
+- reference measurement method;
+- and estimator validation report.
 
-## Features
+### Exit Criteria
 
-* LTE Communication
-* Secure Cloud Database
-* Remote Dashboard
-* Data Synchronization
-* Remote Alerts
-* OTA Firmware Updates
+- current wave height is traceable to raw measurements;
+- the reported wave-height definition is unambiguous;
+- quality state is exposed;
+- invalid inputs produce unavailable status;
+- and controlled-test error is documented.
 
-## Deliverables
+## Gate 7 — Focused AI Development
 
-* Cloud Backend
-* Secure APIs
-* Remote Dashboard
-* Device Registration
-* Fleet Monitoring Foundation
+**Status:** Presentation Prototype Implemented; Physical Model Planned
 
----
+### Deliverables
 
-# Phase 8 — Mobile Application
+- time-ordered dataset;
+- persistence baseline;
+- documented feature set;
+- one selected operational prediction model;
+- 5-minute evaluation;
+- 15-minute evaluation;
+- confidence/quality definition;
+- Calm/Moderate/Rough classification logic;
+- model artifact and version;
+- and evaluation report.
+
+### Exit Criteria
+
+- physical-data training/test boundaries are documented;
+- the selected model is compared with a baseline;
+- MAE and bias are reported per horizon;
+- missing and stale inputs are tested;
+- classification thresholds are approved;
+- prediction latency is acceptable;
+- and no unrelated AI outputs are present.
+
+## Gate 8 — REST API Migration
+
+**Status:** Planned Migration
+
+### Approved Contract
+
+```text
+GET  /status
+GET  /wave
+GET  /gps
+GET  /battery
+GET  /solar
+GET  /ai
+POST /restart
+POST /calibrate
+```
+
+### Deliverables
+
+- schemas;
+- error codes;
+- endpoint tests;
+- legacy route compatibility plan;
+- dashboard migration;
+- and API documentation examples.
+
+### Exit Criteria
+
+- all eight routes meet the approved schemas;
+- unavailable values remain distinct from zero;
+- timestamps and units are explicit;
+- mutating operations use POST;
+- and legacy `/api/...` routes are removed or clearly deprecated.
+
+## Gate 9 — Dashboard Simplification
+
+**Status:** In Progress
+
+### Required Areas
+
+- Home;
+- System Status;
+- Motion;
+- GPS;
+- Power and Solar;
+- Internal Temperature;
+- Alerts;
+- Settings;
+- Wave History;
+- Prediction History;
+- and System Logs.
+
+### Required Home Information
+
+- system status;
+- current wave height;
+- predicted wave height;
+- sea condition;
+- prediction confidence;
+- wind speed;
+- wind direction;
+- GPS;
+- battery;
+- solar;
+- internal temperature;
+- and active alerts.
+
+### Exit Criteria
+
+- unrelated sensor and prediction cards are removed;
+- 30-minute prediction is removed from Phase 1 UI;
+- current and predicted values are visually distinct;
+- simulated and live data are labeled;
+- mobile, tablet, and desktop layouts pass;
+- light and dark modes pass;
+- alerts remain readable in both themes;
+- and typography is suitable for projection.
+
+## Gate 10 — Integrated Bench Validation
 
 **Status:** Planned
 
-## Objectives
+### Test Categories
 
-Develop the official FALCON mobile application.
+- mechanical;
+- electrical;
+- sensors;
+- AI;
+- dashboard;
+- and communication.
 
-## Features
+### Exit Criteria
 
-* Live Monitoring
-* Push Notifications
-* GPS Tracking
-* Health Score
-* Sensor History
-* AI Predictions
-* Maintenance Alerts
-* Multiple Buoy Management
+- approved test cases have recorded results;
+- critical faults are resolved;
+- calibration metadata is archived;
+- the system survives planned disconnect tests;
+- prediction records retain later actual values;
+- and a readiness review approves controlled deployment.
 
-## Deliverables
-
-* Android Application
-* User Authentication
-* Future iOS Version
-
----
-
-# Phase 9 — Marine Field Testing
+## Gate 11 — Controlled Coastal Deployment
 
 **Status:** Planned
 
-## Objectives
+### Deliverables
 
-Validate the complete prototype under real marine conditions.
+- deployment approval;
+- site record;
+- weather and sea context record;
+- deployment coordinates;
+- monitoring dataset;
+- prediction dataset;
+- recovery inspection;
+- maintenance record;
+- and field-test report.
 
-## Mechanical Testing
+### Exit Criteria
 
-* Float Test
-* Stability Test
-* Wave Response
-* Mooring Test
-* Waterproof Test
+- buoy remains mechanically stable for the approved test duration;
+- no unacceptable water ingress occurs;
+- sensor availability is documented;
+- UART and dashboard availability are documented;
+- power performance is measured;
+- wave estimates are compared with a reference;
+- 5-minute and 15-minute predictions are evaluated;
+- and limitations are stated honestly.
 
-## Electrical Testing
+## Gate 12 — Research Presentation and Phase 1 Closeout
 
-* Solar Charging
-* Battery Endurance
-* Power Consumption
-* Thermal Performance
+**Status:** Planned
 
-## Sensor Testing
+### Deliverables
 
-* Calibration
-* Accuracy
-* Reliability
-* Drift Compensation
+- working prototype demonstration;
+- focused research manuscript;
+- architecture diagram;
+- mechanical model and drawings;
+- hardware and wiring documentation;
+- source code;
+- calibration evidence;
+- test evidence;
+- AI evaluation;
+- dashboard demonstration;
+- and final limitations/future-work statement.
 
-## AI Testing
+### Exit Criteria
 
-* Sea-State Classification Accuracy
-* Health Monitoring Accuracy
-* Tidal-Aware Diagnostics
-* False Alert Rate
+- claims match evidence;
+- simulator and physical results are separated;
+- AI scope remains focused;
+- source and documentation versions are recorded;
+- and adviser review is complete.
 
-## Deliverables
+## Future Expansion Roadmap
 
-* Field Test Report
-* Calibration Report
-* Performance Report
-* Final Thesis Validation
+Future Expansion begins only after Phase 1 closeout.
 
----
+Possible later work includes:
 
-# Phase 10 — Final Thesis Presentation
+- pH, salinity, turbidity, and dissolved-oxygen sensors;
+- rain and UV sensors;
+- hydrophone and current meter;
+- cloud synchronization;
+- LTE or LoRa;
+- satellite communication;
+- mobile application;
+- multi-buoy networking;
+- computer vision;
+- additional AI models;
+- maintenance prediction;
+- and autonomous capabilities.
 
-**Status:** Future
+None of these are Phase 1 exit criteria.
 
-## Final Deliverables
-
-* Fully Functional Prototype
-* Fusion 360 CAD Assembly
-* Engineering Drawings
-* Local Dashboard
-* Edge AI Engine
-* Mobile Application
-* Technical Documentation
-* User Manual
-* Installation Manual
-* Maintenance Manual
-* Research Paper
-* Final Defense Presentation
-
----
-
-# Long-Term Vision
-
-Future versions of Project FALCON may include:
-
-* Fleet Management Platform
-* Multiple Interconnected Buoys
-* LoRa Mesh Networking
-* Satellite Communication
-* Coastal AI Forecasting
-* Digital Twin Simulation
-* Oil Spill Detection
-* Harmful Algal Bloom Monitoring
-* Water Quality Mapping
-* Camera-Based Coastal Observation
-* Hydrophone Integration
-* Predictive Maintenance
-* DOST Deployment
-* LGU Coastal Monitoring
-* BFAR Integration
-* DENR Collaboration
-* PAGASA Data Integration
-* AI-Assisted Coastal Decision Support
-
----
-
-# Success Criteria
-
-Project FALCON will be considered successful when it demonstrates:
-
-* Reliable autonomous operation
-* Stable marine deployment
-* Accurate environmental monitoring
-* Effective AI-assisted diagnostics
-* Low-maintenance operation
-* Affordable prototype cost
-* Scalable architecture
-* Research value for coastal monitoring
-
----
-
-# Current Project Status
-
-| Phase                                | Status         |
-| ------------------------------------ | -------------- |
-| Phase 1 – Foundation                 | ✅ Completed    |
-| Phase 2 – Dashboard Development      | 🚧 In Progress |
-| Phase 3 – Mechanical Design          | 📋 Planned     |
-| Phase 4 – Hardware Assembly          | 📋 Planned     |
-| Phase 5 – Sensor Integration         | 📋 Planned     |
-| Phase 6 – AI Development             | 📋 Planned     |
-| Phase 7 – Cloud Communication        | 📋 Planned     |
-| Phase 8 – Mobile Application         | 📋 Planned     |
-| Phase 9 – Marine Field Testing       | 📋 Planned     |
-| Phase 10 – Final Thesis Presentation | 🎯 Future      |
-
----
-
-**Document:** Roadmap.md
-
-**Version:** 3.0
-
-**Status:** Approved Development Roadmap
-
-This roadmap defines the official development sequence for Project FALCON-01. All hardware, firmware, AI, mechanical, and documentation work should follow this roadmap unless superseded by a newer approved version.
-
-## Purpose
-Define staged delivery and future milestones.
-## Scope
-Dashboard, firmware, hardware, sensors, AI, communications, mobile, and field validation.
-## Current Status
-Portal foundation is Implemented; dashboard development is In Progress; other phases are Planned or Future.
-## Architecture
-Development proceeds from stable local controller to validated sensing, data, AI, remote services, and marine deployment.
-## Implementation
-Only source-backed Phase 1 portal deliverables count as implemented.
-## Future Expansion
-Long-term items remain conditional on completed lower-level validation gates.
-## Engineering Notes
-Phase placement does not itself prove implementation.
 ## Revision History
+
 | Version | Date | Change |
 | --- | --- | --- |
-| 3.1 | 2026-08-05 | Added verified status notice and document controls. |
+| 3.1 | 2026-08-05 | Added source-verified phase status. |
+| 4.0 | 2026-08-09 | Replaced broad multi-platform roadmap with focused documentation, sensing, wave, AI, dashboard, API, and validation gates. |

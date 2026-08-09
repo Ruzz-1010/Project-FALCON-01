@@ -1,654 +1,481 @@
-# Project FALCON-01 Hardware Documentation
+# Project FALCON Hardware Specification v4.0
 
-> **Validated hardware notice (2026-08-05):** Confirmed available hardware is
-> limited to the ESP32 DevKit/ESP-WROOM-32 class board, CH340 interface, jumper
-> wires, LM2596, relay, and miscellaneous power modules. No sensor, GPS, edge
-> computer, solar/battery system, or marine assembly is verified as installed.
-> Exact models, capacities, dimensions, and the Dell/Raspberry Pi selection are
-> **Status: Not Yet Finalized** unless confirmed in a later revision. The
-> remainder of this document is an engineering planning baseline.
+## Document Control
 
-**Project Name:** Project FALCON
+| Field | Value |
+| --- | --- |
+| Prototype | FALCON-01 |
+| Status | Phase 1 Hardware Baseline |
+| Authority | PROJECT_CONTEXT.md v4.0 |
+| Updated | 2026-08-09 |
 
-**Prototype:** FALCON-01
+## Verified Status
 
-**Meaning:**
-**F**ullbright College's **A**I-powered **L**ive **C**oastal **O**bservation **N**etwork
+Confirmed repository/development hardware includes an ESP32 DevKit/ESP-WROOM-32-class board and basic development modules previously recorded in the project.
 
-**Document Version:** Hardware Documentation v3.0
+The full sensor set, final mini PC, final solar/battery components, and complete marine deployment assembly shall not be treated as installed until procurement and physical verification records exist.
 
-**Status:** Approved Phase 1 Hardware Baseline
+Part numbers, capacities, ratings, and dimensions marked **TBD** require selection and engineering review.
 
-**Related Documents:**
+## Hardware Purpose
 
-* PROJECT_CONTEXT.md v3
-* SYSTEM_ARCHITECTURE.md
-* FIRMWARE_SPEC.md (Planned)
-* AI_SPEC.md (Planned)
+The Phase 1 hardware supports:
 
----
+- real-time coastal monitoring;
+- pressure- and IMU-based wave measurement;
+- wind context;
+- GPS position;
+- battery and solar monitoring;
+- internal-temperature monitoring;
+- ESP32 data acquisition;
+- UART transfer to a mini PC;
+- local AI-assisted wave prediction;
+- and a local dashboard.
 
-# 1. System Overview
+## Final Phase 1 Hardware Architecture
 
-FALCON-01 is a solar-powered intelligent coastal observation buoy designed for long-term autonomous deployment in marine environments.
+```text
+BNO085 IMU --------------------+
+Water Pressure Sensor ---------+
+Wind Speed Sensor -------------+
+Wind Direction Sensor ---------+--> ESP32 --> UART --> Mini PC
+GPS Module --------------------+                    |
+Battery Monitor ---------------+                    +--> REST API
+Solar Monitor -----------------+                    |
+Internal Temperature ----------+                    +--> Local Dashboard
+Optional Water Temperature ----+
+```
 
-The system combines IoT, embedded systems, renewable energy, edge AI, and environmental sensing to provide continuous coastal monitoring, AI-assisted sea-state classification, buoy self-diagnostics, and remote telemetry.
+## Embedded Controller
 
-Primary capabilities include:
+### ESP32
 
-* Real-time environmental monitoring
-* AI-assisted sea condition classification
-* Local Wi-Fi maintenance dashboard
-* Remote cloud synchronization
-* Autonomous solar-powered operation
-* GPS-based positioning
-* Anti-theft and drift detection
-* Tidal-aware buoy health monitoring
-* Predictive maintenance support (future)
+Role: primary deterministic acquisition and control device.
 
----
+Responsibilities:
 
-# 2. System Architecture
+- initialize approved sensors;
+- acquire timestamped readings;
+- apply calibration coefficients;
+- validate ranges;
+- report sensor health;
+- parse GPS;
+- monitor battery and solar state;
+- monitor internal temperature;
+- frame UART telemetry;
+- handle watchdog recovery;
+- and provide a limited local fallback interface where appropriate.
 
-The hardware is divided into the following subsystems:
+The ESP32 shall continue basic acquisition when the mini PC is unavailable.
 
-1. Mechanical Structure
-2. Power System
-3. Embedded Controller
-4. Edge AI Computer
-5. Sensor Network
-6. Communications
-7. Diagnostics & Safety
-8. Expansion Interface
+The ESP32 is not the primary host for the full 3D dashboard or final AI service.
 
----
+### Minimum Interface Requirements
 
-# 3. Embedded Controller
+- sufficient I2C/UART/ADC resources for selected sensors;
+- 3.3 V logic compatibility;
+- protected power input;
+- accessible programming interface;
+- watchdog capability;
+- and documented pin allocation.
 
-## Primary Controller
+Final pin assignments belong in PINOUT.md after sensor selection.
 
-**ESP32 DevKit**
+## Mini PC
 
-### Responsibilities
+Role: local edge-processing and dashboard host.
 
-* Primary embedded controller
-* Sensor acquisition
-* Local Wi-Fi Access Point
-* Captive Portal
-* Local Web Dashboard
-* REST API
-* GPS processing
-* Power monitoring
-* Buoy health monitoring
-* Communication with AI computer
-* OTA firmware updates
-* Data logging
-* Alert generation
-* Watchdog recovery
+Final model: **TBD**.
 
-The ESP32 remains operational even if the AI computer is unavailable.
+The laptop may temporarily perform this role during demonstrations.
 
----
+Minimum selection considerations:
 
-# 4. Edge AI Computer
+- reliable UART or USB-serial interface;
+- adequate CPU for one lightweight wave-prediction model;
+- adequate storage for local telemetry and prediction history;
+- low enough power consumption for the validated energy budget;
+- automatic startup after power restoration;
+- serviceable local operating system;
+- and physically secure mounting.
 
-## Current Development Platform
+Responsibilities:
 
-**Dell OptiPlex 3050 Micro**
+- UART ingestion;
+- local data validation;
+- wave processing;
+- AI inference;
+- local database;
+- REST API;
+- dashboard hosting;
+- alert aggregation;
+- and system logging.
 
-### Recommended Specification
+The mini PC is not an autonomous-navigation computer.
 
-* Intel Core i5-7500T
-* 8 GB DDR4 RAM
-* 256 GB SSD
-* Ubuntu Server 24.04 LTS
-
-### Responsibilities
-
-* AI inference
-* Sensor fusion
-* Local database
-* Dashboard backend
-* Cloud synchronization
-* Historical analytics
-* Future computer vision
-* Fleet management support
-
-**Note:** Future production versions may migrate to a lower-power platform (e.g., Raspberry Pi or equivalent ARM-based edge computer) after prototype validation.
-
----
-
-# 5. Mechanical Structure
-
-## Main Float
-
-**Modified HDPE Drum**
-
-### Recommended Capacity
-
-60–80 Liters
-
-### Material
-
-High-Density Polyethylene (HDPE)
-
-### Features
-
-* Waterproof
-* UV resistant
-* Corrosion resistant
-* Marine suitable
-* Easy maintenance
-* Lightweight
-* Replaceable
-
-The modified HDPE drum serves as the primary flotation body and structural support for all electronics.
-
----
-
-# 6. Stabilization System
-
-Approved Phase 1 Baseline:
-
-* Four HDPE Stabilizer Buoys
-* Aluminum 6061-T6 Support Arms
-* Stainless Steel 316 Tension Cables
-* Stainless Steel Marine Brackets
-* Central Ballast
-* Single Marine Anchor
-* Single Mooring Line
-
-### Purpose
-
-* Reduce roll
-* Reduce pitch
-* Improve wave stability
-* Improve AI sensor accuracy
-* Maintain solar panel orientation
-* Increase survivability during rough sea conditions
-
----
-
-# 7. Internal Compartments
-
-## Upper Electronics Bay
-
-Contains:
-
-* AI Computer
-* ESP32
-* GPS Module
-* LTE Module
-* Wi-Fi Antenna
-* Electronics Mounting Plate
-* Communication Interfaces
-
----
-
-## Middle Power Bay
-
-Contains:
-
-* MPPT Charge Controller
-* DC-DC Buck Converter
-* Fuse Block
-* Power Distribution Board
-* Current Monitoring
-* Voltage Monitoring
-
----
-
-## Lower Battery Bay
-
-Contains:
-
-* 12V LiFePO₄ Battery
-* Battery Protection
-* Temperature Sensor
-
----
-
-## Bottom Section
-
-Contains:
-
-* Central Ballast Assembly
-* Mooring Connection
-* Anchor Attachment
-
----
-
-# 8. Power System
-
-## Battery
-
-### Type
-
-LiFePO₄
-
-### Capacity
-
-12V 60Ah
-
-### Advantages
-
-* Long cycle life
-* High safety
-* Stable voltage
-* Excellent marine suitability
-* Fast charging
-* Low maintenance
-
----
-
-## Solar Panel
-
-Recommended:
-
-150W Monocrystalline Solar Panel
-
-Future Upgrade:
-
-200W
-
----
-
-## Charge Controller
-
-MPPT Solar Charge Controller
-
-Functions:
-
-* Maximum charging efficiency
-* Battery protection
-* Solar monitoring
-
----
-
-## Voltage Conversion
-
-LM2596 DC-DC Buck Converter
-
-Provides regulated voltages for:
-
-* ESP32
-* AI Computer
-* Sensors
-* LTE Module
-* Cooling Fans
-
----
-
-# 9. Cooling System
-
-## Electronics Cooling
-
-* Intake Fan
-* Exhaust Fan
-* Passive Airflow Channels
-
----
-
-## Battery Cooling
-
-Dedicated battery compartment
-
-Includes:
-
-* Temperature monitoring
-* Passive airflow
-* Thermal isolation
-
----
-
-## Automatic Cooling
-
-The ESP32 automatically controls cooling fans based on internal enclosure temperature.
-
----
-
-# 10. Communication System
-
-## Local
-
-ESP32 Wi-Fi Access Point
-
-Features:
-
-* Local Dashboard
-* Captive Portal
-* Maintenance Interface
-* Offline Diagnostics
-
----
-
-## Remote
-
-LTE Module
-
-Functions:
-
-* Cloud synchronization
-* Remote monitoring
-* Alert transmission
-
----
-
-## Future Expansion
-
-* LoRa
-* Satellite communication
-* Mesh networking
-
----
-
-# 11. Sensor Package
-
-## Marine Sensors
-
-* Water Temperature
-* Salinity
-* pH
-* Turbidity
-* Dissolved Oxygen (Optional)
-* Water Level / Waterline Sensor
-
----
-
-## Weather Sensors
-
-* Wind Speed
-* Wind Direction
-* Air Temperature
-* Humidity
-* Atmospheric Pressure
-
----
-
-## Navigation
-
-* GPS Module
-
-Functions:
-
-* Position tracking
-* Drift detection
-* Anti-theft monitoring
-* Geofencing
-* Time synchronization
-
----
-
-## Motion Monitoring
+## Approved Phase 1 Sensors
 
 ### BNO085 IMU
 
-Measures:
+Purpose:
 
-* Roll
-* Pitch
-* Motion
-* Orientation
-* Acceleration
+- pitch;
+- roll;
+- yaw;
+- acceleration;
+- orientation;
+- and wave-motion features.
 
-Used for:
+Selection status: approved sensor family; exact breakout and supplier **TBD**.
 
-* Wave analysis
-* Stability monitoring
-* Tidal-aware diagnostics
+Interface: typically I2C or UART, subject to final design.
 
----
+Mounting:
 
-## Power Monitoring
+- rigid central structure;
+- documented axes;
+- away from loose vibration;
+- and accessible for calibration.
 
-* Battery Voltage
-* Battery Current
-* Solar Voltage
-* Solar Current
+### Water-Pressure Sensor
 
----
+Purpose:
 
-## Safety Sensors
+- pressure changes;
+- wave-height estimation;
+- wave-period features;
+- and primary AI input support.
 
-* Internal Temperature
-* Enclosure Humidity
-* Water Leak Sensor
-* Tamper Switch
-* RTC DS3231
+Exact model and pressure range: **TBD**.
 
----
+Selection criteria:
 
-# 12. Buoy Health Monitoring
+- marine/water compatibility;
+- suitable pressure range and resolution;
+- stable output;
+- calibration support;
+- compatible electrical interface;
+- and maintainable waterproof installation.
 
-The buoy evaluates multiple systems simultaneously.
+### Wind-Speed Sensor
 
-Inputs include:
+Purpose:
 
-* Waterline changes
-* IMU stability
-* GPS position
-* Leak detection
-* Battery health
-* Solar charging
-* Sensor availability
-* Communication status
+- local wind-speed monitoring;
+- wave-development context;
+- and optional validated AI input.
 
-This sensor fusion approach prevents false alarms caused by normal tidal movement.
+Exact model: **TBD**.
 
----
+The sensor shall tolerate salt exposure or include a protection/maintenance plan.
 
-# 13. Waterproof Protection
+### Wind-Direction Sensor
 
-## Target Rating
+Purpose:
 
-IP67 (minimum)
+- local wind-direction monitoring;
+- directional context;
+- and optional validated AI input.
 
-Target production:
+Exact model: **TBD**.
 
-IP68
+The installation shall document true-north or magnetic-north convention.
 
-### Protection Features
+### GPS Module
 
-* Waterproof cable glands
-* Waterproof connectors
-* Silicone seals
-* Marine-grade enclosure
-* Pressure equalization vent
-* Desiccant packs
-* Corrosion-resistant coating
-* Stainless steel marine fasteners
+Purpose:
 
----
+- deployment position;
+- current position;
+- satellite/fix state;
+- time reference;
+- and sustained drift assessment.
 
-# 14. Internal Wiring
+Exact model: **TBD**.
 
-## Power Flow
+GPS does not provide autonomous navigation.
 
+### Battery Monitor
+
+Purpose:
+
+- battery voltage;
+- battery current;
+- charging/discharging direction;
+- battery-percentage estimate;
+- and low/critical battery state.
+
+Exact device and shunt rating: **TBD**.
+
+### Solar Monitor
+
+Purpose:
+
+- solar voltage;
+- solar current;
+- calculated power where valid;
+- and charging status.
+
+Exact device and range: **TBD**.
+
+### Internal-Temperature Sensor
+
+Purpose:
+
+- electronics-enclosure temperature;
+- thermal warning;
+- and cooling-policy input when cooling hardware is installed.
+
+Exact device: **TBD**.
+
+### Optional Water-Temperature Sensor
+
+Water temperature is optional.
+
+It may provide monitoring and compensation context.
+
+Water-temperature prediction is not in scope.
+
+## Excluded Phase 1 Sensors
+
+The following are Future Expansion:
+
+- pH;
+- salinity;
+- turbidity;
+- dissolved oxygen;
+- rain;
+- UV;
+- camera;
+- hydrophone;
+- current meter;
+- and Water Quality Index sensors.
+
+They shall not be included in the Phase 1 procurement baseline.
+
+## Power System
+
+### Approved Power Chain
+
+```text
 Solar Panel
-
-↓
-
+    |
+    v
 MPPT Charge Controller
+    |
+    v
+12 V LiFePO4 Battery
+    |
+    v
+Protected Power Distribution
+    |
+    +--> ESP32
+    +--> Mini PC
+    +--> Sensors
+```
 
-↓
+### Solar Panel
 
-12V LiFePO₄ Battery
+Final wattage: **TBD through energy-budget calculation**.
 
-↓
+Requirements:
 
-Fuse Block
+- adequate daily energy production;
+- marine/outdoor suitability;
+- secure tilted mounting;
+- acceptable wind loading;
+- and maintainable wiring.
 
-↓
+### MPPT Charge Controller
 
-Power Distribution Board
+Final model: **TBD**.
 
-↓
+Requirements:
 
-DC-DC Buck Converter
+- compatible solar input;
+- compatible LiFePO4 charge profile;
+- current rating above expected maximum;
+- protection features;
+- and charging-state visibility where practical.
 
-↓
+### 12 V LiFePO4 Battery
 
-ESP32
+Final capacity: **TBD through measured autonomy requirement**.
 
-↓
+Requirements:
 
-AI Computer
+- suitable BMS;
+- adequate continuous/peak current;
+- protected enclosure installation;
+- temperature awareness;
+- and safe service disconnect.
 
-↓
+### Power Distribution
 
-Sensors & Communication Modules
+Requirements:
 
----
+- branch fusing;
+- reverse-polarity protection;
+- suitable conductor sizing;
+- regulated rails;
+- labeled connectors;
+- strain relief;
+- and measured conversion efficiency.
 
-## Data Flow
+### Energy-Budget Inputs
 
-Environmental Sensors
+- ESP32 average and peak current;
+- mini-PC idle, average, and startup power;
+- all approved sensors;
+- GPS;
+- cooling hardware when installed;
+- regulator losses;
+- nighttime duration;
+- cloudy-day margin;
+- and required reserve.
 
-↓
+No autonomy duration shall be claimed without measurement.
 
-ESP32
+## Cooling Hardware
 
-↓
+Cooling may include intake and exhaust fans if thermal testing proves they are required.
 
-Health Monitoring & Local Logging
+Fan modules shown in CAD are mechanical provisions until installed and electrically verified.
 
-↓
+Automatic fan control shall be deterministic and based on internal temperature thresholds.
 
-AI Computer
+Cooling status shall not be presented as active when the hardware is absent.
 
-↓
+## Communication Hardware
 
-Cloud Database
+### ESP32 to Mini PC
 
-↓
+Approved Phase 1 transport: UART.
 
-Dashboard
+Requirements:
 
-↓
+- common ground or approved isolation;
+- compatible logic levels;
+- short protected wiring;
+- defined connector;
+- strain relief;
+- and documented baud/framing.
 
-User Interface
+USB serial may be used for development while preserving the UART protocol boundary.
 
----
+### Local Dashboard Network
 
-# 15. Estimated Major Hardware
+The mini PC may provide the local web service over Wi-Fi or Ethernet according to final deployment design.
 
-## Computing
+Public Internet is not required.
 
-* ESP32 DevKit
-* Dell OptiPlex 3050 Micro
+### Future Communication Hardware
 
-## Power
+- LTE;
+- LoRa;
+- satellite communication;
+- mesh networking;
+- and fleet networking.
 
-* 12V 60Ah LiFePO₄ Battery
-* 150W Solar Panel
-* MPPT Charge Controller
-* LM2596 Buck Converter
+## Mechanical Hardware Interface
 
-## Communications
+Hardware installation shall preserve:
 
-* GPS Module
-* LTE Module
+- HDPE main float;
+- four stabilizer buoys;
+- marine aluminum arms;
+- stainless steel tension cables;
+- central ballast;
+- single anchor;
+- waterproof enclosure;
+- solar-panel assembly;
+- upper sensor array;
+- and antenna clearances.
 
-## Motion
+Refer to MECHANICAL.md for the mechanical baseline.
 
-* BNO085 IMU
+## Waterproofing and Marine Protection
 
-## Environmental Sensors
+Design intent: IP67 or better for the electronics enclosure, subject to testing.
 
-* Wind Speed Sensor
-* Wind Direction Sensor
-* Water Temperature Sensor
-* Salinity Sensor
-* pH Sensor
-* Turbidity Sensor
-* Atmospheric Pressure Sensor
-* Humidity Sensor
-* Air Temperature Sensor
-* Waterline Sensor
+Required practices:
 
-## Diagnostics
+- marine-suitable cable glands;
+- waterproof connectors where disconnection is required;
+- strain relief;
+- gasket inspection;
+- pressure equalization or condensation management;
+- corrosion-resistant fasteners;
+- protected exposed copper;
+- and post-deployment fresh-water rinsing.
 
-* Battery Monitor
-* Solar Monitor
-* Leak Sensor
-* Internal Temperature Sensor
-* Enclosure Humidity Sensor
-* RTC DS3231
+## Hardware Fault Behavior
 
-## Mechanical
+### Sensor Disconnect
 
-* Modified HDPE Drum
-* Four HDPE Stabilizer Buoys
-* Aluminum 6061-T6 Support Arms
-* Stainless Steel 316 Tension Cables
-* Stainless Steel Brackets
-* Central Ballast
-* Marine Anchor
-* Waterproof Enclosure
-* Marine Fasteners
+- mark sensor unavailable;
+- preserve remaining acquisition;
+- log the fault;
+- and transmit health state.
 
----
+### Mini-PC Loss
 
-# 16. Future Expansion
+- ESP32 continues acquisition;
+- AI becomes unavailable;
+- and the system reports degraded state.
 
-Planned hardware upgrades include:
+### Low Battery
 
-* Camera Module
-* Thermal Camera
-* Oil Spill Detection Sensor
-* Hydrophone
-* Water Current Sensor
-* Rain Sensor
-* UV Sensor
-* LoRa Gateway
-* Satellite Communication
-* Mesh Networking
-* Fleet Management
-* Edge Computer Upgrade
-* Automatic Firmware Updates
-* Smart Predictive Maintenance
-* Multi-Buoy Synchronization
+- issue warning;
+- apply approved deterministic power policy;
+- and avoid unsafe discharge.
 
----
+### Internal Overtemperature
 
-# 17. Design Principles
+- issue warning/critical alert;
+- activate verified cooling when installed;
+- and reduce nonessential load only according to approved rules.
 
-Project FALCON hardware follows these principles:
+## Procurement and Acceptance
 
-* Modular architecture
-* Marine durability
-* Low maintenance
-* Solar-powered autonomy
-* Expandable subsystem design
-* Fault tolerance
-* Energy efficiency
-* Easy field servicing
-* Cost-effective deployment
-* Research-grade reliability
+Every selected part shall record:
 
----
+- manufacturer;
+- model;
+- supplier;
+- datasheet;
+- electrical rating;
+- environmental rating;
+- interface;
+- calibration needs;
+- unit cost;
+- quantity;
+- and acceptance-test result.
 
-# End of Hardware Documentation
+## Hardware Validation
 
-**Document:** Hardware Documentation v3.0
+Required categories:
 
-**Prototype:** FALCON-01
+- power-up and brownout;
+- current consumption;
+- solar charging;
+- battery endurance;
+- sensor accuracy and repeatability;
+- UART reliability;
+- enclosure temperature;
+- waterproofing;
+- corrosion inspection;
+- and controlled marine operation.
 
-**Status:** Approved Phase 1 Hardware Baseline
+## Future Expansion
 
-This document defines the official hardware configuration for Project FALCON-01 and should be used as the baseline for mechanical design, electronics integration, firmware development, and future hardware revisions unless superseded by a newer approved version.
+Future hardware may include water-quality sensors, camera, hydrophone, current meter, LTE, LoRa, satellite communication, alternate edge computers, larger power systems, and multi-buoy hardware.
 
-## Scope
-Confirmed prototype parts and proposed controller, power, sensor, communication, enclosure, and mechanical systems.
-## Current Status
-Only hardware named in the validated notice is confirmed available; the remainder is planning.
-## Architecture
-Future power feeds a protected ESP32-centered sensor system with an optional, unfinalized edge computer.
-## Implementation
-No external hardware interface or GPIO assignment exists in current firmware.
-## Engineering Notes
-Planning values require calculation, procurement confirmation, electrical review, calibration, and physical testing.
+None are Phase 1 requirements.
+
 ## Revision History
+
 | Version | Date | Change |
 | --- | --- | --- |
-| 3.1 | 2026-08-05 | Added verified hardware status and document controls. |
+| 3.1 | 2026-08-05 | Added verified available-hardware notice. |
+| 4.0 | 2026-08-09 | Replaced broad hardware plan with approved core sensors, UART mini-PC architecture, measured power-design requirements, and explicit Future Expansion boundaries. |

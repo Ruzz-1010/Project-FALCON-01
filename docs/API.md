@@ -1,505 +1,412 @@
-# FALCON-01 Local API
+# Project FALCON Local REST API v4.0
 
-> **Validated API notice (2026-08-05):** Only `GET /api/status`,
-> `POST /api/monitoring/toggle`, and `POST /api/restart` are implemented. Every
-> other endpoint or schema below is Planned and not callable in current firmware.
+## Document Control
 
-**Project:** Project FALCON
+| Field | Value |
+| --- | --- |
+| Authority | PROJECT_CONTEXT.md v4.0 |
+| Target host | Mini PC local edge service |
+| Representation | JSON |
+| Status | Approved contract implemented by the Mini PC edge service |
+| Updated | 2026-08-09 |
 
-**Prototype:** FALCON-01
-
-**Document Version:** API v3.0
-
-**Status:** Phase 1 Development
-
----
-
-# Overview
-
-The FALCON-01 Local API provides a REST interface hosted directly on the ESP32.
-
-The API is used by:
-
-* Local Dashboard
-* Mobile Devices
-* Future Mobile Application
-* AI Computer
-* Maintenance Tools
-
-All API endpoints are available only through the local Wi-Fi Access Point unless remote access is explicitly enabled in future versions.
-
----
-
-# Base URL
+## Approved Endpoint Set
 
 ```text
-http://192.168.4.1/api/
+GET  /status
+GET  /wave
+GET  /gps
+GET  /battery
+GET  /solar
+GET  /ai
+POST /restart
+POST /calibrate
 ```
 
----
+No other endpoint is part of the final Phase 1 contract.
 
-# Response Format
+Dashboard v5 presentation extensions are `GET /prediction` and `GET /logs`. They support the requested 10-minute demonstration and local history/export interface without replacing the eight approved Phase 1 contract endpoints.
 
-All endpoints return JSON.
+## Current Compatibility Status
 
-Example:
+The Mini PC edge service implements all eight approved endpoints. Legacy/prototype routes remain temporarily available for ESP32 portal and presentation-scenario compatibility.
+
+### ESP32 Portal
+
+- `GET /api/status` — implemented;
+- `POST /api/monitoring/toggle` — implemented prototype control;
+- `POST /api/restart` — implemented.
+
+### Laptop Edge Prototype
+
+- `GET /health` — implemented;
+- `GET /api/latest` — implemented;
+- `GET /api/history` — implemented;
+- `GET /api/alerts` — implemented;
+- `GET /api/scenario` — implemented for demonstration;
+- `POST /api/scenario` — implemented for demonstration;
+- `GET /api/forecast` — implemented presentation forecast;
+- and `GET /api/forecast/validation` — implemented presentation backtest.
+
+These routes are not the final v4 public contract. The v4 dashboard no longer depends on legacy telemetry or forecast routes; only its explicitly labeled simulator control uses `/api/scenario`.
+
+Migration shall preserve demonstrations while the dashboard and services adopt the approved paths.
+
+## General Conventions
+
+- JSON responses;
+- UTF-8 encoding;
+- ISO 8601 timestamps with timezone;
+- explicit engineering units;
+- no-cache policy for current operational data;
+- meaningful HTTP status codes;
+- structured error objects;
+- no mutation through GET;
+- and unavailable values represented explicitly, not as false zeros.
+
+## Data-State Conventions
+
+Values may include a state such as:
+
+- `MEASURED`;
+- `ESTIMATED`;
+- `PREDICTED`;
+- `SIMULATED`;
+- `STALE`;
+- `INVALID`;
+- or `UNAVAILABLE`.
+
+## Common Error Shape
 
 ```json
 {
-    "success": true,
-    "timestamp": 1722850000
+  "error": {
+    "code": "SENSOR_UNAVAILABLE",
+    "message": "Water-pressure sensor is unavailable.",
+    "recordedAt": "2026-08-09T10:00:00+00:00",
+    "details": {}
+  }
 }
 ```
 
----
+Recommended status mapping:
 
-# Authentication
+- `200` successful read or completed command;
+- `202` accepted asynchronous command;
+- `400` malformed request;
+- `404` unknown route/resource;
+- `409` command conflicts with current state;
+- `422` structurally valid but unacceptable calibration input;
+- `503` required subsystem unavailable;
+- and `500` unexpected internal failure.
 
-Current Phase 1:
+## GET /status
 
-No authentication.
+Purpose: overall local-system readiness.
 
-Future versions will support:
-
-* User login
-* Technician authentication
-* API tokens
-* Session management
-
----
-
-# Cache Policy
-
-All API responses disable browser caching to ensure the dashboard always displays the latest device information.
-
----
-
-# System Endpoints
-
-## GET `/api/status`
-
-Returns the current system overview used by the dashboard.
-
-### Example Response
+### Response
 
 ```json
 {
   "system": "ONLINE",
-  "clients": 1,
-  "uptime": 120,
   "monitoring": true,
-  "battery": 94,
-  "temperature": 28.6,
-  "tilt": 2.4,
-  "waveLevel": 0.3,
-  "seaCondition": "CALM",
-  "gps": "WAITING FOR GPS",
-  "solar": "STANDBY",
-  "security": "ARMED"
+  "uptimeSeconds": 42672,
+  "esp32": "ONLINE",
+  "miniPc": "ONLINE",
+  "uart": "CONNECTED",
+  "api": "ONLINE",
+  "sensorsOnline": 8,
+  "sensorsExpected": 8,
+  "lastUpdate": "2026-08-09T10:00:00+00:00",
+  "dataSource": "simulator",
+  "activeAlertCount": 0,
+  "version": "4.0"
 }
 ```
 
-Current values are simulated until physical hardware is installed.
+### Rules
 
----
+- `dataSource` is required;
+- simulator mode shall be explicit;
+- sensor counts shall reflect approved installed sensors;
+- and stale ESP32 telemetry shall degrade `system` or `uart` state.
 
-## GET `/api/info`
+## GET /wave
 
-Returns firmware and device information.
+Purpose: current wave, pressure, and motion state.
 
-### Planned Response
+### Response
 
 ```json
 {
-    "device":"FALCON-01",
-    "firmware":"1.0.0",
-    "board":"ESP32 DevKit",
-    "project":"Project FALCON",
-    "status":"ONLINE"
+  "recordedAt": "2026-08-09T10:00:00+00:00",
+  "waveHeight": 0.42,
+  "waveHeightUnit": "m",
+  "waveHeightState": "ESTIMATED",
+  "estimationMethod": "pressure-imu-v1",
+  "pressure": 115.2,
+  "pressureUnit": "kPa",
+  "pitch": 0.9,
+  "roll": 1.8,
+  "yaw": 41.6,
+  "angleUnit": "deg",
+  "waveMotion": 0.37,
+  "quality": 0.91,
+  "valid": true
 }
 ```
 
----
+### Rules
 
-## GET `/api/health`
+- wave-height definition shall match `estimationMethod`;
+- quality meaning shall be documented;
+- missing pressure/IMU input shall not produce fabricated wave height;
+- and simulator data shall use `waveHeightState: SIMULATED` or equivalent source metadata.
 
-Returns the buoy health summary.
+## GET /gps
 
-### Planned Response
+Purpose: current position and deployment-reference state.
+
+### Response
 
 ```json
 {
-    "healthScore":96,
-    "status":"GOOD",
-    "alerts":0,
-    "maintenanceRequired":false
+  "recordedAt": "2026-08-09T10:00:00+00:00",
+  "latitude": 9.742112,
+  "longitude": 118.735322,
+  "fix": "3D",
+  "satellites": 12,
+  "horizontalAccuracyMeters": 1.8,
+  "referenceLatitude": 9.7421,
+  "referenceLongitude": 118.7353,
+  "deploymentName": "Puerto Princesa City, Palawan Coast",
+  "deploymentReferenceState": "DEMO_REFERENCE",
+  "anchorDistanceMeters": 3.4,
+  "driftStatus": "SECURE",
+  "valid": true
 }
 ```
 
----
+### Rules
 
-# Monitoring Endpoints
+- drift calculation shall account for expected mooring swing;
+- the packaged Puerto Princesa coordinate is a presentation reference until replaced by a surveyed field coordinate;
+- no fix shall return `valid: false` and nullable coordinates;
+- and GPS is not an autonomous-navigation interface.
 
-## POST `/api/monitoring/toggle`
+## GET /battery
 
-Enable or disable local monitoring.
+Purpose: battery state and power warning context.
 
-### Example Response
+### Response
 
 ```json
 {
-    "monitoring": true
+  "recordedAt": "2026-08-09T10:00:00+00:00",
+  "voltage": 12.7,
+  "voltageUnit": "V",
+  "current": -0.82,
+  "currentUnit": "A",
+  "percentage": 87.0,
+  "direction": "DISCHARGING",
+  "status": "NORMAL",
+  "valid": true
 }
 ```
 
----
+### Rules
 
-## POST `/api/restart`
+- sign convention shall be documented;
+- percentage is an estimate;
+- and low/critical thresholds belong in configuration.
 
-Restarts the ESP32.
+## GET /solar
 
-### Example Response
+Purpose: solar input and charging state.
+
+### Response
 
 ```json
 {
-    "restarting": true
+  "recordedAt": "2026-08-09T10:00:00+00:00",
+  "voltage": 18.4,
+  "voltageUnit": "V",
+  "current": 2.16,
+  "currentUnit": "A",
+  "power": 39.7,
+  "powerUnit": "W",
+  "charging": true,
+  "status": "CHARGING",
+  "valid": true
 }
 ```
 
----
+### Rules
 
-# GPS Endpoints
+- power shall be calculated only from compatible simultaneous readings;
+- unavailable current shall make power unavailable;
+- and nighttime standby is not automatically a fault.
 
-## GET `/api/gps`
+## GET /ai
 
-**Planned**
+Purpose: focused wave prediction and sea-condition classification.
 
-Example:
+### Successful Response
 
 ```json
 {
-    "status":"LOCKED",
-    "latitude":0.0000,
-    "longitude":0.0000,
-    "satellites":12,
-    "speed":0.0,
-    "distanceFromAnchor":1.5
+  "generatedAt": "2026-08-09T10:00:00+00:00",
+  "targetAt": "2026-08-09T10:15:00+00:00",
+  "horizonMinutes": 15,
+  "currentWaveHeight": 0.42,
+  "predictedWaveHeight": 0.58,
+  "unit": "m",
+  "change": 0.16,
+  "direction": "up",
+  "confidence": 82,
+  "confidenceMeaning": "model quality indicator",
+  "seaCondition": "MODERATE",
+  "model": "wave-short-term",
+  "modelVersion": "1.0.0",
+  "sampleCount": 120,
+  "status": "READY",
+  "dataSource": "sensor",
+  "unavailableReason": null
 }
 ```
 
----
-
-# Sensor Endpoints
-
-## GET `/api/sensors`
-
-Returns all available sensor readings.
-
-Example:
+### Unavailable Response
 
 ```json
 {
-    "waterTemperature":28.3,
-    "airTemperature":29.6,
-    "humidity":82,
-    "pressure":1012,
-    "salinity":34.8,
-    "waterLevel":1.25
+  "generatedAt": "2026-08-09T10:00:00+00:00",
+  "targetAt": null,
+  "horizonMinutes": 15,
+  "currentWaveHeight": null,
+  "predictedWaveHeight": null,
+  "unit": "m",
+  "change": null,
+  "direction": null,
+  "confidence": null,
+  "seaCondition": null,
+  "model": "wave-short-term",
+  "modelVersion": "1.0.0",
+  "sampleCount": 3,
+  "status": "UNAVAILABLE",
+  "dataSource": "sensor",
+  "unavailableReason": "INSUFFICIENT_HISTORY"
 }
 ```
 
----
+### Rules
 
-## GET `/api/motion`
+- supported horizon is 5–15 minutes;
+- Phase 1 audit baselines use 5 and 15 minutes; Dashboard v5 may request 10 minutes as an in-range presentation extension;
+- current and predicted values shall both be returned;
+- sea condition shall be Calm, Moderate, or Rough when valid;
+- unavailable is a state, not a sea-condition class;
+- and weather/current/maintenance/water-quality predictions shall not be added.
 
-Returns IMU information.
+## POST /restart
 
-Example:
+Purpose: authorized controlled restart.
+
+### Request
 
 ```json
 {
-    "roll":1.8,
-    "pitch":2.2,
-    "tilt":2.4,
-    "waveLevel":0.3
+  "target": "esp32",
+  "reason": "authorized maintenance"
 }
 ```
 
----
+Allowed target values:
 
-# Power Endpoints
+- `esp32`;
+- `mini-pc` when implemented;
+- or `service` when implemented.
 
-## GET `/api/battery`
-
-Example:
+### Accepted Response
 
 ```json
 {
-    "percentage":94,
-    "voltage":13.1,
-    "current":1.8,
-    "status":"NORMAL"
+  "accepted": true,
+  "target": "esp32",
+  "status": "RESTARTING"
 }
 ```
 
----
+Restart requests shall be logged.
 
-## GET `/api/solar`
+## POST /calibrate
 
-Example:
+Purpose: authorized sensor calibration request.
+
+### Request
 
 ```json
 {
-    "voltage":18.6,
-    "current":3.5,
-    "power":65.1,
-    "status":"CHARGING"
+  "sensor": "bno085",
+  "operation": "start",
+  "reference": null
 }
 ```
 
----
-
-# Safety Endpoints
-
-## GET `/api/security`
-
-Example:
+### Response
 
 ```json
 {
-    "status":"ARMED",
-    "tamper":false,
-    "leak":false,
-    "drift":false
+  "accepted": true,
+  "sensor": "bno085",
+  "operation": "start",
+  "status": "IN_PROGRESS",
+  "calibrationId": "cal-20260809-001"
 }
 ```
 
----
+Calibration requests shall validate the installed sensor and supported operation.
 
-## POST `/api/security/arm`
+Calibration completion/failure shall be recorded in system logs.
 
-Future endpoint.
+## Security
 
-Example response:
+- local access does not eliminate authorization needs;
+- mutating endpoints shall reject oversized payloads;
+- request input shall be validated;
+- field credentials shall not use prototype defaults;
+- and restart/calibration events shall be auditable.
 
-```json
-{
-    "armed": true
-}
-```
+## Contract Testing
 
----
+Each endpoint requires tests for:
 
-## POST `/api/security/disarm`
+- successful response;
+- schema/type validity;
+- explicit units;
+- unavailable state;
+- stale source;
+- malformed request where applicable;
+- service failure;
+- and no-cache behavior for current state.
 
-Future endpoint.
+## Migration Plan
 
-Example response:
+1. define shared v4 response models;
+2. implement approved endpoints alongside legacy routes;
+3. migrate dashboard consumers;
+4. add contract tests;
+5. mark legacy routes deprecated;
+6. remove legacy routes only after demonstration compatibility is confirmed;
+7. update all examples and supporting documents.
 
-```json
-{
-    "armed": false
-}
-```
-
----
-
-# History Endpoints
-
-## GET `/api/history`
-
-Returns historical sensor records.
-
-Future implementation may support pagination and filtering.
-
----
-
-# Settings Endpoints
-
-## GET `/api/settings`
-
-Returns device configuration.
-
-Future example:
-
-```json
-{
-    "device":"FALCON-01",
-    "samplingInterval":5,
-    "wifiSSID":"FALCON-01"
-}
-```
-
----
-
-## POST `/api/settings`
-
-Updates configuration parameters.
-
-Future implementation will require authentication.
-
----
-
-## POST `/api/calibrate`
-
-Starts sensor calibration.
-
-Future response:
-
-```json
-{
-    "calibration":"STARTED"
-}
-```
-
----
-
-# OTA Endpoints
-
-## GET `/api/ota/status`
-
-**Future**
-
-Returns firmware update status.
-
----
-
-## POST `/api/ota/update`
-
-**Future**
-
-Starts an OTA firmware update.
-
----
-
-# Diagnostics Endpoints
-
-## GET `/api/diagnostics`
-
-Future endpoint.
-
-Returns:
-
-* CPU usage
-* Memory usage
-* LittleFS usage
-* Wi-Fi clients
-* Restart reason
-* Internal temperature
-
----
-
-## GET `/api/logs`
-
-Future endpoint.
-
-Returns recent system logs.
-
----
-
-# AI Endpoints
-
-## GET `/api/ai`
-
-Future endpoint.
-
-Example:
-
-```json
-{
-    "seaCondition":"CALM",
-    "confidence":97,
-    "health":"GOOD"
-}
-```
-
----
-
-# Error Responses
-
-Example:
-
-```json
-{
-    "success": false,
-    "error": "NOT_FOUND"
-}
-```
-
-Possible errors include:
-
-* NOT_FOUND
-* INVALID_REQUEST
-* INTERNAL_ERROR
-* SENSOR_OFFLINE
-* GPS_UNAVAILABLE
-* UNAUTHORIZED *(Future)*
-
----
-
-# API Versioning
-
-Current version:
-
-```
-v1 (Development)
-```
-
-Future major firmware releases may introduce versioned routes, for example:
-
-```text
-/api/v2/status
-/api/v2/sensors
-```
-
-while maintaining backward compatibility whenever practical.
-
----
-
-# Current Implementation
-
-The following endpoints are currently implemented in `PortalServer` (`src/portal_server.cpp`):
-
-* `GET /api/status`
-* `POST /api/monitoring/toggle`
-* `POST /api/restart`
-
-All other endpoints described in this document are planned for future development and serve as the official API roadmap.
-
----
-
-# Development Notes
-
-* JSON is the standard response format.
-* All responses include cache-control headers to prevent browser caching.
-* The API is designed to remain lightweight for efficient operation on the ESP32.
-* New endpoints should follow existing naming conventions and maintain backward compatibility whenever possible.
-
----
-
-**Document:** API.md
-
-**Version:** 3.0
-
-**Status:** Phase 1 Development
-
-This document defines the official local REST API for Project FALCON-01 and serves as the reference for dashboard, firmware, AI, and future mobile application development.
-
-## Purpose
-Define implemented API compatibility and the proposed endpoint roadmap.
-## Scope
-Local ESP32 HTTP endpoints only.
-## Current Status
-Three endpoints are implemented; every other endpoint in this document is Planned.
-## Architecture
-Arduino `WebServer` handlers in `src/portal_server.cpp` serve JSON to the LittleFS dashboard.
-## Implementation
-The authoritative routes are listed under **Current Implementation** above.
 ## Future Expansion
-Planned schemas require source, validation, security review, and tests before becoming contracts.
-## Engineering Notes
-Do not infer implementation from an example response.
+
+Cloud APIs, authentication services, fleet endpoints, water-quality endpoints, camera endpoints, mobile APIs, and multi-buoy endpoints are outside Phase 1.
+
 ## Revision History
+
 | Version | Date | Change |
 | --- | --- | --- |
-| 3.1 | 2026-08-05 | Added source-verified implementation notice and document controls. |
+| 3.1 | 2026-08-05 | Recorded three implemented ESP32 prototype endpoints. |
+| 4.0 | 2026-08-09 | Replaced broad API roadmap with eight approved local endpoints and explicit legacy-migration status. |
+| 4.1 | 2026-08-09 | Recorded implementation of all approved endpoints and dashboard migration. |

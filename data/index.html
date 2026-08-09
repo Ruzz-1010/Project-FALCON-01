@@ -1,167 +1,881 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿<!doctype html>
+<html lang="en" data-theme="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#081216">
-  <title>FALCON-01 Operations</title>
-  <link rel="stylesheet" href="/style.css">
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FALCON-01 Coastal Operations</title>
+  <link rel="icon" href="/favicon.ico">
+<link rel="stylesheet" href="/vendor/leaflet.css?v=1.9.4">
+<link rel="stylesheet" href="/style.css?v=5.0.13">
+  <script type="importmap">{"imports":{"three":"/vendor/three.module.min.js?v=1"}}</script>
 </head>
-<body>
-  <div class="app-shell">
-    <aside class="sidebar" id="sidebar">
-      <div class="brand">
-        <img src="/falcon-logo.jpg" alt="Project FALCON emblem" width="48" height="48">
-        <div><strong>FALCON-01</strong><span>Coastal station</span></div>
+<body class="is-booting">
+<div class="boot-screen" id="bootScreen" role="status" aria-live="polite">
+<div class="boot-mark"><img src="/falcon-logo.jpg" alt=""><i></i></div>
+<strong>FALCON-01</strong><span id="bootMessage">Connecting to local edge system</span>
+<div class="boot-progress"><i></i></div>
+</div>
+<div class="sync-progress" id="syncProgress" aria-hidden="true"><i></i></div>
+<div class="page-transition" id="pageTransition" aria-hidden="true">
+<div class="page-transition-core">
+<div class="transition-logo"><img src="/falcon-logo.jpg" alt=""><i></i></div>
+<span>FALCON OPERATIONS</span><strong id="transitionPageName">Loading page</strong>
+<div class="transition-progress"><i></i></div>
+</div>
+<div class="transition-sea"><i></i><i></i><i></i></div>
+</div>
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+<img src="/falcon-logo.jpg" alt="Project FALCON logo">
+<div>
+<strong>FALCON-01</strong>
+<span>COASTAL STATION</span>
+</div>
+<button class="sidebar-toggle" id="sidebarToggle" type="button" aria-label="Collapse sidebar" title="Collapse sidebar"><svg viewBox="0 0 24 24"><path d="m14 7-5 5 5 5"/></svg></button>
+</div>
+    <nav class="side-nav" aria-label="Dashboard sections">
+      <button class="nav-item is-active" data-view="overview">
+<span class="nav-icon">
+<svg viewBox="0 0 24 24">
+<rect x="3" y="3" width="7" height="7" rx="2"/>
+<rect x="14" y="3" width="7" height="7" rx="2"/>
+<rect x="3" y="14" width="7" height="7" rx="2"/>
+<rect x="14" y="14" width="7" height="7" rx="2"/>
+</svg>
+</span>
+<span class="nav-copy">
+<b>Overview</b>
+<small>Mission control</small>
+</span>
+</button>
+      <button class="nav-item" data-view="wave">
+<span class="nav-icon">
+<svg viewBox="0 0 24 24">
+<path d="M2 8c3-3 5 3 8 0s5 3 8 0 4 0 4 0M2 14c3-3 5 3 8 0s5 3 8 0 4 0 4 0M4 19h16"/>
+</svg>
+</span>
+<span class="nav-copy">
+<b>Wave AI</b>
+<small>Current &amp; predicted</small>
+</span>
+</button>
+      <button class="nav-item" data-view="motion">
+<span class="nav-icon">
+<svg viewBox="0 0 24 24">
+<circle cx="12" cy="12" r="8"/>
+<ellipse cx="12" cy="12" rx="8" ry="3"/>
+<path d="M12 4c2 2 2 14 0 16"/>
+</svg>
+</span>
+<span class="nav-copy">
+<b>Motion</b>
+<small>BNO085 orientation</small>
+</span>
+</button>
+      <button class="nav-item" data-view="gps">
+<span class="nav-icon">
+<svg viewBox="0 0 24 24">
+<circle cx="12" cy="12" r="9"/>
+<path d="m15.5 7.5-2.3 5.7-5.7 2.3 2.3-5.7z"/>
+</svg>
+</span>
+<span class="nav-copy">
+<b>GPS</b>
+<small>Position &amp; drift</small>
+</span>
+</button>
+      <button class="nav-item" data-view="power">
+<span class="nav-icon">
+<svg viewBox="0 0 24 24">
+<rect x="3" y="6" width="17" height="12" rx="2"/>
+<path d="M20 10h2v4h-2M12 8l-3 5h3l-1 3 4-6h-3z"/>
+</svg>
+</span>
+<span class="nav-copy">
+<b>Power</b>
+<small>Battery &amp; solar</small>
+</span>
+</button>
+      <button class="nav-item" data-view="system">
+<span class="nav-icon">
+<svg viewBox="0 0 24 24">
+<path d="M12 3 20 6v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/>
+<path d="m8 12 2.5 2.5L16 9"/>
+</svg>
+</span>
+<span class="nav-copy">
+<b>System</b>
+<small>Health &amp; settings</small>
+</span>
+</button>
+      <button class="nav-item" data-view="activity">
+<span class="nav-icon">
+<svg viewBox="0 0 24 24">
+<path d="M18 8a6 6 0 0 0-12 0c0 6-3 7-3 9h18c0-2-3-3-3-9M10 21h4"/>
+</svg>
+</span>
+<span class="nav-copy">
+<b>Alerts</b>
+<small>Operational events</small>
+</span>
+</button>
+      <button class="nav-item" data-view="logs"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M5 3h14v18H5zM8 8h8M8 12h8M8 16h5"/></svg></span><span class="nav-copy"><b>Logs</b><small>History &amp; exports</small></span></button>
+      <button class="nav-item" data-view="settings"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 13.5v-3l-2-.7-.6-1.4.9-1.9-2.1-2.1-1.9.9-1.4-.6L10.5 3h-3l-.7 2-1.4.6-1.9-.9-2.1 2.1.9 1.9-.6 1.4-2 .7v3l2 .7.6 1.4-.9 1.9 2.1 2.1 1.9-.9 1.4.6.7 2h3l.7-2 1.4-.6 1.9.9 2.1-2.1-.9-1.9.6-1.4z"/></svg></span><span class="nav-copy"><b>Settings</b><small>Station configuration</small></span></button>
+    </nav>
+    <div class="sidebar-footer">
+<div class="connection-state">
+<i class="status-dot">
+</i>
+<div>
+<b id="edgeState">EDGE CONNECTING</b>
+<small>Mini PC local service</small>
+</div>
+</div>
+<span>FALCON OS &middot; DASHBOARD v5.0</span>
+</div>
+  </aside>
+  <button class="sidebar-scrim" id="sidebarScrim" aria-label="Close menu">
+</button>
+  <main class="workspace">
+    <header class="topbar">
+      <div class="title-row">
+<button class="menu-button" id="menuButton" aria-label="Open menu">
+<span>
+</span>
+<span>
+</span>
+<span>
+</span>
+</button>
+<div>
+<p class="eyebrow">PROJECT FALCON / LOCAL OPERATIONS</p>
+<h1 id="pageTitle">Station overview</h1>
+</div>
+</div>
+      <div class="header-status">
+<div class="status-stat">
+<span>Last update</span>
+<strong id="lastUpdate">--:--:--</strong>
+</div>
+<div class="status-stat">
+<span>Source</span>
+<strong id="dataSource">CONNECTING</strong>
+</div>
+<div class="top-signal"><svg viewBox="0 0 24 24"><path d="M12 21s7-6 7-12a7 7 0 1 0-14 0c0 6 7 12 7 12z"/><circle cx="12" cy="9" r="2"/></svg><span>GPS</span><strong id="topGpsLock">ACQUIRING</strong></div>
+<div class="top-signal"><svg viewBox="0 0 24 24"><path d="M12 3 20 6v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="m8 12 2.5 2.5L16 9"/></svg><span>HEALTH</span><strong id="topSystemHealth">CHECKING</strong></div>
+<button class="notification-button" id="notificationButton" aria-label="Enable notifications">
+<svg viewBox="0 0 24 24">
+<path d="M18 8a6 6 0 0 0-12 0c0 6-3 7-3 9h18c0-2-3-3-3-9M10 21h4"/>
+</svg>
+<span id="notificationCount" hidden>0</span>
+</button>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="theme-sun" viewBox="0 0 24 24">
+<circle cx="12" cy="12" r="4"/>
+<path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19"/>
+</svg>
+<svg class="theme-moon" viewBox="0 0 24 24">
+<path d="M20 15.5A8 8 0 0 1 8.5 4 8.5 8.5 0 1 0 20 15.5Z"/>
+</svg>
+</button>
+<span class="live-badge" id="liveBadge">
+<i>
+</i>CONNECTING</span>
+</div>
+    </header>
+
+    <section class="view is-active" data-page="overview">
+      <div class="summary-strip">
+        <article>
+<div class="summary-icon">
+<svg viewBox="0 0 24 24">
+<path d="M12 3v9M7 5.5a8 8 0 1 0 10 0"/>
+</svg>
+</div>
+<div class="summary-copy">
+<span>System status</span>
+<strong id="systemStatus">CONNECTING</strong>
+<small id="sensorSummary">Waiting for sensors</small>
+</div>
+</article>
+        <article>
+<div class="summary-icon">
+<svg viewBox="0 0 24 24">
+<path d="M2 9c3-3 5 3 8 0s5 3 8 0 4 0 4 0M2 15c3-3 5 3 8 0s5 3 8 0 4 0 4 0"/>
+</svg>
+</div>
+<div class="summary-copy">
+<span>Current wave</span>
+<strong>
+<b id="waveNow">--</b> m</strong>
+<small id="waveState">UNAVAILABLE</small>
+</div>
+</article>
+        <article>
+<div class="summary-icon">
+<svg viewBox="0 0 24 24">
+<path d="M4 18 9 12l4 3 7-9M15 6h5v5"/>
+</svg>
+</div>
+<div class="summary-copy">
+<span>Predicted &middot; 15 min</span>
+<strong>
+<b id="wavePredicted">--</b> m</strong>
+<small id="predictionState">COLLECTING</small>
+</div>
+</article>
+        <article>
+<div class="summary-icon">
+<svg viewBox="0 0 24 24">
+<path d="M4 16a8 8 0 0 1 16 0M12 16l4-5"/>
+<circle cx="12" cy="16" r="1"/>
+</svg>
+</div>
+<div class="summary-copy">
+<span>Sea condition</span>
+<strong id="seaCondition">--</strong>
+<small id="confidenceSummary">Confidence unavailable</small>
+</div>
+</article>
       </div>
-
-      <nav class="side-nav" aria-label="Dashboard sections">
-        <button class="nav-item is-active" data-view="overview" type="button"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v10h13V10M9.5 20v-6h5v6"/></svg></span><span class="nav-copy"><b>Overview</b><small>Station summary</small></span></button>
-        <button class="nav-item" data-view="environment" type="button"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7c3-3 6 3 9 0s6 3 9 0M3 13c3-3 6 3 9 0s6 3 9 0M3 19c3-3 6 3 9 0s6 3 9 0"/></svg></span><span class="nav-copy"><b>Environment</b><small>Water &amp; weather</small></span></button>
-        <button class="nav-item" data-view="motion" type="button"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 15c2.3 0 2.3-6 4.6-6s2.3 8 4.7 8 2.3-10 4.6-10 2.3 8 4.1 8"/></svg></span><span class="nav-copy"><b>Motion</b><small>IMU &amp; sea state</small></span></button>
-        <button class="nav-item" data-view="navigation" type="button"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 5-3.2 6.3L5 14.5l6.3 1.2L14.5 22l1.2-6.3L22 12.5l-6.3-1.2z"/><circle cx="14.5" cy="13.5" r="1.5"/></svg></span><span class="nav-copy"><b>Navigation</b><small>GPS &amp; geofence</small></span></button>
-        <button class="nav-item" data-view="power" type="button"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m13 2-8 12h7l-1 8 8-12h-7z"/></svg></span><span class="nav-copy"><b>Power</b><small>Battery &amp; solar</small></span></button>
-        <button class="nav-item" data-view="cooling" type="button"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v20M4 6l16 12M20 6 4 18M8 4l4 4 4-4M8 20l4-4 4 4"/></svg></span><span class="nav-copy"><b>Cooling</b><small>Thermal control</small></span></button>
-        <button class="nav-item" data-view="diagnostics" type="button"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 1-3-6.2"/><path d="m9 11 2 2 6-7"/></svg></span><span class="nav-copy"><b>Diagnostics</b><small>System health</small></span></button>
-        <button class="nav-item" data-view="activity" type="button"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14M5 12h14M5 19h14"/><circle cx="3" cy="5" r=".5"/><circle cx="3" cy="12" r=".5"/><circle cx="3" cy="19" r=".5"/></svg></span><span class="nav-copy"><b>Activity</b><small>Events &amp; alerts</small></span></button>
-      </nav>
-
-      <div class="sidebar-footer">
-        <div class="connection-state"><span class="status-dot"></span><div><b id="systemStatus">CONNECTING</b><small>ESP32 local link</small></div></div>
-          <span>FALCON OS &nbsp;•&nbsp; Dashboard v4.0</span>
+<div class="mission-ribbon"><div><span>Prediction confidence</span><strong id="homeAiConfidence">--%</strong></div><div><span>Wind direction</span><strong id="homeWindDirection">--</strong></div><div><span>GPS lock</span><strong id="homeGpsLock">--</strong></div><div><span>AI engine</span><strong id="homeAiStatus">--</strong></div><div><span>Internal temperature</span><strong id="homeInternalTemp">--</strong></div><div><span>Latest alert</span><strong id="homeLatestAlert">None</strong></div></div>
+      <div class="overview-grid">
+        <article class="panel trend-panel">
+<div class="panel-heading">
+<div>
+<p class="section-label">PRIMARY MARINE SIGNAL</p>
+<h2>Wave height &middot; measured to forecast</h2>
+</div>
+<span class="tag" id="sampleTag">LIVE &middot; 2 SEC</span>
+</div>
+<div class="chart-toolbar">
+<div class="chart-legend">
+<span>
+<i class="legend-temp">
+</i>Current estimate</span>
+<span>
+<i class="legend-wave">
+</i>AI forecast</span>
+</div>
+<div class="chart-readouts">
+<span>Now <b id="chartCurrent">-- m</b>
+</span>
+<span>+15 min <b id="chartForecast">-- m</b>
+</span>
+</div>
+</div>
+<div class="chart-wrap primary-chart">
+<canvas id="trendChart" aria-label="Wave height history and 15-minute forecast">
+</canvas>
+<div class="chart-empty" id="chartEmpty">Collecting readings...</div>
+</div>
+<div class="chart-foot">
+<span>
+<i class="state-dot is-live">
+</i>SIMULATED SENSOR STREAM</span>
+<span>
+<i class="state-dot is-ai">
+</i>PRESENTATION AI &middot; NOT SAFETY VALIDATED</span>
+</div>
+</article>
+        <article class="panel station-panel">
+<div class="panel-heading">
+<div>
+<p class="section-label">LIVE SENSORS</p>
+<h2>Coastal snapshot</h2>
+</div>
+<span class="source-chip">SIMULATED</span>
+</div>
+<dl class="data-list">
+<div>
+<dt>Wind</dt>
+<dd id="windSummary">--</dd>
+</div>
+<div>
+<dt>Water pressure</dt>
+<dd id="pressureSummary">--</dd>
+</div>
+<div>
+<dt>GPS</dt>
+<dd id="gpsSummary">--</dd>
+</div>
+<div>
+<dt>Battery</dt>
+<dd id="batterySummary">--</dd>
+</div>
+<div>
+<dt>Solar</dt>
+<dd id="solarSummary">--</dd>
+</div>
+<div>
+<dt>Internal temperature</dt>
+<dd id="temperatureSummary">--</dd>
+</div>
+</dl>
+</article>
+        <article class="panel telemetry-panel">
+<div class="panel-heading">
+<div>
+<p class="section-label">SENSOR TRANSPARENCY</p>
+<h2>Live supporting measurements</h2>
+</div>
+<span class="tag">LAST 60 SAMPLES</span>
+</div>
+<div class="mini-chart-grid">
+<div>
+<header>
+<span>Wind speed</span>
+<strong id="windChartValue">--</strong>
+</header>
+<canvas id="windChart">
+</canvas>
+</div>
+<div>
+<header>
+<span>Water pressure</span>
+<strong id="pressureChartValue">--</strong>
+</header>
+<canvas id="pressureChart">
+</canvas>
+</div>
+<div>
+<header>
+<span>Battery reserve</span>
+<strong id="batteryChartValue">--</strong>
+</header>
+<canvas id="batteryChart">
+</canvas>
+</div>
+<div>
+<header>
+<span>Internal temperature</span>
+<strong id="temperatureChartValue">--</strong>
+</header>
+<canvas id="temperatureChart">
+</canvas>
+</div>
+</div>
+<p class="forecast-note">Supporting sensors are displayed as current measurements only. The AI predicts wave height, not wind, pressure, battery, or temperature.</p>
+</article>
       </div>
-    </aside>
+    </section>
 
-    <button class="sidebar-scrim" id="sidebarScrim" type="button" aria-label="Close navigation"></button>
+    <section class="view" data-page="wave">
+<div class="page-heading">
+<div>
+<p class="section-label">AI-ASSISTED WAVE FORECAST</p>
+<h2>Current versus predicted</h2>
+</div>
+<label class="scenario-control">
+<span>Horizon</span>
+<select id="forecastHorizon">
+<option value="5">5 minutes</option>
+<option value="10" selected>10 minutes</option>
+<option value="15">15 minutes</option>
+</select>
+</label>
+</div>
+<div class="detail-layout">
+<article class="panel">
+<div class="forecast-grid">
+<div>
+<span>Current wave</span>
+<strong id="aiCurrent">--</strong>
+<small>SIMULATED / ESTIMATED</small>
+</div>
+<div>
+<span>Predicted wave</span>
+<strong id="aiPredicted">--</strong>
+<small>PREDICTED</small>
+</div>
+<div>
+<span>Change</span>
+<strong id="aiChange">--</strong>
+<small id="aiDirection">--</small>
+</div>
+<div>
+<span>Confidence</span>
+<strong id="aiConfidence">--</strong>
+<small>MODEL QUALITY</small>
+</div>
+<div>
+<span>Predicted condition</span>
+<strong id="aiCondition">--</strong>
+<small>CALM / MODERATE / ROUGH</small>
+</div>
+<div>
+<span>Target time</span>
+<strong id="aiTarget">--</strong>
+<small id="aiSamples">COLLECTING</small>
+</div>
+</div>
+<p class="forecast-note" id="forecastNote">Presentation model only. Not validated for safety decisions.</p>
+</article>
+<article class="panel">
+<div class="panel-heading">
+<div>
+<p class="section-label">TRANSPARENCY</p>
+<h2>Prediction status</h2>
+</div>
+<span class="tag tag-warn" id="modelStatus">WARMING UP</span>
+</div>
+<dl class="data-list">
+<div>
+<dt>Model</dt>
+<dd id="modelName">wave-short-term</dd>
+</div>
+<div>
+<dt>Version</dt>
+<dd id="modelVersion">--</dd>
+</div>
+<div>
+<dt>Input source</dt>
+<dd id="modelSource">--</dd>
+</div>
+<div>
+<dt>Current state</dt>
+<dd id="modelCurrentState">--</dd>
+</div>
+<div>
+<dt>Supported horizons</dt>
+<dd>5 and 15 minutes</dd>
+</div>
+</dl>
+</article>
+</div>
+<article class="panel explain-panel">
+<div class="panel-heading">
+<div>
+<p class="section-label">AI PREDICTION</p>
+<h2>Wave forecast result</h2>
+</div>
+<span class="tag tag-warn">DEMO AI</span>
+</div>
+<div class="ai-result-layout">
+<div class="ai-result-card">
+<div class="ai-result-icon"><svg viewBox="0 0 24 24"><path d="M3 16c3-3 5 3 8 0s5 3 8 0 3 0 3 0M4 10l4-4 4 3 7-6M15 3h4v4"/></svg></div>
+<span>Predicted Wave Height</span><strong id="storyResult">-- m</strong><small id="storyMeaning">Waiting for enough wave data</small>
+</div>
+<div class="ai-result-stats">
+<div><span>Confidence</span><strong id="storyConfidence">--%</strong></div>
+<div><span>Prediction Time</span><strong id="predictionTimeSimple">Next 15 minutes</strong></div>
+<div><span>Status</span><strong id="predictionStatusSimple">Unavailable</strong></div>
+</div>
+<div class="prediction-basis">
+<div class="basis-heading"><div><span>Prediction based on</span><small>Configured demo-model input weights</small></div><strong>100%</strong></div>
+<div class="basis-row"><div><span class="basis-check">✓</span><b>IMU Roll</b><em>23%</em></div><i><u style="width:23%"></u></i></div>
+<div class="basis-row"><div><span class="basis-check">✓</span><b>IMU Pitch</b><em>17%</em></div><i><u style="width:17%"></u></i></div>
+<div class="basis-row"><div><span class="basis-check">✓</span><b>Water Pressure</b><em>42%</em></div><i><u style="width:42%"></u></i></div>
+<div class="basis-row"><div><span class="basis-check">✓</span><b>Wind Speed</b><em>13%</em></div><i><u style="width:13%"></u></i></div>
+<div class="basis-row"><div><span class="basis-check">✓</span><b>Wind Direction</b><em>5%</em></div><i><u style="width:5%"></u></i></div>
+</div>
+</div>
+<span id="storyInput" hidden></span><span id="storyAnalysis" hidden></span><span id="plainLanguageResult" hidden></span>
+<details class="technical-details"><summary>Show technical calculation details</summary>
+<div class="prediction-flow">
+<div>
+<span class="flow-number">01</span>
+<svg viewBox="0 0 24 24">
+<path d="M4 16a8 8 0 0 1 16 0M12 16l3-5"/>
+</svg>
+<strong>Pressure + IMU</strong>
+<small>Wave-height estimate enters the Mini PC</small>
+</div>
+<i>
+</i>
+<div>
+<span class="flow-number">02</span>
+<svg viewBox="0 0 24 24">
+<path d="M4 18 9 12l4 3 7-9"/>
+</svg>
+<strong>Recent trend</strong>
+<small id="explainSamples">Waiting for valid samples</small>
+</div>
+<i>
+</i>
+<div>
+<span class="flow-number">03</span>
+<svg viewBox="0 0 24 24">
+<path d="M4 12h16M15 7l5 5-5 5"/>
+</svg>
+<strong>Projection + limit</strong>
+<small id="explainProjection">Selected horizon with damping</small>
+</div>
+<i>
+</i>
+<div>
+<span class="flow-number">04</span>
+<svg viewBox="0 0 24 24">
+<path d="M4 17a8 8 0 0 1 16 0M12 17l4-6"/>
+</svg>
+<strong>Output + class</strong>
+<small id="explainOutput">Wave height and sea condition</small>
+</div>
+</div>
+<div class="evidence-grid">
+<div>
+<span>Observed sample window</span>
+<strong id="evidenceWindow">--</strong>
+<small>Time covered by valid recent samples</small>
+</div>
+<div>
+<span>Detected trend</span>
+<strong id="evidenceTrend">--</strong>
+<small>Wave-height change per minute</small>
+</div>
+<div>
+<span>Raw mathematical output</span>
+<strong id="evidenceRaw">--</strong>
+<small>Before the physical change limit</small>
+</div>
+<div>
+<span>Maximum allowed change</span>
+<strong id="evidenceLimit">--</strong>
+<small id="evidenceLimitState">Short-horizon safeguard</small>
+</div>
+<div>
+<span>Signal volatility</span>
+<strong id="evidenceVolatility">--</strong>
+<small>Used in confidence calculation</small>
+</div>
+<div>
+<span>Damping factor</span>
+<strong id="evidenceDamping">--</strong>
+<small>Reduces exaggerated long projection</small>
+</div>
+</div>
+</details>
+<div class="threshold-strip">
+<div>
+<span>CALM</span>
+<strong>&lt; 0.60 m</strong>
+</div>
+<div>
+<span>MODERATE</span>
+<strong>0.60-2.49 m</strong>
+</div>
+<div>
+<span>ROUGH</span>
+<strong>&gt;= 2.50 m</strong>
+</div>
+<p>
+<b>Demo note:</b> final field accuracy still requires real synchronized pressure and IMU test data.</p>
+</div>
+</article>
+<div class="wave-intelligence-grid">
+<article class="panel wave-flagship-chart"><div class="panel-heading"><div><p class="section-label">LIVE WAVE GRAPH</p><h2>Observed and predicted wave energy</h2></div><span class="tag">HISTORY + FORECAST</span></div><div class="chart-legend"><span><i class="legend-temp"></i>Current wave</span><span><i class="legend-wave"></i>Predicted wave</span></div><div class="wave-ai-chart-wrap"><canvas id="waveAiChart"></canvas></div><div class="chart-foot"><span>Hover-ready timestamped local history</span><span>Dashed segment indicates model output</span></div></article>
+<article class="panel reasoning-panel"><div class="panel-heading"><div><p class="section-label">EXPLAINABLE AI</p><h2>AI analysis summary</h2></div><span class="tag" id="reasoningState">ANALYZING</span></div><ul class="reasoning-list"><li id="reasonPressure">Collecting water-pressure trend.</li><li id="reasonWind">Collecting wind-speed trend.</li><li id="reasonMotion">Analyzing buoy oscillation.</li><li id="reasonHistory">Building historical wave context.</li></ul><div class="reasoning-result"><span>Therefore</span><strong id="reasoningPrediction">Prediction unavailable</strong><small id="reasoningHorizon">Waiting for valid input history</small></div></article>
+<article class="panel confidence-panel"><div><p class="section-label">MODEL CONFIDENCE</p><h2>Prediction confidence</h2></div><div class="confidence-display"><strong id="confidenceLarge">--%</strong><span id="confidenceLabel">Collecting</span></div><div class="confidence-track"><i id="confidenceBar"></i></div><p id="confidenceReason">Confidence will appear after the model receives sufficient synchronized samples.</p></article>
+<article class="panel timeline-panel"><div class="panel-heading"><div><p class="section-label">PREDICTION TIMELINE</p><h2>Expected wave progression</h2></div></div><div class="prediction-timeline"><div><span>NOW</span><strong id="timelineNow">-- m</strong><small>Current estimate</small></div><i></i><div><span>5 MIN</span><strong id="timelineFive">-- m</strong><small>Near-term</small></div><i></i><div><span id="timelineTargetLabel">10 MIN</span><strong id="timelineTarget">-- m</strong><small>Selected horizon</small></div></div></article>
+<article class="panel accuracy-panel"><div class="panel-heading"><div><p class="section-label">PREDICTION QUALITY</p><h2>Presentation validation</h2></div><span class="tag tag-warn">NOT FIELD ACCURACY</span></div><div class="accuracy-metrics"><div><span>Samples used</span><strong id="accuracySamples">--</strong></div><div><span>Model confidence</span><strong id="accuracyConfidence">--</strong></div><div><span>Signal agreement</span><strong id="signalAgreement">--</strong></div><div><span>Data source</span><strong id="accuracySource">--</strong></div></div></article>
+</div>
+</section>
 
-    <main class="workspace">
-      <header class="topbar">
-        <div class="title-row">
-          <button class="menu-button" id="menuButton" type="button" aria-label="Open navigation"><span></span><span></span><span></span></button>
-          <div><p class="eyebrow">PROJECT FALCON / LIVE OPERATIONS</p><h1 id="viewTitle">Station overview</h1></div>
-        </div>
-        <div class="header-status">
-          <div class="status-stat"><span>Last update</span><strong id="lastUpdated">Waiting...</strong></div>
-          <div class="status-stat"><span>Clients</span><strong id="clients">0</strong></div>
-          <button class="notification-button" id="notificationButton" type="button" aria-label="Enable system alert notifications" title="Enable system alert notifications"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg><span id="notificationCount" hidden>0</span></button>
-          <span class="demo-badge" id="dataModeBadge">EDGE DATA</span><span class="live-badge" id="systemIndicator"><i></i>CONNECTING</span>
-        </div>
-      </header>
+    <section class="view" data-page="motion">
+<div class="page-heading">
+<div>
+<p class="section-label">BNO085 + WAVE RESPONSE</p>
+<h2>Buoy motion</h2>
+</div>
+<span class="tag tag-good">LIVE POSE</span>
+</div>
+<div class="detail-layout">
+<article class="panel buoy-visual-panel">
+<div class="buoy-scene" id="buoyScene">
+<canvas id="buoy3dCanvas">
+</canvas>
+<span class="model-load-state" id="modelLoadState">LOADING FUSION MODEL</span>
+<span class="diagnostic-callout" id="diagnosticCallout">ALL COMPONENTS NORMAL</span>
+</div>
+<div class="pose-strip">
+<div>
+<span>ROLL</span>
+<strong id="roll">--</strong>
+</div>
+<div>
+<span>PITCH</span>
+<strong id="pitch">--</strong>
+</div>
+<div>
+<span>YAW</span>
+<strong id="yaw">--</strong>
+</div>
+<div>
+<span>WAVE MOTION</span>
+<strong id="waveMotion">--</strong>
+</div>
+</div>
+</article>
+<article class="panel">
+<dl class="data-list">
+<div>
+<dt>IMU</dt>
+<dd>BNO085 &middot; SIMULATED</dd>
+</div>
+<div>
+<dt>Calibration</dt>
+<dd class="good-text">PRESENTATION READY</dd>
+</div>
+<div>
+<dt>Pose source</dt>
+<dd>Roll, pitch, yaw</dd>
+</div>
+<div>
+<dt>Interaction</dt>
+<dd>Drag to rotate &middot; scroll to zoom</dd>
+</div>
+</dl>
+</article>
+</div>
+</section>
 
-      <section class="view is-active" data-page="overview">
-        <div class="summary-strip">
-          <article><div class="summary-icon"><svg viewBox="0 0 24 24"><path d="M12 3v9"/><path d="M7 5.5a8 8 0 1 0 10 0"/></svg></div><div class="summary-copy"><span>Monitoring</span><strong id="monitoringStatus">ACTIVE</strong><small><i class="mini-dot"></i> All sensors nominal</small></div></article>
-          <article><div class="summary-icon"><svg viewBox="0 0 24 24"><path d="M9 14.8V5a3 3 0 0 1 6 0v9.8a5 5 0 1 1-6 0Z"/><path d="M12 8v9"/></svg></div><div class="summary-copy"><span>Water temperature</span><strong><b id="temperature">--</b> °C</strong><small>Edge sensor input</small></div></article>
-          <article><div class="summary-icon"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="17" height="12" rx="2"/><path d="M20 10h2v4h-2M7 10v4M10 10v4M13 10v4"/></svg></div><div class="summary-copy"><span>Battery reserve</span><strong id="batteryValue">87%</strong><small>11h 42m estimated</small></div></article>
-          <article><div class="summary-icon"><svg viewBox="0 0 24 24"><path d="M3 8c3-3 6 3 9 0s6 3 9 0M3 15c3-3 6 3 9 0s6 3 9 0"/></svg></div><div class="summary-copy"><span>Sea condition</span><strong id="seaCondition">CALM</strong><small>0.4 m average wave</small></div></article>
-        </div>
+    <section class="view" data-page="gps">
+<div class="page-heading">
+<div>
+<p class="section-label">POSITION + MOORING</p>
+<h2>GPS and drift</h2>
+</div>
+<span class="tag tag-good" id="gpsFix">NO FIX</span>
+</div>
+<div class="detail-layout">
+<article class="panel live-map-panel">
+<div class="live-map-head">
+<div><span>LIVE POSITION</span><strong id="coordinates">Coordinates unavailable</strong></div>
+<span class="map-live-badge"><i></i>GPS FEED</span>
+</div>
+<div class="gps-map" id="gpsMap" aria-label="Live buoy location map in Puerto Princesa, Palawan"></div>
+<div class="map-offline" id="mapOffline" hidden>Map tiles unavailable. Live GPS overlays remain active.</div>
+<div class="map-legend">
+<span><i class="is-buoy"></i>Live buoy</span><span><i class="is-base"></i>Deployment point</span><span><i class="is-zone"></i>10 m geofence</span>
+</div>
+</article>
+<article class="panel">
+<dl class="data-list">
+<div>
+<dt>Fix</dt>
+<dd id="gpsFixDetail">--</dd>
+</div>
+<div>
+<dt>Satellites</dt>
+<dd id="satellites">--</dd>
+</div>
+<div>
+<dt>Horizontal accuracy</dt>
+<dd id="gpsAccuracy">--</dd>
+</div>
+<div>
+<dt>Anchor distance</dt>
+<dd id="anchorDistance">--</dd>
+</div>
+<div>
+<dt>Drift status</dt>
+<dd id="driftStatus">--</dd>
+</div>
+<div><dt>Signal quality</dt><dd id="gpsSignalQuality">--</dd></div>
+<div><dt>Heading</dt><dd id="gpsHeading">--</dd></div>
+<div><dt>Surface drift speed</dt><dd id="gpsDriftSpeed">--</dd></div>
+<div><dt>Deployment point</dt><dd id="deploymentPoint">Puerto Princesa City, Palawan Coast</dd></div>
+<div><dt>Reference status</dt><dd class="warn-text" id="deploymentReferenceState">DEMO REFERENCE</dd></div>
+</dl>
+</article>
+</div>
+</section>
 
-        <div class="overview-grid">
-          <article class="panel trend-panel">
-            <div class="panel-heading"><div><p class="section-label">LIVE SESSION</p><h2>Environmental trend</h2></div><span class="tag"><i></i>2 SEC SAMPLE</span></div>
-            <div class="chart-legend"><span><i class="legend-temp"></i>Temperature</span><span><i class="legend-wave"></i>Wave activity</span></div>
-            <div class="chart-wrap"><canvas id="trendChart" aria-label="Live temperature and wave activity chart"></canvas><div id="chartEmpty" class="chart-empty">Collecting readings...</div></div>
-          </article>
+    <section class="view" data-page="power">
+<div class="page-heading">
+<div>
+<p class="section-label">POWER SYSTEM</p>
+<h2>Battery and solar</h2>
+</div>
+<span class="tag" id="powerStatus">--</span>
+</div>
+<div class="detail-layout">
+<article class="panel battery-panel">
+<div class="battery-gauge">
+<span id="batteryBar">
+</span>
+</div>
+<div class="large-reading">
+<span>Battery reserve</span>
+<strong id="batteryPercent">--</strong>
+</div>
+<dl class="data-list">
+<div>
+<dt>Voltage</dt>
+<dd id="batteryVoltage">--</dd>
+</div>
+<div>
+<dt>Current</dt>
+<dd id="batteryCurrent">--</dd>
+</div>
+<div>
+<dt>Direction</dt>
+<dd id="batteryDirection">--</dd>
+</div>
+<div><dt>Estimated runtime</dt><dd id="batteryRuntime">--</dd></div>
+<div><dt>Battery temperature</dt><dd id="batteryTemperature">--</dd></div>
+<div><dt>Power consumption</dt><dd id="powerConsumption">--</dd></div>
+</dl>
+</article>
+<article class="panel">
+<div class="large-reading">
+<span>Solar output</span>
+<strong id="solarPower">--</strong>
+</div>
+<dl class="data-list">
+<div>
+<dt>Voltage</dt>
+<dd id="solarVoltage">--</dd>
+</div>
+<div>
+<dt>Current</dt>
+<dd id="solarCurrent">--</dd>
+</div>
+<div>
+<dt>Charging state</dt>
+<dd id="solarCharging">--</dd>
+</div>
+</dl>
+</article>
+<article class="panel power-thermal-panel">
+<div class="panel-heading">
+<div><p class="section-label">ENCLOSURE COOLING</p><h2>Internal temperature and fans</h2></div>
+<span class="tag tag-good" id="coolingStatus">NORMAL</span>
+</div>
+<div class="cooling-metrics">
+<div class="thermal-reading">
+<span>Internal temperature</span><strong id="powerInternalTemperature">--</strong><small id="powerThermalCondition">Waiting for telemetry</small>
+<div class="thermal-scale"><i id="powerTemperatureBar"></i></div>
+</div>
+<div class="fan-reading">
+<span class="fan-visual" aria-hidden="true"><i></i></span>
+<div><span>Intake fan</span><strong id="intakeFanRpm">-- RPM</strong><small id="intakeFanState">--</small></div>
+</div>
+<div class="fan-reading">
+<span class="fan-visual is-exhaust" aria-hidden="true"><i></i></span>
+<div><span>Exhaust fan</span><strong id="exhaustFanRpm">-- RPM</strong><small id="exhaustFanState">--</small></div>
+</div>
+</div>
+</article>
+</div>
+</section>
 
-          <article class="panel station-panel">
-            <div class="panel-heading"><div><p class="section-label">STATION STATE</p><h2>Local controller</h2></div><span class="tag tag-good"><i></i>ONLINE</span></div>
-            <dl class="data-list">
-              <div><dt>System uptime</dt><dd id="uptime">0h 0m 0s</dd></div>
-              <div><dt>Wi-Fi network</dt><dd>FALCON-01</dd></div>
-              <div><dt>Access point</dt><dd>192.168.4.1</dd></div>
-              <div><dt>Signal quality</dt><dd class="good-text">Excellent · −42 dBm</dd></div>
-            </dl>
-          </article>
+    <section class="view" data-page="system">
+<div class="page-heading">
+<div>
+<p class="section-label">LOCAL EDGE SYSTEM</p>
+<h2>Health and authorized controls</h2>
+</div>
+<span class="tag" id="apiStatus">API --</span>
+</div>
+<div class="detail-layout">
+<article class="panel">
+<dl class="data-list">
+<div>
+<dt>ESP32</dt>
+<dd id="esp32Status">--</dd>
+</div>
+<div>
+<dt>Mini PC</dt>
+<dd id="miniPcStatus">--</dd>
+</div>
+<div>
+<dt>UART</dt>
+<dd id="uartStatus">--</dd>
+</div>
+<div>
+<dt>API</dt>
+<dd id="apiStatusDetail">--</dd>
+</div>
+<div>
+<dt>Uptime</dt>
+<dd id="uptime">--</dd>
+</div>
+<div>
+<dt>Data source</dt>
+<dd id="systemSource">--</dd>
+</div>
+</dl>
+</article>
+<article class="panel">
+<div class="panel-heading">
+<div>
+<p class="section-label">CALIBRATION</p>
+<h2>Sensor settings</h2>
+</div>
+</div>
+<label class="scenario-control settings-select">
+<span>Approved sensor</span>
+<select id="calibrationSensor">
+<option value="bno085">BNO085 IMU</option>
+<option value="water-pressure">Water pressure</option>
+<option value="wind">Wind sensor</option>
+<option value="gps">GPS</option>
+</select>
+</label>
+<button class="button button-primary settings-button" id="calibrateButton">Start calibration</button>
+<p class="forecast-note">Commands are logged in the local database. Unimplemented field actions remain presentation-safe.</p>
+</article>
+</div>
+<div class="system-resource-grid"><article><span>CPU usage</span><strong id="systemCpu">--%</strong><i><u id="systemCpuBar"></u></i></article><article><span>RAM usage</span><strong id="systemRam">--%</strong><i><u id="systemRamBar"></u></i></article><article><span>Storage</span><strong id="systemStorage">--%</strong><i><u id="systemStorageBar"></u></i></article><article><span>Wi-Fi signal</span><strong id="systemWifi">-- dBm</strong><small>Local edge link</small></article></div>
+</section>
 
-          <article class="panel motion-snapshot">
-            <div class="panel-heading"><div><p class="section-label">MOTION SNAPSHOT</p><h2>Current movement</h2></div></div>
-            <div class="dual-reading"><div><span>Tilt</span><strong id="tilt">--&deg;</strong></div><div><span>Wave activity</span><strong id="waveLevel">-- m</strong></div></div>
-          </article>
+    <section class="view" data-page="activity">
+<div class="page-heading">
+<div>
+<p class="section-label">NOTIFICATIONS</p>
+<h2>Active alerts</h2>
+</div>
+<span class="tag tag-good" id="activityStatus">ALL CLEAR</span>
+</div>
+<article class="panel activity-list" id="activityList">
+<div class="activity-empty">
+<strong>No active alerts</strong>
+<p>Use a test scenario to verify the notification pipeline.</p>
+</div>
+</article>
+</section>
 
-          <article class="panel cloud-panel">
-            <div class="panel-heading"><div><p class="section-label">DATA PIPELINE</p><h2>Cloud relay</h2></div><span class="tag tag-warn">NOT CONFIGURED</span></div>
-            <p>Telemetry is synchronized with the local gateway. Cloud relay is staged for the next deployment phase.</p>
-            <div class="pipeline"><span>ESP32</span><i></i><span>Local API</span><i class="is-off"></i><span class="is-muted">Cloud relay</span></div>
-          </article>
+<section class="view" data-page="logs">
+<div class="page-heading"><div><p class="section-label">LOCAL DATA ARCHIVE</p><h2>Operational logs</h2></div><div class="log-actions"><button class="button" id="exportCsvButton">Export CSV</button><button class="button button-primary" id="exportJsonButton">Export JSON</button></div></div>
+<div class="log-summary-grid"><article><span>Wave samples</span><strong id="logWaveCount">--</strong><small>Local history buffer</small></article><article><span>Predictions</span><strong id="logPredictionCount">--</strong><small>Current browser session</small></article><article><span>Active alerts</span><strong id="logAlertCount">--</strong><small>Latest station state</small></article><article><span>Data source</span><strong id="logDataSource">--</strong><small>Explicit provenance</small></article></div>
+<article class="panel logs-panel"><div class="panel-heading"><div><p class="section-label">WAVE + PREDICTION HISTORY</p><h2>Timestamped records</h2></div><span class="tag">LATEST 60</span></div><div class="table-scroll"><table class="operations-table"><thead><tr><th>Timestamp</th><th>Current wave</th><th>Predicted wave</th><th>Horizon</th><th>Condition</th><th>Confidence</th><th>Source</th></tr></thead><tbody id="logsTableBody"><tr><td colspan="7">Collecting operational records...</td></tr></tbody></table></div></article>
+</section>
 
-          <article class="panel forecast-panel">
-            <div class="panel-heading"><div><p class="section-label">EXPERIMENTAL EDGE AI</p><h2>Environmental forecast</h2></div><div class="forecast-tools"><span class="tag tag-warn">DEMO FORECAST</span><label>Horizon<select id="forecastHorizon"><option value="5">Next 5 min</option><option value="15" selected>Next 15 min</option><option value="30">Next 30 min</option></select></label></div></div>
-            <div class="forecast-grid" id="forecastGrid">
-              <div><span>Wave height</span><strong>-- <em>m</em></strong><small>Collecting history</small></div>
-              <div><span>Wind speed</span><strong>-- <em>km/h</em></strong><small>Collecting history</small></div>
-              <div><span>Water level</span><strong>-- <em>m</em></strong><small>Collecting history</small></div>
-              <div><span>Water temperature</span><strong>-- <em>°C</em></strong><small>Collecting history</small></div>
-              <div><span>Battery reserve</span><strong>-- <em>%</em></strong><small>Collecting history</small></div>
-            </div>
-            <p class="forecast-note" id="forecastNote">Presentation model only. Predictions are not validated for field or safety decisions.</p>
-          </article>
+<section class="view" data-page="settings">
+<div class="page-heading"><div><p class="section-label">STATION CONFIGURATION</p><h2>Settings</h2></div><span class="tag tag-warn">LOCAL ADMIN</span></div>
+<div class="settings-grid"><article class="panel"><div class="panel-heading"><div><p class="section-label">NETWORK</p><h2>Local connection</h2></div></div><dl class="data-list"><div><dt>Wi-Fi mode</dt><dd>Local access point</dd></div><div><dt>Station SSID</dt><dd>FALCON-01</dd></div><div><dt>Mini PC API</dt><dd>127.0.0.1:8765</dd></div><div><dt>Cloud relay</dt><dd class="warn-text">Future expansion</dd></div></dl></article><article class="panel"><div class="panel-heading"><div><p class="section-label">SAMPLING</p><h2>Monitoring intervals</h2></div></div><label class="setting-field"><span>Sensor sampling</span><select id="samplingRate"><option value="2" selected>Every 2 seconds</option><option value="5">Every 5 seconds</option><option value="10">Every 10 seconds</option></select></label><label class="setting-field"><span>Default prediction horizon</span><select id="predictionInterval"><option value="5">5 minutes</option><option value="10" selected>10 minutes</option><option value="15">15 minutes</option></select></label><button class="button button-primary" id="saveSettingsButton">Save local preferences</button></article><article class="panel"><div class="panel-heading"><div><p class="section-label">MAINTENANCE</p><h2>Device control</h2></div></div><dl class="data-list"><div><dt>Dashboard</dt><dd>v5.0</dd></div><div><dt>API contract</dt><dd>v4.0</dd></div><div><dt>Firmware channel</dt><dd>Presentation</dd></div></dl><p class="forecast-note">Calibration and restart actions are authorized, validated, and recorded in the local system-event database.</p><button class="button button-danger" id="settingsRestartButton">Restart ESP32</button></article></div>
+</section>
 
-          <article class="panel validation-panel">
-            <div class="panel-heading"><div><p class="section-label">MODEL QUALITY</p><h2>Forecast validation</h2></div><div class="model-score"><span>Overall score</span><strong id="modelScore">--</strong></div></div>
-            <div class="validation-layout">
-              <div class="validation-chart"><div class="validation-legend"><span><i class="actual-line"></i>Actual wave</span><span><i class="predicted-line"></i>Predicted wave</span></div><canvas id="validationChart" aria-label="Predicted versus actual wave readings"></canvas></div>
-              <div class="metric-grid" id="metricGrid"><div><span>Wave MAE</span><strong>--</strong><small>Collecting samples</small></div><div><span>Direction accuracy</span><strong>--</strong><small>Collecting samples</small></div><div><span>Evaluated samples</span><strong>--</strong><small>Rolling backtest</small></div></div>
-            </div>
-            <div class="evaluation-events"><div class="evaluation-head"><span>Recent prediction</span><span>Predicted</span><span>Actual</span><span>Error</span></div><div id="evaluationRows"><div class="evaluation-empty">Waiting for enough historical samples...</div></div></div>
-          </article>
-        </div>
-      </section>
-
-      <section class="view" data-page="environment">
-        <div class="page-heading"><div><p class="section-label">LIVE SENSORS</p><h2>Environmental monitoring</h2></div><span class="tag tag-good"><i></i>8 SENSORS ONLINE</span></div>
-        <div class="module-grid">
-          <article class="module"><span>Water temperature</span><strong><b id="environmentTemperature">28.4</b> °C</strong><small>● NORMAL RANGE</small></article>
-          <article class="module"><span>Water salinity</span><strong><b id="salinity">33.8</b> <em>ppt</em></strong><small>● STABLE</small></article>
-          <article class="module"><span>Air temperature</span><strong><b id="airTemperature">30.1</b> <em>°C</em></strong><small>↗ LIVE TREND</small></article>
-          <article class="module"><span>Humidity</span><strong><b id="humidity">78</b> <em>% RH</em></strong><small>● NORMAL RANGE</small></article>
-          <article class="module"><span>Atmospheric pressure</span><strong><b id="pressure">1009</b> <em>hPa</em></strong><small>→ LIVE TREND</small></article>
-          <article class="module"><span>Water level</span><strong><b id="waterLevel">1.42</b> <em>m</em></strong><small>↗ LIVE TREND</small></article>
-          <article class="module"><span>Wind speed</span><strong><b id="windSpeed">8.6</b> <em>km/h</em></strong><small id="windCondition">● LIGHT BREEZE</small></article>
-          <article class="module"><span>Wind direction</span><strong>NE <em>42°</em></strong><small>→ CONSISTENT</small></article>
-        </div>
-      </section>
-
-      <section class="view" data-page="motion">
-        <div class="page-heading"><div><p class="section-label">IMU &amp; SEA STATE</p><h2>Motion monitoring</h2></div><span class="tag tag-good"><i></i>STABLE</span></div>
-        <div class="detail-layout">
-          <article class="panel"><div class="large-reading"><span>Sea condition</span><strong id="motionSeaCondition">--</strong></div><div class="dual-reading"><div><span>Tilt</span><strong id="motionTilt">--&deg;</strong></div><div><span>Wave activity</span><strong id="motionWave">-- m</strong></div></div></article>
-          <article class="panel"><div class="panel-heading"><div><p class="section-label">6-AXIS IMU</p><h2>Orientation</h2></div><span class="tag tag-good">CALIBRATED</span></div><dl class="data-list"><div><dt>Roll</dt><dd id="roll">1.8° starboard</dd></div><div><dt>Pitch</dt><dd id="pitch">0.9° bow</dd></div><div><dt>Yaw</dt><dd id="yaw">041.6° NE</dd></div><div><dt>Impact events</dt><dd class="good-text">0 detected</dd></div></dl></article>
-        </div>
-      </section>
-
-      <section class="view" data-page="navigation">
-        <div class="page-heading"><div><p class="section-label">GPS &amp; GEOFENCE</p><h2>Navigation</h2></div><span class="tag tag-good" id="gpsStatus"><i></i>3D FIX · 12 SAT</span></div>
-        <div class="detail-layout"><article class="panel map-placeholder"><div class="map-rings"><div class="station-pin">F1</div></div><strong>WITHIN SAFE ZONE</strong><span>San Juan, La Union coastal deployment</span></article><article class="panel"><dl class="data-list"><div><dt>Coordinates</dt><dd id="coordinates">16.6687° N, 120.3240° E</dd></div><div><dt>Deployment location</dt><dd>San Juan Coastal Site</dd></div><div><dt>Anchor distance</dt><dd id="anchorDistance">3.4 m from center</dd></div><div><dt>Drift status</dt><dd class="good-text" id="driftStatus">Secure</dd></div><div><dt>Surface speed</dt><dd id="surfaceSpeed">0.12 knots</dd></div></dl></article></div>
-      </section>
-
-      <section class="view" data-page="power">
-        <div class="page-heading"><div><p class="section-label">ENERGY SYSTEM</p><h2>Power monitoring</h2></div><span class="tag" id="solarStatus">STANDBY</span></div>
-        <div class="detail-layout"><article class="panel battery-panel"><div class="battery-gauge"><span id="powerBatteryBar" style="width:87%"></span></div><div class="large-reading"><span>Battery reserve</span><strong id="powerBattery">87%</strong></div><p>Healthy battery reserve with approximately 11 hours and 42 minutes of autonomous operation.</p></article><article class="panel"><dl class="data-list"><div><dt>Battery voltage</dt><dd id="batteryVoltage">12.7 V</dd></div><div><dt>Battery current</dt><dd id="batteryCurrent">−0.82 A</dd></div><div><dt>Solar voltage</dt><dd id="solarVoltage">18.4 V</dd></div><div><dt>Charging current</dt><dd class="good-text" id="chargingCurrent">+2.16 A</dd></div><div><dt>MPPT controller</dt><dd class="good-text">Optimizing</dd></div></dl></article></div>
-      </section>
-
-      <section class="view" data-page="cooling">
-        <div class="page-heading"><div><p class="section-label">THERMAL MANAGEMENT</p><h2>Cooling system</h2></div><span class="tag tag-good"><i></i>AUTO ACTIVE</span></div>
-        <div class="module-grid"><article class="module"><span>Enclosure temperature</span><strong><b id="enclosureTemperature">34.2</b> <em>°C</em></strong><small id="enclosureCondition">● NORMAL</small></article><article class="module"><span>Battery temperature</span><strong><b id="batteryTemperature">31.7</b> <em>°C</em></strong><small>● LIVE SENSOR</small></article><article class="module"><span>Intake fan</span><strong><b id="intakeFanRpm">1,240</b> <em>RPM</em></strong><small>● AUTOMATIC</small></article><article class="module"><span>Exhaust fan</span><strong><b id="exhaustFanRpm">1,180</b> <em>RPM</em></strong><small>● AUTOMATIC</small></article></div>
-        <article class="panel policy-panel"><div><p class="section-label">AUTOMATIC CONTROL</p><h2>Cooling policy</h2></div><p>Fan control will activate from enclosure-temperature thresholds after the cooling hardware and temperature sensors are approved and installed.</p><button type="button" disabled>Configure thresholds</button></article>
-      </section>
-
-      <section class="view" data-page="diagnostics">
-        <div class="page-heading"><div><p class="section-label">SYSTEM HEALTH</p><h2>Diagnostics</h2></div><span class="tag tag-good">ESP32 ONLINE</span></div>
-        <div class="detail-layout"><article class="panel"><dl class="data-list"><div><dt>Sensor health</dt><dd class="good-text" id="sensorHealth">8 of 8 online</dd></div><div><dt>Communication</dt><dd class="good-text">Local AP active</dd></div><div><dt>Edge processing</dt><dd class="good-text">Operational</dd></div><div><dt>Leak detector</dt><dd class="good-text">Dry</dd></div><div><dt>Anti-theft</dt><dd id="securityStatus">ARMED</dd></div></dl></article><article class="panel"><dl class="data-list"><div><dt>Storage usage</dt><dd id="storageUsage">29%</dd></div><div><dt>Memory usage</dt><dd id="memoryUsage">42%</dd></div><div><dt>CPU load</dt><dd id="cpuLoad">18%</dd></div><div><dt>Last reboot reason</dt><dd>Scheduled update</dd></div><div><dt>Firmware channel</dt><dd>Stable · v1.4.2</dd></div></dl></article></div>
-      </section>
-
-      <section class="view" data-page="activity">
-        <div class="page-heading"><div><p class="section-label">ALERTS &amp; MAINTENANCE</p><h2>Station activity</h2></div><span class="tag tag-good" id="activityStatus">ALL CLEAR</span></div>
-        <article class="panel activity-list" id="activityList"><div class="activity-empty"><div><strong>No safety alerts recorded</strong><p>Select a test scenario below to verify the monitoring pipeline.</p></div></div></article>
-      </section>
-
-      <section class="control-dock">
-        <div><span>Virtual sensor lab</span><small>Test the complete monitoring and alert pipeline</small></div>
-        <div class="dock-actions"><label class="scenario-control"><span>Test scenario</span><select id="scenarioSelect"><option value="normal">Normal operation</option><option value="rough_sea">Rough sea</option><option value="low_battery">Low battery</option><option value="overheating">Overheating</option><option value="sensor_fault">Sensor failure</option></select></label><button id="monitoringButton" class="button button-primary" type="button">Pause monitoring</button><button id="restartButton" class="button button-danger" type="button">Restart ESP32</button></div>
-      </section>
-    </main>
-  </div>
-  <div id="actionMessage" class="toast" role="status" aria-live="polite"></div>
-  <script src="/app.js"></script>
+    <section class="control-dock">
+<div>
+<span>Virtual sensor lab</span>
+<small>
+<b id="scenarioState">NORMAL OPERATION</b> &middot; local presentation data</small>
+</div>
+<div class="dock-actions">
+<label class="scenario-control">
+<span>Test scenario</span>
+<select id="scenarioSelect">
+<option value="normal">Normal operation</option>
+<option value="rough_sea">Rough sea</option>
+<option value="low_battery">Low battery</option>
+<option value="overheating">Internal overheating</option>
+<option value="sensor_fault">Wave sensor failure</option>
+</select>
+</label>
+<button class="button button-danger" id="restartButton">Restart ESP32</button>
+</div>
+</section>
+  </main>
+</div>
+<div class="toast" id="toast" role="status">
+</div>
+<script src="/vendor/leaflet.js?v=1.9.4"></script>
+<script src="/app.js?v=5.0.11">
+</script>
+<script type="module" src="/model-viewer.js?v=5.2">
+</script>
 </body>
 </html>

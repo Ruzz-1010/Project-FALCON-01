@@ -1,50 +1,54 @@
-# Documentation Index
+# PROJECT FALCON Documentation Index
 
-## Purpose
-Homepage for all Project FALCON documentation.
+## Authority
 
-## Scope
-Firmware, dashboard, hardware planning, tests, operations, and future systems.
+[`PROJECT_CONTEXT.md`](PROJECT_CONTEXT.md) is the single source of truth for approved project scope, architecture, terminology, and implementation priorities. If another document conflicts with it, the project context takes precedence.
 
-## Current Status
-Validated against repository source on 2026-08-05.
+## Core v4.0 Documentation
 
-## Architecture
-Source code is authoritative for implementation; `PROJECT_CONTEXT.md` governs approved direction.
+Read these documents in order:
 
-## Implementation
-Recommended reading order:
+1. [`PROJECT_CONTEXT.md`](PROJECT_CONTEXT.md) — master engineering context and scope
+2. [`README.md`](../README.md) — repository entry point and quick start
+3. [`ROADMAP.md`](ROADMAP.md) — gated delivery plan
+4. [`HARDWARE.md`](HARDWARE.md) — Phase 1 electronics and sensor baseline
+5. [`SOFTWARE.md`](SOFTWARE.md) — ESP32 and Mini PC software responsibilities
+6. [`AI.md`](AI.md) — 5- and 15-minute wave-height prediction contract
+7. [`DASHBOARD.md`](DASHBOARD.md) — local dashboard information architecture
+8. [`API.md`](API.md) — approved local REST API contract
+9. [`MECHANICAL.md`](MECHANICAL.md) — approved buoy mechanical baseline
 
-1. [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md) - master context
-2. [README.md](../README.md) - repository overview
-3. [HARDWARE.md](HARDWARE.md) - hardware baseline and status
-4. [ROADMAP.md](ROADMAP.md) - delivery sequence
-5. [API.md](API.md) - HTTP contract
-6. [SYSTEM_ARCHITECTURE.md](SYSTEM_ARCHITECTURE.md) - system boundaries
-7. [FIRMWARE_SPEC.md](FIRMWARE_SPEC.md) - firmware behavior
-8. [PINOUT.md](PINOUT.md) - GPIO register
-9. [SENSOR_SPEC.md](SENSOR_SPEC.md) - sensor requirements
-10. [POWER_SYSTEM.md](POWER_SYSTEM.md) - power requirements
-11. [NETWORK_PROTOCOL.md](NETWORK_PROTOCOL.md) - local communications
-12. [SECURITY.md](SECURITY.md) - security posture
-13. [TEST_PLAN.md](TEST_PLAN.md) - acceptance plan
-14. [TROUBLESHOOTING.md](TROUBLESHOOTING.md) - recovery procedures
-15. [USER_MANUAL.md](USER_MANUAL.md) - dashboard use
-16. [ASSEMBLY_GUIDE.md](ASSEMBLY_GUIDE.md) - assembly gates
-17. [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md) - flashing and deployment
-18. [CALIBRATION_GUIDE.md](CALIBRATION_GUIDE.md) - calibration policy
-19. [CHANGELOG.md](CHANGELOG.md) - change record
-20. [VERSION_HISTORY.md](VERSION_HISTORY.md) - version register
+These core documents were aligned to Project FALCON v4.0 on 2026-08-09.
 
-Future assistants must also read [CODEX.md](CODEX.md).
+## Supporting Documentation
 
-## Future Expansion
-Add documents only for distinct, implemented or approved subsystem ownership.
+- [`SYSTEM_ARCHITECTURE.md`](SYSTEM_ARCHITECTURE.md)
+- [`FIRMWARE_SPEC.md`](FIRMWARE_SPEC.md)
+- [`PINOUT.md`](PINOUT.md)
+- [`SENSOR_SPEC.md`](SENSOR_SPEC.md)
+- [`POWER_SYSTEM.md`](POWER_SYSTEM.md)
+- [`NETWORK_PROTOCOL.md`](NETWORK_PROTOCOL.md)
+- [`SECURITY.md`](SECURITY.md)
+- [`TEST_PLAN.md`](TEST_PLAN.md)
+- [`TROUBLESHOOTING.md`](TROUBLESHOOTING.md)
+- [`USER_MANUAL.md`](USER_MANUAL.md)
+- [`ASSEMBLY_GUIDE.md`](ASSEMBLY_GUIDE.md)
+- [`DEPLOYMENT_GUIDE.md`](DEPLOYMENT_GUIDE.md)
+- [`CALIBRATION_GUIDE.md`](CALIBRATION_GUIDE.md)
+- [`CHANGELOG.md`](CHANGELOG.md)
+- [`VERSION_HISTORY.md`](VERSION_HISTORY.md)
 
-## Engineering Notes
-Each document separates Implemented, In Progress, Planned, and Future Expansion.
+Supporting documents describe implementation details and historical work. They must not expand Phase 1 scope or override the core v4.0 documents. Future updates should migrate them to the same terminology as the master context.
+
+Future assistants must also read [`CODEX.md`](CODEX.md) before changing the project.
+
+## Phase 1 Boundary
+
+Project FALCON v4.0 is limited to real-time coastal monitoring and AI-assisted wave-height prediction at 5- and 15-minute horizons. The AI classifies sea state as Calm, Moderate, or Rough. Cloud services, camera vision, water-quality analytics, and autonomous control remain future expansion.
 
 ## Revision History
+
 | Version | Date | Change |
 | --- | --- | --- |
-| 1.0 | 2026-08-05 | Initial index. |
+| 1.0 | 2026-08-05 | Initial documentation index. |
+| 4.0 | 2026-08-09 | Reordered documentation around the v4.0 source of truth and added all core subsystem documents. |

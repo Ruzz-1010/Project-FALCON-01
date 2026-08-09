@@ -2,20 +2,107 @@
 
 **Fullbright College's AI-powered Live Coastal Observation Network**
 
-## Purpose
-Repository entry point for the Phase 1 ESP32 local-dashboard prototype.
+Project FALCON is a Phase 1 coastal monitoring buoy prototype focused on two outcomes:
 
-## Scope
-Current firmware/dashboard and links to planned hardware, sensors, AI, communications, testing, and deployment documentation.
+1. real-time coastal monitoring; and
+2. AI-assisted wave-height prediction 5–15 minutes ahead.
+
+The AI scope is limited to short-term wave-height prediction and sea-condition classification as **Calm**, **Moderate**, or **Rough**.
+
+## Source of Truth
+
+[PROJECT_CONTEXT.md v4.0](docs/PROJECT_CONTEXT.md) is the official engineering source of truth.
+
+Working source code remains authoritative for what is currently implemented. Documentation describes both the verified prototype and the approved Phase 1 target; it does not turn planned hardware into implemented hardware.
 
 ## Current Status
-Implemented: PlatformIO ESP32 Arduino firmware, `FALCON-01` AP, captive portal, LittleFS dashboard/logo, and three API endpoints. Sensor values are simulated. Sensors, GPIOs, logging, OTA, edge AI, remote services, power autonomy, and marine assembly are not implemented.
 
-## Architecture
-The ESP32 independently owns the offline AP, wildcard DNS, HTTP server, local API, and LittleFS dashboard. Future sensor, edge, and cloud layers must remain optional.
+Status: **Phase 1 Prototype**
 
-## Implementation
-Build and upload firmware and filesystem separately:
+Implemented in the repository:
+
+- PlatformIO ESP32 Arduino firmware;
+- `FALCON-01` Wi-Fi access point and captive portal;
+- LittleFS fallback dashboard and basic ESP32 controls;
+- laptop-hosted Python edge-service prototype;
+- simulated telemetry and deterministic alert scenarios;
+- local SQLite telemetry history;
+- presentation forecast and backtest pipeline;
+- responsive local dashboard with light/dark mode;
+- current-versus-predicted forecast presentation;
+- browser notifications and alert history;
+- and interactive Fusion-derived 3D buoy visualization.
+
+Important limitations:
+
+- physical Phase 1 sensors are not yet fully integrated;
+- the mini PC has not yet been installed;
+- the laptop currently represents the edge-computing role during demonstrations;
+- simulator results are not field-validation results;
+- the current presentation forecast is not the final trained AI model;
+- and the 3D dashboard assets exceed the configured ESP32 LittleFS capacity.
+
+## Approved Phase 1 Architecture
+
+```text
+Sensors
+   |
+   v
+ESP32
+   |
+   | UART
+   v
+Mini PC
+   |
+   | REST API
+   v
+Local Dashboard
+```
+
+Cloud connectivity is Future Expansion and is not required for Phase 1 operation.
+
+## Approved Sensor Set
+
+- BNO085 IMU;
+- water-pressure sensor;
+- wind-speed sensor;
+- wind-direction sensor;
+- GPS module;
+- battery monitor;
+- solar monitor;
+- internal-temperature sensor;
+- and optional water-temperature sensor.
+
+pH, salinity, turbidity, dissolved oxygen, rain, UV, cameras, hydrophones, current meters, and Water Quality Index inputs are Future Expansion.
+
+## Approved AI Outputs
+
+- current wave height;
+- predicted wave height for a 5–15 minute horizon;
+- prediction confidence or quality indicator;
+- prediction status and model version;
+- and sea condition: Calm, Moderate, or Rough.
+
+Weather, typhoon, storm, ocean-current, fish, maintenance, camera, and water-quality predictions are not part of Phase 1.
+
+## Approved API Direction
+
+```text
+GET  /status
+GET  /wave
+GET  /gps
+GET  /battery
+GET  /solar
+GET  /ai
+POST /restart
+POST /calibrate
+```
+
+Current `/api/...` endpoints are prototype compatibility routes and require a controlled migration to the approved v4 contract.
+
+## Development Setup
+
+### ESP32 Firmware
 
 ```powershell
 platformio run
@@ -24,60 +111,83 @@ platformio run --target upload
 platformio run --target uploadfs
 ```
 
-Close serial monitor before upload. Hold BOOT if required; after flashing, release BOOT and press EN/RESET.
+Close the serial monitor before uploading. Hold BOOT if required; after flashing, release BOOT and press EN/RESET.
+
+Prototype access-point settings:
 
 | Setting | Value |
 | --- | --- |
 | SSID | `FALCON-01` |
-| Password | `falcon123` |
-| Dashboard | `http://192.168.4.1` |
+| Prototype password | `falcon123` |
+| ESP32 dashboard | `http://192.168.4.1` |
 
-The credential is for prototype use only.
+The prototype password must be changed before field deployment.
 
-Repository structure:
+### Laptop Edge-Service Demonstration
+
+```powershell
+cd "C:\Users\Admin\Documents\PlatformIO\Projects\Project FALCON-01\edge"
+python -m falcon_edge.service
+```
+
+Open `http://127.0.0.1:8765/`.
+
+Run tests:
+
+```powershell
+cd edge
+python -m unittest discover -s tests -v
+```
+
+## Repository Today
 
 ```text
 Project FALCON-01/
-|-- README.md
-|-- platformio.ini
-|-- docs/
-|-- include/
-|-- src/
-|-- data/
-|-- lib/
-`-- test/
+├── data/               # current dashboard assets and 3D model
+├── docs/               # engineering documentation
+├── edge/               # laptop/mini-PC edge-service prototype
+├── exports/            # archived CAD exchange assets
+├── fusion360/          # mechanical component documentation
+├── include/            # ESP32 configuration headers
+├── src/                # ESP32 firmware source
+├── test/               # PlatformIO test location
+├── platformio.ini
+└── README.md
 ```
 
-## Documentation
-Start with [INDEX.md](docs/INDEX.md) and [CODEX.md](docs/CODEX.md).
+The target v4 repository organization is documented in PROJECT_CONTEXT.md and will be adopted incrementally without breaking working code.
 
-- [PROJECT_CONTEXT.md](docs/PROJECT_CONTEXT.md)
-- [HARDWARE.md](docs/HARDWARE.md)
-- [ROADMAP.md](docs/ROADMAP.md)
-- [API.md](docs/API.md)
-- [SYSTEM_ARCHITECTURE.md](docs/SYSTEM_ARCHITECTURE.md)
-- [FIRMWARE_SPEC.md](docs/FIRMWARE_SPEC.md)
-- [PINOUT.md](docs/PINOUT.md)
-- [SENSOR_SPEC.md](docs/SENSOR_SPEC.md)
-- [POWER_SYSTEM.md](docs/POWER_SYSTEM.md)
-- [NETWORK_PROTOCOL.md](docs/NETWORK_PROTOCOL.md)
-- [SECURITY.md](docs/SECURITY.md)
-- [TEST_PLAN.md](docs/TEST_PLAN.md)
-- [TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md)
-- [USER_MANUAL.md](docs/USER_MANUAL.md)
-- [ASSEMBLY_GUIDE.md](docs/ASSEMBLY_GUIDE.md)
-- [DEPLOYMENT_GUIDE.md](docs/DEPLOYMENT_GUIDE.md)
-- [CALIBRATION_GUIDE.md](docs/CALIBRATION_GUIDE.md)
-- [CHANGELOG.md](docs/CHANGELOG.md)
-- [VERSION_HISTORY.md](docs/VERSION_HISTORY.md)
+## Documentation
+
+Start here:
+
+1. [PROJECT_CONTEXT.md](docs/PROJECT_CONTEXT.md) — master engineering context;
+2. [ROADMAP.md](docs/ROADMAP.md) — focused delivery gates;
+3. [HARDWARE.md](docs/HARDWARE.md) — electronics and sensor baseline;
+4. [SOFTWARE.md](docs/SOFTWARE.md) — firmware and edge-software boundaries;
+5. [AI.md](docs/AI.md) — focused prediction and classification specification;
+6. [DASHBOARD.md](docs/DASHBOARD.md) — approved information architecture;
+7. [API.md](docs/API.md) — approved REST contract and migration status;
+8. [MECHANICAL.md](docs/MECHANICAL.md) — approved buoy mechanical baseline;
+9. [INDEX.md](docs/INDEX.md) — full documentation index.
+
+## Engineering Principles
+
+- Focus over feature count.
+- Reliability over decoration.
+- Local-first operation.
+- Measured, estimated, predicted, simulated, and unavailable values must remain distinguishable.
+- No field claim without calibration and evidence.
+- No AI claim outside wave prediction and three-class sea-condition classification.
+- Preserve working source and migrate incrementally.
 
 ## Future Expansion
-Verified sensor integration, power/GPS systems, bounded logging, labeled datasets, trained AI, remote telemetry, and marine field testing.
 
-## Engineering Notes
-Working source is authoritative for implementation. `docs/PROJECT_CONTEXT.md` is the master planning context. Demo readings must not be used for decisions.
+Cloud synchronization, LTE, LoRa, satellite communication, multi-buoy networking, mobile applications, water-quality sensing, computer vision, additional AI models, and autonomous capabilities are outside Phase 1.
 
 ## Revision History
+
 | Version | Date | Change |
 | --- | --- | --- |
-| 3.1 | 2026-08-05 | Verified root overview and documentation links. |
+| 3.1 | 2026-08-05 | Added source-verified implementation status. |
+| 4.0 | 2026-08-09 | Aligned repository entry point with PROJECT_CONTEXT.md v4.0 and the focused wave-monitoring research scope. |

@@ -1,1784 +1,1916 @@
-# PROJECT_CONTEXT.md v3
-
-> **Validated implementation notice (2026-08-05):** Working source code has
-> priority over this planning document. The only implemented product layer is
-> the ESP32 local system: Wi-Fi AP, captive portal, LittleFS dashboard, and the
-> three API routes documented in `API.md`. Sensors, GPIO assignments, logging,
-> OTA, edge AI, remote telemetry, cloud services, power autonomy, and marine
-> hardware are Planned or Future Expansion. Raspberry Pi versus Dell OptiPlex
-> edge compute is **Status: Not Yet Finalized**. Later references to these items
-> describe design direction, not current implementation or hardware possession.
-
-Project: Project FALCON
-Version: 3.0 Master Context
-Status: Active Development (Phase 1 Prototype)
-Document Type: Master Project Context
-Purpose: This document serves as the single source of truth for Project FALCON. Future firmware, hardware, AI, web dashboard, mobile application, mechanical design, documentation, and research work should follow this document unless superseded by a newer version.
-
-PROJECT FALCON
-
-FALCON (working project name) is an affordable, AI-assisted, solar-powered smart coastal monitoring buoy designed for continuous environmental observation in Philippine coastal waters.
-
-Unlike expensive commercial ocean buoys costing hundreds of thousands to millions of pesos, FALCON focuses on delivering practical, research-grade coastal monitoring using commercially available hardware while remaining financially accessible to local government units, universities, researchers, fisheries, and environmental agencies.
-
-The project combines:
-
-Embedded Systems
-Internet of Things (IoT)
-Edge Artificial Intelligence
-Renewable Energy
-Environmental Monitoring
-Remote Telemetry
-Predictive Analytics
-
-into one integrated floating platform.
-
-Primary Objectives
-
-Project FALCON aims to:
-
-Monitor coastal environmental conditions in real time.
-Operate continuously using solar energy.
-Provide AI-assisted sea condition analysis.
-Detect abnormal buoy conditions automatically.
-Send remote alerts.
-Store environmental history.
-Support future expansion into disaster monitoring.
-Reduce deployment cost while maintaining reliability.
-Long-Term Vision
-
-The long-term vision is to create a network of intelligent autonomous coastal monitoring buoys capable of sharing environmental information across multiple deployment locations.
-
-Future versions may include:
-
-AI forecasting
-Swarm communication
-Mesh networking
-Autonomous maintenance prediction
-Multiple AI models
-Satellite communication
-Ocean current prediction
-Typhoon monitoring
-Harmful algal bloom prediction
-Current Development Phase
-Phase 1
-
-Primary focus:
-
-Build a fully functional autonomous smart buoy capable of:
-
-Floating safely
-Maintaining stability
-Collecting sensor data
-Running continuously on solar power
-Providing a local Wi-Fi dashboard
-Uploading data remotely
-Running a basic onboard AI model
-Detecting abnormal operating conditions
-Major System Components
-
-Project FALCON consists of several interconnected subsystems.
-
-1. Mechanical System
-
-Responsible for flotation, stability, waterproofing, and structural integrity.
-
-Includes:
-
-Central HDPE drum
-Stabilizer buoys
-Aluminum support frame
-Stainless steel tension cables
-Central ballast
-Anchor system
-Waterproof electronics enclosure
-2. Power System
-
-Responsible for energy harvesting and storage.
-
-Includes:
-
-Solar panel
-MPPT charge controller
-Battery
-Power distribution
-Voltage regulators
-Battery monitoring
-3. Embedded Controller
-
-Responsible for:
-
-Reading sensors
-Power management
-Telemetry
-Local dashboard
-Communications
-Alert generation
-
-Primary controller:
-
-ESP32
-
-4. Edge AI Computer
-
-Responsible for:
-
-AI inference
-Data processing
-Future image processing
-Advanced analytics
-
-Primary computer:
-
-Raspberry Pi
-
-5. Sensor Network
-
-Environmental sensors.
-
-Motion sensors.
-
-Safety sensors.
-
-Diagnostic sensors.
-
-6. Communication System
-
-Responsible for:
-
-Wi-Fi
-Local dashboard
-Remote upload
-GPS
-Future LoRa
-Future LTE
-Future satellite communication
-7. Cloud Platform
-
-Responsible for:
-
-Data storage
-Dashboard
-Historical analytics
-Alert management
-Future AI training
-Design Philosophy
-
-The project follows six engineering principles.
-
-1. Low Cost
-
-Every hardware component should maximize value while maintaining acceptable engineering quality.
-
-Commercial off-the-shelf hardware is preferred whenever possible.
-
-2. Modular
-
-Every subsystem should be replaceable independently.
-
-Examples:
-
-Power system
-
-↓
-
-Sensor system
-
-↓
-
-Communication
-
-↓
-
-Controller
-
-↓
-
-AI computer
-
-↓
-
-Mechanical frame
-
-Each module should be removable without redesigning the entire buoy.
-
-3. Fault Tolerant
-
-Failures should not immediately stop operation.
-
-Examples:
-
-Loss of GPS
-
-↓
-
-Continue monitoring.
-
-Loss of Internet
-
-↓
-
-Store locally.
-
-Loss of one sensor
-
-↓
-
-Continue using remaining sensors.
-
-4. Expandable
-
-Future sensors should connect without major redesign.
-
-Examples:
-
-Water quality
-
-Dissolved oxygen
-
-Camera
-
-Radar
-
-Hydrophone
-
-Weather station
-
-Current meter
-
-5. Serviceable
-
-Maintenance should be simple.
-
-Technicians should be able to replace:
-
-Battery
-
-ESP32
-
-Solar controller
-
-Sensor modules
-
-GPS
-
-without dismantling the entire buoy.
-
-6. Energy Efficient
-
-Every subsystem should minimize power consumption.
-
-AI processing should only activate when required.
-
-ESP32 remains the primary always-on controller.
-
-Mechanical Baseline (Phase 1)
-
-The current prototype baseline uses a modified HDPE drum as the primary flotation structure.
-
-This baseline replaces previous mechanical concepts.
-
-Central Float
-
-Material:
-
-HDPE Drum
-
-Purpose:
-
-Main flotation body.
-
-Functions:
-
-Supports all electronics.
-
-Provides buoyancy.
-
-Maintains central structural rigidity.
-
-Supports solar mounting.
-
-Supports antenna mounting.
-
-Supports waterproof enclosure.
-
-Stabilizer Buoys
-
-Quantity:
-
-4
-
-Material:
-
-HDPE
-
-Purpose:
-
-Increase stability.
-
-Reduce roll.
-
-Reduce pitch.
-
-Improve wave survivability.
-
-Maintain platform orientation.
-
-Support Arms
-
-Material:
-
-Marine-grade aluminum
-
-Purpose:
-
-Connect stabilizers to the central float.
-
-Requirements:
-
-High corrosion resistance
-
-Lightweight
-
-Replaceable
-
-Rigid
-
-Stainless Steel Tension Cables
-
-Purpose:
-
-Prevent structural flexing.
-
-Reduce stress on support arms.
-
-Improve long-term durability.
-
-Assist during wave loading.
-
-Material:
-
-Marine-grade stainless steel.
-
-Central Ballast
-
-Purpose:
-
-Lower center of gravity.
-
-Improve righting moment.
-
-Increase stability.
-
-Maintain upright orientation.
-
-Mounted beneath the central drum.
-
-Mooring System
-
-Single anchor line connected beneath the ballast.
-
-Advantages:
-
-Reduced twisting.
-
-Improved stability.
-
-Simpler deployment.
-
-Lower maintenance.
-
-Future versions may support:
-
-Dual anchor
-
-Three-point mooring
-
-Dynamic anchoring
-
-Waterproof Electronics Enclosure
-
-The waterproof enclosure houses:
-
-ESP32
-
-Raspberry Pi
-
-Power regulators
-
-Battery monitor
-
-Communication modules
-
-Relay board
-
-Protection circuits
-
-Diagnostic LEDs
-
-The enclosure must:
-
-Be IP67 or higher.
-
-Include waterproof cable glands.
-
-Include pressure equalization vent.
-
-Allow easy maintenance.
-
-Prevent condensation accumulation.
-
-Solar Panel Mount
-
-Mounted above the central drum.
-
-Requirements:
-
-Maximum sunlight exposure.
-
-Minimal shading.
-
-Strong wind resistance.
-
-Corrosion resistant.
-
-Easy maintenance.
-
-Future versions may support tilting solar mounts.
-
-Sensor Placement Philosophy
-
-Sensors should be physically isolated whenever necessary to avoid interference.
-
-Examples:
-
-GPS antenna:
-
-Highest point.
-
-Wi-Fi antenna:
-
-Away from power electronics.
-
-IMU:
-
-Near center of mass.
-
-Water sensors:
-
-Below waterline.
-
-Leak detector:
-
-Lowest point inside enclosure.
-
-Battery sensor:
-
-Near battery.
-
-Temperature sensors:
-
-Away from power regulators.
-
-Stability Philosophy
-
-Project FALCON prioritizes stability over compactness.
-
-Design goals include:
-
-Minimal roll angle
-Reduced pitch
-Stable GPS readings
-Reliable solar charging
-Consistent sensor orientation
-Improved AI accuracy
-
-The combination of the central HDPE drum, four stabilizer buoys, aluminum support arms, stainless steel tension cables, central ballast, and single-point mooring forms the approved Phase 1 mechanical baseline.
-
-
-Electronics Architecture
-
-Project FALCON uses a layered electronics architecture to maximize reliability, modularity, and future scalability.
-
-                    Solar Panel
-                         │
-                         ▼
-               MPPT Charge Controller
-                         │
-                         ▼
-                LiFePO₄ Battery Pack
-                         │
-            ┌────────────┴────────────┐
-            ▼                         ▼
-      Power Distribution       Battery Monitor
-            │
-   ┌────────┼─────────┬─────────┬─────────┐
-   ▼        ▼         ▼         ▼
- ESP32   Raspberry Pi GPS    Sensor Bus
-   │
-   ├── Wi-Fi Access Point
-   ├── Local Dashboard
-   ├── Telemetry
-   ├── Diagnostics
-   ├── OTA Updates
-   └── Sensor Processing
-Main Controller
-ESP32
-
-The ESP32 serves as the primary real-time controller and remains operational even when the Raspberry Pi is powered down to conserve energy.
-
-Responsibilities
-Sensor polling
-Local data processing
-Power management
-Health monitoring
-Local Wi-Fi dashboard
-GPS processing
-Alarm generation
-Communication with Raspberry Pi
-Data logging
-OTA firmware updates
-Watchdog monitoring
-
-The ESP32 is considered the "brain" of the buoy's embedded control system.
-
-Edge AI Computer
-Raspberry Pi
-
-The Raspberry Pi is responsible for higher-level computation that exceeds the capabilities of the ESP32.
-
-Responsibilities
-AI inference
-Machine learning models
-Advanced analytics
-Historical trend analysis
-Future camera processing
-Future edge vision
-Data synchronization
-Model updates
-
-The Raspberry Pi is not required for basic buoy operation. If it fails, the ESP32 continues collecting and transmitting environmental data.
-
-Communication Between ESP32 and Raspberry Pi
-
-Communication options (in order of preference):
-
-UART (Primary)
-USB Serial
-Ethernet (Future)
-SPI (Future)
-
-UART is selected for Phase 1 because it is simple, reliable, and low power.
-
-Sensor Architecture
-
-Project FALCON is designed around a modular sensor network.
-
-Sensors are grouped into four categories:
-
-Environmental Sensors
-
-Used for measuring ocean and weather conditions.
-
-Examples:
-
-Water temperature
-Air temperature
-Humidity
-Atmospheric pressure
-Water salinity
-Water level
-Wind speed
-Wind direction
-Rain sensor (future)
-UV intensity (future)
-Motion Sensors
-
-Used to determine buoy movement and stability.
-
-Examples:
-
-6-axis IMU
-Accelerometer
-Gyroscope
-Tilt detection
-
-Primary functions:
-
-Roll detection
-Pitch detection
-Sudden impacts
-Excessive wave motion
-Abnormal movement
-Position Sensors
-
-Primary sensor:
-
-GPS
-
-Responsibilities:
-
-Position tracking
-Drift monitoring
-Theft detection
-Deployment verification
-Geofencing
-Time synchronization
-Safety Sensors
-
-Examples:
-
-Water leak detector
-Battery voltage
-Battery current
-Internal temperature
-Enclosure humidity
-Solar voltage
-Charging current
-
-These sensors monitor the health of the buoy itself rather than the environment.
-
-Power System
-
-Project FALCON is designed for long-term autonomous operation using solar energy.
-
-Components
-Solar panel
-MPPT charge controller
-LiFePO₄ battery
-DC regulators
-Battery monitor
-Fuse protection
-Reverse polarity protection
-Overcurrent protection
-Battery
-
-Preferred chemistry:
-
-LiFePO₄
-
-Reasons:
-
-Long cycle life
-Excellent safety
-Stable voltage
-High efficiency
-Suitable for marine environments
-Power States
-
-The firmware supports multiple operating modes.
-
-Active Mode
-
-Everything operational.
-
-ESP32
-
-Sensors
-
-GPS
-
-Wi-Fi
-
-AI
-
-Telemetry
-
-Normal Mode
-
-AI sleeps when not required.
-
-ESP32 remains active.
-
-Sensor sampling continues.
-
-Power Saving Mode
-
-Reduced sampling rate.
-
-GPS updates less frequently.
-
-AI disabled.
-
-Dashboard remains available.
-
-Emergency Mode
-
-Triggered by:
-
-Low battery
-Severe weather
-Hardware fault
-
-Only essential systems remain active.
-
-Priority:
-
-Safety
-Telemetry
-GPS
-Critical sensors
-Local Wi-Fi Dashboard
-
-One of the defining features of Project FALCON is its built-in local web interface hosted directly by the ESP32.
-
-When a technician is physically near the buoy:
-
-Connect to the buoy's Wi-Fi access point.
-Open a web browser.
-Access the onboard dashboard.
-View live data without requiring an Internet connection.
-
-This enables rapid field diagnostics and maintenance.
-
-Dashboard Features
-Live Sensor Data
-
-Displays:
-
-Water temperature
-Air temperature
-Humidity
-Pressure
-Battery voltage
-Solar voltage
-GPS coordinates
-Signal strength
-Leak status
-AI status
-Health score
-System Status
-
-Displays:
-
-ESP32 uptime
-Raspberry Pi status
-Firmware version
-Storage usage
-Wi-Fi clients
-Memory usage
-CPU load
-Battery percentage
-Diagnostics
-
-Shows:
-
-Sensor health
-Communication status
-Last reboot reason
-Error logs
-Warning logs
-Active alerts
-Maintenance Tools
-
-Authorized technicians can:
-
-Restart ESP32
-Restart Raspberry Pi
-Calibrate sensors
-Update firmware (OTA)
-Export logs
-Download sensor history
-Test alarms
-Data Logging
-
-The ESP32 maintains a local circular log containing:
-
-Sensor readings
-AI classifications
-Battery history
-GPS history
-Alerts
-Fault events
-Restart history
-
-If Internet connectivity is unavailable, data is buffered locally until synchronization is possible.
-
-Buoy Health Monitoring
-
-Project FALCON continuously evaluates its own operational status.
-
-Rather than relying on a single sensor, the buoy combines multiple diagnostics into an overall health assessment.
-
-Inputs
-Battery voltage
-Charging current
-Solar output
-IMU data
-Leak detector
-GPS stability
-Sensor availability
-Communication status
-Internal temperature
-Enclosure humidity
-
-Each subsystem contributes to a health score that reflects overall buoy condition.
-
-Tidal-Aware Health Logic
-
-The buoy must distinguish normal tidal movement from actual faults.
-
-A change in waterline alone should not trigger an alert.
-
-Instead, the firmware evaluates multiple indicators together.
-
-Normal Tidal Change
-
-Characteristics:
-
-Waterline changes gradually
-IMU remains stable
-GPS position remains within expected limits
-Leak detector remains dry
-Battery and sensors operate normally
-
-Result:
-
-Status: Normal Operation
-
-No maintenance alert is generated.
-
-Rough Sea Conditions
-
-Characteristics:
-
-Increased roll and pitch
-Temporary GPS variation
-Rapid but expected IMU motion
-No water ingress
-Stable battery
-
-Result:
-
-Status: Environmental Activity
-
-The event is logged but not treated as a hardware failure.
-
-Possible Buoy Failure
-
-Characteristics may include one or more of the following:
-
-Persistent abnormal tilt
-Unexpected waterline change
-GPS drift beyond the mooring radius
-Leak detector activated
-Repeated sensor failures
-Excessive enclosure humidity
-Power instability
-
-When several indicators occur simultaneously, the system elevates the event.
-
-Result:
-
-Status: Maintenance Required
-
-An alert is generated for inspection.
-
-Critical Failure
-
-Triggered when multiple severe conditions are detected together, such as:
-
-Major leak
-Loss of flotation
-Extreme tilt that does not recover
-Rapid uncontrolled drift
-Battery critically low
-Core electronics offline
-
-Result:
-
-Status: Emergency
-
-The buoy prioritizes transmitting its last known status and location while conserving power for recovery operations.
-
-GPS Drift Monitoring
-
-The buoy stores its deployment coordinates as a reference.
-
-If the measured position exceeds the allowable mooring radius for a sustained period, the event is classified according to severity:
-
-Minor deviation → Logged
-Moderate deviation → Warning
-Significant sustained drift → Critical Alert
-
-This logic helps distinguish normal swing around the anchor from actual displacement.
-
-Alert Levels
-
-Project FALCON uses standardized alert categories:
-
-Level	Description
-Info	Normal operational events and logs
-Warning	Non-critical issues requiring observation
-Maintenance	Inspection recommended due to persistent anomalies
-Critical	Immediate attention required to prevent system loss
-Emergency	Severe failure or probable buoy loss
-Firmware Design Principles
-
-The ESP32 firmware shall be:
-
-Modular
-Non-blocking
-Event-driven
-Watchdog-protected
-OTA-capable
-Fail-safe
-Extensively logged
-Easily maintainable
-
-Every subsystem (sensors, communications, power, diagnostics, dashboard) should operate independently where possible to minimize cascading failures.
-
-Software Architecture
-
-Project FALCON follows a layered software architecture to separate hardware control, business logic, AI processing, communications, and user interfaces.
-
-+--------------------------------------------------+
-|                Mobile Application                |
-+--------------------------------------------------+
-                     ▲
-                     │
-+--------------------------------------------------+
-|               Cloud Dashboard/API                |
-+--------------------------------------------------+
-                     ▲
-                     │
-+--------------------------------------------------+
-|          Raspberry Pi AI & Edge Services         |
-+--------------------------------------------------+
-                     ▲
-                     │ UART
-+--------------------------------------------------+
-|              ESP32 Firmware Layer                |
-+--------------------------------------------------+
-                     ▲
-                     │
-+--------------------------------------------------+
-|          Drivers / Sensors / Hardware            |
-+--------------------------------------------------+
-ESP32 Firmware Modules
-
-The firmware is divided into independent modules.
-
-Firmware/
-│
-├── main.cpp
-├── config
-├── sensors
-├── diagnostics
-├── telemetry
-├── dashboard
-├── gps
-├── imu
-├── power
-├── alerts
-├── storage
-├── ota
-├── wifi
-├── security
-├── ai_bridge
-└── utils
-
-Each module should expose clean interfaces and avoid direct dependencies wherever possible.
-
-Main Firmware Loop
-
-The firmware should use a non-blocking scheduler instead of long delay() calls.
-
-Typical cycle:
-
-Read sensors
-Update diagnostics
-Calculate buoy health
-Process alerts
-Update dashboard
-Store data
-Synchronize with Raspberry Pi
-Handle communications
-Feed watchdog
-
-This ensures responsive operation even when multiple subsystems are active.
-
-Sensor Manager
-
-The Sensor Manager is responsible for:
-
-Sensor initialization
-Reading measurements
-Calibration
-Unit conversion
-Filtering invalid data
-Timestamping
-Publishing sensor values to other modules
-
-If one sensor fails, the remaining sensors continue operating.
-
-Diagnostics Manager
-
-The Diagnostics Manager continuously checks:
-
-Sensor availability
-Power status
-Communication links
-Internal temperature
-Memory usage
-CPU load
-Storage availability
-Watchdog events
-
-Outputs:
-
-Health score
-Warnings
-Maintenance recommendations
-Critical faults
-Health Scoring
-
-Each subsystem contributes to an overall health score (0–100).
-
-Example weighting:
-
-Subsystem	Weight
-Power	25%
-Sensors	20%
-Communications	15%
-GPS	10%
-IMU	10%
-Leak Detection	10%
-AI Services	5%
-Storage	5%
-
-Suggested interpretation:
-
-90–100: Excellent
-75–89: Good
-50–74: Maintenance Recommended
-25–49: Critical
-0–24: Emergency
-
-These thresholds may be adjusted after field testing.
-
-AI Subsystem
-
-The Raspberry Pi hosts the edge AI components.
-
-Phase 1
-
-The AI focuses on environmental state classification using sensor data.
-
-Example outputs:
-
-Calm
-Moderate
-Rough
-Severe
-
-The AI does not directly control buoy hardware. It provides classifications and recommendations.
-
-Future AI Capabilities
-
-Potential future models include:
-
-Storm likelihood estimation
-Wave anomaly detection
-Sensor fault prediction
-Battery degradation prediction
-Maintenance forecasting
-Drift pattern analysis
-Harmful algal bloom indicators
-Marine debris detection (camera-based)
-ESP32 ↔ Raspberry Pi Interface
-
-The ESP32 sends:
-
-Timestamp
-Sensor readings
-GPS
-IMU
-Battery status
-Health score
-Alerts
-
-The Raspberry Pi returns:
-
-AI classification
-Confidence score
-Recommendations
-Updated configuration (if authorized)
-Local Web Dashboard
-
-The ESP32 hosts a responsive web interface accessible over its Wi-Fi access point.
-
-Dashboard Sections
-1. Home
-
-Displays:
-
-Overall health
-AI status
-Battery level
-Current sea condition
-GPS position
-Last update time
-2. Live Sensors
-
-Displays real-time values for:
-
-Water temperature
-Air temperature
-Humidity
-Pressure
-Salinity
-Water level
-Battery voltage
-Solar voltage
-Charging current
-3. Motion
-
-Displays:
-
-Roll
-Pitch
-Yaw (if available)
-IMU graphs
-Tilt status
-4. GPS
-
-Displays:
-
-Coordinates
-Deployment location
-Distance from anchor point
-Drift status
-Speed (if moving)
-5. Diagnostics
-
-Displays:
-
-Sensor health
-Power health
-Communication health
-Storage usage
-CPU load
-Memory usage
-Firmware version
-6. Logs
-
-Displays:
-
-Recent alerts
-Fault history
-Restart history
-Maintenance events
-
-Supports:
-
-Filtering
-Search
-Export
-7. Settings
-
-Protected by authentication.
-
-Allows:
-
-Wi-Fi configuration
-Sampling intervals
-Alert thresholds
-Calibration
-OTA update
-Restart services
-Dashboard Design Principles
-
-The interface should be:
-
-Mobile-friendly
-Fast-loading
-Readable in sunlight
-Dark mode by default
-Touch-friendly
-Responsive
-Minimal bandwidth
-Cloud Synchronization
-
-When Internet connectivity is available, the ESP32 or Raspberry Pi synchronizes data to a remote server.
-
-Uploaded data may include:
-
-Sensor readings
-AI results
-Health score
-Alerts
-Battery history
-GPS history
-
-If offline, synchronization is deferred until connectivity returns.
-
-API Design
-
-The system should expose RESTful APIs for future integrations.
-
-Example endpoints:
-
-GET    /api/status
-GET    /api/sensors
-GET    /api/gps
-GET    /api/health
-GET    /api/alerts
-
-POST   /api/restart
-POST   /api/calibrate
-POST   /api/update
-
-GET    /api/history
-GET    /api/logs
-
-Future versions may also support MQTT for real-time telemetry.
-
-Data Storage
-Local Storage
-
-Stores:
-
-Sensor history
-Alerts
-GPS tracks
-Health reports
-Configuration
-
-A circular buffer should prevent storage exhaustion.
-
-Cloud Storage
-
-Stores:
-
-Long-term environmental history
-AI outputs
-Fleet management data
-User accounts
-Maintenance records
-Configuration Management
-
-Configuration values should be stored separately from firmware.
-
-Examples:
-
-Wi-Fi credentials
-Sampling rates
-Alert thresholds
-GPS reference location
-Mooring radius
-OTA server
-Device ID
-
-This allows updates without recompiling firmware.
-
-OTA (Over-the-Air) Updates
-
-The ESP32 should support secure OTA firmware updates.
-
-Requirements:
-
-Version checking
-Integrity verification
-Rollback on failure
-Progress reporting
-Power-loss recovery
-
-The Raspberry Pi should also support remote software updates through a controlled process.
-
-Cybersecurity
-
-Security is a core design requirement.
-
-Minimum protections include:
-
-Authenticated dashboard access
-Strong passwords
-HTTPS support (where practical)
-Signed OTA updates
-Configuration validation
-Input sanitization
-Rate limiting
-Secure storage of credentials
-
-Future enhancements may include certificate-based authentication and VPN connectivity.
-
-Error Handling
-
-All recoverable errors should be:
-
-Logged
-Classified
-Reported to the dashboard
-Included in telemetry (if enabled)
-
-The system should attempt graceful recovery before escalating to a restart.
-
-Watchdog Strategy
-
-A hardware/software watchdog ensures recovery from firmware lockups.
-
-If the main loop stops responding:
-
-Watchdog timeout occurs.
-ESP32 restarts.
-Restart reason is logged.
-Critical services are restored automatically.
-Coding Standards
-
-Project FALCON follows these software engineering principles:
-
-Modular design
-Single responsibility per module
-Clear naming conventions
-Consistent formatting
-Extensive inline documentation
-Version control with Git
-Code reviews before major merges
-Unit testing where feasible
-Repository Structure
-Project-FALCON/
-│
-├── firmware/
-├── raspberry_pi/
-├── web_dashboard/
-├── mobile_app/
-├── hardware/
-├── mechanical/
-├── electronics/
-├── documentation/
-├── research/
-├── simulations/
-├── test_data/
-├── scripts/
-└── PROJECT_CONTEXT.md
-
-This structure is intended to keep firmware, AI, documentation, and mechanical assets organized throughout development.
-
-Development Roadmap
-
-Project FALCON is developed in progressive phases. Each phase builds upon the previous one while maintaining compatibility with the approved system architecture.
-
-Phase 1 – Prototype (Current)
-Objectives
-
-Develop a functional smart buoy capable of:
-
-Floating reliably
-Operating autonomously on solar power
-Monitoring environmental conditions
-Hosting a local ESP32 dashboard
-Logging sensor data
-Uploading telemetry (when available)
-Running basic onboard AI classification
-Detecting abnormal buoy conditions
-Providing remote diagnostics
-Exit Criteria
-Stable flotation for extended periods
-Reliable power operation
-Continuous sensor acquisition
-Successful local dashboard access
-Functional telemetry pipeline
-AI sea-state classification operational
-Successful field validation
-Phase 2 – Enhanced Monitoring
-
-New capabilities:
-
-Improved AI models
-Weather integration
-Additional environmental sensors
-LTE/5G communications
-Fleet management dashboard
-Multi-buoy synchronization
-Advanced maintenance prediction
-Phase 3 – Coastal Observation Network
-
-Expansion into a distributed monitoring system.
-
-Features include:
-
-Multiple interconnected buoys
-Regional environmental mapping
-Central cloud management
-Fleet analytics
-Predictive maintenance
-Large-scale deployments
-Phase 4 – National Deployment (Future Vision)
-
-Potential applications:
-
-LGUs
-DOST
-BFAR
-DENR
-Universities
-Marine protected areas
-Fisheries
-Disaster management agencies
-Coastal research organizations
-Field Deployment Workflow
-Step 1
-
-Mechanical inspection.
-
-Verify:
-
-Drum integrity
-Stabilizer alignment
-Tension cables
-Ballast attachment
-Solar mount
-Step 2
-
-Electrical inspection.
-
-Verify:
-
-Battery voltage
-Solar charging
-Waterproof connectors
-Fuse integrity
-Regulator output
-Step 3
-
-Sensor validation.
-
-Check:
-
-GPS lock
-IMU calibration
-Environmental sensors
-Leak detector
-Internal diagnostics
-Step 4
-
-Dashboard verification.
-
-Confirm:
-
-Wi-Fi AP available
-Dashboard accessible
-Live data updating
-Health score displayed
-Logs accessible
-Step 5
-
-Deployment.
-
-Secure anchor
-Record deployment coordinates
-Set reference GPS position
-Confirm mooring radius
-Begin monitoring
-Maintenance Strategy
-
-Preventive maintenance is preferred over reactive repairs.
-
-Suggested schedule:
-
-Weekly (Remote)
-Review alerts
-Review battery trend
-Confirm telemetry
-Verify AI status
-Monthly (Field)
-Clean solar panel
-Inspect enclosure seals
-Check mounting hardware
-Verify stabilizer condition
-Inspect cables
-Quarterly
-Recalibrate sensors
-Test leak detector
-Review battery capacity
-Update firmware
-Export maintenance logs
-Annual
-Full inspection
-Replace worn seals
-Inspect corrosion
-Evaluate battery health
-Structural assessment
-Failure Recovery
-
-The system should recover gracefully from common failures.
-
-Internet Loss
-
-Behavior:
-
-Continue local monitoring
-Buffer data
-Retry synchronization automatically
-GPS Loss
-
-Behavior:
-
-Continue monitoring
-Flag reduced positioning confidence
-Resume normal operation when GPS returns
-Sensor Failure
-
-Behavior:
-
-Isolate failed sensor
-Continue using remaining sensors
-Log fault
-Notify maintenance
-Raspberry Pi Failure
-
-Behavior:
-
-ESP32 continues independently
-AI features unavailable
-Monitoring continues
-Dashboard remains operational
-ESP32 Restart
-
-Behavior:
-
-Automatic reboot
-Restore configuration
-Resume monitoring
-Record restart reason
-Bill of Materials (Phase 1)
-Core Electronics
-ESP32 Development Board
-Raspberry Pi
-GPS Module
-IMU (Accelerometer/Gyroscope)
-Water Temperature Sensor
-Air Temperature & Humidity Sensor
-Pressure Sensor
-Water Level Sensor
-Salinity Sensor (or future integration)
-Leak Detection Sensor
-Power System
-Solar Panel
-MPPT Charge Controller
-LiFePO₄ Battery
-DC Regulators
-Fuse Protection
-Waterproof Connectors
-Mechanical Components
-Modified HDPE Drum (Main Float)
-4 × HDPE Stabilizer Buoys
-Marine-grade Aluminum Support Arms
-Stainless Steel Tension Cables
-Central Ballast
-Anchor
-Mooring Line
-Waterproof Electronics Enclosure
-Stainless Fasteners
-Cable Glands
-Communications
-Wi-Fi (ESP32 AP Mode)
-GPS Antenna
-Future LTE Module
-Future LoRa Module
-Software Stack
-Embedded
-PlatformIO
-Arduino Framework
-ESP-IDF compatible libraries
-AI
-Python
-TensorFlow Lite
-NumPy
-Pandas
-Dashboard
-HTML5
-CSS3
-JavaScript
-Responsive Web Design
-Backend (Future)
-REST API
-MQTT
-Database
-Authentication
-Testing Plan
-Mechanical Testing
-Floatation test
-Stability test
-Wave response
-Mooring behavior
-Waterproof verification
-Electrical Testing
-Solar charging
-Battery endurance
-Power consumption
-Brownout recovery
-Short-term overload protection
-Sensor Testing
-
-Each sensor shall be validated for:
-
-Accuracy
-Stability
-Repeatability
-Noise
-Calibration
-Communication Testing
-
-Verify:
-
-Wi-Fi dashboard
-API responses
-GPS accuracy
-Telemetry upload
-Offline recovery
-AI Testing
-
-Evaluate:
-
-Classification accuracy
-Response time
-Confidence scores
-False positives
-False negatives
-Environmental Testing
-
-Operate under:
-
-Direct sunlight
-Cloudy weather
-Rain
-High humidity
-Salt spray
-Moderate wave conditions
-
-Future testing should expand to harsher marine environments.
-
-Risk Assessment
-Risk	Mitigation
-Water ingress	IP67+ enclosure, leak detection, proper sealing
-Battery depletion	Solar charging, low-power modes
-Sensor failure	Modular replacement, redundancy where practical
-GPS drift	Geofencing with configurable thresholds
-Communication outage	Local storage with delayed synchronization
-Corrosion	Marine-grade materials and periodic inspection
-Biofouling	Scheduled cleaning and inspection
-Strong storms	Robust mooring, ballast, stabilizers, survivability testing
-Documentation Standards
-
-Every major subsystem should maintain its own documentation.
-
-Examples:
-
-Firmware Design
-Hardware Schematics
-PCB Design
-Mechanical CAD
-AI Models
-API Documentation
-Maintenance Manual
-User Manual
-Deployment Guide
-Research Documentation
-
-All documentation should be version-controlled alongside the project repository.
-
-Coding & Engineering Principles
-
-The project follows these guiding principles:
-
-Reliability over complexity
-Modularity over monolithic design
-Documentation-first development
-Maintainability over shortcuts
-Safety-first engineering
-Incremental improvements
-Test before deployment
-Design for field serviceability
-Future Expansion Ideas
-
-Potential future enhancements include:
-
-Camera-based shoreline observation
-Computer vision for debris detection
-Water quality analysis (DO, pH, turbidity)
-Acoustic monitoring (hydrophone)
-Marine wildlife detection
-Automatic weather station integration
-Satellite communications
-Mesh networking between buoys
-Predictive storm modeling
-Digital twin simulation
-Fleet management platform
-Mobile application for technicians
-Remote configuration management
-AI-assisted maintenance scheduling
-Project Success Metrics
-
-Project FALCON will be considered successful when it demonstrates:
-
-Reliable autonomous operation
-Stable marine deployment
-Accurate environmental monitoring
-Useful AI-assisted insights
-Low maintenance requirements
-Affordable deployment cost
-Scalable architecture
-Research value for coastal monitoring
-Version History
-v1
-Initial concept
-Core architecture
-Basic IoT buoy design
-v2
-Mechanical redesign
-HDPE drum concept
-ESP32 local dashboard
-Raspberry Pi edge AI
-Improved power architecture
-v3 (Current)
-Approved Phase 1 mechanical baseline
-Four stabilizer buoy configuration
-Stainless steel tension cable reinforcement
-Tidal-aware buoy health logic
-Modular firmware architecture
-Health scoring system
-Expanded dashboard specification
-Development roadmap
-Comprehensive documentation standard
-Master project context established
-Master Source of Truth
-
-This document is the authoritative engineering reference for Project FALCON.
-
-Unless a newer approved version explicitly replaces it:
-
-All firmware development
-Mechanical design
-Electronics
-PCB layout
-AI models
-Web dashboard
-Mobile application
-Documentation
-Testing
-Research
-
-shall align with the specifications defined in this document.
-
-Any proposed design changes should be documented through version control and reviewed before becoming part of the official baseline.
-
-## Purpose
-Serve as the master planning context after working source code.
+# PROJECT_CONTEXT.md v4.0
+
+## Document Control
+
+| Field | Value |
+| --- | --- |
+| Project | Project FALCON |
+| Expanded name | Fullbright College's AI-powered Live Coastal Observation Network |
+| Document | Master Engineering Context |
+| Version | 4.0 |
+| Status | Phase 1 Prototype |
+| Authority | Official repository source of truth |
+| Research focus | Real-time coastal monitoring and AI-assisted short-term wave-height prediction |
+| Prediction window | 5–15 minutes |
+| Primary deployment context | Philippine coastal waters |
+| Primary controller | ESP32 |
+| Planned edge computer | Mini PC |
+| Last refactor | 2026-08-09 |
+## Authority and Use
+
+This document defines the approved Phase 1 engineering baseline for Project FALCON. It governs:
+- research scope;
+- system architecture;
+- firmware boundaries;
+- sensor selection;
+- AI responsibilities;
+- dashboard content;
+- API design;
+- mechanical constraints;
+- power architecture;
+- validation activities;
+- repository organization;
+- documentation terminology;
+- and future-development decisions.
+Every future firmware change shall be checked against this document. Every future dashboard change shall be checked against this document. Every future CAD change shall be checked against this document. Every
+future AI model shall be checked against this document. Every future API change shall be checked against this document. Every future research claim shall be checked against this document. When a lower-level
+document conflicts with this document, this document has priority unless an approved newer master context explicitly supersedes it. Working source code remains the authority for what is currently implemented.
+This document remains the authority for what the approved system is intended to become. The difference between implementation and intent shall always be stated honestly.
+## Version 4 Refactor Intent
+
+Version 4 narrows Project FALCON to one defensible research contribution. The project is not a general-purpose marine AI platform. The project is not a weather-forecasting platform. The project is not an
+autonomous marine vehicle. The project is not a cloud-first buoy network. The project is a focused coastal observation prototype. Its two core functions are:
+1. real-time coastal monitoring; and
+2. AI-assisted short-term wave-height prediction.
+Useful v3 engineering material is retained where it supports these functions. Duplicated material is consolidated. Unapproved capabilities are moved to Future Expansion. Conflicting claims are removed.
+Unimplemented features are not presented as completed work.
+## Project Identity
+
+Project FALCON is Fullbright College's AI-powered Live Coastal Observation Network. FALCON is an affordable, modular, solar-powered coastal monitoring buoy prototype. It is intended to collect near-real-time
+coastal measurements. It is intended to estimate short-term wave height at the edge. It is intended to classify current or predicted sea conditions. It is intended to operate through a local dashboard without
+requiring cloud connectivity. It is intended for research, education, prototyping, and controlled coastal trials. It is designed around commercially available components. It prioritizes field serviceability
+over unnecessary complexity. It prioritizes transparent predictions over unsupported AI claims. It prioritizes a focused research scope over a long feature list.
+## Executive Summary
+
+Affordable coastal monitoring systems commonly collect and display environmental readings. Many low-cost systems stop at data acquisition and visualization. Commercial wave-monitoring platforms can be too
+costly or inaccessible for small institutions. Project FALCON explores whether a low-cost, modular, solar-powered buoy can provide useful real-time coastal monitoring and AI-assisted wave-height predictions
+over a short 5–15 minute window. The Phase 1 buoy uses an ESP32 for deterministic sensor acquisition and control. A mini PC is the planned edge-computing platform. The ESP32 and mini PC communicate through
+UART. The mini PC exposes a local REST API. The local dashboard consumes that API. The system remains locally usable without Internet access. Cloud synchronization is not part of the Phase 1 implementation
+baseline. The approved AI scope is intentionally limited. The AI estimates short-term wave height. The AI classifies sea condition as Calm, Moderate, or Rough. The AI does not autonomously control the buoy. The
+AI does not issue navigation commands. The AI does not predict typhoons, storms, weather, fish activity, maintenance, or water quality.
+## Research Focus
+
+### Primary Focus
+Project FALCON focuses only on:
+- real-time coastal monitoring; and
+- AI-assisted short-term wave-height prediction.
+### Monitoring Focus
+Real-time monitoring includes:
+- wave-related pressure changes;
+- wave motion from the IMU;
+- pitch;
+- roll;
+- yaw;
+- wind speed;
+- wind direction;
+- GPS position;
+- battery state;
+- solar charging state;
+- internal enclosure temperature;
+- system health;
+- communication state;
+- and operational alerts.
+### AI Focus
+The AI has exactly two Phase 1 responsibilities.
+#### Responsibility 1: Wave-Height Prediction
+The AI estimates wave height 5–15 minutes into the future. The output shall include:
+- current measured wave height;
+- predicted wave height;
+- prediction horizon;
+- prediction timestamp;
+- confidence value;
+- model identifier;
+- sample count or input-window context;
+- and model status.
+#### Responsibility 2: Sea-Condition Classification
+The AI classifies the sea condition as:
+- Calm;
+- Moderate; or
+- Rough.
+No fourth operational class is approved for Phase 1. Invalid or unavailable inputs shall produce an unavailable status rather than a fabricated class.
+## Research Gap
+
+Existing affordable marine monitoring systems primarily monitor and display environmental data. Many educational and low-cost IoT buoy projects provide sensor readings but do not provide transparent short-term
+wave prediction. Advanced commercial monitoring systems may provide wave analytics, but their acquisition cost, proprietary interfaces, service requirements, and deployment complexity can limit adoption by
+smaller Philippine schools, local research groups, and local coastal stakeholders. Few accessible prototypes combine all of the following in one focused platform:
+- low-cost components;
+- modular construction;
+- solar-powered operation;
+- local-first monitoring;
+- real-time wave-related measurements;
+- edge-based short-term wave-height prediction;
+- transparent current-versus-predicted values;
+- and suitability for controlled Philippine coastal deployment.
+Project FALCON addresses this gap by designing and evaluating a focused coastal monitoring buoy that combines deterministic sensing with AI-assisted 5–15 minute wave-height prediction. The research contribution
+is not the invention of wave forecasting. The contribution is the integration and evaluation of a low-cost, modular, locally operated prototype for this specific use case.
+## Research Questions
+
+The Phase 1 study shall be guided by focused questions.
+1. Can a low-cost buoy collect stable real-time wave, motion, wind, position, and power data in controlled coastal conditions?
+2. Can pressure and IMU measurements be processed into a repeatable wave-height estimate?
+3. Can an edge model provide a measurable 5–15 minute wave-height prediction from the available sensor history?
+4. How accurate are predicted wave heights compared with subsequent measured wave heights?
+5. Can the system classify sea conditions as Calm, Moderate, or Rough with documented thresholds or validated model logic?
+6. Can the local dashboard clearly communicate current measurements, predictions, confidence, alerts, and system state without cloud dependence?
+## General Objective
+
+To design, develop, and evaluate a low-cost, modular, solar-powered coastal monitoring buoy that provides real-time coastal measurements and AI-assisted short-term wave-height prediction through a local
+dashboard.
+## Specific Objectives
+
+1. Design and integrate a stable Phase 1 buoy using an HDPE main float, four stabilizer buoys, marine aluminum arms, stainless steel tension cables, central ballast, and a single-anchor mooring system.
+2. Acquire and process real-time data from the approved Phase 1 sensor set, including IMU, water pressure, wind, GPS, battery, solar, and internal-temperature measurements.
+3. Develop a transparent wave-height estimation pipeline using synchronized water-pressure and IMU data.
+4. Develop and evaluate an edge AI method that predicts wave height 5–15 minutes ahead and classifies sea condition as Calm, Moderate, or Rough.
+5. Develop a responsive local dashboard that displays current readings, predicted wave height, confidence, alerts, motion, history, logs, and system status.
+6. Validate the prototype through mechanical, electrical, sensor, AI, dashboard, and communication testing under controlled conditions.
 ## Scope
-Firmware, dashboard, hardware, mechanical, sensor, AI, remote, and research direction.
-## Current Status
-Phase 1 ESP32 portal prototype; all non-source-backed subsystems remain Planned or Future Expansion.
-## Architecture
-ESP32 is the independent local controller; sensors, edge compute, and cloud are optional future layers.
-## Implementation
-Implemented behavior is limited to the source-backed AP, captive portal, LittleFS dashboard, and three API routes.
-## Future Expansion
-The body of this document records long-term design direction subject to validation gates.
-## Engineering Notes
-When any statement conflicts with source or the validated notice, source and the notice take priority.
-## Revision History
-| Version | Date | Change |
+
+Phase 1 includes only the following scope.
+### Real-Time Monitoring
+- acquisition of approved sensor readings;
+- timestamping;
+- range validation;
+- basic filtering;
+- local display;
+- local logging;
+- system-health reporting;
+- and threshold-based alerts.
+### Wave Monitoring
+- water-pressure changes;
+- IMU motion;
+- pitch and roll;
+- wave-motion features;
+- current wave-height estimation;
+- wave history;
+- and sea-condition context.
+### AI Prediction
+- one focused short-term wave-height prediction pipeline;
+- 5-minute prediction support;
+- 15-minute prediction support;
+- confidence reporting;
+- current-versus-predicted comparison;
+- prediction history;
+- validation against subsequent measurements;
+- and Calm, Moderate, or Rough classification.
+### Dashboard
+- local responsive web dashboard;
+- desktop and mobile layouts;
+- light and dark themes;
+- real-time status;
+- wave and prediction cards;
+- motion display;
+- GPS display;
+- power display;
+- alerts;
+- settings;
+- histories;
+- and logs.
+### Solar Operation
+- solar energy harvesting;
+- MPPT charging;
+- 12 V LiFePO4 energy storage;
+- power distribution;
+- battery monitoring;
+- solar monitoring;
+- and energy-budget validation.
+## Delimitations
+
+Phase 1 does not include tsunami prediction. Phase 1 does not include typhoon prediction. Phase 1 does not include storm prediction. Phase 1 does not include weather forecasting. Phase 1 does not include
+ocean-current prediction. Phase 1 does not include fish prediction. Phase 1 does not include maintenance prediction. Phase 1 does not include self-learning AI. Phase 1 does not include multiple operational AI
+models. Phase 1 does not include cloud AI. Phase 1 does not include autonomous decision making. Phase 1 does not include autonomous navigation. Phase 1 does not include satellite communication. Phase 1 does not
+include multi-buoy networking. Phase 1 does not include camera AI. Phase 1 does not include computer vision. Phase 1 does not include water-quality AI. Phase 1 does not include a mobile application. Phase 1
+does not include a cloud-first implementation. Phase 1 does not include a multi-buoy field deployment. Phase 1 does not claim operational disaster-warning capability. Phase 1 predictions shall not be
+represented as official safety advisories.
+## Terminology
+
+### Real Time
+Real time means data is updated frequently enough for local monitoring. It does not imply hard real-time deterministic guarantees for the web dashboard.
+### Wave Height
+Wave height means the project-defined estimate derived from calibrated pressure and motion measurements. The exact estimator shall be documented and validated.
+### Prediction
+Prediction means a model-generated estimate for a specified future horizon. It is not a direct measurement.
+### Confidence
+Confidence is a documented model-quality or uncertainty indicator. It shall not be presented as a probability unless it is calibrated as one.
+### Sea Condition
+Sea condition is the approved three-class output:
+- Calm;
+- Moderate;
+- Rough.
+### Edge
+Edge refers to processing on the local mini PC near or within the buoy system.
+### Local Dashboard
+Local dashboard means a browser interface reachable over the local network without requiring Internet service.
+### Implemented
+Implemented means working source code exists and has been exercised in the repository environment.
+### Planned
+Planned means approved for Phase 1 but not yet completely integrated or validated.
+### Future Expansion
+Future Expansion means explicitly outside the Phase 1 baseline.
+## Current Implementation Status
+
+Project FALCON is in Phase 1 Prototype status. The repository contains an ESP32 captive-portal prototype. The ESP32 prototype provides:
+- Wi-Fi access-point mode;
+- captive-portal DNS behavior;
+- LittleFS static dashboard hosting;
+- status output;
+- monitoring control;
+- and restart control.
+The repository also contains a laptop-hosted edge-service prototype. The edge-service prototype provides:
+- simulated telemetry;
+- local REST endpoints;
+- SQLite telemetry storage;
+- deterministic safety alerts;
+- presentation forecast generation;
+- forecast backtesting;
+- and local dashboard asset hosting.
+The repository contains a modern local dashboard prototype. The dashboard prototype includes:
+- responsive layouts;
+- light and dark modes;
+- live telemetry views;
+- local notifications;
+- alert history;
+- current-versus-predicted values;
+- and an interactive 3D mechanical model.
+The current forecast implementation is a presentation model. It is not yet a field-validated AI model. The current telemetry source is primarily simulated when physical sensors are unavailable. Physical sensor
+integration remains Planned until hardware is installed and validated. The mini PC has not yet been integrated into the physical prototype. The laptop may temporarily represent the edge-computing role during
+demonstrations. The full dashboard is not approved for direct deployment on the current ESP32 flash because its 3D assets exceed the configured LittleFS capacity.
+## System Requirements
+
+### Functional Requirements
+The system shall acquire approved sensor readings. The system shall timestamp sensor readings. The system shall validate readings before use. The system shall retain raw or minimally processed data required for
+traceability. The system shall estimate current wave height. The system shall predict wave height over a selected 5–15 minute horizon. The system shall classify sea condition as Calm, Moderate, or Rough. The
+system shall expose the approved REST API. The system shall display current readings locally. The system shall display predicted wave height separately from current wave height. The system shall display
+prediction confidence. The system shall record prediction history. The system shall record alerts and system logs. The system shall allow authorized restart and calibration commands.
+### Non-Functional Requirements
+The system shall be modular. The system shall be serviceable. The system shall be locally operable. The system shall degrade safely when optional components fail. The system shall avoid fabricated sensor values
+in field mode. The system shall distinguish simulated data from live sensor data. The system shall use consistent SI or documented engineering units. The system shall provide readable mobile and desktop
+interfaces. The system shall preserve diagnostic logs after recoverable faults where storage permits. The system shall use non-blocking firmware patterns where practical. The system shall be testable at
+subsystem boundaries.
+## Final Phase 1 Architecture
+
+```text
+Sensors
+   |
+   v
+ESP32
+   |
+   | UART
+   v
+Mini PC
+   |
+   | REST API
+   v
+Local Dashboard
+```
+Future connectivity is represented only as:
+```text
+Local System
+   |
+   v
+Cloud (Future Expansion)
+```
+No cloud component is required for Phase 1 operation. No cloud component is required for Phase 1 demonstration. No cloud component is required for local AI inference.
+## Architecture Responsibilities
+
+### Sensors
+Sensors convert physical conditions into electrical or digital measurements. Sensors do not make safety decisions. Sensors shall expose calibration and health information where available.
+### ESP32
+The ESP32 is the deterministic embedded controller. It is responsible for:
+- sensor initialization;
+- sensor polling;
+- basic filtering;
+- range checking;
+- calibration application;
+- timestamp coordination;
+- power telemetry;
+- GPS parsing;
+- UART framing;
+- local watchdog handling;
+- basic fault reporting;
+- and safe restart behavior.
+The ESP32 shall continue basic acquisition if the mini PC is unavailable.
+### UART
+UART is the approved Phase 1 link between ESP32 and mini PC. UART is selected for simplicity, low overhead, and deterministic local communication. The UART protocol shall include framing and validation.
+### Mini PC
+The mini PC is the planned edge-processing host. It is responsible for:
+- ingesting ESP32 telemetry;
+- validating message structure;
+- local storage;
+- wave-feature processing;
+- AI inference;
+- sea-condition classification;
+- prediction history;
+- API hosting;
+- dashboard hosting;
+- alert aggregation;
+- and system logging.
+The mini PC shall not replace the ESP32's time-critical acquisition role.
+### REST API
+The REST API is the approved interface between local services and the dashboard. It shall return explicit status codes. It shall distinguish unavailable values from zero values. It shall use documented JSON
+schemas.
+### Local Dashboard
+The dashboard presents measurements and predictions. It does not directly control physical actuators except through approved API commands. It shall clearly label simulated, measured, estimated, and predicted
+values.
+## End-to-End Data Flow
+
+1. A sensor produces a measurement.
+2. The ESP32 reads the sensor.
+3. The ESP32 applies calibration metadata.
+4. The ESP32 checks validity and range.
+5. The ESP32 assigns a timestamp or sequence number.
+6. The ESP32 packages the reading into a UART message.
+7. The mini PC validates the UART message.
+8. The mini PC stores the accepted reading.
+9. The wave-processing pipeline updates wave features.
+10. The AI pipeline produces a prediction when sufficient valid history exists.
+11. The classifier produces Calm, Moderate, or Rough.
+12. The API exposes current data and AI results.
+13. The dashboard displays current and predicted values separately.
+14. Alerts and logs are generated when defined conditions are met.
+15. Later measurements are compared with earlier predictions for validation.
+## Approved Phase 1 Sensor Set
+
+Only the following sensors are part of the Phase 1 baseline.
+### 1. BNO085 IMU
+Purpose:
+- pitch measurement;
+- roll measurement;
+- yaw measurement;
+- acceleration measurement;
+- angular-motion measurement;
+- wave-motion feature extraction;
+- and orientation context for pressure-derived estimates.
+Required outputs:
+- pitch in degrees;
+- roll in degrees;
+- yaw in degrees;
+- timestamp;
+- calibration state;
+- and sensor-health state.
+Installation guidance:
+- mount near the buoy's rigid central structure;
+- align axes with documented buoy axes;
+- isolate from loose mechanical vibration;
+- record mounting orientation;
+- and prevent movement relative to the main frame.
+Validation:
+- stationary offset test;
+- known-angle test;
+- repeatability test;
+- axis-orientation test;
+- and motion-response test.
+### 2. Water Pressure Sensor
+Purpose:
+- detect pressure changes related to water movement;
+- support current wave-height estimation;
+- provide wave-period features;
+- and support AI prediction inputs.
+Required outputs:
+- raw pressure;
+- calibrated pressure;
+- pressure change;
+- timestamp;
+- temperature compensation status when applicable;
+- and sensor-health state.
+Installation guidance:
+- mount at a documented depth;
+- prevent trapped air at the sensing face;
+- protect wiring through waterproof glands;
+- avoid flow obstruction;
+- document vertical position relative to the float;
+- and provide service access.
+Validation:
+- static-water baseline;
+- known-depth comparison;
+- drift test;
+- noise test;
+- temperature-sensitivity review;
+- and dynamic wave-tank or controlled-motion test.
+### 3. Wind Speed Sensor
+Purpose:
+- measure local wind speed;
+- provide environmental context for wave development;
+- and provide an optional input feature for wave prediction.
+Required outputs:
+- wind speed;
+- engineering unit;
+- timestamp;
+- validity;
+- and health state.
+Installation guidance:
+- mount above major flow obstructions;
+- separate from rotating hazards;
+- document mast height;
+- and inspect for salt accumulation.
+### 4. Wind Direction Sensor
+Purpose:
+- measure local wind direction;
+- provide directional context for wave conditions;
+- and support interpretation of buoy motion.
+Required outputs:
+- direction in degrees;
+- cardinal representation for display;
+- timestamp;
+- validity;
+- and health state.
+Installation guidance:
+- align the reference direction during deployment;
+- document magnetic or true-north convention;
+- and verify free mechanical movement.
+### 5. GPS Module
+Purpose:
+- record deployment position;
+- report current position;
+- support mooring-distance checks;
+- provide time reference when available;
+- and assist recovery.
+Required outputs:
+- latitude;
+- longitude;
+- fix type;
+- satellite count;
+- horizontal accuracy when available;
+- speed when valid;
+- UTC time when valid;
+- and health state.
+GPS is not an autonomous-navigation component. GPS drift alerts shall account for expected swing around the anchor.
+### 6. Battery Monitor
+Purpose:
+- battery-voltage measurement;
+- battery-current measurement;
+- battery-percentage estimation;
+- low-power warning;
+- and energy-budget validation.
+Required outputs:
+- voltage;
+- current;
+- estimated percentage;
+- charging or discharging direction;
+- timestamp;
+- and health state.
+Battery percentage is an estimate. Its method shall be documented.
+### 7. Solar Monitor
+Purpose:
+- solar-voltage measurement;
+- solar-current measurement;
+- charging-status reporting;
+- and solar-performance validation.
+Required outputs:
+- solar voltage;
+- solar current;
+- calculated solar power when appropriate;
+- charging state;
+- timestamp;
+- and health state.
+### 8. Internal Temperature Sensor
+Purpose:
+- monitor electronics-enclosure temperature;
+- detect thermal stress;
+- support cooling decisions;
+- and protect electronics.
+Required outputs:
+- internal temperature;
+- timestamp;
+- threshold state;
+- and health state.
+The sensor shall be placed where it represents enclosure thermal conditions. It shall not be mounted directly against a localized heat source unless the measurement is explicitly labeled as component
+temperature.
+### Optional Water Temperature Sensor
+Water temperature is optional in Phase 1. If installed, it may provide:
+- environmental context;
+- pressure-sensor compensation context;
+- and an additional monitored value.
+Water temperature is not an AI output. Water temperature prediction is not included.
+## Sensors Reserved for Future Expansion
+
+The following are not part of the Phase 1 sensor baseline:
+- pH;
+- salinity;
+- turbidity;
+- dissolved oxygen;
+- rain sensor;
+- UV sensor;
+- camera;
+- hydrophone;
+- current meter;
+- and Water Quality Index inputs.
+These sensors shall not appear as active Phase 1 hardware in official claims. Dashboard placeholders for these sensors shall be removed or explicitly labeled Future Expansion.
+## Sensor Data Quality
+
+Every sensor value shall carry enough context to determine whether it is usable. Recommended metadata includes:
+- timestamp;
+- sequence number;
+- sensor identifier;
+- value;
+- unit;
+- validity;
+- calibration version;
+- and fault code.
+Invalid values shall not be silently converted to zero. Missing values shall be represented as unavailable. Out-of-range values shall be flagged. Stale values shall be flagged. Repeated identical values may
+require a stuck-sensor check. Sudden discontinuities shall be logged for review. Filtering shall not destroy the raw evidence needed for validation.
+## Sampling and Synchronization
+
+Sampling rates shall be selected through testing. The IMU may require a higher internal sampling rate than dashboard updates. The pressure sensor shall be sampled fast enough to preserve relevant wave dynamics.
+Wind data may use a lower output rate than IMU data. GPS may use a lower rate than pressure and IMU data. Power and internal-temperature data may use still lower rates. All data used together for wave
+estimation shall be time-aligned. Clock drift between ESP32 and mini PC shall be measured. UART sequence numbers shall help detect missing messages. The dashboard refresh rate shall not be treated as the sensor
+sample rate.
+## Wave-Height Estimation Pipeline
+
+The measured wave-height value is an engineering estimate. It shall be derived through a documented pipeline. The pipeline shall include:
+1. pressure-sensor calibration;
+2. pressure baseline determination;
+3. removal of invalid samples;
+4. compensation for sensor depth where required;
+5. separation of slow baseline changes from wave-related changes;
+6. IMU-based motion context;
+7. synchronized analysis window selection;
+8. feature extraction;
+9. wave-height calculation;
+10. quality scoring;
+11. comparison with a reference method;
+12. and storage of the resulting estimate.
+The estimator shall not claim significant wave height unless it implements and validates the appropriate definition. Terminology shall match the implemented method. If the system reports peak-to-trough wave
+height, it shall use that label. If the system reports an average over a window, it shall state the window. If the system reports significant wave height, the computation shall be documented.
+## Wave Features
+
+Candidate Phase 1 features may include:
+- recent wave-height estimates;
+- pressure variance;
+- pressure range;
+- pressure rate of change;
+- dominant motion period;
+- vertical acceleration statistics;
+- pitch statistics;
+- roll statistics;
+- motion-energy measures;
+- recent wind speed;
+- recent wind direction encoding;
+- and data-quality indicators.
+Only validated features shall be included in the final model. Feature selection shall be documented. Feature units shall be documented. Feature scaling shall be documented. Missing-feature handling shall be
+documented.
+## AI Subsystem
+
+### Approved AI Boundary
+The Phase 1 AI subsystem has one prediction task and one classification task. Prediction task:
+- estimate wave height 5–15 minutes ahead.
+Classification task:
+- classify sea condition as Calm, Moderate, or Rough.
+The classifier may use the measured or predicted wave state according to the approved design. The chosen basis shall be visible in the API schema.
+### Model Strategy
+Phase 1 shall prefer a model that is explainable, lightweight, and testable. Candidate approaches may include:
+- persistence baseline;
+- moving-average baseline;
+- damped linear trend;
+- linear regression;
+- tree-based regression;
+- or a compact time-series model.
+Only one operational prediction model shall be selected for the final Phase 1 evaluation. Baselines may be retained for comparison. Baselines shall not be misrepresented as separate production AI systems.
+### Training Data
+The final model shall be trained or calibrated using time-ordered data. Data collection conditions shall be documented. Sensor calibration state shall be documented. Invalid samples shall be excluded according
+to written rules. Training and test periods shall be separated chronologically. Random row-level splitting shall be avoided when it leaks future time-series information.
+### Prediction Horizons
+The approved horizon range is 5–15 minutes. The dashboard may offer 5-minute and 15-minute views. Any intermediate horizon shall be documented. Thirty-minute prediction is outside the approved Phase 1 research
+claim. Legacy 30-minute presentation controls shall be removed or moved to Future Expansion.
+### Model Inputs
+The minimum input is recent validated wave-height history. Pressure and IMU features are primary inputs. Wind data may be used when validated. GPS, battery, solar, and internal temperature are operational
+measurements, not default wave-prediction targets.
+### Model Outputs
+Each AI response shall include:
+- model status;
+- current wave height;
+- predicted wave height;
+- horizon in minutes;
+- generated timestamp;
+- target timestamp;
+- confidence or quality indicator;
+- sea-condition class;
+- input sample count;
+- model version;
+- and unavailable reason when applicable.
+### Transparency
+The dashboard shall show current and predicted wave height together. The dashboard shall not display prediction without its horizon. The dashboard shall not display confidence without a documented meaning. The
+dashboard shall identify simulated predictions. The dashboard shall identify presentation models. The dashboard shall identify insufficient-history states. The dashboard shall not hide failed predictions behind
+nominal values.
+### Sea-Condition Classification
+The approved outputs are Calm, Moderate, and Rough. Thresholds shall be established from literature, adviser approval, or validation data. Thresholds shall be recorded in configuration. Classification
+hysteresis should be considered to prevent rapid class switching. Unavailable wave input shall produce Unavailable status outside the three valid classes. Unavailable is an error state, not a fourth
+sea-condition class.
+### AI Safety Boundary
+AI output is advisory. AI output shall not actuate propulsion. AI output shall not release or move the anchor. AI output shall not autonomously navigate. AI output shall not be represented as an official
+weather warning. AI output shall not replace government advisories.
+## AI Validation
+
+The AI shall be evaluated with time-ordered measurements. Required evaluation dimensions include:
+- mean absolute error;
+- root mean squared error when appropriate;
+- bias;
+- direction accuracy when used;
+- coverage of valid predictions;
+- inference time;
+- and missing-data behavior.
+The model shall be compared with at least one simple baseline. A persistence baseline is recommended. Evaluation shall report the horizon. Five-minute and fifteen-minute results shall not be combined without
+explanation. Results shall include sample count. Results shall identify simulated versus physical data. Presentation-model scores shall not be reported as field accuracy.
+## Dashboard Baseline
+
+The dashboard shall be simplified around the approved research focus. It shall avoid unrelated sensor cards. It shall avoid unsupported AI predictions. It shall emphasize wave state, prediction, confidence, and
+system readiness.
+## Dashboard Information Architecture
+
+### Home
+Home shall show the most important operational information. Required cards:
+- System Status;
+- Wave Height;
+- Predicted Wave Height;
+- Sea Condition;
+- Prediction Confidence;
+- Wind Speed;
+- Wind Direction;
+- GPS;
+- Battery;
+- Solar;
+- Internal Temperature;
+- and active Alerts.
+The Home page shall distinguish measured and predicted values visually.
+### System Status
+System Status shall show:
+- ESP32 state;
+- mini PC state;
+- UART state;
+- API state;
+- sensor availability;
+- monitoring state;
+- last update;
+- data source;
+- and system uptime.
+### Motion
+Motion shall show:
+- pitch;
+- roll;
+- yaw when available;
+- wave motion;
+- IMU calibration state;
+- and recent motion history.
+### GPS
+GPS shall show:
+- coordinates;
+- fix state;
+- satellite count;
+- reference deployment position;
+- anchor-distance estimate;
+- and drift status.
+### Power
+Power shall show:
+- battery voltage;
+- battery current;
+- battery percentage;
+- solar voltage;
+- solar current;
+- charging status;
+- and power warnings.
+### Thermal
+Thermal information shall focus on internal temperature. It may show fan state when cooling hardware exists. It shall not imply installed cooling hardware when hardware is absent.
+### Alerts
+Alerts shall show:
+- severity;
+- timestamp;
+- code;
+- affected subsystem;
+- message;
+- acknowledgement state when implemented;
+- and current or historical state.
+### Settings
+Settings shall provide approved controls for:
+- sampling configuration;
+- alert thresholds;
+- calibration;
+- display preferences;
+- and authorized restart.
+Settings that are not implemented shall be disabled or labeled Planned.
+### Logs
+Logs shall contain:
+- Wave History;
+- Prediction History;
+- and System Logs.
+### Wave History
+Wave History shall show measured or estimated wave height over time. It shall include units and timestamps.
+### Prediction History
+Prediction History shall preserve:
+- prediction creation time;
+- prediction horizon;
+- predicted value;
+- later actual value when available;
+- error;
+- confidence;
+- and model version.
+### System Logs
+System Logs shall include:
+- startup;
+- shutdown;
+- restart;
+- sensor connection changes;
+- UART errors;
+- storage errors;
+- API errors;
+- calibration events;
+- and critical configuration changes.
+## Dashboard Design Requirements
+
+The dashboard shall be responsive. The dashboard shall support desktop and mobile browsers. The dashboard shall support light and dark modes. The dashboard shall use readable typography suitable for projection.
+The dashboard shall use consistent icons. The dashboard shall use consistent status colors. Green shall indicate healthy or normal state. Amber shall indicate warning or attention state. Red shall indicate
+critical or failed state. Color shall not be the only indicator. Labels and icons shall accompany color states. The dashboard shall avoid excessive decorative animation. Motion shall support comprehension
+rather than distraction. The dashboard shall remain usable when animation is reduced. The dashboard shall expose data-source labels. The dashboard shall label simulated data. The dashboard shall label
+presentation predictions.
+## Digital Twin Boundary
+
+The interactive 3D buoy model is a dashboard visualization aid. It is not an AI responsibility. It may show:
+- current pitch;
+- current roll;
+- approximate wave motion;
+- sensor locations;
+- component temperature state;
+- component fault state;
+- and navigation-light state.
+It shall not claim exact physical motion unless driven by calibrated measurements. It shall preserve the approved mechanical baseline. It shall not introduce autonomous-navigation concepts.
+## Approved REST API
+
+Only the following Phase 1 endpoint set is approved.
+```text
+GET  /status
+GET  /wave
+GET  /gps
+GET  /battery
+GET  /solar
+GET  /ai
+POST /restart
+POST /calibrate
+```
+Legacy `/api/...` paths may remain temporarily during migration. The final documented interface shall use the approved paths above.
+### GET /status
+Purpose:
+- return overall system and communication status.
+Minimum response fields:
+- system;
+- monitoring;
+- uptimeSeconds;
+- esp32;
+- miniPc;
+- uart;
+- api;
+- sensorsOnline;
+- sensorsExpected;
+- lastUpdate;
+- dataSource;
+- and activeAlertCount.
+### GET /wave
+Purpose:
+- return current wave and motion measurements.
+Minimum response fields:
+- recordedAt;
+- waveHeight;
+- waveHeightUnit;
+- estimationMethod;
+- pressure;
+- pressureUnit;
+- pitch;
+- roll;
+- yaw;
+- waveMotion;
+- quality;
+- and valid.
+### GET /gps
+Purpose:
+- return GPS and deployment-reference information.
+Minimum response fields:
+- recordedAt;
+- latitude;
+- longitude;
+- fix;
+- satellites;
+- horizontalAccuracy;
+- referenceLatitude;
+- referenceLongitude;
+- anchorDistance;
+- driftStatus;
+- and valid.
+### GET /battery
+Purpose:
+- return battery state.
+Minimum response fields:
+- recordedAt;
+- voltage;
+- current;
+- percentage;
+- direction;
+- status;
+- and valid.
+### GET /solar
+Purpose:
+- return solar generation and charging state.
+Minimum response fields:
+- recordedAt;
+- voltage;
+- current;
+- power;
+- charging;
+- status;
+- and valid.
+### GET /ai
+Purpose:
+- return the focused wave prediction and sea-condition classification.
+Minimum response fields:
+- generatedAt;
+- targetAt;
+- horizonMinutes;
+- currentWaveHeight;
+- predictedWaveHeight;
+- unit;
+- change;
+- direction;
+- confidence;
+- seaCondition;
+- model;
+- modelVersion;
+- sampleCount;
+- status;
+- and unavailableReason.
+### POST /restart
+Purpose:
+- request an authorized system restart.
+The target component shall be explicit when more than one component can restart. The response shall acknowledge that restart was accepted.
+### POST /calibrate
+Purpose:
+- request an authorized sensor calibration operation.
+The request shall identify the sensor. The request shall identify calibration type when applicable. The response shall return accepted, completed, or failed state.
+## API Conventions
+
+JSON is the default representation. Timestamps shall use ISO 8601 with timezone information. Units shall be explicit. HTTP status codes shall be meaningful. Unavailable data shall not return false zero values.
+Bad requests shall return structured error codes. Restart and calibration shall require POST. Read endpoints shall not mutate state. Schemas shall be versioned when breaking changes occur.
+## UART Interface
+
+UART is the approved ESP32-to-mini-PC transport. The interface shall define:
+- baud rate;
+- voltage-level compatibility;
+- connector pinout;
+- frame delimiter;
+- message type;
+- payload length;
+- sequence number;
+- timestamp;
+- checksum or CRC;
+- timeout;
+- and retry behavior.
+Recommended message categories include:
+- STATUS;
+- WAVE;
+- MOTION;
+- GPS;
+- BATTERY;
+- SOLAR;
+- TEMPERATURE;
+- ALERT;
+- CALIBRATION;
+- and HEARTBEAT.
+Malformed frames shall be rejected. Rejected frames shall be counted. Sequence gaps shall be logged. The mini PC shall not block ESP32 acquisition while processing a frame.
+## Firmware Architecture
+
+The firmware shall remain modular. Approved top-level firmware modules are:
+```text
+firmware/
+├── sensors/
+├── power/
+├── gps/
+├── dashboard/
+├── storage/
+├── wifi/
+├── api/
+├── ai_bridge/
+├── config/
+├── diagnostics/
+├── communication/
+└── main.cpp
+```
+The required named modules from the research baseline are:
+- sensors;
+- power;
+- gps;
+- dashboard;
+- storage;
+- wifi;
+- api;
+- and ai_bridge.
+Diagnostics, configuration, and communication helpers may support them.
+## Firmware Module Responsibilities
+
+### sensors
+- initialize approved sensors;
+- read sensors without unnecessary blocking;
+- apply calibration;
+- validate values;
+- expose health state;
+- and publish timestamped measurements.
+### power
+- read battery voltage;
+- read battery current;
+- estimate battery percentage;
+- read solar voltage;
+- read solar current;
+- determine charging state;
+- and report power warnings.
+### gps
+- parse GPS messages;
+- validate fix state;
+- publish coordinates;
+- manage reference position;
+- calculate anchor distance;
+- and report drift state.
+### dashboard
+- provide only the embedded fallback interface when required;
+- avoid hosting assets larger than available flash;
+- and expose clear local status.
+The full Phase 1 dashboard is expected to run from the mini PC.
+### storage
+- store configuration;
+- store calibration metadata;
+- retain essential logs;
+- enforce storage limits;
+- and recover safely from incomplete writes.
+### wifi
+- configure local connectivity;
+- manage access-point mode when required;
+- report link state;
+- and avoid exposing undocumented services.
+### api
+- implement approved local endpoints where hosted;
+- validate requests;
+- return structured errors;
+- and avoid blocking acquisition.
+### ai_bridge
+- transport validated sensor data to the mini PC;
+- receive AI status when needed;
+- report link failures;
+- and never fabricate AI results.
+The ESP32 is not required to execute the Phase 1 AI model.
+## Firmware Runtime Principles
+
+The firmware shall avoid long blocking delays. The firmware shall use periodic tasks or a scheduler. Sensor acquisition shall have priority over dashboard requests. UART transmission shall not starve sensor
+polling. Watchdog servicing shall be explicit. Recoverable sensor failures shall not restart the entire system immediately. Repeated unrecoverable faults may trigger a controlled restart. Restart reason shall
+be logged. Configuration shall be validated before use. Defaults shall be safe and documented.
+## Mini-PC Software Architecture
+
+The mini-PC software shall contain focused services. Recommended structure:
+```text
+mini_pc/
+├── ingestion/
+├── validation/
+├── wave_processing/
+├── ai/
+├── storage/
+├── alerts/
+├── api/
+├── dashboard_host/
+├── config/
+└── service.py
+```
+The ingestion service reads UART data. The validation service checks structure and ranges. The wave-processing service derives wave estimates and features. The AI service produces the approved outputs only. The
+storage service retains measurements, predictions, and logs. The alert service applies deterministic operational rules. The API service exposes approved endpoints. The dashboard host serves local static assets.
+## Storage Model
+
+The local data store shall prioritize traceability. Recommended records include:
+- sensor sample;
+- wave estimate;
+- AI prediction;
+- prediction evaluation;
+- GPS fix;
+- battery sample;
+- solar sample;
+- internal-temperature sample;
+- alert;
+- calibration event;
+- and system log.
+### Sensor Sample
+Minimum fields:
+- id;
+- recordedAt;
+- source;
+- sensorId;
+- value;
+- unit;
+- valid;
+- quality;
+- and calibrationVersion.
+### AI Prediction Record
+Minimum fields:
+- id;
+- generatedAt;
+- targetAt;
+- horizonMinutes;
+- currentWaveHeight;
+- predictedWaveHeight;
+- confidence;
+- seaCondition;
+- modelVersion;
+- sampleCount;
+- status;
+- actualWaveHeight when later available;
+- and absoluteError when later available.
+### Retention
+Retention periods shall be configurable. Storage exhaustion shall be prevented. Critical logs shall be retained longer than routine dashboard samples where practical. Database backup is a local maintenance
+function. Cloud backup is Future Expansion.
+## Alert System
+
+Alerts are deterministic operational outputs unless explicitly labeled AI-derived context. Approved severity levels are:
+- Info;
+- Warning;
+- Critical.
+Phase 1 shall avoid excessive severity categories.
+### Candidate Alerts
+- pressure sensor unavailable;
+- IMU unavailable;
+- wind sensor unavailable;
+- GPS fix lost;
+- battery low;
+- battery critical;
+- solar charging unavailable during expected daylight;
+- internal temperature high;
+- internal temperature critical;
+- UART disconnected;
+- API unavailable;
+- storage nearing capacity;
+- prediction unavailable;
+- prediction input stale;
+- and sustained anchor-distance warning.
+### Alert Requirements
+Every alert shall have a code. Every alert shall have a timestamp. Every alert shall identify its subsystem. Every alert shall have a human-readable message. Every alert shall avoid ambiguous wording. Repeated
+alerts shall be rate-limited or grouped. Resolved alerts shall be distinguishable from active alerts when resolution tracking is implemented.
+## Mechanical Baseline
+
+The Phase 1 mechanical system shall not be redesigned by this documentation refactor. The approved mechanical baseline is retained.
+### HDPE Main Float
+The HDPE main float provides primary buoyancy. It supports the central frame. It supports the electronics enclosure. It supports the solar assembly. It supports the upper sensor structure. It shall be inspected
+for cuts, deformation, and water ingress.
+### Four Stabilizer Buoys
+Quantity: four. The stabilizers increase transverse and longitudinal stability. They reduce excessive roll and pitch. They support consistent sensor orientation. They shall be symmetrically installed according
+to the approved CAD assembly.
+### Marine Aluminum Arms
+The arms connect stabilizers to the main float structure. They shall use corrosion-resistant marine-suitable material. They shall be replaceable. They shall be inspected for bending, cracking, and loose
+fasteners.
+### Stainless Steel Tension Cables
+The tension cables reinforce the stabilizer structure. They reduce flex under wave loading. They shall be tensioned consistently. They shall be inspected for broken strands and corrosion.
+### Central Ballast
+The ballast lowers the center of gravity. It improves righting moment. It assists upright recovery after disturbance. Its attachment shall include a secondary retention strategy where practical.
+### Single Anchor
+Phase 1 uses a single-anchor mooring system. The anchor connects beneath the central structure through the approved mooring arrangement. The system shall allow expected swing around the reference position.
+Anchor-distance thresholds shall account for line length and GPS uncertainty.
+### Electronics Enclosure
+The enclosure protects electronics from water, salt, humidity, and mechanical exposure. It should meet IP67 or better design intent. It shall use suitable cable glands. It shall provide strain relief. It shall
+support inspection and service. Condensation risk shall be addressed.
+### Solar Assembly
+The solar assembly shall remain mechanically secure. Tilted solar-panel geometry may be used when supported by the approved CAD model. Panel tilt shall not compromise stability, wind loading, access, or sensor
+clearance. Mechanical validation remains required.
+## Mechanical Design Rules
+
+Reliability has priority over cosmetic appearance. Stability has priority over compactness. Service access shall be preserved. Sharp exposed edges shall be avoided. Fasteners shall resist loosening.
+Galvanic-corrosion risks shall be reviewed where dissimilar metals meet. Cable paths shall avoid abrasion. Water-facing components shall tolerate marine exposure or be protected. The CAD model shall use
+meaningful component names. CAD revisions shall be archived.
+## Power Architecture
+
+The approved Phase 1 power chain is:
+```text
+Solar Panel
+    |
+    v
+MPPT Charge Controller
+    |
+    v
+12 V LiFePO4 Battery
+    |
+    v
+Power Distribution
+    |
+    +--> ESP32
+    |
+    +--> Mini PC
+    |
+    +--> Sensors
+```
+## Power-System Responsibilities
+
+### Solar Panel
+- harvest solar energy;
+- tolerate outdoor exposure;
+- remain securely mounted;
+- and provide adequate output for the validated energy budget.
+### MPPT Charge Controller
+- regulate solar charging;
+- respect LiFePO4 requirements;
+- expose charging state where possible;
+- and protect the battery from invalid charging conditions.
+### 12 V LiFePO4 Battery
+- store energy;
+- supply overnight operation;
+- tolerate the planned current draw;
+- and include suitable protection.
+LiFePO4 is preferred for cycle life, voltage stability, and safety characteristics.
+### Power Distribution
+- provide fused branches;
+- provide correct regulated voltages;
+- isolate faults where practical;
+- prevent reverse polarity;
+- and document connector ratings.
+### Energy Budget
+The energy budget shall include:
+- ESP32 average current;
+- mini PC average and peak power;
+- sensor consumption;
+- GPS consumption;
+- cooling consumption when installed;
+- regulator loss;
+- nighttime duration;
+- cloudy-day margin;
+- and battery reserve.
+Power autonomy shall be demonstrated by measurement. It shall not be claimed from nominal battery capacity alone.
+## Operating States
+
+### Normal Monitoring
+- approved sensors active;
+- ESP32 acquisition active;
+- UART active;
+- mini PC active when power permits;
+- API active;
+- dashboard available;
+- and local storage active.
+### Reduced-Power Monitoring
+- essential sensing continues;
+- nonessential display activity may reduce;
+- AI inference frequency may reduce;
+- and GPS update frequency may reduce when justified.
+### Critical Battery State
+- preserve essential ESP32 operation;
+- preserve critical logging;
+- reduce mini-PC load when required;
+- avoid unsafe battery discharge;
+- and report the state locally.
+Power states shall not be labeled autonomous decision making. They are deterministic power-management policies.
+## Communication Architecture
+
+Phase 1 communication consists of:
+- sensor buses to ESP32;
+- UART from ESP32 to mini PC;
+- local network access to REST API;
+- and local browser access to the dashboard.
+Internet connectivity is optional and not required. LTE is Future Expansion. LoRa is Future Expansion. Satellite communication is Future Expansion. Multi-buoy networking is Future Expansion.
+## Local Networking
+
+The local network shall have a documented IP plan. Service ports shall be documented. Default credentials shall be changed before field deployment. The dashboard shall show connection state. The API shall not
+depend on public DNS. The system shall recover from temporary client disconnects.
+## Cybersecurity Baseline
+
+Phase 1 security shall be proportional to a local prototype while avoiding unsafe defaults. Requirements include:
+- non-default strong Wi-Fi credentials for field use;
+- input validation;
+- bounded request sizes;
+- no undocumented control endpoints;
+- POST for mutating operations;
+- configuration protection;
+- logging of restart and calibration requests;
+- dependency tracking;
+- and no secrets committed to public source control.
+HTTPS may be constrained on the embedded local system. The limitation shall be documented. Cloud identity and certificates are Future Expansion.
+## Configuration Management
+
+Configuration shall be separate from measurement data. Configuration items may include:
+- device identifier;
+- sensor identifiers;
+- sensor calibration coefficients;
+- sampling intervals;
+- UART parameters;
+- GPS reference position;
+- expected anchor radius;
+- alert thresholds;
+- sea-condition thresholds;
+- model path;
+- model version;
+- retention limits;
+- and display defaults.
+Configuration changes shall be validated. Invalid configuration shall fall back to documented safe defaults. Configuration version shall be recorded.
+## Calibration
+
+Calibration is required before research measurements are treated as valid.
+### IMU Calibration
+- verify axis mapping;
+- verify stationary offsets;
+- perform vendor-required calibration;
+- record calibration status;
+- and verify mounting alignment.
+### Pressure Calibration
+- establish zero or atmospheric reference as appropriate;
+- compare with known pressure or depth;
+- document sensor depth;
+- evaluate drift;
+- and record coefficients.
+### Wind-Speed Calibration
+- compare with a reference instrument or controlled airflow;
+- document conversion factor;
+- and verify zero-wind response.
+### Wind-Direction Calibration
+- align to documented north reference;
+- verify full rotation;
+- and record angular offset.
+### Battery Calibration
+- compare voltage with a calibrated meter;
+- compare current with a calibrated meter;
+- and document percentage-estimation method.
+### Solar Calibration
+- compare voltage and current with reference measurements;
+- and verify charging-state logic.
+### Temperature Calibration
+- compare with a reference thermometer;
+- document sensor location;
+- and evaluate local heat-source bias.
+## Testing Strategy
+
+Testing is divided into six required categories.
+1. Mechanical testing.
+2. Electrical testing.
+3. Sensor testing.
+4. AI testing.
+5. Dashboard testing.
+6. Communication testing.
+## Mechanical Testing
+
+Required mechanical tests include:
+- visual inspection;
+- flotation test;
+- static stability test;
+- added-load test;
+- roll recovery test;
+- pitch recovery test;
+- stabilizer inspection;
+- arm-deflection observation;
+- tension-cable inspection;
+- ballast-retention test;
+- anchor attachment test;
+- enclosure splash test;
+- cable-strain test;
+- and controlled wave-response test.
+Mechanical acceptance evidence shall include photographs, test conditions, observations, and pass/fail results.
+## Electrical Testing
+
+Required electrical tests include:
+- polarity verification;
+- continuity test;
+- fuse verification;
+- regulator output test;
+- idle-current measurement;
+- normal-load measurement;
+- peak-load measurement;
+- solar charging test;
+- battery discharge test;
+- low-voltage behavior;
+- brownout recovery;
+- ESP32 restart recovery;
+- mini-PC startup behavior;
+- grounding review;
+- and thermal observation.
+## Sensor Testing
+
+Every installed sensor shall be tested for:
+- detection;
+- initialization;
+- accuracy;
+- repeatability;
+- stability;
+- noise;
+- range behavior;
+- missing-data behavior;
+- disconnect behavior;
+- reconnect behavior;
+- timestamp quality;
+- calibration persistence;
+- and dashboard representation.
+Sensor test data shall identify the reference instrument.
+## AI Testing
+
+Required AI tests include:
+- insufficient-history handling;
+- invalid-input handling;
+- stale-input handling;
+- 5-minute prediction evaluation;
+- 15-minute prediction evaluation;
+- baseline comparison;
+- mean absolute error;
+- bias assessment;
+- inference-time measurement;
+- confidence behavior;
+- Calm classification;
+- Moderate classification;
+- Rough classification;
+- boundary stability;
+- and prediction-history integrity.
+Physical-data results shall be separated from simulator results.
+## Dashboard Testing
+
+Required dashboard tests include:
+- desktop layout;
+- tablet layout;
+- mobile layout;
+- light mode;
+- dark mode;
+- readable typography;
+- navigation drawer;
+- current wave display;
+- predicted wave display;
+- confidence display;
+- alert visibility;
+- missing-data state;
+- offline state;
+- API-error state;
+- chart resizing;
+- history rendering;
+- restart control;
+- calibration control;
+- keyboard focus;
+- reduced-motion preference;
+- and local-network loading.
+## Communication Testing
+
+Required communication tests include:
+- UART startup;
+- valid frame transfer;
+- checksum failure;
+- partial frame;
+- sequence gap;
+- high message rate;
+- ESP32 disconnect;
+- mini-PC restart;
+- automatic reconnect;
+- API availability;
+- malformed API request;
+- browser refresh;
+- multiple local clients;
+- and local-network interruption.
+## Test Evidence
+
+Each formal test shall record:
+- test identifier;
+- objective;
+- setup;
+- equipment;
+- software version;
+- hardware version;
+- environmental condition;
+- procedure;
+- expected result;
+- actual result;
+- pass or fail;
+- observations;
+- and corrective action.
+## Acceptance Criteria
+
+Phase 1 acceptance criteria shall be finalized with the adviser before field claims. Minimum categories shall include:
+- stable controlled flotation;
+- no observed water ingress during the approved test;
+- continuous sensor acquisition for the test duration;
+- valid UART transfer;
+- local API availability;
+- responsive dashboard access;
+- explicit current and predicted wave values;
+- recorded AI validation results;
+- correct three-class sea-condition output;
+- power operation for the defined test duration;
+- and recoverable behavior after planned faults.
+Passing a demonstration is not equivalent to passing field validation.
+## Deployment Workflow
+
+### 1. Documentation Check
+- confirm approved design revision;
+- confirm firmware version;
+- confirm model version;
+- confirm calibration records;
+- and confirm test status.
+### 2. Mechanical Inspection
+- inspect main float;
+- inspect four stabilizers;
+- inspect aluminum arms;
+- inspect tension cables;
+- inspect ballast;
+- inspect anchor connection;
+- inspect solar mounts;
+- and inspect enclosure mounting.
+### 3. Electrical Inspection
+- verify battery voltage;
+- verify charging state;
+- verify fuses;
+- verify regulators;
+- verify connectors;
+- and verify enclosure seals.
+### 4. Sensor Inspection
+- verify IMU calibration;
+- verify pressure baseline;
+- verify wind sensors;
+- verify GPS fix;
+- verify battery monitor;
+- verify solar monitor;
+- and verify internal temperature.
+### 5. Communication Inspection
+- verify ESP32 startup;
+- verify UART;
+- verify mini PC;
+- verify REST API;
+- and verify dashboard access.
+### 6. AI Readiness
+- verify model file;
+- verify model version;
+- verify sufficient input history;
+- verify current wave value;
+- verify prediction horizon;
+- verify confidence state;
+- and verify sea-condition output.
+### 7. Deployment
+- record site conditions;
+- record coordinates;
+- establish GPS reference;
+- deploy anchor;
+- verify expected swing radius;
+- verify live telemetry;
+- and begin the approved observation period.
+### 8. Recovery
+- stop data collection safely;
+- record final status;
+- retrieve buoy;
+- inspect for damage;
+- export data;
+- and document anomalies.
+## Maintenance
+
+Maintenance shall be preventive and evidence-based.
+### Before Every Deployment
+- inspect seals;
+- inspect cable glands;
+- inspect fasteners;
+- inspect stabilizers;
+- inspect arms;
+- inspect tension cables;
+- inspect ballast;
+- inspect anchor line;
+- clean solar panels;
+- verify battery;
+- verify sensors;
+- and verify calibration status.
+### After Every Deployment
+- rinse salt residue;
+- inspect corrosion;
+- inspect biofouling;
+- inspect water ingress;
+- inspect connectors;
+- inspect mechanical deformation;
+- export logs;
+- back up research data;
+- and record maintenance actions.
+### Periodic Maintenance
+- recalibrate sensors according to the approved schedule;
+- review battery capacity;
+- review solar performance;
+- inspect enclosure venting;
+- update approved software;
+- and verify stored configuration.
+## Failure Behavior
+
+### Pressure Sensor Failure
+- mark current wave height unavailable if no validated fallback exists;
+- suspend AI prediction when required inputs are missing;
+- log the failure;
+- and notify the dashboard.
+### IMU Failure
+- mark motion data unavailable;
+- reduce wave-estimate quality when appropriate;
+- log the failure;
+- and notify the dashboard.
+### Wind Sensor Failure
+- continue core wave monitoring when possible;
+- mark wind input unavailable;
+- avoid fabricated wind values;
+- and log the failure.
+### GPS Failure
+- continue local wave monitoring;
+- mark position unavailable;
+- suspend drift evaluation;
+- and retry acquisition.
+### UART Failure
+- ESP32 continues acquisition;
+- mini PC marks telemetry stale;
+- API reports degraded state;
+- dashboard reports communication failure;
+- and reconnection is attempted.
+### Mini-PC Failure
+- ESP32 continues basic acquisition and health reporting;
+- AI becomes unavailable;
+- full dashboard becomes unavailable unless an embedded fallback exists;
+- and recovery is attempted without falsifying predictions.
+### Low Battery
+- issue warning;
+- apply approved deterministic power policy;
+- preserve essential monitoring;
+- and record the event.
+### Internal Overtemperature
+- issue warning or critical alert according to thresholds;
+- activate cooling only when hardware is installed and approved;
+- reduce nonessential load when approved;
+- and record peak temperature.
+## Risk Register
+
+| Risk | Impact | Primary Mitigation |
 | --- | --- | --- |
-| 3.1 | 2026-08-05 | Added verified implementation notice and document controls. |
+| Water ingress | Electronics loss | Sealed enclosure, glands, inspection, controlled waterproof testing |
+| Battery depletion | Monitoring interruption | Solar sizing, energy budget, low-power policy, battery alert |
+| Pressure-sensor drift | Incorrect wave estimate | Calibration, baseline tracking, reference comparison |
+| IMU misalignment | Incorrect motion features | Fixed mounting, axis documentation, known-angle calibration |
+| UART data loss | Missing edge data | Framing, sequence numbers, CRC, reconnect logic |
+| Mini-PC failure | AI and full dashboard unavailable | ESP32 independent acquisition and clear degraded state |
+| GPS uncertainty | False drift alert | Accuracy checks, sustained thresholds, mooring-radius allowance |
+| Corrosion | Mechanical or electrical failure | Marine materials, isolation, rinsing, periodic inspection |
+| Biofouling | Sensor bias | Protective placement and cleaning schedule |
+| Excessive wave loading | Structural damage | Stabilizers, ballast, tension cables, controlled validation |
+| Model overfitting | Misleading predictions | Time-ordered validation, baseline comparison, honest reporting |
+| Simulated-data confusion | Invalid research claim | Prominent data-source labels and separated results |
+| Dashboard overload | Poor operator awareness | Focused cards, readable hierarchy, alert prioritization |
+## Engineering Principles
+
+### Focus
+One validated contribution is preferred over many unsupported features.
+### Reliability
+Monitoring reliability has priority over decorative features.
+### Modularity
+Sensors, controller, edge computer, power system, and mechanical components shall be independently serviceable where practical.
+### Transparency
+Measured, estimated, predicted, simulated, and unavailable states shall be distinguishable.
+### Local-First Operation
+Core Phase 1 functions shall not depend on cloud availability.
+### Safety
+Prototype predictions shall not be presented as official warnings.
+### Maintainability
+Clear naming, documentation, tests, and version control are required.
+### Evidence
+Claims shall be supported by tests and recorded results.
+## Repository Structure
+
+The target repository structure is:
+```text
+Project-FALCON/
+├── firmware/
+│   ├── sensors/
+│   ├── power/
+│   ├── gps/
+│   ├── dashboard/
+│   ├── storage/
+│   ├── wifi/
+│   ├── api/
+│   └── ai_bridge/
+├── dashboard/
+│   ├── assets/
+│   ├── models/
+│   ├── scripts/
+│   ├── styles/
+│   └── index.html
+├── mini_pc/
+│   ├── ingestion/
+│   ├── wave_processing/
+│   ├── storage/
+│   ├── alerts/
+│   ├── api/
+│   └── service/
+├── hardware/
+│   ├── schematics/
+│   ├── pinout/
+│   ├── wiring/
+│   └── bom/
+├── mechanical/
+│   ├── cad/
+│   ├── exports/
+│   ├── drawings/
+│   └── assembly/
+├── documentation/
+│   ├── architecture/
+│   ├── calibration/
+│   ├── deployment/
+│   ├── maintenance/
+│   └── research/
+├── api/
+│   ├── schema/
+│   └── examples/
+├── ai/
+│   ├── data/
+│   ├── features/
+│   ├── training/
+│   ├── inference/
+│   ├── evaluation/
+│   └── models/
+├── test/
+│   ├── mechanical/
+│   ├── electrical/
+│   ├── sensors/
+│   ├── ai/
+│   ├── dashboard/
+│   └── communication/
+└── PROJECT_CONTEXT.md
+```
+The current repository may migrate incrementally. Migration shall preserve working code and history. Folders shall not be renamed solely for appearance when doing so breaks active workflows.
+## Documentation Set
+
+Supporting documents should include:
+- system architecture;
+- API specification;
+- UART protocol;
+- firmware specification;
+- sensor specification;
+- calibration guide;
+- power-system specification;
+- hardware schematic;
+- pinout;
+- mechanical assembly guide;
+- deployment guide;
+- test plan;
+- user manual;
+- maintenance guide;
+- security notes;
+- troubleshooting guide;
+- changelog;
+- and version history.
+Supporting documents shall link back to this master context.
+## Documentation Style
+
+Use professional engineering language. Use consistent component names. Use consistent units. Use explicit status labels. Avoid marketing claims that exceed evidence. Avoid describing Future Expansion as
+implemented. Avoid using AI as a vague label for deterministic rules. Avoid duplicate requirements across multiple documents where a reference is sufficient. Use diagrams where they improve clarity. Record
+assumptions. Record unresolved decisions. Record validation evidence.
+## Change Control
+
+Changes to the research focus require adviser approval. Changes to the AI responsibilities require adviser approval. Changes to the core sensor set require engineering review. Changes to the mechanical baseline
+require mechanical review. Changes to the power architecture require electrical review. Breaking API changes require a versioned migration plan. Model changes require a new model version and evaluation record.
+Calibration changes require updated metadata. Every approved change shall update relevant documentation.
+## Phase 1 Roadmap
+
+### Gate 1: Documentation Baseline
+- approve PROJECT_CONTEXT.md v4;
+- align supporting documents;
+- remove conflicting Phase 1 claims;
+- and approve terminology.
+### Gate 2: Hardware Readiness
+- acquire approved sensors;
+- finalize wiring;
+- verify power components;
+- inspect mechanical assembly;
+- and record hardware revisions.
+### Gate 3: Sensor Integration
+- integrate BNO085;
+- integrate water-pressure sensor;
+- integrate wind speed;
+- integrate wind direction;
+- integrate GPS;
+- integrate battery monitor;
+- integrate solar monitor;
+- integrate internal-temperature sensor;
+- and complete calibration.
+### Gate 4: Communication Integration
+- define UART protocol;
+- implement framing;
+- implement validation;
+- test reconnect behavior;
+- and integrate mini-PC ingestion.
+### Gate 5: Wave Estimation
+- collect controlled data;
+- implement pressure preprocessing;
+- synchronize IMU;
+- define wave-height method;
+- compare with reference;
+- and document quality limits.
+### Gate 6: AI Model
+- define input window;
+- create baseline;
+- select one operational model;
+- train with time-ordered data;
+- validate 5-minute horizon;
+- validate 15-minute horizon;
+- implement three-class output;
+- and document limitations.
+### Gate 7: Dashboard and API
+- migrate to approved endpoints;
+- simplify dashboard cards;
+- remove unrelated predictions;
+- implement current-versus-predicted view;
+- implement histories;
+- implement settings;
+- and complete responsive testing.
+### Gate 8: Integrated Testing
+- complete mechanical tests;
+- complete electrical tests;
+- complete sensor tests;
+- complete AI tests;
+- complete dashboard tests;
+- complete communication tests;
+- and resolve critical defects.
+### Gate 9: Controlled Deployment
+- complete readiness review;
+- perform controlled deployment;
+- record data;
+- recover system;
+- analyze results;
+- and document conclusions.
+## Success Metrics
+
+Project success shall be evaluated against focused metrics.
+### Monitoring Metrics
+- percentage of expected samples acquired;
+- percentage of valid pressure samples;
+- percentage of valid IMU samples;
+- GPS availability;
+- UART delivery rate;
+- dashboard availability;
+- and local storage continuity.
+### Wave Metrics
+- wave-estimate agreement with reference;
+- estimator bias;
+- estimator repeatability;
+- and valid-estimate coverage.
+### AI Metrics
+- 5-minute prediction MAE;
+- 15-minute prediction MAE;
+- baseline comparison;
+- valid-prediction coverage;
+- inference latency;
+- and sea-condition classification performance.
+### Power Metrics
+- average consumption;
+- peak consumption;
+- solar energy collected;
+- overnight reserve;
+- and operation during the test duration.
+### Usability Metrics
+- dashboard task completion;
+- alert visibility;
+- mobile readability;
+- desktop readability;
+- and correct interpretation of current versus predicted values.
+## Future Expansion
+
+Everything in this section is outside the Phase 1 baseline. Future work shall not be mixed into Phase 1 claims.
+### Environmental Sensors
+- pH;
+- salinity;
+- turbidity;
+- dissolved oxygen;
+- rain;
+- UV;
+- hydrophone;
+- current meter;
+- and Water Quality Index.
+### Expanded AI
+- weather prediction;
+- ocean-current prediction;
+- typhoon prediction;
+- storm prediction;
+- fish prediction;
+- maintenance prediction;
+- self-learning AI;
+- multiple operational AI models;
+- cloud AI;
+- camera AI;
+- computer vision;
+- and water-quality AI.
+### Communications
+- LTE;
+- LoRa;
+- satellite communication;
+- multi-buoy networking;
+- mesh networking;
+- and remote fleet telemetry.
+### Platforms
+- cloud dashboard;
+- mobile application;
+- fleet-management portal;
+- remote configuration;
+- and cloud archival.
+### Mechanical and Operational Expansion
+- multi-buoy deployment;
+- alternate mooring arrangements;
+- larger deployment endurance;
+- harsher-environment qualification;
+- and additional service tooling.
+### Autonomous Functions
+- autonomous decision making;
+- autonomous navigation;
+- and autonomous repositioning.
+These functions require a separate safety case and are not inherited automatically from Phase 1.
+## Explicitly Removed v3 Claims
+
+The following concepts are no longer part of the Phase 1 description:
+- general-purpose marine AI;
+- national autonomous buoy network as a current objective;
+- cloud platform as a required subsystem;
+- mobile application as a required subsystem;
+- remote telemetry as a required Phase 1 outcome;
+- multi-model AI operation;
+- autonomous maintenance prediction;
+- harmful algal bloom prediction;
+- marine debris detection;
+- camera processing;
+- satellite communication;
+- mesh networking;
+- and broad disaster-monitoring capability.
+They remain only as possible Future Expansion items.
+## Research Reporting Rules
+
+Reports shall identify the data source. Reports shall separate simulator data from physical sensor data. Reports shall identify the prediction horizon. Reports shall state the number of samples. Reports shall
+state the reference method. Reports shall state calibration status. Reports shall state environmental conditions. Reports shall state model version. Reports shall state known limitations. Reports shall not
+generalize beyond the tested conditions without justification. Reports shall not claim tsunami, typhoon, storm, or weather prediction. Reports shall not claim operational public-safety readiness.
+## Demonstration Rules
+
+Demonstration mode may use simulated sensor data. Simulated data shall be labeled clearly. Presentation predictions shall be labeled clearly. Fault scenarios may be injected for demonstration. Injected faults
+shall not be confused with hardware failures. The digital twin may visualize simulated motion. The demonstration shall explain that physical sensors and mini-PC hardware may still be pending. The demonstration
+shall focus on architecture, data flow, usability, and planned validation.
+## Traceability Matrix
+
+| Research need | System element | Verification |
+| --- | --- | --- |
+| Real-time wave monitoring | Pressure sensor, IMU, ESP32 | Sensor and communication tests |
+| Short-term prediction | Mini-PC AI service | Time-ordered AI evaluation |
+| Sea-condition class | AI classifier | Classification test set |
+| Local operation | REST API and dashboard | Offline local-network test |
+| Solar operation | Solar, MPPT, battery | Electrical endurance test |
+| Stable platform | Float, stabilizers, arms, cables, ballast | Mechanical testing |
+| Position awareness | GPS | Reference-position test |
+| Transparent prediction | Current/predicted dashboard cards | Dashboard usability test |
+| Fault awareness | Alerts and logs | Injected-fault test |
+| Maintainability | Modular hardware and software | Inspection and replacement exercise |
+## Open Engineering Decisions
+
+The exact mini-PC model remains to be finalized. The exact water-pressure sensor remains to be finalized. The exact wind-speed sensor remains to be finalized. The exact wind-direction sensor remains to be
+finalized. The exact GPS module remains to be finalized. The exact battery-monitor device remains to be finalized. The exact solar-monitor device remains to be finalized. The exact internal-temperature sensor
+remains to be finalized. The final sampling rates remain to be validated. The final UART baud rate remains to be approved. The final wave-height estimator remains to be validated. The final AI model remains to
+be selected after data collection. The final Calm, Moderate, and Rough thresholds remain to be validated. The final power budget remains to be measured. The final field-test site and permits remain to be
+confirmed.
+## Definition of Done for Phase 1
+
+Phase 1 is complete only when:
+- the approved mechanical baseline is assembled;
+- the approved core sensors are installed;
+- calibration records exist;
+- ESP32 acquisition is operational;
+- UART communication is operational;
+- mini-PC edge services are operational;
+- the approved REST API is operational;
+- current wave height is validated against a reference;
+- 5–15 minute prediction is evaluated on physical data;
+- Calm, Moderate, and Rough classification is evaluated;
+- the simplified dashboard is operational;
+- histories and logs are retained;
+- solar-power behavior is tested;
+- all six required testing categories are documented;
+- critical defects are resolved or explicitly accepted;
+- and research limitations are documented.
+## Version History
+
+### v1
+- initial concept;
+- basic IoT buoy direction;
+- and early local monitoring ideas.
+### v2
+- HDPE mechanical direction;
+- ESP32 dashboard concept;
+- edge-computing concept;
+- and expanded power architecture.
+### v3
+- four-stabilizer mechanical baseline;
+- tension-cable reinforcement;
+- modular firmware direction;
+- broad AI and cloud concepts;
+- and comprehensive but overly broad master context.
+### v4.0
+- narrowed research to real-time coastal monitoring;
+- narrowed AI to 5–15 minute wave-height prediction and three-class sea-condition classification;
+- defined approved Phase 1 sensors;
+- moved unrelated sensors and AI capabilities to Future Expansion;
+- simplified final architecture;
+- simplified API endpoint set;
+- simplified dashboard information architecture;
+- retained approved mechanical and power baselines;
+- clarified current implementation versus planned integration;
+- rewrote the research gap and objectives;
+- strengthened validation and transparency requirements;
+- and established this document as the official v4 source of truth.
+## Final Authority Statement
+
+PROJECT_CONTEXT.md v4.0 is the authoritative Phase 1 engineering context for Project FALCON. All firmware shall align with its focused sensor and architecture boundaries. All dashboard work shall align with its
+simplified information architecture. All AI work shall remain limited to short-term wave-height prediction and Calm, Moderate, or Rough classification. All API work shall migrate toward the approved eight
+endpoints. All mechanical work shall preserve the approved Phase 1 baseline unless formally reviewed. All research reporting shall distinguish implemented, planned, simulated, and future capabilities. Any
+proposal outside this baseline belongs in Future Expansion until approved through change control. This document supersedes PROJECT_CONTEXT.md v3.

@@ -1,0 +1,9 @@
+{
+  "autodeskProduct": "Fusion360",
+  "type": "script",
+  "author": "PROJECT FALCON-01",
+  "description": {
+    "": "Safely tilt four solar panels inward and add eight editable support struts"
+  },
+  "supportedOS": "windows|mac"
+}

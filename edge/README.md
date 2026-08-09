@@ -1,75 +1,67 @@
-# FALCON Edge Service
+# FALCON Edge Service v4.0
 
-Laptop-first foundation for the future FALCON mini PC. It collects telemetry,
-validates sensor values, evaluates deterministic safety rules, and stores every
-sample in SQLite. It uses only the Python standard library.
+Local-first Python service for the Project FALCON Mini PC. It collects ESP32 telemetry, validates approved sensors, evaluates deterministic alerts, stores operational records in SQLite, serves the dashboard, and provides AI-assisted wave-height predictions.
 
-## Run with simulated telemetry
+## Run the Presentation Simulator
 
 From the repository root:
 
 ```powershell
-
 cd "C:\Users\Admin\Documents\PlatformIO\Projects\Project FALCON-01\edge"
 python -m falcon_edge.service
-
 ```
 
-Open the integrated dashboard:
+Open `http://127.0.0.1:8765/`.
 
-- `http://127.0.0.1:8765/`
+## Approved v4 API
 
-The service also provides these local endpoints:
+- `GET /status`
+- `GET /wave`
+- `GET /gps`
+- `GET /battery`
+- `GET /solar`
+- `GET /ai?horizon=5`
+- `GET /ai?horizon=15`
+- `POST /restart`
+- `POST /calibrate`
 
-- `http://127.0.0.1:8765/health`
-- `http://127.0.0.1:8765/api/latest`
-- `http://127.0.0.1:8765/api/history?limit=20`
-- `http://127.0.0.1:8765/api/alerts?limit=20`
-- `http://127.0.0.1:8765/api/scenario`
-- `http://127.0.0.1:8765/api/forecast`
-- `http://127.0.0.1:8765/api/forecast/validation`
+Dashboard v5 presentation extensions:
 
-The dashboard's virtual sensor lab can switch between normal operation, rough
-sea, low battery, overheating, and sensor-failure scenarios. Generated warnings
-are evaluated by the real rules engine and persisted in SQLite.
+- `GET /prediction?horizon=10`
+- `GET /logs?limit=60`
 
-The overview also includes a presentation-only trend forecaster for wave
-height, wind speed, water level, water temperature, and battery reserve at
-5-, 15-, and 30-minute horizons. It is intentionally marked experimental and
-must be retrained and validated with real sensor data before field use.
+The route remains `GET /ai`; `horizon` selects one of the two approved prediction windows. Legacy `/api/...` routes remain temporarily for presentation compatibility. The dashboard uses `/api/scenario` only for the clearly labeled virtual sensor lab.
 
-The validation endpoint performs a rolling one-step backtest over recent
-telemetry and reports mean absolute error, direction accuracy, an overall demo
-model score, and predicted-versus-actual wave comparisons.
+The AI predicts wave height only. It returns current and predicted values, confidence, model status, and Calm, Moderate, or Rough classification. It does not predict other sensors and is not validated for safety decisions.
 
-The database is created at `edge/data/falcon.db`. This runtime data is ignored
-by Git.
+Presentation scenarios use gradual state transitions. Rough Sea ramps wave height, wind, roll, and pitch over multiple samples and settles gradually when Normal operation is restored, preventing unrealistic graph steps.
+
+## Local Database
+
+The default database is `edge/data/falcon.db`. Startup performs a non-destructive additive schema migration.
+
+- `telemetry` — raw timestamped source payloads
+- `alerts` — deterministic alerts linked to telemetry
+- `wave_predictions` — stored 5- and 15-minute predictions
+- `system_events` — audited restart and calibration requests
+
+Runtime database files are ignored by Git.
 
 ## Read from the ESP32
 
-Connect the computer to the `FALCON-01` Wi-Fi network, then run:
+Connect the Mini PC or laptop to the ESP32 endpoint and run:
 
 ```powershell
 python -m falcon_edge.service --source esp32 --esp32-url http://192.168.4.1
 ```
 
-The collector intentionally records connection errors instead of silently
-substituting fake readings when ESP32 mode is selected.
+ESP32 connection failures are reported explicitly. The service never silently replaces physical-source failures with simulated readings.
 
-## Run tests
+## Tests
 
 ```powershell
 cd edge
 python -m unittest discover -s tests -v
 ```
 
-## Current rules
-
-- Valid physical ranges for battery, water temperature, tilt, and wave level
-- Low/critical battery reserve
-- High water temperature
-- High/critical station tilt
-- High wave activity
-
-Thresholds are prototype defaults and must be reviewed against the selected
-sensors and deployment safety requirements before field use.
+The test suite covers the two approved prediction horizons, wave-only output, sea-condition classification, invalid horizons, wave backtesting, sensor validation, and presentation alert scenarios.
