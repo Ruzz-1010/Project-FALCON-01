@@ -1410,3 +1410,32 @@ html[data-theme="light"] body {
 @media (max-width: 820px) {
   html[data-theme="dark"] body,html[data-theme="light"] body { background-attachment: scroll; background-position: 62% center; }
 }
+
+/* Collapsed-sidebar liquid icon state */
+@media (min-width: 821px) {
+  body.sidebar-collapsed .nav-icon::before {
+    position: absolute;
+    z-index: 0;
+    right: -11px;
+    bottom: -50px;
+    width: 62px;
+    height: 62px;
+    border-radius: 43% 48% 46% 51%;
+    background: linear-gradient(145deg,rgba(79,213,231,.72),rgba(113,216,155,.48));
+    box-shadow: inset 0 0 13px rgba(255,255,255,.16),0 -3px 10px rgba(79,213,231,.12);
+    content: "";
+    opacity: .4;
+    transition: bottom .65s cubic-bezier(.2,.75,.22,1),opacity .35s ease;
+    animation: sidebarLiquid 6s linear infinite;
+  }
+  body.sidebar-collapsed .nav-icon svg { position: relative; z-index: 2; transition: color .3s ease,transform .3s ease; }
+  body.sidebar-collapsed .nav-icon::after { z-index: 3; }
+  body.sidebar-collapsed .nav-item:hover .nav-icon::before { bottom: -42px; opacity: .65; }
+  body.sidebar-collapsed .nav-item.is-active .nav-icon::before { bottom: -27px; opacity: .92; }
+  body.sidebar-collapsed .nav-item.is-active .nav-icon svg { color: #03211f; filter: drop-shadow(0 1px rgba(255,255,255,.22)); }
+  body.sidebar-collapsed .nav-item.icon-activated .nav-icon::before { animation: sidebarLiquid 6s linear infinite,sidebarLiquidSplash .65s ease-out; }
+  html[data-theme="light"] body.sidebar-collapsed .nav-icon::before { background: linear-gradient(145deg,rgba(9,151,167,.78),rgba(24,160,115,.62)); box-shadow: inset 0 0 12px rgba(255,255,255,.25),0 -3px 9px rgba(8,127,114,.12); }
+}
+@keyframes sidebarLiquid { to { transform: rotate(360deg); } }
+@keyframes sidebarLiquidSplash { 0%,100% { border-radius: 43% 48% 46% 51%; } 42% { border-radius: 58% 35% 61% 38%; } 72% { border-radius: 36% 62% 39% 57%; } }
+@media (prefers-reduced-motion: reduce) { body.sidebar-collapsed .nav-icon::before { animation: none !important; transition: none; } }
