@@ -19,6 +19,7 @@ let gpsMap=null,buoyMapMarker=null,deploymentMapMarker=null,anchorMapCircle=null
 const scenarioLabels={normal:"NORMAL OPERATION",rough_sea:"ROUGH SEA",low_battery:"LOW BATTERY",overheating:"INTERNAL OVERHEATING",sensor_fault:"WAVE SENSOR FAILURE"};
 
 const titles = {overview:"Mission control",wave:"Wave intelligence",motion:"Buoy motion",gps:"GPS and drift",power:"Power system",system:"System health",activity:"Alerts and events",logs:"Operational logs",settings:"Station settings"};
+window.lucide?.createIcons();
 const number = (value, digits = 1) => typeof value === "number" && Number.isFinite(value) ? value.toFixed(digits) : "--";
 const statusClass = (value) => ["ONLINE","NORMAL","CONNECTED","SECURE","CHARGING","READY"].includes(value) ? "good-text" : ["CRITICAL","OFFLINE","DISCONNECTED","ROUGH"].includes(value) ? "bad-text" : "warn-text";
 function continuousWaveSegment(items,maxJump=.85){const valid=items.filter(item=>Number.isFinite(item.waveHeight)),segment=[];let newer=null;for(let index=valid.length-1;index>=0;index--){const item=valid[index];if(newer!==null&&Math.abs(item.waveHeight-newer)>maxJump)break;segment.unshift(item);newer=item.waveHeight;}return segment;}

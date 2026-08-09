@@ -206,6 +206,7 @@ def make_handler(runtime: EdgeRuntime, store: TelemetryStore):
         "/vendor/GLTFLoader.js": ("vendor/GLTFLoader.js", "application/javascript; charset=utf-8"),
         "/vendor/leaflet.css": ("vendor/leaflet.css", "text/css; charset=utf-8"),
         "/vendor/leaflet.js": ("vendor/leaflet.js", "application/javascript; charset=utf-8"),
+        "/vendor/lucide.min.js": ("vendor/lucide.min.js", "application/javascript; charset=utf-8"),
         "/utils/BufferGeometryUtils.js": ("utils/BufferGeometryUtils.js", "application/javascript; charset=utf-8"),
         "/models/FALCON-01.glb": ("models/FALCON-01.glb", "model/gltf-binary"),
     }
