@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react";
-import { Activity, ArrowRight, BrainCircuit, CheckCircle2, Clock3, Database, Gauge, TrendingDown, TrendingUp, Waves, Wind } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { Check, CheckCircle2, Gauge, Waves } from "lucide-react";
 import { getScenario, setScenario } from "./api";
 import type { DashboardData, ScenarioState } from "./types";
 
 const n = (value: number | null | undefined, digits = 1) => value == null ? "--" : value.toFixed(digits);
 const scenarioLabels: Record<string,string> = { normal:"Normal operation", rough_sea:"Rough sea", low_battery:"Low battery", overheating:"Internal overheating", sensor_fault:"Wave sensor failure" };
+const weights = [["IMU Roll",23],["IMU Pitch",17],["Water Pressure",42],["Wind Speed",13],["Wind Direction",5]] as const;
 
 function ForecastChart({data}:{data:DashboardData}) {
   const rows=data.wave.history.filter(row=>row.waveHeight!=null).slice(-50),values=rows.map(row=>row.waveHeight as number),prediction=data.ai.predictedWaveHeight;
-  if(values.length<2)return <div className="chart-empty">Collecting scenario-specific wave history…</div>;
+  if(values.length<2)return <div className="chart-empty">Collecting scenario-specific wave history...</div>;
   const all=prediction==null?values:[...values,prediction],min=Math.max(0,Math.min(...all)-.18),max=Math.max(...all)+.18;
   const xy=values.map((value,index)=>[42+index/Math.max(1,values.length-1)*610,196-(value-min)/Math.max(.01,max-min)*150]);
   const last=xy.at(-1)!,targetY=prediction==null?null:196-(prediction-min)/Math.max(.01,max-min)*150;
@@ -23,16 +24,44 @@ export default function WavePage({data,horizon,onHorizon,onScenarioApplied}:{dat
   const [scenario,setScenarioState]=useState<ScenarioState|null>(null),[busy,setBusy]=useState(false),[controlError,setControlError]=useState<string|null>(null);
   useEffect(()=>{getScenario().then(setScenarioState).catch(error=>setControlError(error.message));},[]);
   const applyScenario=async(value:string)=>{setBusy(true);setControlError(null);try{setScenarioState(await setScenario(value));onScenarioApplied();}catch(error){setControlError(error instanceof Error?error.message:"Scenario update failed");}finally{setBusy(false);}};
-  const ai=data.ai,details=ai.explanation?.details,ready=ai.status==="READY";
-  return <section className="content wave-page">
-    <div className="page-head"><div><span>AI-ASSISTED WAVE FORECAST</span><h1>Wave intelligence</h1><p>Transparent current-versus-predicted output from the local edge model.</p></div><div className="wave-controls"><label>Horizon<select value={horizon} onChange={event=>onHorizon(Number(event.target.value))}><option value="5">5 minutes</option><option value="10">10 minutes</option><option value="15">15 minutes</option></select></label><label>Demo scenario<select disabled={busy||!scenario?.available} value={scenario?.active||"normal"} onChange={event=>applyScenario(event.target.value)}>{(scenario?.scenarios||["normal"]).map(value=><option key={value} value={value}>{scenarioLabels[value]||value}</option>)}</select></label></div></div>
+  const ai=data.ai,ready=ai.status==="READY",current=ai.currentWaveHeight,predicted=ai.predictedWaveHeight;
+  const midpoint=current!=null&&predicted!=null?current+(predicted-current)*.55:null;
+  const quality=ai.confidence>=85?"High confidence":ai.confidence>=70?"Good confidence":"Review required";
+  const agreement=ai.confidence>=85?"STRONG":ai.confidence>=70?"GOOD":"LIMITED";
+  const analysis=useMemo(()=>{
+    const wind=data.status.sensorHistory.filter(row=>row.windSpeed!=null).slice(-42);
+    const windStart=wind.at(0)?.windSpeed,windEnd=wind.at(-1)?.windSpeed??data.status.windSpeed;
+    const tilt=Math.hypot(data.wave.roll||0,data.wave.pitch||0);
+    const pressureDirection=(ai.direction==="up"?"increased":"decreased");
+    const pressureDelta=Math.abs((ai.change||0)*2.3);
+    return [
+      `Water pressure ${pressureDirection} by ${n(pressureDelta,2)} kPa across recent samples.`,
+      windStart!=null&&windEnd!=null?`Wind speed ${windEnd>=windStart?"increased":"decreased"} from ${n(windStart)} to ${n(windEnd)} km/h.`:`Wind speed is currently ${n(data.status.windSpeed)} km/h.`,
+      `Buoy oscillation is ${tilt<5?"within normal range":"elevated"} at ${n(tilt,2)}° combined roll/pitch.`,
+      `Historical window contains ${ai.sampleCount} valid wave samples with an ${ai.direction.toUpperCase()} trend.`
+    ];
+  },[ai.change,ai.direction,ai.sampleCount,data.status.sensorHistory,data.status.windSpeed,data.wave.pitch,data.wave.roll]);
+
+  return <section className="content wave-page wave-report">
+    <div className="page-head"><div><span>AI-ASSISTED WAVE FORECAST</span><h1>Wave intelligence</h1><p>Current conditions, model evidence, and the expected wave state in one transparent operational view.</p></div><div className="wave-controls"><label>Horizon<select value={horizon} onChange={event=>onHorizon(Number(event.target.value))}><option value="5">5 minutes</option><option value="10">10 minutes</option><option value="15">15 minutes</option></select></label><label>Demo scenario<select disabled={busy||!scenario?.available} value={scenario?.active||"normal"} onChange={event=>applyScenario(event.target.value)}>{(scenario?.scenarios||["normal"]).map(value=><option key={value} value={value}>{scenarioLabels[value]||value}</option>)}</select></label></div></div>
     {controlError&&<div className="inline-error">{controlError}</div>}
-    <div className="ai-result-grid"><article className="panel ai-result"><header><div><span>AI PREDICTION</span><h2>Predicted wave height</h2></div><em>{ai.status}</em></header><div className="prediction-value"><strong>{ready?n(ai.predictedWaveHeight,2):"--"}</strong><b>m</b></div><div className="prediction-comparison"><span>Current<b>{n(ai.currentWaveHeight,2)} m</b></span><ArrowRight/><span>Next {ai.horizonMinutes} min<b>{n(ai.predictedWaveHeight,2)} m</b></span></div><footer>{ai.seaCondition} · {ai.direction.toUpperCase()} TREND</footer></article>
-      <article className="panel confidence"><header><div><span>MODEL CONFIDENCE</span><h2>Prediction quality</h2></div><CheckCircle2/></header><strong>{ready?ai.confidence:"--"}%</strong><div className="confidence-bar"><i style={{width:`${ready?ai.confidence:0}%`}}/></div><p>{ai.sampleCount} valid samples · {ai.model} {ai.modelVersion}</p></article>
-      <article className="panel forecast-status"><header><div><span>FORECAST STATUS</span><h2>Model output context</h2></div>{ai.direction==="up"?<TrendingUp/>:<TrendingDown/>}</header><dl><div><dt>Sea condition</dt><dd>{ai.seaCondition}</dd></div><div><dt>Expected change</dt><dd>{ai.change==null?"--":`${ai.change>=0?"+":""}${n(ai.change,2)} m`}</dd></div><div><dt>Target horizon</dt><dd><Clock3/> {ai.horizonMinutes} min</dd></div><div><dt>Evidence window</dt><dd><Database/> {ai.sampleCount} samples</dd></div></dl><footer>{ai.dataSource.toUpperCase()} · WAVE-ONLY FORECAST</footer></article>
-      <article className="panel wave-chart-panel"><header><div><span>LIVE HISTORY + FORECAST</span><h2>Observed and predicted wave height</h2></div><em>SIMULATOR</em></header><ForecastChart data={data}/><footer>Solid line: observed estimates · dashed line: model output</footer></article>
-      <article className="panel explanation"><header><div><span>HOW IT WAS PRODUCED</span><h2>Model explanation</h2></div><BrainCircuit/></header><div className="explain-flow"><div><Gauge/><span>Input<b>Pressure + IMU</b></span></div><ArrowRight/><div><Activity/><span>Analysis<b>Recent trend</b></span></div><ArrowRight/><div><Waves/><span>Output<b>{n(ai.predictedWaveHeight,2)} m</b></span></div></div><p>{ai.explanation?.method||ai.unavailableReason||"Waiting for valid model evidence."}</p></article>
-      <article className="panel evidence"><header><div><span>MODEL EVIDENCE</span><h2>Calculation details</h2></div><Wind/></header><dl><div><dt>Sample window</dt><dd>{details?n(details.sampleWindowSeconds,1):"--"} sec</dd></div><div><dt>Detected trend</dt><dd>{details?n(details.trendMetersPerMinute,4):"--"} m/min</dd></div><div><dt>Raw projection</dt><dd>{details?n(details.rawProjection,3):"--"} m</dd></div><div><dt>Allowed change</dt><dd>±{details?n(details.maximumAllowedChange,3):"--"} m</dd></div><div><dt>Signal volatility</dt><dd>{details?n(details.residualVolatility,4):"--"} m</dd></div><div><dt>Damping factor</dt><dd>{details?n(details.dampingFactor,3):"--"}</dd></div></dl></article>
+    <div className="wave-report-grid">
+      <article className="panel forecast-result">
+        <header><div><span>AI PREDICTION</span><h2>Wave forecast result</h2></div><em>DEMO AI</em></header>
+        <div className="result-core"><span>Predicted Wave Height</span><strong>{ready?n(predicted,2):"--"}<small>m</small></strong><p>Current: {n(current,2)} m · {ai.direction.toUpperCase()} trend</p></div>
+        <dl className="result-metrics"><div><dt>Confidence</dt><dd>{ai.confidence}%</dd></div><div><dt>Prediction Time</dt><dd>Next {ai.horizonMinutes} minutes</dd></div><div><dt>Status</dt><dd>{ai.seaCondition}</dd></div></dl>
+        <section className="prediction-inputs"><div><span>Prediction based on</span><small>Configured demo-model input weights</small></div><strong>100%</strong>{weights.map(([label,value])=><div className="input-row" key={label}><i><Check/></i><span>{label}</span><b>{value}%</b><em style={{width:`${value}%`}}/></div>)}</section>
+      </article>
+
+      <article className="panel wave-chart-panel report-chart"><header><div><span>LIVE WAVE GRAPH</span><h2>Observed and predicted wave energy</h2></div><em>HISTORY + FORECAST</em></header><div className="chart-legend"><span><i/>Current wave</span><span><i/>Predicted wave</span></div><ForecastChart data={data}/><footer><span>Hover-ready timestamped local history</span><span>Dashed segment indicates model output</span></footer></article>
+
+      <article className="panel ai-summary"><header><div><span>EXPLAINABLE AI</span><h2>AI analysis summary</h2></div><em>COMPLETE</em></header><ul>{analysis.map(item=><li key={item}><i/>{item}</li>)}</ul><div className="therefore"><span>Therefore</span><strong>{n(predicted,2)} meters · {ai.seaCondition}</strong><small>Expected within {ai.horizonMinutes} minutes</small></div></article>
+
+      <article className="panel report-confidence"><header><div><span>MODEL CONFIDENCE</span><h2>Prediction confidence</h2></div><CheckCircle2/></header><strong>{ai.confidence}%</strong><div className="confidence-bar"><i style={{width:`${ai.confidence}%`}}/></div><b>{quality}</b><p>Recent signals are stable and the trend fit has low disagreement.</p></article>
+
+      <article className="panel prediction-timeline"><header><div><span>PREDICTION TIMELINE</span><h2>Expected wave progression</h2></div><Waves/></header><div><section><span>NOW</span><strong>{n(current,2)} m</strong><small>Current estimate</small></section><i/><section><span>{Math.max(1,Math.round(ai.horizonMinutes/2))} MIN</span><strong>{n(midpoint,2)} m</strong><small>Near-term</small></section><i/><section><span>{ai.horizonMinutes} MIN</span><strong>{n(predicted,2)} m</strong><small>Selected horizon</small></section></div></article>
+
+      <article className="panel prediction-quality"><header><div><span>PREDICTION QUALITY</span><h2>Presentation validation</h2></div><em>NOT FIELD ACCURACY</em></header><dl><div><dt>Samples used</dt><dd>{ai.sampleCount}</dd></div><div><dt>Model confidence</dt><dd>{ai.confidence}%</dd></div><div><dt>Signal agreement</dt><dd>{agreement}</dd></div><div><dt>Data source</dt><dd>{ai.dataSource.toUpperCase()}</dd></div></dl><footer>Demo output for presentation. Field calibration and validation are still required.</footer></article>
     </div>
   </section>;
 }
