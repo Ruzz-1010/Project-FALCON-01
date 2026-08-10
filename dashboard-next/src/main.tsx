@@ -14,5 +14,6 @@ import "./logs.css";
 import "./settings.css";
 import "./polish.css";
 import "./light.css";
+import "./sidebar-control.css";
 
 createRoot(document.getElementById("root")!).render(<StrictMode><App /></StrictMode>);
