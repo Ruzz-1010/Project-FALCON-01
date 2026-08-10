@@ -5,11 +5,12 @@ import type { DashboardData } from "./types";
 import WavePage from "./WavePage";
 const MotionPage = lazy(() => import("./MotionPage"));
 const GpsPage = lazy(() => import("./GpsPage"));
+const PowerPage = lazy(() => import("./PowerPage"));
 
 const navigation = [
   ["overview", "Overview", "Mission control", LayoutDashboard, true], ["wave", "Wave AI", "Current & predicted", Waves, true],
   ["motion", "Motion", "BNO085 orientation", Move3d, true], ["gps", "GPS", "Position & drift", MapPin, true],
-  ["power", "Power", "Battery & solar", BatteryCharging, false], ["system", "System", "Health & settings", ShieldCheck, false],
+  ["power", "Power", "Battery & solar", BatteryCharging, true], ["system", "System", "Health & settings", ShieldCheck, false],
   ["activity", "Alerts", "Operational events", Bell, false], ["logs", "Logs", "History & exports", FileText, false],
   ["settings", "Settings", "Station configuration", Settings, false]
 ] as const;
@@ -38,7 +39,7 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
-  const [page, setPage] = useState<"overview"|"wave"|"motion"|"gps">("overview");
+  const [page, setPage] = useState<"overview"|"wave"|"motion"|"gps"|"power">("overview");
   const [horizon, setHorizon] = useState(10);
   const [refreshToken, setRefreshToken] = useState(0);
   const [theme, setTheme] = useState<"dark" | "light">(() => (localStorage.getItem("falcon-next-theme") as "dark" | "light") || "dark");
@@ -56,13 +57,13 @@ function App() {
     <button className="scrim" onClick={() => setSidebarOpen(false)} aria-label="Close navigation" />
     <aside className="sidebar">
       <div className="brand"><img src="/falcon-logo.jpg" alt="FALCON logo" /><div><strong>FALCON-01</strong><span>COASTAL STATION</span></div></div>
-      <nav>{navigation.map(([key, label, detail, Icon, ready]) => <button key={key} className={`nav-item ${page === key ? "is-active" : ""}`} disabled={!ready} onClick={()=>{if(ready){setPage(key as "overview"|"wave"|"motion"|"gps");setSidebarOpen(false);}}} title={!ready ? `${label} migration pending` : label}><Icon /><span><b>{label}</b><small>{ready ? detail : "Migration pending"}</small></span></button>)}</nav>
-      <div className="side-foot"><i className={online ? "online" : ""} /><span><b>{online ? "EDGE ONLINE" : "EDGE CONNECTING"}</b><small>React migration · Phase 4</small></span></div>
+      <nav>{navigation.map(([key, label, detail, Icon, ready]) => <button key={key} className={`nav-item ${page === key ? "is-active" : ""}`} disabled={!ready} onClick={()=>{if(ready){setPage(key as "overview"|"wave"|"motion"|"gps"|"power");setSidebarOpen(false);}}} title={!ready ? `${label} migration pending` : label}><Icon /><span><b>{label}</b><small>{ready ? detail : "Migration pending"}</small></span></button>)}</nav>
+      <div className="side-foot"><i className={online ? "online" : ""} /><span><b>{online ? "EDGE ONLINE" : "EDGE CONNECTING"}</b><small>React migration · Phase 5</small></span></div>
     </aside>
     <main>
-      <header className="topbar"><div className="title"><button className="mobile-menu" onClick={() => setSidebarOpen(true)}><Menu /></button><button className="collapse" onClick={() => setCollapsed(!collapsed)}>{collapsed ? <Menu /> : <X />}</button><div><span>PROJECT FALCON / DASHBOARD NEXT</span><h1>{page === "wave" ? "Wave intelligence" : page === "motion" ? "Buoy motion" : page === "gps" ? "GPS and drift" : "Mission control"}</h1></div></div><div className="top-actions"><div><span>LAST UPDATE</span><b>{lastUpdate}</b></div><div><span>SOURCE</span><b>{data?.status.dataSource?.toUpperCase() || "--"}</b></div><button onClick={() => setTheme(theme === "dark" ? "light" : "dark")} aria-label="Toggle theme">{theme === "dark" ? <Sun /> : <Moon />}</button><span className={`live ${online ? "is-online" : ""}`}><i />{online ? "LIVE" : "OFFLINE"}</span></div></header>
+      <header className="topbar"><div className="title"><button className="mobile-menu" onClick={() => setSidebarOpen(true)}><Menu /></button><button className="collapse" onClick={() => setCollapsed(!collapsed)}>{collapsed ? <Menu /> : <X />}</button><div><span>PROJECT FALCON / DASHBOARD NEXT</span><h1>{page === "wave" ? "Wave intelligence" : page === "motion" ? "Buoy motion" : page === "gps" ? "GPS and drift" : page === "power" ? "Power system" : "Mission control"}</h1></div></div><div className="top-actions"><div><span>LAST UPDATE</span><b>{lastUpdate}</b></div><div><span>SOURCE</span><b>{data?.status.dataSource?.toUpperCase() || "--"}</b></div><button onClick={() => setTheme(theme === "dark" ? "light" : "dark")} aria-label="Toggle theme">{theme === "dark" ? <Sun /> : <Moon />}</button><span className={`live ${online ? "is-online" : ""}`}><i />{online ? "LIVE" : "OFFLINE"}</span></div></header>
       {error && <div className="error-banner"><Activity /> <span><b>Edge connection interrupted</b>{error}</span></div>}
-      {!data ? <div className="loading"><img src="/falcon-logo.jpg" alt="" /><b>Connecting to FALCON edge service</b><span>Loading verified telemetry…</span></div> : page === "wave" ? <WavePage data={data} horizon={horizon} onHorizon={setHorizon} onScenarioApplied={()=>setRefreshToken(value=>value+1)}/> : page === "motion" ? <Suspense fallback={<div className="loading"><img src="/falcon-logo.jpg" alt=""/><b>Loading digital twin</b><span>Preparing Fusion CAD and marine scene…</span></div>}><MotionPage data={data}/></Suspense> : page === "gps" ? <Suspense fallback={<div className="loading"><img src="/falcon-logo.jpg" alt=""/><b>Loading coastal map</b><span>Preparing Puerto Princesa position view…</span></div>}><GpsPage data={data}/></Suspense> : <section className="content">
+      {!data ? <div className="loading"><img src="/falcon-logo.jpg" alt="" /><b>Connecting to FALCON edge service</b><span>Loading verified telemetry…</span></div> : page === "wave" ? <WavePage data={data} horizon={horizon} onHorizon={setHorizon} onScenarioApplied={()=>setRefreshToken(value=>value+1)}/> : page === "motion" ? <Suspense fallback={<div className="loading"><img src="/falcon-logo.jpg" alt=""/><b>Loading digital twin</b><span>Preparing Fusion CAD and marine scene…</span></div>}><MotionPage data={data}/></Suspense> : page === "gps" ? <Suspense fallback={<div className="loading"><img src="/falcon-logo.jpg" alt=""/><b>Loading coastal map</b><span>Preparing Puerto Princesa position view…</span></div>}><GpsPage data={data}/></Suspense> : page === "power" ? <Suspense fallback={<div className="loading"><img src="/falcon-logo.jpg" alt=""/><b>Loading power telemetry</b><span>Preparing energy and thermal history…</span></div>}><PowerPage data={data}/></Suspense> : <section className="content">
         <div className="summary">
           <article><ShieldCheck /><span>System status<b className="good">{data.status.system}</b><small>{data.status.sensorsOnline}/{data.status.sensorsExpected} sensors online</small></span></article>
           <article><Waves /><span>Current wave<b>{n(data.wave.waveHeight, 2)} m</b><small>{data.wave.waveHeightState}</small></span></article>

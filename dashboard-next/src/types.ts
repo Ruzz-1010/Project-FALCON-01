@@ -4,6 +4,8 @@ export type Status = {
   system: string; sensorsOnline: number; sensorsExpected: number; lastUpdate: string;
   dataSource: string; windSpeed: number | null; windDirection: string | null;
   internalTemperature: number | null; alerts: Alert[];
+  intakeFanRpm: number | null; exhaustFanRpm: number | null;
+  sensorHistory: Array<{recordedAt:string;windSpeed:number|null;internalTemperature:number|null}>;
 };
 
 export type Wave = {
@@ -20,8 +22,8 @@ export type Gps = {
   deploymentReferenceState: string; anchorDistanceMeters: number | null; driftStatus: string;
   headingDegrees: number | null; surfaceSpeedKnots: number | null; signalQuality: string;
 };
-export type Battery = { percentage: number | null; status: string };
-export type Solar = { power: number | null; status: string };
+export type Battery = { percentage: number | null; status: string; valid:boolean; recordedAt:string; voltage:number|null; current:number|null; direction:string; temperature:number|null; estimatedRuntimeHours:number|null; powerConsumptionWatts:number|null; history:Array<{recordedAt:string;percentage:number|null;voltage:number|null}> };
+export type Solar = { power: number | null; status: string; valid:boolean; recordedAt:string; voltage:number|null; current:number|null; charging:boolean };
 export type Prediction = {
   status: string; predictedWaveHeight: number | null; currentWaveHeight: number | null;
   seaCondition: string; confidence: number; horizonMinutes: number; change: number | null;

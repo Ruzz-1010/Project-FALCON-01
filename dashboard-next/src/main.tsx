@@ -6,5 +6,6 @@ import "./wave.css";
 import "./motion.css";
 import "leaflet/dist/leaflet.css";
 import "./gps.css";
+import "./power.css";
 
 createRoot(document.getElementById("root")!).render(<StrictMode><App /></StrictMode>);

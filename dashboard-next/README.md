@@ -25,6 +25,11 @@ Puerto Princesa City, Palawan coastal reference. It updates the live buoy marker
 deployment marker, 10 m geofence, drift line, coordinates, accuracy, heading,
 surface speed, satellites, and map-tile connection status.
 
+Phase 5 adds the Power page with battery reserve and runtime, voltage/current/load,
+solar charging input, battery and enclosure temperatures, live intake/exhaust fan
+RPM, thermal states, and realistic recent-history charts. Low-battery and thermal
+presentation scenarios use the same verified edge telemetry and alert pipeline.
+
 ## Run
 
 Start the existing edge service on port `8765`, then:
@@ -35,5 +40,5 @@ npm install
 npm run dev
 ```
 
-Open `http://127.0.0.1:5173`. Overview, Wave AI, Motion, and GPS are available. Other pages are
+Open `http://127.0.0.1:5173`. Overview, Wave AI, Motion, GPS, and Power are available. Other pages are
 intentionally marked as pending until migrated and verified.
