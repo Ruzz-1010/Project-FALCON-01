@@ -6,6 +6,9 @@ export type Status = {
   internalTemperature: number | null; alerts: Alert[];
   intakeFanRpm: number | null; exhaustFanRpm: number | null;
   sensorHistory: Array<{recordedAt:string;windSpeed:number|null;internalTemperature:number|null}>;
+  monitoring:boolean; uptimeSeconds:number; esp32:string; miniPc:string; uart:string; api:string;
+  cpuUsage:number|null; memoryUsage:number|null; storageUsage:number|null; wifiSignalDbm:number|null;
+  version:string; dashboardVersion:string; lastError:string|null; activeAlertCount:number;
 };
 
 export type Wave = {

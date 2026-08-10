@@ -30,6 +30,11 @@ solar charging input, battery and enclosure temperatures, live intake/exhaust fa
 RPM, thermal states, and realistic recent-history charts. Low-battery and thermal
 presentation scenarios use the same verified edge telemetry and alert pipeline.
 
+Phase 6 adds System Health with explicit ESP32, Mini PC, UART, and API states;
+sensor-channel availability; uptime and monitoring state; CPU, memory, storage,
+and Wi-Fi metrics; active diagnostics; and firmware/dashboard version context.
+Simulator-backed services remain clearly labeled instead of appearing physical.
+
 ## Run
 
 Start the existing edge service on port `8765`, then:
@@ -40,5 +45,5 @@ npm install
 npm run dev
 ```
 
-Open `http://127.0.0.1:5173`. Overview, Wave AI, Motion, GPS, and Power are available. Other pages are
+Open `http://127.0.0.1:5173`. Overview, Wave AI, Motion, GPS, Power, and System Health are available. Other pages are
 intentionally marked as pending until migrated and verified.
