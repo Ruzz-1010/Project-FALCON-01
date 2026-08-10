@@ -12,7 +12,8 @@ export default defineConfig({
       "/battery": "http://127.0.0.1:8765",
       "/solar": "http://127.0.0.1:8765",
       "/ai": "http://127.0.0.1:8765",
-      "/api": "http://127.0.0.1:8765"
+      "/api": "http://127.0.0.1:8765",
+      "/models": "http://127.0.0.1:8765"
     }
   }
 });

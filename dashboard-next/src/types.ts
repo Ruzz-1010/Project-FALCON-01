@@ -8,7 +8,8 @@ export type Status = {
 
 export type Wave = {
   waveHeight: number | null; waveHeightState: string; pressure: number | null;
-  recordedAt: string; valid: boolean;
+  recordedAt: string; valid: boolean; roll: number | null; pitch: number | null;
+  yaw: number | null; waveMotion: number | null; quality: number;
   history: Array<{ recordedAt: string; waveHeight: number | null }>;
 };
 
