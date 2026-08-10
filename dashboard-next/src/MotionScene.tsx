@@ -26,12 +26,16 @@ export default function MotionScene({ telemetry }: { telemetry: Telemetry }) {
     const pose = new THREE.Group(); scene.add(pose);
     const seaGeometry = new THREE.PlaneGeometry(12, 12, 56, 56); seaGeometry.rotateX(-Math.PI / 2);
     const base = new Float32Array(seaGeometry.attributes.position.array);
-    const sea = new THREE.Mesh(seaGeometry, new THREE.MeshPhongMaterial({ color: 0x087681, emissive: 0x052d35, emissiveIntensity: .5, specular: 0x9bfff0, shininess: 100, transparent: true, opacity: .64, side: THREE.DoubleSide }));
+    const seaColors = new Float32Array(seaGeometry.attributes.position.count * 3);
+    seaGeometry.setAttribute("color", new THREE.BufferAttribute(seaColors, 3));
+    const seaMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, vertexColors:true, emissive: 0x03272d, emissiveIntensity: .32, specular: 0xb8fff7, shininess: 125, transparent: true, opacity: .82, side: THREE.DoubleSide });
+    const sea = new THREE.Mesh(seaGeometry, seaMaterial);
     sea.position.y = -.58; scene.add(sea);
     const ringMaterial = new THREE.MeshBasicMaterial({ color: 0xc8fff7, transparent: true, opacity: .34, side: THREE.DoubleSide, depthWrite:false });
     const ring = new THREE.Mesh(new THREE.RingGeometry(.43, .54, 64), ringMaterial);
     ring.rotation.x = -Math.PI / 2; scene.add(ring);
     let ready = false;
+    let modelWaterlineOffset = -.08;
     const diagnostic: Record<string, Array<{material:THREE.MeshStandardMaterial;base:number;intensity:number}>> = {};
     new GLTFLoader().load("/models/FALCON-01.glb", gltf => {
       const model = gltf.scene; model.rotation.x = -Math.PI / 2;
@@ -39,6 +43,9 @@ export default function MotionScene({ telemetry }: { telemetry: Telemetry }) {
       model.updateMatrixWorld(true);
       const bounds = new THREE.Box3().setFromObject(model), size = bounds.getSize(new THREE.Vector3()), center = bounds.getCenter(new THREE.Vector3());
       const scale = 3.15 / Math.max(size.x, size.y, size.z, .001); model.scale.setScalar(scale); model.position.copy(center).multiplyScalar(-scale); pose.add(model);
+      model.updateMatrixWorld(true);
+      const normalizedBounds=new THREE.Box3().setFromObject(model),normalizedSize=normalizedBounds.getSize(new THREE.Vector3());
+      modelWaterlineOffset=-(normalizedBounds.min.y+normalizedSize.y*.45);
       const register=(keyName:string,names:string[])=>{const part=names.map(name=>model.getObjectByName(name)||model.getObjectByName(`${name}:2`)||model.getObjectByName(`${name}:3`)).find(Boolean);diagnostic[keyName]=[];part?.traverse(object=>{const mesh=object as THREE.Mesh;if(!mesh.isMesh||!mesh.material)return;const materials=Array.isArray(mesh.material)?mesh.material:[mesh.material];materials.forEach(raw=>{const material=raw.clone() as THREE.MeshStandardMaterial;mesh.material=material;diagnostic[keyName].push({material,base:material.emissive?.getHex?.()||0,intensity:material.emissiveIntensity||0})})})};
       register("sensor",["TOP_SENSOR_ARRAY"]);register("thermal",["ELECTRONICS_BOX_V3"]);register("power",["ELECTRONICS_BOX_V3"]);
       [[-.28,.8,.02,0x72d99d],[0,.94,.02,0x56d7df],[.28,.8,.02,0xefbb70]].forEach(([x,y,z,color]) => { const light = new THREE.Mesh(new THREE.SphereGeometry(.035, 12, 8), new THREE.MeshBasicMaterial({color:color as number})); light.position.set(x as number,y as number,z as number); pose.add(light); });
@@ -51,14 +58,15 @@ export default function MotionScene({ telemetry }: { telemetry: Telemetry }) {
     const up=()=>{pointer=null}; const wheel=(e:WheelEvent)=>{e.preventDefault();target.distance=THREE.MathUtils.clamp(target.distance+e.deltaY*.003,2.7,7)};
     canvas.addEventListener("pointerdown",down);canvas.addEventListener("pointermove",move);canvas.addEventListener("pointerup",up);canvas.addEventListener("wheel",wheel,{passive:false});
     const resize=()=>{const w=container.clientWidth,h=container.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/Math.max(1,h);camera.updateProjectionMatrix()}; const observer=new ResizeObserver(resize);observer.observe(container);resize();
-    const clock=new THREE.Clock(); let frame=0,phase=0,previous=0; const motion={roll:0,pitch:0,yaw:0,wave:.4};
+    const clock=new THREE.Clock(); let frame=0,phase=0,previous=0,normalFrame=0; const motion={roll:0,pitch:0,yaw:0,wave:.4};
     const surface=(x:number,z:number,a:number)=>Math.sin(x*.72+phase)*a+Math.sin(z*.92-phase*.72+x*.18)*a*.58;
+    const deepSea=new THREE.Color(0x075866),waveCrest=new THREE.Color(0x42c7c4),seaShade=new THREE.Color();
     const animate=()=>{frame=requestAnimationFrame(animate);const elapsed=clock.getElapsedTime(),dt=Math.min(.05,Math.max(.001,elapsed-previous));previous=elapsed;const t=live.current;
       motion.roll=THREE.MathUtils.damp(motion.roll,t.roll,1.5,dt);motion.pitch=THREE.MathUtils.damp(motion.pitch,t.pitch,1.5,dt);motion.yaw=THREE.MathUtils.damp(motion.yaw,t.yaw,1.1,dt);motion.wave=THREE.MathUtils.damp(motion.wave,t.wave,.9,dt);phase+=dt*(t.rough?1.35:.85);
-      const amp=THREE.MathUtils.lerp(.035,.22,THREE.MathUtils.clamp(motion.wave/3.5,0,1)),p=seaGeometry.attributes.position;
-      for(let i=0;i<p.count;i++){const o=i*3;p.setY(i,surface(base[o],base[o+2],amp))}p.needsUpdate=true;if(Math.floor(elapsed*10)%4===0)seaGeometry.computeVertexNormals();
+      const amp=THREE.MathUtils.lerp(.065,.28,THREE.MathUtils.clamp(motion.wave/3.5,0,1)),p=seaGeometry.attributes.position,colors=seaGeometry.attributes.color;
+      for(let i=0;i<p.count;i++){const o=i*3,height=surface(base[o],base[o+2],amp);p.setY(i,height);seaShade.copy(deepSea).lerp(waveCrest,THREE.MathUtils.clamp(.42+height/Math.max(.02,amp)*.34,0,1));colors.setXYZ(i,seaShade.r,seaShade.g,seaShade.b)}p.needsUpdate=true;colors.needsUpdate=true;if((normalFrame++%3)===0)seaGeometry.computeVertexNormals();
       const sway=Math.sin(phase*.48)*(.008+motion.wave*.006),surge=Math.sin(phase*.63+1.4)*(.008+motion.wave*.005),h=surface(sway,surge,amp);
-      pose.position.x=THREE.MathUtils.damp(pose.position.x,sway,2.5,dt);pose.position.z=THREE.MathUtils.damp(pose.position.z,surge,2.5,dt);pose.position.y=THREE.MathUtils.damp(pose.position.y,-.58+h+.34,2.8,dt);pose.rotation.z=THREE.MathUtils.damp(pose.rotation.z,THREE.MathUtils.degToRad(-motion.roll+Math.sin(phase*.78)*(1+motion.wave)),2.4,dt);pose.rotation.x=THREE.MathUtils.damp(pose.rotation.x,THREE.MathUtils.degToRad(motion.pitch+Math.sin(phase*.61)*(.7+motion.wave*.7)),2.4,dt);pose.rotation.y=THREE.MathUtils.damp(pose.rotation.y,THREE.MathUtils.degToRad(motion.yaw),1.8,dt);ring.position.set(pose.position.x,-.555+h,pose.position.z);ring.scale.setScalar(1+Math.sin(phase)*.06+Math.min(.16,motion.wave*.035));ringMaterial.opacity=.26+Math.max(0,Math.sin(phase*1.8))*.12;
+      pose.position.x=THREE.MathUtils.damp(pose.position.x,sway,2.5,dt);pose.position.z=THREE.MathUtils.damp(pose.position.z,surge,2.5,dt);pose.position.y=THREE.MathUtils.damp(pose.position.y,-.58+h+modelWaterlineOffset,2.8,dt);pose.rotation.z=THREE.MathUtils.damp(pose.rotation.z,THREE.MathUtils.degToRad(-motion.roll+Math.sin(phase*.78)*(1+motion.wave)),2.4,dt);pose.rotation.x=THREE.MathUtils.damp(pose.rotation.x,THREE.MathUtils.degToRad(motion.pitch+Math.sin(phase*.61)*(.7+motion.wave*.7)),2.4,dt);pose.rotation.y=THREE.MathUtils.damp(pose.rotation.y,THREE.MathUtils.degToRad(motion.yaw),1.8,dt);ring.position.set(pose.position.x,-.555+h,pose.position.z);ring.scale.setScalar(1+Math.sin(phase)*.06+Math.min(.16,motion.wave*.035));ringMaterial.opacity=.26+Math.max(0,Math.sin(phase*1.8))*.12;
       Object.entries(diagnostic).forEach(([name,materials])=>materials.forEach(item=>{const active=t.fault===name;item.material.emissive?.setHex(active?0xff302c:item.base);item.material.emissiveIntensity=active?.8+Math.max(0,Math.sin(elapsed*7))*2.4:item.intensity}));
       orbit.yaw=THREE.MathUtils.damp(orbit.yaw,target.yaw,10,dt);orbit.pitch=THREE.MathUtils.damp(orbit.pitch,target.pitch,10,dt);orbit.distance=THREE.MathUtils.damp(orbit.distance,target.distance,10,dt);const horizontal=orbit.distance*Math.cos(orbit.pitch);camera.position.set(horizontal*Math.sin(orbit.yaw),.05+orbit.distance*Math.sin(orbit.pitch),horizontal*Math.cos(orbit.yaw));camera.lookAt(0,.05,0);if(ready)renderer.render(scene,camera)};animate();
     return()=>{cancelAnimationFrame(frame);observer.disconnect();renderer.dispose();canvas.remove()};
