@@ -11,5 +11,6 @@ import "./system.css";
 import "./alerts.css";
 import "./toast.css";
 import "./logs.css";
+import "./settings.css";
 
 createRoot(document.getElementById("root")!).render(<StrictMode><App /></StrictMode>);

@@ -43,6 +43,11 @@ Phase 8 adds Operational Logs with separate telemetry, AI prediction, alert, and
 system-event archives; record search; timestamped tables; source/model context;
 and CSV/JSON export of the currently filtered local records.
 
+Phase 9 adds Settings for persistent theme and polling preferences, Wave AI
+horizon, demo scenario selection, browser notification permission, approved
+sensor calibration, and confirmed ESP32 restart requests. Maintenance actions
+are accepted by the edge API and written to the auditable local event archive.
+
 ## Run
 
 Start the existing edge service on port `8765`, then:
@@ -53,5 +58,5 @@ npm install
 npm run dev
 ```
 
-Open `http://127.0.0.1:5173`. Overview, Wave AI, Motion, GPS, Power, System Health, Alerts, and Logs are available. Other pages are
-intentionally marked as pending until migrated and verified.
+Open `http://127.0.0.1:5173`. All planned migration pages are available: Overview,
+Wave AI, Motion, GPS, Power, System Health, Alerts, Logs, and Settings.

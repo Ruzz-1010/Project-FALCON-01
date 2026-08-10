@@ -14,7 +14,9 @@ export default defineConfig({
       "/ai": "http://127.0.0.1:8765",
       "/api": "http://127.0.0.1:8765",
       "/models": "http://127.0.0.1:8765",
-      "/logs": "http://127.0.0.1:8765"
+      "/logs": "http://127.0.0.1:8765",
+      "/restart": "http://127.0.0.1:8765",
+      "/calibrate": "http://127.0.0.1:8765"
     }
   }
 });
