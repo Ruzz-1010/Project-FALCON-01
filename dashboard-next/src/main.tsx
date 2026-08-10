@@ -18,5 +18,6 @@ import "./sidebar-control.css";
 import "./wave-polish.css";
 import "./command-center.css";
 import "./wave-report.css";
+import "./chromatic-system.css";
 
 createRoot(document.getElementById("root")!).render(<StrictMode><App /></StrictMode>);

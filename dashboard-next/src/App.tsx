@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
-import { Activity, BatteryCharging, Bell, FileText, LayoutDashboard, MapPin, Menu, Moon, Move3d, Settings, ShieldCheck, Sun, Waves, X } from "lucide-react";
+import { Activity, BatteryCharging, Bell, Cpu, Database, LayoutDashboard, MapPinned, Menu, Moon, Orbit, Settings2, ShieldCheck, Siren, Sun, Waves, X } from "lucide-react";
 import { getOverview } from "./api";
 import type { DashboardData } from "./types";
 import WavePage from "./WavePage";
@@ -13,10 +13,10 @@ const SettingsPage = lazy(() => import("./SettingsPage"));
 
 const navigation = [
   ["overview", "Overview", "Mission control", LayoutDashboard, true], ["wave", "Wave AI", "Current & predicted", Waves, true],
-  ["motion", "Motion", "BNO085 orientation", Move3d, true], ["gps", "GPS", "Position & drift", MapPin, true],
-  ["power", "Power", "Battery & solar", BatteryCharging, true], ["system", "System", "Health & settings", ShieldCheck, true],
-  ["activity", "Alerts", "Operational events", Bell, true], ["logs", "Logs", "History & exports", FileText, true],
-  ["settings", "Settings", "Station configuration", Settings, true]
+  ["motion", "Motion", "BNO085 orientation", Orbit, true], ["gps", "GPS", "Position & drift", MapPinned, true],
+  ["power", "Power", "Battery & solar", BatteryCharging, true], ["system", "System", "Health & settings", Cpu, true],
+  ["activity", "Alerts", "Operational events", Siren, true], ["logs", "Logs", "History & exports", Database, true],
+  ["settings", "Settings", "Station configuration", Settings2, true]
 ] as const;
 
 const n = (value: number | null | undefined, digits = 1) => value == null ? "--" : value.toFixed(digits);

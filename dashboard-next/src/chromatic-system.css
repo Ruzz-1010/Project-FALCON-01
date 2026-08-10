@@ -1,0 +1,49 @@
+/* Semantic color and icon system: every subsystem has a recognizable identity. */
+:root{--blue:#60aef8;--violet:#a98cf5;--aqua:#48d9df;--lime:#70d99b;--gold:#f1b85b;--coral:#f47f76;--indigo:#829cf8}
+
+/* Navigation icons are full controls, not undersized line marks. */
+.nav-item>svg{width:38px;height:38px;flex:0 0 38px;padding:8px;border:1px solid color-mix(in srgb,currentColor 22%,transparent);border-radius:11px;background:color-mix(in srgb,currentColor 9%,transparent);color:inherit;stroke-width:1.8}
+.nav-item:nth-child(1){color:#8ab7d9}.nav-item:nth-child(2){color:var(--aqua)}.nav-item:nth-child(3){color:var(--violet)}.nav-item:nth-child(4){color:var(--lime)}.nav-item:nth-child(5){color:var(--gold)}.nav-item:nth-child(6){color:var(--blue)}.nav-item:nth-child(7){color:var(--coral)}.nav-item:nth-child(8){color:var(--indigo)}.nav-item:nth-child(9){color:#a7b6bd}
+.nav-item span{color:var(--muted)}.nav-item b{color:color-mix(in srgb,currentColor 72%,var(--text))}.nav-item.is-active span,.nav-item:hover span{color:currentColor}.nav-item.is-active b{color:var(--text)}
+.nav-item.is-active>svg{border-color:color-mix(in srgb,currentColor 45%,transparent);background:color-mix(in srgb,currentColor 17%,transparent);box-shadow:0 0 20px color-mix(in srgb,currentColor 18%,transparent)}
+.is-collapsed .nav-item>svg{width:40px;height:40px;flex-basis:40px}
+
+/* Page identities */
+.wave-page{--page-accent:var(--aqua);--page-soft:rgba(72,217,223,.08)}
+.motion-page{--page-accent:var(--violet);--page-soft:rgba(169,140,245,.08)}
+.gps-page{--page-accent:var(--lime);--page-soft:rgba(112,217,155,.08)}
+.power-page{--page-accent:var(--gold);--page-soft:rgba(241,184,91,.08)}
+.system-page{--page-accent:var(--blue);--page-soft:rgba(96,174,248,.08)}
+.alerts-page{--page-accent:var(--coral);--page-soft:rgba(244,127,118,.08)}
+.logs-page{--page-accent:var(--indigo);--page-soft:rgba(130,156,248,.08)}
+.settings-page{--page-accent:#79b7b2;--page-soft:rgba(121,183,178,.08)}
+.content[class$="-page"] .page-head>div:first-child>span,.wave-page .page-head>div:first-child>span{color:var(--page-accent)}
+.content[class$="-page"] .panel header span,.wave-page .panel header span{color:var(--page-accent)}
+.content[class$="-page"] .panel{background:linear-gradient(145deg,var(--page-soft),rgba(8,29,34,.91) 34%,rgba(6,24,29,.92))}
+.content[class$="-page"] .panel header>svg,.wave-page .panel header>svg{color:var(--page-accent)}
+
+/* Overview uses four distinct operational colors. */
+.summary article{position:relative;overflow:hidden}.summary article:before{position:absolute;inset:0 auto 0 0;width:3px;background:currentColor;content:"";opacity:.9}
+.summary article:nth-child(1){color:var(--lime)}.summary article:nth-child(2){color:var(--aqua)}.summary article:nth-child(3){color:var(--violet)}.summary article:nth-child(4){color:var(--gold)}
+.summary article svg{width:46px;height:46px;flex-basis:46px;padding:9px;border:1px solid color-mix(in srgb,currentColor 28%,transparent);border-radius:13px;background:color-mix(in srgb,currentColor 11%,transparent);color:currentColor}
+.summary article span{color:var(--muted)}.summary article b{color:var(--text)}
+
+/* Page-specific instruments use semantic colors. */
+.power-page .battery-hero header>svg{color:var(--lime)}.power-page .solar-hero header>svg{color:var(--gold)}.power-page .thermal-hero header>svg,.power-page .cooling header>svg{color:var(--coral)}.power-page .electrical header>svg{color:var(--blue)}
+.system-page .connectivity header>svg{color:var(--lime)}.system-page .sensors-card header>svg{color:var(--aqua)}.system-page .resources header>svg{color:var(--violet)}.system-page .diagnostics header>svg{color:var(--gold)}
+.gps-page .coordinates header>svg{color:var(--lime)}.gps-page .drift-card header>svg{color:var(--gold)}
+.motion-page .pose-readout header>svg{color:var(--violet)}.motion-page .motion-quality header>svg{color:var(--lime)}
+.wave-page .forecast-result{--page-accent:var(--aqua)}.wave-page .report-chart{--page-accent:var(--blue)}.wave-page .ai-summary{--page-accent:var(--violet)}.wave-page .report-confidence{--page-accent:var(--lime)}.wave-page .prediction-timeline{--page-accent:var(--gold)}.wave-page .prediction-quality{--page-accent:var(--indigo)}
+.wave-page .forecast-result,.wave-page .report-chart,.wave-page .ai-summary,.wave-page .report-confidence,.wave-page .prediction-timeline,.wave-page .prediction-quality{border-top:2px solid color-mix(in srgb,var(--page-accent) 52%,transparent)}
+.alerts-page .alert-summary article:nth-child(1) svg{color:var(--coral)}.alerts-page .alert-summary article:nth-child(2) svg{color:#ff655e}.alerts-page .alert-summary article:nth-child(3) svg{color:var(--gold)}.alerts-page .alert-summary article:nth-child(4) svg{color:var(--blue)}
+.logs-page .log-summary article:nth-child(1) svg{color:var(--aqua)}.logs-page .log-summary article:nth-child(2) svg{color:var(--violet)}.logs-page .log-summary article:nth-child(3) svg{color:var(--coral)}.logs-page .log-summary article:nth-child(4) svg{color:var(--indigo)}
+
+/* Larger icon badges inside technical cards. */
+.content[class$="-page"] .panel header>svg,.wave-page .panel header>svg{width:42px;height:42px;flex:0 0 42px;padding:8px;border:1px solid color-mix(in srgb,currentColor 25%,transparent);border-radius:12px;background:color-mix(in srgb,currentColor 9%,transparent);stroke-width:1.75}
+.system-node>svg,.resource-grid article>svg{width:38px;height:38px;padding:8px;border-radius:10px;background:color-mix(in srgb,currentColor 10%,transparent)}
+.alert-summary svg,.log-summary svg{width:40px;height:40px;padding:8px;border-radius:11px;background:color-mix(in srgb,currentColor 10%,transparent)}
+
+html[data-theme=light] .content[class$="-page"] .panel,html[data-theme=light] .wave-page .panel{background:linear-gradient(145deg,var(--page-soft),rgba(249,252,251,.96) 35%,rgba(235,245,243,.94))}
+html[data-theme=light] .nav-item b{color:#294b50}
+
+@media(max-width:720px){.nav-item>svg{width:36px;height:36px;flex-basis:36px}.summary article svg{width:42px;height:42px;flex-basis:42px}.content[class$="-page"] .panel header>svg,.wave-page .panel header>svg{width:38px;height:38px;flex-basis:38px}}
