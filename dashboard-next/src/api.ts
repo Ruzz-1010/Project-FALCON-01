@@ -1,4 +1,4 @@
-import type { AlertRecord, DashboardData, ScenarioState } from "./types";
+import type { AlertRecord, DashboardData, LogsPayload, ScenarioState } from "./types";
 
 async function get<T>(path: string): Promise<T> {
   const response = await fetch(path, { cache: "no-store" });
@@ -24,6 +24,7 @@ export async function getOverview(horizon = 10): Promise<DashboardData> {
 
 export const getScenario = () => get<ScenarioState>("/api/scenario");
 export async function getAlerts(limit=100):Promise<AlertRecord[]>{return (await get<{items:AlertRecord[]}>(`/api/alerts?limit=${limit}`)).items;}
+export const getLogs=(limit=100)=>get<LogsPayload>(`/logs?limit=${limit}`);
 export async function setScenario(scenario: string): Promise<ScenarioState> {
   const response = await fetch("/api/scenario", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ scenario }) });
   if (!response.ok) throw new Error(`Scenario update returned ${response.status}`);

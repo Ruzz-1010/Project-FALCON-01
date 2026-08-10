@@ -39,6 +39,10 @@ Phase 7 adds Alerts and Events with a live top-bar badge, in-app warning toast,
 active-alert panel, severity filters, persisted SQLite alert history, and local
 acknowledgement states. Acknowledging an item never removes the edge evidence.
 
+Phase 8 adds Operational Logs with separate telemetry, AI prediction, alert, and
+system-event archives; record search; timestamped tables; source/model context;
+and CSV/JSON export of the currently filtered local records.
+
 ## Run
 
 Start the existing edge service on port `8765`, then:
@@ -49,5 +53,5 @@ npm install
 npm run dev
 ```
 
-Open `http://127.0.0.1:5173`. Overview, Wave AI, Motion, GPS, Power, System Health, and Alerts are available. Other pages are
+Open `http://127.0.0.1:5173`. Overview, Wave AI, Motion, GPS, Power, System Health, Alerts, and Logs are available. Other pages are
 intentionally marked as pending until migrated and verified.

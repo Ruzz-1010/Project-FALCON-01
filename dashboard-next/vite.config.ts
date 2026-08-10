@@ -13,7 +13,8 @@ export default defineConfig({
       "/solar": "http://127.0.0.1:8765",
       "/ai": "http://127.0.0.1:8765",
       "/api": "http://127.0.0.1:8765",
-      "/models": "http://127.0.0.1:8765"
+      "/models": "http://127.0.0.1:8765",
+      "/logs": "http://127.0.0.1:8765"
     }
   }
 });

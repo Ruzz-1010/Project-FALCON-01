@@ -1,5 +1,9 @@
 export type Alert = { code: string; severity: string; message: string };
 export type AlertRecord = Alert & { id:number; telemetryId:number; recordedAt:string };
+export type TelemetryRecord = {id:number;recordedAt:string;source:string;waveLevel:number|null;battery:number|null;internalTemperature:number|null;windSpeed:number|null;latitude:number|null;longitude:number|null;scenario:string;[key:string]:unknown};
+export type PredictionRecord = {id:number;telemetryId:number;generatedAt:string;targetAt:string;horizonMinutes:number;currentWaveHeight:number|null;predictedWaveHeight:number|null;confidence:number;seaCondition:string;model:string;modelVersion:string;status:string;dataSource:string};
+export type EventRecord = {id:number;recordedAt:string;eventType:string;target:string|null;status:string;detail:Record<string,unknown>};
+export type LogsPayload = {telemetry:TelemetryRecord[];predictions:PredictionRecord[];alerts:AlertRecord[];events:EventRecord[]};
 
 export type Status = {
   system: string; sensorsOnline: number; sensorsExpected: number; lastUpdate: string;
