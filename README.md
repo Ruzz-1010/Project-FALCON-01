@@ -35,7 +35,7 @@ Implemented in the repository:
 
 ### Safe frontend migration
 
-The production dashboard in `data/` remains the verified fallback. A page-by-page React + TypeScript migration is isolated in `dashboard-next/`; Phase 1 currently includes the responsive application shell and live Overview page. Unmigrated pages are explicitly disabled until their behavior is ported and verified against the existing Python edge API.
+The production dashboard in `data/` remains the verified fallback. A page-by-page React + TypeScript migration is isolated in `dashboard-next/`. The responsive application shell, live Overview, and Wave AI pages are now migrated. Wave AI includes current-versus-predicted results, forecast horizons, model evidence, and presentation scenarios. Unmigrated pages are explicitly disabled until their behavior is ported and verified against the existing Python edge API.
 
 Run the migration preview with the edge service on port `8765`:
 

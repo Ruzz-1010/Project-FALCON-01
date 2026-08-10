@@ -17,7 +17,15 @@ export type Battery = { percentage: number | null; status: string };
 export type Solar = { power: number | null; status: string };
 export type Prediction = {
   status: string; predictedWaveHeight: number | null; currentWaveHeight: number | null;
-  seaCondition: string; confidence: number; horizonMinutes: number;
+  seaCondition: string; confidence: number; horizonMinutes: number; change: number | null;
+  direction: string; targetAt: string | null; model: string; modelVersion: string;
+  sampleCount: number; dataSource: string; unavailableReason: string | null;
+  explanation?: {
+    method: string; input: string; steps: string[];
+    details: { validSamples: number; sampleWindowSeconds: number; trendMetersPerMinute: number; rawProjection: number; maximumAllowedChange: number; limitApplied: boolean; residualVolatility: number; dampingFactor: number };
+  };
 };
+
+export type ScenarioState = { available: boolean; active: string | null; scenarios: string[]; appliedAt?: string; aiState?: string };
 
 export type DashboardData = { status: Status; wave: Wave; gps: Gps; battery: Battery; solar: Solar; ai: Prediction };
