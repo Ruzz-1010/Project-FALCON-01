@@ -8,5 +8,7 @@ import "leaflet/dist/leaflet.css";
 import "./gps.css";
 import "./power.css";
 import "./system.css";
+import "./alerts.css";
+import "./toast.css";
 
 createRoot(document.getElementById("root")!).render(<StrictMode><App /></StrictMode>);

@@ -1,4 +1,5 @@
 export type Alert = { code: string; severity: string; message: string };
+export type AlertRecord = Alert & { id:number; telemetryId:number; recordedAt:string };
 
 export type Status = {
   system: string; sensorsOnline: number; sensorsExpected: number; lastUpdate: string;

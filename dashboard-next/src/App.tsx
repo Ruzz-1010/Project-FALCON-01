@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useMemo, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Activity, BatteryCharging, Bell, FileText, LayoutDashboard, MapPin, Menu, Moon, Move3d, Settings, ShieldCheck, Sun, Waves, X } from "lucide-react";
 import { getOverview } from "./api";
 import type { DashboardData } from "./types";
@@ -7,12 +7,13 @@ const MotionPage = lazy(() => import("./MotionPage"));
 const GpsPage = lazy(() => import("./GpsPage"));
 const PowerPage = lazy(() => import("./PowerPage"));
 const SystemPage = lazy(() => import("./SystemPage"));
+const AlertsPage = lazy(() => import("./AlertsPage"));
 
 const navigation = [
   ["overview", "Overview", "Mission control", LayoutDashboard, true], ["wave", "Wave AI", "Current & predicted", Waves, true],
   ["motion", "Motion", "BNO085 orientation", Move3d, true], ["gps", "GPS", "Position & drift", MapPin, true],
   ["power", "Power", "Battery & solar", BatteryCharging, true], ["system", "System", "Health & settings", ShieldCheck, true],
-  ["activity", "Alerts", "Operational events", Bell, false], ["logs", "Logs", "History & exports", FileText, false],
+  ["activity", "Alerts", "Operational events", Bell, true], ["logs", "Logs", "History & exports", FileText, false],
   ["settings", "Settings", "Station configuration", Settings, false]
 ] as const;
 
@@ -40,9 +41,11 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
-  const [page, setPage] = useState<"overview"|"wave"|"motion"|"gps"|"power"|"system">("overview");
+  const [page, setPage] = useState<"overview"|"wave"|"motion"|"gps"|"power"|"system"|"activity">("overview");
   const [horizon, setHorizon] = useState(10);
   const [refreshToken, setRefreshToken] = useState(0);
+  const [alertToast,setAlertToast]=useState<{code:string;message:string;severity:string}|null>(null);
+  const knownAlerts=useRef<Set<string>|null>(null);
   const [theme, setTheme] = useState<"dark" | "light">(() => (localStorage.getItem("falcon-next-theme") as "dark" | "light") || "dark");
 
   useEffect(() => { document.documentElement.dataset.theme = theme; localStorage.setItem("falcon-next-theme", theme); }, [theme]);
@@ -51,6 +54,7 @@ function App() {
     const refresh = async () => { try { const next = await getOverview(horizon); if (active) { setData(next); setError(null); } } catch (reason) { if (active) setError(reason instanceof Error ? reason.message : "Edge service unavailable"); } };
     refresh(); const timer = window.setInterval(refresh, 2000); return () => { active = false; window.clearInterval(timer); };
   }, [horizon, refreshToken]);
+  useEffect(()=>{if(!data)return;const next=new Set(data.status.alerts.map(item=>item.code));if(knownAlerts.current){const fresh=data.status.alerts.find(item=>!knownAlerts.current?.has(item.code));if(fresh){setAlertToast(fresh);const timer=window.setTimeout(()=>setAlertToast(null),8000);knownAlerts.current=next;return()=>window.clearTimeout(timer)}}knownAlerts.current=next},[data]);
 
   const lastUpdate = useMemo(() => data?.status.lastUpdate ? new Date(data.status.lastUpdate).toLocaleTimeString() : "--:--:--", [data]);
   const online = data?.status.system === "ONLINE";
@@ -58,13 +62,14 @@ function App() {
     <button className="scrim" onClick={() => setSidebarOpen(false)} aria-label="Close navigation" />
     <aside className="sidebar">
       <div className="brand"><img src="/falcon-logo.jpg" alt="FALCON logo" /><div><strong>FALCON-01</strong><span>COASTAL STATION</span></div></div>
-      <nav>{navigation.map(([key, label, detail, Icon, ready]) => <button key={key} className={`nav-item ${page === key ? "is-active" : ""}`} disabled={!ready} onClick={()=>{if(ready){setPage(key as "overview"|"wave"|"motion"|"gps"|"power"|"system");setSidebarOpen(false);}}} title={!ready ? `${label} migration pending` : label}><Icon /><span><b>{label}</b><small>{ready ? detail : "Migration pending"}</small></span></button>)}</nav>
-      <div className="side-foot"><i className={online ? "online" : ""} /><span><b>{online ? "EDGE ONLINE" : "EDGE CONNECTING"}</b><small>React migration · Phase 6</small></span></div>
+      <nav>{navigation.map(([key, label, detail, Icon, ready]) => <button key={key} className={`nav-item ${page === key ? "is-active" : ""}`} disabled={!ready} onClick={()=>{if(ready){setPage(key as "overview"|"wave"|"motion"|"gps"|"power"|"system"|"activity");setSidebarOpen(false);}}} title={!ready ? `${label} migration pending` : label}><Icon /><span><b>{label}</b><small>{ready ? detail : "Migration pending"}</small></span></button>)}</nav>
+      <div className="side-foot"><i className={online ? "online" : ""} /><span><b>{online ? "EDGE ONLINE" : "EDGE CONNECTING"}</b><small>React migration · Phase 7</small></span></div>
     </aside>
     <main>
-      <header className="topbar"><div className="title"><button className="mobile-menu" onClick={() => setSidebarOpen(true)}><Menu /></button><button className="collapse" onClick={() => setCollapsed(!collapsed)}>{collapsed ? <Menu /> : <X />}</button><div><span>PROJECT FALCON / DASHBOARD NEXT</span><h1>{page === "wave" ? "Wave intelligence" : page === "motion" ? "Buoy motion" : page === "gps" ? "GPS and drift" : page === "power" ? "Power system" : page === "system" ? "System health" : "Mission control"}</h1></div></div><div className="top-actions"><div><span>LAST UPDATE</span><b>{lastUpdate}</b></div><div><span>SOURCE</span><b>{data?.status.dataSource?.toUpperCase() || "--"}</b></div><button onClick={() => setTheme(theme === "dark" ? "light" : "dark")} aria-label="Toggle theme">{theme === "dark" ? <Sun /> : <Moon />}</button><span className={`live ${online ? "is-online" : ""}`}><i />{online ? "LIVE" : "OFFLINE"}</span></div></header>
+      <header className="topbar"><div className="title"><button className="mobile-menu" onClick={() => setSidebarOpen(true)}><Menu /></button><button className="collapse" onClick={() => setCollapsed(!collapsed)}>{collapsed ? <Menu /> : <X />}</button><div><span>PROJECT FALCON / DASHBOARD NEXT</span><h1>{page === "wave" ? "Wave intelligence" : page === "motion" ? "Buoy motion" : page === "gps" ? "GPS and drift" : page === "power" ? "Power system" : page === "system" ? "System health" : page === "activity" ? "Alerts and events" : "Mission control"}</h1></div></div><div className="top-actions"><div><span>LAST UPDATE</span><b>{lastUpdate}</b></div><div><span>SOURCE</span><b>{data?.status.dataSource?.toUpperCase() || "--"}</b></div><button className="notification-button" onClick={()=>setPage("activity")} aria-label="Open alerts"><Bell/>{data?.status.alerts.length?<b>{data.status.alerts.length}</b>:null}</button><button onClick={() => setTheme(theme === "dark" ? "light" : "dark")} aria-label="Toggle theme">{theme === "dark" ? <Sun /> : <Moon />}</button><span className={`live ${online ? "is-online" : ""}`}><i />{online ? "LIVE" : "OFFLINE"}</span></div></header>
       {error && <div className="error-banner"><Activity /> <span><b>Edge connection interrupted</b>{error}</span></div>}
-      {!data ? <div className="loading"><img src="/falcon-logo.jpg" alt="" /><b>Connecting to FALCON edge service</b><span>Loading verified telemetry…</span></div> : page === "wave" ? <WavePage data={data} horizon={horizon} onHorizon={setHorizon} onScenarioApplied={()=>setRefreshToken(value=>value+1)}/> : page === "motion" ? <Suspense fallback={<div className="loading"><img src="/falcon-logo.jpg" alt=""/><b>Loading digital twin</b><span>Preparing Fusion CAD and marine scene…</span></div>}><MotionPage data={data}/></Suspense> : page === "gps" ? <Suspense fallback={<div className="loading"><img src="/falcon-logo.jpg" alt=""/><b>Loading coastal map</b><span>Preparing Puerto Princesa position view…</span></div>}><GpsPage data={data}/></Suspense> : page === "power" ? <Suspense fallback={<div className="loading"><img src="/falcon-logo.jpg" alt=""/><b>Loading power telemetry</b><span>Preparing energy and thermal history…</span></div>}><PowerPage data={data}/></Suspense> : page === "system" ? <Suspense fallback={<div className="loading"><img src="/falcon-logo.jpg" alt=""/><b>Loading diagnostics</b><span>Checking edge services and sensor health…</span></div>}><SystemPage data={data}/></Suspense> : <section className="content">
+      {alertToast&&<button className={`alert-toast is-${alertToast.severity}`} onClick={()=>{setPage("activity");setAlertToast(null)}}><Bell/><span><b>{alertToast.code.replaceAll("_"," ")}</b>{alertToast.message}</span><X/></button>}
+      {!data ? <div className="loading"><img src="/falcon-logo.jpg" alt="" /><b>Connecting to FALCON edge service</b><span>Loading verified telemetry…</span></div> : page === "wave" ? <WavePage data={data} horizon={horizon} onHorizon={setHorizon} onScenarioApplied={()=>setRefreshToken(value=>value+1)}/> : page === "motion" ? <Suspense fallback={<div className="loading"><img src="/falcon-logo.jpg" alt=""/><b>Loading digital twin</b><span>Preparing Fusion CAD and marine scene…</span></div>}><MotionPage data={data}/></Suspense> : page === "gps" ? <Suspense fallback={<div className="loading"><img src="/falcon-logo.jpg" alt=""/><b>Loading coastal map</b><span>Preparing Puerto Princesa position view…</span></div>}><GpsPage data={data}/></Suspense> : page === "power" ? <Suspense fallback={<div className="loading"><img src="/falcon-logo.jpg" alt=""/><b>Loading power telemetry</b><span>Preparing energy and thermal history…</span></div>}><PowerPage data={data}/></Suspense> : page === "system" ? <Suspense fallback={<div className="loading"><img src="/falcon-logo.jpg" alt=""/><b>Loading diagnostics</b><span>Checking edge services and sensor health…</span></div>}><SystemPage data={data}/></Suspense> : page === "activity" ? <Suspense fallback={<div className="loading"><img src="/falcon-logo.jpg" alt=""/><b>Loading alert history</b><span>Reading local operational events…</span></div>}><AlertsPage data={data}/></Suspense> : <section className="content">
         <div className="summary">
           <article><ShieldCheck /><span>System status<b className="good">{data.status.system}</b><small>{data.status.sensorsOnline}/{data.status.sensorsExpected} sensors online</small></span></article>
           <article><Waves /><span>Current wave<b>{n(data.wave.waveHeight, 2)} m</b><small>{data.wave.waveHeightState}</small></span></article>

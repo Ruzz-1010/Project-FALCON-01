@@ -35,6 +35,10 @@ sensor-channel availability; uptime and monitoring state; CPU, memory, storage,
 and Wi-Fi metrics; active diagnostics; and firmware/dashboard version context.
 Simulator-backed services remain clearly labeled instead of appearing physical.
 
+Phase 7 adds Alerts and Events with a live top-bar badge, in-app warning toast,
+active-alert panel, severity filters, persisted SQLite alert history, and local
+acknowledgement states. Acknowledging an item never removes the edge evidence.
+
 ## Run
 
 Start the existing edge service on port `8765`, then:
@@ -45,5 +49,5 @@ npm install
 npm run dev
 ```
 
-Open `http://127.0.0.1:5173`. Overview, Wave AI, Motion, GPS, Power, and System Health are available. Other pages are
+Open `http://127.0.0.1:5173`. Overview, Wave AI, Motion, GPS, Power, System Health, and Alerts are available. Other pages are
 intentionally marked as pending until migrated and verified.
