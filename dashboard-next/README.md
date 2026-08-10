@@ -20,6 +20,11 @@ lazy-loaded digital twin follows live roll, pitch, heading, and wave telemetry;
 floats on an animated sea; supports orbit and zoom controls; shows navigation
 lights; and highlights affected components during sensor, thermal, or power alerts.
 
+Phase 4 adds the GPS page with a lazy-loaded OpenStreetMap view centered on the
+Puerto Princesa City, Palawan coastal reference. It updates the live buoy marker,
+deployment marker, 10 m geofence, drift line, coordinates, accuracy, heading,
+surface speed, satellites, and map-tile connection status.
+
 ## Run
 
 Start the existing edge service on port `8765`, then:
@@ -30,5 +35,5 @@ npm install
 npm run dev
 ```
 
-Open `http://127.0.0.1:5173`. Overview, Wave AI, and Motion are available. Other pages are
+Open `http://127.0.0.1:5173`. Overview, Wave AI, Motion, and GPS are available. Other pages are
 intentionally marked as pending until migrated and verified.

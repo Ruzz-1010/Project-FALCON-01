@@ -13,7 +13,13 @@ export type Wave = {
   history: Array<{ recordedAt: string; waveHeight: number | null }>;
 };
 
-export type Gps = { valid: boolean; fix: string; satellites: number };
+export type Gps = {
+  valid: boolean; fix: string; satellites: number; recordedAt: string;
+  latitude: number | null; longitude: number | null; horizontalAccuracyMeters: number | null;
+  referenceLatitude: number; referenceLongitude: number; deploymentName: string;
+  deploymentReferenceState: string; anchorDistanceMeters: number | null; driftStatus: string;
+  headingDegrees: number | null; surfaceSpeedKnots: number | null; signalQuality: string;
+};
 export type Battery = { percentage: number | null; status: string };
 export type Solar = { power: number | null; status: string };
 export type Prediction = {
