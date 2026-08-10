@@ -166,23 +166,23 @@ class EdgeRuntime:
         self.collect_once()
         result = self.scenario_status()
         result["appliedAt"] = datetime.now(timezone.utc).isoformat()
-        result["aiState"] = "WARMING_UP"
+        # Simulator scenarios transition continuously, so the existing valid
+        # history remains usable immediately after the control is applied.
+        result["aiState"] = "READY"
         return result
 
     def forecast_records(self, limit: int = 120) -> list[dict[str, Any]]:
         records = self.store.recent(limit)
         if not isinstance(self.source, SimulatorSource):
             return records
-        active = self.source.scenario
         segment: list[dict[str, Any]] = []
         newer_wave: float | None = None
         for record in records:
-            if record.get("scenario") != active:
-                break
             wave = record.get("waveLevel")
             if isinstance(wave, (int, float)) and newer_wave is not None and abs(float(wave) - newer_wave) > 0.85:
-                # Do not connect legacy abrupt-scenario samples or corrupted
-                # spikes to the current smooth presentation segment.
+                # Keep protection against legacy abrupt scenario changes and
+                # corrupted spikes. Current scenarios blend smoothly, so a
+                # scenario label boundary alone must not discard AI history.
                 break
             segment.append(record)
             if isinstance(wave, (int, float)):
