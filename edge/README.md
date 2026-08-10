@@ -36,6 +36,11 @@ The AI predicts wave height only. It returns current and predicted values, confi
 
 Presentation scenarios use gradual state transitions. Rough Sea ramps wave height, wind, roll, and pitch over multiple samples and settles gradually when Normal operation is restored, preventing unrealistic graph steps.
 
+The presentation simulator also correlates related channels: wave height with
+pressure and motion, coordinates with anchor distance, solar input with battery
+voltage/current, and enclosure temperature with fan demand. Low Battery and
+Overheating now ramp gradually instead of stepping directly to their alert values.
+
 ## Local Database
 
 The default database is `edge/data/falcon.db`. Startup performs a non-destructive additive schema migration.

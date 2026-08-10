@@ -1,3 +1,4 @@
+import math
 import unittest
 
 from falcon_edge.rules import analyze
@@ -49,6 +50,26 @@ class RulesTest(unittest.TestCase):
             values.append(source.read()["waveLevel"])
         self.assertGreater(values[-1], baseline)
         self.assertLess(max(abs(right - left) for left, right in zip([baseline] + values, values)), 0.8)
+
+    def test_power_and_temperature_scenarios_transition_gradually(self):
+        source = SimulatorSource()
+        baseline = source.read()
+        source.set_scenario("low_battery")
+        source._last_read_at -= 2.0
+        first_low = source.read()
+        self.assertLess(first_low["battery"], baseline["battery"])
+        self.assertGreater(first_low["battery"], 60.0)
+        source.set_scenario("overheating")
+        source._last_read_at -= 2.0
+        first_hot = source.read()
+        self.assertGreater(first_hot["internalTemperature"], baseline["internalTemperature"])
+        self.assertLess(first_hot["internalTemperature"], 45.0)
+
+    def test_gps_distance_matches_coordinate_offset(self):
+        reading = SimulatorSource().read()
+        north = (reading["latitude"] - 9.7421) * 111_320.0
+        east = (reading["longitude"] - 118.7353) * 111_320.0 * math.cos(math.radians(9.7421))
+        self.assertAlmostEqual(reading["anchorDistance"], math.hypot(north, east), delta=.15)
 
 
 if __name__ == "__main__":
