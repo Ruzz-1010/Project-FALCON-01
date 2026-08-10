@@ -1,1 +1,11 @@
 .forecast-status{grid-column:span 4}.forecast-status header>svg{width:24px;color:var(--cyan)}.forecast-status dl{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin:17px 0 12px;overflow:hidden;border:1px solid var(--line);border-radius:10px;background:var(--line)}.forecast-status dl div{padding:12px;background:var(--panel2)}.forecast-status dt{color:var(--muted);font-size:7px}.forecast-status dd{display:flex;align-items:center;gap:5px;margin:6px 0 0;font-size:11px;font-weight:850}.forecast-status dd svg{width:13px;color:var(--cyan)}.forecast-status footer{color:var(--cyan);font-weight:800}.prediction-value{margin-top:22px}.prediction-value strong{font-size:58px}.prediction-comparison{margin-top:20px;padding-block:12px}.ai-result footer{margin-top:13px}.confidence>strong{margin-top:28px;font-size:48px}.confidence-bar{margin-top:14px}.confidence p{margin-top:14px}.ai-result,.confidence,.forecast-status{min-height:280px}.wave-chart-panel{min-height:365px}.wave-chart{height:265px}@media(max-width:1100px){.forecast-status{grid-column:span 12}.ai-result,.confidence,.forecast-status{min-height:0}}@media(max-width:720px){.forecast-status{grid-column:span 12}.prediction-value strong{font-size:50px}.forecast-status dl{grid-template-columns:1fr 1fr}}
+/* Larger, presentation-friendly Wave AI iconography. */
+.wave-page .confidence header>svg,
+.wave-page .forecast-status header>svg,
+.wave-page .explanation header>svg,
+.wave-page .evidence header>svg{width:32px;height:32px;flex:0 0 32px;stroke-width:1.8}
+.wave-page .forecast-status dd svg{width:18px;height:18px;flex:0 0 18px}
+.wave-page .prediction-comparison>svg{width:23px;height:23px;justify-self:center;stroke-width:2}
+.wave-page .explain-flow div>svg{width:34px;height:34px;stroke-width:1.7}
+.wave-page .explain-flow>svg{width:20px;height:20px}
+@media(max-width:720px){.wave-page .confidence header>svg,.wave-page .forecast-status header>svg,.wave-page .explanation header>svg,.wave-page .evidence header>svg{width:28px;height:28px;flex-basis:28px}.wave-page .explain-flow div>svg{width:32px;height:32px}}
