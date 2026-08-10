@@ -2,12 +2,13 @@ import { useEffect, useMemo, useState } from "react";
 import { Check, CheckCircle2, Gauge, Waves } from "lucide-react";
 import { getScenario, setScenario } from "./api";
 import type { DashboardData, ScenarioState } from "./types";
+import TelemetryChart from "./TelemetryChart";
 
 const n = (value: number | null | undefined, digits = 1) => value == null ? "--" : value.toFixed(digits);
 const scenarioLabels: Record<string,string> = { normal:"Normal operation", rough_sea:"Rough sea", low_battery:"Low battery", overheating:"Internal overheating", sensor_fault:"Wave sensor failure" };
 const weights = [["IMU Roll",23],["IMU Pitch",17],["Water Pressure",42],["Wind Speed",13],["Wind Direction",5]] as const;
 
-function ForecastChart({data}:{data:DashboardData}) {
+function LegacyForecastChart({data}:{data:DashboardData}) {
   const rows=data.wave.history.filter(row=>row.waveHeight!=null).slice(-50),values=rows.map(row=>row.waveHeight as number),prediction=data.ai.predictedWaveHeight;
   if(values.length<2)return <div className="chart-empty">Collecting scenario-specific wave history...</div>;
   const all=prediction==null?values:[...values,prediction],min=Math.max(0,Math.min(...all)-.18),max=Math.max(...all)+.18;
@@ -18,6 +19,11 @@ function ForecastChart({data}:{data:DashboardData}) {
     <polyline points={xy.map(point=>point.join(",")).join(" ")} className="wave-line"/>
     {targetY!=null&&<><line x1={last[0]} y1={last[1]} x2="700" y2={targetY} className="forecast-line"/><circle cx="700" cy={targetY} r="5" className="forecast-dot"/><text x="692" y={targetY-12} textAnchor="end" className="forecast-label">{prediction!.toFixed(2)} m</text></>}
   </svg>;
+}
+
+void LegacyForecastChart;
+function ForecastChart({data}:{data:DashboardData}){
+  return <TelemetryChart points={data.wave.history.slice(-50).map(item=>({value:item.waveHeight,recordedAt:item.recordedAt}))} forecast={data.ai.predictedWaveHeight} forecastLabel={`${data.ai.horizonMinutes} MIN FORECAST`} unit=" m" color="#48d9df" minimumZero label="Live wave history and forecast"/>;
 }
 
 export default function WavePage({data,horizon,onHorizon,onScenarioApplied}:{data:DashboardData;horizon:number;onHorizon:(value:number)=>void;onScenarioApplied:()=>void}){

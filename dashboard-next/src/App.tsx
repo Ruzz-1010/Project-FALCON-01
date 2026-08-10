@@ -3,6 +3,7 @@ import { Activity, BatteryCharging, Bell, Cpu, Database, LayoutDashboard, MapPin
 import { getOverview } from "./api";
 import type { DashboardData } from "./types";
 import WavePage from "./WavePage";
+import TelemetryChart from "./TelemetryChart";
 const MotionPage = lazy(() => import("./MotionPage"));
 const GpsPage = lazy(() => import("./GpsPage"));
 const PowerPage = lazy(() => import("./PowerPage"));
@@ -21,7 +22,7 @@ const navigation = [
 
 const n = (value: number | null | undefined, digits = 1) => value == null ? "--" : value.toFixed(digits);
 
-function Trend({ data }: { data: DashboardData }) {
+function LegacyTrend({ data }: { data: DashboardData }) {
   const points = data.wave.history.filter((item) => item.waveHeight != null).slice(-36);
   if (points.length < 2) return <div className="chart-empty">Collecting wave history…</div>;
   const values = points.map((item) => item.waveHeight as number);
@@ -36,6 +37,11 @@ function Trend({ data }: { data: DashboardData }) {
     <polyline points={xy.join(" ")} className="wave-line" />
     {forecastY != null && <><line x1={last[0]} y1={last[1]} x2="700" y2={forecastY} className="forecast-line" /><circle cx="700" cy={forecastY} r="5" className="forecast-dot" /></>}
   </svg>;
+}
+
+void LegacyTrend;
+function Trend({data}:{data:DashboardData}){
+  return <TelemetryChart points={data.wave.history.slice(-42).map(item=>({value:item.waveHeight,recordedAt:item.recordedAt}))} forecast={data.ai.predictedWaveHeight} forecastLabel={`${data.ai.horizonMinutes} MIN AI`} unit=" m" color="#48d9df" minimumZero label="Observed and predicted wave height"/>;
 }
 
 function App() {
