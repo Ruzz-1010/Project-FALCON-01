@@ -33,6 +33,20 @@ Implemented in the repository:
 - browser notifications and alert history;
 - and interactive Fusion-derived 3D buoy visualization.
 
+### Safe frontend migration
+
+The production dashboard in `data/` remains the verified fallback. A page-by-page React + TypeScript migration is isolated in `dashboard-next/`; Phase 1 currently includes the responsive application shell and live Overview page. Unmigrated pages are explicitly disabled until their behavior is ported and verified against the existing Python edge API.
+
+Run the migration preview with the edge service on port `8765`:
+
+```powershell
+cd dashboard-next
+npm install
+npm run dev
+```
+
+Then open `http://127.0.0.1:5173`.
+
 Important limitations:
 
 - physical Phase 1 sensors are not yet fully integrated;

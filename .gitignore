@@ -8,3 +8,5 @@ __pycache__/
 edge/data/
 .chrome-*/
 *-preview.png
+node_modules/
+dashboard-next/dist/
