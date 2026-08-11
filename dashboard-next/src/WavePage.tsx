@@ -23,7 +23,7 @@ function LegacyForecastChart({data}:{data:DashboardData}) {
 
 void LegacyForecastChart;
 function ForecastChart({data}:{data:DashboardData}){
-  return <TelemetryChart points={data.wave.history.slice(-50).map(item=>({value:item.waveHeight,recordedAt:item.recordedAt}))} forecast={data.ai.predictedWaveHeight} forecastLabel={`${data.ai.horizonMinutes} MIN FORECAST`} unit=" m" color="#48d9df" minimumZero label="Live wave history and forecast"/>;
+  return <TelemetryChart points={data.wave.history.slice(-50).map(item=>({value:item.waveHeight,recordedAt:item.recordedAt}))} forecast={data.ai.predictedWaveHeight} forecastLabel={`${data.ai.horizonMinutes} MIN FORECAST`} unit=" m" color="#6e9da5" secondaryColor="#c49355" primaryLabel="Measured wave" secondaryLabel="AI model trend" minimumZero label="Live wave history and forecast"/>;
 }
 
 export default function WavePage({data,horizon,onHorizon,onScenarioApplied}:{data:DashboardData;horizon:number;onHorizon:(value:number)=>void;onScenarioApplied:()=>void}){

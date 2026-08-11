@@ -3,7 +3,7 @@ import type { DashboardData } from "./types";
 import TelemetryChart, { type ChartPoint } from "./TelemetryChart";
 
 const n=(value:number|null|undefined,digits=1)=>value==null?"--":value.toFixed(digits);
-function HistoryChart({points,color,label,unit,threshold}:{points:ChartPoint[];color:string;label:string;unit:string;threshold?:number}){return <TelemetryChart points={points} unit={unit} color={color} threshold={threshold} label={`${label} history`}/>}
+function HistoryChart({points,color,label,unit,threshold}:{points:ChartPoint[];color:string;label:string;unit:string;threshold?:number}){return <TelemetryChart points={points} unit={unit} color="#8c9fa4" secondaryColor={color} primaryLabel="Measured" secondaryLabel="Rolling trend" threshold={threshold} label={`${label} history`}/>}
 
 export default function PowerPage({data}:{data:DashboardData}){
  const {battery,solar,status}=data,temp=status.internalTemperature,cooling=temp==null?"UNAVAILABLE":temp>=55?"CRITICAL":temp>=45?"ELEVATED":"NORMAL",batteryColor=battery.status==="CRITICAL"?"#ee7a72":battery.status==="LOW"?"#efbb70":"#72d99d";

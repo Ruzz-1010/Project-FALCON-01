@@ -1,43 +1,13 @@
 import { useId } from "react";
-
-export type ChartPoint = { value: number | null; recordedAt?: string };
-
-const smoothPath = (points: number[][]) => {
-  if (!points.length) return "";
-  if (points.length === 1) return `M ${points[0][0]} ${points[0][1]}`;
-  let path = `M ${points[0][0]} ${points[0][1]}`;
-  for (let index = 0; index < points.length - 1; index++) {
-    const previous = points[Math.max(0,index-1)],current=points[index],next=points[index+1],after=points[Math.min(points.length-1,index+2)];
-    const c1x=current[0]+(next[0]-previous[0])/6,c1y=current[1]+(next[1]-previous[1])/6;
-    const c2x=next[0]-(after[0]-current[0])/6,c2y=next[1]-(after[1]-current[1])/6;
-    path += ` C ${c1x} ${c1y}, ${c2x} ${c2y}, ${next[0]} ${next[1]}`;
-  }
-  return path;
-};
-
+export type ChartPoint={value:number|null;recordedAt?:string};
+type Props={points:ChartPoint[];unit:string;color:string;secondaryColor?:string;primaryLabel?:string;secondaryLabel?:string;forecast?:number|null;forecastLabel?:string;minimumZero?:boolean;threshold?:number;label:string};
+const smoothPath=(points:number[][])=>{if(!points.length)return"";if(points.length===1)return`M ${points[0][0]} ${points[0][1]}`;let path=`M ${points[0][0]} ${points[0][1]}`;for(let i=0;i<points.length-1;i++){const p=points[Math.max(0,i-1)],c=points[i],n=points[i+1],a=points[Math.min(points.length-1,i+2)];path+=` C ${c[0]+(n[0]-p[0])/6} ${c[1]+(n[1]-p[1])/6}, ${n[0]-(a[0]-c[0])/6} ${n[1]-(a[1]-c[1])/6}, ${n[0]} ${n[1]}`}return path};
 const timeLabel=(value?:string)=>value?new Date(value).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit",second:"2-digit"}):"--";
-
-export default function TelemetryChart({points,unit,color,forecast,forecastLabel="FORECAST",minimumZero=false,threshold,label}:{points:ChartPoint[];unit:string;color:string;forecast?:number|null;forecastLabel?:string;minimumZero?:boolean;threshold?:number;label:string}){
-  const gradientId=`chart-fill-${useId().replaceAll(":","")}`;
-  const valid=points.filter((point):point is ChartPoint&{value:number}=>point.value!=null).slice(-60);
-  if(valid.length<2)return <div className="pro-chart-empty">Collecting {label.toLowerCase()} history...</div>;
-  const values=valid.map(point=>point.value),all=forecast==null?values:[...values,forecast];
-  const rawMin=Math.min(...all),rawMax=Math.max(...all),rawRange=Math.max(.01,rawMax-rawMin),padding=Math.max(rawRange*.2,unit==="%"?.15:.05);
-  const min=minimumZero?Math.max(0,rawMin-padding):rawMin-padding,max=rawMax+padding,range=Math.max(.01,max-min);
-  const left=58,right=forecast==null?714:642,top=26,bottom=214;
-  const xy=valid.map((point,index)=>[left+index/Math.max(1,valid.length-1)*(right-left),bottom-(point.value-min)/range*(bottom-top)]);
-  const line=smoothPath(xy),area=`${line} L ${right} ${bottom} L ${left} ${bottom} Z`,last=xy.at(-1)!;
-  const forecastY=forecast==null?null:bottom-(forecast-min)/range*(bottom-top);
-  const ticks=[0,1,2,3,4],mid=Math.floor((valid.length-1)/2);
-  return <svg className="pro-chart" viewBox="0 0 760 260" role="img" aria-label={label}>
-    <defs><linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor={color} stopOpacity=".28"/><stop offset="1" stopColor={color} stopOpacity=".015"/></linearGradient></defs>
-    {ticks.map(row=>{const y=top+(bottom-top)*row/4,value=max-(max-min)*row/4;return <g key={row}><line x1={left} y1={y} x2="714" y2={y} className="pro-grid"/><text x={left-11} y={y+4} textAnchor="end" className="pro-axis">{value.toFixed(unit==="%"?1:2)}{unit}</text></g>})}
-    {forecastY!=null&&<rect x={right} y={top} width={714-right} height={bottom-top} className="forecast-zone"/>}
-    {threshold!=null&&threshold>=min&&threshold<=max&&<g><line x1={left} y1={bottom-(threshold-min)/range*(bottom-top)} x2="714" y2={bottom-(threshold-min)/range*(bottom-top)} className="threshold-line"/><text x="708" y={bottom-(threshold-min)/range*(bottom-top)-7} textAnchor="end" className="threshold-label">LIMIT {threshold}{unit}</text></g>}
-    <path d={area} fill={`url(#${gradientId})`} className="pro-area"/><path d={line} style={{stroke:color}} className="pro-line"/>
-    {xy.map((point,index)=><circle key={index} cx={point[0]} cy={point[1]} r="8" className="pro-hit"><title>{timeLabel(valid[index].recordedAt)} · {valid[index].value.toFixed(2)}{unit}</title></circle>)}
-    <circle cx={last[0]} cy={last[1]} r="5" style={{fill:color}} className="current-dot"/>
-    {forecastY!=null&&<g><path d={`M ${last[0]} ${last[1]} C ${last[0]+24} ${last[1]}, ${right+37} ${forecastY}, 714 ${forecastY}`} className="pro-forecast"/><circle cx="714" cy={forecastY} r="6" className="forecast-dot"/><text x="706" y={forecastY-12} textAnchor="end" className="forecast-value">{forecast!.toFixed(2)}{unit}</text><text x={right+8} y={top+14} className="forecast-zone-label">{forecastLabel}</text></g>}
-    <text x={left} y="245" className="pro-time">{timeLabel(valid[0].recordedAt)}</text><text x={(left+right)/2} y="245" textAnchor="middle" className="pro-time">{timeLabel(valid[mid].recordedAt)}</text><text x={right} y="245" textAnchor="end" className="pro-time">{timeLabel(valid.at(-1)?.recordedAt)}</text>
-  </svg>;
+export default function TelemetryChart({points,unit,color,secondaryColor="#c49355",primaryLabel="Measured telemetry",secondaryLabel="Smoothed trend",forecast,forecastLabel="FORECAST",minimumZero=false,threshold,label}:Props){
+ const gradientId=`chart-fill-${useId().replaceAll(":","")}`,valid=points.filter((p):p is ChartPoint&{value:number}=>p.value!=null).slice(-60);if(valid.length<2)return <div className="pro-chart-empty">Collecting {label.toLowerCase()} history...</div>;
+ const values=valid.map(p=>p.value),trend:number[]=[];values.forEach((v,i)=>trend.push(i===0?v:trend[i-1]*.72+v*.28));const all=forecast==null?[...values,...trend]:[...values,...trend,forecast],rawMin=Math.min(...all),rawMax=Math.max(...all),rawRange=Math.max(.01,rawMax-rawMin),padding=Math.max(rawRange*.2,unit==="%"?.15:.05),min=minimumZero?Math.max(0,rawMin-padding):rawMin-padding,max=rawMax+padding,range=Math.max(.01,max-min),left=58,right=forecast==null?714:642,top=26,bottom=214,toY=(v:number)=>bottom-(v-min)/range*(bottom-top),toX=(i:number)=>left+i/Math.max(1,valid.length-1)*(right-left),xy=values.map((v,i)=>[toX(i),toY(v)]),trendXy=trend.map((v,i)=>[toX(i),toY(v)]),line=smoothPath(xy),trendLine=smoothPath(trendXy),area=`${line} L ${right} ${bottom} L ${left} ${bottom} Z`,last=xy.at(-1)!,trendLast=trendXy.at(-1)!,forecastY=forecast==null?null:toY(forecast),ticks=[0,1,2,3,4],mid=Math.floor((valid.length-1)/2);
+ return <div className="pro-chart-shell"><div className="pro-chart-legend"><span><i style={{background:color}}/>{primaryLabel}</span><span><i style={{background:secondaryColor}}/>{secondaryLabel}</span>{forecast!=null&&<span><i className="is-forecast"/>AI forecast</span>}</div><svg className="pro-chart" viewBox="0 0 760 260" role="img" aria-label={label}><defs><linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor={color} stopOpacity=".2"/><stop offset="1" stopColor={color} stopOpacity=".01"/></linearGradient></defs>
+ {ticks.map(row=>{const y=top+(bottom-top)*row/4,value=max-(max-min)*row/4;return <g key={row}><line x1={left} y1={y} x2="714" y2={y} className="pro-grid"/><text x={left-11} y={y+4} textAnchor="end" className="pro-axis">{value.toFixed(unit==="%"?1:2)}{unit}</text></g>})}{forecastY!=null&&<rect x={right} y={top} width={714-right} height={bottom-top} className="forecast-zone"/>}{threshold!=null&&threshold>=min&&threshold<=max&&<g><line x1={left} y1={toY(threshold)} x2="714" y2={toY(threshold)} className="threshold-line"/><text x="708" y={toY(threshold)-7} textAnchor="end" className="threshold-label">LIMIT {threshold}{unit}</text></g>}
+ <path d={area} fill={`url(#${gradientId})`} className="pro-area"/><path d={line} style={{stroke:color}} className="pro-line is-measured"/><path d={trendLine} style={{stroke:secondaryColor}} className="pro-line is-trend"/>{xy.map((p,i)=><circle key={i} cx={p[0]} cy={p[1]} r="8" className="pro-hit"><title>{timeLabel(valid[i].recordedAt)} · measured {values[i].toFixed(2)}{unit} · trend {trend[i].toFixed(2)}{unit}</title></circle>)}<circle cx={last[0]} cy={last[1]} r="4.5" style={{fill:color}} className="current-dot"/><circle cx={trendLast[0]} cy={trendLast[1]} r="4" style={{fill:secondaryColor}} className="trend-dot"/>
+ {forecastY!=null&&<g><path d={`M ${trendLast[0]} ${trendLast[1]} C ${trendLast[0]+24} ${trendLast[1]}, ${right+37} ${forecastY}, 714 ${forecastY}`} className="pro-forecast"/><circle cx="714" cy={forecastY} r="6" className="forecast-dot"/><text x="706" y={forecastY-12} textAnchor="end" className="forecast-value">{forecast!.toFixed(2)}{unit}</text><text x={right+8} y={top+14} className="forecast-zone-label">{forecastLabel}</text></g>}<text x={left} y="245" className="pro-time">{timeLabel(valid[0].recordedAt)}</text><text x={(left+right)/2} y="245" textAnchor="middle" className="pro-time">{timeLabel(valid[mid].recordedAt)}</text><text x={right} y="245" textAnchor="end" className="pro-time">{timeLabel(valid.at(-1)?.recordedAt)}</text></svg></div>;
 }

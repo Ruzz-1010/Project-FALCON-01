@@ -41,7 +41,7 @@ function LegacyTrend({ data }: { data: DashboardData }) {
 
 void LegacyTrend;
 function Trend({data}:{data:DashboardData}){
-  return <TelemetryChart points={data.wave.history.slice(-42).map(item=>({value:item.waveHeight,recordedAt:item.recordedAt}))} forecast={data.ai.predictedWaveHeight} forecastLabel={`${data.ai.horizonMinutes} MIN AI`} unit=" m" color="#48d9df" minimumZero label="Observed and predicted wave height"/>;
+  return <TelemetryChart points={data.wave.history.slice(-42).map(item=>({value:item.waveHeight,recordedAt:item.recordedAt}))} forecast={data.ai.predictedWaveHeight} forecastLabel={`${data.ai.horizonMinutes} MIN AI`} unit=" m" color="#6e9da5" secondaryColor="#c49355" primaryLabel="Measured wave" secondaryLabel="AI trend" minimumZero label="Observed and predicted wave height"/>;
 }
 
 function App() {
