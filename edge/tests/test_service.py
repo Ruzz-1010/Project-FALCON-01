@@ -15,7 +15,7 @@ class MemoryStore:
 class ForecastHistoryTests(unittest.TestCase):
     def test_smooth_scenario_boundary_keeps_recent_ai_history(self):
         records = [
-            {"recordedAt": f"2026-08-11T00:00:{index:02d}+00:00", "waveLevel": 0.50 + index * 0.01,
+            {"recordedAt": f"2026-08-11T00:00:{index * 2:02d}+00:00", "waveLevel": 0.50 + index * 0.01,
              "scenario": "normal" if index < 8 else "rough_sea", "source": "simulator"}
             for index in range(10)
         ]
@@ -26,13 +26,25 @@ class ForecastHistoryTests(unittest.TestCase):
     def test_abrupt_legacy_jump_still_stops_history_segment(self):
         records = [
             {"recordedAt": "2026-08-11T00:00:00+00:00", "waveLevel": 0.5, "scenario": "normal"},
-            {"recordedAt": "2026-08-11T00:00:01+00:00", "waveLevel": 0.6, "scenario": "normal"},
-            {"recordedAt": "2026-08-11T00:00:02+00:00", "waveLevel": 3.2, "scenario": "rough_sea"},
-            {"recordedAt": "2026-08-11T00:00:03+00:00", "waveLevel": 3.3, "scenario": "rough_sea"},
+            {"recordedAt": "2026-08-11T00:00:02+00:00", "waveLevel": 0.6, "scenario": "normal"},
+            {"recordedAt": "2026-08-11T00:00:04+00:00", "waveLevel": 3.2, "scenario": "rough_sea"},
+            {"recordedAt": "2026-08-11T00:00:06+00:00", "waveLevel": 3.3, "scenario": "rough_sea"},
         ]
         runtime = EdgeRuntime(SimulatorSource(), MemoryStore(records), 2.0)
         runtime.source.set_scenario("rough_sea")
         self.assertEqual(len(runtime.forecast_records()), 2)
+
+    def test_duplicate_interleaved_simulator_samples_are_filtered(self):
+        records = [
+            {"recordedAt": "2026-08-11T00:00:00.000000+00:00", "waveLevel": 0.50, "scenario": "normal"},
+            {"recordedAt": "2026-08-11T00:00:00.800000+00:00", "waveLevel": 0.62, "scenario": "normal"},
+            {"recordedAt": "2026-08-11T00:00:02.000000+00:00", "waveLevel": 0.51, "scenario": "normal"},
+            {"recordedAt": "2026-08-11T00:00:02.800000+00:00", "waveLevel": 0.63, "scenario": "normal"},
+            {"recordedAt": "2026-08-11T00:00:04.000000+00:00", "waveLevel": 0.52, "scenario": "normal"},
+        ]
+        runtime = EdgeRuntime(SimulatorSource(), MemoryStore(records), 2.0)
+        kept = runtime.forecast_records()
+        self.assertEqual([item["waveLevel"] for item in kept], [0.52, 0.51, 0.50])
 
 
 if __name__ == "__main__":

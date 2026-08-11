@@ -187,7 +187,19 @@ class EdgeRuntime:
             segment.append(record)
             if isinstance(wave, (int, float)):
                 newer_wave = float(wave)
-        return segment
+        # A stale duplicate service used to be able to write a second sample
+        # between the configured two-second samples. Keep one coherent
+        # simulator stream so charts and forecasts cannot alternate between
+        # two independent phases while legacy rows age out of the database.
+        coherent: list[dict[str, Any]] = []
+        newest_kept: datetime | None = None
+        minimum_gap = self.interval * 0.75
+        for record in segment:
+            recorded_at = datetime.fromisoformat(record["recordedAt"])
+            if newest_kept is None or (newest_kept - recorded_at).total_seconds() >= minimum_gap:
+                coherent.append(record)
+                newest_kept = recorded_at
+        return coherent
 
 
 def make_handler(runtime: EdgeRuntime, store: TelemetryStore):
@@ -366,9 +378,12 @@ def main() -> None:
     source = SimulatorSource() if args.source == "simulator" else Esp32Source(args.esp32_url)
     store = TelemetryStore(args.database)
     runtime = EdgeRuntime(source, store, args.interval)
+    # Bind before starting collection. If another FALCON service owns the
+    # port, startup now fails without leaving a hidden duplicate collector
+    # writing conflicting simulator samples into the shared database.
+    server = ThreadingHTTPServer((args.host, args.port), make_handler(runtime, store))
     collector = threading.Thread(target=runtime.run, name="falcon-collector", daemon=True)
     collector.start()
-    server = ThreadingHTTPServer((args.host, args.port), make_handler(runtime, store))
 
     def shutdown(*_: Any) -> None:
         runtime.stop()
