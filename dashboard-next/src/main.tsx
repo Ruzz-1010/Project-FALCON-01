@@ -21,5 +21,6 @@ import "./wave-report.css";
 import "./chromatic-system.css";
 import "./charts-pro.css";
 import "./prediction-inputs.css";
+import "./industrial-theme.css";
 
 createRoot(document.getElementById("root")!).render(<StrictMode><App /></StrictMode>);
