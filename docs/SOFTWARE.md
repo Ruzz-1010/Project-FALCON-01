@@ -144,7 +144,7 @@ firmware/
 
 ### ai_bridge
 
-- send validated telemetry to the mini PC;
+- send validated telemetry to the Orange Pi;
 - expose AI availability;
 - and never fabricate predictions.
 
@@ -201,7 +201,7 @@ Approved message families:
 ## Mini-PC Services
 
 ```text
-mini_pc/
+orange_pi/
 ├── ingestion/
 ├── validation/
 ├── wave_processing/
@@ -321,7 +321,7 @@ Configuration shall be validated and versioned.
 - log recoverable errors;
 - return structured API errors;
 - reconnect UART automatically;
-- preserve acquisition during mini-PC outages;
+- preserve acquisition during Orange Pi outages;
 - mark AI unavailable when inputs fail;
 - and avoid restart loops.
 
@@ -355,7 +355,7 @@ Cloud services, fleet management, mobile applications, additional AI services, c
 
 ## Database Implementation
 
-The Mini PC uses SQLite for local-first persistence. The v4 schema contains:
+The Orange Pi Zero 3 (4GB) uses SQLite for local-first persistence. The v4 schema contains:
 
 - `telemetry` for timestamped source payloads;
 - `alerts` linked to their telemetry record;
@@ -368,5 +368,6 @@ Schema creation is additive through `CREATE TABLE IF NOT EXISTS`. Existing prese
 
 | Version | Date | Change |
 | --- | --- | --- |
-| 4.0 | 2026-08-09 | Created focused ESP32, UART, mini-PC, REST API, and local-dashboard software architecture. |
+| 4.1 | 2026-08-12 | Selected Orange Pi Zero 3 (4GB) as the edge host; UART remains primary and Wi-Fi is an alternate validated transport. |
+| 4.0 | 2026-08-09 | Created focused ESP32, UART, edge-host, REST API, and local-dashboard software architecture. |
 | 4.1 | 2026-08-09 | Recorded the implemented v4 SQLite schema, approved endpoints, and dashboard migration. |

@@ -54,7 +54,8 @@ Home shall prioritize wave state and system readiness.
 ### System Status
 
 - ESP32;
-- mini PC;
+- Orange Pi Zero 3 edge-host state;
+- Orange Pi Zero 3;
 - UART;
 - API;
 - monitoring state;

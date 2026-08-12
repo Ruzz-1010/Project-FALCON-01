@@ -1,6 +1,6 @@
 # FALCON Edge Service v4.0
 
-Local-first Python service for the Project FALCON Mini PC. It collects ESP32 telemetry, validates approved sensors, evaluates deterministic alerts, stores operational records in SQLite, serves the dashboard, and provides AI-assisted wave-height predictions.
+Local-first Python service for the selected Project FALCON Orange Pi Zero 3 (4GB). It collects ESP32 telemetry, validates approved sensors, evaluates deterministic alerts, stores operational records in SQLite, serves the dashboard, and provides AI-assisted wave-height predictions. A laptop currently performs the same role during development.
 
 ## Run the Presentation Simulator
 
@@ -54,7 +54,7 @@ Runtime database files are ignored by Git.
 
 ## Read from the ESP32
 
-Connect the Mini PC or laptop to the ESP32 endpoint and run:
+Connect the Orange Pi or development laptop to the ESP32 endpoint and run:
 
 ```powershell
 python -m falcon_edge.service --source esp32 --esp32-url http://192.168.4.1

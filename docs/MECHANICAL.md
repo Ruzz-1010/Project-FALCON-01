@@ -19,6 +19,7 @@ This refactor does not redesign the mechanical system.
 - waterproof electronics enclosure;
 - upper equipment/sensor structure;
 - and solar-panel assembly.
+- Orange Pi Zero 3 mounting, airflow, cable strain relief, and service access within the electronics enclosure.
 
 ## Design Objectives
 

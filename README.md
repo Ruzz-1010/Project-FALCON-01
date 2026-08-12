@@ -24,7 +24,7 @@ Implemented in the repository:
 - PlatformIO ESP32 Arduino firmware;
 - `FALCON-01` Wi-Fi access point and captive portal;
 - LittleFS fallback dashboard and basic ESP32 controls;
-- laptop-hosted Python edge-service prototype;
+- laptop-hosted Python edge-service prototype, ready to migrate to the selected Orange Pi Zero 3 (4GB);
 - simulated telemetry and deterministic alert scenarios;
 - local SQLite telemetry history;
 - presentation forecast and backtest pipeline;
@@ -50,7 +50,7 @@ Then open `http://127.0.0.1:5173`.
 Important limitations:
 
 - physical Phase 1 sensors are not yet fully integrated;
-- the mini PC has not yet been installed;
+- the selected Orange Pi Zero 3 (4GB) has not yet been installed;
 - the laptop currently represents the edge-computing role during demonstrations;
 - simulator results are not field-validation results;
 - the current presentation forecast is not the final trained AI model;
@@ -59,18 +59,12 @@ Important limitations:
 ## Approved Phase 1 Architecture
 
 ```text
-Sensors
-   |
-   v
-ESP32
-   |
-   | UART
-   v
-Mini PC
-   |
-   | REST API
-   v
-Local Dashboard
+Marine Sensors -> ESP32 -> UART / Wi-Fi -> Orange Pi Zero 3 (4GB)
+                                             |
+                                             +-> AI prediction + XAI
+                                             +-> SQLite + historical data
+                                             +-> REST API + web server
+                                             +-> Local dashboard -> laptop / tablet / phone
 ```
 
 Cloud connectivity is Future Expansion and is not required for Phase 1 operation.
@@ -159,7 +153,7 @@ python -m unittest discover -s tests -v
 Project FALCON-01/
 ├── data/               # current dashboard assets and 3D model
 ├── docs/               # engineering documentation
-├── edge/               # laptop/mini-PC edge-service prototype
+├── edge/               # laptop/Orange Pi edge-service prototype
 ├── exports/            # archived CAD exchange assets
 ├── fusion360/          # mechanical component documentation
 ├── include/            # ESP32 configuration headers

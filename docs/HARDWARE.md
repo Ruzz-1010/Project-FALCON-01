@@ -13,7 +13,7 @@
 
 Confirmed repository/development hardware includes an ESP32 DevKit/ESP-WROOM-32-class board and basic development modules previously recorded in the project.
 
-The full sensor set, final mini PC, final solar/battery components, and complete marine deployment assembly shall not be treated as installed until procurement and physical verification records exist.
+The full sensor set, selected Orange Pi Zero 3 (4GB), final solar/battery components, and complete marine deployment assembly shall not be treated as installed until procurement and physical verification records exist.
 
 Part numbers, capacities, ratings, and dimensions marked **TBD** require selection and engineering review.
 
@@ -28,7 +28,7 @@ The Phase 1 hardware supports:
 - battery and solar monitoring;
 - internal-temperature monitoring;
 - ESP32 data acquisition;
-- UART transfer to a mini PC;
+- UART or validated local Wi-Fi transfer to the Orange Pi;
 - local AI-assisted wave prediction;
 - and a local dashboard.
 
@@ -38,7 +38,7 @@ The Phase 1 hardware supports:
 BNO085 IMU --------------------+
 Water Pressure Sensor ---------+
 Wind Speed Sensor -------------+
-Wind Direction Sensor ---------+--> ESP32 --> UART --> Mini PC
+Wind Direction Sensor ---------+--> ESP32 --> UART / Wi-Fi --> Orange Pi Zero 3 (4GB)
 GPS Module --------------------+                    |
 Battery Monitor ---------------+                    +--> REST API
 Solar Monitor -----------------+                    |
@@ -66,7 +66,7 @@ Responsibilities:
 - handle watchdog recovery;
 - and provide a limited local fallback interface where appropriate.
 
-The ESP32 shall continue basic acquisition when the mini PC is unavailable.
+The ESP32 shall continue basic acquisition when the Orange Pi is unavailable.
 
 The ESP32 is not the primary host for the full 3D dashboard or final AI service.
 
@@ -81,17 +81,19 @@ The ESP32 is not the primary host for the full 3D dashboard or final AI service.
 
 Final pin assignments belong in PINOUT.md after sensor selection.
 
-## Mini PC
+## Orange Pi Zero 3 (4GB)
 
-Role: local edge-processing and dashboard host.
+Role: selected local edge-processing and dashboard host.
 
-Final model: **TBD**.
+Selected model: **Orange Pi Zero 3, 4GB LPDDR4**. Procurement and physical integration remain pending.
 
 The laptop may temporarily perform this role during demonstrations.
 
-Minimum selection considerations:
+Integration requirements:
 
-- reliable UART or USB-serial interface;
+- reliable 3.3 V UART or isolated USB-serial interface, with local Wi-Fi available as a validated alternate transport;
+- regulated 5 V rail sized for a 3 A transient design envelope;
+- short, low-resistance power wiring and brownout logging;
 - adequate CPU for one lightweight wave-prediction model;
 - adequate storage for local telemetry and prediction history;
 - low enough power consumption for the validated energy budget;
@@ -111,7 +113,7 @@ Responsibilities:
 - alert aggregation;
 - and system logging.
 
-The mini PC is not an autonomous-navigation computer.
+The Orange Pi is not an autonomous-navigation computer.
 
 ## Approved Phase 1 Sensors
 
@@ -270,7 +272,7 @@ MPPT Charge Controller
 Protected Power Distribution
     |
     +--> ESP32
-    +--> Mini PC
+    +--> Orange Pi Zero 3
     +--> Sensors
 ```
 
@@ -325,7 +327,7 @@ Requirements:
 ### Energy-Budget Inputs
 
 - ESP32 average and peak current;
-- mini-PC idle, average, and startup power;
+- Orange Pi idle, average, and startup power;
 - all approved sensors;
 - GPS;
 - cooling hardware when installed;
@@ -348,7 +350,7 @@ Cooling status shall not be presented as active when the hardware is absent.
 
 ## Communication Hardware
 
-### ESP32 to Mini PC
+### ESP32 to Orange Pi
 
 Approved Phase 1 transport: UART.
 
@@ -365,7 +367,7 @@ USB serial may be used for development while preserving the UART protocol bounda
 
 ### Local Dashboard Network
 
-The mini PC may provide the local web service over Wi-Fi or Ethernet according to final deployment design.
+The Orange Pi provides the local web service over Wi-Fi or Ethernet according to the validated deployment design.
 
 Public Internet is not required.
 
@@ -478,4 +480,5 @@ None are Phase 1 requirements.
 | Version | Date | Change |
 | --- | --- | --- |
 | 3.1 | 2026-08-05 | Added verified available-hardware notice. |
-| 4.0 | 2026-08-09 | Replaced broad hardware plan with approved core sensors, UART mini-PC architecture, measured power-design requirements, and explicit Future Expansion boundaries. |
+| 4.1 | 2026-08-12 | Selected Orange Pi Zero 3 (4GB), added UART/Wi-Fi transport wording, and linked provisional power sizing. |
+| 4.0 | 2026-08-09 | Replaced broad hardware plan with approved core sensors, UART edge architecture, measured power-design requirements, and explicit Future Expansion boundaries. |

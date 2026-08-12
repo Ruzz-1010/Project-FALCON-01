@@ -91,14 +91,14 @@ Thirty-minute prediction is not a Phase 1 research output.
 7. select one operational model;
 8. freeze a versioned artifact;
 9. validate by horizon;
-10. deploy to the mini PC;
+10. deploy to the Orange Pi Zero 3;
 11. monitor inference quality;
 12. and retain prediction history.
 
 ## Model Selection Principles
 
 - explainable enough for research review;
-- lightweight enough for the mini PC;
+- lightweight enough for the Orange Pi Zero 3;
 - deterministic preprocessing;
 - robust missing-data behavior;
 - measurable improvement over baseline;
@@ -209,9 +209,9 @@ Backtesting shall:
 
 ## Deployment
 
-The model runs on the mini PC.
+The model runs on the Orange Pi Zero 3.
 
-The ESP32 provides validated telemetry through UART.
+The ESP32 provides validated telemetry to the Orange Pi Zero 3 primarily through UART; validated local Wi-Fi may be used as an alternate transport.
 
 The AI service publishes through `GET /ai`.
 

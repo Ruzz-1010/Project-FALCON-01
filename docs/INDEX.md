@@ -12,13 +12,14 @@ Read these documents in order:
 2. [`README.md`](../README.md) — repository entry point and quick start
 3. [`ROADMAP.md`](ROADMAP.md) — gated delivery plan
 4. [`HARDWARE.md`](HARDWARE.md) — Phase 1 electronics and sensor baseline
-5. [`SOFTWARE.md`](SOFTWARE.md) — ESP32 and Mini PC software responsibilities
-6. [`AI.md`](AI.md) — 5- and 15-minute wave-height prediction contract
-7. [`DASHBOARD.md`](DASHBOARD.md) — local dashboard information architecture
-8. [`API.md`](API.md) — approved local REST API contract
-9. [`MECHANICAL.md`](MECHANICAL.md) — approved buoy mechanical baseline
+5. [`SOFTWARE.md`](SOFTWARE.md) — ESP32 and Orange Pi software responsibilities
+6. [`ORANGE_PI_EDGE.md`](ORANGE_PI_EDGE.md) — selected Orange Pi Zero 3 architecture and responsibility boundary
+7. [`AI.md`](AI.md) — 5- and 15-minute wave-height prediction contract
+8. [`DASHBOARD.md`](DASHBOARD.md) — local dashboard information architecture
+9. [`API.md`](API.md) — approved local REST API contract
+10. [`MECHANICAL.md`](MECHANICAL.md) — approved buoy mechanical baseline
 
-These core documents were aligned to Project FALCON v4.0 on 2026-08-09.
+These core documents were aligned to Project FALCON v4.0 and the Orange Pi architecture decision on 2026-08-12.
 
 ## Supporting Documentation
 

@@ -38,8 +38,8 @@ Implemented:
 Not yet complete:
 
 - acquisition and installation of all approved sensors;
-- final UART protocol and physical ESP32-to-mini-PC link;
-- final mini-PC installation;
+- final UART protocol and physical ESP32-to-Orange-Pi link;
+- Orange Pi Zero 3 installation;
 - calibrated wave-height estimation;
 - physical coastal dataset;
 - final trained/selected wave-prediction model;
@@ -168,7 +168,7 @@ Not yet complete:
 - calibration records exist;
 - and reference comparisons meet approved tolerances.
 
-## Gate 5 — UART and Mini-PC Integration
+## Gate 5 — UART/Wi-Fi and Orange Pi Zero 3 Integration
 
 **Status:** Planned
 
@@ -180,7 +180,7 @@ Not yet complete:
 - sequence numbers;
 - checksum or CRC;
 - reconnect logic;
-- mini-PC ingestion service;
+- Orange Pi ingestion service;
 - validation service;
 - and end-to-end communication tests.
 
@@ -189,8 +189,8 @@ Not yet complete:
 - valid messages are delivered consistently;
 - corrupted messages are rejected;
 - sequence gaps are detected;
-- ESP32 acquisition continues during mini-PC restart;
-- mini-PC reconnects automatically;
+- ESP32 acquisition continues during Orange Pi restart;
+- Orange Pi reconnects automatically;
 - and communication state is visible through `/status`.
 
 ## Gate 6 — Wave-Height Estimation

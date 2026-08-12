@@ -14,8 +14,8 @@
 | Prediction window | 5–15 minutes |
 | Primary deployment context | Philippine coastal waters |
 | Primary controller | ESP32 |
-| Planned edge computer | Mini PC |
-| Last refactor | 2026-08-09 |
+| Selected edge computer | Orange Pi Zero 3 (4GB) |
+| Last architecture update | 2026-08-12 |
 ## Authority and Use
 
 This document defines the approved Phase 1 engineering baseline for Project FALCON. It governs:
@@ -54,8 +54,7 @@ over unnecessary complexity. It prioritizes transparent predictions over unsuppo
 
 Affordable coastal monitoring systems commonly collect and display environmental readings. Many low-cost systems stop at data acquisition and visualization. Commercial wave-monitoring platforms can be too
 costly or inaccessible for small institutions. Project FALCON explores whether a low-cost, modular, solar-powered buoy can provide useful real-time coastal monitoring and AI-assisted wave-height predictions
-over a short 5–15 minute window. The Phase 1 buoy uses an ESP32 for deterministic sensor acquisition and control. A mini PC is the planned edge-computing platform. The ESP32 and mini PC communicate through
-UART. The mini PC exposes a local REST API. The local dashboard consumes that API. The system remains locally usable without Internet access. Cloud synchronization is not part of the Phase 1 implementation
+over a short 5–15 minute window. The Phase 1 buoy uses an ESP32 for deterministic sensor acquisition and control. An Orange Pi Zero 3 (4GB) is the selected edge-computing platform. The ESP32 and Orange Pi communicate primarily through UART, with validated local Wi-Fi available as an alternate transport. The Orange Pi exposes a local REST API and hosts the dashboard. The system remains locally usable without Internet access. Cloud synchronization is not part of the Phase 1 implementation
 baseline. The approved AI scope is intentionally limited. The AI estimates short-term wave height. The AI classifies sea condition as Calm, Moderate, or Rough. The AI does not autonomously control the buoy. The
 AI does not issue navigation commands. The AI does not predict typhoons, storms, weather, fish activity, maintenance, or water quality.
 ## Research Focus
@@ -208,7 +207,7 @@ Sea condition is the approved three-class output:
 - Moderate;
 - Rough.
 ### Edge
-Edge refers to processing on the local mini PC near or within the buoy system.
+Edge refers to processing on the local Orange Pi Zero 3 (4GB) near or within the buoy system.
 ### Local Dashboard
 Local dashboard means a browser interface reachable over the local network without requiring Internet service.
 ### Implemented
@@ -243,7 +242,7 @@ The repository contains a modern local dashboard prototype. The dashboard protot
 - current-versus-predicted values;
 - and an interactive 3D mechanical model.
 The current forecast implementation is a presentation model. It is not yet a field-validated AI model. The current telemetry source is primarily simulated when physical sensors are unavailable. Physical sensor
-integration remains Planned until hardware is installed and validated. The mini PC has not yet been integrated into the physical prototype. The laptop may temporarily represent the edge-computing role during
+integration remains Planned until hardware is installed and validated. The selected Orange Pi Zero 3 has not yet been integrated into the physical prototype. The laptop may temporarily represent the edge-computing role during
 demonstrations. The full dashboard is not approved for direct deployment on the current ESP32 flash because its 3D assets exceed the configured LittleFS capacity.
 ## System Requirements
 
@@ -267,7 +266,7 @@ ESP32
    |
    | UART
    v
-Mini PC
+Orange Pi Zero 3 (4GB)
    |
    | REST API
    v
@@ -299,11 +298,11 @@ The ESP32 is the deterministic embedded controller. It is responsible for:
 - local watchdog handling;
 - basic fault reporting;
 - and safe restart behavior.
-The ESP32 shall continue basic acquisition if the mini PC is unavailable.
+The ESP32 shall continue basic acquisition if the Orange Pi is unavailable.
 ### UART
-UART is the approved Phase 1 link between ESP32 and mini PC. UART is selected for simplicity, low overhead, and deterministic local communication. The UART protocol shall include framing and validation.
-### Mini PC
-The mini PC is the planned edge-processing host. It is responsible for:
+UART is the primary Phase 1 link between ESP32 and Orange Pi. Validated local Wi-Fi is an alternate development or fallback transport. Both shall include framing, validation, reconnect behavior, and stale-data detection.
+### Orange Pi Zero 3 (4GB)
+The Orange Pi Zero 3 (4GB) is the selected edge-processing host. It is responsible for:
 - ingesting ESP32 telemetry;
 - validating message structure;
 - local storage;
@@ -315,7 +314,7 @@ The mini PC is the planned edge-processing host. It is responsible for:
 - dashboard hosting;
 - alert aggregation;
 - and system logging.
-The mini PC shall not replace the ESP32's time-critical acquisition role.
+The Orange Pi shall not replace the ESP32's time-critical acquisition role.
 ### REST API
 The REST API is the approved interface between local services and the dashboard. It shall return explicit status codes. It shall distinguish unavailable values from zero values. It shall use documented JSON
 schemas.
@@ -330,8 +329,8 @@ values.
 4. The ESP32 checks validity and range.
 5. The ESP32 assigns a timestamp or sequence number.
 6. The ESP32 packages the reading into a UART message.
-7. The mini PC validates the UART message.
-8. The mini PC stores the accepted reading.
+7. The Orange Pi validates the UART or Wi-Fi message.
+8. The Orange Pi stores the accepted reading.
 9. The wave-processing pipeline updates wave features.
 10. The AI pipeline produces a prediction when sufficient valid history exists.
 11. The classifier produces Calm, Moderate, or Rough.
@@ -523,7 +522,7 @@ require a stuck-sensor check. Sudden discontinuities shall be logged for review.
 
 Sampling rates shall be selected through testing. The IMU may require a higher internal sampling rate than dashboard updates. The pressure sensor shall be sampled fast enough to preserve relevant wave dynamics.
 Wind data may use a lower output rate than IMU data. GPS may use a lower rate than pressure and IMU data. Power and internal-temperature data may use still lower rates. All data used together for wave
-estimation shall be time-aligned. Clock drift between ESP32 and mini PC shall be measured. UART sequence numbers shall help detect missing messages. The dashboard refresh rate shall not be treated as the sensor
+estimation shall be time-aligned. Clock drift between ESP32 and Orange Pi shall be measured. UART sequence numbers shall help detect missing messages. The dashboard refresh rate shall not be treated as the sensor
 sample rate.
 ## Wave-Height Estimation Pipeline
 
@@ -645,7 +644,7 @@ The Home page shall distinguish measured and predicted values visually.
 ### System Status
 System Status shall show:
 - ESP32 state;
-- mini PC state;
+- Orange Pi edge-host state;
 - UART state;
 - API state;
 - sensor availability;
@@ -858,7 +857,7 @@ JSON is the default representation. Timestamps shall use ISO 8601 with timezone 
 Bad requests shall return structured error codes. Restart and calibration shall require POST. Read endpoints shall not mutate state. Schemas shall be versioned when breaking changes occur.
 ## UART Interface
 
-UART is the approved ESP32-to-mini-PC transport. The interface shall define:
+UART is the primary ESP32-to-Orange-Pi transport. The interface shall define:
 - baud rate;
 - voltage-level compatibility;
 - connector pinout;
@@ -881,7 +880,7 @@ Recommended message categories include:
 - ALERT;
 - CALIBRATION;
 - and HEARTBEAT.
-Malformed frames shall be rejected. Rejected frames shall be counted. Sequence gaps shall be logged. The mini PC shall not block ESP32 acquisition while processing a frame.
+Malformed frames shall be rejected. Rejected frames shall be counted. Sequence gaps shall be logged. The Orange Pi shall not block ESP32 acquisition while processing a frame.
 ## Firmware Architecture
 
 The firmware shall remain modular. Approved top-level firmware modules are:
@@ -938,7 +937,7 @@ Diagnostics, configuration, and communication helpers may support them.
 - provide only the embedded fallback interface when required;
 - avoid hosting assets larger than available flash;
 - and expose clear local status.
-The full Phase 1 dashboard is expected to run from the mini PC.
+The full Phase 1 dashboard is expected to run from the Orange Pi Zero 3.
 ### storage
 - store configuration;
 - store calibration metadata;
@@ -956,7 +955,7 @@ The full Phase 1 dashboard is expected to run from the mini PC.
 - return structured errors;
 - and avoid blocking acquisition.
 ### ai_bridge
-- transport validated sensor data to the mini PC;
+- transport validated sensor data to the Orange Pi;
 - receive AI status when needed;
 - report link failures;
 - and never fabricate AI results.
@@ -968,9 +967,9 @@ polling. Watchdog servicing shall be explicit. Recoverable sensor failures shall
 be logged. Configuration shall be validated before use. Defaults shall be safe and documented.
 ## Mini-PC Software Architecture
 
-The mini-PC software shall contain focused services. Recommended structure:
+The Orange Pi edge software shall contain focused services. Recommended structure:
 ```text
-mini_pc/
+orange_pi/
 ├── ingestion/
 ├── validation/
 ├── wave_processing/
@@ -1100,7 +1099,7 @@ Power Distribution
     |
     +--> ESP32
     |
-    +--> Mini PC
+    +--> Orange Pi Zero 3 (4GB)
     |
     +--> Sensors
 ```
@@ -1131,7 +1130,7 @@ LiFePO4 is preferred for cycle life, voltage stability, and safety characteristi
 ### Energy Budget
 The energy budget shall include:
 - ESP32 average current;
-- mini PC average and peak power;
+- Orange Pi average, peak, and startup power;
 - sensor consumption;
 - GPS consumption;
 - cooling consumption when installed;
@@ -1146,7 +1145,7 @@ Power autonomy shall be demonstrated by measurement. It shall not be claimed fro
 - approved sensors active;
 - ESP32 acquisition active;
 - UART active;
-- mini PC active when power permits;
+- Orange Pi active when power permits;
 - API active;
 - dashboard available;
 - and local storage active.
@@ -1158,7 +1157,7 @@ Power autonomy shall be demonstrated by measurement. It shall not be claimed fro
 ### Critical Battery State
 - preserve essential ESP32 operation;
 - preserve critical logging;
-- reduce mini-PC load when required;
+- reduce Orange Pi load when required;
 - avoid unsafe battery discharge;
 - and report the state locally.
 Power states shall not be labeled autonomous decision making. They are deterministic power-management policies.
@@ -1166,7 +1165,7 @@ Power states shall not be labeled autonomous decision making. They are determini
 
 Phase 1 communication consists of:
 - sensor buses to ESP32;
-- UART from ESP32 to mini PC;
+- UART from ESP32 to Orange Pi;
 - local network access to REST API;
 - and local browser access to the dashboard.
 Internet connectivity is optional and not required. LTE is Future Expansion. LoRa is Future Expansion. Satellite communication is Future Expansion. Multi-buoy networking is Future Expansion.
@@ -1280,7 +1279,7 @@ Required electrical tests include:
 - low-voltage behavior;
 - brownout recovery;
 - ESP32 restart recovery;
-- mini-PC startup behavior;
+- Orange Pi startup behavior;
 - grounding review;
 - and thermal observation.
 ## Sensor Testing
@@ -1353,7 +1352,7 @@ Required communication tests include:
 - sequence gap;
 - high message rate;
 - ESP32 disconnect;
-- mini-PC restart;
+- Orange Pi restart;
 - automatic reconnect;
 - API availability;
 - malformed API request;
@@ -1426,7 +1425,7 @@ Passing a demonstration is not equivalent to passing field validation.
 ### 5. Communication Inspection
 - verify ESP32 startup;
 - verify UART;
-- verify mini PC;
+- verify Orange Pi;
 - verify REST API;
 - and verify dashboard access.
 ### 6. AI Readiness
@@ -1509,7 +1508,7 @@ Maintenance shall be preventive and evidence-based.
 - and retry acquisition.
 ### UART Failure
 - ESP32 continues acquisition;
-- mini PC marks telemetry stale;
+- Orange Pi marks telemetry stale;
 - API reports degraded state;
 - dashboard reports communication failure;
 - and reconnection is attempted.
@@ -1583,7 +1582,7 @@ Project-FALCON/
 │   ├── scripts/
 │   ├── styles/
 │   └── index.html
-├── mini_pc/
+├── orange_pi/
 │   ├── ingestion/
 │   ├── wave_processing/
 │   ├── storage/
@@ -1686,7 +1685,7 @@ Calibration changes require updated metadata. Every approved change shall update
 - implement framing;
 - implement validation;
 - test reconnect behavior;
-- and integrate mini-PC ingestion.
+- and integrate Orange Pi ingestion.
 ### Gate 5: Wave Estimation
 - collect controlled data;
 - implement pressure preprocessing;
@@ -1836,7 +1835,7 @@ generalize beyond the tested conditions without justification. Reports shall not
 ## Demonstration Rules
 
 Demonstration mode may use simulated sensor data. Simulated data shall be labeled clearly. Presentation predictions shall be labeled clearly. Fault scenarios may be injected for demonstration. Injected faults
-shall not be confused with hardware failures. The digital twin may visualize simulated motion. The demonstration shall explain that physical sensors and mini-PC hardware may still be pending. The demonstration
+shall not be confused with hardware failures. The digital twin may visualize simulated motion. The demonstration shall explain that physical sensors and Orange Pi hardware may still be pending. The demonstration
 shall focus on architecture, data flow, usability, and planned validation.
 ## Traceability Matrix
 
@@ -1854,7 +1853,7 @@ shall focus on architecture, data flow, usability, and planned validation.
 | Maintainability | Modular hardware and software | Inspection and replacement exercise |
 ## Open Engineering Decisions
 
-The exact mini-PC model remains to be finalized. The exact water-pressure sensor remains to be finalized. The exact wind-speed sensor remains to be finalized. The exact wind-direction sensor remains to be
+The Orange Pi Zero 3 (4GB) is selected; procurement and integration remain pending. The exact water-pressure sensor remains to be finalized. The exact wind-speed sensor remains to be finalized. The exact wind-direction sensor remains to be
 finalized. The exact GPS module remains to be finalized. The exact battery-monitor device remains to be finalized. The exact solar-monitor device remains to be finalized. The exact internal-temperature sensor
 remains to be finalized. The final sampling rates remain to be validated. The final UART baud rate remains to be approved. The final wave-height estimator remains to be validated. The final AI model remains to
 be selected after data collection. The final Calm, Moderate, and Rough thresholds remain to be validated. The final power budget remains to be measured. The final field-test site and permits remain to be
@@ -1867,7 +1866,7 @@ Phase 1 is complete only when:
 - calibration records exist;
 - ESP32 acquisition is operational;
 - UART communication is operational;
-- mini-PC edge services are operational;
+- Orange Pi edge services are operational;
 - the approved REST API is operational;
 - current wave height is validated against a reference;
 - 5–15 minute prediction is evaluated on physical data;

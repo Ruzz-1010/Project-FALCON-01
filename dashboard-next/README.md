@@ -30,7 +30,7 @@ solar charging input, battery and enclosure temperatures, live intake/exhaust fa
 RPM, thermal states, and realistic recent-history charts. Low-battery and thermal
 presentation scenarios use the same verified edge telemetry and alert pipeline.
 
-Phase 6 adds System Health with explicit ESP32, Mini PC, UART, and API states;
+Phase 6 adds System Health with explicit ESP32, Orange Pi edge host, UART/Wi-Fi, and API states;
 sensor-channel availability; uptime and monitoring state; CPU, memory, storage,
 and Wi-Fi metrics; active diagnostics; and firmware/dashboard version context.
 Simulator-backed services remain clearly labeled instead of appearing physical.
@@ -51,6 +51,10 @@ are accepted by the edge API and written to the auditable local event archive.
 ## Run
 
 Start the existing edge service on port `8765`, then:
+
+cd "C:\Users\Admin\Documents\PlatformIO\Projects\Project FALCON-01\dashboard-next"
+npm.cmd run dev
+
 
 ```powershell
 cd dashboard-next

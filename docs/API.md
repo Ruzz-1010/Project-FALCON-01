@@ -5,9 +5,9 @@
 | Field | Value |
 | --- | --- |
 | Authority | PROJECT_CONTEXT.md v4.0 |
-| Target host | Mini PC local edge service |
+| Target host | Orange Pi Zero 3 (4GB) local edge service |
 | Representation | JSON |
-| Status | Approved contract implemented by the Mini PC edge service |
+| Status | Approved contract implemented by the edge service; currently laptop-hosted and targeted to the Orange Pi |
 | Updated | 2026-08-09 |
 
 ## Approved Endpoint Set
@@ -29,7 +29,7 @@ Dashboard v5 presentation extensions are `GET /prediction` and `GET /logs`. They
 
 ## Current Compatibility Status
 
-The Mini PC edge service implements all eight approved endpoints. Legacy/prototype routes remain temporarily available for ESP32 portal and presentation-scenario compatibility.
+The Orange Pi-targeted edge service implements all eight approved endpoints. It currently runs on the development laptop. Legacy/prototype routes remain temporarily available for ESP32 portal and presentation-scenario compatibility.
 
 ### ESP32 Portal
 
