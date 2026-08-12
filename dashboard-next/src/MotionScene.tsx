@@ -45,10 +45,10 @@ export default function MotionScene({ telemetry }: { telemetry: Telemetry }) {
       const scale = 3.15 / Math.max(size.x, size.y, size.z, .001); model.scale.setScalar(scale); model.position.copy(center).multiplyScalar(-scale); pose.add(model);
       model.updateMatrixWorld(true);
       const normalizedBounds=new THREE.Box3().setFromObject(model),normalizedSize=normalizedBounds.getSize(new THREE.Vector3());
-      // The operational waterline crosses the lower central hull and the
-      // stabilizer floats. The CAD bounding-box midpoint sat visibly above
-      // the animated surface, so use the measured lower 57% datum instead.
-      modelWaterlineOffset=-(normalizedBounds.min.y+normalizedSize.y*.64);
+      // Calibrated presentation draft: the waterline crosses the lower hull
+      // and approximately the lower half of the stabilizer floats. This is a
+      // visual flotation datum, not a hydrostatic engineering result.
+      modelWaterlineOffset=-(normalizedBounds.min.y+normalizedSize.y*.59);
       const register=(keyName:string,names:string[])=>{const part=names.map(name=>model.getObjectByName(name)||model.getObjectByName(`${name}:2`)||model.getObjectByName(`${name}:3`)).find(Boolean);diagnostic[keyName]=[];part?.traverse(object=>{const mesh=object as THREE.Mesh;if(!mesh.isMesh||!mesh.material)return;const materials=Array.isArray(mesh.material)?mesh.material:[mesh.material];materials.forEach(raw=>{const material=raw.clone() as THREE.MeshStandardMaterial;mesh.material=material;diagnostic[keyName].push({material,base:material.emissive?.getHex?.()||0,intensity:material.emissiveIntensity||0})})})};
       register("sensor",["TOP_SENSOR_ARRAY"]);register("thermal",["ELECTRONICS_BOX_V3"]);register("power",["ELECTRONICS_BOX_V3"]);
       [[-.28,.8,.02,0x72d99d],[0,.94,.02,0x56d7df],[.28,.8,.02,0xefbb70]].forEach(([x,y,z,color]) => { const light = new THREE.Mesh(new THREE.SphereGeometry(.035, 12, 8), new THREE.MeshBasicMaterial({color:color as number})); light.position.set(x as number,y as number,z as number); pose.add(light); });
