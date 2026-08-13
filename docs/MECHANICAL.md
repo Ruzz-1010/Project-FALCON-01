@@ -1,296 +1,124 @@
-# Project FALCON Mechanical Baseline v4.0
+# Project FALCON Mechanical Baseline v5.0
 
 ## Authority
 
-Authority: PROJECT_CONTEXT.md v4.0.
+Authority: `PROJECT_CONTEXT.md` v5.0.
 
-Status: approved Phase 1 mechanical baseline; validation ongoing.
-
-This refactor does not redesign the mechanical system.
+Status: approved Phase 1 design direction; CAD and physical validation ongoing.
 
 ## Approved Assembly
 
-- HDPE main float;
-- four HDPE stabilizer buoys;
-- marine aluminum arms;
-- stainless steel tension cables;
-- central ballast;
-- single anchor;
-- waterproof electronics enclosure;
-- upper equipment/sensor structure;
-- and solar-panel assembly.
-- Orange Pi Zero 3 mounting, airflow, cable strain relief, and service access within the electronics enclosure.
+- `MAIN_FLOAT_TRADITIONAL_V2`: marine-grade HDPE single-body float;
+- Ø650 mm cylindrical upper body with the existing removable top-cap interface;
+- 240 mm-deep rounded tapered underwater keel;
+- central ballast and suspension connection;
+- single-anchor mooring system;
+- waterproof two-layer electronics enclosure and ventilation ducts;
+- removable upper equipment frame and structural stanchions;
+- tilted four-panel solar array;
+- navigation light, GNSS, wind-speed/direction sensor, and approved antennas.
 
-## Design Objectives
+The former four-stabilizer arrangement, aluminum outrigger arms, stabilizer cradles, and radial tension cables are **Legacy Revision 4**. They remain in CAD and source control for traceability but are not part of the Revision 5 production baseline.
 
-- stable flotation;
-- reduced roll and pitch;
-- reliable sensor orientation;
-- low center of gravity;
-- marine corrosion resistance;
-- serviceable electronics;
-- secure solar mounting;
-- protected cable routing;
-- and recoverable single-anchor deployment.
+## Single-Body Main Float
 
-## HDPE Main Float
+Nominal geometry:
+
+- upper outside diameter: 650 mm;
+- upper cylindrical height: 380 mm;
+- rounded tapered keel depth: 240 mm;
+- overall body height: 620 mm;
+- nominal HDPE wall: 6 mm;
+- open/removable service top compatible with the existing top cap.
 
 Functions:
 
 - primary buoyancy;
-- central structural support;
-- electronics support;
-- solar-frame support;
-- sensor-frame support;
-- and ballast/mooring load transfer.
+- hydrodynamic roll/pitch damping from the tapered keel;
+- support for the electronics and upper equipment structure;
+- direct ballast/mooring load transfer;
+- reduced deployed footprint compared with the outrigger configuration.
 
 Requirements:
 
-- no cracks or unapproved penetrations;
-- sealed interfaces;
-- documented waterline under test load;
-- and serviceable mounting points.
+- no unapproved penetrations;
+- sealed and gasketed interfaces;
+- smooth underwater transitions without sharp snagging edges;
+- documented loaded waterline, freeboard, displacement, and center of gravity;
+- verified righting moment with final ballast;
+- serviceable top cover and ventilation bulkheads.
 
-## Four Stabilizer Buoys
-
-Quantity: four.
-
-Functions:
-
-- increase righting stability;
-- reduce excessive roll;
-- reduce excessive pitch;
-- and support consistent sensor attitude.
-
-The stabilizers shall remain symmetric unless an approved analysis supports a change.
-
-## Marine Aluminum Arms
-
-Functions:
-
-- connect stabilizers to the main assembly;
-- transfer buoyancy/stability loads;
-- and preserve geometry.
-
-Requirements:
-
-- marine-suitable alloy and finish;
-- replaceable fastening;
-- acceptable deflection;
-- no sharp exposed edges;
-- and isolation review where dissimilar metals contact.
-
-## Stainless Steel Tension Cables
-
-Functions:
-
-- reduce arm flex;
-- distribute loads;
-- reinforce the stabilizer geometry;
-- and improve durability under repeated motion.
-
-Requirements:
-
-- marine-grade stainless material;
-- controlled tension;
-- secure terminations;
-- no broken strands;
-- and inspection access.
+The new geometry is not approved for field deployment until flotation and stability tests demonstrate acceptable roll recovery, pitch recovery, and freeboard without the stabilizers.
 
 ## Central Ballast
 
-Functions:
-
-- lower center of gravity;
-- increase righting moment;
-- assist upright recovery;
-- and stabilize sensor orientation.
+The ballast shall be repositioned below the new keel so it does not intersect the V2 hull. Final position and mass shall be established by calculation and controlled flotation testing.
 
 Requirements:
 
-- calculated/validated mass;
+- calculated and measured mass;
 - secure primary attachment;
 - secondary retention where practical;
 - corrosion protection;
-- and safe lifting/handling method.
+- safe lifting method;
+- clearance from the hull through the full motion envelope.
 
 ## Single Anchor and Mooring
 
-Phase 1 uses one anchor.
+Phase 1 retains one anchor below the central ballast. The mooring shall permit controlled swing and include appropriate line/chain strength, shackles, chafe protection, and a recovery plan. GPS drift thresholds shall include expected anchor swing and measurement uncertainty.
 
-Functions:
+## Electronics and Ventilation
 
-- retain the buoy within an expected area;
-- permit controlled swing;
-- and support position-reference testing.
+The enclosure design intent remains IP67 or better, subject to validation. Intake and exhaust paths shall use sealed top-cover bulkheads, hidden upper risers, downward-facing rain outlets, serviceable filters, strain relief, and condensation management.
 
-Requirements:
+## Solar and Upper Sensor Structure
 
-- site-appropriate anchor selection;
-- documented line length;
-- suitable line strength;
-- chafe protection;
-- secure connection below the central structure;
-- and recovery plan.
+The removable upper structure carries the tilted solar array and approved sensors. Requirements include wind-resistant brackets, direct load paths to the structural frame, antenna separation, unobstructed wind exposure, drainage, protected wiring, and top-cap service access.
 
-Expected anchor swing and GPS uncertainty shall be included in drift thresholds.
+## CAD Configuration
 
-## Electronics Enclosure
-
-Design intent: IP67 or better, subject to validation.
-
-Requirements:
-
-- gasketed access;
-- marine-suitable cable glands;
-- strain relief;
-- condensation management;
-- internal mounting trays;
-- separation of power and signal wiring;
-- temperature monitoring;
-- and maintenance access.
-
-## Solar-Panel Assembly
-
-The current approved digital model may use tilted solar panels.
-
-Requirements:
-
-- adequate sunlight exposure;
-- secure wind-resistant brackets;
-- no interference with antennas/sensors;
-- no obstruction of service access;
-- acceptable center-of-gravity effect;
-- drainage;
-- protected wiring;
-- and safe edges.
-
-Solar tilt shall be validated mechanically and energetically.
-
-## Upper Sensor Array
-
-The upper structure may support:
-
-- wind-speed sensor;
-- wind-direction sensor;
-- GPS antenna;
-- local communication antennas;
-- navigation light;
-- and lightning/air terminal provisions where approved.
-
-Requirements:
-
-- unobstructed wind exposure;
-- antenna separation;
-- rigid orientation reference;
-- maintenance access;
-- and protected cable entry.
-
-## Sensor Placement
-
-- IMU near the rigid central structure;
-- pressure sensor at documented submerged depth;
-- wind sensors above major obstructions;
-- GPS with clear sky view;
-- internal temperature at a representative enclosure location;
-- battery monitor near the battery circuit;
-- and solar monitor in the approved charging measurement path.
-
-## CAD Configuration Management
-
-CAD files shall use meaningful component names.
-
-Every major revision shall record:
-
-- revision identifier;
-- date;
-- author;
-- purpose;
-- changed components;
-- compatibility impact;
-- exported FBX/GLB version when used by the dashboard;
-- and archived previous revision.
-
-The dashboard 3D model is a visualization artifact and does not replace engineering drawings.
+- Current body: `MAIN_FLOAT_TRADITIONAL_V2` (`FALCON-MF-002`).
+- Legacy body: `MAIN_FLOAT` (`FALCON-MF-001`).
+- Legacy stabilizer scripts remain archived and must not be used for new Revision 5 assemblies.
+- Never delete legacy CAD components from the master design; suppress/hide them in the Revision 5 representation.
+- Exported F3D/FBX/GLB files must identify their mechanical revision.
+- Dashboard models must not be labelled Revision 5 until exported from the verified V2 assembly.
 
 ## Assembly Inspection
 
-Before testing:
+- inspect the V2 HDPE body and tapered keel;
+- inspect top-cap gasket and vent bulkheads;
+- verify upper-frame fasteners and stanchions;
+- verify solar brackets and sensor clearances;
+- verify ballast clearance and retention;
+- verify mooring and anchor connections;
+- inspect cable glands and strain relief.
 
-- inspect main float;
-- inspect four stabilizers;
-- verify arm fasteners;
-- verify cable tension;
-- verify ballast retention;
-- verify mooring connection;
-- verify enclosure seal;
-- verify solar brackets;
-- verify sensor mast;
-- and verify cable strain relief.
+## Required Mechanical Tests
 
-## Mechanical Testing
-
-Required tests:
-
-- dry assembly inspection;
-- flotation;
-- static load;
-- waterline measurement;
-- roll recovery;
-- pitch recovery;
-- controlled motion/wave response;
-- arm deflection observation;
-- tension-cable inspection;
-- ballast retention;
-- anchor attachment;
-- enclosure splash/waterproof test;
-- and post-test damage inspection.
-
-## Acceptance Evidence
-
-Each test shall record:
-
-- assembly revision;
-- load condition;
-- water condition;
-- procedure;
-- measured result;
-- photographs/video;
-- pass/fail;
-- and corrective action.
-
-## Maintenance
-
-- rinse salt after retrieval;
-- inspect corrosion;
-- inspect biofouling;
-- inspect cracks/deformation;
-- inspect fastener torque;
-- inspect tension-cable condition;
-- inspect ballast and mooring;
-- inspect seals/glands;
-- clean solar panels;
-- and record maintenance.
+- dry assembly and interference inspection;
+- leak test;
+- loaded flotation and waterline measurement;
+- freeboard measurement;
+- static heel test;
+- roll and pitch recovery;
+- controlled wave response;
+- ballast-retention and mooring-load tests;
+- ventilation splash/rain-ingress test;
+- post-test crack, deformation, and water-ingress inspection.
 
 ## Safety
 
 - use appropriate lifting methods;
 - secure ballast during handling;
 - isolate battery power before enclosure work;
-- avoid working beneath suspended loads;
-- wear marine PPE during deployment/recovery;
-- and follow site/boat safety requirements.
-
-## Non-Goals
-
-Phase 1 mechanical design does not include autonomous propulsion, autonomous navigation, dynamic positioning, multi-buoy docking, or alternate fleet hardware.
-
-## Future Expansion
-
-Alternate mooring systems, larger platforms, harsher-environment qualification, multi-buoy deployments, and additional sensor structures require later review.
+- do not work below suspended ballast or anchor loads;
+- use marine PPE during deployment/recovery;
+- do not field-deploy Revision 5 before documented stability validation.
 
 ## Revision History
 
 | Version | Date | Change |
 | --- | --- | --- |
-| 4.0 | 2026-08-09 | Created controlled mechanical baseline without redesigning the approved main float, stabilizers, arms, cables, ballast, and single anchor. |
+| 4.0 | 2026-08-09 | Controlled four-stabilizer mechanical baseline. |
+| 5.0 | 2026-08-13 | Replaced the production direction with a compact single-body Ø650 HDPE buoy and 240 mm rounded tapered keel; moved the outrigger system to Legacy Revision 4. |

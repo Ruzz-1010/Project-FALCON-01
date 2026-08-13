@@ -11,7 +11,7 @@ The AI scope is limited to short-term wave-height prediction and sea-condition c
 
 ## Source of Truth
 
-[PROJECT_CONTEXT.md v4.0](docs/PROJECT_CONTEXT.md) is the official engineering source of truth.
+[PROJECT_CONTEXT.md v5.0](docs/PROJECT_CONTEXT.md) is the official engineering source of truth.
 
 Working source code remains authoritative for what is currently implemented. Documentation describes both the verified prototype and the approved Phase 1 target; it does not turn planned hardware into implemented hardware.
 
@@ -32,6 +32,8 @@ Implemented in the repository:
 - current-versus-predicted forecast presentation;
 - browser notifications and alert history;
 - and interactive Fusion-derived 3D buoy visualization.
+
+Current mechanical direction: a compact traditional single-body Ø650 mm HDPE buoy with a rounded 240 mm tapered underwater keel, central ballast, and single-anchor mooring. The former four-outrigger configuration is retained only as Legacy Revision 4.
 
 ### Safe frontend migration
 
@@ -199,3 +201,4 @@ Cloud synchronization, LTE, LoRa, satellite communication, multi-buoy networking
 | --- | --- | --- |
 | 3.1 | 2026-08-05 | Added source-verified implementation status. |
 | 4.0 | 2026-08-09 | Aligned repository entry point with PROJECT_CONTEXT.md v4.0 and the focused wave-monitoring research scope. |
+| 5.0 | 2026-08-13 | Adopted the single-body rounded-keel buoy baseline and retired the four-stabilizer arrangement to legacy status. |

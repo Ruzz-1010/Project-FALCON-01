@@ -1,0 +1,9 @@
+{
+  "autodeskProduct": "Fusion360",
+  "type": "script",
+  "author": "PROJECT FALCON-01",
+  "description": {
+    "": "Traditional single-body 650 mm drum buoy with rounded tapered underwater keel"
+  },
+  "supportedOS": "windows|mac"
+}

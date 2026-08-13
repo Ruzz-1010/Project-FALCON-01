@@ -4,7 +4,9 @@
 
 [`PROJECT_CONTEXT.md`](PROJECT_CONTEXT.md) is the single source of truth for approved project scope, architecture, terminology, and implementation priorities. If another document conflicts with it, the project context takes precedence.
 
-## Core v4.0 Documentation
+Current authoritative mechanical revision: **5.0**, using the traditional single-body rounded-keel buoy. Existing August 9 dashboard/CAD exports remain Legacy Revision 4 until replaced by a verified Revision 5 export.
+
+## Core v5.0 Documentation
 
 Read these documents in order:
 
@@ -19,7 +21,7 @@ Read these documents in order:
 9. [`API.md`](API.md) — approved local REST API contract
 10. [`MECHANICAL.md`](MECHANICAL.md) — approved buoy mechanical baseline
 
-These core documents were aligned to Project FALCON v4.0 and the Orange Pi architecture decision on 2026-08-12.
+These core documents were aligned to Project FALCON v5.0 and the single-body mechanical baseline on 2026-08-13.
 
 ## Supporting Documentation
 
@@ -39,13 +41,13 @@ These core documents were aligned to Project FALCON v4.0 and the Orange Pi archi
 - [`CHANGELOG.md`](CHANGELOG.md)
 - [`VERSION_HISTORY.md`](VERSION_HISTORY.md)
 
-Supporting documents describe implementation details and historical work. They must not expand Phase 1 scope or override the core v4.0 documents. Future updates should migrate them to the same terminology as the master context.
+Supporting documents describe implementation details and historical work. They must not expand Phase 1 scope or override the core v5.0 documents. Future updates should migrate them to the same terminology as the master context.
 
 Future assistants must also read [`CODEX.md`](CODEX.md) before changing the project.
 
 ## Phase 1 Boundary
 
-Project FALCON v4.0 is limited to real-time coastal monitoring and AI-assisted wave-height prediction at 5- and 15-minute horizons. The AI classifies sea state as Calm, Moderate, or Rough. Cloud services, camera vision, water-quality analytics, and autonomous control remain future expansion.
+Project FALCON v5.0 is limited to real-time coastal monitoring and AI-assisted wave-height prediction at 5- and 15-minute horizons. The AI classifies sea state as Calm, Moderate, or Rough. Cloud services, camera vision, water-quality analytics, and autonomous control remain future expansion.
 
 ## Revision History
 

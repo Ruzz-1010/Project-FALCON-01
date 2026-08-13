@@ -18,8 +18,10 @@ Component versions remain independent until a release manifest is implemented.
 | Firmware | Development | Implemented prototype |
 | Dashboard | 2.1 | Implemented prototype |
 | API | Development | Three routes implemented |
-| Project context | v3 plus validation notice | Active |
-| Documentation set | 1.0 | Active |
+| Project context | v5.0 | Active |
+| Mechanical baseline | v5.0 | CAD direction; validation pending |
+| Dashboard 3D asset | Legacy Revision 4 | Replacement export pending |
+| Documentation set | 2.0 | Active |
 
 Git milestones: `5387122` initial portal, `5e80fb3` dashboard redesign, `8bec676` expanded root documentation content.
 
@@ -33,3 +35,4 @@ Record the exact Git commit during flashing until firmware exposes version metad
 | Version | Date | Change |
 | --- | --- | --- |
 | 1.0 | 2026-08-05 | Initial version register. |
+| 2.0 | 2026-08-13 | Registered mechanical Revision 5 and identified the current 3D visualization as a legacy export pending replacement. |

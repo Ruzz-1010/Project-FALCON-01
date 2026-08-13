@@ -383,16 +383,18 @@ Public Internet is not required.
 
 Hardware installation shall preserve:
 
-- HDPE main float;
-- four stabilizer buoys;
-- marine aluminum arms;
-- stainless steel tension cables;
+- the Revision 5 single-body HDPE main float;
+- the rounded, tapered lower keel;
+- the removable top-cap interface;
 - central ballast;
 - single anchor;
 - waterproof enclosure;
 - solar-panel assembly;
 - upper sensor array;
 - and antenna clearances.
+
+The four stabilizer buoys, radial arms, and stabilizer tension cables belong to
+legacy Revision 4 and are not part of the active mechanical baseline.
 
 Refer to MECHANICAL.md for the mechanical baseline.
 

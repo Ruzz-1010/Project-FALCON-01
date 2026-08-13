@@ -79,14 +79,14 @@ Not yet complete:
 
 ### Approved Baseline
 
-- HDPE main float;
-- four HDPE stabilizer buoys;
-- marine aluminum arms;
-- stainless steel tension cables;
+- traditional Ø650 mm HDPE single-body float;
+- 240 mm rounded tapered underwater keel;
 - central ballast;
 - single anchor;
 - waterproof electronics enclosure;
 - and tilted solar-panel assembly where represented by the approved CAD revision.
+
+The former stabilizer buoys, outrigger arms, cradles, and radial tension cables are Legacy Revision 4 and are excluded from the current build.
 
 ### Deliverables
 
@@ -101,6 +101,7 @@ Not yet complete:
 ### Exit Criteria
 
 - all structural parts are identified;
+- loaded waterline, freeboard, center of gravity, and righting behavior are validated without outriggers;
 - ballast and anchor attachments have retention provisions;
 - sensor and antenna clearances are verified;
 - solar tilt does not create interference;

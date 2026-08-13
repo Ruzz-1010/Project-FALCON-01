@@ -1,4 +1,4 @@
-# PROJECT_CONTEXT.md v4.0
+# PROJECT_CONTEXT.md v5.0
 
 ## Document Control
 
@@ -7,7 +7,7 @@
 | Project | Project FALCON |
 | Expanded name | Fullbright College's AI-powered Live Coastal Observation Network |
 | Document | Master Engineering Context |
-| Version | 4.0 |
+| Version | 5.0 |
 | Status | Phase 1 Prototype |
 | Authority | Official repository source of truth |
 | Research focus | Real-time coastal monitoring and AI-assisted short-term wave-height prediction |
@@ -15,7 +15,7 @@
 | Primary deployment context | Philippine coastal waters |
 | Primary controller | ESP32 |
 | Selected edge computer | Orange Pi Zero 3 (4GB) |
-| Last architecture update | 2026-08-12 |
+| Last architecture update | 2026-08-13 |
 ## Authority and Use
 
 This document defines the approved Phase 1 engineering baseline for Project FALCON. It governs:
@@ -127,7 +127,7 @@ To design, develop, and evaluate a low-cost, modular, solar-powered coastal moni
 dashboard.
 ## Specific Objectives
 
-1. Design and integrate a stable Phase 1 buoy using an HDPE main float, four stabilizer buoys, marine aluminum arms, stainless steel tension cables, central ballast, and a single-anchor mooring system.
+1. Design and integrate a stable Phase 1 buoy using a traditional Ø650 mm HDPE single body, a 240 mm rounded tapered underwater keel, central ballast, and a single-anchor mooring system.
 2. Acquire and process real-time data from the approved Phase 1 sensor set, including IMU, water pressure, wind, GPS, battery, solar, and internal-temperature measurements.
 3. Develop a transparent wave-height estimation pipeline using synchronized water-pressure and IMU data.
 4. Develop and evaluate an edge AI method that predicts wave height 5–15 minutes ahead and classifies sea condition as Calm, Moderate, or Rough.
@@ -1054,18 +1054,13 @@ Every alert shall have a code. Every alert shall have a timestamp. Every alert s
 alerts shall be rate-limited or grouped. Resolved alerts shall be distinguishable from active alerts when resolution tracking is implemented.
 ## Mechanical Baseline
 
-The Phase 1 mechanical system shall not be redesigned by this documentation refactor. The approved mechanical baseline is retained.
-### HDPE Main Float
-The HDPE main float provides primary buoyancy. It supports the central frame. It supports the electronics enclosure. It supports the solar assembly. It supports the upper sensor structure. It shall be inspected
-for cuts, deformation, and water ingress.
-### Four Stabilizer Buoys
-Quantity: four. The stabilizers increase transverse and longitudinal stability. They reduce excessive roll and pitch. They support consistent sensor orientation. They shall be symmetrically installed according
-to the approved CAD assembly.
-### Marine Aluminum Arms
-The arms connect stabilizers to the main float structure. They shall use corrosion-resistant marine-suitable material. They shall be replaceable. They shall be inspected for bending, cracking, and loose
-fasteners.
-### Stainless Steel Tension Cables
-The tension cables reinforce the stabilizer structure. They reduce flex under wave loading. They shall be tensioned consistently. They shall be inspected for broken strands and corrosion.
+Mechanical Revision 5 replaces the former four-outrigger production direction with a compact traditional single-body buoy. Legacy Revision 4 stabilizer components remain archived for traceability.
+### Traditional HDPE Main Float V2
+`MAIN_FLOAT_TRADITIONAL_V2` provides primary buoyancy through a Ø650 mm cylindrical upper body and a 240 mm rounded tapered underwater keel. It supports the central frame, electronics enclosure, solar assembly,
+upper sensor structure, and central mooring load path. Its nominal overall height is 620 mm with a 6 mm marine-grade HDPE wall. It shall be inspected for cuts, deformation, water ingress, and interference.
+### Legacy Outrigger System
+The four stabilizer buoys, marine aluminum arms, cradles, and radial tension cables are excluded from the Revision 5 production build. They shall remain in source control and the master CAD archive but shall be
+suppressed or hidden in the Revision 5 representation. Removal of their stability contribution requires renewed flotation, heel, roll-recovery, pitch-recovery, and freeboard validation.
 ### Central Ballast
 The ballast lowers the center of gravity. It improves righting moment. It assists upright recovery after disturbance. Its attachment shall include a secondary retention strategy where practical.
 ### Single Anchor
@@ -1255,9 +1250,9 @@ Required mechanical tests include:
 - added-load test;
 - roll recovery test;
 - pitch recovery test;
-- stabilizer inspection;
-- arm-deflection observation;
-- tension-cable inspection;
+- tapered-keel inspection;
+- loaded-freeboard and static-heel measurement;
+- single-body roll/pitch recovery observation;
 - ballast-retention test;
 - anchor attachment test;
 - enclosure splash test;
@@ -1400,9 +1395,9 @@ Passing a demonstration is not equivalent to passing field validation.
 - and confirm test status.
 ### 2. Mechanical Inspection
 - inspect main float;
-- inspect four stabilizers;
-- inspect aluminum arms;
-- inspect tension cables;
+- inspect the rounded tapered keel;
+- verify the legacy outrigger system is absent from the Revision 5 build;
+- verify loaded freeboard and ballast clearance;
 - inspect ballast;
 - inspect anchor connection;
 - inspect solar mounts;
@@ -1458,9 +1453,9 @@ Maintenance shall be preventive and evidence-based.
 - inspect seals;
 - inspect cable glands;
 - inspect fasteners;
-- inspect stabilizers;
-- inspect arms;
-- inspect tension cables;
+- inspect the tapered keel and HDPE shell;
+- inspect ballast clearance below the keel;
+- verify the single-body stability-test record;
 - inspect ballast;
 - inspect anchor line;
 - clean solar panels;
@@ -1540,7 +1535,7 @@ Maintenance shall be preventive and evidence-based.
 | GPS uncertainty | False drift alert | Accuracy checks, sustained thresholds, mooring-radius allowance |
 | Corrosion | Mechanical or electrical failure | Marine materials, isolation, rinsing, periodic inspection |
 | Biofouling | Sensor bias | Protective placement and cleaning schedule |
-| Excessive wave loading | Structural damage | Stabilizers, ballast, tension cables, controlled validation |
+| Excessive wave loading | Structural damage or excessive heel | Rounded keel, low ballast, controlled stability/wave validation |
 | Model overfitting | Misleading predictions | Time-ordered validation, baseline comparison, honest reporting |
 | Simulated-data confusion | Invalid research claim | Prominent data-source labels and separated results |
 | Dashboard overload | Poor operator awareness | Focused cards, readable hierarchy, alert prioritization |
@@ -1846,7 +1841,7 @@ shall focus on architecture, data flow, usability, and planned validation.
 | Sea-condition class | AI classifier | Classification test set |
 | Local operation | REST API and dashboard | Offline local-network test |
 | Solar operation | Solar, MPPT, battery | Electrical endurance test |
-| Stable platform | Float, stabilizers, arms, cables, ballast | Mechanical testing |
+| Stable platform | Single-body float, rounded keel, central ballast | Mechanical testing |
 | Position awareness | GPS | Reference-position test |
 | Transparent prediction | Current/predicted dashboard cards | Dashboard usability test |
 | Fault awareness | Alerts and logs | Injected-fault test |
@@ -1907,9 +1902,16 @@ Phase 1 is complete only when:
 - rewrote the research gap and objectives;
 - strengthened validation and transparency requirements;
 - and established this document as the official v4 source of truth.
+### v5.0
+- adopted `MAIN_FLOAT_TRADITIONAL_V2` as the current mechanical direction;
+- replaced the production outrigger arrangement with a Ø650 mm single body and 240 mm rounded tapered keel;
+- retained Revision 4 stabilizer components only as archived legacy geometry;
+- required ballast relocation below the deeper keel;
+- required renewed flotation, freeboard, heel, and roll/pitch recovery validation;
+- identified pre-August-13 3D exports as legacy assets pending replacement.
 ## Final Authority Statement
 
-PROJECT_CONTEXT.md v4.0 is the authoritative Phase 1 engineering context for Project FALCON. All firmware shall align with its focused sensor and architecture boundaries. All dashboard work shall align with its
+PROJECT_CONTEXT.md v5.0 is the authoritative Phase 1 engineering context for Project FALCON. All firmware shall align with its focused sensor and architecture boundaries. All dashboard work shall align with its
 simplified information architecture. All AI work shall remain limited to short-term wave-height prediction and Calm, Moderate, or Rough classification. All API work shall migrate toward the approved eight
 endpoints. All mechanical work shall preserve the approved Phase 1 baseline unless formally reviewed. All research reporting shall distinguish implemented, planned, simulated, and future capabilities. Any
-proposal outside this baseline belongs in Future Expansion until approved through change control. This document supersedes PROJECT_CONTEXT.md v3.
+proposal outside this baseline belongs in Future Expansion until approved through change control. This document supersedes PROJECT_CONTEXT.md v4.0.
