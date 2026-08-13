@@ -33,6 +33,27 @@ def _find_hdpe(app):
     return None
 
 
+def _largest_profile(sketch, label):
+    """Return the intended closed region when Fusion reports split regions."""
+    count = sketch.profiles.count
+    if count < 1:
+        raise RuntimeError(
+            '{} did not produce a closed profile (Fusion reported 0 regions).'.format(label)
+        )
+    largest = sketch.profiles.item(0)
+    largest_area = -1.0
+    for index in range(count):
+        profile = sketch.profiles.item(index)
+        try:
+            area = profile.areaProperties().area
+        except Exception:
+            area = 0.0
+        if area > largest_area:
+            largest = profile
+            largest_area = area
+    return largest
+
+
 def _outer_profile(sketch):
     lines = sketch.sketchCurves.sketchLines
     arcs = sketch.sketchCurves.sketchArcs
@@ -85,8 +106,9 @@ def run(context):
                 'Fusion has uncaptured component positions. Nothing was changed.\n\n'
                 'Click Capture Position, save, then run again.'
             )
-        if _find_occurrence(root, 'MAIN_FLOAT_TRADITIONAL_V2'):
-            raise RuntimeError('MAIN_FLOAT_TRADITIONAL_V2 already exists; nothing was changed.')
+        existing_occurrence = _find_occurrence(root, 'MAIN_FLOAT_TRADITIONAL_V2')
+        if existing_occurrence and existing_occurrence.component.bRepBodies.count > 0:
+            raise RuntimeError('MAIN_FLOAT_TRADITIONAL_V2 already contains a body; nothing was changed.')
         if not _find_occurrence(root, 'MAIN_FLOAT'):
             raise RuntimeError('The original MAIN_FLOAT was not found.')
 
@@ -98,18 +120,20 @@ def run(context):
         _add_parameter(parameters, 'traditional_float_total_height', '620 mm', 'mm', 'Overall body height')
         _add_parameter(parameters, 'traditional_float_keel_tip_OD', '200 mm', 'mm', 'Rounded keel zone diameter')
 
-        occurrence = root.occurrences.addNewComponent(adsk.core.Matrix3D.create())
-        component = occurrence.component
-        component.name = 'MAIN_FLOAT_TRADITIONAL_V2'
+        if existing_occurrence:
+            component = existing_occurrence.component
+        else:
+            occurrence = root.occurrences.addNewComponent(adsk.core.Matrix3D.create())
+            component = occurrence.component
+            component.name = 'MAIN_FLOAT_TRADITIONAL_V2'
 
         outer_sketch = component.sketches.add(component.xZConstructionPlane)
         outer_sketch.name = 'SKETCH_01_TRADITIONAL_OUTER_PROFILE'
         outer_axis = _outer_profile(outer_sketch)
-        if outer_sketch.profiles.count != 1:
-            raise RuntimeError('Unexpected outer profile; only the new component was affected.')
+        outer_profile = _largest_profile(outer_sketch, 'Outer float sketch')
         revolves = component.features.revolveFeatures
         outer_input = revolves.createInput(
-            outer_sketch.profiles.item(0), outer_axis,
+            outer_profile, outer_axis,
             adsk.fusion.FeatureOperations.NewBodyFeatureOperation
         )
         outer_input.setAngleExtent(False, _value('360 deg'))
@@ -121,10 +145,9 @@ def run(context):
         cavity_sketch = component.sketches.add(component.xZConstructionPlane)
         cavity_sketch.name = 'SKETCH_02_OPEN_TOP_INNER_CAVITY'
         cavity_axis = _inner_cavity_profile(cavity_sketch)
-        if cavity_sketch.profiles.count != 1:
-            raise RuntimeError('Unexpected inner profile; only the new component was affected.')
+        cavity_profile = _largest_profile(cavity_sketch, 'Inner cavity sketch')
         cavity_input = revolves.createInput(
-            cavity_sketch.profiles.item(0), cavity_axis,
+            cavity_profile, cavity_axis,
             adsk.fusion.FeatureOperations.CutFeatureOperation
         )
         cavity_input.setAngleExtent(False, _value('360 deg'))
