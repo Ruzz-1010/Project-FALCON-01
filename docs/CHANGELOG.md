@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-08-13 - Elevated solar-panel support upgrade
+
+- Added a Fusion 360 upgrade that raises all four existing solar panels by 150 mm.
+- Added eight 12 mm 6061-T6 extension struts from the upper-frame rail.
+- Preserved the buoy body, electronics, ballast, and sensor positions.
+
 ## Purpose
 Record material repository changes.
 

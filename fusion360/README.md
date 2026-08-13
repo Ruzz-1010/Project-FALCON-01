@@ -1,5 +1,11 @@
 # Fusion 360 CAD Scripts
 
+## Current Solar Elevation Upgrade
+
+`SOLAR_PANEL_ELEVATION_UPGRADE` raises the four panels by 150 mm and adds
+eight upper-frame extension struts. It does not move the buoy, electronics,
+ballast, or sensor components.
+
 ## Current Mechanical Revision: 5.0
 
 The current production direction uses `MAIN_FLOAT_TRADITIONAL_V2`, a traditional Ø650 mm HDPE single-body buoy with a 240 mm rounded tapered underwater keel.
