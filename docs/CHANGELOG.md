@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-08-13 - V2 digital-twin waterline correction
+
+- Replaced the overall-assembly percentage waterline with a datum calculated
+  from the `MAIN_FLOAT_TRADITIONAL_V2` bounds only.
+- Raised the visible V2 buoy so the sea crosses the lower rounded hull instead
+  of submerging the upper float and support frame.
+
 ## 2026-08-13 - Dashboard digital twin updated to FALCON V2
 
 - Replaced the dashboard GLB asset with the Fusion-exported FALCON V2 assembly.

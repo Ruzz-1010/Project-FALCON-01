@@ -76,7 +76,7 @@ if (canvas && container) {
     depthWrite: false,
   });
   const SEA_LEVEL = -.58;
-  const BUOY_FREEBOARD = .72;
+  let BUOY_FREEBOARD = .72;
   const sea = new THREE.Mesh(seaGeometry, seaMaterial);
   sea.position.y = SEA_LEVEL;
   sea.renderOrder = 2;
@@ -170,7 +170,7 @@ if (canvas && container) {
     }
   }
 
-  new GLTFLoader().load("/models/FALCON-01.glb?v=3", (gltf) => {
+  new GLTFLoader().load("/models/FALCON-01.glb?v=4", (gltf) => {
     const model = gltf.scene;
     // Fusion exports this assembly Z-up; Three.js scenes are Y-up.
     model.rotation.x = -Math.PI / 2;
@@ -196,6 +196,15 @@ if (canvas && container) {
     model.position.copy(center).multiplyScalar(-scale);
     normalizedRoot.add(model);
     scene.updateMatrixWorld(true);
+    const mainFloat = model.getObjectByName("MAIN_FLOAT_TRADITIONAL_V2")
+      || model.getObjectByName("MAIN_FLOAT_TRADITIONAL_V2:2")
+      || model.getObjectByName("MAIN_FLOAT_TRADITIONAL_V2_HDPE_BODY");
+    if (mainFloat) {
+      const floatBounds = new THREE.Box3().setFromObject(mainFloat);
+      const floatSize = floatBounds.getSize(new THREE.Vector3());
+      // Calibrate against the float only; exclude ballast, chain and tower.
+      BUOY_FREEBOARD = -(floatBounds.min.y + floatSize.y * .42);
+    }
 
     prepareDiagnosticPart(model, "sensorArray", ["TOP_SENSOR_ARRAY:3", "TOP_SENSOR_ARRAY"]);
     prepareDiagnosticPart(model, "electronics", ["ELECTRONICS_BOX_V3:2", "ELECTRONICS_BOX_V3"]);
