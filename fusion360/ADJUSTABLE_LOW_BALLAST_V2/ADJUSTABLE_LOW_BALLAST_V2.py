@@ -14,6 +14,21 @@ def _find(root, name):
     return None
 
 
+def _find_traditional_float(root):
+    """Accept Fusion occurrence suffixes and the assigned V2 part metadata."""
+    for occurrence in root.allOccurrences:
+        component = occurrence.component
+        normalized = component.name.upper().replace(' ', '_')
+        if normalized.startswith('MAIN_FLOAT_TRADITIONAL_V2'):
+            return occurrence
+        part_number = component.attributes.itemByName(
+            'PROJECT_FALCON_01', 'PartNumber'
+        )
+        if part_number and part_number.value == 'FALCON-MF-002':
+            return occurrence
+    return None
+
+
 def _parameter(parameters, name, expression, units, comment):
     existing = parameters.itemByName(name)
     return existing or parameters.add(name, _value(expression), units, comment)
@@ -91,8 +106,11 @@ def run(context):
             raise RuntimeError('Fusion has uncaptured positions. Click Capture Position, save, then run again.')
         if _find(root, 'ADJUSTABLE_LOW_BALLAST_V2'):
             raise RuntimeError('ADJUSTABLE_LOW_BALLAST_V2 already exists; nothing was changed.')
-        if not _find(root, 'MAIN_FLOAT_TRADITIONAL_V2'):
-            raise RuntimeError('MAIN_FLOAT_TRADITIONAL_V2 was not found.')
+        if not _find_traditional_float(root):
+            raise RuntimeError(
+                'The traditional V2 float body was not found by name prefix or '
+                'FALCON-MF-002 part metadata.'
+            )
 
         p = design.userParameters
         _parameter(p, 'ballast_v2_rail_length', '500 mm', 'mm', 'Adjustable central ballast rail')
