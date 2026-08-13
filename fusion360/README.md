@@ -8,6 +8,10 @@ amount, and replaces the visible 560 mm frame with a compact 460 mm low-drag
 frame. `SOLAR_PANEL_ELEVATION_UPGRADE` is retained only as the earlier
 panel-only revision.
 
+`DUAL_30W_SOLAR_REPLACEMENT` is the current solar configuration: two separate
+30 W panels on opposite East and West sides, mounted at Z1170 mm with a
+20-degree outward tilt. The former four-panel array is legacy geometry.
+
 ## Current Mechanical Revision: 5.0
 
 The current production direction uses `MAIN_FLOAT_TRADITIONAL_V2`, a traditional Ø650 mm HDPE single-body buoy with a 240 mm rounded tapered underwater keel.

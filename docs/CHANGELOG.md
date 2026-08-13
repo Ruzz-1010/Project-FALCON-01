@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-08-13 - Dual 30 W solar replacement
+
+- Replaced the active four-panel solar arrangement with two opposed 30 W
+  panels for 60 W nominal total output.
+- Positioned the new panels on the East and West sides at Z1170 mm with a
+  20-degree outward tilt and compact triangulated brackets.
+- Hid rather than deleted the former four-panel array and its brackets.
+
 ## 2026-08-13 - Compact elevated upper tower correction
 
 - Corrected the earlier panel-only elevation upgrade by raising the top sensor

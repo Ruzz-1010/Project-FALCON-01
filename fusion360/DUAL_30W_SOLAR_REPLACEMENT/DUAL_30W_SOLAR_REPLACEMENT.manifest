@@ -1,0 +1,7 @@
+{
+  "autodeskProduct": "Fusion360",
+  "type": "script",
+  "author": "PROJECT FALCON-01",
+  "description": {"": "Two opposed elevated 30 W solar panels with compact brackets"},
+  "supportedOS": "windows|mac"
+}
