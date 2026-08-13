@@ -39,6 +39,9 @@ lightning bond, and secondary lid retention.
 a low central rail, four removable plates, dual lock collars, secondary
 retention, and an anchor-chain clevis. Final mass remains test-controlled.
 
+`BALLAST_V2_ANCHOR_CONNECTOR` connects the new ballast clevis to the existing
+anchor eye with dual shackles, a swivel, compact snubber, and safety lanyard.
+
 ## Current Mechanical Revision: 5.0
 
 The current production direction uses `MAIN_FLOAT_TRADITIONAL_V2`, a traditional Ø650 mm HDPE single-body buoy with a 240 mm rounded tapered underwater keel.

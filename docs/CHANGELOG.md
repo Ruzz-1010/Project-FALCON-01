@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-08-13 - Ballast V2 anchor connector
+
+- Added upper/lower shackles, load swivel, elastic snubber, and secondary
+  lanyard between the adjustable ballast and existing anchor eye.
+
 ## 2026-08-13 - Adjustable low ballast V2
 
 - Added a 500 mm central ballast rail below the rounded keel with four separate
