@@ -12,9 +12,10 @@ panel-only revision.
 30 W panels on opposite East and West sides, mounted at Z1170 mm with a
 20-degree outward tilt. The former four-panel array is legacy geometry.
 
-`DUAL_SOLAR_COMPACT_FRAME_V2` is the matching visible frame: 360 mm OD with
-four 20 mm posts, three slim rings, East/West panel ties, and a top sensor cross.
-It supersedes the visible 560 mm and 460 mm frames.
+`TWO_SIDE_SOLAR_FRAME_V3` is the active matching frame. It has only two open
+flat support sides, East and West, for the two 30 W panels. There are no North
+or South panel frames and no circular rings. `DUAL_SOLAR_COMPACT_FRAME_V2` is
+retained as a superseded intermediate revision.
 
 ## Current Mechanical Revision: 5.0
 

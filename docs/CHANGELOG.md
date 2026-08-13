@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-08-13 - Two-side solar frame V3
+
+- Replaced the circular dual-solar cage with two open flat frames only: East
+  and West, matching the two opposed 30 W panels.
+- Removed North/South frame geometry and circular rings from the active view.
+- Used 20 x 2 mm round aluminum tubing and a minimal top sensor crossbar to
+  reduce exposed wind area.
+
 ## 2026-08-13 - Dual-solar compact frame V2
 
 - Added the missing visible frame for the dual 30 W configuration.
