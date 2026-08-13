@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-08-13 - Upper-to-lower structural load cage
+
+- Added four 32 mm primary struts from the tapered mast feet to the lower metal
+  split-clamp frame, plus eight 20 mm anti-racking knee braces.
+- Added isolated mounting pads and kept the HDPE shell free of new penetrations.
+
 ## 2026-08-13 - Tapered braced marine mast
 
 - Replaced the tall open-post concept with a reference-inspired tapered mast.

@@ -59,6 +59,10 @@ a 420-to-380-to-260 mm two-stage four-leg mast. Its lower bay preserves sealed
 pod clearance while the upper bay tapers to the sensor platform. Horizontal
 rails, full-face X-bracing, and two opposed solar cradles complete the frame.
 
+`REV5_UPPER_TO_LOWER_LOAD_CAGE` adds four direct load-transfer struts and eight
+knee braces between the tapered mast feet and the existing lower split-clamp
+frame, keeping mast loads out of the HDPE shell.
+
 ## Current Mechanical Revision: 5.0
 
 The current production direction uses `MAIN_FLOAT_TRADITIONAL_V2`, a traditional Ø650 mm HDPE single-body buoy with a 240 mm rounded tapered underwater keel.
