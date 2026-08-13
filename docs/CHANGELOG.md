@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-08-13 - Full-height external buoy support cage
+
+- Corrected the upper/lower load path to use four continuous external tubes
+  from the mast feet down to the lower fairing elevation.
+- Added a separate 760/696 mm EPDM-lined lower metal collar so the selected HDPE
+  fairing is not incorrectly treated as a structural attachment.
+- Retained the earlier short load cage as a hidden fallback.
+
 ## 2026-08-13 - Rectangular marine electronics pod
 
 - Added a 300 x 280 x 400 mm chamfered UV-HDPE top-service cabinet with dual

@@ -63,6 +63,10 @@ rails, full-face X-bracing, and two opposed solar cradles complete the frame.
 knee braces between the tapered mast feet and the existing lower split-clamp
 frame, keeping mast loads out of the HDPE shell.
 
+`REV5_FULL_HEIGHT_EXTERNAL_SUPPORT_CAGE` supersedes that short cage with four
+continuous tubes outside the complete float body, joining the upper mast/deck
+to a new EPDM-lined structural collar around the lower fairing.
+
 `REV5_RECTANGULAR_MARINE_ELECTRONICS_POD` replaces the visible round pod with a
 300 x 280 x 400 mm chamfered UV-HDPE cabinet containing separate leak, power,
 control, sealing, weather-protection, thermal and cable-interface components.
