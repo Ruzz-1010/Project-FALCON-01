@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-08-13 - Pod marine protection hardware
+
+- Added eight 316L lid clamps, four vibration isolators, and six downward IP68
+  gland envelopes.
+- Added external emergency isolation, solar surge protection, a dedicated
+  lightning bonding lug, and secondary lid-retention cable.
+
 ## 2026-08-13 - Upper pod electronics packaging
 
 - Added separate editable equipment envelopes for the LiFePO4 battery, BMS,

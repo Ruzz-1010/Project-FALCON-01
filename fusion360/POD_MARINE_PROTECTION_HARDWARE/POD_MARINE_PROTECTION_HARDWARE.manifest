@@ -1,0 +1,7 @@
+{
+  "autodeskProduct": "Fusion360",
+  "type": "script",
+  "author": "PROJECT FALCON-01",
+  "description": {"": "Marine protection and service hardware for the sealed upper pod"},
+  "supportedOS": "windows|mac"
+}

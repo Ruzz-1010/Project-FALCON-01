@@ -31,6 +31,10 @@ dry electronics compartment.
 packaging envelopes: battery/BMS below, MPPT and protected power equipment in
 the middle, and Orange Pi, ESP32, LTE, and sensor distribution on top.
 
+`POD_MARINE_PROTECTION_HARDWARE` adds lid clamps, vibration isolators,
+downward IP68 glands, emergency isolation, solar surge protection, an external
+lightning bond, and secondary lid retention.
+
 ## Current Mechanical Revision: 5.0
 
 The current production direction uses `MAIN_FLOAT_TRADITIONAL_V2`, a traditional Ø650 mm HDPE single-body buoy with a 240 mm rounded tapered underwater keel.
