@@ -8,3 +8,7 @@ temperature/humidity sensor bracket.
 The design does not create an outside-air opening into the dry pod. Heat crosses
 the sealed wall through a clamped thermal interface. Existing components are not
 moved, hidden, or deleted.
+
+The shutdown threshold is stored as the unitless parameter
+`pod_thermal_shutdown_C = 65` because some Fusion builds reject `degC` in user
+parameter expressions.

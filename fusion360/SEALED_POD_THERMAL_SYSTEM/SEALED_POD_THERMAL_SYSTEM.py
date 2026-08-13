@@ -105,7 +105,10 @@ def run(context):
         _add_parameter(p, 'pod_heat_sink_base', '6 mm', 'mm', 'Sealed aluminum heat-sink base')
         _add_parameter(p, 'pod_heat_sink_fin_count', '8', '', 'External heat-sink fin count')
         _add_parameter(p, 'pod_heat_sink_fin_depth', '25 mm', 'mm', 'External fin projection')
-        _add_parameter(p, 'pod_thermal_shutdown', '65 degC', 'degC', 'Emergency electronics shutdown threshold')
+        # Some Fusion builds reject temperature symbols in user-parameter
+        # expressions. Store the threshold as a documented Celsius number.
+        _add_parameter(p, 'pod_thermal_shutdown_C', '65', '',
+                       'Emergency electronics shutdown threshold in deg C')
 
         transform = adsk.core.Matrix3D.create()
         transform.translation = adsk.core.Vector3D.create(0, 0, POD_BASE_Z_CM)
