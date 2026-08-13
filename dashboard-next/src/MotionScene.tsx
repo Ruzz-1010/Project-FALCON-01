@@ -37,7 +37,7 @@ export default function MotionScene({ telemetry }: { telemetry: Telemetry }) {
     let ready = false;
     let modelWaterlineOffset = -.08;
     const diagnostic: Record<string, Array<{material:THREE.MeshStandardMaterial;base:number;intensity:number}>> = {};
-    new GLTFLoader().load("/models/FALCON-01.glb", gltf => {
+    new GLTFLoader().load("/models/FALCON-01.glb?v=3", gltf => {
       const model = gltf.scene; model.rotation.x = -Math.PI / 2;
       model.traverse(object => { if (object.name.toUpperCase().startsWith("ANCHOR_MOORING_SYSTEM")) object.visible = false; });
       model.updateMatrixWorld(true);

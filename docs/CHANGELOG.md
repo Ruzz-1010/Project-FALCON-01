@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-08-13 - Dashboard digital twin updated to FALCON V2
+
+- Replaced the dashboard GLB asset with the Fusion-exported FALCON V2 assembly.
+- Bumped the browser model cache key to `v=3` in both dashboard viewers.
+
 ## 2026-08-13 - Lower cage overhang correction
 
 - Tapered the four lower support tubes inward from radius 365 mm to the existing

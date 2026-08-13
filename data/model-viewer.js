@@ -170,7 +170,7 @@ if (canvas && container) {
     }
   }
 
-  new GLTFLoader().load("/models/FALCON-01.glb?v=2", (gltf) => {
+  new GLTFLoader().load("/models/FALCON-01.glb?v=3", (gltf) => {
     const model = gltf.scene;
     // Fusion exports this assembly Z-up; Three.js scenes are Y-up.
     model.rotation.x = -Math.PI / 2;
