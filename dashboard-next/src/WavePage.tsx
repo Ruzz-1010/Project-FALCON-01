@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Check, CheckCircle2, Gauge, Waves } from "lucide-react";
 import { getScenario, setScenario } from "./api";
 import type { DashboardData, ScenarioState } from "./types";
@@ -27,9 +27,10 @@ function ForecastChart({data}:{data:DashboardData}){
 }
 
 export default function WavePage({data,horizon,onHorizon,onScenarioApplied}:{data:DashboardData;horizon:number;onHorizon:(value:number)=>void;onScenarioApplied:()=>void}){
-  const [scenario,setScenarioState]=useState<ScenarioState|null>(null),[busy,setBusy]=useState(false),[controlError,setControlError]=useState<string|null>(null);
-  useEffect(()=>{getScenario().then(setScenarioState).catch(error=>setControlError(error.message));},[]);
-  const applyScenario=async(value:string)=>{setBusy(true);setControlError(null);try{setScenarioState(await setScenario(value));onScenarioApplied();}catch(error){setControlError(error instanceof Error?error.message:"Scenario update failed");}finally{setBusy(false);}};
+  const [scenario,setScenarioState]=useState<ScenarioState|null>(null),[busy,setBusy]=useState(false),[transitioning,setTransitioning]=useState(false),[controlError,setControlError]=useState<string|null>(null);
+  const transitionTimer=useRef<number|null>(null),refreshTimers=useRef<number[]>([]);
+  useEffect(()=>{let active=true;const load=(attempt=0)=>getScenario().then(value=>{if(active){setScenarioState(value);setControlError(null)}}).catch(error=>{if(!active)return;if(attempt<2)window.setTimeout(()=>load(attempt+1),800*(attempt+1));else setControlError(error instanceof Error?error.message:"Scenario controls unavailable")});load();return()=>{active=false;if(transitionTimer.current!=null)window.clearTimeout(transitionTimer.current);refreshTimers.current.forEach(window.clearTimeout)};},[]);
+  const applyScenario=async(value:string)=>{setBusy(true);setTransitioning(true);setControlError(null);setScenarioState(current=>current?{...current,active:value}:current);try{setScenarioState(await setScenario(value));refreshTimers.current.forEach(window.clearTimeout);refreshTimers.current=[0,800,2000,4000,7000,11000].map(delay=>window.setTimeout(onScenarioApplied,delay));if(transitionTimer.current!=null)window.clearTimeout(transitionTimer.current);transitionTimer.current=window.setTimeout(()=>setTransitioning(false),11500);}catch(error){setTransitioning(false);setControlError(error instanceof Error?error.message:"Scenario update failed");getScenario().then(setScenarioState).catch(()=>undefined);}finally{setBusy(false);}};
   const ai=data.ai,ready=ai.status==="READY",current=ai.currentWaveHeight,predicted=ai.predictedWaveHeight;
   const midpoint=current!=null&&predicted!=null?current+(predicted-current)*.55:null;
   const quality=ai.confidence>=85?"High confidence":ai.confidence>=70?"Good confidence":"Review required";
@@ -51,6 +52,7 @@ export default function WavePage({data,horizon,onHorizon,onScenarioApplied}:{dat
   return <section className="content wave-page wave-report">
     <div className="page-head"><div><span>AI-ASSISTED WAVE FORECAST</span><h1>Wave intelligence</h1><p>Current conditions, model evidence, and the expected wave state in one transparent operational view.</p></div><div className="wave-controls"><label>Horizon<select value={horizon} onChange={event=>onHorizon(Number(event.target.value))}><option value="5">5 minutes</option><option value="10">10 minutes</option><option value="15">15 minutes</option></select></label><label>Demo scenario<select disabled={busy||!scenario?.available} value={scenario?.active||"normal"} onChange={event=>applyScenario(event.target.value)}>{(scenario?.scenarios||["normal"]).map(value=><option key={value} value={value}>{scenarioLabels[value]||value}</option>)}</select></label></div></div>
     {controlError&&<div className="inline-error">{controlError}</div>}
+    {transitioning&&<div className="scenario-progress"><Gauge/><span><b>{scenarioLabels[scenario?.active||""]||"Demo scenario"} is active</b>Live samples and AI forecast are updating smoothly.</span></div>}
     <div className="wave-report-grid">
       <article className="panel forecast-result">
         <header><div><span>AI PREDICTION</span><h2>Wave forecast result</h2></div><em>DEMO AI</em></header>

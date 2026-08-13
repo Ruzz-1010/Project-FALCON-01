@@ -22,5 +22,6 @@ import "./chromatic-system.css";
 import "./charts-pro.css";
 import "./prediction-inputs.css";
 import "./industrial-theme.css";
+import "./scenario.css";
 
 createRoot(document.getElementById("root")!).render(<StrictMode><App /></StrictMode>);
