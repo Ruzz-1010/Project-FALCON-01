@@ -1,0 +1,7 @@
+{
+  "autodeskProduct": "Fusion360",
+  "type": "script",
+  "author": "PROJECT FALCON-01",
+  "description": {"": "Adjustable low ballast for the upper-electronics buoy configuration"},
+  "supportedOS": "windows|mac"
+}

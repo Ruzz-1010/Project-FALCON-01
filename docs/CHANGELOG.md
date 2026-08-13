@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-08-13 - Adjustable low ballast V2
+
+- Added a 500 mm central ballast rail below the rounded keel with four separate
+  removable weight plates.
+- Added upper/lower locking collars, secondary retention, and a lower
+  anchor-chain clevis.
+- Kept final ballast mass and depth dependent on loaded stability testing.
+
 ## 2026-08-13 - Pod marine protection hardware
 
 - Added eight 316L lid clamps, four vibration isolators, and six downward IP68
