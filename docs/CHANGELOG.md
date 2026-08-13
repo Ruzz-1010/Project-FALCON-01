@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-08-13 - Rectangular marine electronics pod
+
+- Added a 300 x 280 x 400 mm chamfered UV-HDPE top-service cabinet with dual
+  EPDM seals, weather hood, internal decks and sealed thermal interface.
+- Retained the previous round pod as a hidden fallback instead of deleting it.
+
 ## 2026-08-13 - Upper-to-lower structural load cage
 
 - Added four 32 mm primary struts from the tapered mast feet to the lower metal

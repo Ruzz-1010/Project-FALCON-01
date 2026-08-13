@@ -63,6 +63,10 @@ rails, full-face X-bracing, and two opposed solar cradles complete the frame.
 knee braces between the tapered mast feet and the existing lower split-clamp
 frame, keeping mast loads out of the HDPE shell.
 
+`REV5_RECTANGULAR_MARINE_ELECTRONICS_POD` replaces the visible round pod with a
+300 x 280 x 400 mm chamfered UV-HDPE cabinet containing separate leak, power,
+control, sealing, weather-protection, thermal and cable-interface components.
+
 ## Current Mechanical Revision: 5.0
 
 The current production direction uses `MAIN_FLOAT_TRADITIONAL_V2`, a traditional Ø650 mm HDPE single-body buoy with a 240 mm rounded tapered underwater keel.
