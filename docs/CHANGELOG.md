@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-08-13 - Revision 5 assembly cleanup
+
+- Added reversible visibility-only cleanup for the final Revision 5 assembly.
+- Added missing-active-system reporting and export-review metadata.
+- Preserved all legacy geometry without moving or deleting components.
+
 ## 2026-08-13 - Ballast V2 anchor connector
 
 - Added upper/lower shackles, load swivel, elastic snubber, and secondary

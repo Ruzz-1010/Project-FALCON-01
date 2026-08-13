@@ -42,6 +42,10 @@ retention, and an anchor-chain clevis. Final mass remains test-controlled.
 `BALLAST_V2_ANCHOR_CONNECTOR` connects the new ballast clevis to the existing
 anchor eye with dual shackles, a swivel, compact snubber, and safety lanyard.
 
+`REV5_FINAL_ASSEMBLY_CLEANUP` applies the reversible final visibility state,
+shows active Revision 5 systems, hides superseded geometry, and reports missing
+required systems before export.
+
 ## Current Mechanical Revision: 5.0
 
 The current production direction uses `MAIN_FLOAT_TRADITIONAL_V2`, a traditional Ø650 mm HDPE single-body buoy with a 240 mm rounded tapered underwater keel.
