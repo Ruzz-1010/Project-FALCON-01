@@ -22,6 +22,11 @@ retained as a superseded intermediate revision.
 double-gasket lid, sun/rain shield, leak tray, thermal plate, control rack,
 membrane vent, and downward IP68 connector panel.
 
+`SEALED_POD_THERMAL_SYSTEM` adds two internal recirculation fans, airflow
+baffles, a sealed thermal bridge, a rear external eight-fin heat sink, and a
+temperature/humidity sensor bracket. It introduces no outside-air path into the
+dry electronics compartment.
+
 ## Current Mechanical Revision: 5.0
 
 The current production direction uses `MAIN_FLOAT_TRADITIONAL_V2`, a traditional Ø650 mm HDPE single-body buoy with a 240 mm rounded tapered underwater keel.

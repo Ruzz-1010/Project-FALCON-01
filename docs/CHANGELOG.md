@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-08-13 - Sealed pod thermal system
+
+- Added two 80 mm internal recirculation fans and airflow guides.
+- Added a sealed aluminum thermal bridge and rear external eight-fin heat sink.
+- Added a temperature/humidity sensor bracket with 40 C fan enable, 55 C
+  derating, and 65 C shutdown design thresholds.
+- Preserved pod ingress protection by providing no outside-air opening into the
+  dry electronics volume.
+
 ## 2026-08-13 - Upper all-electronics service pod
 
 - Added a separate 320 mm OD x 400 mm UV-HDPE upper pod for the battery,
