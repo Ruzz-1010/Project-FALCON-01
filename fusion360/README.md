@@ -2,9 +2,11 @@
 
 ## Current Solar Elevation Upgrade
 
-`SOLAR_PANEL_ELEVATION_UPGRADE` raises the four panels by 150 mm and adds
-eight upper-frame extension struts. It does not move the buoy, electronics,
-ballast, or sensor components.
+`COMPACT_ELEVATED_UPPER_TOWER` is the active correction. It retains the four
+panels at +150 mm, raises the sensor array and navigation light by the same
+amount, and replaces the visible 560 mm frame with a compact 460 mm low-drag
+frame. `SOLAR_PANEL_ELEVATION_UPGRADE` is retained only as the earlier
+panel-only revision.
 
 ## Current Mechanical Revision: 5.0
 

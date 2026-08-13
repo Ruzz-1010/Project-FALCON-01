@@ -1,0 +1,7 @@
+{
+  "autodeskProduct": "Fusion360",
+  "type": "script",
+  "author": "PROJECT FALCON-01",
+  "description": {"": "Compact elevated solar, sensor, and navigation-light tower"},
+  "supportedOS": "windows|mac"
+}

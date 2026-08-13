@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-08-13 - Compact elevated upper tower correction
+
+- Corrected the earlier panel-only elevation upgrade by raising the top sensor
+  array and navigation light to the same +150 mm level.
+- Replaced the active visible 560 mm frame with a 460 mm OD frame using four
+  20 mm posts and slim rings to reduce wind area.
+- Preserved the old frame and temporary supports as hidden, recoverable legacy
+  geometry rather than deleting them.
+
 ## 2026-08-13 - Elevated solar-panel support upgrade
 
 - Added a Fusion 360 upgrade that raises all four existing solar panels by 150 mm.
