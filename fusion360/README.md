@@ -12,6 +12,10 @@ panel-only revision.
 30 W panels on opposite East and West sides, mounted at Z1170 mm with a
 20-degree outward tilt. The former four-panel array is legacy geometry.
 
+`DUAL_SOLAR_COMPACT_FRAME_V2` is the matching visible frame: 360 mm OD with
+four 20 mm posts, three slim rings, East/West panel ties, and a top sensor cross.
+It supersedes the visible 560 mm and 460 mm frames.
+
 ## Current Mechanical Revision: 5.0
 
 The current production direction uses `MAIN_FLOAT_TRADITIONAL_V2`, a traditional Ø650 mm HDPE single-body buoy with a 240 mm rounded tapered underwater keel.

@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-08-13 - Dual-solar compact frame V2
+
+- Added the missing visible frame for the dual 30 W configuration.
+- Reduced tower outside diameter to 360 mm and used four 20 mm posts.
+- Added East/West solar ties and a compact top sensor cross.
+- Hid the former 560 mm and 460 mm frames without deleting them.
+
 ## 2026-08-13 - Dual 30 W solar replacement
 
 - Replaced the active four-panel solar arrangement with two opposed 30 W

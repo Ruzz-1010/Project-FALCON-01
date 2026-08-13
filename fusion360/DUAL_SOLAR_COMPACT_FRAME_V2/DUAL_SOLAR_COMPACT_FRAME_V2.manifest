@@ -1,0 +1,7 @@
+{
+  "autodeskProduct": "Fusion360",
+  "type": "script",
+  "author": "PROJECT FALCON-01",
+  "description": {"": "Visible 360 mm compact tower frame for the dual 30 W solar array"},
+  "supportedOS": "windows|mac"
+}
