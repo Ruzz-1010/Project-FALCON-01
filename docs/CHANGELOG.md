@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-08-13 - Main-buoy upper-frame support base
+
+- Added an EPDM-lined non-penetrating clamp interface around the 650 mm body.
+- Added four diagonal risers, eight gusset struts, an annular service deck, and
+  four isolated mounting pads aligned with the Revision 5 upper frame.
+- Preserved a 340 mm central service opening and prohibited drilling through
+  the sealed HDPE shell in the design intent.
+
 ## 2026-08-13 - Fresh sealed-pod dual-solar frame
 
 - Added a new frame independent of all deleted/superseded upper frames.

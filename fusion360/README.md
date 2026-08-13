@@ -50,6 +50,10 @@ required systems before export.
 sealed-pod layout: two open solar side frames, four deck feet, lower diagonal
 braces, and a compact sensor bridge. It does not depend on any deleted frame.
 
+`REV5_MAIN_BUOY_FRAME_SUPPORT` supplies its missing primary load path using an
+EPDM-lined split clamp, four gusseted diagonal risers, an annular service deck,
+and four isolated upper-frame mounting pads without drilling the HDPE shell.
+
 ## Current Mechanical Revision: 5.0
 
 The current production direction uses `MAIN_FLOAT_TRADITIONAL_V2`, a traditional Ø650 mm HDPE single-body buoy with a 240 mm rounded tapered underwater keel.
