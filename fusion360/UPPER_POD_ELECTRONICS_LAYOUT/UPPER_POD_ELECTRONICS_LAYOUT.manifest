@@ -1,0 +1,7 @@
+{
+  "autodeskProduct": "Fusion360",
+  "type": "script",
+  "author": "PROJECT FALCON-01",
+  "description": {"": "Serviceable three-level equipment layout inside the sealed upper pod"},
+  "supportedOS": "windows|mac"
+}

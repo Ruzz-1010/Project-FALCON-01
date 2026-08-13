@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-08-13 - Upper pod electronics packaging
+
+- Added separate editable equipment envelopes for the LiFePO4 battery, BMS,
+  MPPT, DC-DC, fused distribution, disconnect, Orange Pi, ESP32, LTE modem, and
+  sensor distribution board.
+- Organized the pod into battery, power/thermal, and control/communications
+  service levels.
+- Raised the internal recirculation-fan reference positions to preserve the
+  battery and power-equipment packaging zones.
+
 ## 2026-08-13 - Sealed pod thermal system
 
 - Added two 80 mm internal recirculation fans and airflow guides.

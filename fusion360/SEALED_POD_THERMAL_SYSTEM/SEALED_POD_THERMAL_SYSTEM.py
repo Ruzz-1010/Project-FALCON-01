@@ -118,10 +118,12 @@ def run(context):
         aluminum = _material(app, ('Aluminum 6061-T6', 'Aluminum 6061', 'Aluminum'))
         plastic = _material(app, ('ABS Plastic', 'Plastic', 'Nylon'))
 
-        fan1 = _child(system, 'POD_INTERNAL_FAN_LOWER', -5.0, 0, 12.0)
-        _fan(fan1, 1, 12.0, plastic)
-        fan2 = _child(system, 'POD_INTERNAL_FAN_UPPER', 5.0, 0, 29.0)
-        _fan(fan2, 2, 29.0, plastic)
+        # Keep the battery zone clear: the lower fan sits above the power deck,
+        # while the upper fan provides return flow above the control deck.
+        fan1 = _child(system, 'POD_INTERNAL_FAN_LOWER', -5.0, 0, 23.0)
+        _fan(fan1, 1, 23.0, plastic)
+        fan2 = _child(system, 'POD_INTERNAL_FAN_UPPER', 5.0, 0, 34.0)
+        _fan(fan2, 2, 34.0, plastic)
 
         bridge = _child(system, 'POD_SEALED_THERMAL_BRIDGE', 0, -14.9, 16.0)
         _box(
