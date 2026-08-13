@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-08-13 - Fresh sealed-pod dual-solar frame
+
+- Added a new frame independent of all deleted/superseded upper frames.
+- Added two open East/West side structures, four deck feet, lower diagonal
+  braces, three panel rails per side, and a compact central sensor bridge.
+- Updated final assembly cleanup to treat this frame as active and the earlier
+  two-side frame as legacy.
+
 ## 2026-08-13 - Revision 5 assembly cleanup
 
 - Added reversible visibility-only cleanup for the final Revision 5 assembly.

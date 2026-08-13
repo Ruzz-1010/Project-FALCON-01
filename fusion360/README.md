@@ -46,6 +46,10 @@ anchor eye with dual shackles, a swivel, compact snubber, and safety lanyard.
 shows active Revision 5 systems, hides superseded geometry, and reports missing
 required systems before export.
 
+`REV5_POD_DUAL_SOLAR_FRAME` is the fresh current structural frame for the
+sealed-pod layout: two open solar side frames, four deck feet, lower diagonal
+braces, and a compact sensor bridge. It does not depend on any deleted frame.
+
 ## Current Mechanical Revision: 5.0
 
 The current production direction uses `MAIN_FLOAT_TRADITIONAL_V2`, a traditional Ø650 mm HDPE single-body buoy with a 240 mm rounded tapered underwater keel.
