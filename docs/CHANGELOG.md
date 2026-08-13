@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-08-13 - Lower cage overhang correction
+
+- Tapered the four lower support tubes inward from radius 365 mm to the existing
+  frame-support attachment radius of 336 mm.
+- Lowered the tube termination to Z=385 mm inside the main support clamp band,
+  removing the visible radial and vertical overhang.
+
 ## 2026-08-13 - Lower-to-main-frame cage scope correction
 
 - Limited the four external tubes to the lower buoy collar and

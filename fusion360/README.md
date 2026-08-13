@@ -75,6 +75,10 @@ slopes to the upper buoy ring, then runs vertically to the lower collar.
 external tubes connect the lower buoy collar only to
 `REV5_MAIN_BUOY_FRAME_SUPPORT` and terminate at its Z=480 mm support ring.
 
+`REV5_LOWER_TO_MAIN_FRAME_SUPPORT_CAGE_V2` removes the visible overhang: its
+tubes taper inward from radius 365 mm at the lower collar to radius 336 mm and
+terminate inside the main support clamp band at Z=385 mm.
+
 `REV5_RECTANGULAR_MARINE_ELECTRONICS_POD` replaces the visible round pod with a
 300 x 280 x 400 mm chamfered UV-HDPE cabinet containing separate leak, power,
 control, sealing, weather-protection, thermal and cable-interface components.
