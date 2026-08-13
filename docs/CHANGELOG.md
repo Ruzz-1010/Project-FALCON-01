@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-08-13 - Lower-to-main-frame cage scope correction
+
+- Limited the four external tubes to the lower buoy collar and
+  `REV5_MAIN_BUOY_FRAME_SUPPORT`; they now stop at Z=480 mm.
+- Removed any active cage connection to the upper mast, solar frame or antennas.
+- Kept all earlier cage attempts hidden and recoverable.
+
 ## 2026-08-13 - Full-height cage top-connection correction
 
 - Moved the four external cage origins from the mast feet to the top mast

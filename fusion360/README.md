@@ -71,6 +71,10 @@ to a new EPDM-lined structural collar around the lower fairing.
 continuous load path begins at a top mast corner rather than at a mast foot,
 slopes to the upper buoy ring, then runs vertically to the lower collar.
 
+`REV5_LOWER_TO_MAIN_FRAME_SUPPORT_CAGE` is the corrected active version: four
+external tubes connect the lower buoy collar only to
+`REV5_MAIN_BUOY_FRAME_SUPPORT` and terminate at its Z=480 mm support ring.
+
 `REV5_RECTANGULAR_MARINE_ELECTRONICS_POD` replaces the visible round pod with a
 300 x 280 x 400 mm chamfered UV-HDPE cabinet containing separate leak, power,
 control, sealing, weather-protection, thermal and cable-interface components.
