@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-08-13 - Upper all-electronics service pod
+
+- Added a separate 320 mm OD x 400 mm UV-HDPE upper pod for the battery,
+  computing, communications, power management, and sensor-control electronics.
+- Added a removable double-gasket lid, ventilated sun/rain shield, leak tray,
+  battery restraint, thermal spreader, control rack, downward connector panel,
+  and hydrophobic membrane-vent boss.
+- Specified sealed internal air recirculation instead of salt-air fan intake.
+- Kept final acceptance dependent on thermal, ingress, salt-fog, vibration,
+  flotation, freeboard, and righting-moment validation.
+
 ## 2026-08-13 - Two-side solar frame V3
 
 - Replaced the circular dual-solar cage with two open flat frames only: East

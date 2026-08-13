@@ -17,6 +17,11 @@ flat support sides, East and West, for the two 30 W panels. There are no North
 or South panel frames and no circular rings. `DUAL_SOLAR_COMPACT_FRAME_V2` is
 retained as a superseded intermediate revision.
 
+`UPPER_ALL_ELECTRONICS_POD` is the active serviceability concept: a sealed
+320 mm OD upper pod containing the battery and serviceable electronics, with a
+double-gasket lid, sun/rain shield, leak tray, thermal plate, control rack,
+membrane vent, and downward IP68 connector panel.
+
 ## Current Mechanical Revision: 5.0
 
 The current production direction uses `MAIN_FLOAT_TRADITIONAL_V2`, a traditional Ø650 mm HDPE single-body buoy with a 240 mm rounded tapered underwater keel.
