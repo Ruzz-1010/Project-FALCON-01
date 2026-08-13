@@ -54,6 +54,11 @@ braces, and a compact sensor bridge. It does not depend on any deleted frame.
 EPDM-lined split clamp, four gusseted diagonal risers, an annular service deck,
 and four isolated upper-frame mounting pads without drilling the HDPE shell.
 
+`REV5_TAPERED_MARINE_MAST` is the active reference-inspired upper structure:
+a 420-to-380-to-260 mm two-stage four-leg mast. Its lower bay preserves sealed
+pod clearance while the upper bay tapers to the sensor platform. Horizontal
+rails, full-face X-bracing, and two opposed solar cradles complete the frame.
+
 ## Current Mechanical Revision: 5.0
 
 The current production direction uses `MAIN_FLOAT_TRADITIONAL_V2`, a traditional Ø650 mm HDPE single-body buoy with a 240 mm rounded tapered underwater keel.

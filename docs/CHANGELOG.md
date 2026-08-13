@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-08-13 - Tapered braced marine mast
+
+- Replaced the tall open-post concept with a reference-inspired tapered mast.
+- Added four two-stage 32 mm primary legs with a 420 mm deck footprint, 380 mm
+  pod-clearance shoulder, 260 mm top, five rail levels, full-face X-bracing,
+  two opposed solar cradles, and a compact top sensor platform.
+- Marked the earlier fresh rectangular frame as superseded in final cleanup.
+
 ## 2026-08-13 - Main-buoy upper-frame support base
 
 - Added an EPDM-lined non-penetrating clamp interface around the 650 mm body.
