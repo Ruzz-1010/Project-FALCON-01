@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-08-13 - Full-height cage top-connection correction
+
+- Moved the four external cage origins from the mast feet to the top mast
+  corners, then continued them through the upper ring to the lower collar.
+- Retained the incorrect V1 cage as a hidden fallback instead of deleting it.
+
 ## 2026-08-13 - Full-height external buoy support cage
 
 - Corrected the upper/lower load path to use four continuous external tubes
