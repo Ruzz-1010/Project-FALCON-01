@@ -15,5 +15,5 @@ body{background:linear-gradient(135deg,rgba(7,20,27,.98),rgba(10,29,35,.96)),url
 html[data-theme=light]{--text:#2b3b3f;--muted:#68787c;--cyan:#647f82;--aqua:#647f82;--green:#687f70;--lime:#687f70;--amber:#8d7658;--gold:#8d7658;--blue:#687b85;--violet:#77727d;--indigo:#707986;--coral:#916762;--line:rgba(61,81,86,.14);--panel:#f2f4f3;--panel2:#e8edeb}
 html[data-theme=light] body{background:linear-gradient(135deg,rgba(230,235,233,.98),rgba(218,226,224,.96)),url('/ocean-dashboard-bg.png') center/cover fixed}
 html[data-theme=light] .nav-item>svg{background:#d9e1df}html[data-theme=light] .nav-item.is-active{color:#344d51;background:#d3dfdd;box-shadow:inset 3px 0 #667f82}html[data-theme=light] .nav-item.is-active>svg{color:#486367;background:#cbdad7}
-.motion-scene{border-color:rgba(143,183,197,.2);background:radial-gradient(circle at 50% 28%,rgba(205,235,244,.34),transparent 46%),linear-gradient(180deg,#9bcfe1 0%,#6db3cb 48%,#4388a2 100%)}
-html[data-theme=light] .motion-scene{border-color:rgba(70,121,139,.2);background:radial-gradient(circle at 50% 28%,rgba(230,246,250,.48),transparent 48%),linear-gradient(180deg,#add8e6 0%,#7ebed3 48%,#5799b1 100%)}
+.motion-scene{border-color:rgba(105,147,160,.2);background:radial-gradient(circle at 50% 28%,rgba(113,165,183,.22),transparent 46%),linear-gradient(180deg,#39788f 0%,#286177 52%,#19475a 100%)}
+html[data-theme=light] .motion-scene{border-color:rgba(70,121,139,.2);background:radial-gradient(circle at 50% 28%,rgba(151,194,207,.25),transparent 48%),linear-gradient(180deg,#5794aa 0%,#39778e 52%,#285d72 100%)}

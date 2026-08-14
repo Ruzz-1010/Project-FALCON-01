@@ -24,14 +24,14 @@ export default function MotionScene({ telemetry }: { telemetry: Telemetry }) {
     const key = new THREE.DirectionalLight(0xf2f6f5, 3.2); key.position.set(3, 5, 4); scene.add(key);
     const rim = new THREE.DirectionalLight(0xa9d9e9, 1.15); rim.position.set(-4, 2, -3); scene.add(rim);
     const pose = new THREE.Group(); scene.add(pose);
-    const seaGeometry = new THREE.PlaneGeometry(12, 12, 34, 34).toNonIndexed(); seaGeometry.rotateX(-Math.PI / 2);
+    const seaGeometry = new THREE.PlaneGeometry(22, 22, 44, 44).toNonIndexed(); seaGeometry.rotateX(-Math.PI / 2);
     const base = new Float32Array(seaGeometry.attributes.position.array);
     const seaColors = new Float32Array(seaGeometry.attributes.position.count * 3);
     seaGeometry.setAttribute("color", new THREE.BufferAttribute(seaColors, 3));
-    const seaMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, vertexColors:true, emissive: 0x174a60, emissiveIntensity: .11, specular: 0xd5f3fb, shininess: 48, flatShading:true, transparent: true, opacity: .92, side: THREE.DoubleSide });
+    const seaMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, vertexColors:true, emissive: 0x123b4d, emissiveIntensity: .09, specular: 0x8ab7c5, shininess: 38, flatShading:true, transparent: true, opacity: .94, side: THREE.DoubleSide });
     const sea = new THREE.Mesh(seaGeometry, seaMaterial);
     sea.position.y = -.58; scene.add(sea);
-    const seaGrid = new THREE.Mesh(seaGeometry, new THREE.MeshBasicMaterial({color:0xb7dce8,wireframe:true,transparent:true,opacity:.075,depthWrite:false}));
+    const seaGrid = new THREE.Mesh(seaGeometry, new THREE.MeshBasicMaterial({color:0x87afbc,wireframe:true,transparent:true,opacity:.038,depthWrite:false}));
     seaGrid.position.y=-.578;scene.add(seaGrid);
     const ringMaterial = new THREE.MeshBasicMaterial({ color: 0xc8ebf5, transparent: true, opacity: .2, side: THREE.DoubleSide, depthWrite:false });
     const ring = new THREE.Mesh(new THREE.RingGeometry(.43, .54, 64), ringMaterial);
@@ -67,7 +67,7 @@ export default function MotionScene({ telemetry }: { telemetry: Telemetry }) {
     const resize=()=>{const w=container.clientWidth,h=container.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/Math.max(1,h);camera.updateProjectionMatrix()}; const observer=new ResizeObserver(resize);observer.observe(container);resize();
     const clock=new THREE.Clock(); let frame=0,phase=0,previous=0,normalFrame=0; const motion={roll:0,pitch:0,yaw:0,wave:.4};
     const surface=(x:number,z:number,a:number)=>Math.sin(x*.52+phase)*a+Math.sin(z*.64-phase*.58+x*.14)*a*.38+Math.sin((x+z)*.96+phase*.82)*a*.1;
-    const deepSea=new THREE.Color(0x3f8dab),midSea=new THREE.Color(0x67b4cf),waveCrest=new THREE.Color(0xb8dfeb),seaShade=new THREE.Color();
+    const deepSea=new THREE.Color(0x205b72),midSea=new THREE.Color(0x397f97),waveCrest=new THREE.Color(0x75a9b9),seaShade=new THREE.Color();
     const animate=()=>{frame=requestAnimationFrame(animate);const elapsed=clock.getElapsedTime(),dt=Math.min(.05,Math.max(.001,elapsed-previous));previous=elapsed;const t=live.current;
       motion.roll=THREE.MathUtils.damp(motion.roll,t.roll,1.25,dt);motion.pitch=THREE.MathUtils.damp(motion.pitch,t.pitch,1.25,dt);motion.yaw=THREE.MathUtils.damp(motion.yaw,t.yaw,1,dt);motion.wave=THREE.MathUtils.damp(motion.wave,t.wave,.72,dt);phase+=dt*(t.rough?.72:.38);
       const amp=THREE.MathUtils.lerp(.055,.25,THREE.MathUtils.clamp(motion.wave/3.5,0,1)),p=seaGeometry.attributes.position,colors=seaGeometry.attributes.color;
