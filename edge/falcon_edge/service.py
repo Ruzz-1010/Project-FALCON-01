@@ -40,10 +40,8 @@ class EdgeRuntime:
         now = time.monotonic()
         if now - self._last_prediction_save >= 30.0:
             history = self.store.recent(120)
-            # The established audit table persists the approved 5/15-minute
-            # rows. The v5 presentation can calculate 10 minutes on demand
-            # without destructively rebuilding existing field databases.
-            for horizon in (5, 15):
+            # Persist every supported horizon for forecast-versus-actual history.
+            for horizon in (5, 10, 15):
                 self.store.save_prediction(telemetry_id, build_wave_prediction(history, horizon))
             self._last_prediction_save = now
         return snapshot

@@ -59,6 +59,43 @@ def _project(points: list[tuple[float, float]], horizon_minutes: int) -> tuple[f
     return projected, confidence, details
 
 
+def _forecast_series(points: list[tuple[float, float]], horizon_minutes: int, endpoint: float,
+                     confidence: int, generated: datetime) -> list[dict[str, Any]]:
+    """Build a transparent demo trajectory, anchored to the verified endpoint.
+
+    Recent detrended residuals supply the short wave-like variation. Their
+    influence decays to zero at the selected horizon, so the final series value
+    always equals the primary endpoint returned by ``_project``.
+    """
+    current = round(points[-1][1], 2)
+    recent = [value for _, value in points[-24:]]
+    baseline_start = recent[0]
+    baseline_step = (recent[-1] - baseline_start) / max(1, len(recent) - 1)
+    residuals = [value - (baseline_start + baseline_step * index) for index, value in enumerate(recent)]
+    volatility = math.sqrt(sum(value * value for value in residuals) / max(1, len(residuals)))
+    steps = max(10, horizon_minutes * 2)
+    series: list[dict[str, Any]] = []
+    for index in range(steps + 1):
+        progress = index / steps
+        eased = progress * progress * (3.0 - 2.0 * progress)
+        baseline = current + (endpoint - current) * eased
+        residual = residuals[index % len(residuals)] if residuals else 0.0
+        predicted = max(0.0, baseline + residual * (1.0 - progress) * math.sin(math.pi * progress))
+        uncertainty = max(0.025, volatility * (0.7 + progress) + (100 - confidence) / 1000.0)
+        if index == 0:
+            predicted = current
+        elif index == steps:
+            predicted = endpoint
+        series.append({
+            "minutesAhead": round(progress * horizon_minutes, 2),
+            "at": (generated + timedelta(minutes=progress * horizon_minutes)).isoformat(),
+            "predictedWaveHeight": round(predicted, 3),
+            "lowerBound": round(max(0.0, predicted - uncertainty), 3),
+            "upperBound": round(predicted + uncertainty, 3),
+        })
+    return series
+
+
 def build_wave_prediction(records: list[dict[str, Any]], horizon_minutes: int = 15) -> dict[str, Any]:
     if horizon_minutes not in SUPPORTED_HORIZONS:
         raise ValueError("Unsupported horizon; use 5, 10, or 15 minutes")
@@ -73,6 +110,7 @@ def build_wave_prediction(records: list[dict[str, Any]], horizon_minutes: int = 
         "confidenceMeaning": "model quality indicator", "seaCondition": None,
         "model": MODEL_NAME, "modelVersion": MODEL_VERSION, "sampleCount": len(points),
         "status": "UNAVAILABLE", "dataSource": source, "unavailableReason": "INSUFFICIENT_HISTORY",
+        "forecastSeries": [],
     }
     if len(points) < 8:
         return base
@@ -86,6 +124,7 @@ def build_wave_prediction(records: list[dict[str, Any]], horizon_minutes: int = 
         "change": change, "direction": "up" if change > 0 else "down" if change < 0 else "stable",
         "confidence": confidence, "seaCondition": classify_sea_condition(predicted),
         "status": "READY", "unavailableReason": None,
+        "forecastSeries": _forecast_series(points[-120:], horizon_minutes, predicted, confidence, generated),
         "explanation": {
             "method": "damped linear trend over recent wave-height history",
             "input": "wave-height estimates derived from pressure and IMU telemetry",
