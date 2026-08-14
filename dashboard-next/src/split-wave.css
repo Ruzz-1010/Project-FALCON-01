@@ -7,7 +7,7 @@
 .connected-wave-chart text{fill:var(--muted);font-size:9px}
 .connected-grid{stroke:rgba(145,173,180,.1);stroke-width:1}
 .prediction-half{fill:rgba(196,147,85,.025)}
-.forecast-band{fill:rgba(196,147,85,.13);stroke:none;pointer-events:none}
+.forecast-band{fill:url(#forecast-band-fill);stroke:none;pointer-events:none}
 .center-divider{stroke:rgba(196,147,85,.34);stroke-width:1;stroke-dasharray:4 5}
 .connected-current,.connected-prediction{fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
 .connected-current{stroke:#70b7bd}
@@ -17,7 +17,7 @@
 .current-point{fill:#70b7bd;pointer-events:none}
 .prediction-point{fill:#c49355;pointer-events:none}
 .historic-point{fill:#d2a05f;stroke:var(--minimal-card);stroke-width:1.5;pointer-events:none}
-.forecast-target{cursor:pointer}.forecast-target text{fill:#c4a06f;font-size:8px;font-weight:700;letter-spacing:.04em}.forecast-target-ring{fill:rgba(196,147,85,.1);stroke:rgba(196,147,85,.55);stroke-width:1.5;pointer-events:none}
+.forecast-target{pointer-events:none}.forecast-target-ring{fill:rgba(196,147,85,.08);stroke:rgba(196,147,85,.55);stroke-width:1.5}.forecast-target-core{fill:#d2a05f}
 .connected-selection{display:flex;align-items:center;gap:12px;width:100%;padding:11px 13px;border:1px solid rgba(117,169,173,.22);border-radius:9px;color:var(--muted);background:rgba(117,169,173,.06);cursor:pointer}
 .connected-selection span{font-size:10px}.connected-selection b{color:var(--text);font-size:13px}.connected-selection i{margin-left:auto;font-size:16px;font-style:normal}
 html[data-theme=light] .prediction-half{fill:rgba(159,111,52,.04)}
