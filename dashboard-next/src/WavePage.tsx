@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Check, CheckCircle2, Gauge, Waves } from "lucide-react";
 import { getScenario, setScenario } from "./api";
 import type { DashboardData, ScenarioState } from "./types";
-import TelemetryChart from "./TelemetryChart";
 
 const n = (value: number | null | undefined, digits = 1) => value == null ? "--" : value.toFixed(digits);
 const scenarioLabels: Record<string,string> = { normal:"Normal operation", rough_sea:"Rough sea", low_battery:"Low battery", overheating:"Internal overheating", sensor_fault:"Wave sensor failure" };
@@ -22,13 +21,18 @@ function LegacyForecastChart({data}:{data:DashboardData}) {
 }
 
 void LegacyForecastChart;
-function SplitWaveCharts({data}:{data:DashboardData}){
-  const current=data.ai.currentWaveHeight??data.wave.waveHeight,predicted=data.ai.predictedWaveHeight;
-  const projected=current==null||predicted==null?[]:Array.from({length:12},(_,index)=>{const progress=index/11,eased=progress*progress*(3-2*progress);return {value:current+(predicted-current)*eased,recordedAt:new Date(Date.now()+progress*data.ai.horizonMinutes*60_000).toISOString()}});
-  return <div className="split-wave-charts">
-    <section><div className="split-chart-head"><span>Current wave</span><b>{n(current,2)} m</b><small>Measured history</small></div><TelemetryChart points={data.wave.history.slice(-50).map(item=>({value:item.waveHeight,recordedAt:item.recordedAt}))} unit=" m" color="#70b7bd" primaryLabel="Measured wave" minimumZero label="Current measured wave history" variant="minimal" showSecondary={false}/></section>
-    <section className="is-prediction"><div className="split-chart-head"><span>Predicted wave</span><b>{n(predicted,2)} m</b><small>Next {data.ai.horizonMinutes} minutes</small></div><TelemetryChart points={projected} unit=" m" color="#c49355" primaryLabel="AI projection" minimumZero label={`${data.ai.horizonMinutes} minute predicted wave trajectory`} variant="minimal" showSecondary={false}/></section>
-  </div>;
+function ConnectedWaveChart({data}:{data:DashboardData}){
+  const history=data.wave.history.filter((item):item is typeof item&{waveHeight:number}=>item.waveHeight!=null).slice(-32),predicted=data.ai.predictedWaveHeight,[selected,setSelected]=useState<{label:string;value:number}|null>(null);
+  if(history.length<2||predicted==null)return <div className="chart-empty">Collecting wave history and prediction...</div>;
+  const measured=history.map(item=>item.waveHeight),current=measured.at(-1)!,projection=Array.from({length:10},(_,index)=>{const progress=index/9,eased=progress*progress*(3-2*progress);return current+(predicted-current)*eased}),all=[...measured,...projection],min=Math.max(0,Math.min(...all)-.12),max=Math.max(...all)+.12,range=Math.max(.01,max-min),top=42,bottom=225,left=54,divider=390,right=726,toY=(value:number)=>bottom-(value-min)/range*(bottom-top),measuredPoints=measured.map((value,index)=>[left+index/(measured.length-1)*(divider-left),toY(value)]),predictionPoints=projection.map((value,index)=>[divider+index/(projection.length-1)*(right-divider),toY(value)]),ticks=[0,1,2,3,4];
+  return <div className="connected-wave-shell"><div className="connected-wave-labels"><span>Current wave history<b>{n(current,2)} m</b></span><span>Predicted · next {data.ai.horizonMinutes} min<b>{n(predicted,2)} m</b></span></div><svg className="connected-wave-chart" viewBox="0 0 780 270" role="img" aria-label="Connected current and predicted wave graph">
+    {ticks.map(row=>{const y=top+(bottom-top)*row/4,value=max-(max-min)*row/4;return <g key={row}><line x1={left} y1={y} x2={right} y2={y} className="connected-grid"/><text x={left-10} y={y+4} textAnchor="end">{value.toFixed(2)} m</text></g>})}
+    <rect x={divider} y={top} width={right-divider} height={bottom-top} className="prediction-half"/><line x1={divider} y1={top-10} x2={divider} y2={bottom+8} className="center-divider"/>
+    <polyline points={measuredPoints.map(point=>point.join(",")).join(" ")} className="connected-current"/><polyline points={predictionPoints.map(point=>point.join(",")).join(" ")} className="connected-prediction"/>
+    {measuredPoints.map((point,index)=><g key={`m-${index}`} onClick={()=>setSelected({label:new Date(history[index].recordedAt).toLocaleTimeString(),value:measured[index]})}><circle cx={point[0]} cy={point[1]} r="13" className="connected-hit"/><circle cx={point[0]} cy={point[1]} r="2.5" className="current-point"/></g>)}
+    {predictionPoints.map((point,index)=><g key={`p-${index}`} onClick={()=>setSelected({label:index===0?"Now":`+${Math.round(index/9*data.ai.horizonMinutes)} min`,value:projection[index]})}><circle cx={point[0]} cy={point[1]} r="13" className="connected-hit"/><circle cx={point[0]} cy={point[1]} r={index===predictionPoints.length-1?5:2.5} className="prediction-point"/></g>)}
+    <text x={left} y="254">{new Date(history[0].recordedAt).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})}</text><text x={divider} y="254" textAnchor="middle">NOW</text><text x={right} y="254" textAnchor="end">+{data.ai.horizonMinutes} MIN</text>
+  </svg>{selected&&<button className="connected-selection" onClick={()=>setSelected(null)}><span>{selected.label}</span><b>{selected.value.toFixed(2)} m</b><i>×</i></button>}</div>;
 }
 
 export default function WavePage({data,horizon,onHorizon,onScenarioApplied}:{data:DashboardData;horizon:number;onHorizon:(value:number)=>void;onScenarioApplied:()=>void}){
@@ -66,7 +70,7 @@ export default function WavePage({data,horizon,onHorizon,onScenarioApplied}:{dat
         <section className="prediction-inputs"><div className="inputs-heading"><span>Prediction based on</span><small>Configured demo-model input weights</small></div><strong className="weight-total">100% total</strong><div className="input-list">{weights.map(([label,value])=><div className="input-row" key={label}><i><Check/></i><span>{label}</span><b>{value}%</b><div className="input-track"><em style={{width:`${value}%`}}/></div></div>)}</div></section>
       </article>
 
-      <article className="panel wave-chart-panel report-chart"><header><div><span>LIVE WAVE GRAPH</span><h2>Current and predicted wave</h2></div><em>SIDE-BY-SIDE</em></header><SplitWaveCharts data={data}/><footer><span>Current chart uses timestamped local history</span><span>Prediction chart draws the selected AI horizon immediately</span></footer></article>
+      <article className="panel wave-chart-panel report-chart"><header><div><span>LIVE WAVE GRAPH</span><h2>Current to predicted wave</h2></div><em>CONNECTED VIEW</em></header><ConnectedWaveChart data={data}/><footer><span>Blue: timestamped measured history</span><span>Orange: connected AI projection to the selected horizon</span></footer></article>
 
       <article className="panel ai-summary"><header><div><span>EXPLAINABLE AI</span><h2>AI analysis summary</h2></div><em>COMPLETE</em></header><ul>{analysis.map(item=><li key={item}><i/>{item}</li>)}</ul><div className="therefore"><span>Therefore</span><strong>{n(predicted,2)} meters · {ai.seaCondition}</strong><small>Expected within {ai.horizonMinutes} minutes</small></div></article>
 
