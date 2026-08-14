@@ -24,13 +24,15 @@ export default function MotionScene({ telemetry }: { telemetry: Telemetry }) {
     const key = new THREE.DirectionalLight(0xf2f6f5, 3.2); key.position.set(3, 5, 4); scene.add(key);
     const rim = new THREE.DirectionalLight(0xa9d9e9, 1.15); rim.position.set(-4, 2, -3); scene.add(rim);
     const pose = new THREE.Group(); scene.add(pose);
-    const seaGeometry = new THREE.PlaneGeometry(12, 12, 56, 56); seaGeometry.rotateX(-Math.PI / 2);
+    const seaGeometry = new THREE.PlaneGeometry(12, 12, 34, 34).toNonIndexed(); seaGeometry.rotateX(-Math.PI / 2);
     const base = new Float32Array(seaGeometry.attributes.position.array);
     const seaColors = new Float32Array(seaGeometry.attributes.position.count * 3);
     seaGeometry.setAttribute("color", new THREE.BufferAttribute(seaColors, 3));
-    const seaMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, vertexColors:true, emissive: 0x174a60, emissiveIntensity: .13, specular: 0xd5f3fb, shininess: 58, transparent: true, opacity: .9, side: THREE.DoubleSide });
+    const seaMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, vertexColors:true, emissive: 0x174a60, emissiveIntensity: .11, specular: 0xd5f3fb, shininess: 48, flatShading:true, transparent: true, opacity: .92, side: THREE.DoubleSide });
     const sea = new THREE.Mesh(seaGeometry, seaMaterial);
     sea.position.y = -.58; scene.add(sea);
+    const seaGrid = new THREE.Mesh(seaGeometry, new THREE.MeshBasicMaterial({color:0xb7dce8,wireframe:true,transparent:true,opacity:.075,depthWrite:false}));
+    seaGrid.position.y=-.578;scene.add(seaGrid);
     const ringMaterial = new THREE.MeshBasicMaterial({ color: 0xc8ebf5, transparent: true, opacity: .2, side: THREE.DoubleSide, depthWrite:false });
     const ring = new THREE.Mesh(new THREE.RingGeometry(.43, .54, 64), ringMaterial);
     ring.rotation.x = -Math.PI / 2; scene.add(ring);
