@@ -1,0 +1,18 @@
+.split-wave-charts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+.split-wave-charts>section{min-width:0;padding:15px;border:1px solid rgba(157,181,188,.13);border-radius:11px;background:rgba(7,24,30,.42)}
+.split-wave-charts>section.is-prediction{border-color:rgba(196,147,85,.2);background:rgba(196,147,85,.025)}
+.split-chart-head{display:grid;grid-template-columns:1fr auto;align-items:end;gap:3px 12px}
+.split-chart-head span{color:#90a8ad;font-size:10px;font-weight:650}
+.split-chart-head b{grid-row:span 2;font-size:23px;font-weight:650;letter-spacing:-.035em}
+.split-chart-head small{color:var(--muted);font-size:9px}
+.split-wave-charts .pro-chart-legend{margin-top:14px}
+.split-wave-charts .pro-chart-legend small{display:none}
+.split-wave-charts .pro-chart{height:235px}
+.split-wave-charts .pro-axis,.split-wave-charts .pro-time{font-size:9px}
+.split-wave-charts .pro-area{display:none}
+.split-wave-charts .pro-line.is-measured{stroke-width:2.7;opacity:1}
+.split-wave-charts .history-dot{opacity:.65}
+.split-wave-charts .chart-selected-value{margin-bottom:0}
+html[data-theme=light] .split-wave-charts>section{background:rgba(224,233,231,.55)}
+html[data-theme=light] .split-wave-charts>section.is-prediction{background:rgba(196,147,85,.045)}
+@media(max-width:900px){.split-wave-charts{grid-template-columns:1fr}.split-wave-charts .pro-chart{height:250px}}

@@ -22,8 +22,13 @@ function LegacyForecastChart({data}:{data:DashboardData}) {
 }
 
 void LegacyForecastChart;
-function ForecastChart({data}:{data:DashboardData}){
-  return <TelemetryChart points={data.wave.history.slice(-50).map(item=>({value:item.waveHeight,recordedAt:item.recordedAt}))} forecast={data.ai.predictedWaveHeight} forecastLabel={`${data.ai.horizonMinutes} MIN FORECAST`} unit=" m" color="#6e9da5" secondaryColor="#c49355" primaryLabel="Measured wave" secondaryLabel="AI model trend" minimumZero label="Live wave history and forecast"/>;
+function SplitWaveCharts({data}:{data:DashboardData}){
+  const current=data.ai.currentWaveHeight??data.wave.waveHeight,predicted=data.ai.predictedWaveHeight;
+  const projected=current==null||predicted==null?[]:Array.from({length:12},(_,index)=>{const progress=index/11,eased=progress*progress*(3-2*progress);return {value:current+(predicted-current)*eased,recordedAt:new Date(Date.now()+progress*data.ai.horizonMinutes*60_000).toISOString()}});
+  return <div className="split-wave-charts">
+    <section><div className="split-chart-head"><span>Current wave</span><b>{n(current,2)} m</b><small>Measured history</small></div><TelemetryChart points={data.wave.history.slice(-50).map(item=>({value:item.waveHeight,recordedAt:item.recordedAt}))} unit=" m" color="#70b7bd" primaryLabel="Measured wave" minimumZero label="Current measured wave history" variant="minimal" showSecondary={false}/></section>
+    <section className="is-prediction"><div className="split-chart-head"><span>Predicted wave</span><b>{n(predicted,2)} m</b><small>Next {data.ai.horizonMinutes} minutes</small></div><TelemetryChart points={projected} unit=" m" color="#c49355" primaryLabel="AI projection" minimumZero label={`${data.ai.horizonMinutes} minute predicted wave trajectory`} variant="minimal" showSecondary={false}/></section>
+  </div>;
 }
 
 export default function WavePage({data,horizon,onHorizon,onScenarioApplied}:{data:DashboardData;horizon:number;onHorizon:(value:number)=>void;onScenarioApplied:()=>void}){
@@ -61,7 +66,7 @@ export default function WavePage({data,horizon,onHorizon,onScenarioApplied}:{dat
         <section className="prediction-inputs"><div className="inputs-heading"><span>Prediction based on</span><small>Configured demo-model input weights</small></div><strong className="weight-total">100% total</strong><div className="input-list">{weights.map(([label,value])=><div className="input-row" key={label}><i><Check/></i><span>{label}</span><b>{value}%</b><div className="input-track"><em style={{width:`${value}%`}}/></div></div>)}</div></section>
       </article>
 
-      <article className="panel wave-chart-panel report-chart"><header><div><span>LIVE WAVE GRAPH</span><h2>Observed and predicted wave energy</h2></div><em>HISTORY + FORECAST</em></header><div className="chart-legend"><span><i/>Current wave</span><span><i/>Predicted wave</span></div><ForecastChart data={data}/><footer><span>Hover-ready timestamped local history</span><span>Dashed segment indicates model output</span></footer></article>
+      <article className="panel wave-chart-panel report-chart"><header><div><span>LIVE WAVE GRAPH</span><h2>Current and predicted wave</h2></div><em>SIDE-BY-SIDE</em></header><SplitWaveCharts data={data}/><footer><span>Current chart uses timestamped local history</span><span>Prediction chart draws the selected AI horizon immediately</span></footer></article>
 
       <article className="panel ai-summary"><header><div><span>EXPLAINABLE AI</span><h2>AI analysis summary</h2></div><em>COMPLETE</em></header><ul>{analysis.map(item=><li key={item}><i/>{item}</li>)}</ul><div className="therefore"><span>Therefore</span><strong>{n(predicted,2)} meters · {ai.seaCondition}</strong><small>Expected within {ai.horizonMinutes} minutes</small></div></article>
 

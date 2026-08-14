@@ -25,5 +25,6 @@ import "./industrial-theme.css";
 import "./scenario.css";
 import "./overview.css";
 import "./minimal-pages.css";
+import "./split-wave.css";
 
 createRoot(document.getElementById("root")!).render(<StrictMode><App /></StrictMode>);
