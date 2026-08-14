@@ -1,0 +1,8 @@
+.wave-page .prediction-inputs .input-track{position:relative;height:8px;border:1px solid rgba(133,172,178,.1);background:rgba(108,147,154,.14)}
+.wave-page .prediction-inputs .input-track em{display:block;min-width:5px;height:100%;border-radius:inherit;background:#70a8ad;box-shadow:0 0 8px rgba(112,168,173,.22);opacity:1}
+.wave-page .prediction-inputs .input-row:nth-child(2) .input-track em{background:#7f9eaf}
+.wave-page .prediction-inputs .input-row:nth-child(3) .input-track em{background:#6eb3b8}
+.wave-page .prediction-inputs .input-row:nth-child(4) .input-track em{background:#889d79}
+.wave-page .prediction-inputs .input-row:nth-child(5) .input-track em{background:#a88f6c}
+.wave-page .prediction-inputs .input-track:before{position:absolute;z-index:1;inset:0 auto 0 0;width:3px;border-radius:3px;background:rgba(225,240,239,.78);content:""}
+html[data-theme=light] .wave-page .prediction-inputs .input-track{border-color:rgba(50,83,88,.12);background:rgba(50,83,88,.12)}

@@ -26,5 +26,6 @@ import "./scenario.css";
 import "./overview.css";
 import "./minimal-pages.css";
 import "./split-wave.css";
+import "./input-bars-fix.css";
 
 createRoot(document.getElementById("root")!).render(<StrictMode><App /></StrictMode>);
