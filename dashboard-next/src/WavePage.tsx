@@ -70,6 +70,7 @@ export default function WavePage({data,horizon,onHorizon,onScenarioApplied}:{dat
         <div className="result-core"><span>Predicted Wave Height</span><strong>{ready?n(predicted,2):"--"}<small>m</small></strong><p>Current: {n(current,2)} m · {ai.direction.toUpperCase()} trend</p></div>
         <dl className="result-metrics"><div><dt>Confidence</dt><dd>{ai.confidence}%</dd></div><div><dt>Prediction Time</dt><dd>Next {ai.horizonMinutes} minutes</dd></div><div><dt>Status</dt><dd>{ai.seaCondition}</dd></div></dl>
         <section className="prediction-inputs"><div className="inputs-heading"><span>Prediction based on</span><small>Configured demo-model input weights</small></div><strong className="weight-total">100% total</strong><div className="input-list">{weights.map(([label,value])=><div className="input-row" key={label}><i><Check/></i><span>{label}</span><b>{value}%</b><div className="input-track"><em style={{width:`${value}%`}}/></div></div>)}</div></section>
+        <section className="compact-quality"><header><div><span>PREDICTION QUALITY</span><h3>Presentation validation</h3></div><em>DEMO</em></header><dl><div><dt>Samples</dt><dd>{ai.sampleCount}</dd></div><div><dt>Confidence</dt><dd>{ai.confidence}%</dd></div><div><dt>Agreement</dt><dd>{agreement}</dd></div><div><dt>Source</dt><dd>{ai.dataSource.toUpperCase()}</dd></div></dl><p>Presentation output · field validation still required.</p></section>
       </article>
 
       <article className="panel wave-chart-panel report-chart"><header><div><span>LIVE WAVE GRAPH</span><h2>Measured and predicted wave</h2></div><em>MODEL SERIES</em></header><ConnectedWaveChart data={data}/><footer><span>Left: blue actual history with orange rolling model estimates</span><span>Right: forecast series with transparent uncertainty band</span></footer></article>
@@ -80,7 +81,6 @@ export default function WavePage({data,horizon,onHorizon,onScenarioApplied}:{dat
 
       <article className="panel prediction-timeline"><header><div><span>PREDICTION TIMELINE</span><h2>Expected wave progression</h2></div><Waves/></header><div><section><span>NOW</span><strong>{n(current,2)} m</strong><small>Current estimate</small></section><i/><section><span>{Math.max(1,Math.round(ai.horizonMinutes/2))} MIN</span><strong>{n(midpoint,2)} m</strong><small>Near-term</small></section><i/><section><span>{ai.horizonMinutes} MIN</span><strong>{n(predicted,2)} m</strong><small>Selected horizon</small></section></div></article>
 
-      <article className="panel prediction-quality"><header><div><span>PREDICTION QUALITY</span><h2>Presentation validation</h2></div><em>NOT FIELD ACCURACY</em></header><dl><div><dt>Samples used</dt><dd>{ai.sampleCount}</dd></div><div><dt>Model confidence</dt><dd>{ai.confidence}%</dd></div><div><dt>Signal agreement</dt><dd>{agreement}</dd></div><div><dt>Data source</dt><dd>{ai.dataSource.toUpperCase()}</dd></div></dl><footer>Demo output for presentation. Field calibration and validation are still required.</footer></article>
     </div>
   </section>;
 }
