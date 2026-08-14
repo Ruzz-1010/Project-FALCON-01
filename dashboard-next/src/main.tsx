@@ -23,5 +23,7 @@ import "./charts-pro.css";
 import "./prediction-inputs.css";
 import "./industrial-theme.css";
 import "./scenario.css";
+import "./overview.css";
+import "./minimal-pages.css";
 
 createRoot(document.getElementById("root")!).render(<StrictMode><App /></StrictMode>);
