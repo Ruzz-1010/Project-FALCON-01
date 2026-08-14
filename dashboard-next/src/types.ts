@@ -38,6 +38,7 @@ export type Prediction = {
   direction: string; targetAt: string | null; model: string; modelVersion: string;
   sampleCount: number; dataSource: string; unavailableReason: string | null;
   forecastSeries?: Array<{minutesAhead:number;at:string;predictedWaveHeight:number;lowerBound:number;upperBound:number}>;
+  historicalPredictionSeries?: Array<{at:string;predictedWaveHeight:number}>;
   explanation?: {
     method: string; input: string; steps: string[];
     details: { validSamples: number; sampleWindowSeconds: number; trendMetersPerMinute: number; rawProjection: number; maximumAllowedChange: number; limitApplied: boolean; residualVolatility: number; dampingFactor: number };

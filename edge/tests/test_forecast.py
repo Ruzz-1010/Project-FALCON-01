@@ -26,6 +26,8 @@ class ForecastTest(unittest.TestCase):
         self.assertEqual(result["forecastSeries"][-1]["predictedWaveHeight"], result["predictedWaveHeight"])
         self.assertLessEqual(result["forecastSeries"][-1]["lowerBound"], result["predictedWaveHeight"])
         self.assertGreaterEqual(result["forecastSeries"][-1]["upperBound"], result["predictedWaveHeight"])
+        self.assertGreater(len(result["historicalPredictionSeries"]), 2)
+        self.assertIn("at", result["historicalPredictionSeries"][0])
 
     def test_prediction_is_wave_only_and_transparent(self):
         result = build_wave_prediction(records(), 15)

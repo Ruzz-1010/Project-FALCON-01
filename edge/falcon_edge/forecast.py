@@ -96,6 +96,27 @@ def _forecast_series(points: list[tuple[float, float]], horizon_minutes: int, en
     return series
 
 
+def _historical_prediction_series(points: list[tuple[float, float]]) -> list[dict[str, Any]]:
+    """Rolling one-step estimates aligned with past measured timestamps."""
+    rows: list[dict[str, Any]] = []
+    start = max(8, len(points) - 32)
+    for index in range(start, len(points)):
+        training = points[max(0, index - 20):index]
+        origin = training[0][0]
+        xs = [timestamp - origin for timestamp, _ in training]
+        ys = [value for _, value in training]
+        mean_x, mean_y = sum(xs) / len(xs), sum(ys) / len(ys)
+        denominator = sum((x - mean_x) ** 2 for x in xs)
+        slope = 0.0 if denominator == 0 else sum((x - mean_x) * (y - mean_y) for x, y in zip(xs, ys)) / denominator
+        elapsed = max(0.0, points[index][0] - training[-1][0])
+        raw = training[-1][1] + slope * elapsed
+        maximum_step = max(0.03, training[-1][1] * 0.08)
+        predicted = min(training[-1][1] + maximum_step, max(training[-1][1] - maximum_step, raw))
+        rows.append({"at": datetime.fromtimestamp(points[index][0]).astimezone().isoformat(),
+                     "predictedWaveHeight": round(max(0.0, predicted), 3)})
+    return rows
+
+
 def build_wave_prediction(records: list[dict[str, Any]], horizon_minutes: int = 15) -> dict[str, Any]:
     if horizon_minutes not in SUPPORTED_HORIZONS:
         raise ValueError("Unsupported horizon; use 5, 10, or 15 minutes")
@@ -111,6 +132,7 @@ def build_wave_prediction(records: list[dict[str, Any]], horizon_minutes: int = 
         "model": MODEL_NAME, "modelVersion": MODEL_VERSION, "sampleCount": len(points),
         "status": "UNAVAILABLE", "dataSource": source, "unavailableReason": "INSUFFICIENT_HISTORY",
         "forecastSeries": [],
+        "historicalPredictionSeries": [],
     }
     if len(points) < 8:
         return base
@@ -125,6 +147,7 @@ def build_wave_prediction(records: list[dict[str, Any]], horizon_minutes: int = 
         "confidence": confidence, "seaCondition": classify_sea_condition(predicted),
         "status": "READY", "unavailableReason": None,
         "forecastSeries": _forecast_series(points[-120:], horizon_minutes, predicted, confidence, generated),
+        "historicalPredictionSeries": _historical_prediction_series(points),
         "explanation": {
             "method": "damped linear trend over recent wave-height history",
             "input": "wave-height estimates derived from pressure and IMU telemetry",
