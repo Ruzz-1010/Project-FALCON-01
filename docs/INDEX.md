@@ -10,16 +10,17 @@ Current authoritative mechanical revision: **5.0**, using the traditional single
 
 Read these documents in order:
 
-1. [`PROJECT_CONTEXT.md`](PROJECT_CONTEXT.md) — master engineering context and scope
-2. [`README.md`](../README.md) — repository entry point and quick start
-3. [`ROADMAP.md`](ROADMAP.md) — gated delivery plan
-4. [`HARDWARE.md`](HARDWARE.md) — Phase 1 electronics and sensor baseline
-5. [`SOFTWARE.md`](SOFTWARE.md) — ESP32 and Orange Pi software responsibilities
-6. [`ORANGE_PI_EDGE.md`](ORANGE_PI_EDGE.md) — selected Orange Pi Zero 3 architecture and responsibility boundary
-7. [`AI.md`](AI.md) — 5- and 15-minute wave-height prediction contract
-8. [`DASHBOARD.md`](DASHBOARD.md) — local dashboard information architecture
-9. [`API.md`](API.md) — approved local REST API contract
-10. [`MECHANICAL.md`](MECHANICAL.md) — approved buoy mechanical baseline
+1. [`CURRENT_PROJECT_DOCUMENTATION.md`](CURRENT_PROJECT_DOCUMENTATION.md) — consolidated current-state guide and verified implementation status
+2. [`PROJECT_CONTEXT.md`](PROJECT_CONTEXT.md) — master engineering context and scope
+3. [`README.md`](../README.md) — repository entry point and quick start
+4. [`ROADMAP.md`](ROADMAP.md) — gated delivery plan
+5. [`HARDWARE.md`](HARDWARE.md) — Phase 1 electronics and sensor baseline
+6. [`SOFTWARE.md`](SOFTWARE.md) — ESP32 and Orange Pi software responsibilities
+7. [`ORANGE_PI_EDGE.md`](ORANGE_PI_EDGE.md) — selected Orange Pi Zero 3 architecture and responsibility boundary
+8. [`AI.md`](AI.md) — 5- and 15-minute wave-height prediction contract
+9. [`DASHBOARD.md`](DASHBOARD.md) — local dashboard information architecture
+10. [`API.md`](API.md) — approved local REST API contract
+11. [`MECHANICAL.md`](MECHANICAL.md) — approved buoy mechanical baseline
 
 These core documents were aligned to Project FALCON v5.0 and the single-body mechanical baseline on 2026-08-13.
 

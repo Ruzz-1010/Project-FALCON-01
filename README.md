@@ -171,15 +171,16 @@ The target v4 repository organization is documented in PROJECT_CONTEXT.md and wi
 
 Start here:
 
-1. [PROJECT_CONTEXT.md](docs/PROJECT_CONTEXT.md) — master engineering context;
-2. [ROADMAP.md](docs/ROADMAP.md) — focused delivery gates;
-3. [HARDWARE.md](docs/HARDWARE.md) — electronics and sensor baseline;
-4. [SOFTWARE.md](docs/SOFTWARE.md) — firmware and edge-software boundaries;
-5. [AI.md](docs/AI.md) — focused prediction and classification specification;
-6. [DASHBOARD.md](docs/DASHBOARD.md) — approved information architecture;
-7. [API.md](docs/API.md) — approved REST contract and migration status;
-8. [MECHANICAL.md](docs/MECHANICAL.md) — approved buoy mechanical baseline;
-9. [INDEX.md](docs/INDEX.md) — full documentation index.
+1. [CURRENT_PROJECT_DOCUMENTATION.md](docs/CURRENT_PROJECT_DOCUMENTATION.md) — consolidated current-state guide, Linux setup, verified features, limitations, and next work;
+2. [PROJECT_CONTEXT.md](docs/PROJECT_CONTEXT.md) — master engineering context;
+3. [ROADMAP.md](docs/ROADMAP.md) — focused delivery gates;
+4. [HARDWARE.md](docs/HARDWARE.md) — electronics and sensor baseline;
+5. [SOFTWARE.md](docs/SOFTWARE.md) — firmware and edge-software boundaries;
+6. [AI.md](docs/AI.md) — focused prediction and classification specification;
+7. [DASHBOARD.md](docs/DASHBOARD.md) — approved information architecture;
+8. [API.md](docs/API.md) — approved REST contract and migration status;
+9. [MECHANICAL.md](docs/MECHANICAL.md) — approved buoy mechanical baseline;
+10. [INDEX.md](docs/INDEX.md) — full documentation index.
 
 ## Engineering Principles
 
