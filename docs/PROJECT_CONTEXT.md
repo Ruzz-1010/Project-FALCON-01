@@ -221,7 +221,7 @@ Future Expansion means explicitly outside the Phase 1 baseline.
 Project FALCON is in Phase 1 Prototype status. The repository contains an ESP32 captive-portal prototype. The ESP32 prototype provides:
 - Wi-Fi access-point mode;
 - captive-portal DNS behavior;
-- LittleFS static dashboard hosting;
+- LittleFS setup and diagnostics portal hosting;
 - status output;
 - monitoring control;
 - and restart control.
@@ -233,7 +233,7 @@ The repository also contains a laptop-hosted edge-service prototype. The edge-se
 - presentation forecast generation;
 - forecast backtesting;
 - and local dashboard asset hosting.
-The repository contains a modern local dashboard prototype. The dashboard prototype includes:
+The repository contains the canonical edge-hosted Dashboard Next application. It includes:
 - responsive layouts;
 - light and dark modes;
 - live telemetry views;
@@ -243,7 +243,7 @@ The repository contains a modern local dashboard prototype. The dashboard protot
 - and an interactive 3D mechanical model.
 The current forecast implementation is a presentation model. It is not yet a field-validated AI model. The current telemetry source is primarily simulated when physical sensors are unavailable. Physical sensor
 integration remains Planned until hardware is installed and validated. The selected Orange Pi Zero 3 has not yet been integrated into the physical prototype. The laptop may temporarily represent the edge-computing role during
-demonstrations. The full dashboard is not approved for direct deployment on the current ESP32 flash because its 3D assets exceed the configured LittleFS capacity.
+demonstrations. The full dashboard is bundled with and served by the edge service; it is not approved for direct deployment on the current ESP32 flash because its 3D assets exceed the configured LittleFS capacity.
 ## System Requirements
 
 ### Functional Requirements

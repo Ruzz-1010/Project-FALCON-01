@@ -4,7 +4,7 @@
 Specify current observable ESP32 firmware behavior.
 
 ## Scope
-Startup, LittleFS, AP, DNS, HTTP, API, captive routes, and loop behavior.
+Startup, LittleFS setup portal, AP, DNS, HTTP, API, captive routes, diagnostics, and loop behavior.
 
 ## Current Status
 Implemented and buildable; sensor behavior is simulated.
@@ -15,7 +15,7 @@ One `PortalServer` service owns `DNSServer`, `WebServer`, startup state, and mon
 ## Implementation
 Startup mounts LittleFS, verifies four assets, configures `192.168.4.1/24`, starts `FALCON-01` on channel 6 for up to four clients, starts wildcard DNS port 53, and HTTP port 80. The loop services DNS/HTTP and delays 2 ms.
 
-Required assets: `/index.html`, `/style.css`, `/app.js`, `/falcon-logo.jpg`. HTML and API are uncached; static assets use a one-hour cache. Monitoring state is volatile. Restart responds, waits 700 ms, then calls `ESP.restart()`.
+Required assets: `/index.html`, `/style.css`, `/app.js`, `/falcon-logo.jpg`. These provide sensor-node setup and diagnostics only; the full dashboard is hosted by the edge service. HTML and API are uncached; static assets use a one-hour cache. Monitoring state is volatile. Restart responds, waits 700 ms, then calls `ESP.restart()`.
 
 ## Future Expansion
 Sensors, storage, structured errors, secure settings, watchdog, and OTA require approved implementation.
@@ -26,4 +26,5 @@ Sensors, storage, structured errors, secure settings, watchdog, and OTA require 
 ## Revision History
 | Version | Date | Change |
 | --- | --- | --- |
+| 2.0 | 2026-08-15 | Reduced LittleFS UI to sensor-node setup/diagnostics; full dashboard moved to edge host. |
 | 1.0 | 2026-08-05 | Initial firmware specification. |

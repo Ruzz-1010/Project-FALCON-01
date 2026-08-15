@@ -13,7 +13,7 @@ void setup() {
   Serial.println();
   Serial.println(F("===================================="));
   Serial.println(F("PROJECT FALCON-01"));
-  Serial.println(F("Starting Local Dashboard v2..."));
+  Serial.println(F("Starting Sensor Node Portal..."));
   Serial.println(F("===================================="));
 
   if (!portal.begin()) {

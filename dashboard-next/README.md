@@ -1,6 +1,6 @@
 # FALCON Dashboard Next
 
-Safe, page-by-page React + TypeScript migration of the FALCON dashboard. The existing dashboard remains the production fallback while this directory is developed and validated.
+Canonical React + TypeScript dashboard for Project FALCON. The production build is served by the Python edge service; the ESP32 hosts only a small setup and diagnostics portal.
 
 ## Migrated pages
 
@@ -64,3 +64,16 @@ npm run dev
 
 Open `http://127.0.0.1:5173`. All planned migration pages are available: Overview,
 Wave AI, Motion, GPS, Power, System Health, Alerts, Logs, and Settings.
+
+## Production build
+
+```bash
+cd dashboard-next
+npm install
+npm run build
+cd ../edge
+python3 -m falcon_edge.service
+```
+
+The build is written to `edge/static/dashboard/`. Open `http://127.0.0.1:8765/`.
+This is the normal dashboard URL on the development laptop and target Orange Pi.

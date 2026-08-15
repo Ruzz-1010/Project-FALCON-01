@@ -2,6 +2,7 @@
 
 import argparse
 import json
+import mimetypes
 import signal
 import threading
 import time
@@ -201,25 +202,7 @@ class EdgeRuntime:
 
 
 def make_handler(runtime: EdgeRuntime, store: TelemetryStore):
-    dashboard_directory = Path(__file__).parents[2] / "data"
-    static_assets = {
-        "/": ("index.html", "text/html; charset=utf-8"),
-        "/index.html": ("index.html", "text/html; charset=utf-8"),
-        "/style.css": ("style.css", "text/css; charset=utf-8"),
-        "/app.js": ("app.js", "application/javascript; charset=utf-8"),
-        "/model-viewer.js": ("model-viewer.js", "application/javascript; charset=utf-8"),
-        "/falcon-logo.jpg": ("falcon-logo.jpg", "image/jpeg"),
-        "/ocean-dashboard-bg.png": ("ocean-dashboard-bg.png", "image/png"),
-        "/favicon.ico": ("falcon-logo.jpg", "image/jpeg"),
-        "/vendor/three.module.min.js": ("vendor/three.module.min.js", "application/javascript; charset=utf-8"),
-        "/vendor/three.core.min.js": ("vendor/three.core.min.js", "application/javascript; charset=utf-8"),
-        "/vendor/GLTFLoader.js": ("vendor/GLTFLoader.js", "application/javascript; charset=utf-8"),
-        "/vendor/leaflet.css": ("vendor/leaflet.css", "text/css; charset=utf-8"),
-        "/vendor/leaflet.js": ("vendor/leaflet.js", "application/javascript; charset=utf-8"),
-        "/vendor/lucide.min.js": ("vendor/lucide.min.js", "application/javascript; charset=utf-8"),
-        "/utils/BufferGeometryUtils.js": ("utils/BufferGeometryUtils.js", "application/javascript; charset=utf-8"),
-        "/models/FALCON-01.glb": ("models/FALCON-01.glb", "model/gltf-binary"),
-    }
+    dashboard_directory = Path(__file__).parents[1] / "static" / "dashboard"
 
     class ApiHandler(BaseHTTPRequestHandler):
         def _write_body(self, body: bytes) -> None:
@@ -242,19 +225,33 @@ def make_handler(runtime: EdgeRuntime, store: TelemetryStore):
             self.end_headers()
             self._write_body(body)
 
-        def _send_asset(self, file_name: str, content_type: str) -> None:
-            path = dashboard_directory / file_name
+        def _send_dashboard_asset(self, request_path: str) -> bool:
+            relative_path = request_path.lstrip("/") or "index.html"
+            path = (dashboard_directory / relative_path).resolve()
+            try:
+                path.relative_to(dashboard_directory.resolve())
+            except ValueError:
+                self._send(404, {"error": "NOT_FOUND"})
+                return True
+
+            if not path.is_file() and "." not in Path(relative_path).name:
+                path = dashboard_directory / "index.html"
+
             try:
                 body = path.read_bytes()
             except OSError:
-                self._send(503, {"error": "DASHBOARD_ASSET_UNAVAILABLE"})
-                return
+                return False
+
+            content_type = mimetypes.guess_type(path.name)[0] or "application/octet-stream"
+            if content_type.startswith("text/") or content_type in ("application/javascript", "application/json"):
+                content_type += "; charset=utf-8"
             self.send_response(200)
             self.send_header("Content-Type", content_type)
             self.send_header("Content-Length", str(len(body)))
-            self.send_header("Cache-Control", "no-cache")
+            self.send_header("Cache-Control", "no-cache" if path.name == "index.html" else "public, max-age=31536000, immutable")
             self.end_headers()
             self._write_body(body)
+            return True
 
         def do_OPTIONS(self) -> None:
             self.send_response(204)
@@ -266,9 +263,7 @@ def make_handler(runtime: EdgeRuntime, store: TelemetryStore):
 
         def do_GET(self) -> None:
             parsed = urlparse(self.path)
-            if parsed.path in static_assets:
-                self._send_asset(*static_assets[parsed.path])
-            elif parsed.path == "/health":
+            if parsed.path == "/health":
                 self._send(200, runtime.status())
             elif parsed.path == "/status":
                 self._send(200, runtime.v4_status())
@@ -321,6 +316,10 @@ def make_handler(runtime: EdgeRuntime, store: TelemetryStore):
                 self._send(200, build_forecast(runtime.forecast_records()))
             elif parsed.path == "/api/forecast/validation":
                 self._send(200, evaluate_forecast(runtime.forecast_records()))
+            elif parsed.path == "/api" or parsed.path.startswith("/api/"):
+                self._send(404, {"error": "NOT_FOUND"})
+            elif self._send_dashboard_asset(parsed.path):
+                return
             else:
                 self._send(404, {"error": "NOT_FOUND"})
 

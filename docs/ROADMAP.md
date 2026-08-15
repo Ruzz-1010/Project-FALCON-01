@@ -25,13 +25,13 @@ Implemented:
 
 - ESP32 PlatformIO firmware foundation;
 - Wi-Fi access point and captive portal;
-- LittleFS fallback dashboard;
+- lightweight LittleFS setup/diagnostic portal;
 - basic ESP32 status, monitoring, and restart routes;
 - laptop-hosted edge-service prototype;
 - local SQLite storage;
 - simulated telemetry and alert scenarios;
 - presentation forecasting and backtesting;
-- responsive dashboard with light/dark themes;
+- canonical edge-hosted Dashboard Next with light/dark themes;
 - current-versus-predicted UI;
 - and an interactive Fusion-derived digital twin.
 

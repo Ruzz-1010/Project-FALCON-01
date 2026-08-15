@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-08-15 - Dashboard Next promoted to canonical production UI
+
+- Made `dashboard-next/` the only full dashboard source.
+- Configured Vite to bundle the production UI into `edge/static/dashboard/`.
+- Updated the edge service to serve hashed assets, the 3D model, and SPA routes.
+- Reduced ESP32 LittleFS content to a small sensor-node setup/diagnostics portal.
+- Removed obsolete duplicated legacy dashboard libraries and assets from `data/`.
+- Updated setup, architecture, firmware, and current-state documentation.
+
 ## 2026-08-13 - V2 digital-twin waterline correction
 
 - Replaced the overall-assembly percentage waterline with a datum calculated

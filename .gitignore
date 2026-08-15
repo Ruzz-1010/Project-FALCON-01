@@ -10,3 +10,6 @@ edge/data/
 *-preview.png
 node_modules/
 dashboard-next/dist/
+fusion360/**/.vscode/
+wokwi.vcd
+*.original-backup-*

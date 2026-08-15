@@ -13,6 +13,9 @@ python -m falcon_edge.service
 
 Open `http://127.0.0.1:8765/`.
 
+This URL serves the bundled production build of `dashboard-next`. Rebuild it with
+`npm run build` inside `dashboard-next/` after frontend changes.
+
 ## Approved v4 API
 
 - `GET /status`

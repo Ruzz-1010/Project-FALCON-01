@@ -63,9 +63,9 @@ bool PortalServer::begin() {
   Serial.println(FalconConfig::kApSsid);
   Serial.print(F("Password   : "));
   Serial.println(FalconConfig::kApPassword);
-  Serial.print(F("Dashboard  : http://"));
+  Serial.print(F("Setup page : http://"));
   Serial.println(localIp);
-  Serial.println(F("FALCON captive portal ready."));
+  Serial.println(F("FALCON sensor-node portal ready."));
   return true;
 }
 
@@ -188,7 +188,7 @@ void PortalServer::handleNotFound() {
 void PortalServer::sendDashboard() {
   if (!webAssetsReady_) {
     webServer_.send(503, "text/plain",
-                    F("Dashboard files are missing. Upload the LittleFS image."));
+                    F("Setup portal files are missing. Upload the LittleFS image."));
     return;
   }
   sendFile(FalconConfig::kIndexPath, "text/html", kNoCache);

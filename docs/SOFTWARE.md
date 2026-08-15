@@ -41,7 +41,7 @@ Implemented:
 - Arduino/PlatformIO firmware;
 - Wi-Fi access point;
 - captive portal;
-- LittleFS fallback dashboard;
+- lightweight LittleFS setup/diagnostic portal;
 - simulated system state;
 - status response;
 - monitoring toggle;

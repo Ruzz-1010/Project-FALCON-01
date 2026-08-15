@@ -23,7 +23,7 @@ Implemented in the repository:
 
 - PlatformIO ESP32 Arduino firmware;
 - `FALCON-01` Wi-Fi access point and captive portal;
-- LittleFS fallback dashboard and basic ESP32 controls;
+- lightweight LittleFS sensor-node setup/diagnostic portal;
 - laptop-hosted Python edge-service prototype, ready to migrate to the selected Orange Pi Zero 3 (4GB);
 - simulated telemetry and deterministic alert scenarios;
 - local SQLite telemetry history;
@@ -35,11 +35,11 @@ Implemented in the repository:
 
 Current mechanical direction: a compact traditional single-body Ø650 mm HDPE buoy with a rounded 240 mm tapered underwater keel, central ballast, and single-anchor mooring. The former four-outrigger configuration is retained only as Legacy Revision 4.
 
-### Safe frontend migration
+### Canonical dashboard
 
-The production dashboard in `data/` remains the verified fallback. The page-by-page React + TypeScript migration in `dashboard-next/` now includes the responsive shell plus Overview, Wave AI, Motion, GPS, Power, System Health, Alerts, Logs, and Settings. Wave AI includes current-versus-predicted results, forecast horizons, model evidence, and presentation scenarios. Motion preserves the Fusion GLB digital twin with telemetry-driven sea motion, camera controls, navigation lights, and component alert highlighting. GPS provides a live Puerto Princesa coastal map, deployment reference, geofence, and drift telemetry. Power presents battery, solar, thermal, fan, and recent-history telemetry. System Health presents local service connectivity, sensor availability, edge resource use, and diagnostics. Alerts provides live notification badges and toasts, active warnings, persisted history, severity filters, and non-destructive acknowledgement. Logs provides searchable telemetry, AI prediction, alert, and system-event archives with filtered CSV/JSON export. Settings provides local presentation preferences, notification permission, scenarios, and auditable maintenance controls.
+`dashboard-next/` is the only full production dashboard. Its production build is bundled under `edge/static/dashboard/` and served by the edge service at port `8765`. It includes Overview, Wave AI, Motion, GPS, Power, System Health, Alerts, Logs, and Settings. The old full dashboard has been retired. `data/` now contains only the small ESP32 sensor-node setup and diagnostics portal required by the captive portal firmware.
 
-Run the migration preview with the edge service on port `8765`:
+For frontend development, run the edge service on port `8765`, then:
 
 ```powershell
 cd dashboard-next
@@ -47,7 +47,7 @@ npm install
 npm run dev
 ```
 
-Then open `http://127.0.0.1:5173`.
+Open `http://127.0.0.1:5173`. For normal use, run only the edge service and open `http://127.0.0.1:8765/`.
 
 Important limitations:
 
@@ -153,9 +153,10 @@ python -m unittest discover -s tests -v
 
 ```text
 Project FALCON-01/
-├── data/               # current dashboard assets and 3D model
+├── dashboard-next/     # canonical React/TypeScript dashboard source
+├── data/               # minimal ESP32 setup/diagnostic portal
 ├── docs/               # engineering documentation
-├── edge/               # laptop/Orange Pi edge-service prototype
+├── edge/               # edge service and bundled production dashboard
 ├── exports/            # archived CAD exchange assets
 ├── fusion360/          # mechanical component documentation
 ├── include/            # ESP32 configuration headers

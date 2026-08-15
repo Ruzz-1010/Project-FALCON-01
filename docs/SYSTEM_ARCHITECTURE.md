@@ -7,32 +7,35 @@ Define implemented boundaries and future integration points.
 ESP32 firmware, local dashboard, planned sensors, edge AI, and remote systems.
 
 ## Current Status
-Only the ESP32 local system is implemented.
+The ESP32 acquisition/diagnostic foundation and laptop-hosted edge prototype are implemented. The Orange Pi and physical sensor integrations remain pending.
 
 ## Architecture
 ```mermaid
 flowchart LR
-  User -->|Wi-Fi/HTTP| ESP32
+  User -->|Setup/diagnostics| ESP32
   ESP32 --> DNS[Captive DNS]
   ESP32 --> API[Local API]
-  ESP32 --> FS[LittleFS dashboard]
-  Sensors[Future sensors] -.-> ESP32
-  ESP32 -. future link .-> Edge[Edge AI]
+  ESP32 --> FS[LittleFS setup portal]
+  Sensors --> ESP32
+  ESP32 -->|UART / Wi-Fi| Edge[Edge service]
+  User -->|Full dashboard| Edge
+  Edge --> DB[SQLite]
   Edge -. future sync .-> Cloud
 ```
 
 ## Implementation
-`main.cpp` owns Arduino lifecycle. `PortalServer` owns LittleFS, AP, DNS, HTTP, API, and volatile monitoring state. `config.h` owns network/asset constants. `data/` owns HTML, CSS, JavaScript, and logo.
+`main.cpp` owns Arduino lifecycle. `PortalServer` owns LittleFS, AP, DNS, HTTP, API, and volatile monitoring state. `config.h` owns network/asset constants. `data/` owns the minimal ESP32 setup portal. `dashboard-next/` owns the only full dashboard, and its build is served from `edge/static/dashboard/` by the edge service.
 
 Missing assets return 503; AP/DNS initialization failure stops service; dashboard polling failure shows connection loss.
 
 ## Future Expansion
-Add independent sensor, storage, edge-link, and security modules while keeping the local ESP32 functional alone.
+Complete physical sensor drivers, Orange Pi deployment, authentication, and field validation while keeping ESP32 diagnostics available independently.
 
 ## Engineering Notes
-No scheduler, watchdog policy, persistent storage, OTA, authentication, or sensor layer is implemented.
+No production watchdog policy, OTA, authentication, or fully validated physical sensor layer is implemented.
 
 ## Revision History
 | Version | Date | Change |
 | --- | --- | --- |
+| 2.0 | 2026-08-15 | Made Dashboard Next canonical on the edge host and reduced LittleFS to setup/diagnostics. |
 | 1.0 | 2026-08-05 | Source-verified architecture. |

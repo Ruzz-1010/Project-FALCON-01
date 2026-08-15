@@ -49,7 +49,7 @@ Orange Pi Zero 3 target / development laptop today
     |-- SQLite telemetry and event history
     |-- presentation wave forecast and backtesting
     |-- REST API on port 8765
-    `-- React dashboard on port 5173 during development
+    `-- bundled React dashboard on port 8765 (Vite port 5173 in development)
 ```
 
 The ESP32 remains responsible for deterministic acquisition, basic validation,
@@ -150,7 +150,7 @@ Relevant source files:
 
 - `src/main.cpp` — firmware entry point;
 - `src/portal_server.cpp/.h` — AP, captive portal, local HTTP API and controls;
-- `src/system_state.cpp/.h` — current fallback dashboard state;
+- `src/system_state.cpp/.h` — current ESP32 portal status state;
 - `src/sensor_diagnostics.cpp/.h` — hardware probes and telemetry frames; and
 - `include/config.h` — network settings, pins, addresses, and timing.
 
@@ -215,7 +215,7 @@ Legacy `/api/...` compatibility routes still exist for the presentation UI.
 
 ## 9. Dashboard
 
-`dashboard-next/` is the active React + TypeScript dashboard migration. It has:
+`dashboard-next/` is the canonical React + TypeScript dashboard. It has:
 
 - Overview mission control;
 - Wave AI measured/history/forecast presentation;
@@ -228,9 +228,10 @@ Legacy `/api/...` compatibility routes still exist for the presentation UI.
 - local Settings and presentation scenarios.
 
 The UI is responsive and supports light/dark themes. Its values currently come
-primarily from the edge simulator. The production fallback dashboard remains in
-`data/`. The larger React/3D application is not intended to fit in the current
-ESP32 LittleFS partition; the Orange Pi/laptop hosts it.
+primarily from the edge simulator. `dashboard-next/` is the only full dashboard;
+its bundled build is served by the edge host from `edge/static/dashboard/`.
+`data/` contains only the lightweight ESP32 setup/diagnostic portal because the
+React/3D application is not intended to fit in the ESP32 LittleFS partition.
 
 ## 10. AI and Wave Forecast
 
@@ -302,7 +303,8 @@ npm run dev
 ```
 
 Open `http://127.0.0.1:5173/`. Keep the edge service running on port 8765 so
-Vite can proxy API and model requests.
+Vite can proxy API requests. For the normal production-style workflow, run
+`npm run build`, start the edge service, and open `http://127.0.0.1:8765/`.
 
 ### 13.3 Build ESP32 firmware
 

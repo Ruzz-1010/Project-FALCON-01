@@ -1,0 +1,2 @@
+# Vite bundles contain upstream shader template strings with significant spacing.
+edge/static/dashboard/assets/* -whitespace

@@ -10,7 +10,7 @@ Analysis, firmware, dashboard, documentation, hardware planning, tests, and Git.
 Active for the Phase 1 prototype. Read `INDEX.md` and this file first.
 
 ## Architecture
-Keep lifecycle in `main.cpp`, portal/API ownership in `portal_server.*`, constants in `include/`, LittleFS assets in `data/`, tests in `test/`, and long-form documents in `docs/`.
+Keep lifecycle in `main.cpp`, portal/API ownership in `portal_server.*`, constants in `include/`, the minimal LittleFS setup portal in `data/`, the canonical full dashboard in `dashboard-next/`, its bundled edge build in `edge/static/dashboard/`, tests in `test/`, and long-form documents in `docs/`.
 
 ## Implementation
 Source priority: working code, `PROJECT_CONTEXT.md`, `HARDWARE.md`, `API.md`, `ROADMAP.md`, then remaining docs.
