@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "author": "Project FALCON-01 - Power and Edge",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "chip-ina260", "id": "batteryMonitor", "top": 60, "left": 40, "attrs": {} },
+    { "type": "chip-ina260", "id": "solarMonitor", "top": 360, "left": 40, "attrs": {} },
+    { "type": "wokwi-esp32-devkit-v1", "id": "esp32", "top": 210, "left": 470, "attrs": {} },
+    { "type": "chip-orange-pi", "id": "orangePi", "top": 210, "left": 900, "attrs": {} }
+  ],
+  "connections": [
+    [ "batteryMonitor:VCC", "esp32:3V3", "red", [ "h260", "v100" ] ],
+    [ "batteryMonitor:GND", "esp32:GND.1", "black", [ "h275", "v85" ] ],
+    [ "batteryMonitor:SCL", "esp32:D22", "#367c88", [ "h290", "v70" ] ],
+    [ "batteryMonitor:SDA", "esp32:D21", "#4f96a0", [ "h305", "v55" ] ],
+    [ "solarMonitor:VCC", "esp32:3V3", "red", [ "h260", "v-75" ] ],
+    [ "solarMonitor:GND", "esp32:GND.1", "black", [ "h275", "v-60" ] ],
+    [ "solarMonitor:SCL", "esp32:D22", "#367c88", [ "h290", "v-45" ] ],
+    [ "solarMonitor:SDA", "esp32:D21", "#4f96a0", [ "h305", "v-30" ] ]
+  ],
+  "dependencies": {}
+}

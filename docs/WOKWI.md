@@ -3,7 +3,10 @@
 ## Open the Interactive Wiring
 
 1. Build the firmware with PlatformIO.
-2. Open `diagram.json` in VS Code.
+2. Open the clean page you need in VS Code:
+   - `diagram.json` — BNO085, Bar02, and GPS core sensors;
+   - `diagram.environment.json` — pressure, temperature, wind, and ADC; or
+   - `diagram.power.json` — battery/solar monitors and Orange Pi.
 3. If it opens as text, right-click the tab, choose **Reopen Editor With...**,
    then select **Wokwi Diagram Editor**.
 4. Click the green Play button, or press `F1` and run
@@ -37,3 +40,13 @@ branch cannot be represented as ordinary ESP32 GPIO wires.
 - `.pio/build/esp32dev/firmware.elf`
 
 Rebuild after firmware changes so the simulator loads the latest files.
+
+## Wire Colors
+
+- red: 3.3 V power;
+- black: common ground;
+- teal pair: I2C SDA/SCL;
+- violet: BNO085 SPI;
+- green: UART or pulse signal;
+- amber: analog wind-vane signal; and
+- blue-gray: interrupt, reset, or OneWire.
