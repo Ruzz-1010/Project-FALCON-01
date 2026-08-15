@@ -1,0 +1,92 @@
+{
+  "version": 1,
+  "author": "Project FALCON-01",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "wokwi-esp32-devkit-v1",
+      "id": "esp32",
+      "top": 20,
+      "left": 360,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-mpu6050",
+      "id": "imuPlaceholder",
+      "top": 20,
+      "left": 80,
+      "attrs": { "label": "IMU PLACEHOLDER - BNO085 USES SPI" }
+    },
+    {
+      "type": "wokwi-ds18b20",
+      "id": "waterTemp",
+      "top": 300,
+      "left": 650,
+      "attrs": { "label": "OPTIONAL WATER TEMP" }
+    },
+    {
+      "type": "wokwi-potentiometer",
+      "id": "windVane",
+      "top": 275,
+      "left": 70,
+      "attrs": { "value": "512", "label": "WIND VANE TEST INPUT" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "anemometer",
+      "top": 390,
+      "left": 100,
+      "attrs": { "color": "blue", "label": "ANEMOMETER PULSE" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "tempPullup",
+      "top": 250,
+      "left": 590,
+      "rotate": 90,
+      "attrs": { "value": "4700" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "windPullup",
+      "top": 370,
+      "left": 250,
+      "rotate": 90,
+      "attrs": { "value": "10000" }
+    },
+    {
+      "type": "wokwi-logic-analyzer",
+      "id": "logic",
+      "top": 500,
+      "left": 350,
+      "attrs": { "label": "FALCON BUS CHECK" }
+    }
+  ],
+  "connections": [
+    [ "esp32:D21", "imuPlaceholder:SDA", "#1597a5", [ "h-45", "v-90" ] ],
+    [ "esp32:D22", "imuPlaceholder:SCL", "#2f7f8a", [ "h-55", "v-70" ] ],
+    [ "esp32:3V3", "imuPlaceholder:VCC", "#d04b4b", [ "h-75", "v-50" ] ],
+    [ "esp32:GND.1", "imuPlaceholder:GND", "#30383d", [ "h-85", "v-30" ] ],
+
+    [ "esp32:D26", "waterTemp:DQ", "#815ca6", [ "h80", "v80" ] ],
+    [ "esp32:3V3", "waterTemp:VCC", "#d04b4b", [ "h110", "v115" ] ],
+    [ "esp32:GND.2", "waterTemp:GND", "#30383d", [ "h100", "v135" ] ],
+    [ "tempPullup:1", "esp32:3V3", "#d04b4b", [] ],
+    [ "tempPullup:2", "esp32:D26", "#815ca6", [] ],
+
+    [ "windVane:VCC", "esp32:3V3", "#d04b4b", [ "v-30", "h220" ] ],
+    [ "windVane:GND", "esp32:GND.2", "#30383d", [ "v35", "h220" ] ],
+    [ "windVane:SIG", "logic:D2", "#c38b35", [ "v70", "h260" ] ],
+
+    [ "anemometer:1.l", "esp32:D25", "#4f8a63", [ "h150", "v-35" ] ],
+    [ "anemometer:2.l", "esp32:GND.2", "#30383d", [ "h175", "v-15" ] ],
+    [ "windPullup:1", "esp32:3V3", "#d04b4b", [ "v-55", "h130" ] ],
+    [ "windPullup:2", "esp32:D25", "#4f8a63", [ "v15", "h125" ] ],
+
+    [ "esp32:D21", "logic:D0", "#1597a5", [ "v250", "h-80" ] ],
+    [ "esp32:D22", "logic:D1", "#2f7f8a", [ "v230", "h-60" ] ],
+    [ "esp32:D25", "logic:D3", "#4f8a63", [ "v210", "h-40" ] ],
+    [ "logic:GND", "esp32:GND.2", "#30383d", [ "v-25", "h80" ] ]
+  ],
+  "dependencies": {}
+}
