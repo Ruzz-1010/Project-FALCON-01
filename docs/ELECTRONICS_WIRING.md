@@ -6,6 +6,11 @@ and wiring baseline without inventing final marine fuse sizes or cable gauges.
 Open [the SVG wiring diagram](diagrams/FALCON-01-electronics-wiring.svg) directly
 in VS Code. Exact GPIO connections are in [PINOUT.md](PINOUT.md).
 
+For an easier spatial overview, open the
+[3D-style assembly guide](diagrams/FALCON-01-electronics-wiring-3d.png). The 3D
+image is illustrative: use `PINOUT.md`, not the generated board markings, when
+connecting individual pins.
+
 ## Recommended Parts
 
 | Qty | Part | Reason |
