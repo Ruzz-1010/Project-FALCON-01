@@ -13,7 +13,7 @@ from urllib.parse import parse_qs, urlparse
 
 from .rules import analyze
 from .forecast import build_forecast, build_wave_prediction, evaluate_forecast
-from .sources import Esp32Source, SimulatorSource
+from .sources import Esp32Source, SerialJsonSource, SimulatorSource
 from .storage import TelemetryStore
 
 
@@ -362,8 +362,10 @@ def make_handler(runtime: EdgeRuntime, store: TelemetryStore):
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="FALCON edge telemetry service")
-    parser.add_argument("--source", choices=("simulator", "esp32"), default="simulator")
+    parser.add_argument("--source", choices=("simulator", "esp32", "serial"), default="simulator")
     parser.add_argument("--esp32-url", default="http://192.168.4.1")
+    parser.add_argument("--serial-port", default="/dev/ttyUSB0")
+    parser.add_argument("--serial-baud", type=int, default=115200)
     parser.add_argument("--database", default=str(Path(__file__).parents[1] / "data" / "falcon.db"))
     parser.add_argument("--interval", type=float, default=2.0)
     parser.add_argument("--host", default="127.0.0.1")
@@ -373,7 +375,12 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    source = SimulatorSource() if args.source == "simulator" else Esp32Source(args.esp32_url)
+    if args.source == "simulator":
+        source = SimulatorSource()
+    elif args.source == "serial":
+        source = SerialJsonSource(args.serial_port, args.serial_baud)
+    else:
+        source = Esp32Source(args.esp32_url)
     store = TelemetryStore(args.database)
     runtime = EdgeRuntime(source, store, args.interval)
     # Bind before starting collection. If another FALCON service owns the

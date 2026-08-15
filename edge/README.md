@@ -62,6 +62,15 @@ python -m falcon_edge.service --source esp32 --esp32-url http://192.168.4.1
 
 ESP32 connection failures are reported explicitly. The service never silently replaces physical-source failures with simulated readings.
 
+For ESP32 USB serial telemetry on Linux:
+
+```bash
+python3 -m pip install -r edge/requirements-hardware.txt
+python3 -m falcon_edge.service --source serial --serial-port /dev/ttyUSB0
+```
+
+The serial reader accepts only `falcon.telemetry` version 1 newline-JSON frames.
+
 ## Tests
 
 ```powershell

@@ -9,6 +9,42 @@ from typing import Any
 from urllib.request import Request, urlopen
 
 
+def parse_telemetry_line(line: str) -> dict[str, Any]:
+    """Validate one newline-delimited FALCON telemetry frame."""
+    frame = json.loads(line)
+    if frame.get("protocol") != "falcon.telemetry" or frame.get("version") != 1:
+        raise ValueError("Unsupported FALCON telemetry frame")
+    if not isinstance(frame.get("sequence"), int) or not isinstance(frame.get("measurements"), dict):
+        raise ValueError("Malformed FALCON telemetry frame")
+    payload = dict(frame["measurements"])
+    payload.update({"sequence": frame["sequence"], "uptime": int(frame.get("uptimeMs", 0)) // 1000,
+                    "monitoring": bool(frame.get("monitoring", True)), "sensorStatus": frame.get("sensors", {}),
+                    "telemetryVersion": frame["version"], "dataSource": frame.get("source", "esp32")})
+    return payload
+
+
+class SerialJsonSource:
+    """Read versioned newline-JSON telemetry from ESP32 USB/UART."""
+
+    name = "esp32-serial"
+
+    def __init__(self, port: str, baud: int = 115200, timeout_seconds: float = 3.0):
+        try:
+            import serial  # type: ignore
+        except ImportError as error:
+            raise RuntimeError("Serial source requires: python -m pip install pyserial") from error
+        self._serial = serial.Serial(port, baudrate=baud, timeout=timeout_seconds)
+
+    def read(self) -> dict[str, Any]:
+        while True:
+            raw = self._serial.readline()
+            if not raw:
+                raise TimeoutError("No ESP32 telemetry frame received")
+            line = raw.decode("utf-8", errors="replace").strip()
+            if line.startswith("{"):
+                return parse_telemetry_line(line)
+
+
 class SimulatorSource:
     name = "simulator"
     scenarios = ("normal", "rough_sea", "low_battery", "overheating", "sensor_fault")

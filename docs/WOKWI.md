@@ -4,6 +4,7 @@
 
 1. Build the firmware with PlatformIO.
 2. Open the clean page you need in VS Code:
+   - `diagram.all.json` — all selected parts in one overview;
    - `diagram.json` — BNO085, Bar02, and GPS core sensors;
    - `diagram.environment.json` — pressure, temperature, wind, and ADC; or
    - `diagram.power.json` — battery/solar monitors and Orange Pi.

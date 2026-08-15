@@ -1,8 +1,10 @@
 #include <Arduino.h>
 
 #include "portal_server.h"
+#include "sensor_diagnostics.h"
 
 PortalServer portal;
+SensorDiagnostics diagnostics;
 
 void setup() {
   Serial.begin(115200);
@@ -17,9 +19,11 @@ void setup() {
   if (!portal.begin()) {
     Serial.println(F("FATAL: Portal startup stopped."));
   }
+  diagnostics.begin();
 }
 
 void loop() {
   portal.handleClient();
+  diagnostics.tick(millis());
   delay(2);
 }
