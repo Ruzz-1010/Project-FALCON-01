@@ -1,0 +1,1 @@
+{"name":"BNO085 IMU (SPI)","author":"Project FALCON-01","pins":["VIN","GND","SCK","MISO","MOSI","CS","INT","RST","P0","P1"]}

@@ -2,3 +2,31 @@
 version = 1
 firmware = ".pio/build/esp32dev/firmware.bin"
 elf = ".pio/build/esp32dev/firmware.elf"
+
+[[chip]]
+name = "bno085"
+binary = "chips/bno085.chip.wasm"
+
+[[chip]]
+name = "bar02"
+binary = "chips/bar02.chip.wasm"
+
+[[chip]]
+name = "ina260"
+binary = "chips/ina260.chip.wasm"
+
+[[chip]]
+name = "mcp9808"
+binary = "chips/mcp9808.chip.wasm"
+
+[[chip]]
+name = "ads1115"
+binary = "chips/ads1115.chip.wasm"
+
+[[chip]]
+name = "gps"
+binary = "chips/gps.chip.wasm"
+
+[[chip]]
+name = "orange-pi"
+binary = "chips/orange-pi.chip.wasm"

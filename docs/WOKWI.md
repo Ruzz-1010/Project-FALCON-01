@@ -14,18 +14,20 @@
 ## Important Accuracy Note
 
 Wokwi does not provide native models for every selected FALCON sensor. The
-current view uses:
+complete view therefore includes visual-only custom breakouts for BNO085,
+Bar02, two INA260 monitors, MCP9808, ADS1115, UART GPS, and Orange Pi. Their
+named pins and wires document the physical plan, but their protocol behavior is
+not simulated yet. The view also uses:
 
-- an MPU6050 as an **I2C visual/simulation placeholder only**;
 - a potentiometer to exercise wind-direction analog input;
 - a pushbutton to exercise anemometer pulses;
 - a real simulated DS18B20 for the optional temperature channel; and
 - a logic analyzer for the bus signals.
 
-The MPU6050 wires shown are not the final BNO085 wires. The physical BNO085 must
-use the SPI assignments in `docs/PINOUT.md`. Bar02, INA260, ADS1115, MCP9808,
-GPS, and Orange Pi remain documented in the exact pinout/SVG until custom Wokwi
-chips are added.
+The BNO085 custom breakout now shows its actual SPI signal plan, including INT,
+RST, P0, and P1. `docs/PINOUT.md` remains the authority for physical assembly.
+The Orange Pi block is visual-only because its USB cable and separate 5 V power
+branch cannot be represented as ordinary ESP32 GPIO wires.
 
 ## Build Path
 
