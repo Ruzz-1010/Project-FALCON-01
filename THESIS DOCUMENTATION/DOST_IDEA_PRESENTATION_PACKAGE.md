@@ -35,7 +35,28 @@ prediction model, and conduct a supervised pilot deployment.
 
 ## 2. Ten-Slide Pitch Deck
 
+### Simple terms to use during the presentation
+
+| Technical term | Listener-friendly explanation |
+| --- | --- |
+| Buoy | A floating device placed on the water to collect information |
+| Sensor | A small electronic instrument that measures one condition |
+| ESP32 | The small controller that reads the sensors repeatedly |
+| Orange Pi | The small onboard computer that saves and processes the data |
+| Edge processing | Processing done inside or near the buoy instead of relying on the Internet |
+| Telemetry | The measurements sent from the sensors to the computer |
+| Simulator | Software-generated test data used before actual hardware is ready |
+| AI model | A program trained using past data to estimate a future value |
+| Calibration | Comparing a sensor with a trusted reference and correcting its readings |
+| Validation | Testing whether the complete system performs accurately and reliably |
+
+Use the simple explanation first. Mention the technical term afterward only when
+needed. Do not explain every component unless the panel asks for more detail.
+
 ### Slide 1 — Project Title
+
+**What listeners should remember:** FALCON is an affordable smart buoy concept
+that will collect and explain localized coastal information.
 
 **PROJECT FALCON**  
 Fullbright College's AI-powered Live Coastal Observation Network
@@ -63,6 +84,9 @@ the proposal addresses. Avoid starting with component specifications.
 
 ### Slide 2 — The Problem
 
+**What listeners should remember:** Coastal users may receive a general forecast,
+but they can still lack an affordable instrument for observing their exact site.
+
 - Coastal decisions benefit from timely and location-specific sea-condition data.
 - Professional oceanographic systems can be difficult for small institutions to
   acquire, operate, and maintain.
@@ -82,11 +106,16 @@ exists; state that affordable localized access is limited for the intended user.
 > institution or coastal group to deploy and maintain. Actual near-shore
 > conditions at one site may also differ from a wider forecast area. Continuous
 > monitoring has other challenges, such as unstable connectivity, limited power,
-> maintenance, and possible buoy displacement. So ang target gap namin is not
-> the absence of monitoring. It is the need for a more affordable and localized
-> observation platform for our intended pilot user.
+> maintenance, and possible buoy displacement. For example, a coastal user may
+> know the general forecast for Palawan but still need to observe the conditions
+> near a specific launch point or research site. So ang target gap namin is not
+> the absence of monitoring. It is the need for a more affordable instrument that
+> can collect local observations at one clearly identified pilot site.
 
 ### Slide 3 — Proposed Solution
+
+**What listeners should remember:** FALCON measures the water environment, saves
+the information locally, and shows it on a simple dashboard.
 
 Project FALCON combines:
 
@@ -115,9 +144,14 @@ purchased-board datasheets, and electrical protection plan.*
 > a validated prediction model. Users can view the information through a
 > responsive dashboard on a laptop, tablet, or phone. Solar-powered din ang
 > design, and local buffering protects the data during Internet interruptions.
-> We also propose GPS and IMU-based logic for detecting abnormal buoy movement.
+> In simple terms, the ESP32 is the sensor reader, while the Orange Pi is the
+> small onboard computer. We also propose GPS and motion-based checks for
+> detecting when the buoy moves beyond its expected area.
 
 ### Slide 4 — How It Works
+
+**What listeners should remember:** Sensors measure, the ESP32 collects, the
+Orange Pi processes, and the dashboard explains.
 
 ```text
 Wave, motion, wind, GPS, power and health sensors
@@ -154,6 +188,9 @@ required for the core prototype.
 
 ### Slide 5 — Current Progress
 
+**What listeners should remember:** The software concept works, but funding is
+still required to build, calibrate, and test the physical buoy.
+
 **Already developed:**
 
 - responsive multi-page dashboard;
@@ -189,9 +226,14 @@ not yet live coastal measurements.*
 > and the automated edge tests pass. However, transparent po kami na simulated
 > data pa ang demo. The complete physical buoy, calibrated sensors, and
 > field-trained AI are not yet finished. Those are the main activities that the
-> requested development support will enable.
+> requested development support will enable. The simulator is similar to a flight
+> simulator: it lets us test the software workflow and possible fault conditions,
+> but it does not replace actual hardware and field testing.
 
 ### Slide 6 — Innovation and Differentiation
+
+**What listeners should remember:** The innovation is the affordable and locally
+adapted combination of the system—not the invention of a new sensor or AI method.
 
 - Affordable and modular student-scale architecture.
 - Local edge processing instead of mandatory cloud dependence.
@@ -217,9 +259,14 @@ not yet live coastal measurements.*
 > designed to clearly distinguish simulated, measured, estimated, and predicted
 > values. In short, ang innovation is not based on having the most features. It
 > is based on creating a practical, reproducible, and properly validated system
-> for a defined local use case.
+> for a defined local use case. Individual parts already exist; our research is
+> about whether they can work together reliably, affordably, and transparently
+> under the requirements of the selected coastal pilot.
 
 ### Slide 7 — Intended Beneficiaries and Value
+
+**What listeners should remember:** The first pilot should solve one verified
+problem for one identified coastal user before the project expands.
 
 Potential beneficiaries include:
 
@@ -247,6 +294,9 @@ possible. A stakeholder interview or support letter will strengthen this slide.
 > their actual information needs, and adjust the system to a realistic use case.
 
 ### Slide 8 — Development Plan
+
+**What listeners should remember:** The project moves in a safe order: build,
+calibrate, controlled test, coastal pilot, then evaluate.
 
 | Phase | Main output | Indicative duration |
 | --- | --- | ---: |
@@ -277,6 +327,9 @@ weather, permits, site access, and the amount of data required.
 
 ### Slide 9 — Preliminary Funding Plan
 
+**What listeners should remember:** The request pays for a complete development
+and testing process, not only for electronic sensors.
+
 | Category | Preliminary amount |
 | --- | ---: |
 | Sensors and embedded electronics | PHP 15,000–22,000 |
@@ -304,9 +357,15 @@ testing, fabrication, transport, spares, and contingency costs.
 > tools, fabrication, field testing, transport, spare parts, and contingency.
 > Planning range pa lamang ito. Before formal procurement, we will replace the
 > estimates with actual supplier quotations and separate reusable tools from the
-> components permanently installed in the prototype.
+> components permanently installed in the prototype. For example, the battery and
+> sensors remain inside the buoy, while a reference instrument used for calibration
+> may be reused in future tests. This separation makes the final budget easier to
+> check and justify.
 
 ### Slide 10 — Expected Result and Request
+
+**What listeners should remember:** The requested support will convert an existing
+working software concept into a tested and documented physical prototype.
 
 At the end of funded development, the team intends to deliver:
 
