@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="720" viewBox="0 0 1400 720">
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#071b24"/><stop offset="1" stop-color="#102f3a"/></linearGradient>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0l12 6-12 6z" fill="#67c7cf"/></marker>
+    <style>.h{font:700 38px Arial;fill:#f3faf9}.s{font:600 24px Arial;fill:#e4f2f1}.p{font:18px Arial;fill:#a9c4c7}.tag{font:700 16px Arial;fill:#63d0c5;letter-spacing:2px}.box{fill:#0d2832;stroke:#3f707a;stroke-width:2}.line{stroke:#67c7cf;stroke-width:5;fill:none;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1400" height="720" rx="36" fill="url(#bg)"/>
+  <text x="70" y="74" class="tag">PROJECT FALCON • LOCAL-FIRST DATA FLOW</text>
+  <text x="70" y="125" class="h">How the system works</text>
+  <rect x="60" y="205" width="285" height="360" rx="24" class="box"/>
+  <text x="95" y="255" class="tag">01 • SENSING</text><text x="95" y="305" class="s">Marine sensors</text>
+  <text x="95" y="350" class="p">• Motion / IMU</text><text x="95" y="390" class="p">• Water pressure</text><text x="95" y="430" class="p">• Wind and GPS</text><text x="95" y="470" class="p">• Battery and solar</text><text x="95" y="510" class="p">• Temperature / health</text>
+  <rect x="415" y="205" width="285" height="360" rx="24" class="box"/>
+  <text x="450" y="255" class="tag">02 • ACQUISITION</text><text x="450" y="305" class="s">ESP32 sensor node</text>
+  <text x="450" y="360" class="p">Reads sensors</text><text x="450" y="402" class="p">Checks basic validity</text><text x="450" y="444" class="p">Adds sequence + status</text><text x="450" y="486" class="p">Sends JSON telemetry</text>
+  <rect x="770" y="205" width="285" height="360" rx="24" class="box"/>
+  <text x="805" y="255" class="tag">03 • EDGE</text><text x="805" y="305" class="s">Orange Pi Zero 3</text>
+  <text x="805" y="360" class="p">Local SQLite storage</text><text x="805" y="402" class="p">Signal processing</text><text x="805" y="444" class="p">REST API + alerts</text><text x="805" y="486" class="p">Future validated model</text>
+  <rect x="1125" y="205" width="215" height="360" rx="24" class="box"/>
+  <text x="1160" y="255" class="tag">04 • USER</text><text x="1160" y="305" class="s">Dashboard</text>
+  <text x="1160" y="360" class="p">Live readings</text><text x="1160" y="402" class="p">History</text><text x="1160" y="444" class="p">Alerts</text><text x="1160" y="486" class="p">Prediction evidence</text>
+  <path d="M345 385h65" class="line"/><path d="M700 385h65" class="line"/><path d="M1055 385h65" class="line"/>
+  <rect x="392" y="603" width="615" height="66" rx="20" fill="#0a222a" stroke="#315c65"/>
+  <text x="700" y="644" text-anchor="middle" class="p">Core monitoring remains local • Cloud connection is optional</text>
+</svg>

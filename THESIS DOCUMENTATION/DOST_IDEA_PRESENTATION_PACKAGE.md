@@ -101,6 +101,11 @@ Project FALCON combines:
 **Speaker note:** Explain the system in plain language: measure, validate, store,
 analyze, display, and alert.
 
+![Illustrated Project FALCON electronics and power layout](visuals/electronics-wiring.png)
+
+*Visual guide only. Final physical connections must follow the approved pinout,
+purchased-board datasheets, and electrical protection plan.*
+
 **Taglish presentation script:**
 
 > Our proposed solution is Project FALCON. The buoy uses sensors for motion,
@@ -134,6 +139,8 @@ Wave, motion, wind, GPS, power and health sensors
 heavier software. Essential data remain local, so continuous cloud access is not
 required for the core prototype.
 
+![Project FALCON local-first system architecture](visuals/system-architecture.png)
+
 **Taglish presentation script:**
 
 > This diagram shows the system workflow. First, the sensors collect wave,
@@ -166,6 +173,11 @@ required for the core prototype.
 
 **Not yet completed:** physical sensor integration, assembled marine power system,
 field-trained AI, calibration, and marine deployment validation.
+
+![Current Project FALCON dashboard overview](visuals/dashboard-overview.png)
+
+*Dashboard values shown during the presentation are simulator-generated and are
+not yet live coastal measurements.*
 
 **Taglish presentation script:**
 
@@ -249,6 +261,8 @@ possible. A stakeholder interview or support letter will strengthen this slide.
 Estimated development period: approximately **8–12 months**, subject to procurement,
 weather, permits, site access, and the amount of data required.
 
+![Project FALCON development roadmap](visuals/development-roadmap.png)
+
 **Taglish presentation script:**
 
 > If the project receives support, development will follow clear phases. We will
@@ -278,6 +292,8 @@ This is a planning range, not a supplier quotation. Before submission, replace
 estimates with current quotations and separate reusable tools from installed parts.
 The lower raw-component estimate in the technical BOM does not include all field
 testing, fabrication, transport, spares, and contingency costs.
+
+![Project FALCON preliminary funding breakdown](visuals/funding-breakdown.png)
 
 **Taglish presentation script:**
 
