@@ -2,21 +2,25 @@
   <defs>
     <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#071b24"/><stop offset="1" stop-color="#102f3a"/></linearGradient>
     <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0l12 6-12 6z" fill="#67c7cf"/></marker>
+    <symbol id="sensor" viewBox="0 0 64 64"><path d="M8 21c8-8 16 8 24 0s16 8 24 0M8 33c8-8 16 8 24 0s16 8 24 0M8 45c8-8 16 8 24 0s16 8 24 0" fill="none" stroke="#dff8f5" stroke-width="4" stroke-linecap="round"/></symbol>
+    <symbol id="chip" viewBox="0 0 64 64"><rect x="14" y="14" width="36" height="36" rx="6" fill="none" stroke="#dff8f5" stroke-width="4"/><rect x="24" y="24" width="16" height="16" rx="2" fill="#dff8f5"/><path d="M4 20h10M4 32h10M4 44h10M50 20h10M50 32h10M50 44h10M20 4v10M32 4v10M44 4v10M20 50v10M32 50v10M44 50v10" stroke="#dff8f5" stroke-width="4"/></symbol>
+    <symbol id="server" viewBox="0 0 64 64"><rect x="9" y="8" width="46" height="48" rx="6" fill="none" stroke="#dff8f5" stroke-width="4"/><path d="M9 25h46M9 40h46" stroke="#dff8f5" stroke-width="4"/><circle cx="18" cy="17" r="3" fill="#dff8f5"/><circle cx="18" cy="33" r="3" fill="#dff8f5"/><circle cx="18" cy="48" r="3" fill="#dff8f5"/></symbol>
+    <symbol id="screen" viewBox="0 0 64 64"><rect x="7" y="9" width="50" height="37" rx="5" fill="none" stroke="#dff8f5" stroke-width="4"/><path d="M17 38l10-10 8 6 12-14M25 55h14M32 46v9" fill="none" stroke="#dff8f5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
     <style>.h{font:700 38px Arial;fill:#f3faf9}.s{font:600 24px Arial;fill:#e4f2f1}.p{font:18px Arial;fill:#a9c4c7}.tag{font:700 16px Arial;fill:#63d0c5;letter-spacing:2px}.box{fill:#0d2832;stroke:#3f707a;stroke-width:2}.line{stroke:#67c7cf;stroke-width:5;fill:none;marker-end:url(#arrow)}</style>
   </defs>
   <rect width="1400" height="720" rx="36" fill="url(#bg)"/>
   <text x="70" y="74" class="tag">PROJECT FALCON • LOCAL-FIRST DATA FLOW</text>
   <text x="70" y="125" class="h">How the system works</text>
-  <rect x="60" y="205" width="285" height="360" rx="24" class="box"/>
+  <rect x="60" y="205" width="285" height="360" rx="24" class="box"/><circle cx="290" cy="260" r="34" fill="#23717a"/><use href="#sensor" x="269" y="239" width="42" height="42"/>
   <text x="95" y="255" class="tag">01 • SENSING</text><text x="95" y="305" class="s">Marine sensors</text>
   <text x="95" y="350" class="p">• Motion / IMU</text><text x="95" y="390" class="p">• Water pressure</text><text x="95" y="430" class="p">• Wind and GPS</text><text x="95" y="470" class="p">• Battery and solar</text><text x="95" y="510" class="p">• Temperature / health</text>
-  <rect x="415" y="205" width="285" height="360" rx="24" class="box"/>
+  <rect x="415" y="205" width="285" height="360" rx="24" class="box"/><circle cx="645" cy="260" r="34" fill="#23717a"/><use href="#chip" x="624" y="239" width="42" height="42"/>
   <text x="450" y="255" class="tag">02 • ACQUISITION</text><text x="450" y="305" class="s">ESP32 sensor node</text>
   <text x="450" y="360" class="p">Reads sensors</text><text x="450" y="402" class="p">Checks basic validity</text><text x="450" y="444" class="p">Adds sequence + status</text><text x="450" y="486" class="p">Sends JSON telemetry</text>
-  <rect x="770" y="205" width="285" height="360" rx="24" class="box"/>
+  <rect x="770" y="205" width="285" height="360" rx="24" class="box"/><circle cx="1000" cy="260" r="34" fill="#23717a"/><use href="#server" x="979" y="239" width="42" height="42"/>
   <text x="805" y="255" class="tag">03 • EDGE</text><text x="805" y="305" class="s">Orange Pi Zero 3</text>
   <text x="805" y="360" class="p">Local SQLite storage</text><text x="805" y="402" class="p">Signal processing</text><text x="805" y="444" class="p">REST API + alerts</text><text x="805" y="486" class="p">Future validated model</text>
-  <rect x="1125" y="205" width="215" height="360" rx="24" class="box"/>
+  <rect x="1125" y="205" width="215" height="360" rx="24" class="box"/><circle cx="1290" cy="260" r="30" fill="#23717a"/><use href="#screen" x="1271" y="241" width="38" height="38"/>
   <text x="1160" y="255" class="tag">04 • USER</text><text x="1160" y="305" class="s">Dashboard</text>
   <text x="1160" y="360" class="p">Live readings</text><text x="1160" y="402" class="p">History</text><text x="1160" y="444" class="p">Alerts</text><text x="1160" y="486" class="p">Prediction evidence</text>
   <path d="M345 385h65" class="line"/><path d="M700 385h65" class="line"/><path d="M1055 385h65" class="line"/>
