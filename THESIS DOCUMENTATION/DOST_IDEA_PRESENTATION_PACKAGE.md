@@ -49,6 +49,19 @@ buoy health and displacement alerts.
 **Speaker note:** Introduce the team, school, project name, and the single problem
 the proposal addresses. Avoid starting with component specifications.
 
+**Taglish presentation script:**
+
+> Magandang araw po. Kami po ang Project FALCON Research Group mula sa
+> Fullbright College. Ang FALCON ay nangangahulugang Fullbright College's
+> AI-powered Live Coastal Observation Network. Ang proposal namin ay isang
+> affordable at solar-powered smart coastal buoy na ginawa para sa localized
+> wave monitoring. Layunin nitong mangolekta ng coastal data, ipakita ito sa
+> isang madaling maintindihang dashboard, at magsilbing research platform para
+> sa short-term wave prediction at system protection. Sa presentation na ito,
+> ipapakita namin ang problemang gusto naming tugunan, paano gagana ang system,
+> ano na ang nagawa namin, at ano ang kailangan upang mabuo at ma-validate ang
+> physical prototype.
+
 ### Slide 2 — The Problem
 
 - Coastal decisions benefit from timely and location-specific sea-condition data.
@@ -61,6 +74,19 @@ the proposal addresses. Avoid starting with component specifications.
 **Speaker note:** Connect the problem to a specific intended Palawan user or pilot
 site once stakeholder confirmation is available. Do not claim that no monitoring
 exists; state that affordable localized access is limited for the intended user.
+
+**Taglish presentation script:**
+
+> Ang pangunahing problemang nakita namin ay ang limitadong access sa affordable
+> at location-specific coastal information. May mga official forecast at
+> professional monitoring systems na po, pero maaaring maging mahal at mahirap
+> i-deploy o i-maintain ang specialized equipment para sa maliit na institution
+> o local coastal group. Maaari ring magkaiba ang actual near-shore condition sa
+> isang specific location kumpara sa mas malawak na forecast area. Bukod dito,
+> kailangan ding solusyunan ang intermittent connectivity, limited power,
+> maintenance, at possibility ng abnormal displacement o pagkawala ng buoy.
+> Hindi po namin sinasabing walang existing monitoring; ang target gap namin ay
+> affordable at localized observation para sa intended pilot user.
 
 ### Slide 3 — Proposed Solution
 
@@ -76,6 +102,18 @@ Project FALCON combines:
 
 **Speaker note:** Explain the system in plain language: measure, validate, store,
 analyze, display, and alert.
+
+**Taglish presentation script:**
+
+> Ang proposed solution namin ay Project FALCON. May sensors ito para sa buoy
+> motion, water pressure, wind, GPS position, power, at system health. Ang ESP32
+> ang regular na kumukuha at nagva-validate ng sensor readings. Pagkatapos,
+> ipinapasa ang data sa Orange Pi Zero 3, na siyang magse-save ng records,
+> magpapatakbo ng local services, at eventually ng validated prediction model.
+> Makikita ng user ang information sa responsive dashboard gamit ang laptop,
+> tablet, o phone. Solar-powered din ang design at may local data buffering para
+> hindi agad mawala ang observations kapag mahina o walang Internet. May proposed
+> GPS at IMU logic din para matukoy ang abnormal movement ng buoy.
 
 ### Slide 4 — How It Works
 
@@ -99,6 +137,17 @@ Wave, motion, wind, GPS, power and health sensors
 heavier software. Essential data remain local, so continuous cloud access is not
 required for the core prototype.
 
+**Taglish presentation script:**
+
+> Ganito po ang magiging flow ng system. Una, kumukuha ng measurements ang wave,
+> motion, wind, GPS, power, at health sensors. Pangalawa, binabasa at chine-check
+> ito ng ESP32 bago i-package bilang telemetry. Pangatlo, ipinapadala ang data sa
+> Orange Pi sa pamamagitan ng USB o UART. Ang Orange Pi naman ang responsible sa
+> local database, signal processing, API, dashboard, at future model inference.
+> Sa huli, makikita ng user ang current measurements, history, alerts, at model
+> output sa FALCON dashboard. Local-first po ang architecture, kaya hindi kailangan
+> ng continuous cloud connection para gumana ang pangunahing monitoring workflow.
+
 ### Slide 5 — Current Progress
 
 **Already developed:**
@@ -121,6 +170,19 @@ required for the core prototype.
 **Not yet completed:** physical sensor integration, assembled marine power system,
 field-trained AI, calibration, and marine deployment validation.
 
+**Taglish presentation script:**
+
+> Sa current stage, hindi na lang po ito drawing o raw idea. May working responsive
+> dashboard, sensor at fault simulator, ESP32 firmware foundation, telemetry
+> protocol, Python edge service, local database, API, alerts, wiring diagrams,
+> mechanical concepts, bill of materials, at testing documentation na kami.
+> Na-build na rin nang successful ang ESP32 firmware at dashboard, at pumapasa ang
+> automated edge-service tests. Pero gusto naming maging transparent: simulated
+> data pa ang ginagamit sa demonstration. Hindi pa assembled ang complete physical
+> buoy, hindi pa integrated at calibrated ang actual sensors, at hindi pa
+> field-trained o safety-validated ang AI. Iyon po mismo ang development stage na
+> gusto naming pondohan at maisagawa nang tama.
+
 ### Slide 6 — Innovation and Differentiation
 
 - Affordable and modular student-scale architecture.
@@ -136,6 +198,19 @@ field-trained AI, calibration, and marine deployment validation.
 > FALCON's innovation is the validated integration and local adaptation of its
 > sensing, edge-computing, energy, prediction, and protection subsystems—not the
 > invention of an individual sensor, buoy, or machine-learning algorithm.
+
+**Taglish presentation script:**
+
+> Ang innovation ng FALCON ay hindi nakabase sa claim na kami ang nakaimbento ng
+> buoy, sensor, o AI algorithm. Ang contribution namin ay ang validated integration
+> at local adaptation ng mga subsystem na ito sa isang affordable at modular
+> platform. Local ang processing kaya hindi mandatory ang cloud. Focused ang sensor
+> scope para manageable ang calibration, cost, at energy. Intended din na malinaw
+> sa dashboard kung simulated, measured, estimated, o predicted ang isang value.
+> Kasama rin sa iisang platform ang wave monitoring, energy status, position,
+> system health, at abnormal-displacement alerts. Ang magiging sukatan ng novelty
+> namin ay hindi dami ng features, kundi kung maayos, reproducible, at validated
+> ang pagsasama ng mga ito para sa local use case.
 
 ### Slide 7 — Intended Beneficiaries and Value
 
@@ -153,6 +228,18 @@ future student teams.
 **Important:** Identify one primary beneficiary before the presentation whenever
 possible. A stakeholder interview or support letter will strengthen this slide.
 
+**Taglish presentation script:**
+
+> Ang possible beneficiaries ng project ay coastal LGUs at disaster-management
+> offices, fisherfolk at small-craft communities, schools at marine researchers,
+> ports, tourism operators, at environmental organizations. Makakatulong ang
+> FALCON sa pagkakaroon ng localized observation history, mas accessible na data
+> visualization, research dataset, at awareness sa condition ng equipment.
+> Gayunman, hindi namin gustong sabihing para agad ito sa lahat. Bago ang actual
+> pilot, pipili kami ng isang primary beneficiary at specific site sa Palawan,
+> aalamin ang tunay nilang information needs, at ia-adjust ang deployment at
+> dashboard ayon sa responsible at realistic na use case.
+
 ### Slide 8 — Development Plan
 
 | Phase | Main output | Indicative duration |
@@ -167,6 +254,18 @@ possible. A stakeholder interview or support letter will strengthen this slide.
 
 Estimated development period: approximately **8–12 months**, subject to procurement,
 weather, permits, site access, and the amount of data required.
+
+**Taglish presentation script:**
+
+> Kapag nabigyan ng support, hahatiin namin ang development sa malinaw na phases.
+> Magsisimula kami sa final design at procurement, kasunod ang electronics at
+> sensor integration. Pagkatapos ay fabrication at sealing ng buoy, calibration,
+> at controlled testing. Kapag pumasa sa basic safety at reliability tests, saka
+> kami magsasagawa ng supervised coastal pilot at data collection. Ang collected
+> at validated data ang gagamitin sa model training at baseline comparison.
+> Magtatapos ang project sa final system evaluation, demonstration, at technical
+> reporting. Ang realistic estimate namin ay eight to twelve months, dahil maaari
+> itong maapektuhan ng procurement, weather, permits, site access, at sapat na data.
 
 ### Slide 9 — Preliminary Funding Plan
 
@@ -185,6 +284,18 @@ This is a planning range, not a supplier quotation. Before submission, replace
 estimates with current quotations and separate reusable tools from installed parts.
 The lower raw-component estimate in the technical BOM does not include all field
 testing, fabrication, transport, spares, and contingency costs.
+
+**Taglish presentation script:**
+
+> Para sa preliminary funding plan, ang indicative development request ay mula
+> seventy-two thousand hanggang one hundred twenty-seven thousand pesos. Hindi
+> lang po ito presyo ng sensors. Kasama rito ang embedded electronics, Orange Pi,
+> solar at battery system, marine enclosure at structure, mooring at anchor,
+> calibration or reference tools, fabrication, field testing, transport, spare
+> parts, at contingency. Planning range pa lamang ito at papalitan namin ng actual
+> supplier quotations bago ang formal procurement. Hihiwalay rin namin ang
+> reusable tools sa components na permanenteng mai-install sa prototype para
+> transparent at madaling i-review ang budget.
 
 ### Slide 10 — Expected Result and Request
 
@@ -207,6 +318,21 @@ supervised field testing, and technical mentorship.
 > product. We are asking for the opportunity to turn a documented and working
 > software concept into a calibrated physical prototype, generate local evidence,
 > and determine its real technical and community value through responsible testing.
+
+**Taglish presentation script:**
+
+> Kapag natapos ang funded development, target naming ma-deliver ang isang
+> integrated at documented physical prototype, calibrated sensors at power
+> subsystem, local dashboard at data archive, supervised coastal-test results,
+> model-versus-baseline evaluation, at reports para sa power, communication,
+> waterproofing, stability, at alert performance. Kasama rin ang reproducible
+> source code, wiring, bill of materials, at operating documentation. Ang hinihingi
+> naming support ay para sa component procurement, fabrication, calibration,
+> supervised field testing, at technical mentorship. Hindi po namin hinihinging
+> tanggapin agad ang untested AI bilang operational forecast. Ang hinihingi namin
+> ay pagkakataong gawing calibrated at evidence-based physical prototype ang
+> working concept na na-develop na namin. Maraming salamat po, at handa kaming
+> sagutin ang inyong mga tanong.
 
 ## 3. Dashboard Demonstration Script
 
@@ -378,4 +504,3 @@ a different limit. Assign one member to control the laptop and one to monitor ti
 5. Rehearse the simulator disclosure and funding request.
 6. Practice answering questions without overstating the current AI or hardware state.
 7. Prepare both editable and PDF/offline presentation copies.
-
