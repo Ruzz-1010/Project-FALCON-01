@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Project FALCON RRL Gap Matrix</title>
+<style>
+@page { size: A4 landscape; margin: 15mm; }
+* { box-sizing: border-box; }
+body { font-family: Arial, sans-serif; font-size: 9.5pt; line-height: 1.35; color: #111; }
+h1 { font-size: 18pt; text-align: center; margin: 0 0 5pt; }
+h2 { font-size: 13pt; color: #17365d; margin: 16pt 0 6pt; }
+p { margin: 0 0 7pt; text-align: justify; }
+.meta { text-align: center; margin-bottom: 14pt; }
+.title { font-weight: bold; font-size: 12pt; }
+.note { background: #edf4fa; border-left: 4px solid #2d6f9f; padding: 8pt 10pt; }
+table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+th, td { border: 1px solid #333; padding: 6pt; vertical-align: top; text-align: left; }
+th { background: #d9e8f3; color: #111; text-align: center; font-size: 10pt; }
+tr { break-inside: avoid; page-break-inside: avoid; }
+.col-title { width: 33%; }
+.col-gap { width: 52%; }
+.col-ref { width: 15%; }
+.study { font-weight: bold; }
+.finding { display: block; margin-top: 3pt; color: #333; }
+.refs p { padding-left: 12mm; text-indent: -12mm; margin-bottom: 6pt; }
+ol { margin-top: 4pt; }
+li { margin-bottom: 5pt; }
+.footer-note { font-size: 8.5pt; color: #444; }
+</style>
+</head>
+<body>
+<h1>REVIEW OF RELATED LITERATURE: GAP MATRIX</h1>
+<div class="meta">
+  <div class="title">Project FALCON: An Affordable Solar-Powered Smart Coastal Monitoring Buoy with Local Edge Processing and AI-Assisted Short-Term Wave-Height Prediction</div>
+  <div>Project FALCON Research Group · Fullbright College · August 2026</div>
+</div>
+
+<p class="note"><strong>Purpose.</strong> This matrix compares related research, identifies what remains unresolved, and shows the specific contribution that Project FALCON can test. The gap column does not mean that prior studies are defective; it identifies differences in scope, environment, hardware, validation, or intended users.</p>
+
+<h2>Table 1. Related Literature, Research Gap, and Reference</h2>
+<table border="1" cellspacing="0" cellpadding="6">
+  <thead><tr><th class="col-title">TITLE</th><th class="col-gap">GAP</th><th class="col-ref">REF</th></tr></thead>
+  <tbody>
+    <tr><td><span class="study">A Low-Cost Sensor Buoy System for Monitoring Shallow Marine Environments</span><br><span class="finding">Demonstrated an affordable autonomous wireless platform for shallow-water monitoring.</span></td><td>The system focused on environmental monitoring and communications, not locally executed short-horizon wave-height prediction, transparent model status, or GPS/IMU displacement assessment. FALCON can extend the integrated low-cost approach by evaluating these functions on an ESP32–Orange Pi architecture.</td><td>Albaladejo et al. (2012)</td></tr>
+    <tr><td><span class="study">Observing Sea States</span><br><span class="finding">Synthesized modern sea-state observation methods and the limitations of platforms and sensors.</span></td><td>The review establishes that a buoy's motion, response, sampling, and processing affect wave estimates, but it does not provide a student-scale implementation for a specific Philippine coastal site. FALCON must translate these principles into a calibrated, documented prototype and avoid treating raw IMU motion as wave height.</td><td>Ardhuin et al. (2019)</td></tr>
+    <tr><td><span class="study">Measuring Waves with Pressure Transducers</span><br><span class="finding">Explained how subsurface pressure may be converted to wave information and why correction is required.</span></td><td>Pressure attenuation, sensor depth, and high-frequency loss prevent pressure from being used as direct surface elevation. FALCON can contribute a pressure-assisted method only after depth-aware calibration and comparison against a reference measurement.</td><td>Bishop &amp; Donelan (1987)</td></tr>
+    <tr><td><span class="study">A Nonlinear Weakly Dispersive Method for Recovering the Elevation of Irrotational Surface Waves from Pressure Measurements</span><br><span class="finding">Improved pressure-based free-surface reconstruction for nonlinear waves.</span></td><td>The method is mathematically rigorous but was not designed as a low-compute, real-time workflow for an inexpensive edge buoy. FALCON can evaluate whether a simplified, documented reconstruction is accurate and computationally practical on its selected hardware.</td><td>Bonneton et al. (2018)</td></tr>
+    <tr><td><span class="study">A Novel Model to Predict Significant Wave Height Based on Long Short-Term Memory Network</span><br><span class="finding">Showed that LSTM models can learn temporal patterns for significant-wave-height prediction.</span></td><td>Results from established datasets do not prove performance using a new low-cost local buoy with limited, noisy records. FALCON must use chronological validation, compare against persistence and simple baselines, and report error, latency, and uncertainty for its 5–15 minute target.</td><td>Fan et al. (2020)</td></tr>
+    <tr><td><span class="study">Seawater Battery-Based Wireless Marine Buoy System with Battery Degradation Prediction and Multiple Power Optimization Capabilities</span><br><span class="finding">Integrated energy awareness, communications, and load optimization for marine autonomy.</span></td><td>The study used a different power architecture and did not evaluate FALCON's proposed solar–LiFePO4 system or dual-computer load. FALCON must produce a measured energy budget, brownout behavior, charging profile, and reduced-sun endurance test.</td><td>Cho et al. (2021)</td></tr>
+    <tr><td><span class="study">Beach Deployment of a Low-Cost GNSS Buoy for Determining Sea-Level and Wave Characteristics</span><br><span class="finding">Demonstrated that low-cost GNSS can capture useful coastal sea-level and wave information.</span></td><td>The deployment was short and used post-processed GNSS in a different coastline. FALCON combines GNSS primarily for position and displacement monitoring with IMU/pressure wave sensing; its local accuracy and false-alarm behavior still require testing.</td><td>Knight et al. (2021)</td></tr>
+    <tr><td><span class="study">Measurement Principle and Technology of Miniaturized Strapdown Inertial Wave Sensor</span><br><span class="finding">Presented orientation correction, acceleration transformation, integration, and spectral processing for a compact inertial wave sensor.</span></td><td>The work validates the measurement principle, not the BNO085 or FALCON hull. FALCON must quantify orientation error, gravity removal, integration drift, sampling stability, hull response, and mooring influence through controlled and field comparison tests.</td><td>Zhou et al. (2022)</td></tr>
+    <tr><td><span class="study">Prediction of Significant Wave Height Based on EEMD and Deep Learning</span><br><span class="finding">Used signal decomposition and deep learning for nonlinear, non-stationary wave prediction.</span></td><td>The approach may be too computationally complex and data-hungry for a small edge computer and an early local dataset. FALCON can test whether a compact model offers a meaningful improvement over simpler baselines within power, memory, and latency limits.</td><td>Song et al. (2023)</td></tr>
+    <tr><td><span class="study">Challenges, Limitations, and Measurement Strategies to Ensure Data Quality in Deep-Sea Sensors</span><br><span class="finding">Identified drift, corrosion, power limits, communication problems, and missing references as persistent data-quality risks.</span></td><td>The paper provides broad quality strategies rather than a complete low-cost coastal implementation. FALCON can operationalize them through per-record quality flags, missing/stuck-value checks, cross-sensor plausibility, local buffering, maintenance logs, and prediction suppression when inputs are invalid.</td><td>Skålvik et al. (2023)</td></tr>
+    <tr><td><span class="study">Monitoring Tides, Currents, and Waves along Coastal Habitats Using the Mini Buoy</span><br><span class="finding">Validated reinforced low-cost accelerometer-based devices for inundation, currents, and wave orbital velocity.</span></td><td>The bottom-mounted Mini Buoy has a different mechanics and purpose from a surface-following, solar-powered telemetry buoy. FALCON must validate its own float response and long-term enclosure, mooring, UV, corrosion, and biofouling performance.</td><td>Ladd et al. (2024)</td></tr>
+    <tr><td><span class="study">A Low-Cost Autonomous Multi-Functional Buoy for Ocean Currents and Seawater Parameter Monitoring, and Particle Tracking</span><br><span class="finding">Reported a modular solar-powered buoy with local logging, satellite telemetry, GPS, and successful short field deployments.</span></td><td>The platform emphasizes drifting and water-quality observations, uses satellite communication, and does not test edge-based 5–15 minute wave prediction or multi-condition anti-displacement logic. FALCON targets a moored, locally maintainable and local-first coastal implementation.</td><td>Williams et al. (2025)</td></tr>
+  </tbody>
+</table>
+
+<p class="footer-note"><strong>Interpretation:</strong> Existing literature supports the feasibility of each major subsystem, but no reviewed study validates the same complete combination, cost constraints, local-first architecture, and intended Palawan coastal use case proposed for FALCON.</p>
+
+<h2>Consolidated Research Gap</h2>
+<p>Prior studies establish that low-cost buoys, inertial or pressure-assisted wave measurement, GNSS monitoring, renewable power, and machine-learning wave prediction are individually feasible. However, the reviewed literature does not establish that these capabilities will remain accurate and dependable when integrated into a student-built, solar-powered buoy using inexpensive sensors, intermittent connectivity, and a small edge computer in a Philippine near-shore environment. In particular, there is limited evidence on the combined effects of hull and mooring response, sensor quality, local data scarcity, power constraints, model uncertainty, offline operation, and false displacement alarms within one reproducible low-cost platform.</p>
+
+<h2>Proposed Novel Contribution of Project FALCON</h2>
+<ol>
+  <li><strong>Locally adapted integration:</strong> A reproducible ESP32–Orange Pi coastal buoy designed around affordable, obtainable components and a defined Palawan test site.</li>
+  <li><strong>Calibrated wave observation:</strong> Wave estimates derived from synchronized motion and pressure measurements, with hull/mooring effects and reference comparison explicitly documented.</li>
+  <li><strong>Honest edge prediction:</strong> A clearly defined 5–15 minute wave-height target evaluated chronologically against persistence and other simple baselines, including error, latency, and uncertainty.</li>
+  <li><strong>Local-first resilience:</strong> Onboard acquisition, quality checks, storage, and dashboard service that continue during internet outages and recover delayed records without silently duplicating data.</li>
+  <li><strong>Integrated health and displacement logic:</strong> GPS, IMU, time persistence, sensor health, and power state combined to distinguish likely abnormal movement from ordinary anchor swing and GPS noise.</li>
+  <li><strong>Whole-system validation:</strong> Measurement accuracy, energy autonomy, communication reliability, maintainability, and alert performance assessed together rather than presenting component integration alone as novelty.</li>
+</ol>
+
+<p class="note"><strong>Defensible novelty statement:</strong> Project FALCON is novel not because it invents the smart buoy, wave sensor, or machine-learning forecast, but because it designs and experimentally evaluates their affordable, local-first integration for a defined Philippine coastal setting, with transparent data quality, uncertainty, energy performance, and displacement-alert limitations.</p>
+
+<h2>APA 7th Edition References</h2>
+<div class="refs">
+<p>Albaladejo, C., Soto, F., Torres, R., Sánchez, P., &amp; López, J. A. (2012). A low-cost sensor buoy system for monitoring shallow marine environments. <em>Sensors, 12</em>(7), 9613–9634. https://doi.org/10.3390/s120709613</p>
+<p>Ardhuin, F., Stopa, J. E., Chapron, B., Collard, F., Husson, R., Jensen, R. E., Johannessen, J., Mouche, A., Passaro, M., Quartly, G. D., Swail, V., &amp; Young, I. R. (2019). Observing sea states. <em>Frontiers in Marine Science, 6</em>, Article 124. https://doi.org/10.3389/fmars.2019.00124</p>
+<p>Bishop, C. T., &amp; Donelan, M. A. (1987). Measuring waves with pressure transducers. <em>Coastal Engineering, 11</em>(4), 309–328. https://doi.org/10.1016/0378-3839(87)90031-7</p>
+<p>Bonneton, P., Lannes, D., Martins, K., &amp; Michallet, H. (2018). A nonlinear weakly dispersive method for recovering the elevation of irrotational surface waves from pressure measurements. <em>Coastal Engineering, 138</em>, 1–8. https://doi.org/10.1016/j.coastaleng.2018.04.005</p>
+<p>Cho, J., Kim, M. W., Kim, Y., Park, J.-S., Lee, D.-H., Kim, Y., &amp; Kim, J. J. (2021). Seawater battery-based wireless marine buoy system with battery degradation prediction and multiple power optimization capabilities. <em>IEEE Access, 9</em>, 104104–104114. https://doi.org/10.1109/ACCESS.2021.3098846</p>
+<p>Fan, S., Xiao, N., &amp; Dong, S. (2020). A novel model to predict significant wave height based on long short-term memory network. <em>Ocean Engineering, 205</em>, Article 107298. https://doi.org/10.1016/j.oceaneng.2020.107298</p>
+<p>Knight, P. J., Bird, C. O., Sinclair, A., Higham, J., &amp; Plater, A. J. (2021). Beach deployment of a low-cost GNSS buoy for determining sea-level and wave characteristics. <em>Geosciences, 11</em>(12), Article 494. https://doi.org/10.3390/geosciences11120494</p>
+<p>Ladd, C. J. T., Burden, A., Skov, M. W., &amp; van der Wal, D. (2024). Monitoring tides, currents, and waves along coastal habitats using the Mini Buoy. <em>Limnology and Oceanography: Methods, 22</em>(4), 259–279. https://doi.org/10.1002/lom3.10631</p>
+<p>Skålvik, A. M., Saetre, C., Frøysa, K.-E., Bjørk, R. N., &amp; Tengberg, A. (2023). Challenges, limitations, and measurement strategies to ensure data quality in deep-sea sensors. <em>Frontiers in Marine Science, 10</em>, Article 1152236. https://doi.org/10.3389/fmars.2023.1152236</p>
+<p>Song, T., Wang, J., Huo, J., Wei, W., Han, R., Xu, D., &amp; Meng, F. (2023). Prediction of significant wave height based on EEMD and deep learning. <em>Frontiers in Marine Science, 10</em>, Article 1089357. https://doi.org/10.3389/fmars.2023.1089357</p>
+<p>Williams, Z., Soto Calvo, M. A., Lee, H. S., Aljber, M., &amp; Jeong, J.-S. (2025). A low-cost autonomous multi-functional buoy for ocean currents and seawater parameter monitoring, and particle tracking. <em>Journal of Marine Science and Engineering, 13</em>(9), Article 1629. https://doi.org/10.3390/jmse13091629</p>
+<p>Zhou, F., Zhang, R., &amp; Zhang, S. (2022). Measurement principle and technology of miniaturized strapdown inertial wave sensor. <em>Frontiers in Marine Science, 9</em>, Article 991996. https://doi.org/10.3389/fmars.2022.991996</p>
+</div>
+
+<p class="footer-note">Prepared for academic discussion. Final claims of accuracy, prediction capability, autonomy, and field readiness remain subject to calibration and physical field validation.</p>
+</body>
+</html>
