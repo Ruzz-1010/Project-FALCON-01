@@ -37,6 +37,40 @@ li { margin-bottom: 4pt; }
   <li>If interrupted by a question, answer briefly and return using the transition line.</li>
 </ul>
 
+<h2>Simple Component Guide</h2>
+<p class="box"><strong>Easy way to explain the hardware:</strong> Do not begin with model numbers. First say the component's simple job, then mention its name. Example: “This sensor measures the tilt and movement of the buoy. It is called the BNO085.”</p>
+<table>
+<tr><th>Component</th><th>Simple meaning and purpose</th><th>Easy line to say</th></tr>
+<tr><td><strong>Main float</strong></td><td>The round floating body that supports the complete structure and provides stability on the water.</td><td>“This is the body that keeps FALCON floating and supports all equipment above the water.”</td></tr>
+<tr><td><strong>Tower and frame</strong></td><td>The strong structure that holds the sensors, solar panels, antennas, and electronics pod at their intended positions.</td><td>“The tower keeps the equipment secure and gives the upper sensors a clear position.”</td></tr>
+<tr><td><strong>Upper electronics pod</strong></td><td>The sealed and serviceable box that protects the computers and electronic boards from water and weather.</td><td>“This is the dry control box or brain compartment of the buoy.”</td></tr>
+<tr><td><strong>Wind sensor / SEN-15901</strong></td><td>The anemometer measures wind speed, while the wind vane identifies wind direction.</td><td>“This tells us how fast the wind is moving and where it is coming from.”</td></tr>
+<tr><td><strong>GPS module</strong></td><td>Provides the buoy's position, movement, heading-related information, and satellite-fix quality.</td><td>“GPS tells us where the buoy is and helps us detect if it moves unusually far from its deployment point.”</td></tr>
+<tr><td><strong>BNO085 IMU</strong></td><td>An inertial measurement unit that measures orientation and motion, including roll, pitch, and rotational movement.</td><td>“This is the motion sensor. It tells us how the buoy tilts and moves with the waves.”</td></tr>
+<tr><td><strong>Bar02 pressure sensor</strong></td><td>Measures water pressure. After calibration and depth correction, changes in pressure may help estimate water movement and wave characteristics.</td><td>“This sensor feels changes in water pressure, which may help us study waves after proper calibration.”</td></tr>
+<tr><td><strong>Optional DS18B20</strong></td><td>A waterproof temperature probe intended for measuring water temperature if it is included in the approved final scope.</td><td>“This optional probe measures the temperature of the surrounding water.”</td></tr>
+<tr><td><strong>ESP32 DevKit V1</strong></td><td>The microcontroller that reads sensors repeatedly, performs basic checks, and packages the readings for transmission.</td><td>“The ESP32 is the sensor reader. It gathers the raw measurements and sends them in an organized format.”</td></tr>
+<tr><td><strong>Orange Pi Zero 3</strong></td><td>The small Linux computer that stores data, performs heavier calculations, runs the API, hosts the dashboard, and later executes the validated model.</td><td>“The Orange Pi is the onboard computer. It saves, processes, and presents the information.”</td></tr>
+<tr><td><strong>MicroSD or eMMC storage</strong></td><td>Stores the operating system, database, dashboard files, sensor history, and test records.</td><td>“This is the buoy's local memory, so records can remain available even without internet.”</td></tr>
+<tr><td><strong>ADS1115</strong></td><td>A high-resolution analog-to-digital converter used to read the changing electrical signal from the wind-direction vane more consistently.</td><td>“This converts the wind vane's electrical signal into a value the ESP32 can understand.”</td></tr>
+<tr><td><strong>MCP9808</strong></td><td>Measures temperature inside the electronics enclosure to identify overheating risk.</td><td>“This checks whether the electronics box is becoming too hot.”</td></tr>
+<tr><td><strong>Two INA260 monitors</strong></td><td>One board measures the battery branch and the other measures the solar branch. They report voltage, current, and power flow.</td><td>“These are power meters: one watches the battery and one watches the solar charging.”</td></tr>
+<tr><td><strong>Solar panels</strong></td><td>Convert sunlight into electrical energy for charging the battery and supporting longer operation.</td><td>“The solar panels provide renewable energy for the buoy.”</td></tr>
+<tr><td><strong>MPPT solar charger</strong></td><td>Controls energy transfer from the solar panels to the battery and helps charging operate efficiently and safely.</td><td>“This is the charging controller between the solar panels and the battery.”</td></tr>
+<tr><td><strong>12.8 V LiFePO4 battery</strong></td><td>Stores solar energy and powers the system when sunlight is weak or unavailable. Final capacity still requires measured load testing.</td><td>“The battery stores energy so FALCON can continue operating when there is no sunlight.”</td></tr>
+<tr><td><strong>Fuse and disconnect</strong></td><td>The fuse protects wiring during an electrical fault, while the disconnect allows power to be safely isolated during maintenance.</td><td>“These are safety parts that protect the system and let us turn off power before servicing it.”</td></tr>
+<tr><td><strong>5 V buck converters</strong></td><td>Safely reduce the battery voltage to regulated 5 V supplies. Separate branches are planned for the Orange Pi and ESP32 peripherals.</td><td>“These lower the battery voltage to the safe voltage required by the computers.”</td></tr>
+<tr><td><strong>Terminal blocks</strong></td><td>Provide organized connection points for power, ground, and signals, making inspection and replacement easier.</td><td>“These keep the wire connections organized, labeled, and easier to repair.”</td></tr>
+<tr><td><strong>Cable glands and connectors</strong></td><td>Secure cables entering the enclosure and help provide strain relief and water protection.</td><td>“These protect the cable entry points so wires are not easily pulled or exposed to water.”</td></tr>
+<tr><td><strong>Mooring and anchor</strong></td><td>Hold the buoy near its approved deployment position while allowing normal movement caused by tide, current, and waves.</td><td>“The mooring keeps the buoy in its assigned area, while GPS helps us check abnormal movement.”</td></tr>
+<tr><td><strong>Local database</strong></td><td>An organized record of measurements, predictions, alerts, and system events stored on the edge computer.</td><td>“The database is the digital logbook of everything the buoy records.”</td></tr>
+<tr><td><strong>API</strong></td><td>A software connection that lets the dashboard request current and historical information from the edge service.</td><td>“The API is the messenger between the saved data and the dashboard.”</td></tr>
+<tr><td><strong>Dashboard</strong></td><td>The human-readable interface that displays current readings, graphs, history, alerts, and system health.</td><td>“The dashboard turns technical sensor data into information that people can understand.”</td></tr>
+</table>
+
+<h3>One-Sentence System Explanation</h3>
+<p class="box">“The sensors observe the buoy and environment; the ESP32 collects their readings; the Orange Pi saves and processes the data; the solar and battery system supplies energy; and the dashboard explains the results to the user.”</p>
+
 <h2>Slide-by-Slide Script</h2>
 
 <h3>Slide 1 — Project FALCON <small>(35–45 seconds)</small></h3>
@@ -61,7 +95,7 @@ li { margin-bottom: 4pt; }
 
 <h3>Slide 5 — Hardware Concept <small>(60–70 seconds)</small></h3>
 <p class="cue">Explain function, not every wire. Point first to sensors, then ESP32, Orange Pi, and finally the protected power chain.</p>
-<p class="script">“This diagram explains the job of each electronic component. The BNO085 measures the tilt and movement of the buoy. The Bar02 measures water pressure, which may help us estimate wave movement after proper calibration. GPS tells us the location, while the wind sensor measures wind speed and direction. The INA260 boards check the battery and solar power, and the MCP9808 checks the temperature inside the electronics box. All sensor readings go first to the ESP32. The ESP32 then sends the data to the Orange Pi for storage, processing, and display on the dashboard. The lower section shows how solar energy charges the battery and safely supplies power to the electronics. This is still a design guide; we will confirm the exact wiring using the real boards and their official datasheets.”</p>
+<p class="script">“To make this diagram easier, we can divide the components into four groups. The first group is sensing: BNO085 measures buoy movement, Bar02 measures water pressure, GPS gives location, and the weather sensor measures wind. The second group is control: the ESP32 collects all sensor readings, while the Orange Pi saves, processes, and sends the results to the dashboard. The third group is system health: INA260 boards act as power meters for the battery and solar branches, while MCP9808 checks if the electronics box becomes too hot. The fourth group is power: solar panels produce energy, the MPPT controls battery charging, the battery stores energy, and buck converters provide the safe voltage required by the computers. The fuse and disconnect protect the system and allow safe maintenance. So the simple flow is: sensors measure, ESP32 collects, Orange Pi explains, and the power system keeps everything running. This remains a design guide until we confirm the real components, wiring, and safety calculations.”</p>
 <p class="transition"><strong>Transition:</strong> “To make this system practical, the electronics must also be organized for safe maintenance.”</p>
 
 <h3>Slide 6 — Maintainable Enclosure <small>(50–60 seconds)</small></h3>
