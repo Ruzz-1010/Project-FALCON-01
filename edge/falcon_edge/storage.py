@@ -42,7 +42,7 @@ class TelemetryStore:
                     telemetry_id INTEGER NOT NULL,
                     generated_at TEXT NOT NULL,
                     target_at TEXT,
-                    horizon_minutes INTEGER NOT NULL CHECK(horizon_minutes IN (5, 15)),
+                    horizon_minutes INTEGER NOT NULL CHECK(horizon_minutes IN (5, 10, 15)),
                     current_wave_height REAL,
                     predicted_wave_height REAL,
                     confidence INTEGER,
@@ -67,6 +67,52 @@ class TelemetryStore:
                 CREATE INDEX IF NOT EXISTS idx_events_recorded_at ON system_events(recorded_at DESC);
                 """
                 )
+                self._migrate_prediction_horizons(connection)
+
+    @staticmethod
+    def _migrate_prediction_horizons(connection: sqlite3.Connection) -> None:
+        """Expand legacy 5/15-minute prediction tables without losing records."""
+        row = connection.execute(
+            "SELECT sql FROM sqlite_master WHERE type = 'table' AND name = 'wave_predictions'"
+        ).fetchone()
+        table_sql = (row["sql"] or "") if row else ""
+        normalized_sql = "".join(table_sql.lower().split())
+        if "horizon_minutesin(5,10,15)" in normalized_sql:
+            return
+
+        connection.executescript(
+            """
+            DROP INDEX IF EXISTS idx_predictions_generated_at;
+            ALTER TABLE wave_predictions RENAME TO wave_predictions_legacy;
+            CREATE TABLE wave_predictions (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                telemetry_id INTEGER NOT NULL,
+                generated_at TEXT NOT NULL,
+                target_at TEXT,
+                horizon_minutes INTEGER NOT NULL CHECK(horizon_minutes IN (5, 10, 15)),
+                current_wave_height REAL,
+                predicted_wave_height REAL,
+                confidence INTEGER,
+                sea_condition TEXT CHECK(sea_condition IN ('CALM', 'MODERATE', 'ROUGH') OR sea_condition IS NULL),
+                model TEXT NOT NULL,
+                model_version TEXT NOT NULL,
+                status TEXT NOT NULL,
+                source TEXT NOT NULL,
+                FOREIGN KEY (telemetry_id) REFERENCES telemetry(id)
+            );
+            INSERT INTO wave_predictions (
+                id, telemetry_id, generated_at, target_at, horizon_minutes,
+                current_wave_height, predicted_wave_height, confidence,
+                sea_condition, model, model_version, status, source
+            )
+            SELECT id, telemetry_id, generated_at, target_at, horizon_minutes,
+                   current_wave_height, predicted_wave_height, confidence,
+                   sea_condition, model, model_version, status, source
+            FROM wave_predictions_legacy;
+            DROP TABLE wave_predictions_legacy;
+            CREATE INDEX idx_predictions_generated_at ON wave_predictions(generated_at DESC);
+            """
+        )
 
     def save(self, recorded_at: str, source: str, payload: dict[str, Any], alerts: list[dict[str, str]]) -> int:
         with closing(self._connect()) as connection:
