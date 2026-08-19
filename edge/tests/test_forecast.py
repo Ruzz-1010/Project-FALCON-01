@@ -20,6 +20,9 @@ class ForecastTest(unittest.TestCase):
     def test_ten_minute_presentation_horizon(self):
         result = build_wave_prediction(records(), 10)
         self.assertEqual(result["horizonMinutes"], 10)
+        self.assertIsNone(result["lastTrainingDate"])
+        self.assertIsInstance(result["inferenceTimeMs"], float)
+        self.assertGreaterEqual(result["inferenceTimeMs"], 0)
         self.assertEqual(result["status"], "READY")
         self.assertGreater(len(result["forecastSeries"]), 2)
         self.assertEqual(result["forecastSeries"][0]["predictedWaveHeight"], result["currentWaveHeight"])

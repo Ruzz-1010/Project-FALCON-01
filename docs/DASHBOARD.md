@@ -20,6 +20,11 @@ Implemented prototype capabilities include:
 - alert history;
 - current-versus-predicted forecast cards;
 - simulated scenarios;
+- dedicated sensor-status and calibration registers;
+- explainable GPS/IMU displacement logic;
+- a traceable AI architecture view;
+- filtered historical pressure, wave, motion, wind, and prediction charts with CSV/JSON export;
+- engineering telemetry for database size, link interval, packet age, sampling output, and packet loss;
 - and interactive Fusion-derived 3D visualization.
 
 The v4 dashboard simplification is implemented in the local edge dashboard. Out-of-scope sensor cards, multi-sensor predictions, and the 30-minute prediction selector have been removed.
@@ -29,6 +34,8 @@ The dashboard now consumes the approved v4 read endpoints directly. The simulato
 Dashboard v5.0 also consumes `GET /prediction` and `GET /logs` as local presentation extensions. `/prediction` exposes the requested 10-minute presentation view, while durable Phase 1 prediction audit rows remain at the approved 5- and 15-minute horizons.
 
 The overview uses consistent engineering line icons and a restrained operational-card hierarchy. Graphs are limited to meaningful trends: current versus predicted wave height plus supporting current-only wind, water-pressure, battery, and internal-temperature sparklines. Supporting graphs explicitly state that those channels are not AI predictions.
+
+All prediction surfaces carry an experimental-research disclaimer and must not be represented as PAGASA or official-agency guidance. Simulator history is labeled `SIMULATED`, live sensor-derived wave height remains `ESTIMATED` until field validation, and model output is labeled `PREDICTED`.
 
 ## Information Architecture
 
@@ -72,6 +79,40 @@ Home shall prioritize wave state and system readiness.
 - wave motion;
 - IMU calibration;
 - and recent motion history.
+
+The Motion/Buoy Motion implementation and interactive 3D behavior remain the locked visual baseline and are not modified by the engineering-page expansion.
+
+### Sensor Status
+
+- per-channel availability and health;
+- configured or target sampling frequency;
+- last-update age;
+- signal-quality indicator;
+- calibration readiness; and
+- explicit simulator/source labeling.
+
+### Calibration
+
+- GPS reference;
+- IMU orientation;
+- pressure/depth;
+- wind speed and direction;
+- battery monitor; and
+- solar monitor procedures.
+
+Starting a workflow records an accepted calibration action. It does not mark a sensor scientifically calibrated without a reference instrument, operator, evidence, and approved result.
+
+### Security Logic
+
+GPS distance, IMU tilt, time persistence, and battery evidence produce an explainable research assessment: Normal, Anchor Swing, Equipment Displacement, or Possible Theft. The page is not a certified theft detector and requires human confirmation.
+
+### AI Architecture
+
+The page documents the unchanged pipeline: Sensors → ESP32 → Orange Pi → SQLite → Feature Engineering → AI Prediction → Explainable AI → Dashboard. Cloud, LTE, satellite, remote monitoring, and additional sensors are labeled future interfaces and are not implemented.
+
+### Historical Data
+
+The local archive provides date filtering, charts for pressure, wave height, motion, wind, and predictions, plus CSV and JSON export. Source/state labels remain part of exported evidence.
 
 ### GPS
 

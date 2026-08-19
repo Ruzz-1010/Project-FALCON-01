@@ -89,6 +89,12 @@ class EdgeRuntime:
                 "intakeFanRpm": data.get("intakeFanRpm"), "exhaustFanRpm": data.get("exhaustFanRpm"),
                 "cpuUsage": data.get("cpuLoad"), "memoryUsage": data.get("memoryUsage"),
                 "storageUsage": data.get("storageUsage"), "wifiSignalDbm": -42,
+                "databaseSizeMb": round(self.store.database_path.stat().st_size / 1048576, 2) if self.store.database_path.exists() else 0.0,
+                "communicationLatencyMs": round(self.interval * 1000),
+                "packetLossPercent": 0.0 if source == "simulator" else data.get("packetLossPercent"),
+                "samplingFrequencyHz": round(1.0 / self.interval, 2) if self.interval > 0 else None,
+                "lastPacketAgeMs": max(0, round((datetime.now(timezone.utc) - datetime.fromisoformat(latest["recordedAt"])).total_seconds() * 1000)) if latest.get("recordedAt") else None,
+                "database": "ONLINE",
                 "sensorHistory": sensor_history, "version": "4.0", "dashboardVersion": "5.0", "lastError": error}
 
     def wave(self) -> dict[str, Any]:
@@ -342,7 +348,7 @@ def make_handler(runtime: EdgeRuntime, store: TelemetryStore):
                 else:
                     sensor = str(payload.get("sensor", ""))
                     operation = str(payload.get("operation", "start"))
-                    if sensor not in ("bno085", "water-pressure", "wind", "gps") or operation != "start":
+                    if sensor not in ("bno085", "water-pressure", "wind", "gps", "battery", "solar") or operation != "start":
                         raise ValueError("Unsupported sensor or calibration operation")
                     calibration_id = f"cal-{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}"
                     store.log_event(datetime.now(timezone.utc).isoformat(), "CALIBRATION", sensor, "IN_PROGRESS", payload)

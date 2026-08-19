@@ -13,6 +13,8 @@ export type Status = {
   sensorHistory: Array<{recordedAt:string;windSpeed:number|null;internalTemperature:number|null}>;
   monitoring:boolean; uptimeSeconds:number; esp32:string; miniPc:string; uart:string; api:string;
   cpuUsage:number|null; memoryUsage:number|null; storageUsage:number|null; wifiSignalDbm:number|null;
+  databaseSizeMb:number|null; communicationLatencyMs:number|null; packetLossPercent:number|null;
+  samplingFrequencyHz:number|null; lastPacketAgeMs:number|null; database:string;
   version:string; dashboardVersion:string; lastError:string|null; activeAlertCount:number;
 };
 
@@ -36,6 +38,7 @@ export type Prediction = {
   status: string; predictedWaveHeight: number | null; currentWaveHeight: number | null;
   seaCondition: string; confidence: number; horizonMinutes: number; change: number | null;
   direction: string; targetAt: string | null; model: string; modelVersion: string;
+  generatedAt?: string; lastTrainingDate?: string | null; inferenceTimeMs?: number | null;
   sampleCount: number; dataSource: string; unavailableReason: string | null;
   forecastSeries?: Array<{minutesAhead:number;at:string;predictedWaveHeight:number;lowerBound:number;upperBound:number}>;
   historicalPredictionSeries?: Array<{at:string;predictedWaveHeight:number}>;

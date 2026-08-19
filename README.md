@@ -47,6 +47,10 @@ npm install
 npm run dev
 ```
 
+The current Vite toolchain requires Node.js 20.19 or newer. On systems with
+NVM, run `nvm use` inside `dashboard-next/` to select the repository's Node 22
+runtime before `npm run dev` or `npm run build`.
+
 Open `http://127.0.0.1:5173`. For normal use, run only the edge service and open `http://127.0.0.1:8765/`.
 
 Important limitations:

@@ -1,6 +1,7 @@
 """Focused short-horizon wave forecasting for Project FALCON v4.0."""
 
 import math
+import time
 from datetime import datetime, timedelta
 from typing import Any
 
@@ -118,6 +119,7 @@ def _historical_prediction_series(points: list[tuple[float, float]]) -> list[dic
 
 
 def build_wave_prediction(records: list[dict[str, Any]], horizon_minutes: int = 15) -> dict[str, Any]:
+    inference_started = time.perf_counter()
     if horizon_minutes not in SUPPORTED_HORIZONS:
         raise ValueError("Unsupported horizon; use 5, 10, or 15 minutes")
     ordered = sorted(records, key=_timestamp)
@@ -130,11 +132,13 @@ def build_wave_prediction(records: list[dict[str, Any]], horizon_minutes: int = 
         "unit": "m", "change": None, "direction": None, "confidence": None,
         "confidenceMeaning": "model quality indicator", "seaCondition": None,
         "model": MODEL_NAME, "modelVersion": MODEL_VERSION, "sampleCount": len(points),
+        "lastTrainingDate": None, "inferenceTimeMs": None,
         "status": "UNAVAILABLE", "dataSource": source, "unavailableReason": "INSUFFICIENT_HISTORY",
         "forecastSeries": [],
         "historicalPredictionSeries": [],
     }
     if len(points) < 8:
+        base["inferenceTimeMs"] = round((time.perf_counter() - inference_started) * 1000, 3)
         return base
     predicted, confidence, details = _project(points[-120:], horizon_minutes)
     current = points[-1][1]
@@ -157,6 +161,7 @@ def build_wave_prediction(records: list[dict[str, Any]], horizon_minutes: int = 
             "seaConditionThresholds": {"calmBelowMeters": 0.6, "moderateBelowMeters": 2.5, "roughAtOrAboveMeters": 2.5},
         },
     })
+    base["inferenceTimeMs"] = round((time.perf_counter() - inference_started) * 1000, 3)
     return base
 
 
