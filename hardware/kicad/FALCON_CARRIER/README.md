@@ -53,6 +53,32 @@ ERC with zero errors and warnings. `generate_schematic.py` reproducibly rebuilds
 the native schematic and its project symbol library; do not hand-edit generated
 symbol geometry without updating the generator.
 
+PCB placement v0.2 contains provisional through-hole module/socket envelopes,
+named-net pads, four provisional M3 mounting holes, and an ESP32 antenna
+keep-out. `generate_pcb.py` reproducibly builds this placement. The current DRC
+result is **zero geometry/rule violations and 64 expected unconnected ratsnest
+items**. Those connections must remain visible until deliberate copper routing;
+they are not to be suppressed or described as a finished PCB.
+
+Reference map:
+
+| Reference | Function |
+| --- | --- |
+| U1 | 5 V to 3.3 V regulator placeholder |
+| U2 | ESP32 DevKit carrier interface |
+| U3 | BNO085 SPI breakout |
+| U4 | ADS1115 wind-vane ADC |
+| U5 | Fan MOSFET-driver placeholder |
+| J1 | Protected 5 V input |
+| J2–J6 | Bar02, GPS, two INA260 logic links, MCP9808 |
+| J7–J10 | Anemometer, wind vane, DS18B20, leak sensor |
+| J11–J12 | Fan and service I2C |
+| R1–R2 | Wind-pulse 10 kOhm and OneWire 4.7 kOhm pull-ups |
+| H1–H4 | Provisional M3 mounting holes |
+
+Every footprint outline, header spacing, mounting hole, and connector remains
+provisional until checked against the purchased hardware on a 1:1 print.
+
 Use these source registers during capture:
 
 - [NET_REGISTER.csv](NET_REGISTER.csv)
