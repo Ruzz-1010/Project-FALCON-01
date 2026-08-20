@@ -45,6 +45,14 @@ The board contains a 200 x 160 mm planning outline and labeled placement zones,
 not final footprints or routing. Do not manufacture from placeholder geometry
 or exported pictures.
 
+Schematic v0.1 contains the ESP32 carrier interface, BNO085 SPI, shared I2C
+modules, GPS UART, wind inputs, optional DS18B20, leak placeholder, fan-driver
+placeholder, protected 5 V input, 3.3 V regulator placeholder, and required
+wind/OneWire pull-ups. Connections use validated named nets and pass KiCad 10
+ERC with zero errors and warnings. `generate_schematic.py` reproducibly rebuilds
+the native schematic and its project symbol library; do not hand-edit generated
+symbol geometry without updating the generator.
+
 Use these source registers during capture:
 
 - [NET_REGISTER.csv](NET_REGISTER.csv)
