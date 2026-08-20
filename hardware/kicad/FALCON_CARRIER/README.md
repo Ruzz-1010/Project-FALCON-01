@@ -79,6 +79,10 @@ Reference map:
 Every footprint outline, header spacing, mounting hole, and connector remains
 provisional until checked against the purchased hardware on a 1:1 print.
 
+The next release gate is [FOOTPRINT_VALIDATION.md](FOOTPRINT_VALIDATION.md).
+Record measurements in `footprint_measurements.csv`; do not start final copper
+routing while the critical rows remain `PENDING`.
+
 Use these source registers during capture:
 
 - [NET_REGISTER.csv](NET_REGISTER.csv)
