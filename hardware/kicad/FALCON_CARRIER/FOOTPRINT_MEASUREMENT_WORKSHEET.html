@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>FALCON-01 Footprint Measurement Worksheet</title>
+  <style>
+    @page { size: A4 portrait; margin: 12mm; }
+    * { box-sizing: border-box; }
+    body { margin: 0; color: #17212b; font: 10pt Arial, sans-serif; }
+    h1 { margin: 0 0 2mm; font-size: 18pt; }
+    h2 { margin: 5mm 0 2mm; font-size: 12pt; border-bottom: 1px solid #52606d; }
+    p { margin: 1.5mm 0; line-height: 1.35; }
+    .warning { padding: 2.5mm; border: 1px solid #9b6a22; background: #fff8e8; }
+    .meta, table { width: 100%; border-collapse: collapse; }
+    td, th { border: 1px solid #9aa5b1; padding: 1.6mm; vertical-align: top; }
+    th { background: #e8edf2; text-align: left; }
+    .meta td { height: 9mm; }
+    .check { font-size: 12pt; letter-spacing: 1mm; }
+    .module { break-inside: avoid; margin-top: 4mm; }
+    .module table td:first-child { width: 34%; font-weight: bold; }
+    .blank { height: 8mm; }
+    .photos { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; }
+    .photo { height: 48mm; border: 1px dashed #657786; padding: 2mm; text-align: center; color: #657786; }
+    .page-break { break-before: page; }
+    footer { margin-top: 4mm; font-size: 8pt; color: #52606d; }
+  </style>
+</head>
+<body>
+  <h1>FALCON-01 Carrier PCB</h1>
+  <p><strong>Physical Footprint Measurement Worksheet</strong> · Revision 1 · 2026-08-20</p>
+  <div class="warning"><strong>Release gate:</strong> Do not begin final copper routing or order a PCB until the critical modules pass the physical and 1:1 checks below.</div>
+
+  <h2>Inspection record</h2>
+  <table class="meta">
+    <tr><td>Measured by:</td><td>Date:</td><td>Caliper ID:</td></tr>
+    <tr><td>Board/module reference:</td><td>Manufacturer:</td><td>Exact part/revision:</td></tr>
+  </table>
+
+  <div class="module">
+    <h2>Dimensions (millimetres)</h2>
+    <table>
+      <tr><td>PCB width × length</td><td class="blank"></td></tr>
+      <tr><td>Maximum assembled height</td><td class="blank"></td></tr>
+      <tr><td>Pin count and pitch</td><td class="blank"></td></tr>
+      <tr><td>Header-row spacing</td><td class="blank"></td></tr>
+      <tr><td>Pin 1 to left/top datum edges</td><td class="blank"></td></tr>
+      <tr><td>Mounting-hole diameter</td><td class="blank"></td></tr>
+      <tr><td>Hole-centre coordinates from datum</td><td class="blank"></td></tr>
+      <tr><td>Connector/USB/cable clearance</td><td class="blank"></td></tr>
+    </table>
+  </div>
+
+  <h2>Orientation and electrical verification</h2>
+  <table>
+    <tr><th>Check</th><th>Result</th><th>Evidence / notes</th></tr>
+    <tr><td>Pin 1 is physically marked</td><td class="check">☐ PASS ☐ FAIL</td><td></td></tr>
+    <tr><td>Printed pin order copied exactly</td><td class="check">☐ PASS ☐ FAIL</td><td></td></tr>
+    <tr><td>Connector mating direction checked</td><td class="check">☐ PASS ☐ FAIL</td><td></td></tr>
+    <tr><td>Antenna/USB/jumper access clear</td><td class="check">☐ PASS ☐ FAIL</td><td></td></tr>
+    <tr><td>1:1 KiCad print matches hardware</td><td class="check">☐ PASS ☐ FAIL</td><td></td></tr>
+  </table>
+
+  <h2>Required photos</h2>
+  <div class="photos">
+    <div class="photo">TOP VIEW<br>Place module beside a metric ruler.<br>Mark pin 1 and datum corner.</div>
+    <div class="photo">BOTTOM VIEW<br>Show header pins, holes,<br>labels, and exposed conductors.</div>
+  </div>
+  <footer>Transfer approved results to <code>footprint_measurements.csv</code>. Measurements from seller photos are not acceptable.</footer>
+
+  <div class="page-break"></div>
+  <h1>FALCON-01 Validation Queue</h1>
+  <p>Complete one copy of page 1 for each item. Write the photo filenames in the evidence column.</p>
+  <table>
+    <tr><th>Priority</th><th>Ref.</th><th>Hardware</th><th>Status / evidence</th></tr>
+    <tr><td>1</td><td>U2</td><td>ESP32-DevKitC V4, WROOM-32E, 38 pin</td><td></td></tr>
+    <tr><td>2</td><td>U3</td><td>Adafruit BNO085 PID 4754</td><td></td></tr>
+    <tr><td>3</td><td>J2</td><td>Blue Robotics Bar02 R2 and cable</td><td></td></tr>
+    <tr><td>4</td><td>J3</td><td>Exact GPS breakout and antenna</td><td></td></tr>
+    <tr><td>5</td><td>J4/J5</td><td>INA260 battery and solar breakouts</td><td></td></tr>
+    <tr><td>6</td><td>U4/J6</td><td>ADS1115 and MCP9808 breakouts</td><td></td></tr>
+    <tr><td>7</td><td>J7–J12</td><td>Selected keyed field connectors</td><td></td></tr>
+    <tr><td>8</td><td>U1/U5</td><td>3.3 V regulator and fan driver</td><td></td></tr>
+    <tr><td>9</td><td>H1–H4</td><td>Electronics tray, standoffs, and lid clearance</td><td></td></tr>
+  </table>
+
+  <h2>Critical release sign-off</h2>
+  <table>
+    <tr><td>U2, U3, J2, J3, J4/J5 physically PASS</td><td class="check">☐</td></tr>
+    <tr><td>Power-input connector selected and PASS</td><td class="check">☐</td></tr>
+    <tr><td>Enclosure mounting coordinates PASS</td><td class="check">☐</td></tr>
+    <tr><td>USB/external-5V back-feed solution approved</td><td class="check">☐</td></tr>
+    <tr><td>Connector polarity independently reviewed</td><td class="check">☐</td></tr>
+  </table>
+  <p><strong>Reviewer:</strong> ____________________ <strong>Date:</strong> ____________ <strong>Decision:</strong> ☐ HOLD ☐ ROUTING MAY BEGIN</p>
+</body>
+</html>
