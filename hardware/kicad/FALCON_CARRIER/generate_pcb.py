@@ -154,7 +154,7 @@ for index, (x, y) in enumerate(((26, 26), (214, 26), (26, 174), (214, 174)), sta
 net_lines = ['  (net 0 "")'] + [f'  (net {net_id[name]} "{name}")' for name in nets]
 
 board = f'''(kicad_pcb
-  (version 20241229) (generator "pcbnew") (generator_version "10.0")
+  (version 20260206) (generator "pcbnew") (generator_version "10.0")
   (general (thickness 1.6) (legacy_teardrops no))
   (paper "A4")
   (title_block (title "FALCON-01 LOW-VOLTAGE CARRIER") (date "2026-08-20")
