@@ -1,0 +1,16 @@
+(kicad_sch (version 20231120) (generator eeschema)
+  (uuid 8f84bda8-4a60-4fb6-9df1-43d0356dc759)
+  (paper "A4")
+  (title_block
+    (title "FALCON-01 LOW-VOLTAGE CARRIER")
+    (date "2026-08-20")
+    (rev "PRE-SCHEMATIC A")
+    (company "PROJECT FALCON-01")
+    (comment 1 "NOT APPROVED FOR FABRICATION")
+    (comment 2 "Module footprints and protection components remain TBD")
+  )
+  (lib_symbols)
+  (sheet_instances
+    (path "/" (page "1"))
+  )
+)

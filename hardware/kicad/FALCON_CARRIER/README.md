@@ -1,6 +1,7 @@
 # FALCON-01 Low-Voltage Carrier PCB
 
-Status: **pre-schematic draft; not approved for fabrication**.
+Status: **native KiCad pre-schematic and placement-zone draft; not approved for
+fabrication**.
 
 This KiCad project will implement a serviceable low-voltage carrier for the
 ESP32 DevKit and selected sensor breakouts. It intentionally excludes the raw
@@ -39,9 +40,10 @@ enclosure and modules are physically measured.
 
 ## Native KiCad files
 
-Native `.kicad_pro`, `.kicad_sch`, and `.kicad_pcb` files will be created with
-the installed KiCad version. Do not manufacture from placeholder footprints or
-from exported pictures.
+Native KiCad 10 `.kicad_pro`, `.kicad_sch`, and `.kicad_pcb` files are present.
+The board contains a 200 x 160 mm planning outline and labeled placement zones,
+not final footprints or routing. Do not manufacture from placeholder geometry
+or exported pictures.
 
 Use these source registers during capture:
 
