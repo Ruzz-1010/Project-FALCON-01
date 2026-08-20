@@ -96,6 +96,11 @@ The next release gate is [FOOTPRINT_VALIDATION.md](FOOTPRINT_VALIDATION.md).
 Record measurements in `footprint_measurements.csv`; do not start final copper
 routing while the critical rows remain `PENDING`.
 
+Official product dimensions and CAD-derived hole/header coordinates gathered
+for that gate are recorded in
+[MANUFACTURER_DIMENSION_RESEARCH.md](MANUFACTURER_DIMENSION_RESEARCH.md).
+These references reduce guesswork but do not replace the receiving and 1:1 checks.
+
 KiCad routing classes and the required routing sequence are documented in
 [ROUTING_PLAN.md](ROUTING_PLAN.md). The project now applies wider power/fan
 rules and separate sensor-bus/external-sensor clearances automatically.

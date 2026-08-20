@@ -1,12 +1,12 @@
 reference,item,manufacturer_part_number,revision,pcb_width_mm,pcb_length_mm,max_height_mm,pin_count,pin_pitch_mm,row_spacing_mm,mount_hole_diameter_mm,mount_hole_coordinates_mm,connector_or_overhang_clearance_mm,pin_1_and_order_verified,photo_top,photo_bottom,one_to_one_print_result,status,notes
-U2,ESP32-DevKitC V4,Espressif ESP32-DevKitC V4 with ESP32-WROOM-32E,official 38-pin reference,28.4,47.92,,38,2.54,25.4,,,,,vendor CAD imported,,,REFERENCE_LOCKED_PHYSICAL_CHECK_PENDING,"Use WROOM-32E only; WROVER reserves GPIO16/17; verify delivered board at 1:1"
-U3,BNO085,,,,,,,,,,,,,,,,PENDING,"Expected Adafruit PID 4754; verify actual purchase"
-J2,Bar02 cable interface,,,,,,,,,,,,,,,,PENDING,"Verify exact JST-GH pin order and mating direction"
-J3,GPS breakout,,,,,,,,,,,,,,,,PENDING,"Record antenna type and clearance"
-J4,INA260 battery,,,,,,,,,,,,,,,,PENDING,"Record logic and high-current terminal geometry"
-J5,INA260 solar,,,,,,,,,,,,,,,,PENDING,"Verify address-jumper access and 0x41 configuration"
-J6,MCP9808,,,,,,,,,,,,,,,,PENDING,"Keep away from local heat sources"
-U4,ADS1115,,,,,,,,,,,,,,,,PENDING,"Record address jumper and A0 position"
+U2,ESP32-DevKitC V4,Espressif ESP32-DevKitC V4 with ESP32-WROOM-32E,official V4 WROOM-32 reference,27.9,48.2,,38,2.54,25.4,,,54.4 mm maximum including USB connector,official pinout/CAD,,,,CAD_REFERENCE_PHYSICAL_CHECK_PENDING,Official dimensions drawing; delivered module and 1:1 fit still required
+U3,BNO085,Adafruit BNO085 PID 4754,Rev C CAD / current product,25.4,22.86,4.6,12,2.54,,2.5,"(2.54,2.54); (22.86,2.54); (2.54,20.32); (22.86,20.32)",STEMMA QT connector access required,official Eagle CAD,,,,CAD_REFERENCE_PHYSICAL_CHECK_PENDING,Product lists 25.6 x 22.7 x 4.6 mm; Eagle outline is 25.4 x 22.86 mm
+J2,Bar02 cable interface,Blue Robotics Bar02 R2 BR-100891,R2,16 diameter,307.6 assembly envelope,,4,1.25,,,M10 x 1.5 bulkhead; 10.0-10.2 enclosure port,4-position JST GH; cable included in 307.6 mm CAD envelope,official pinout/CAD,,,,CAD_REFERENCE_CONNECTOR_SELECTION_PENDING,"Sensor is bulkhead-mounted, not PCB-mounted; select exact board-side JST-GH orientation"
+J3,GPS breakout,Adafruit Ultimate GPS PID 746 PA1616S,current product / official Eagle CAD,25.4,34.29,6.5,9,2.54,,2.5,"(2.54,31.75); (22.86,31.75)",Antenna and optional u.FL cable keep-out required,official Eagle CAD,,,,CAD_REFERENCE_PHYSICAL_CHECK_PENDING,Product lists 25.5 x 35 x 6.5 mm; board revision and antenna clearance need receiving check
+J4,INA260 battery,Adafruit INA260 PID 4226,current product / official Eagle CAD,22.86,22.86,2.7 PCB only,8,2.54,,2.5,"(2.54,20.32); (20.32,20.32)",5.08 mm terminal block and high-current cable clearance TBD,official Eagle CAD,,,,CAD_REFERENCE_PHYSICAL_CHECK_PENDING,Product height excludes pre-soldered terminal block; high-current path stays off carrier
+J5,INA260 solar,Adafruit INA260 PID 4226,current product / official Eagle CAD,22.86,22.86,2.7 PCB only,8,2.54,,2.5,"(2.54,20.32); (20.32,20.32)",5.08 mm terminal block and address-jumper access TBD,official Eagle CAD,,,,CAD_REFERENCE_PHYSICAL_CHECK_PENDING,Set and bench-verify address 0x41; high-current path stays off carrier
+J6,MCP9808,Adafruit MCP9808 PID 1782,header-only product baseline,21,13,2 PCB only,8,2.54,,,,Header and airflow clearance TBD,official product specification,,,,PRODUCT_REFERENCE_PHYSICAL_CHECK_PENDING,"BOM previously lacked exact SKU; PID 1782 selected as research baseline, final revision/footprint still requires CAD and receiving check"
+U4,ADS1115,Adafruit ADS1115 PID 1085 STEMMA QT,June 2022+ official Eagle CAD,25.4,17.78,4.6,12 total / two 6-pin rows,2.54,,2.5,"(2.54,2.54); (22.86,2.54); (2.54,15.24); (22.86,15.24)",STEMMA QT and A0 access required,official Eagle CAD,,,,CAD_REFERENCE_PHYSICAL_CHECK_PENDING,Do not substitute pre-2022 board; physical shape and pinout changed with STEMMA QT revision
 J7,Anemometer connector,,,,,,,,,,,,,,,,PENDING,"Select keyed field connector"
 J8,Wind-vane connector,,,,,,,,,,,,,,,,PENDING,"Select keyed field connector"
 J9,DS18B20 connector,,,,,,,,,,,,,,,,PENDING,"Confirm probe cable colors against continuity"

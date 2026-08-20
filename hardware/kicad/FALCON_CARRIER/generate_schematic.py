@@ -102,7 +102,7 @@ MODULES = [
         ("4", "BNO_MISO"), ("5", "BNO_MOSI"), ("6", "BNO_CS"),
         ("7", "BNO_INT"), ("8", "BNO_RST"), ("9", "+3V3_SENSOR"),
         ("10", "+3V3_SENSOR")], 220, 45),
-    ("J2", "BAR02_I2C", [("1", "+3V3_SENSOR"), ("2", "GND"), ("3", "I2C_SCL"), ("4", "I2C_SDA")], 55, 75),
+    ("J2", "BAR02_I2C", [("1", "+3V3_SENSOR"), ("2", "I2C_SCL"), ("3", "I2C_SDA"), ("4", "GND")], 55, 75),
     ("J3", "GPS_UART", [("1", "+3V3_SENSOR"), ("2", "GND"), ("3", "GPS_TX"), ("4", "GPS_RX")], 55, 105),
     ("J4", "INA260_BAT_LOGIC", [("1", "+3V3_SENSOR"), ("2", "GND"), ("3", "I2C_SCL"), ("4", "I2C_SDA")], 100, 75),
     ("J5", "INA260_SOLAR_0X41", [("1", "+3V3_SENSOR"), ("2", "GND"), ("3", "I2C_SCL"), ("4", "I2C_SDA")], 100, 105),
