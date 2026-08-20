@@ -1,5 +1,5 @@
 reference,item,manufacturer_part_number,revision,pcb_width_mm,pcb_length_mm,max_height_mm,pin_count,pin_pitch_mm,row_spacing_mm,mount_hole_diameter_mm,mount_hole_coordinates_mm,connector_or_overhang_clearance_mm,pin_1_and_order_verified,photo_top,photo_bottom,one_to_one_print_result,status,notes
-U2,ESP32 DevKit,,,,,,,,,,,,,,,,PENDING,"Highest priority; generic DevKit dimensions are not standardized"
+U2,ESP32-DevKitC V4,Espressif ESP32-DevKitC V4 with ESP32-WROOM-32E,official 38-pin reference,28.4,47.92,,38,2.54,25.4,,,,,vendor CAD imported,,,REFERENCE_LOCKED_PHYSICAL_CHECK_PENDING,"Use WROOM-32E only; WROVER reserves GPIO16/17; verify delivered board at 1:1"
 U3,BNO085,,,,,,,,,,,,,,,,PENDING,"Expected Adafruit PID 4754; verify actual purchase"
 J2,Bar02 cable interface,,,,,,,,,,,,,,,,PENDING,"Verify exact JST-GH pin order and mating direction"
 J3,GPS breakout,,,,,,,,,,,,,,,,PENDING,"Record antenna type and clearance"

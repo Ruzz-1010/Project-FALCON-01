@@ -9,7 +9,7 @@ markup. Confirm the live exchange rate, stock, revision, and ratings before orde
 
 | Qty | Selected item | Budget | Procurement note |
 | ---: | --- | ---: | --- |
-| 1 | ESP32 DevKit / ESP-WROOM-32 | PHP 620–1,235 | Match `esp32dev`; photograph exact pin labels |
+| 1 | Espressif ESP32-DevKitC V4 with ESP32-WROOM-32E, 38-pin | PHP 620–1,235 | Exact carrier reference; do not substitute WROVER because GPIO16/17 are required |
 | 1 | Adafruit BNO085, PID 4754 | PHP 1,540 | Use SPI with INT/RST; add headers/cable |
 | 1 | Blue Robotics Bar02 R2 | PHP 4,940–5,555 | Select Bar02, JST-GH lead, bulkhead seal |
 | 1 | Adafruit Ultimate GPS, PID 746 | PHP 1,850 | UART; external antenna optional |

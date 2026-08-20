@@ -94,6 +94,12 @@ KiCad routing classes and the required routing sequence are documented in
 [ROUTING_PLAN.md](ROUTING_PLAN.md). The project now applies wider power/fan
 rules and separate sensor-bus/external-sensor clearances automatically.
 
+U2 is now locked to the official **Espressif ESP32-DevKitC V4 with
+ESP32-WROOM-32E** 38-pad geometry and header numbering. The official Espressif
+KiCad footprint and its license are stored under `vendor/`; the generated board
+uses the same pad pitch, row spacing, outline, USB end, and approved functional
+pad mapping. Physical receiving/1:1 validation is still required.
+
 Use these source registers during capture:
 
 - [NET_REGISTER.csv](NET_REGISTER.csv)

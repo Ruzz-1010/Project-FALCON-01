@@ -77,13 +77,26 @@ def symbol_instance(ref: str, name: str, pins: list[tuple[str, str]], x: float, 
 MODULES = [
     ("J1", "POWER_INPUT", [("1", "+5V_PROTECTED"), ("2", "GND")], 55, 35),
     ("U1", "REGULATOR_3V3_TBD", [("1", "+5V_PROTECTED"), ("2", "GND"), ("3", "+3V3_SENSOR")], 100, 35),
-    ("U2", "ESP32_DEVKIT_INTERFACE", [
-        ("1", "+5V_PROTECTED"), ("2", "+3V3_SENSOR"), ("3", "GND"),
-        ("4", "I2C_SDA"), ("5", "I2C_SCL"), ("6", "BNO_SCK"),
-        ("7", "BNO_MISO"), ("8", "BNO_MOSI"), ("9", "BNO_CS"),
-        ("10", "BNO_INT"), ("11", "BNO_RST"), ("12", "GPS_TX"),
-        ("13", "GPS_RX"), ("14", "WIND_PULSE"), ("15", "WATER_TEMP"),
-        ("16", "LEAK_SIGNAL"), ("17", "FAN_PWM")], 155, 50),
+    ("U2", "ESP32_DEVKITC_V4_WROOM32E", [
+        ("1", "+3V3_SENSOR"),       # J2.1  3V3
+        ("7", "LEAK_SIGNAL"),       # J2.7  GPIO32
+        ("8", "FAN_PWM"),           # J2.8  GPIO33
+        ("9", "WIND_PULSE"),        # J2.9  GPIO25
+        ("10", "WATER_TEMP"),       # J2.10 GPIO26
+        ("11", "BNO_INT"),          # J2.11 GPIO27
+        ("12", "BNO_RST"),          # J2.12 GPIO14
+        ("14", "GND"),              # J2.14 GND
+        ("15", "BNO_CS"),           # J2.15 GPIO13
+        ("19", "+5V_PROTECTED"),    # J2.19 5V
+        ("27", "GPS_TX"),           # J3.12 GPIO16 / ESP32 RX2
+        ("28", "GPS_RX"),           # J3.11 GPIO17 / ESP32 TX2
+        ("30", "BNO_SCK"),          # J3.9  GPIO18
+        ("31", "BNO_MISO"),         # J3.8  GPIO19
+        ("32", "GND"),              # J3.7  GND
+        ("33", "I2C_SDA"),          # J3.6  GPIO21
+        ("36", "I2C_SCL"),          # J3.3  GPIO22
+        ("37", "BNO_MOSI"),         # J3.2  GPIO23
+        ("38", "GND")], 155, 50),   # J3.1  GND
     ("U3", "BNO085_SPI", [
         ("1", "+3V3_SENSOR"), ("2", "GND"), ("3", "BNO_SCK"),
         ("4", "BNO_MISO"), ("5", "BNO_MOSI"), ("6", "BNO_CS"),

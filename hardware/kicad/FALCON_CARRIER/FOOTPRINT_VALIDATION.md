@@ -30,7 +30,7 @@ length, USB connector, and regulator placement.
 
 | Priority | Reference | Item | Required evidence |
 | --- | --- | --- | --- |
-| 1 | U2 | ESP32 DevKit | Exact revision, 30-pin order, row spacing, board size, USB overhang, antenna end |
+| 1 | U2 | Espressif ESP32-DevKitC V4 with ESP32-WROOM-32E | Official 38-pin CAD is locked; verify delivered revision, USB overhang, antenna end, and header fit at 1:1 |
 | 2 | U3 | Adafruit BNO085 PID 4754 | Board outline, full header order, holes, P0/P1 access, axis orientation |
 | 3 | J2 | Blue Robotics Bar02 R2 | Exact cable/connector revision and JST-GH pin order |
 | 4 | J3 | GPS breakout | Exact product/revision, header order, antenna and keep-out |

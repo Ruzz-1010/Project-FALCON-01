@@ -24,7 +24,7 @@ placements = {
     # Pull-ups remain physically close to the associated field inputs.
     "R1": (51, 75), "R2": (51, 135),
     # Center/right: rigid motion sensor, GPS, controller, and antenna edge.
-    "U3": (135, 88), "J3": (145, 45), "U2": (192, 82),
+    "U3": (135, 88), "J3": (145, 45), "U2": (165, 65),
     # Bottom service and power section, separated from BNO085/GPS.
     "J12": (120, 150), "U1": (160, 152), "U5": (180, 130),
     "J11": (208, 130), "J1": (208, 158),
@@ -87,10 +87,54 @@ def footprint(ref: str, value: str, pins: list[tuple[str, str]], x: float, y: fl
   )'''
 
 
+def esp32_devkitc_footprint(ref: str, value: str, pins: list[tuple[str, str]], x: float, y: float) -> str:
+    """38-pad geometry from Espressif's official ESP32-DevKitC footprint."""
+    used = {number: net for number, net in pins}
+    pads = []
+    for number in range(1, 39):
+        if number <= 19:
+            px, py = 0.0, (number - 1) * 2.54
+        else:
+            px, py = 25.4, (38 - number) * 2.54
+        shape = "rect" if number == 1 else "oval"
+        net_clause = ""
+        if str(number) in used:
+            net = used[str(number)]
+            net_clause = f' (net {net_id[net]} "{net}")'
+        pads.append(
+            f'''    (pad "{number}" thru_hole {shape} (at {px:.2f} {py:.2f} 270)
+      (size 1.2 2.0) (drill 0.8) (layers "*.Cu" "*.Mask"){net_clause}
+      (uuid "{uid(ref + '/pad/' + str(number))}"))'''
+        )
+    return f'''  (footprint "FALCON_LOCKED_ESP32_DEVKITC_V4"
+    (layer "F.Cu") (uuid "{uid(ref)}") (at {x:.2f} {y:.2f} 90)
+    (descr "ESP32-DevKitC V4 geometry locked from official Espressif KiCad library")
+    (tags "ESP32 DevKitC V4 WROOM-32E OFFICIAL GEOMETRY")
+{property_block(ref, "ESP32-DevKitC_V4_WROOM-32E", -3.1)}
+    (path "/{uid(ref)}") (attr through_hole)
+    (fp_rect (start -1.5 -1.1) (end 26.9 46.82)
+      (stroke (width 0.2) (type solid)) (fill none) (layer "F.Fab")
+      (uuid "{uid(ref + '/outline')}"))
+    (fp_rect (start 3.73 -7.01) (end 21.71 -1.12)
+      (stroke (width 0.25) (type solid)) (fill none) (layer "F.SilkS")
+      (uuid "{uid(ref + '/usb')}"))
+    (fp_text user "USB / POWER END" (at 12.7 -4.1 0) (layer "F.SilkS")
+      (uuid "{uid(ref + '/usb-label')}")
+      (effects (font (size 0.8 0.8) (thickness 0.15))))
+    (fp_text user "ANTENNA END" (at 12.7 44.45 0) (layer "F.SilkS")
+      (uuid "{uid(ref + '/antenna-label')}")
+      (effects (font (size 0.8 0.8) (thickness 0.15))))
+{chr(10).join(pads)}
+  )'''
+
+
 footprints = []
 for ref, value, pins, _, _ in MODULES:
     x, y = placements[ref]
-    footprints.append(footprint(ref, value, pins, x, y))
+    if ref == "U2":
+        footprints.append(esp32_devkitc_footprint(ref, value, pins, x, y))
+    else:
+        footprints.append(footprint(ref, value, pins, x, y))
 
 holes = []
 for index, (x, y) in enumerate(((26, 26), (214, 26), (26, 174), (214, 174)), start=1):
@@ -148,10 +192,10 @@ board = f'''(kicad_pcb
   (gr_text "POWER / SERVICE" (at 180 174 0) (layer "F.SilkS")
     (uuid "{uid('zone-power')}")
     (effects (font (size 1.1 1.1) (thickness 0.22)) (justify bottom)))
-  (gr_rect (start 205 60) (end 218 108)
+  (gr_rect (start 205 50) (end 218 80)
     (stroke (width 0.5) (type dash_dot)) (fill none) (layer "Dwgs.User")
     (uuid "{uid('antenna-keepout')}"))
-  (gr_text "ESP32 ANTENNA KEEP-OUT" (at 213 84 90) (layer "Dwgs.User")
+  (gr_text "ESP32 ANTENNA KEEP-OUT" (at 213 65 90) (layer "Dwgs.User")
     (uuid "{uid('antenna-text')}")
     (effects (font (size 1 1) (thickness 0.2)) (justify bottom)))
 )

@@ -11,7 +11,7 @@ power path. Exact purchased revisions and measurements remain release gates.
 
 | Area | Result | Basis |
 | --- | --- | --- |
-| Controller | ESP32 DevKit / ESP-WROOM-32 class | Matches PlatformIO `esp32dev`; exact DevKit footprint remains open |
+| Controller | Espressif ESP32-DevKitC V4 with ESP32-WROOM-32E | Official 38-pad pinout and Espressif KiCad footprint locked; physical 1:1 receiving check remains open |
 | I2C bus | GPIO21 SDA, GPIO22 SCL, 3.3 V logic | Firmware, pinout, and wiring documents agree |
 | BNO085 SPI | SCK 18, MISO 19, MOSI 23, CS 13, INT 27, RST 14 | Firmware and documents agree; P0 and P1 high select SPI |
 | GPS UART2 | GPS TX to GPIO16; GPS RX from GPIO17; 9600 baud baseline | Firmware and documents agree |
@@ -73,7 +73,7 @@ mean.
 
 | Priority | Required decision or evidence | Why it blocks release |
 | --- | --- | --- |
-| Critical | Exact ESP32 DevKit manufacturer/revision and measured header spacing | Generic `ESP32 DevKit V1` footprints are not mechanically interchangeable |
+| High | Receive and 1:1-check Espressif ESP32-DevKitC V4 with ESP32-WROOM-32E | Exact official reference is locked, but delivered board/revision and headers still require physical confirmation |
 | Critical | Exact 5 V buck models and output-current/ripple test | Defines input connector, protection, thermal area, and power quality |
 | Critical | Exact MPPT, battery BMS, panel Voc/Isc, and load-current measurements | Required for correct fusing and current-monitor topology |
 | Critical | Connector family, pin count, current rating, waterproofing method, and keying | Prevents reversed sensors and unsafe power connections |

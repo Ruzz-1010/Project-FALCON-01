@@ -15,7 +15,7 @@ connecting individual pins.
 
 | Qty | Part | Reason |
 | ---: | --- | --- |
-| 1 | ESP32 DevKit / ESP-WROOM-32 | Existing controller family |
+| 1 | Espressif ESP32-DevKitC V4 with ESP32-WROOM-32E, 38-pin | Exact carrier reference; preserves GPIO16/17 |
 | 1 | Adafruit BNO085 breakout | Fused orientation; use documented SPI mode |
 | 1 | Blue Robotics Bar02 | Shallow-water range and 0.16 mm depth resolution |
 | 1 | Adafruit Ultimate GPS or equivalent 3.3 V UART GPS | Simple UART integration |

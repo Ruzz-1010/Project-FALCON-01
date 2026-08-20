@@ -6,7 +6,9 @@
 pin labels and exact breakout revision before power. Marine power wiring remains
 subject to physical load, fuse, cable, connector, and waterproofing review.
 
-Controller: ESP32 DevKit / ESP-WROOM-32.
+Controller PCB reference: **Espressif ESP32-DevKitC V4 fitted with
+ESP32-WROOM-32E**, 38-pin header version. A visually similar WROVER version is
+not an approved substitute because GPIO16 and GPIO17 are reserved by WROVER.
 
 ## ESP32 Assignments
 
@@ -30,6 +32,11 @@ Controller: ESP32 DevKit / ESP-WROOM-32.
 
 GPIO 0, 2, 5, 12, and 15 remain unused because they are strapping pins. GPIO 1
 and 3 remain reserved for programming and logs.
+
+The carrier uses the official DevKitC header numbering: J2 pads 1–19 become PCB
+pads 1–19, while J3 runs from PCB pad 38 at its top/GND end down to pad 20 at
+its CLK end. The project schematic and PCB generator map only the approved
+functional pads; flash pins remain physically socketed but electrically open.
 
 ## Shared I2C Bus
 
