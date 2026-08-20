@@ -15,13 +15,19 @@ def uid(key: str) -> str:
 
 
 placements = {
-    "J1": (205, 155), "U1": (170, 148), "U2": (197, 62),
-    "U3": (122, 90), "J2": (32, 48), "J3": (150, 48),
-    "J4": (75, 50), "J5": (75, 78), "J6": (75, 106),
-    "U4": (75, 134), "J7": (32, 78), "J8": (32, 105),
-    "J9": (32, 130), "J10": (32, 153), "U5": (170, 120),
-    "J11": (205, 130), "J12": (122, 145), "R1": (115, 42),
-    "R2": (135, 42),
+    # Left edge: field-service connectors in physical cable order.
+    "J2": (32, 45), "J7": (32, 75), "J8": (32, 105),
+    "J9": (32, 135), "J10": (32, 160),
+    # I2C distribution column; short shared-bus paths and clear addressing order.
+    "J4": (78, 48), "J5": (78, 78), "J6": (78, 108),
+    "U4": (78, 138),
+    # Pull-ups remain physically close to the associated field inputs.
+    "R1": (51, 75), "R2": (51, 135),
+    # Center/right: rigid motion sensor, GPS, controller, and antenna edge.
+    "U3": (135, 88), "J3": (145, 45), "U2": (192, 82),
+    # Bottom service and power section, separated from BNO085/GPS.
+    "J12": (120, 150), "U1": (160, 152), "U5": (180, 130),
+    "J11": (208, 130), "J1": (208, 158),
 }
 
 nets = []
@@ -108,7 +114,7 @@ board = f'''(kicad_pcb
   (general (thickness 1.6) (legacy_teardrops no))
   (paper "A4")
   (title_block (title "FALCON-01 LOW-VOLTAGE CARRIER") (date "2026-08-20")
-    (rev "PLACEMENT V0.2") (company "PROJECT FALCON-01")
+    (rev "PLACEMENT V0.3") (company "PROJECT FALCON-01")
     (comment 1 "ALL FOOTPRINTS PROVISIONAL — VERIFY AT 1:1")
     (comment 2 "NOT APPROVED FOR FABRICATION"))
   (layers
@@ -124,16 +130,28 @@ board = f'''(kicad_pcb
   (gr_rect (start 20 20) (end 220 180)
     (stroke (width 0.5) (type default)) (fill none) (layer "Edge.Cuts")
     (uuid "{uid('outline')}"))
-  (gr_text "FALCON-01 CARRIER — PROVISIONAL PLACEMENT V0.2" (at 120 25 0)
+  (gr_text "FALCON-01 CARRIER — PROVISIONAL PLACEMENT V0.3" (at 120 25 0)
     (layer "F.SilkS") (uuid "{uid('title')}")
     (effects (font (size 2.2 2.2) (thickness 0.4)) (justify bottom)))
   (gr_text "VERIFY EVERY MODULE, CONNECTOR AND HOLE AT 1:1 BEFORE FABRICATION" (at 120 176 0)
     (layer "F.SilkS") (uuid "{uid('warning')}")
     (effects (font (size 1.2 1.2) (thickness 0.25)) (justify bottom)))
-  (gr_rect (start 207 42) (end 218 94)
+  (gr_text "FIELD SENSORS" (at 42 29 0) (layer "F.SilkS")
+    (uuid "{uid('zone-field')}")
+    (effects (font (size 1.1 1.1) (thickness 0.22)) (justify bottom)))
+  (gr_text "I2C DISTRIBUTION" (at 78 29 0) (layer "F.SilkS")
+    (uuid "{uid('zone-i2c')}")
+    (effects (font (size 1.1 1.1) (thickness 0.22)) (justify bottom)))
+  (gr_text "MOTION / CONTROL" (at 160 29 0) (layer "F.SilkS")
+    (uuid "{uid('zone-control')}")
+    (effects (font (size 1.1 1.1) (thickness 0.22)) (justify bottom)))
+  (gr_text "POWER / SERVICE" (at 180 174 0) (layer "F.SilkS")
+    (uuid "{uid('zone-power')}")
+    (effects (font (size 1.1 1.1) (thickness 0.22)) (justify bottom)))
+  (gr_rect (start 205 60) (end 218 108)
     (stroke (width 0.5) (type dash_dot)) (fill none) (layer "Dwgs.User")
     (uuid "{uid('antenna-keepout')}"))
-  (gr_text "ESP32 ANTENNA KEEP-OUT" (at 215 68 90) (layer "Dwgs.User")
+  (gr_text "ESP32 ANTENNA KEEP-OUT" (at 213 84 90) (layer "Dwgs.User")
     (uuid "{uid('antenna-text')}")
     (effects (font (size 1 1) (thickness 0.2)) (justify bottom)))
 )

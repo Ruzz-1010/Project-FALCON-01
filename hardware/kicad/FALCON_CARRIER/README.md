@@ -60,6 +60,13 @@ result is **zero geometry/rule violations and 64 expected unconnected ratsnest
 items**. Those connections must remain visible until deliberate copper routing;
 they are not to be suppressed or described as a finished PCB.
 
+Placement v0.3 reorganizes the same validated nets into professional functional
+zones: field connectors on the left service edge, I2C modules in an addressable
+distribution column, pull-ups beside their inputs, BNO085/GPS in the quiet
+control area, ESP32 at the antenna edge, and power/fan/service components at the
+bottom right. This reduces ratsnest crossing before routing without pretending
+that the provisional footprints are final.
+
 Reference map:
 
 | Reference | Function |
