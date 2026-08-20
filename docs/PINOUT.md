@@ -42,7 +42,7 @@ functional pads; flash pins remain physically socketed but electrically open.
 
 | Device | Address | Supply | Purpose |
 | --- | --- | --- | --- |
-| Blue Robotics Bar02 | Module default | 3.3 V | Pressure/wave input |
+| Blue Robotics Bar02 | `0x76` | 3.3 V | Pressure/wave input; JST-GH 1 Vin, 2 SCL, 3 SDA, 4 GND |
 | INA260 battery | `0x40` | 3.3 V | Battery branch monitor |
 | INA260 solar | `0x41` | 3.3 V | Solar/charger monitor |
 | MCP9808 | `0x18` | 3.3 V | Enclosure temperature |
