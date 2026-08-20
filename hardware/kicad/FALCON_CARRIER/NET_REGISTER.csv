@@ -1,0 +1,22 @@
+net_name,source,destinations,voltage_or_type,status,note
+GND,J1.2,"all modules and external connectors",0 V,validated,"logic ground; controlled connection to protected low-voltage distribution"
++5V_PROTECTED,J1.1,"ESP32 5V input; 3V3 regulator input; fan power if 5 V model selected",5 V regulated,TBD,"add fuse/source selection after exact buck and DevKit are known"
++3V3_SENSOR,U1.OUT,"I2C modules; BNO085; pull-ups; external sensor interfaces",3.3 V regulated,TBD,"regulator and current rating require load measurement"
+I2C_SDA,ESP32.GPIO21,"Bar02; INA260_BAT; INA260_SOLAR; MCP9808; ADS1115",3.3 V open-drain,validated,"audit total installed pull-up resistance"
+I2C_SCL,ESP32.GPIO22,"Bar02; INA260_BAT; INA260_SOLAR; MCP9808; ADS1115",3.3 V open-drain,validated,"audit total installed pull-up resistance"
+BNO_SCK,ESP32.GPIO18,BNO085.SCL_SCK,3.3 V SPI,validated,
+BNO_MISO,ESP32.GPIO19,BNO085.SDA_MISO,3.3 V SPI,validated,
+BNO_MOSI,ESP32.GPIO23,BNO085.DI_MOSI,3.3 V SPI,validated,
+BNO_CS,ESP32.GPIO13,BNO085.CS,3.3 V digital,validated,"active low"
+BNO_INT,BNO085.INT,ESP32.GPIO27,3.3 V digital,validated,"active low; required"
+BNO_RST,ESP32.GPIO14,BNO085.RST,3.3 V digital,validated,"active low; required"
+BNO_P0,+3V3_SENSOR,BNO085.P0,mode strap,validated,"high with P1 selects SPI"
+BNO_P1,+3V3_SENSOR,BNO085.P1,mode strap,validated,"high with P0 selects SPI"
+GPS_TX,GPS.TX,ESP32.GPIO16_UART2_RX,3.3 V UART,validated,"9600 baud baseline"
+GPS_RX,ESP32.GPIO17_UART2_TX,GPS.RX,3.3 V UART,validated,"9600 baud baseline"
+WIND_PULSE,J7.2,ESP32.GPIO25,3.3 V digital,validated,"reed to GND; 10 kOhm external pull-up"
+WIND_VANE,J8.2,ADS1115.A0,0-3.3 V analog,provisional,"exact resistor ladder and calibration required"
+WATER_TEMP,J9.2,ESP32.GPIO26,OneWire,provisional,"4.7 kOhm pull-up; optional probe"
+LEAK_SIGNAL,J10.2,ESP32.GPIO32,TBD digital,TBD,"do not finalize until detector output is selected"
+FAN_PWM,ESP32.GPIO33,Q1_GATE,3.3 V PWM,provisional,"series gate resistor and pull-down required"
+FAN_SWITCHED,Q1_DRAIN,J11.2,TBD power,TBD,"fan voltage/current and protection remain open"
