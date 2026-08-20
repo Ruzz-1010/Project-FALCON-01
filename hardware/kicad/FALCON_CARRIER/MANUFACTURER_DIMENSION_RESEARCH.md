@@ -26,6 +26,10 @@ on pin 2. The schematic generator and connector register were corrected to the
 manufacturer order during this research. Plug-view orientation must still be
 checked on the received mating connector before applying power.
 
+The CAD-confirmed U3, J3, J4, J5, and U4 datums were promoted into the native
+KiCad placement v0.5. Unused manufacturer header pads remain physically present
+but unconnected; the carrier connects only the reviewed power and signal pins.
+
 ## Items that cannot be dimensioned yet
 
 J1 and J7–J12 connector bodies, U1 regulator, U5 fan driver, leak detector,

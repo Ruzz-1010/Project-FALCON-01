@@ -98,16 +98,16 @@ MODULES = [
         ("37", "BNO_MOSI"),         # J3.2  GPIO23
         ("38", "GND")], 155, 50),   # J3.1  GND
     ("U3", "BNO085_SPI", [
-        ("1", "+3V3_SENSOR"), ("2", "GND"), ("3", "BNO_SCK"),
-        ("4", "BNO_MISO"), ("5", "BNO_MOSI"), ("6", "BNO_CS"),
-        ("7", "BNO_INT"), ("8", "BNO_RST"), ("9", "+3V3_SENSOR"),
-        ("10", "+3V3_SENSOR")], 220, 45),
+        ("A1", "+3V3_SENSOR"), ("A3", "GND"), ("A4", "BNO_SCK"),
+        ("A5", "BNO_MISO"), ("A6", "BNO_INT"),
+        ("B2", "+3V3_SENSOR"), ("B3", "+3V3_SENSOR"), ("B4", "BNO_RST"),
+        ("B5", "BNO_MOSI"), ("B6", "BNO_CS")], 220, 45),
     ("J2", "BAR02_I2C", [("1", "+3V3_SENSOR"), ("2", "I2C_SCL"), ("3", "I2C_SDA"), ("4", "GND")], 55, 75),
-    ("J3", "GPS_UART", [("1", "+3V3_SENSOR"), ("2", "GND"), ("3", "GPS_TX"), ("4", "GPS_RX")], 55, 105),
+    ("J3", "GPS_UART", [("2", "+3V3_SENSOR"), ("3", "GND"), ("4", "GPS_RX"), ("5", "GPS_TX")], 55, 105),
     ("J4", "INA260_BAT_LOGIC", [("1", "+3V3_SENSOR"), ("2", "GND"), ("3", "I2C_SCL"), ("4", "I2C_SDA")], 100, 75),
     ("J5", "INA260_SOLAR_0X41", [("1", "+3V3_SENSOR"), ("2", "GND"), ("3", "I2C_SCL"), ("4", "I2C_SDA")], 100, 105),
     ("J6", "MCP9808_0X18", [("1", "+3V3_SENSOR"), ("2", "GND"), ("3", "I2C_SCL"), ("4", "I2C_SDA")], 55, 135),
-    ("U4", "ADS1115_0X48", [("1", "+3V3_SENSOR"), ("2", "GND"), ("3", "I2C_SCL"), ("4", "I2C_SDA"), ("5", "WIND_VANE")], 100, 135),
+    ("U4", "ADS1115_0X48", [("B1", "+3V3_SENSOR"), ("B2", "GND"), ("B3", "I2C_SCL"), ("B4", "I2C_SDA"), ("A5", "WIND_VANE")], 100, 135),
     ("J7", "ANEMOMETER", [("1", "+3V3_SENSOR"), ("2", "WIND_PULSE"), ("3", "GND")], 55, 165),
     ("J8", "WIND_VANE", [("1", "+3V3_SENSOR"), ("2", "WIND_VANE"), ("3", "GND")], 100, 165),
     ("J9", "DS18B20_OPTION", [("1", "+3V3_SENSOR"), ("2", "WATER_TEMP"), ("3", "GND")], 145, 145),

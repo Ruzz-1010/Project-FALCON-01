@@ -24,7 +24,7 @@ placements = {
     # Pull-ups remain physically close to the associated field inputs.
     "R1": (51, 75), "R2": (51, 135),
     # Center/right: rigid motion sensor, GPS, controller, and antenna edge.
-    "U3": (135, 88), "J3": (145, 45), "U2": (165, 65),
+    "U3": (135, 88), "J3": (145, 45), "U2": (173, 90),
     # Bottom service and power section, separated from BNO085/GPS.
     "J12": (120, 150), "U1": (160, 152), "U5": (180, 130),
     "J11": (208, 130), "J1": (208, 158),
@@ -112,7 +112,7 @@ def esp32_devkitc_footprint(ref: str, value: str, pins: list[tuple[str, str]], x
       (uuid "{uid(ref + '/pad/' + str(number))}"))'''
         )
     return f'''  (footprint "FALCON_LOCKED_ESP32_DEVKITC_V4"
-    (layer "F.Cu") (uuid "{uid(ref)}") (at {x:.2f} {y:.2f} 90)
+    (layer "F.Cu") (uuid "{uid(ref)}") (at {x:.2f} {y:.2f} 270)
     (descr "ESP32-DevKitC V4 geometry locked from official Espressif KiCad library")
     (tags "ESP32 DevKitC V4 WROOM-32E OFFICIAL GEOMETRY")
 {property_block(ref, "ESP32-DevKitC_V4_WROOM-32E", -3.1)}
@@ -130,6 +130,85 @@ def esp32_devkitc_footprint(ref: str, value: str, pins: list[tuple[str, str]], x
       (uuid "{uid(ref + '/antenna-label')}")
       (effects (font (size 0.8 0.8) (thickness 0.15))))
 {chr(10).join(pads)}
+  )'''
+
+
+OFFICIAL_MODULE_GEOMETRY = {
+    # Coordinates are from the manufacturers' Eagle board datum, in mm.
+    "U3": {
+        "size": (25.4, 22.86),
+        "pads": [(f"A{i}", 6.35 + (i - 1) * 2.54, 2.54) for i in range(1, 7)]
+                + [(f"B{i}", 6.35 + (i - 1) * 2.54, 20.32) for i in range(1, 7)],
+        "holes": [(2.54, 2.54), (22.86, 2.54), (2.54, 20.32), (22.86, 20.32)],
+        "source": "Adafruit BNO08x Rev C official Eagle CAD",
+    },
+    "J3": {
+        "size": (25.4, 34.29),
+        "pads": [(str(i), 22.86 - (i - 1) * 2.54, 2.032) for i in range(1, 10)],
+        "holes": [(2.54, 31.75), (22.86, 31.75)],
+        "source": "Adafruit Ultimate GPS PID 746 official Eagle CAD",
+    },
+    "J4": {
+        "size": (22.86, 22.86),
+        "pads": [(str(i), 2.54 + (i - 1) * 2.54, 2.54) for i in range(1, 9)],
+        "holes": [(2.54, 20.32), (20.32, 20.32)],
+        "source": "Adafruit INA260 PID 4226 official Eagle CAD",
+    },
+    "J5": {
+        "size": (22.86, 22.86),
+        "pads": [(str(i), 2.54 + (i - 1) * 2.54, 2.54) for i in range(1, 9)],
+        "holes": [(2.54, 20.32), (20.32, 20.32)],
+        "source": "Adafruit INA260 PID 4226 official Eagle CAD",
+    },
+    "U4": {
+        "size": (25.4, 17.78),
+        "pads": [(f"B{i}", 6.35 + (i - 1) * 2.54, 2.54) for i in range(1, 7)]
+                + [(f"A{i}", 6.35 + (i - 1) * 2.54, 15.24) for i in range(1, 7)],
+        "holes": [(2.54, 2.54), (22.86, 2.54), (2.54, 15.24), (22.86, 15.24)],
+        "source": "Adafruit ADS1115 PID 1085 STEMMA QT official Eagle CAD",
+    },
+}
+
+
+def official_module_footprint(
+    ref: str, value: str, pins: list[tuple[str, str]], x: float, y: float
+) -> str:
+    """Create a carrier socket from a manufacturer board datum."""
+    spec = OFFICIAL_MODULE_GEOMETRY[ref]
+    width, height = spec["size"]
+    connected = dict(pins)
+    pads = []
+    for index, (number, px, py) in enumerate(spec["pads"]):
+        net_clause = ""
+        if number in connected:
+            net = connected[number]
+            net_clause = f' (net {net_id[net]} "{net}")'
+        shape = "rect" if index == 0 else "circle"
+        pads.append(f'''    (pad "{number}" thru_hole {shape}
+      (at {px - width / 2:.3f} {py - height / 2:.3f})
+      (size 2.0 2.0) (drill 1.0) (layers "*.Cu" "*.Mask"){net_clause}
+      (uuid "{uid(ref + '/pad/' + number)}"))''')
+    holes = []
+    for index, (hx, hy) in enumerate(spec["holes"], start=1):
+        holes.append(f'''    (pad "" np_thru_hole circle
+      (at {hx - width / 2:.3f} {hy - height / 2:.3f})
+      (size 2.5 2.5) (drill 2.5) (layers "*.Cu" "*.Mask")
+      (uuid "{uid(ref + '/mount/' + str(index))}"))''')
+    return f'''  (footprint "FALCON_LOCKED_{value}"
+    (layer "F.Cu") (uuid "{uid(ref)}") (at {x:.2f} {y:.2f})
+    (descr "{spec['source']}; receiving check still required")
+    (tags "FALCON MANUFACTURER CAD SOCKET")
+{property_block(ref, value, -height / 2 - 2.0)}
+    (path "/{uid(ref)}") (attr through_hole)
+    (fp_rect (start {-width / 2:.3f} {-height / 2:.3f})
+      (end {width / 2:.3f} {height / 2:.3f})
+      (stroke (width 0.25) (type solid)) (fill none) (layer "F.SilkS")
+      (uuid "{uid(ref + '/outline')}"))
+    (fp_text user "CAD LOCKED · VERIFY 1:1" (at 0 0 0) (layer "F.Fab")
+      (uuid "{uid(ref + '/cad-label')}")
+      (effects (font (size 0.8 0.8) (thickness 0.14))))
+{chr(10).join(pads)}
+{chr(10).join(holes)}
   )'''
 
 
@@ -163,6 +242,8 @@ for ref, value, pins, _, _ in MODULES:
     x, y = placements[ref]
     if ref == "U2":
         footprints.append(esp32_devkitc_footprint(ref, value, pins, x, y))
+    elif ref in OFFICIAL_MODULE_GEOMETRY:
+        footprints.append(official_module_footprint(ref, value, pins, x, y))
     elif ref.startswith("TP"):
         footprints.append(test_point_footprint(ref, pins[0][1], x, y))
     else:
@@ -190,7 +271,7 @@ board = f'''(kicad_pcb
   (general (thickness 1.6) (legacy_teardrops no))
   (paper "A4")
   (title_block (title "FALCON-01 LOW-VOLTAGE CARRIER") (date "2026-08-20")
-    (rev "PLACEMENT V0.4") (company "PROJECT FALCON-01")
+    (rev "PLACEMENT V0.5") (company "PROJECT FALCON-01")
     (comment 1 "ALL FOOTPRINTS PROVISIONAL — VERIFY AT 1:1")
     (comment 2 "NOT APPROVED FOR FABRICATION"))
   (layers
@@ -206,7 +287,7 @@ board = f'''(kicad_pcb
   (gr_rect (start 20 20) (end 220 180)
     (stroke (width 0.5) (type default)) (fill none) (layer "Edge.Cuts")
     (uuid "{uid('outline')}"))
-  (gr_text "FALCON-01 CARRIER — PROVISIONAL PLACEMENT V0.4" (at 120 25 0)
+  (gr_text "FALCON-01 CARRIER — CAD-REFERENCED PLACEMENT V0.5" (at 120 25 0)
     (layer "F.SilkS") (uuid "{uid('title')}")
     (effects (font (size 2.2 2.2) (thickness 0.4)) (justify bottom)))
   (gr_text "VERIFY EVERY MODULE, CONNECTOR AND HOLE AT 1:1 BEFORE FABRICATION" (at 120 176 0)
@@ -227,10 +308,10 @@ board = f'''(kicad_pcb
   (gr_text "SERVICE TEST POINTS" (at 150 101 0) (layer "F.SilkS")
     (uuid "{uid('zone-test-points')}")
     (effects (font (size 1.0 1.0) (thickness 0.20)) (justify bottom)))
-  (gr_rect (start 205 50) (end 218 80)
+  (gr_rect (start 205 62) (end 219 95)
     (stroke (width 0.5) (type dash_dot)) (fill none) (layer "Dwgs.User")
     (uuid "{uid('antenna-keepout')}"))
-  (gr_text "ESP32 ANTENNA KEEP-OUT" (at 213 65 90) (layer "Dwgs.User")
+  (gr_text "ESP32 ANTENNA KEEP-OUT" (at 213 78.5 90) (layer "Dwgs.User")
     (uuid "{uid('antenna-text')}")
     (effects (font (size 1 1) (thickness 0.2)) (justify bottom)))
 )

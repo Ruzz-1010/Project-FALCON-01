@@ -72,6 +72,13 @@ for both rails, ground, I2C, BNO085 SPI/control, GPS UART, external sensor
 inputs, and fan PWM. They are grouped and labeled in an accessible service bank
 for safe bench bring-up; this does not remove the footprint-validation gate.
 
+Placement v0.5 replaces the generic U3, J3, J4, J5, and U4 envelopes with
+manufacturer-CAD socket geometry for the selected Adafruit BNO085, Ultimate
+GPS, two INA260 boards, and ADS1115 STEMMA QT board. Header pads, module
+outlines, and mounting holes now use the official board datums. U2 was also
+rotated so its antenna end actually faces the right-edge keep-out. Receiving
+and 1:1 checks are still mandatory before routing or fabrication.
+
 Reference map:
 
 | Reference | Function |

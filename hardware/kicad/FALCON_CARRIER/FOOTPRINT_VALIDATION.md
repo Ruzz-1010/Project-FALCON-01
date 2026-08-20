@@ -6,9 +6,9 @@ Print [`FOOTPRINT_MEASUREMENT_WORKSHEET.html`](FOOTPRINT_MEASUREMENT_WORKSHEET.h
 from a browser at 100% scale on A4 portrait paper. Use one page-one copy per
 module, then transfer the signed results to `footprint_measurements.csv`.
 
-The v0.2 PCB uses provisional module envelopes and 2.54 mm through-hole pads so
-the electrical grouping and service layout can be reviewed. These are not proof
-that a purchased board will fit. Validate every line in
+The PCB now uses official CAD geometry for U2, U3, J3, J4, J5, and U4; all
+remaining module and connector envelopes are provisional. Manufacturer CAD is
+not proof that the delivered revision or installed headers will fit. Validate every line in
 `footprint_measurements.csv` using the actual item, a digital caliper, and clear
 photos of both sides.
 
