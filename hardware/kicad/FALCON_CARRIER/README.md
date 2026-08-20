@@ -90,6 +90,10 @@ The next release gate is [FOOTPRINT_VALIDATION.md](FOOTPRINT_VALIDATION.md).
 Record measurements in `footprint_measurements.csv`; do not start final copper
 routing while the critical rows remain `PENDING`.
 
+KiCad routing classes and the required routing sequence are documented in
+[ROUTING_PLAN.md](ROUTING_PLAN.md). The project now applies wider power/fan
+rules and separate sensor-bus/external-sensor clearances automatically.
+
 Use these source registers during capture:
 
 - [NET_REGISTER.csv](NET_REGISTER.csv)
