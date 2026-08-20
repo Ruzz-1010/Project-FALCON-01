@@ -67,6 +67,11 @@ control area, ESP32 at the antenna edge, and power/fan/service components at the
 bottom right. This reduces ratsnest crossing before routing without pretending
 that the provisional footprints are final.
 
+Placement v0.4 adds 18 schematic-synchronized, through-hole service test points
+for both rails, ground, I2C, BNO085 SPI/control, GPS UART, external sensor
+inputs, and fan PWM. They are grouped and labeled in an accessible service bank
+for safe bench bring-up; this does not remove the footprint-validation gate.
+
 Reference map:
 
 | Reference | Function |
@@ -82,6 +87,7 @@ Reference map:
 | J11–J12 | Fan and service I2C |
 | R1–R2 | Wind-pulse 10 kOhm and OneWire 4.7 kOhm pull-ups |
 | H1–H4 | Provisional M3 mounting holes |
+| TP1–TP18 | Labeled power, bus, UART, sensor-input, and PWM test points |
 
 Every footprint outline, header spacing, mounting hole, and connector remains
 provisional until checked against the purchased hardware on a 1:1 print.

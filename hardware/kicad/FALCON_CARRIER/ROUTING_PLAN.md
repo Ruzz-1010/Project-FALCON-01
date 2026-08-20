@@ -36,7 +36,9 @@ weight, temperature rise, and connector ratings.
    loop local to the power/driver zone.
 9. Add ground stitching where it improves return continuity, not inside antenna
    keep-outs or beneath prohibited module areas.
-10. Refill zones, run DRC, inspect every unrouted item, and review both copper
+10. Route the TP1–TP18 branches as short stubs from their monitored nets; do not
+    force a sensitive bus or analog signal to detour through a test point.
+11. Refill zones, run DRC, inspect every unrouted item, and review both copper
     layers visually before generating any fabrication output.
 
 ## Completion criteria

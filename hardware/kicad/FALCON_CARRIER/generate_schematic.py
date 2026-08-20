@@ -119,6 +119,21 @@ MODULES = [
     ("R2", "PULLUP_4K7", [("1", "+3V3_SENSOR"), ("2", "WATER_TEMP")], 190, 205),
 ]
 
+# Accessible single-pad service points required for bench bring-up. They are
+# real schematic items so PCB/netlist synchronization remains deterministic.
+TEST_POINT_NETS = [
+    "+5V_PROTECTED", "+3V3_SENSOR", "GND", "I2C_SDA", "I2C_SCL",
+    "BNO_SCK", "BNO_MISO", "BNO_MOSI", "BNO_CS", "BNO_INT", "BNO_RST",
+    "GPS_TX", "GPS_RX", "WIND_PULSE", "WIND_VANE", "WATER_TEMP",
+    "LEAK_SIGNAL", "FAN_PWM",
+]
+for index, net in enumerate(TEST_POINT_NETS, start=1):
+    column = (index - 1) % 6
+    row = (index - 1) // 6
+    MODULES.append(
+        (f"TP{index}", "TEST_POINT", [("1", net)], 45 + column * 55, 240 + row * 15)
+    )
+
 
 definitions = []
 seen = set()

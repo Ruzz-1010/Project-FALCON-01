@@ -4,7 +4,7 @@
 from pathlib import Path
 from uuid import NAMESPACE_URL, uuid5
 
-from generate_schematic import MODULES
+from generate_schematic import MODULES, TEST_POINT_NETS
 
 
 OUT = Path(__file__).with_name("FALCON_CARRIER.kicad_pcb")
@@ -29,6 +29,11 @@ placements = {
     "J12": (120, 150), "U1": (160, 152), "U5": (180, 130),
     "J11": (208, 130), "J1": (208, 158),
 }
+
+for index, _net in enumerate(TEST_POINT_NETS, start=1):
+    column = (index - 1) % 9
+    row = (index - 1) // 9
+    placements[f"TP{index}"] = (96 + column * 13.5, 108 + row * 12)
 
 nets = []
 for _, _, pins, _, _ in MODULES:
@@ -128,11 +133,38 @@ def esp32_devkitc_footprint(ref: str, value: str, pins: list[tuple[str, str]], x
   )'''
 
 
+def test_point_footprint(ref: str, net: str, x: float, y: float) -> str:
+    """Create a labeled 1.0 mm drilled pad for bench probing."""
+    short_label = net.replace("+", "")
+    return f'''  (footprint "FALCON_TEST_POINT_THT"
+    (layer "F.Cu") (uuid "{uid(ref)}") (at {x:.2f} {y:.2f})
+    (descr "FALCON labeled through-hole service test point")
+    (tags "TEST POINT SERVICE")
+    (property "Reference" "{ref}" (at 0 -2.8 0) (layer "F.SilkS")
+      (uuid "{uid(ref + '/ref')}") (effects (font (size 0.75 0.75) (thickness 0.13))))
+    (property "Value" "{short_label}" (at 0 2.8 0) (layer "F.SilkS")
+      (uuid "{uid(ref + '/value')}") (effects (font (size 0.65 0.65) (thickness 0.12))))
+    (property "Datasheet" "" (at 0 0 0) (layer "F.Fab") (hide yes)
+      (uuid "{uid(ref + '/datasheet')}") (effects (font (size 1.27 1.27))))
+    (property "Description" "Accessible service test point" (at 0 0 0)
+      (layer "F.Fab") (hide yes) (uuid "{uid(ref + '/description')}")
+      (effects (font (size 1.27 1.27))))
+    (path "/{uid(ref)}") (attr through_hole exclude_from_bom)
+    (fp_circle (center 0 0) (end 1.8 0) (stroke (width 0.2) (type solid))
+      (fill none) (layer "F.SilkS") (uuid "{uid(ref + '/outline')}"))
+    (pad "1" thru_hole circle (at 0 0) (size 2.4 2.4) (drill 1.0)
+      (layers "*.Cu" "*.Mask") (net {net_id[net]} "{net}")
+      (uuid "{uid(ref + '/pad/1')}"))
+  )'''
+
+
 footprints = []
 for ref, value, pins, _, _ in MODULES:
     x, y = placements[ref]
     if ref == "U2":
         footprints.append(esp32_devkitc_footprint(ref, value, pins, x, y))
+    elif ref.startswith("TP"):
+        footprints.append(test_point_footprint(ref, pins[0][1], x, y))
     else:
         footprints.append(footprint(ref, value, pins, x, y))
 
@@ -158,7 +190,7 @@ board = f'''(kicad_pcb
   (general (thickness 1.6) (legacy_teardrops no))
   (paper "A4")
   (title_block (title "FALCON-01 LOW-VOLTAGE CARRIER") (date "2026-08-20")
-    (rev "PLACEMENT V0.3") (company "PROJECT FALCON-01")
+    (rev "PLACEMENT V0.4") (company "PROJECT FALCON-01")
     (comment 1 "ALL FOOTPRINTS PROVISIONAL — VERIFY AT 1:1")
     (comment 2 "NOT APPROVED FOR FABRICATION"))
   (layers
@@ -174,7 +206,7 @@ board = f'''(kicad_pcb
   (gr_rect (start 20 20) (end 220 180)
     (stroke (width 0.5) (type default)) (fill none) (layer "Edge.Cuts")
     (uuid "{uid('outline')}"))
-  (gr_text "FALCON-01 CARRIER — PROVISIONAL PLACEMENT V0.3" (at 120 25 0)
+  (gr_text "FALCON-01 CARRIER — PROVISIONAL PLACEMENT V0.4" (at 120 25 0)
     (layer "F.SilkS") (uuid "{uid('title')}")
     (effects (font (size 2.2 2.2) (thickness 0.4)) (justify bottom)))
   (gr_text "VERIFY EVERY MODULE, CONNECTOR AND HOLE AT 1:1 BEFORE FABRICATION" (at 120 176 0)
@@ -192,6 +224,9 @@ board = f'''(kicad_pcb
   (gr_text "POWER / SERVICE" (at 180 174 0) (layer "F.SilkS")
     (uuid "{uid('zone-power')}")
     (effects (font (size 1.1 1.1) (thickness 0.22)) (justify bottom)))
+  (gr_text "SERVICE TEST POINTS" (at 150 101 0) (layer "F.SilkS")
+    (uuid "{uid('zone-test-points')}")
+    (effects (font (size 1.0 1.0) (thickness 0.20)) (justify bottom)))
   (gr_rect (start 205 50) (end 218 80)
     (stroke (width 0.5) (type dash_dot)) (fill none) (layer "Dwgs.User")
     (uuid "{uid('antenna-keepout')}"))
