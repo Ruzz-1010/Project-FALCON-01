@@ -9,7 +9,7 @@ BOARD = Path(__file__).with_name("FALCON_CARRIER.kicad_pcb")
 def model_for(ref: str) -> tuple[str, tuple[float, float, float]] | None:
     fixed = {
         "J1": ("jst_vh_2", (0, 1.15, 0)), "U1": ("sot25", (0, 0, 0)),
-        "U2": ("esp32_devkitc", (12.7, 22.86, 0)), "U3": ("bno085", (0, 0, 0)),
+        "U2": ("esp32_devkitc", (12.7, -22.86, 0)), "U3": ("bno085", (0, 0, 0)),
         "J2": ("jst_gh_4", (0, -2.125, 0)), "J3": ("gps", (0, 0, 0)),
         "J4": ("ina260", (0, 0, 0)), "J5": ("ina260", (0, 0, 0)),
         "J6": ("jst_gh_4", (0, -2.125, 0)), "U4": ("ads1115", (0, 0, 0)),

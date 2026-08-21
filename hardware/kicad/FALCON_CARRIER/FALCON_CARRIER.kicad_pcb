@@ -3076,7 +3076,7 @@
 		(embedded_fonts no)
 		(model "${KIPRJMOD}/models/esp32_devkitc.wrl"
 			(offset
-				(xyz 12.7 22.86 0)
+				(xyz 12.7 -22.86 0)
 			)
 			(scale
 				(xyz 1 1 1)

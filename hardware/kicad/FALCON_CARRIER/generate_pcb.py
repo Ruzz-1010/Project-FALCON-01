@@ -338,7 +338,7 @@ def esp32_devkitc_footprint(ref: str, value: str, pins: list[tuple[str, str]], x
       (uuid "{uid(ref + '/antenna-label')}")
       (effects (font (size 0.8 0.8) (thickness 0.15))))
 {chr(10).join(pads)}
-{model_block("esp32_devkitc", (12.7, 22.86, 0))}
+{model_block("esp32_devkitc", (12.7, -22.86, 0))}
   )'''
 
 
