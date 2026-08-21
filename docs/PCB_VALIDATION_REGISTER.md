@@ -79,7 +79,7 @@ mean.
 | Critical | Exact 5 V buck models and output-current/ripple test | Defines input connector, protection, thermal area, and power quality |
 | Critical | Exact MPPT, battery BMS, panel Voc/Isc, and load-current measurements | Required for correct fusing and current-monitor topology |
 | Critical | Connector family, pin count, current rating, waterproofing method, and keying | Prevents reversed sensors and unsafe power connections |
-| Critical | Fan voltage, startup current, and PWM requirements | Required to select MOSFET, flyback protection, and connector |
+| Critical | Receive and bench-test two NF-A8 5V PWM candidates: startup current, rail transient, 25 kHz PWM, independent tach, and enclosure environment | Required to release the open-drain PWM/load-enable stages and dual four-pin connectors |
 | Critical | Leak/tamper sensor electrical output | GPIO32 interface and protection cannot be designed from a placeholder |
 | High | Photos/revisions and dimensions for every breakout | Required to create or verify module footprints |
 | High | BNO085 physical mounting location and axis convention | Orientation is invalid if the board can flex or its axes are undocumented |

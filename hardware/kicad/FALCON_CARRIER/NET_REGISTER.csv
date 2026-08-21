@@ -20,5 +20,5 @@ WIND_PULSE,J7.2,ESP32.GPIO25,3.3 V digital,validated,"reed to GND; 10 kOhm exter
 WIND_VANE,J8.2,ADS1115.A0,0-3.3 V analog,provisional,"exact resistor ladder and calibration required"
 WATER_TEMP,J9.2,ESP32.GPIO26,OneWire,provisional,"4.7 kOhm pull-up; optional probe"
 LEAK_SIGNAL,J10.2,ESP32.GPIO32,TBD digital,TBD,"do not finalize until detector output is selected"
-FAN_PWM,ESP32.GPIO33,Q1_GATE,3.3 V PWM,provisional,"series gate resistor and pull-down required"
-FAN_SWITCHED,Q1_DRAIN,J11.2,TBD power,TBD,"fan voltage/current and protection remain open"
+FAN_PWM,ESP32.GPIO33,dual open-drain PWM stages,3.3 V 25 kHz PWM,provisional,"reference NF-A8 5V PWM; each fan input needs its own sink stage"
+FAN_SWITCHED,Q1_DRAIN,J11.2,superseded,superseded,"legacy two-wire placeholder; do not route or fabricate"

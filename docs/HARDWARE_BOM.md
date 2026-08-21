@@ -19,9 +19,10 @@ markup. Confirm the live exchange rate, stock, revision, and ratings before orde
 | 1 | SparkFun Weather Meter SEN-15901 | PHP 4,935 | Prototype only; salt-exposure maintenance required |
 | 1 | Sealed DS18B20 probe | PHP 495–925 | Optional water temperature; verify genuine waterproof build |
 | 1 | Orange Pi Zero 3 4 GB | PHP 2,160–3,705 | Buy from an authorized listing; include storage/heatsink |
+| 2 | Noctua NF-A8 5V PWM, 80 mm | Verify local quote | Reference cooling candidate; 5 V, 0.15 A max each, four-wire PWM/tach, dry enclosure only |
 
-Known sensor/control subtotal is approximately **PHP 19,320–21,050**, excluding power,
-connectors, enclosure, shipping, and optional antenna.
+Known sensor/control subtotal is approximately **PHP 19,320–21,050**, excluding fans,
+power, connectors, enclosure, shipping, and optional antenna.
 
 ## Power and Installation Allowance
 
@@ -35,9 +36,11 @@ connectors, enclosure, shipping, and optional antenna.
 | lot | Fuses, disconnect, terminals, glands, marine wire | PHP 4,320–9,875 | Rated schedule and ingress review |
 
 Internal connector baseline: JST GH 4-position (`BM04B-GHS-TBT`) for Bar02/I2C,
-JST GH 3-position (`BM03B-GHS-TBT`) for low-current sensor signals, JST VH
-2-position (`B2P-VH-FB-B`) for protected 5 V input, and JST VH 3-position
-(`B3P-VH-FB-B`) for the fan harness. Include matching housings, correctly sized
+JST GH 3-position (`BM03B-GHS-TBT`) for low-current sensor signals and JST VH
+2-position (`B2P-VH-FB-B`) for protected 5 V input. The earlier three-position
+fan connector is superseded by the four-wire fan architecture in
+`hardware/kicad/FALCON_CARRIER/FAN_SELECTION_BASELINE.md`; its exact dual-header
+harness is pending physical connector inspection. Include matching housings, correctly sized
 contacts, authorized crimp tooling, and spares; verify availability before
 locking the PCB footprints.
 

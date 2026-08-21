@@ -10,11 +10,12 @@ validation**.
 | Power | `+5V_PROTECTED`, `+3V3_SENSOR`, `GND` | 0.75 mm | 0.30 mm | 1.0/0.5 mm |
 | SensorBus | `I2C_*`, `BNO_*`, `GPS_*` | 0.30 mm | 0.25 mm | 0.8/0.4 mm |
 | ExternalSensor | `WIND_*`, `WATER_TEMP`, `LEAK_SIGNAL` | 0.40 mm | 0.30 mm | 0.9/0.4 mm |
-| FanLoad | `FAN_SWITCHED` | 0.75 mm | 0.30 mm | 1.0/0.5 mm |
+| FanLoad | Future protected fan `+5V`/GND branches | 0.75 mm | 0.30 mm | 1.0/0.5 mm |
 | Default | Remaining low-current logic, including `FAN_PWM` | 0.20 mm | 0.20 mm | 0.6/0.3 mm |
 
 Widths are conservative prototype defaults, not final current/thermal proof.
-Recalculate the power and fan classes after measuring actual current, copper
+The generated `FAN_SWITCHED` net is a superseded two-wire placeholder and must
+not be routed. Recalculate the power and fan classes after measuring actual current, copper
 weight, temperature rise, and connector ratings.
 
 ## Routing order

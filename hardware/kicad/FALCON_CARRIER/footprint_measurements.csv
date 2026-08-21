@@ -13,6 +13,6 @@ J9,DS18B20 connector,,,,,,,,,,,,,,,,PENDING,"Confirm probe cable colors against 
 J10,Leak-sensor connector,,,,,,,,,,,,,,,,PENDING,"Sensor electrical output still TBD"
 U1,3.3 V regulator,,,,,,,,,,,,,,,,PENDING,"Part selection and thermal test required"
 U5,Fan driver,,,,,,,,,,,,,,,,PENDING,"Fan voltage/current and MOSFET stage TBD"
-J11,Fan connector,,,,,,,,,,,,,,,,PENDING,"Select after fan rating is known"
+J11,Fan connector,,,,,,,,,,,,,,,,SUPERSEDED,"Replace three-position placeholder with two four-wire PWM/tach outputs after physical harness inspection"
 J12,Service I2C connector,,,,,,,,,,,,,,,,PENDING,"Bench/service connector only"
 H1-H4,Carrier mounting,,,,,,,,,,,,,,,,PENDING,"Derive from enclosure datum and standoffs"
