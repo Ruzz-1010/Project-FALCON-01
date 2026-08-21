@@ -99,7 +99,8 @@ Reference map:
 | J1 | Protected 5 V input |
 | J2–J6 | Bar02, GPS, two INA260 logic links, MCP9808 |
 | J7–J10 | Anemometer, wind vane, DS18B20, leak sensor |
-| J11–J12 | Fan and service I2C |
+| J11/J13 | Independent four-wire PWM fan outputs |
+| J12 | Service I2C |
 | R1–R2 | Wind-pulse 10 kOhm and OneWire 4.7 kOhm pull-ups |
 | H1–H4 | Provisional M3 mounting holes |
 | TP1–TP18 | Labeled power, bus, UART, sensor-input, and PWM test points |

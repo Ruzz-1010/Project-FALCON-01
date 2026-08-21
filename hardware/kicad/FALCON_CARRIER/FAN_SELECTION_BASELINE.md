@@ -37,10 +37,9 @@ ESP32 timer -> gate resistor -> NMOS ---- fan pin 4 PWM (open-drain sink)
 ESP32 input <---- protected/pulled-up ---- fan pin 3 TACH
 ```
 
-Use a load switch or equivalent hardware enable if the requirement remains
-"off during ESP32 boot." With PWM alone, an un-driven/open PWM input commands
-full speed, which is fail-safe for cooling but not default-off. This behavior
-must be chosen deliberately and tested; firmware alone is not a power interlock.
+With PWM alone, an un-driven/open PWM input commands full speed. The v0.8
+carrier deliberately uses this fail-safe cooling behavior during ESP32 boot;
+firmware then assumes speed control after initialization.
 
 Do not place a flyback diode blindly across a four-wire electronically
 commutated fan. The fan includes its own driver electronics. Protection shall
@@ -48,15 +47,21 @@ instead be based on measured rail transients and the final harness length.
 
 ## Connector correction
 
-- Replace the provisional three-position J11 concept with two separately keyed
-  four-position fan outputs, one per fan.
+- The generated v0.8 carrier replaces the provisional three-position J11 with
+  two Molex `470531000` four-position fan outputs: J11 fan 1 and J13 fan 2.
 - Do not tie the two tachometer outputs together.
-- A JST VH four-position family is the current carrier-side mechanical
-  candidate because it is distinct from the two-position power input and has
-  ample current margin. A harness adapter is required because the fan ships
-  with an A2543-4PIN-or-equal plug.
-- Lock the exact header/housing/contact and harness drawing only after checking
-  authorized availability and the actual fan connector.
+- Molex `470531000` is the carrier-side reference header and `470541000` is the
+  matching polarized four-position housing baseline. Confirm whether the
+  received fan plug mates directly; otherwise document a pin-for-pin adapter.
+- Lock the contact SKU and harness drawing only after checking authorized
+  availability and the actual fan connector.
+
+The v0.8 control stage uses one 2N7002 open-drain transistor per PWM input,
+100-ohm gate resistors, 100-kilohm gate pull-downs, and independent 10-kilohm
+3.3 V tach pull-ups. A pulled-down transistor gate leaves the fan PWM input
+open during boot, so both fans run at full speed until firmware takes control.
+This fail-safe cooling behavior intentionally replaces the earlier default-off
+requirement and must be confirmed during the bench test.
 
 ## Bench release tests
 
@@ -74,4 +79,6 @@ instead be based on measured rail transients and the final harness length.
 - [Noctua NF-A8 5V PWM specifications](https://www.noctua.at/en/products/nf-a8-5v-pwm/specifications)
 - [Noctua PWM specification white paper](https://www.noctua.at/pub/media/wysiwyg/Noctua_PWM_specifications_white_paper.pdf)
 - [Noctua NF-A8 5V PWM information sheet](https://noctua.at/pub/media/blfa_files/infosheet/noctua_nf_a8_5v_pwm_datasheet_en.pdf)
-
+- [Molex 470531000 four-circuit fan header](https://www.molex.com/en-us/products/series-chart/47053)
+- [Molex 470541000 polarized housing](https://www.molex.com/en-us/products/part-detail/0470541000)
+- [Nexperia 2N7002 datasheet and SOT23 pinning](https://assets.nexperia.com/documents/data-sheet/2N7002.pdf)

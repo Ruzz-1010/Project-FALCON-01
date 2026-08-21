@@ -14,8 +14,9 @@ validation**.
 | Default | Remaining low-current logic, including `FAN_PWM` | 0.20 mm | 0.20 mm | 0.6/0.3 mm |
 
 Widths are conservative prototype defaults, not final current/thermal proof.
-The generated `FAN_SWITCHED` net is a superseded two-wire placeholder and must
-not be routed. Recalculate the power and fan classes after measuring actual current, copper
+Route the v0.8 J11/J13 5 V and ground branches as fan-load conductors. Keep
+`FAN1_PWM_OD`, `FAN2_PWM_OD`, and both tach nets away from those power loops.
+Recalculate the power and fan classes after measuring actual current, copper
 weight, temperature rise, and connector ratings.
 
 ## Routing order

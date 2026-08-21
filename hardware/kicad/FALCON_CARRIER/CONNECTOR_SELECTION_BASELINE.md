@@ -26,9 +26,9 @@ a printed 1:1 overlay and physical receiving inspection before fabrication.
 | J2 Bar02 R2 | JST `BM04B-GHS-TBT`, 4-pos., 1.25 mm, SMT | `GHR-04V-S` | GH: 1 A with AWG26 | 1 Vin, 2 SCL, 3 SDA, 4 GND |
 | J6 MCP9808 / J12 service I2C | JST `BM04B-GHS-TBT` | `GHR-04V-S` | GH: 1 A with AWG26 | 1 3V3, 2 SCL, 3 SDA, 4 GND |
 | J7–J10 sensor inputs | JST `BM03B-GHS-TBT`, 3-pos. | `GHR-03V-S` | GH: 1 A with AWG26 | 1 3V3, 2 signal, 3 GND |
-| J11 fan placeholder | **Superseded:** JST `B3P-VH-FB-B` | Do not build | The selected reference fan is four-wire PWM/tach; replace this with two keyed four-position outputs after harness inspection |
+| J11/J13 fans | Molex `470531000`, 4-pos., 2.54 mm, THT | `470541000` baseline | 4-wire fan interface | 1 GND, 2 5 V, 3 independent tach, 4 independent open-drain PWM |
 
-J1 and the future fan outputs must use different circuit counts. Silkscreen must
+J1 and the fan outputs use different families/circuit counts. Silkscreen must
 show reference, pin 1, voltage, signal names, and mating direction. See
 `FAN_SELECTION_BASELINE.md` for the current dual-fan interface decision.
 

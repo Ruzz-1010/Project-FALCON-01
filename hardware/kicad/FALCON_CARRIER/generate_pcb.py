@@ -26,8 +26,10 @@ placements = {
     # Center/right: rigid motion sensor, GPS, controller, and antenna edge.
     "U3": (135, 88), "J3": (145, 45), "U2": (173, 90),
     # Bottom service and power section, separated from BNO085/GPS.
-    "J12": (120, 150), "U1": (160, 152), "U5": (180, 130),
-    "J11": (208, 130), "J1": (208, 158),
+    "J12": (120, 150), "U1": (160, 152),
+    "R3": (174, 124), "R4": (174, 132), "R5": (186, 124), "R6": (186, 132),
+    "Q1": (198, 124), "Q2": (198, 132), "R7": (174, 140), "R8": (186, 140),
+    "J11": (204, 146), "J13": (204, 158), "J1": (208, 170),
     "U6": (190, 158), "JP1": (175, 158),
 }
 
@@ -95,7 +97,8 @@ def footprint(ref: str, value: str, pins: list[tuple[str, str]], x: float, y: fl
 
 GH_CONNECTORS = {"J2": 4, "J6": 4, "J7": 3, "J8": 3, "J9": 3,
                  "J10": 3, "J12": 4}
-VH_CONNECTORS = {"J1": 2, "J11": 3}
+VH_CONNECTORS = {"J1": 2}
+FAN_CONNECTORS = {"J11", "J13"}
 
 
 def jst_gh_top_footprint(
@@ -176,6 +179,80 @@ def jst_vh_footprint(
     (fp_text user "CABLE" (at 0 7.1 0) (layer "F.SilkS")
       (uuid "{uid(ref + '/cable-label')}")
       (effects (font (size 0.75 0.75) (thickness 0.14))))
+{chr(10).join(pads)}
+  )'''
+
+
+def fan_header_footprint(
+    ref: str, value: str, pins: list[tuple[str, str]], x: float, y: float
+) -> str:
+    """Four-pin 2.54 mm fan header pin pattern for Molex 470531000."""
+    connected = dict(pins)
+    pads = []
+    for index in range(4):
+        number = str(index + 1)
+        px = (index - 1.5) * 2.54
+        net = connected[number]
+        shape = "rect" if number == "1" else "circle"
+        pads.append(f'''    (pad "{number}" thru_hole {shape} (at {px:.2f} 0)
+      (size 2.0 2.0) (drill 1.0) (layers "*.Cu" "*.Mask")
+      (net {net_id[net]} "{net}") (uuid "{uid(ref + '/pad/' + number)}"))''')
+    return f'''  (footprint "MOLEX_470531000_4PIN_FAN_HEADER"
+    (layer "F.Cu") (uuid "{uid(ref)}") (at {x:.2f} {y:.2f})
+    (descr "Molex 470531000 4-circuit 2.54 mm vertical fan header; outline verify on receipt")
+    (tags "MOLEX 47053 FAN PWM 2.54MM")
+{property_block(ref, "470531000", -4.0)}
+    (path "/{uid(ref)}") (attr through_hole)
+    (fp_rect (start -5.2 -2.4) (end 5.2 2.4)
+      (stroke (width 0.2) (type solid)) (fill none) (layer "F.SilkS")
+      (uuid "{uid(ref + '/outline')}"))
+    (fp_text user "1 GND" (at -3.81 3.5 0) (layer "F.SilkS")
+      (uuid "{uid(ref + '/pin1-label')}")
+      (effects (font (size 0.7 0.7) (thickness 0.13))))
+    (fp_text user "5V TACH PWM" (at 1.3 3.5 0) (layer "F.SilkS")
+      (uuid "{uid(ref + '/signals-label')}")
+      (effects (font (size 0.65 0.65) (thickness 0.12))))
+{chr(10).join(pads)}
+  )'''
+
+
+def smd_resistor_0603_footprint(
+    ref: str, value: str, pins: list[tuple[str, str]], x: float, y: float
+) -> str:
+    pads = []
+    for number, px in (("1", -0.8), ("2", 0.8)):
+        net = dict(pins)[number]
+        pads.append(f'''    (pad "{number}" smd roundrect (at {px} 0)
+      (size 0.9 0.95) (layers "F.Cu" "F.Paste" "F.Mask")
+      (roundrect_rratio 0.2) (net {net_id[net]} "{net}")
+      (uuid "{uid(ref + '/pad/' + number)}"))''')
+    return f'''  (footprint "R_0603_1608Metric"
+    (layer "F.Cu") (uuid "{uid(ref)}") (at {x:.2f} {y:.2f})
+{property_block(ref, value, -1.8)} (path "/{uid(ref)}") (attr smd)
+    (fp_rect (start -1.1 -0.6) (end 1.1 0.6)
+      (stroke (width 0.15) (type solid)) (fill none) (layer "F.SilkS")
+      (uuid "{uid(ref + '/outline')}"))
+{chr(10).join(pads)}
+  )'''
+
+
+def sot23_2n7002_footprint(
+    ref: str, value: str, pins: list[tuple[str, str]], x: float, y: float
+) -> str:
+    positions = {"1": (-1.0, 0.95), "2": (1.0, 0.95), "3": (0.0, -0.95)}
+    pads = []
+    for number, net in pins:
+        px, py = positions[number]
+        pads.append(f'''    (pad "{number}" smd roundrect (at {px} {py})
+      (size 0.9 1.0) (layers "F.Cu" "F.Paste" "F.Mask")
+      (roundrect_rratio 0.2) (net {net_id[net]} "{net}")
+      (uuid "{uid(ref + '/pad/' + number)}"))''')
+    return f'''  (footprint "SOT-23_2N7002"
+    (layer "F.Cu") (uuid "{uid(ref)}") (at {x:.2f} {y:.2f})
+{property_block(ref, value, -2.5)} (path "/{uid(ref)}") (attr smd)
+    (fp_rect (start -1.5 -1.45) (end 1.5 1.45)
+      (stroke (width 0.15) (type solid)) (fill none) (layer "F.SilkS")
+      (uuid "{uid(ref + '/outline')}"))
 {chr(10).join(pads)}
   )'''
 
@@ -334,6 +411,12 @@ for ref, value, pins, _, _ in MODULES:
         footprints.append(jst_gh_top_footprint(ref, value, pins, x, y))
     elif ref in VH_CONNECTORS:
         footprints.append(jst_vh_footprint(ref, value, pins, x, y))
+    elif ref in FAN_CONNECTORS:
+        footprints.append(fan_header_footprint(ref, value, pins, x, y))
+    elif ref in {"R3", "R4", "R5", "R6", "R7", "R8"}:
+        footprints.append(smd_resistor_0603_footprint(ref, value, pins, x, y))
+    elif ref in {"Q1", "Q2"}:
+        footprints.append(sot23_2n7002_footprint(ref, value, pins, x, y))
     elif ref in OFFICIAL_MODULE_GEOMETRY:
         footprints.append(official_module_footprint(ref, value, pins, x, y))
     elif ref.startswith("TP"):
@@ -363,8 +446,8 @@ board = f'''(kicad_pcb
   (general (thickness 1.6) (legacy_teardrops no))
   (paper "A4")
   (title_block (title "FALCON-01 LOW-VOLTAGE CARRIER") (date "2026-08-20")
-    (rev "PLACEMENT V0.7") (company "PROJECT FALCON-01")
-    (comment 1 "JST CONNECTOR GEOMETRY LOCKED — VERIFY AT 1:1")
+    (rev "PLACEMENT V0.8") (company "PROJECT FALCON-01")
+    (comment 1 "MODULE AND CONNECTOR GEOMETRY — VERIFY AT 1:1")
     (comment 2 "NOT APPROVED FOR FABRICATION"))
   (layers
     (0 "F.Cu" signal) (31 "B.Cu" signal)
@@ -379,7 +462,7 @@ board = f'''(kicad_pcb
   (gr_rect (start 20 20) (end 220 180)
     (stroke (width 0.5) (type default)) (fill none) (layer "Edge.Cuts")
     (uuid "{uid('outline')}"))
-  (gr_text "FALCON-01 CARRIER — CONNECTOR PLACEMENT V0.7" (at 120 25 0)
+  (gr_text "FALCON-01 CARRIER — DUAL-FAN PLACEMENT V0.8" (at 120 25 0)
     (layer "F.SilkS") (uuid "{uid('title')}")
     (effects (font (size 2.2 2.2) (thickness 0.4)) (justify bottom)))
   (gr_text "VERIFY EVERY MODULE, CONNECTOR AND HOLE AT 1:1 BEFORE FABRICATION" (at 120 176 0)

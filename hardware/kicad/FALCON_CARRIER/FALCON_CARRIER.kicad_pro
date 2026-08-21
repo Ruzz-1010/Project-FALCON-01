@@ -633,7 +633,7 @@
       },
       {
         "netclass": "FanLoad",
-        "pattern": "FAN_SWITCHED"
+        "pattern": "FAN*_PWM_OD"
       }
     ]
   },

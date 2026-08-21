@@ -27,7 +27,9 @@ not an approved substitute because GPIO16 and GPIO17 are reserved by WROVER.
 | Anemometer | 25 | Input | Reed to GND; external 10 kOhm pull-up |
 | Optional DS18B20 | 26 | OneWire | DQ; external 4.7 kOhm pull-up |
 | Leak/tamper | 32 | Input | Exact sensor TBD |
-| Reserved fan | 33 | PWM output | MOSFET driver only; never direct fan |
+| Fan PWM source | 33 | 25 kHz PWM output | Drives two separate 2N7002 open-drain stages; never direct fan |
+| Fan 1 tach | 34 | Input only | Independent open-collector RPM input with 10 kΩ pull-up |
+| Fan 2 tach | 35 | Input only | Independent open-collector RPM input with 10 kΩ pull-up |
 | Edge link | USB | USB serial | Preferred prototype link to Orange Pi |
 
 GPIO 0, 2, 5, 12, and 15 remain unused because they are strapping pins. GPIO 1

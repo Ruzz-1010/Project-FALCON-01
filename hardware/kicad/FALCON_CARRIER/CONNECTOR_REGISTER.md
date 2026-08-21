@@ -17,7 +17,8 @@ require validation before fabrication.
 | J8 | Wind vane | 1 `+3V3_SENSOR`, 2 `WIND_VANE`, 3 `GND` | JST BM03B-GHS-TBT; input must remain within ADS1115 rails |
 | J9 | DS18B20 | 1 `+3V3_SENSOR`, 2 `WATER_TEMP`, 3 `GND` | JST BM03B-GHS-TBT; confirm probe wires by continuity |
 | J10 | Leak sensor | 1 `+3V3_SENSOR`, 2 `LEAK_SIGNAL`, 3 `GND` | JST BM03B-GHS-TBT; blocked by exact detector output |
-| J11 | Fan placeholder (superseded) | Do not build | Replace with two independent four-wire PWM/tach outputs per `FAN_SELECTION_BASELINE.md` |
+| J11 | Fan 1 PWM | 1 GND, 2 `+5V_PROTECTED`, 3 `FAN1_TACH`, 4 `FAN1_PWM_OD` | Molex 470531000 / 470541000; verify received fan mating and key |
+| J13 | Fan 2 PWM | 1 GND, 2 `+5V_PROTECTED`, 3 `FAN2_TACH`, 4 `FAN2_PWM_OD` | Molex 470531000 / 470541000; do not join tach outputs |
 | J12 | Service I2C | 1 `+3V3_SENSOR`, 2 `I2C_SCL`, 3 `I2C_SDA`, 4 `GND` | JST BM04B-GHS-TBT; bench diagnostics only |
 
 ## Module headers

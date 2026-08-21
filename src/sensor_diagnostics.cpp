@@ -25,7 +25,11 @@ void SensorDiagnostics::begin() {
   pinMode(FalconConfig::kAnemometerPin, INPUT_PULLUP);
   pinMode(FalconConfig::kLeakPin, INPUT_PULLUP);
   pinMode(FalconConfig::kFanPwmPin, OUTPUT);
+  // LOW leaves both external open-drain transistors off. The fans' internal
+  // PWM pull-ups then command fail-safe full speed until normal control starts.
   digitalWrite(FalconConfig::kFanPwmPin, LOW);
+  pinMode(FalconConfig::kFan1TachPin, INPUT);
+  pinMode(FalconConfig::kFan2TachPin, INPUT);
   gps_.begin(9600, SERIAL_8N1, FalconConfig::kGpsRxPin,
              FalconConfig::kGpsTxPin);
   printInventory();

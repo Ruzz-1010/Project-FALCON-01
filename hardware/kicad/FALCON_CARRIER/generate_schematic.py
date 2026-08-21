@@ -82,7 +82,9 @@ MODULES = [
     ("U2", "ESP32_DEVKITC_V4_WROOM32E", [
         ("1", "+3V3_SENSOR"),       # J2.1  3V3
         ("7", "LEAK_SIGNAL"),       # J2.7  GPIO32
-        ("8", "FAN_PWM"),           # J2.8  GPIO33
+        ("5", "FAN1_TACH"),         # J2.5  GPIO34 input only
+        ("6", "FAN2_TACH"),         # J2.6  GPIO35 input only
+        ("8", "FAN_PWM_GPIO"),      # J2.8  GPIO33 shared 25 kHz PWM source
         ("9", "WIND_PULSE"),        # J2.9  GPIO25
         ("10", "WATER_TEMP"),       # J2.10 GPIO26
         ("11", "BNO_INT"),          # J2.11 GPIO27
@@ -114,8 +116,16 @@ MODULES = [
     ("J8", "WIND_VANE", [("1", "+3V3_SENSOR"), ("2", "WIND_VANE"), ("3", "GND")], 100, 165),
     ("J9", "DS18B20_OPTION", [("1", "+3V3_SENSOR"), ("2", "WATER_TEMP"), ("3", "GND")], 145, 145),
     ("J10", "LEAK_SENSOR_TBD", [("1", "+3V3_SENSOR"), ("2", "LEAK_SIGNAL"), ("3", "GND")], 190, 145),
-    ("U5", "FAN_DRIVER_TBD", [("1", "+5V_PROTECTED"), ("2", "GND"), ("3", "FAN_PWM"), ("4", "FAN_SWITCHED")], 235, 145),
-    ("J11", "FAN_TBD", [("1", "+5V_PROTECTED"), ("2", "FAN_SWITCHED")], 235, 175),
+    ("R3", "FAN1_GATE_100R", [("1", "FAN_PWM_GPIO"), ("2", "FAN1_GATE")], 220, 135),
+    ("R4", "FAN2_GATE_100R", [("1", "FAN_PWM_GPIO"), ("2", "FAN2_GATE")], 220, 145),
+    ("R5", "FAN1_GATE_PULLDOWN_100K", [("1", "FAN1_GATE"), ("2", "GND")], 235, 135),
+    ("R6", "FAN2_GATE_PULLDOWN_100K", [("1", "FAN2_GATE"), ("2", "GND")], 235, 145),
+    ("Q1", "2N7002_FAN1_PWM", [("1", "FAN1_GATE"), ("2", "GND"), ("3", "FAN1_PWM_OD")], 250, 135),
+    ("Q2", "2N7002_FAN2_PWM", [("1", "FAN2_GATE"), ("2", "GND"), ("3", "FAN2_PWM_OD")], 250, 145),
+    ("R7", "FAN1_TACH_PULLUP_10K", [("1", "+3V3_SENSOR"), ("2", "FAN1_TACH")], 220, 155),
+    ("R8", "FAN2_TACH_PULLUP_10K", [("1", "+3V3_SENSOR"), ("2", "FAN2_TACH")], 235, 155),
+    ("J11", "FAN1_MOLEX_470531000", [("1", "GND"), ("2", "+5V_PROTECTED"), ("3", "FAN1_TACH"), ("4", "FAN1_PWM_OD")], 220, 175),
+    ("J13", "FAN2_MOLEX_470531000", [("1", "GND"), ("2", "+5V_PROTECTED"), ("3", "FAN2_TACH"), ("4", "FAN2_PWM_OD")], 250, 175),
     ("J12", "SERVICE_I2C", [("1", "+3V3_SENSOR"), ("2", "I2C_SCL"), ("3", "I2C_SDA"), ("4", "GND")], 190, 175),
     ("R1", "PULLUP_10K", [("1", "+3V3_SENSOR"), ("2", "WIND_PULSE")], 145, 185),
     ("R2", "PULLUP_4K7", [("1", "+3V3_SENSOR"), ("2", "WATER_TEMP")], 190, 205),
@@ -127,7 +137,7 @@ TEST_POINT_NETS = [
     "+5V_PROTECTED", "+3V3_SENSOR", "GND", "I2C_SDA", "I2C_SCL",
     "BNO_SCK", "BNO_MISO", "BNO_MOSI", "BNO_CS", "BNO_INT", "BNO_RST",
     "GPS_TX", "GPS_RX", "WIND_PULSE", "WIND_VANE", "WATER_TEMP",
-    "LEAK_SIGNAL", "FAN_PWM",
+    "LEAK_SIGNAL", "FAN_PWM_GPIO", "FAN1_TACH", "FAN2_TACH",
 ]
 for index, net in enumerate(TEST_POINT_NETS, start=1):
     column = (index - 1) % 6

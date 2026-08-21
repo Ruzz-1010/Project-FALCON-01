@@ -95,7 +95,8 @@ mean.
 - Test points for 5 V, 3.3 V, GND, SDA, SCL, SPI signals, UART2, and protected inputs.
 - External pull-ups for anemometer and DS18B20, with values shown on schematic.
 - Address configuration that guarantees the second INA260 is `0x41`.
-- MOSFET fan stage with a defined power-up-off state and load-appropriate protection.
+- Dual open-drain fan-PWM stages with documented fail-safe full-speed startup,
+  independent tach inputs, and load/transient-appropriate protection.
 - Sensor-line ESD/transient provisions selected for actual cable lengths and environment.
 - Mounting holes and keep-outs that do not interfere with module undersides or antennas.
 - No high-current path beneath the BNO085, ESP32 antenna, GPS antenna, or pressure-sensor interface.
