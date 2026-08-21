@@ -113,6 +113,8 @@ off before fabrication.
 The next release gate is [FOOTPRINT_VALIDATION.md](FOOTPRINT_VALIDATION.md).
 Record measurements in `footprint_measurements.csv`; do not start final copper
 routing while the critical rows remain `PENDING`.
+Use [PHYSICAL_FIT_CHECKLIST.md](PHYSICAL_FIT_CHECKLIST.md) with a true 100%-scale
+print to capture the required module, connector, cable, and enclosure checks.
 
 Official product dimensions and CAD-derived hole/header coordinates gathered
 for that gate are recorded in
