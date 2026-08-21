@@ -28,6 +28,7 @@ placements = {
     # Bottom service and power section, separated from BNO085/GPS.
     "J12": (120, 150), "U1": (160, 152), "U5": (180, 130),
     "J11": (208, 130), "J1": (208, 158),
+    "U6": (190, 158), "JP1": (175, 158),
 }
 
 for index, _net in enumerate(TEST_POINT_NETS, start=1):
@@ -271,7 +272,7 @@ board = f'''(kicad_pcb
   (general (thickness 1.6) (legacy_teardrops no))
   (paper "A4")
   (title_block (title "FALCON-01 LOW-VOLTAGE CARRIER") (date "2026-08-20")
-    (rev "PLACEMENT V0.5") (company "PROJECT FALCON-01")
+    (rev "PLACEMENT V0.6") (company "PROJECT FALCON-01")
     (comment 1 "ALL FOOTPRINTS PROVISIONAL — VERIFY AT 1:1")
     (comment 2 "NOT APPROVED FOR FABRICATION"))
   (layers
@@ -287,7 +288,7 @@ board = f'''(kicad_pcb
   (gr_rect (start 20 20) (end 220 180)
     (stroke (width 0.5) (type default)) (fill none) (layer "Edge.Cuts")
     (uuid "{uid('outline')}"))
-  (gr_text "FALCON-01 CARRIER — CAD-REFERENCED PLACEMENT V0.5" (at 120 25 0)
+  (gr_text "FALCON-01 CARRIER — PROTECTED-POWER PLACEMENT V0.6" (at 120 25 0)
     (layer "F.SilkS") (uuid "{uid('title')}")
     (effects (font (size 2.2 2.2) (thickness 0.4)) (justify bottom)))
   (gr_text "VERIFY EVERY MODULE, CONNECTOR AND HOLE AT 1:1 BEFORE FABRICATION" (at 120 176 0)
@@ -305,6 +306,9 @@ board = f'''(kicad_pcb
   (gr_text "POWER / SERVICE" (at 180 174 0) (layer "F.SilkS")
     (uuid "{uid('zone-power')}")
     (effects (font (size 1.1 1.1) (thickness 0.22)) (justify bottom)))
+  (gr_text "EXT 5V — REMOVE USB FIRST" (at 190 168 0) (layer "F.SilkS")
+    (uuid "{uid('external-power-warning')}")
+    (effects (font (size 0.9 0.9) (thickness 0.18)) (justify bottom)))
   (gr_text "SERVICE TEST POINTS" (at 150 101 0) (layer "F.SilkS")
     (uuid "{uid('zone-test-points')}")
     (effects (font (size 1.0 1.0) (thickness 0.20)) (justify bottom)))

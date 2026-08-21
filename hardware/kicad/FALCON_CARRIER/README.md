@@ -79,6 +79,12 @@ outlines, and mounting holes now use the official board datums. U2 was also
 rotated so its antenna end actually faces the right-edge keep-out. Receiving
 and 1:1 checks are still mandatory before routing or fabrication.
 
+Placement v0.6 adds the reviewed external-input protection blocks: J1 raw 5 V,
+U6 TPS25947-family eFuse candidate, and JP1 external-power enable. The normal
+deployment remains USB powered with JP1 open. The added silkscreen explicitly
+requires USB removal before JP1 is fitted. Protection values remain blocked by
+load, buck, transient, and thermal measurements.
+
 Reference map:
 
 | Reference | Function |
@@ -88,6 +94,8 @@ Reference map:
 | U3 | BNO085 SPI breakout |
 | U4 | ADS1115 wind-vane ADC |
 | U5 | Fan MOSFET-driver placeholder |
+| U6 | TPS25947-family external-input eFuse candidate |
+| JP1 | External-power enable shunt; USB must be unplugged when fitted |
 | J1 | Protected 5 V input |
 | J2–J6 | Bar02, GPS, two INA260 logic links, MCP9808 |
 | J7–J10 | Anemometer, wind vane, DS18B20, leak sensor |
@@ -123,6 +131,7 @@ Use these source registers during capture:
 - [NET_REGISTER.csv](NET_REGISTER.csv)
 - [CONNECTOR_REGISTER.md](CONNECTOR_REGISTER.md)
 - [CONNECTOR_SELECTION_BASELINE.md](CONNECTOR_SELECTION_BASELINE.md)
+- [POWER_PROTECTION_BASELINE.md](POWER_PROTECTION_BASELINE.md)
 - [DESIGN_RULES.md](DESIGN_RULES.md)
 - [`docs/PCB_VALIDATION_REGISTER.md`](../../../docs/PCB_VALIDATION_REGISTER.md)
 

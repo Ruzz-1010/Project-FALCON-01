@@ -75,7 +75,9 @@ def symbol_instance(ref: str, name: str, pins: list[tuple[str, str]], x: float, 
 
 
 MODULES = [
-    ("J1", "POWER_INPUT", [("1", "+5V_PROTECTED"), ("2", "GND")], 55, 35),
+    ("J1", "POWER_INPUT", [("1", "+5V_INPUT_RAW"), ("2", "GND")], 55, 35),
+    ("U6", "EFUSE_TPS25947_TBD", [("1", "+5V_INPUT_RAW"), ("2", "GND"), ("3", "+5V_EXT_PROTECTED")], 55, 50),
+    ("JP1", "EXT_POWER_ENABLE", [("1", "+5V_EXT_PROTECTED"), ("2", "+5V_PROTECTED")], 55, 65),
     ("U1", "REGULATOR_3V3_TBD", [("1", "+5V_PROTECTED"), ("2", "GND"), ("3", "+3V3_SENSOR")], 100, 35),
     ("U2", "ESP32_DEVKITC_V4_WROOM32E", [
         ("1", "+3V3_SENSOR"),       # J2.1  3V3

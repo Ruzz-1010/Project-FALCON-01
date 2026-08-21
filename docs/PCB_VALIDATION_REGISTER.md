@@ -40,9 +40,11 @@ The carrier board shall accept only regulated low voltage:
 ```
 
 - Raw battery or panel voltage shall not enter an ESP32 header or logic connector.
-- USB and external 5 V must not back-feed each other. The carrier needs an
-  explicit source-selection, ideal-diode, or jumper arrangement based on the
-  exact DevKit schematic.
+- USB and external 5 V must not back-feed each other. Placement v0.6 uses a
+  manual `JP1 EXT POWER ENABLE` interlock: normal Orange Pi/USB operation keeps
+  JP1 open; alternate regulated J1 power requires USB to be physically
+  unplugged before JP1 is fitted. U6 is a TPS25947-family protection candidate,
+  but its values and suffix remain blocked by load/transient measurements.
 - Add input fuse coordination, reverse-polarity protection, transient/ESD
   protection, bulk capacitance, and local decoupling after exact loads and
   connectors are selected.

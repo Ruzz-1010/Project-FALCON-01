@@ -7,7 +7,7 @@ require validation before fabrication.
 
 | Ref | Service | Pin assignment | Release note |
 | --- | --- | --- | --- |
-| J1 | Protected carrier input | 1 `+5V_PROTECTED`, 2 `GND` | JST B2P-VH-FB-B / VHR-2N; final rating based on measured load and fuse |
+| J1 | Alternate regulated 5 V input | 1 `+5V_INPUT_RAW`, 2 `GND` | JST B2P-VH-FB-B / VHR-2N; passes through U6 and JP1; USB must be unplugged |
 | J2 | Bar02 R2 JST-GH | 1 `+3V3_SENSOR` (red), 2 `I2C_SCL` (green), 3 `I2C_SDA` (white), 4 `GND` (black) | JST BM04B-GHS-TBT; verify plug-view orientation before energizing |
 | J3 | Socketed Ultimate GPS PID 746 | pad 2 `+3V3_SENSOR`, 3 `GND`, 4 `GPS_RX`, 5 `GPS_TX`; remaining pads open | Official module-header order; preserve antenna/u.FL clearance |
 | J4 | INA260 battery logic | 1 `+3V3_SENSOR`, 2 `GND`, 3 `I2C_SCL`, 4 `I2C_SDA` | High current does not use this connector |

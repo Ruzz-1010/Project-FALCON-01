@@ -34,8 +34,10 @@ not substitutes for the selected PCB manufacturer's capabilities.
 - Fan gate needs a series resistor and pull-down so the fan remains off during boot.
 - Fit load-appropriate flyback protection for an inductive two-wire fan unless
   the selected fan/driver topology proves it unnecessary.
-- Keep USB power isolated from the external 5 V source unless the exact DevKit
-  power schematic proves safe automatic sharing.
+- USB and external 5 V are mutually exclusive for the DevKitC V4. Keep JP1
+  `EXT POWER ENABLE` open during normal USB operation; fit it only with USB
+  physically unplugged. An input eFuse does not by itself prevent external 5 V
+  from backfeeding the DevKit USB connector.
 
 ## Review requirements
 
