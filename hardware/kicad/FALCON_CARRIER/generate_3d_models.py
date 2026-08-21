@@ -69,6 +69,20 @@ write("ads1115", [box((25.4, 17.78, 1.6), (0, 0, 0), GREEN),
 write("module_generic", [box((10.16, 10.16, 1.6), (0, 0, 0), (.22, .30, .34)),
  box((6, 6, 3), (0, 0, 1.6), BLACK)])
 
+# Presentation-only composite for the still-TBD protected-input stage. The
+# distinct bodies communicate fuse, TVS, eFuse IC and bulk capacitor without
+# claiming released footprints or values.
+write("power_protection_preview", [box((10.16, 12.7, 1.6), (0, 0, 0), (.20, .30, .34)),
+ box((7.0, 2.4, 2.2), (0, -4.3, 1.6), (.72, .20, .12)),       # fuse/PTC
+ box((3.0, 1.8, 1.2), (-2.5, 0, 1.6), BLACK),                 # TVS diode
+ box((3.0, 3.0, 1.0), (2.2, 0, 1.6), BLACK),                  # eFuse QFN
+ box((3.2, 3.2, 4.5), (0, 4.0, 1.6), (.12, .18, .28))])       # bulk capacitor
+
+write("jumper_2pin", [box((6.0, 4.0, 2.5), (0, 0, 0), BLACK),
+ box((.7, .7, 6.0), (-1.27, 0, 0), GOLD, .5),
+ box((.7, .7, 6.0), (1.27, 0, 0), GOLD, .5),
+ box((3.2, 2.6, 3.5), (0, 0, 2.5), (.12, .16, .20))])
+
 
 def jst(name, width, pins):
     # Geometry stays centered at the model origin; the footprint supplies the
@@ -88,10 +102,12 @@ write("fan_header", [box((10.4, 5, 3), (0, 0, 0), BLACK)] +
 
 write("resistor_0603", [box((1.6, .8, .45), (0, 0, 0), (.12, .10, .08)),
  box((.35, .82, .5), (-.63, 0, 0), SILVER, .6), box((.35, .82, .5), (.63, 0, 0), SILVER, .6)])
+write("capacitor_0603", [box((1.6, .8, .65), (0, 0, 0), (.72, .58, .34)),
+ box((.35, .82, .68), (-.63, 0, 0), SILVER, .6), box((.35, .82, .68), (.63, 0, 0), SILVER, .6)])
 write("sot23", [box((3, 1.4, 1.1), (0, 0, 0), BLACK)] +
  [box((.45, 1, .2), pos, SILVER, .6) for pos in ((-1, .95, 0), (1, .95, 0), (0, -.95, 0))])
 write("sot25", [box((3, 1.7, 1.3), (0, 0, 0), BLACK)] +
  [box((.42, 1, .2), pos, SILVER, .6) for pos in ((-.95, 1.1, 0), (0, 1.1, 0), (.95, 1.1, 0), (-.95, -1.1, 0), (.95, -1.1, 0))])
 write("testpoint", [box((2.4, 2.4, .5), (0, 0, 0), GOLD, .7), box((1, 1, 2.5), (0, 0, .5), SILVER, .6)])
 
-print(f"Generated 14 detailed sample-part VRML models in {OUT}")
+print(f"Generated 17 detailed sample-part VRML models in {OUT}")

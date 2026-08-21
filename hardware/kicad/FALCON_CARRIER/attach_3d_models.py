@@ -17,8 +17,9 @@ def model_for(ref: str) -> tuple[str, tuple[float, float, float]] | None:
         "J9": ("jst_gh_3", (0, -2.125, 0)), "J10": ("jst_gh_3", (0, -2.125, 0)),
         "J11": ("fan_header", (0, 0, 0)), "J12": ("jst_gh_4", (0, -2.125, 0)),
         "J13": ("fan_header", (0, 0, 0)), "Q1": ("sot23", (0, 0, 0)),
-        "Q2": ("sot23", (0, 0, 0)), "U6": ("module_generic", (0, 0, 0)),
-        "JP1": ("module_generic", (0, 0, 0)),
+        "Q2": ("sot23", (0, 0, 0)), "U6": ("power_protection_preview", (0, 0, 0)),
+        "JP1": ("jumper_2pin", (0, 0, 0)),
+        "C1": ("capacitor_0603", (0, 0, 0)), "C2": ("capacitor_0603", (0, 0, 0)),
     }
     if ref in fixed:
         return fixed[ref]

@@ -88,6 +88,9 @@ def footprint(ref: str, value: str, pins: list[tuple[str, str]], x: float, y: fl
       (size 2.2 2.2) (drill 1) (layers "*.Cu" "*.Mask")
       (net {net_id[net]} "{net}") (uuid "{uid(ref + '/pad/' + number)}"))'''
         )
+    preview_model = {"U6": "power_protection_preview", "JP1": "jumper_2pin"}.get(
+        ref, "module_generic"
+    )
     return f'''  (footprint "FALCON_PROVISIONAL_{value}"
     (layer "F.Cu") (uuid "{uid(ref)}") (at {x:.2f} {y:.2f})
     (descr "PROVISIONAL Project FALCON module envelope")
@@ -99,7 +102,7 @@ def footprint(ref: str, value: str, pins: list[tuple[str, str]], x: float, y: fl
       (stroke (width 0.3) (type dash)) (fill none) (layer "F.SilkS")
       (uuid "{uid(ref + '/outline')}"))
 {chr(10).join(pads)}
-{model_block("module_generic")}
+{model_block(preview_model)}
   )'''
 
 
@@ -231,6 +234,7 @@ def smd_resistor_0603_footprint(
     ref: str, value: str, pins: list[tuple[str, str]], x: float, y: float
 ) -> str:
     pads = []
+    preview_model = "capacitor_0603" if ref.startswith("C") else "resistor_0603"
     for number, px in (("1", -0.8), ("2", 0.8)):
         net = dict(pins)[number]
         pads.append(f'''    (pad "{number}" smd roundrect (at {px} 0)
@@ -244,7 +248,7 @@ def smd_resistor_0603_footprint(
       (stroke (width 0.15) (type solid)) (fill none) (layer "F.SilkS")
       (uuid "{uid(ref + '/outline')}"))
 {chr(10).join(pads)}
-{model_block("resistor_0603")}
+{model_block(preview_model)}
   )'''
 
 

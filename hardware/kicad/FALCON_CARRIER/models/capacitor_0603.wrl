@@ -1,0 +1,15 @@
+#VRML V2.0 utf8
+Group { children [
+Transform { translation 0.00000 0.00000 0.12795 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.72 0.58 0.34
+ specularColor 0.2 0.2 0.2 shininess .35 } }
+ geometry Box { size 0.62992 0.31496 0.25591 } } ] }
+Transform { translation -0.24803 0.00000 0.13386 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.62 0.66 0.68
+ specularColor 0.6 0.6 0.6 shininess .35 } }
+ geometry Box { size 0.13780 0.32283 0.26772 } } ] }
+Transform { translation 0.24803 0.00000 0.13386 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.62 0.66 0.68
+ specularColor 0.6 0.6 0.6 shininess .35 } }
+ geometry Box { size 0.13780 0.32283 0.26772 } } ] }
+] }
