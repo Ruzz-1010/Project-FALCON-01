@@ -58,6 +58,13 @@ def property_block(ref: str, value: str, ref_y: float) -> str:
       (effects (font (size 1.27 1.27))))'''
 
 
+def model_block(name: str, offset: tuple[float, float, float] = (0, 0, 0)) -> str:
+    ox, oy, oz = offset
+    return f'''    (model "${{KIPRJMOD}}/models/{name}.wrl"
+      (offset (xyz {ox:.3f} {oy:.3f} {oz:.3f}))
+      (scale (xyz 1 1 1)) (rotate (xyz 0 0 0)))'''
+
+
 def footprint(ref: str, value: str, pins: list[tuple[str, str]], x: float, y: float) -> str:
     count = len(pins)
     two_rows = count > 6
@@ -92,6 +99,7 @@ def footprint(ref: str, value: str, pins: list[tuple[str, str]], x: float, y: fl
       (stroke (width 0.3) (type dash)) (fill none) (layer "F.SilkS")
       (uuid "{uid(ref + '/outline')}"))
 {chr(10).join(pads)}
+{model_block("module_generic")}
   )'''
 
 
@@ -140,6 +148,7 @@ def jst_gh_top_footprint(
       (uuid "{uid(ref + '/cable-label')}")
       (effects (font (size 0.65 0.65) (thickness 0.12))))
 {chr(10).join(pads)}
+{model_block("jst_gh_3" if circuits == 3 else "jst_gh_4", (0, -2.125, 0))}
   )'''
 
 
@@ -180,6 +189,7 @@ def jst_vh_footprint(
       (uuid "{uid(ref + '/cable-label')}")
       (effects (font (size 0.75 0.75) (thickness 0.14))))
 {chr(10).join(pads)}
+{model_block("jst_vh_2", (0, 1.15, 0))}
   )'''
 
 
@@ -213,6 +223,7 @@ def fan_header_footprint(
       (uuid "{uid(ref + '/signals-label')}")
       (effects (font (size 0.65 0.65) (thickness 0.12))))
 {chr(10).join(pads)}
+{model_block("fan_header")}
   )'''
 
 
@@ -233,6 +244,7 @@ def smd_resistor_0603_footprint(
       (stroke (width 0.15) (type solid)) (fill none) (layer "F.SilkS")
       (uuid "{uid(ref + '/outline')}"))
 {chr(10).join(pads)}
+{model_block("resistor_0603")}
   )'''
 
 
@@ -254,6 +266,7 @@ def sot23_2n7002_footprint(
       (stroke (width 0.15) (type solid)) (fill none) (layer "F.SilkS")
       (uuid "{uid(ref + '/outline')}"))
 {chr(10).join(pads)}
+{model_block("sot23")}
   )'''
 
 
@@ -283,6 +296,7 @@ def sot25_ap2112_footprint(
       (stroke (width 0.15) (type solid)) (fill none) (layer "F.SilkS")
       (uuid "{uid(ref + '/outline')}"))
 {chr(10).join(pads)}
+{model_block("sot25")}
   )'''
 
 
@@ -324,6 +338,7 @@ def esp32_devkitc_footprint(ref: str, value: str, pins: list[tuple[str, str]], x
       (uuid "{uid(ref + '/antenna-label')}")
       (effects (font (size 0.8 0.8) (thickness 0.15))))
 {chr(10).join(pads)}
+{model_block("esp32_devkitc", (12.7, 22.86, 0))}
   )'''
 
 
@@ -403,6 +418,7 @@ def official_module_footprint(
       (effects (font (size 0.8 0.8) (thickness 0.14))))
 {chr(10).join(pads)}
 {chr(10).join(holes)}
+{model_block({"U3": "bno085", "J3": "gps", "J4": "ina260", "J5": "ina260", "U4": "ads1115"}[ref])}
   )'''
 
 
@@ -428,6 +444,7 @@ def test_point_footprint(ref: str, net: str, x: float, y: float) -> str:
     (pad "1" thru_hole circle (at 0 0) (size 2.4 2.4) (drill 1.0)
       (layers "*.Cu" "*.Mask") (net {net_id[net]} "{net}")
       (uuid "{uid(ref + '/pad/1')}"))
+{model_block("testpoint")}
   )'''
 
 

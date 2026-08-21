@@ -149,3 +149,11 @@ Use these source registers during capture:
 5. Print footprints at 1:1 and place the actual modules on the print.
 6. Pass DRC and an independent connector/polarity review.
 7. Assemble and test one protected bench prototype before any marine trial.
+
+## 3D preview
+
+Local lightweight VRML envelopes are stored in `models/` and attached by the
+PCB generator. Run `python3 generate_3d_models.py`, regenerate the PCB, open
+`FALCON_CARRIER.kicad_pcb` in KiCad PCB Editor, then press **Alt+3**. These
+models communicate placement and approximate component volume only; they are
+not manufacturer STEP models and must not be used for enclosure tolerancing.
