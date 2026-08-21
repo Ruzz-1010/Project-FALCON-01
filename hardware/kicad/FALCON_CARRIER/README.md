@@ -115,6 +115,11 @@ Record measurements in `footprint_measurements.csv`; do not start final copper
 routing while the critical rows remain `PENDING`.
 Use [PHYSICAL_FIT_CHECKLIST.md](PHYSICAL_FIT_CHECKLIST.md) with a true 100%-scale
 print to capture the required module, connector, cable, and enclosure checks.
+Run `python3 export_physical_fit_sheet.py`, then print
+`FALCON_CARRIER_PHYSICAL_FIT_A4.svg` on A4 portrait at **100% / Actual size**.
+Verify its 50 mm calibration bar before trusting the footprint overlay.
+On Linux Mint, a matching A4 PDF can be rebuilt with
+`convert -density 300 FALCON_CARRIER_PHYSICAL_FIT_A4.svg -units PixelsPerInch FALCON_CARRIER_PHYSICAL_FIT_A4.pdf`.
 
 Official product dimensions and CAD-derived hole/header coordinates gathered
 for that gate are recorded in
