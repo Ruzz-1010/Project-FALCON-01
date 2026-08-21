@@ -1277,7 +1277,7 @@
 	(footprint "JST_GH_04P_TOP_BM04B-GHS-TBT"
 		(layer "F.Cu")
 		(uuid "29b6db2d-f9e1-5bc4-adfe-04c9bc12d9ef")
-		(at 107 94)
+		(at 153.625 56.25)
 		(descr "JST BM04B-GHS-TBT official-catalog top-entry SMT land pattern")
 		(tags "JST GH 1.25MM TOP ENTRY OFFICIAL CATALOG")
 		(property "Reference" "J12"
@@ -6379,7 +6379,7 @@
 		)
 	)
 	(gr_text "FALCON-01 CARRIER — COMPACT PREVIEW V1.0"
-		(at 102.5 22.5 0)
+		(at 108.5 25 0)
 		(layer "F.SilkS")
 		(uuid "66292e11-d61c-5172-983b-a6f621065f26")
 		(effects
@@ -6401,6 +6401,36 @@
 			)
 			(justify bottom)
 		)
+	)
+	(gr_text "1:+  2:SCL  3:SDA  4:G"
+		(at 34.5 44.5 0)
+		(layer "F.SilkS")
+		(uuid "a958e4b3-467c-5d7c-a6f0-56e7623335fb")
+		(effects (font (size 0.58 0.58) (thickness 0.11)) (justify left bottom))
+	)
+	(gr_text "1:+  2:PULSE  3:G"
+		(at 34.5 62.5 0)
+		(layer "F.SilkS")
+		(uuid "450bcad9-5510-5849-913c-8a5a756c275d")
+		(effects (font (size 0.58 0.58) (thickness 0.11)) (justify left bottom))
+	)
+	(gr_text "1:+  2:VANE  3:G"
+		(at 34.5 80.5 0)
+		(layer "F.SilkS")
+		(uuid "f8c2902d-ed78-581f-8e72-a92a8a18b6cc")
+		(effects (font (size 0.58 0.58) (thickness 0.11)) (justify left bottom))
+	)
+	(gr_text "1:+  2:TEMP  3:G"
+		(at 34.5 98.5 0)
+		(layer "F.SilkS")
+		(uuid "70d8dd2f-415a-521d-b22f-0bd362340a22")
+		(effects (font (size 0.58 0.58) (thickness 0.11)) (justify left bottom))
+	)
+	(gr_text "1:+  2:LEAK  3:G"
+		(at 34.5 116.5 0)
+		(layer "F.SilkS")
+		(uuid "b2209d5b-58d5-56b7-a82d-3c20703837b0")
+		(effects (font (size 0.58 0.58) (thickness 0.11)) (justify left bottom))
 	)
 	(embedded_fonts no)
 )
