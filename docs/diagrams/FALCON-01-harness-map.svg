@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+<style>.bg{fill:#f3f5f4}.board{fill:#0b6b3a;stroke:#183c2c;stroke-width:5}.plug{fill:#f5f1df;stroke:#34443d;stroke-width:3}.h{font:700 27px sans-serif;fill:#10241d}.t{font:20px sans-serif;fill:#253c34}.w{fill:none;stroke-width:8}.r{stroke:#c8443d}.k{stroke:#202624}.y{stroke:#d2a51f}.b{stroke:#3274b8}.g{stroke:#45a568}.wh{stroke:#eee;stroke-width:10}.note{fill:#fff7d4;stroke:#9b7b18;stroke-width:3}</style>
+<rect class="bg" width="1600" height="900"/><text class="h" x="70" y="65">FALCON-01 · PLUG-AND-PLAY FIELD SENSOR HARNESS</text>
+<rect class="board" x="595" y="120" width="410" height="660" rx="18"/><text x="655" y="165" style="font:700 25px sans-serif;fill:white">CARRIER · LEFT SERVICE EDGE</text>
+<g transform="translate(630 220)"><rect class="plug" width="150" height="64" rx="8"/><text class="h" x="20" y="41">J2 · 4P</text></g>
+<g transform="translate(630 335)"><rect class="plug" width="150" height="64" rx="8"/><text class="h" x="20" y="41">J7 · 3P</text></g>
+<g transform="translate(630 450)"><rect class="plug" width="150" height="64" rx="8"/><text class="h" x="20" y="41">J8 · 3P</text></g>
+<g transform="translate(630 565)"><rect class="plug" width="150" height="64" rx="8"/><text class="h" x="20" y="41">J9 · 3P</text></g>
+<g transform="translate(630 680)"><rect class="plug" width="150" height="64" rx="8"/><text class="h" x="12" y="41">J10 · 3P</text></g>
+<text class="h" x="70" y="230">PRES-01 · Bar02</text><text class="t" x="70" y="265">Red 3V3 · Green SCL · White SDA · Black GND</text>
+<path class="w r" d="M520 225H630"/><path class="w g" d="M520 240H630"/><path class="w wh" d="M520 255H630"/><path class="w k" d="M520 270H630"/>
+<text class="h" x="70" y="355">WIND-SPD · Anemometer</text><text class="t" x="70" y="390">Red 3V3 reserved · Yellow pulse · Black GND</text><path class="w r" d="M520 350H630"/><path class="w y" d="M520 365H630"/><path class="w k" d="M520 380H630"/>
+<text class="h" x="70" y="470">WIND-DIR · Wind vane</text><text class="t" x="70" y="505">Red 3V3 · Blue analog signal · Black GND</text><path class="w r" d="M520 465H630"/><path class="w b" d="M520 480H630"/><path class="w k" d="M520 495H630"/>
+<text class="h" x="70" y="585">WATER-T · DS18B20</text><text class="t" x="70" y="620">Red 3V3 · Yellow DQ · Black GND</text><path class="w r" d="M520 580H630"/><path class="w y" d="M520 595H630"/><path class="w k" d="M520 610H630"/>
+<text class="h" x="70" y="700">LEAK-01 · Detector</text><text class="t" x="70" y="735">Red 3V3 · White signal · Black GND · SENSOR TBD</text><path class="w r" d="M520 695H630"/><path class="w wh" d="M520 710H630"/><path class="w k" d="M520 725H630"/>
+<rect class="note" x="1070" y="220" width="450" height="280" rx="16"/><text class="h" x="1110" y="270">ASSEMBLY RULE</text><text class="t" x="1110" y="315">• PCB header is soldered once.</text><text class="t" x="1110" y="355">• Sensor cable uses a crimped plug.</text><text class="t" x="1110" y="395">• Pull the housing, never the wires.</text><text class="t" x="1110" y="435">• Continuity-test before applying power.</text><text class="t" x="1110" y="475">• JST GH stays inside the dry enclosure.</text>
+<text class="t" x="1070" y="570">External waterproof boundary:</text><text class="h" x="1070" y="610">SEALED GLAND / BULKHEAD</text><path d="M1270 640v120" stroke="#326d88" stroke-width="12"/><path d="M1200 700h140" stroke="#326d88" stroke-width="12"/><text class="t" x="1090" y="810">Labels at both ends · strain relief · service loop</text>
+</svg>
