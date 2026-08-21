@@ -3455,7 +3455,7 @@
 	(footprint "MOLEX_470531000_4PIN_FAN_HEADER"
 		(layer "F.Cu")
 		(uuid "88322a7c-e8b7-5241-80c6-ca30a7091cba")
-		(at 172 132)
+		(at 169 132)
 		(descr "Molex 470531000 4-circuit 2.54 mm vertical fan header; outline verify on receipt")
 		(tags "MOLEX 47053 FAN PWM 2.54MM")
 		(property "Reference" "J13"
@@ -4155,7 +4155,7 @@
 	(footprint "FALCON_LOCKED_GPS_UART"
 		(layer "F.Cu")
 		(uuid "a4ce6d7b-e869-5286-8868-91481f653db1")
-		(at 87 43)
+		(at 87 47)
 		(descr "Adafruit Ultimate GPS PID 746 official Eagle CAD; receiving check still required")
 		(tags "FALCON MANUFACTURER CAD SOCKET")
 		(property "Reference" "J3"
@@ -6295,7 +6295,7 @@
 		(uuid "d5784478-7579-5c66-a34a-d8df309c894b")
 	)
 	(gr_text "EXT 5V — REMOVE USB FIRST"
-		(at 116 139 0)
+		(at 116 122 0)
 		(layer "F.SilkS")
 		(uuid "a3da3b6d-478a-5acc-b86d-c214c75cdcb0")
 		(effects
@@ -6331,7 +6331,7 @@
 		)
 	)
 	(gr_text "I2C DISTRIBUTION"
-		(at 56 29 0)
+		(at 56 25.5 0)
 		(layer "F.SilkS")
 		(uuid "305ef6d6-fe64-54cb-b1a1-99fdbe3bc6b9")
 		(effects
@@ -6379,7 +6379,7 @@
 		)
 	)
 	(gr_text "FALCON-01 CARRIER — COMPACT PREVIEW V1.0"
-		(at 102.5 25 0)
+		(at 102.5 22.5 0)
 		(layer "F.SilkS")
 		(uuid "66292e11-d61c-5172-983b-a6f621065f26")
 		(effects

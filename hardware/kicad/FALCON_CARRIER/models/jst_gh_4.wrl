@@ -1,6 +1,6 @@
 #VRML V2.0 utf8
 Group { children [
-Transform { translation 0.00000 -0.83661 1.14173 children [
+Transform { translation 0.00000 0.00000 1.14173 children [
  Shape { appearance Appearance { material Material { diffuseColor 0.88 0.87 0.78
  specularColor 0.2 0.2 0.2 shininess .35 } }
  geometry Box { size 3.24803 1.67323 2.28346 } } ] }

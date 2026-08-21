@@ -71,7 +71,9 @@ write("module_generic", [box((10.16, 10.16, 1.6), (0, 0, 0), (.22, .30, .34)),
 
 
 def jst(name, width, pins):
-    shapes = [box((width, 4.25, 5.8), (0, -2.125, 0), WHITE)]
+    # Geometry stays centered at the model origin; the footprint supplies the
+    # catalog-specific body offset exactly once.
+    shapes = [box((width, 4.25, 5.8), (0, 0, 0), WHITE)]
     for i in range(pins):
         shapes.append(box((.45, 3.2, .35), ((i-(pins-1)/2)*1.25, -4.2, 0), SILVER, .6))
     write(name, shapes)
@@ -79,7 +81,7 @@ def jst(name, width, pins):
 
 jst("jst_gh_3", 7, 3)
 jst("jst_gh_4", 8.25, 4)
-write("jst_vh_2", [box((9.8, 9.7, 9.5), (0, 1.15, 0), WHITE),
+write("jst_vh_2", [box((9.8, 9.7, 9.5), (0, 0, 0), WHITE),
  box((1.1, 1.1, 11), (-1.98, 0, 0), SILVER, .6), box((1.1, 1.1, 11), (1.98, 0, 0), SILVER, .6)])
 write("fan_header", [box((10.4, 5, 3), (0, 0, 0), BLACK)] +
  [box((.65, .65, 8), ((i-1.5)*2.54, 0, 0), GOLD, .5) for i in range(4)])

@@ -24,12 +24,12 @@ placements = {
     # Pull-ups remain physically close to the associated field inputs.
     "R1": (39, 58), "R2": (39, 94),
     # Center/right: rigid motion sensor, GPS, controller, and antenna edge.
-    "U3": (89, 79), "J3": (87, 43), "U2": (136, 70),
+    "U3": (89, 79), "J3": (87, 47), "U2": (136, 70),
     # Bottom service and power section, separated from BNO085/GPS.
     "J12": (107, 94), "U1": (82, 132), "C1": (76, 132), "C2": (88, 132),
     "R3": (145, 83), "R4": (145, 91), "R5": (155, 83), "R6": (155, 91),
     "Q1": (166, 83), "Q2": (166, 91), "R7": (145, 99), "R8": (155, 99),
-    "J11": (151, 132), "J13": (172, 132), "J1": (132, 132),
+    "J11": (151, 132), "J13": (169, 132), "J1": (132, 132),
     "U6": (116, 132), "JP1": (103, 132),
 }
 
@@ -459,7 +459,7 @@ for ref, value, pins, _, _ in MODULES:
         footprints.append(jst_vh_footprint(ref, value, pins, x, y))
     elif ref in FAN_CONNECTORS:
         footprints.append(fan_header_footprint(ref, value, pins, x, y))
-    elif ref in {"R3", "R4", "R5", "R6", "R7", "R8"}:
+    elif ref in {"R1", "R2", "R3", "R4", "R5", "R6", "R7", "R8"}:
         footprints.append(smd_resistor_0603_footprint(ref, value, pins, x, y))
     elif ref in {"Q1", "Q2"}:
         footprints.append(sot23_2n7002_footprint(ref, value, pins, x, y))
@@ -512,7 +512,7 @@ board = f'''(kicad_pcb
   (gr_rect (start 20 20) (end 185 145)
     (stroke (width 0.5) (type default)) (fill none) (layer "Edge.Cuts")
     (uuid "{uid('outline')}"))
-  (gr_text "FALCON-01 CARRIER — COMPACT PREVIEW V1.0" (at 102.5 25 0)
+  (gr_text "FALCON-01 CARRIER — COMPACT PREVIEW V1.0" (at 102.5 22.5 0)
     (layer "F.SilkS") (uuid "{uid('title')}")
     (effects (font (size 2.2 2.2) (thickness 0.4)) (justify bottom)))
   (gr_text "VERIFY EVERY MODULE, CONNECTOR AND HOLE AT 1:1 BEFORE FABRICATION" (at 102.5 143 0)
@@ -521,7 +521,7 @@ board = f'''(kicad_pcb
   (gr_text "FIELD SENSORS" (at 30 29 0) (layer "F.SilkS")
     (uuid "{uid('zone-field')}")
     (effects (font (size 1.1 1.1) (thickness 0.22)) (justify bottom)))
-  (gr_text "I2C DISTRIBUTION" (at 56 29 0) (layer "F.SilkS")
+  (gr_text "I2C DISTRIBUTION" (at 56 25.5 0) (layer "F.SilkS")
     (uuid "{uid('zone-i2c')}")
     (effects (font (size 1.1 1.1) (thickness 0.22)) (justify bottom)))
   (gr_text "MOTION / CONTROL" (at 136 29 0) (layer "F.SilkS")
@@ -530,7 +530,7 @@ board = f'''(kicad_pcb
   (gr_text "POWER / SERVICE" (at 145 142 0) (layer "F.SilkS")
     (uuid "{uid('zone-power')}")
     (effects (font (size 1.1 1.1) (thickness 0.22)) (justify bottom)))
-  (gr_text "EXT 5V — REMOVE USB FIRST" (at 116 139 0) (layer "F.SilkS")
+  (gr_text "EXT 5V — REMOVE USB FIRST" (at 116 122 0) (layer "F.SilkS")
     (uuid "{uid('external-power-warning')}")
     (effects (font (size 0.9 0.9) (thickness 0.18)) (justify bottom)))
   (gr_text "SERVICE TEST POINTS" (at 116 103 0) (layer "F.SilkS")
