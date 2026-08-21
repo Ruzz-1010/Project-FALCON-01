@@ -45,13 +45,15 @@ The board contains a 165 x 125 mm compact-preview outline and labeled placement 
 not final footprints or routing. Do not manufacture from placeholder geometry
 or exported pictures.
 
-Schematic v0.1 contains the ESP32 carrier interface, BNO085 SPI, shared I2C
-modules, GPS UART, wind inputs, optional DS18B20, leak placeholder, fan-driver
-placeholder, protected 5 V input, 3.3 V regulator placeholder, and required
-wind/OneWire pull-ups. Connections use validated named nets and pass KiCad 10
-ERC with zero errors and warnings. `generate_schematic.py` reproducibly rebuilds
-the native schematic and its project symbol library; do not hand-edit generated
-symbol geometry without updating the generator.
+Schematic v1.0 is organized into Power Management, ESP32 Controller, Sensor
+Interfaces, Communication, and Debug & Expansion blocks. It adds the documented
+battery protection chain, external-MPPT solar boundary, power-only service
+USB-C, status/program controls, eight release test points, and connector-only
+UART edge interface. The external edge computer is not part of the PCB.
+`generate_schematic.py` reproducibly rebuilds the native schematic and project
+symbol library. The current placement PCB predates v1.0 and must not be routed
+until schematic-to-PCB synchronization and the remaining part-selection gates
+are completed.
 
 PCB placement v0.7 contains manufacturer-CAD module sockets, official-catalog
 JST GH/VH connector geometry, named-net pads, four provisional M3 mounting holes, and an ESP32 antenna
