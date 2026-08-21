@@ -106,7 +106,7 @@ MODULES = [
     ("J3", "GPS_UART", [("2", "+3V3_SENSOR"), ("3", "GND"), ("4", "GPS_RX"), ("5", "GPS_TX")], 55, 105),
     ("J4", "INA260_BAT_LOGIC", [("1", "+3V3_SENSOR"), ("2", "GND"), ("3", "I2C_SCL"), ("4", "I2C_SDA")], 100, 75),
     ("J5", "INA260_SOLAR_0X41", [("1", "+3V3_SENSOR"), ("2", "GND"), ("3", "I2C_SCL"), ("4", "I2C_SDA")], 100, 105),
-    ("J6", "MCP9808_0X18", [("1", "+3V3_SENSOR"), ("2", "GND"), ("3", "I2C_SCL"), ("4", "I2C_SDA")], 55, 135),
+    ("J6", "MCP9808_0X18", [("1", "+3V3_SENSOR"), ("2", "I2C_SCL"), ("3", "I2C_SDA"), ("4", "GND")], 55, 135),
     ("U4", "ADS1115_0X48", [("B1", "+3V3_SENSOR"), ("B2", "GND"), ("B3", "I2C_SCL"), ("B4", "I2C_SDA"), ("A5", "WIND_VANE")], 100, 135),
     ("J7", "ANEMOMETER", [("1", "+3V3_SENSOR"), ("2", "WIND_PULSE"), ("3", "GND")], 55, 165),
     ("J8", "WIND_VANE", [("1", "+3V3_SENSOR"), ("2", "WIND_VANE"), ("3", "GND")], 100, 165),
@@ -114,7 +114,7 @@ MODULES = [
     ("J10", "LEAK_SENSOR_TBD", [("1", "+3V3_SENSOR"), ("2", "LEAK_SIGNAL"), ("3", "GND")], 190, 145),
     ("U5", "FAN_DRIVER_TBD", [("1", "+5V_PROTECTED"), ("2", "GND"), ("3", "FAN_PWM"), ("4", "FAN_SWITCHED")], 235, 145),
     ("J11", "FAN_TBD", [("1", "+5V_PROTECTED"), ("2", "FAN_SWITCHED")], 235, 175),
-    ("J12", "SERVICE_I2C", [("1", "+3V3_SENSOR"), ("2", "GND"), ("3", "I2C_SCL"), ("4", "I2C_SDA")], 190, 175),
+    ("J12", "SERVICE_I2C", [("1", "+3V3_SENSOR"), ("2", "I2C_SCL"), ("3", "I2C_SDA"), ("4", "GND")], 190, 175),
     ("R1", "PULLUP_10K", [("1", "+3V3_SENSOR"), ("2", "WIND_PULSE")], 145, 185),
     ("R2", "PULLUP_4K7", [("1", "+3V3_SENSOR"), ("2", "WATER_TEMP")], 190, 205),
 ]

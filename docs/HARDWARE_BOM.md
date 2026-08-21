@@ -34,6 +34,13 @@ connectors, enclosure, shipping, and optional antenna.
 | 1 | Separate 5 V / 2 A buck | PHP 620–1,850 | ESP32/sensor branch test |
 | lot | Fuses, disconnect, terminals, glands, marine wire | PHP 4,320–9,875 | Rated schedule and ingress review |
 
+Internal connector baseline: JST GH 4-position (`BM04B-GHS-TBT`) for Bar02/I2C,
+JST GH 3-position (`BM03B-GHS-TBT`) for low-current sensor signals, JST VH
+2-position (`B2P-VH-FB-B`) for protected 5 V input, and JST VH 3-position
+(`B3P-VH-FB-B`) for the fan harness. Include matching housings, correctly sized
+contacts, authorized crimp tooling, and spares; verify availability before
+locking the PCB footprints.
+
 Raw converted planning total: **PHP 36,600–60,550** before enclosure fabrication,
 freight, taxes, and spares. A more practical landed budget is approximately
 **PHP 42,000–79,000**, allowing 15–30% for shipping, import costs, local markup,
