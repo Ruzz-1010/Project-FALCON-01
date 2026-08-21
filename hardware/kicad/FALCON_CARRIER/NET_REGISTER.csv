@@ -3,7 +3,7 @@ GND,J1.2,"all modules and external connectors",0 V,validated,"logic ground; cont
 +5V_INPUT_RAW,J1.1,U6.IN,5 V regulated input,TBD,"alternate source only; upstream buck and fuse measurements required"
 +5V_EXT_PROTECTED,U6.OUT,JP1.1,protected alternate 5 V,TBD,"TPS25947-family eFuse candidate; values and exact suffix TBD"
 +5V_PROTECTED,"JP1.2 or DevKitC USB/5V header","ESP32 5V input; 3V3 regulator input; fan power if 5 V model selected",5 V logic rail,TBD,"normal mode is USB with JP1 open; external mode requires USB unplugged and JP1 fitted"
-+3V3_SENSOR,U1.OUT,"I2C modules; BNO085; pull-ups; external sensor interfaces",3.3 V regulated,TBD,"regulator and current rating require load measurement"
++3V3_SENSOR,U1.5 AP2112K-3.3TRG1,"I2C modules; BNO085; pull-ups; external sensor interfaces",3.3 V regulated,selected pending test,"DevKitC 3V3 header intentionally open; load/thermal test required"
 I2C_SDA,ESP32.GPIO21,"Bar02; INA260_BAT; INA260_SOLAR; MCP9808; ADS1115",3.3 V open-drain,validated,"audit total installed pull-up resistance"
 I2C_SCL,ESP32.GPIO22,"Bar02; INA260_BAT; INA260_SOLAR; MCP9808; ADS1115",3.3 V open-drain,validated,"audit total installed pull-up resistance"
 BNO_SCK,ESP32.GPIO18,BNO085.SCL_SCK,3.3 V SPI,validated,

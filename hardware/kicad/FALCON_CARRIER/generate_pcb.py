@@ -26,7 +26,7 @@ placements = {
     # Center/right: rigid motion sensor, GPS, controller, and antenna edge.
     "U3": (135, 88), "J3": (145, 45), "U2": (173, 90),
     # Bottom service and power section, separated from BNO085/GPS.
-    "J12": (120, 150), "U1": (160, 152),
+    "J12": (120, 150), "U1": (154, 160), "C1": (146, 160), "C2": (162, 160),
     "R3": (174, 124), "R4": (174, 132), "R5": (186, 124), "R6": (186, 132),
     "Q1": (198, 124), "Q2": (198, 132), "R7": (174, 140), "R8": (186, 140),
     "J11": (204, 146), "J13": (204, 158), "J1": (208, 170),
@@ -257,6 +257,35 @@ def sot23_2n7002_footprint(
   )'''
 
 
+def sot25_ap2112_footprint(
+    ref: str, value: str, pins: list[tuple[str, str]], x: float, y: float
+) -> str:
+    """Diodes AP2112 SOT25 pin pattern: 1 VIN, 2 GND, 3 EN, 4 NC, 5 VOUT."""
+    connected = dict(pins)
+    positions = {"1": (-0.95, 1.10), "2": (0.0, 1.10), "3": (0.95, 1.10),
+                 "4": (0.95, -1.10), "5": (-0.95, -1.10)}
+    pads = []
+    for number, (px, py) in positions.items():
+        net_clause = ""
+        if number in connected:
+            net = connected[number]
+            net_clause = f' (net {net_id[net]} "{net}")'
+        pads.append(f'''    (pad "{number}" smd roundrect (at {px} {py})
+      (size 0.65 1.05) (layers "F.Cu" "F.Paste" "F.Mask")
+      (roundrect_rratio 0.18){net_clause}
+      (uuid "{uid(ref + '/pad/' + number)}"))''')
+    return f'''  (footprint "SOT-25_AP2112K"
+    (layer "F.Cu") (uuid "{uid(ref)}") (at {x:.2f} {y:.2f})
+    (descr "Diodes AP2112K SOT25; official pin assignment and package geometry")
+    (tags "AP2112K SOT25 LDO 3V3")
+{property_block(ref, "AP2112K-3.3TRG1", -2.7)} (path "/{uid(ref)}") (attr smd)
+    (fp_rect (start -1.55 -1.45) (end 1.55 1.45)
+      (stroke (width 0.15) (type solid)) (fill none) (layer "F.SilkS")
+      (uuid "{uid(ref + '/outline')}"))
+{chr(10).join(pads)}
+  )'''
+
+
 def esp32_devkitc_footprint(ref: str, value: str, pins: list[tuple[str, str]], x: float, y: float) -> str:
     """38-pad geometry from Espressif's official ESP32-DevKitC footprint."""
     used = {number: net for number, net in pins}
@@ -417,6 +446,10 @@ for ref, value, pins, _, _ in MODULES:
         footprints.append(smd_resistor_0603_footprint(ref, value, pins, x, y))
     elif ref in {"Q1", "Q2"}:
         footprints.append(sot23_2n7002_footprint(ref, value, pins, x, y))
+    elif ref == "U1":
+        footprints.append(sot25_ap2112_footprint(ref, value, pins, x, y))
+    elif ref in {"C1", "C2"}:
+        footprints.append(smd_resistor_0603_footprint(ref, value, pins, x, y))
     elif ref in OFFICIAL_MODULE_GEOMETRY:
         footprints.append(official_module_footprint(ref, value, pins, x, y))
     elif ref.startswith("TP"):
@@ -446,7 +479,7 @@ board = f'''(kicad_pcb
   (general (thickness 1.6) (legacy_teardrops no))
   (paper "A4")
   (title_block (title "FALCON-01 LOW-VOLTAGE CARRIER") (date "2026-08-20")
-    (rev "PLACEMENT V0.8") (company "PROJECT FALCON-01")
+    (rev "PLACEMENT V0.9") (company "PROJECT FALCON-01")
     (comment 1 "MODULE AND CONNECTOR GEOMETRY — VERIFY AT 1:1")
     (comment 2 "NOT APPROVED FOR FABRICATION"))
   (layers
@@ -462,7 +495,7 @@ board = f'''(kicad_pcb
   (gr_rect (start 20 20) (end 220 180)
     (stroke (width 0.5) (type default)) (fill none) (layer "Edge.Cuts")
     (uuid "{uid('outline')}"))
-  (gr_text "FALCON-01 CARRIER — DUAL-FAN PLACEMENT V0.8" (at 120 25 0)
+  (gr_text "FALCON-01 CARRIER — SENSOR-POWER PLACEMENT V0.9" (at 120 25 0)
     (layer "F.SilkS") (uuid "{uid('title')}")
     (effects (font (size 2.2 2.2) (thickness 0.4)) (justify bottom)))
   (gr_text "VERIFY EVERY MODULE, CONNECTOR AND HOLE AT 1:1 BEFORE FABRICATION" (at 120 176 0)

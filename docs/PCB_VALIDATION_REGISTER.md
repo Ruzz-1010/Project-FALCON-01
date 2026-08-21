@@ -76,7 +76,7 @@ mean.
 | Priority | Required decision or evidence | Why it blocks release |
 | --- | --- | --- |
 | High | Receive and 1:1-check Espressif ESP32-DevKitC V4 with ESP32-WROOM-32E | Exact official reference is locked, but delivered board/revision and headers still require physical confirmation |
-| Critical | Exact 5 V buck models and output-current/ripple test | Defines input connector, protection, thermal area, and power quality |
+| Critical | Exact 5 V buck models and output-current/ripple test; AP2112 3.3 V sensor-rail load/thermal test | Defines input protection, thermal area, and power quality |
 | Critical | Exact MPPT, battery BMS, panel Voc/Isc, and load-current measurements | Required for correct fusing and current-monitor topology |
 | Critical | Connector family, pin count, current rating, waterproofing method, and keying | Prevents reversed sensors and unsafe power connections |
 | Critical | Receive and bench-test two NF-A8 5V PWM candidates: startup current, rail transient, 25 kHz PWM, independent tach, and enclosure environment | Required to release the open-drain PWM/load-enable stages and dual four-pin connectors |

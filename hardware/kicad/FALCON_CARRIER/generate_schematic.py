@@ -78,9 +78,11 @@ MODULES = [
     ("J1", "POWER_INPUT", [("1", "+5V_INPUT_RAW"), ("2", "GND")], 55, 35),
     ("U6", "EFUSE_TPS25947_TBD", [("1", "+5V_INPUT_RAW"), ("2", "GND"), ("3", "+5V_EXT_PROTECTED")], 55, 50),
     ("JP1", "EXT_POWER_ENABLE", [("1", "+5V_EXT_PROTECTED"), ("2", "+5V_PROTECTED")], 55, 65),
-    ("U1", "REGULATOR_3V3_TBD", [("1", "+5V_PROTECTED"), ("2", "GND"), ("3", "+3V3_SENSOR")], 100, 35),
+    ("U1", "AP2112K_3V3", [("1", "+5V_PROTECTED"), ("2", "GND"), ("3", "+5V_PROTECTED"), ("5", "+3V3_SENSOR")], 100, 35),
+    ("C1", "LDO_INPUT_1UF_X7R", [("1", "+5V_PROTECTED"), ("2", "GND")], 85, 50),
+    ("C2", "LDO_OUTPUT_1UF_X7R", [("1", "+3V3_SENSOR"), ("2", "GND")], 115, 50),
     ("U2", "ESP32_DEVKITC_V4_WROOM32E", [
-        ("1", "+3V3_SENSOR"),       # J2.1  3V3
+        # J2.1 3V3 intentionally left open: the sensor rail has its own U1 LDO.
         ("7", "LEAK_SIGNAL"),       # J2.7  GPIO32
         ("5", "FAN1_TACH"),         # J2.5  GPIO34 input only
         ("6", "FAN2_TACH"),         # J2.6  GPIO35 input only
