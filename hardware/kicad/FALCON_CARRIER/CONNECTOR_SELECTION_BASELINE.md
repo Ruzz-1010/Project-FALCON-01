@@ -3,6 +3,10 @@
 Status: **engineering baseline for footprint capture; receiving and harness
 validation still required**. Updated 2026-08-21.
 
+PCB footprint status: JST GH and VH geometries are now generated from the
+official catalog board-layout and dimensional drawings. They remain subject to
+a printed 1:1 overlay and physical receiving inspection before fabrication.
+
 ## Selection rules
 
 - PCB connectors stay inside the dry electronics enclosure; they are not the

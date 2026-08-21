@@ -7,7 +7,8 @@ from a browser at 100% scale on A4 portrait paper. Use one page-one copy per
 module, then transfer the signed results to `footprint_measurements.csv`.
 
 The PCB now uses official CAD geometry for U2, U3, J3, J4, J5, and U4; all
-remaining module and connector envelopes are provisional. Manufacturer CAD is
+remaining unselected module envelopes are provisional. JST GH/VH connector
+geometry is captured from official catalogs, while manufacturer CAD is
 not proof that the delivered revision or installed headers will fit. Validate every line in
 `footprint_measurements.csv` using the actual item, a digital caliper, and clear
 photos of both sides.

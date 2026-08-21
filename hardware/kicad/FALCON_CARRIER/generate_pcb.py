@@ -93,6 +93,93 @@ def footprint(ref: str, value: str, pins: list[tuple[str, str]], x: float, y: fl
   )'''
 
 
+GH_CONNECTORS = {"J2": 4, "J6": 4, "J7": 3, "J8": 3, "J9": 3,
+                 "J10": 3, "J12": 4}
+VH_CONNECTORS = {"J1": 2, "J11": 3}
+
+
+def jst_gh_top_footprint(
+    ref: str, value: str, pins: list[tuple[str, str]], x: float, y: float
+) -> str:
+    """JST BMxxB-GHS-TBT top-entry SMT land pattern from the official GH catalog."""
+    circuits = GH_CONNECTORS[ref]
+    connected = dict(pins)
+    contact_span = (circuits - 1) * 1.25
+    body_width = contact_span + 4.50
+    pads = []
+    for index in range(circuits):
+        number = str(index + 1)
+        px = -contact_span / 2 + index * 1.25
+        net = connected[number]
+        pads.append(f'''    (pad "{number}" smd roundrect (at {px:.3f} -4.750)
+      (size 0.60 1.70) (layers "F.Cu" "F.Paste" "F.Mask")
+      (roundrect_rratio 0.20) (net {net_id[net]} "{net}")
+      (uuid "{uid(ref + '/pad/' + number)}"))''')
+    # Two soldered reinforcement tabs shown in JST's top-entry board layout.
+    for side, px in (("L", -body_width / 2), ("R", body_width / 2)):
+        pads.append(f'''    (pad "MP" smd roundrect (at {px:.3f} -1.550)
+      (size 1.35 2.50) (layers "F.Cu" "F.Paste" "F.Mask")
+      (roundrect_rratio 0.15) (uuid "{uid(ref + '/mount/' + side)}"))''')
+    return f'''  (footprint "JST_GH_{circuits:02d}P_TOP_BM{circuits:02d}B-GHS-TBT"
+    (layer "F.Cu") (uuid "{uid(ref)}") (at {x:.2f} {y:.2f})
+    (descr "JST BM{circuits:02d}B-GHS-TBT official-catalog top-entry SMT land pattern")
+    (tags "JST GH 1.25MM TOP ENTRY OFFICIAL CATALOG")
+{property_block(ref, f"BM{circuits:02d}B-GHS-TBT", -7.5)}
+    (path "/{uid(ref)}") (attr smd)
+    (fp_rect (start {-body_width / 2:.3f} -4.250)
+      (end {body_width / 2:.3f} 0)
+      (stroke (width 0.15) (type solid)) (fill none) (layer "F.Fab")
+      (uuid "{uid(ref + '/outline')}"))
+    (fp_text user "1" (at {-contact_span / 2:.3f} -6.25 0) (layer "F.SilkS")
+      (uuid "{uid(ref + '/pin1-label')}")
+      (effects (font (size 0.75 0.75) (thickness 0.15))))
+    (fp_text user "TOP MATE" (at 0 1.2 0) (layer "F.SilkS")
+      (uuid "{uid(ref + '/cable-label')}")
+      (effects (font (size 0.65 0.65) (thickness 0.12))))
+{chr(10).join(pads)}
+  )'''
+
+
+def jst_vh_footprint(
+    ref: str, value: str, pins: list[tuple[str, str]], x: float, y: float
+) -> str:
+    """JST BxP-VH-FB-B 3.96 mm THT geometry from the official VH catalog."""
+    circuits = VH_CONNECTORS[ref]
+    connected = dict(pins)
+    span = (circuits - 1) * 3.96
+    body_width = span + 5.84
+    pads = []
+    for index in range(circuits):
+        number = str(index + 1)
+        px = -span / 2 + index * 3.96
+        net_clause = ""
+        if number in connected:
+            net = connected[number]
+            net_clause = f' (net {net_id[net]} "{net}")'
+        shape = "rect" if number == "1" else "circle"
+        pads.append(f'''    (pad "{number}" thru_hole {shape} (at {px:.3f} 0)
+      (size 2.40 2.40) (drill 1.30) (layers "*.Cu" "*.Mask"){net_clause}
+      (uuid "{uid(ref + '/pad/' + number)}"))''')
+    return f'''  (footprint "JST_VH_{circuits:02d}P_B{circuits}P-VH-FB-B"
+    (layer "F.Cu") (uuid "{uid(ref)}") (at {x:.2f} {y:.2f})
+    (descr "JST B{circuits}P-VH-FB-B official-catalog 3.96 mm THT geometry")
+    (tags "JST VH 3.96MM SHROUDED OFFICIAL CATALOG")
+{property_block(ref, f"B{circuits}P-VH-FB-B", -7.5)}
+    (path "/{uid(ref)}") (attr through_hole)
+    (fp_rect (start {-body_width / 2:.3f} -3.70)
+      (end {body_width / 2:.3f} 6.00)
+      (stroke (width 0.25) (type solid)) (fill none) (layer "F.SilkS")
+      (uuid "{uid(ref + '/outline')}"))
+    (fp_text user "1" (at {-span / 2:.3f} -5.0 0) (layer "F.SilkS")
+      (uuid "{uid(ref + '/pin1-label')}")
+      (effects (font (size 0.9 0.9) (thickness 0.18))))
+    (fp_text user "CABLE" (at 0 7.1 0) (layer "F.SilkS")
+      (uuid "{uid(ref + '/cable-label')}")
+      (effects (font (size 0.75 0.75) (thickness 0.14))))
+{chr(10).join(pads)}
+  )'''
+
+
 def esp32_devkitc_footprint(ref: str, value: str, pins: list[tuple[str, str]], x: float, y: float) -> str:
     """38-pad geometry from Espressif's official ESP32-DevKitC footprint."""
     used = {number: net for number, net in pins}
@@ -243,6 +330,10 @@ for ref, value, pins, _, _ in MODULES:
     x, y = placements[ref]
     if ref == "U2":
         footprints.append(esp32_devkitc_footprint(ref, value, pins, x, y))
+    elif ref in GH_CONNECTORS:
+        footprints.append(jst_gh_top_footprint(ref, value, pins, x, y))
+    elif ref in VH_CONNECTORS:
+        footprints.append(jst_vh_footprint(ref, value, pins, x, y))
     elif ref in OFFICIAL_MODULE_GEOMETRY:
         footprints.append(official_module_footprint(ref, value, pins, x, y))
     elif ref.startswith("TP"):
@@ -272,8 +363,8 @@ board = f'''(kicad_pcb
   (general (thickness 1.6) (legacy_teardrops no))
   (paper "A4")
   (title_block (title "FALCON-01 LOW-VOLTAGE CARRIER") (date "2026-08-20")
-    (rev "PLACEMENT V0.6") (company "PROJECT FALCON-01")
-    (comment 1 "ALL FOOTPRINTS PROVISIONAL — VERIFY AT 1:1")
+    (rev "PLACEMENT V0.7") (company "PROJECT FALCON-01")
+    (comment 1 "JST CONNECTOR GEOMETRY LOCKED — VERIFY AT 1:1")
     (comment 2 "NOT APPROVED FOR FABRICATION"))
   (layers
     (0 "F.Cu" signal) (31 "B.Cu" signal)
@@ -288,7 +379,7 @@ board = f'''(kicad_pcb
   (gr_rect (start 20 20) (end 220 180)
     (stroke (width 0.5) (type default)) (fill none) (layer "Edge.Cuts")
     (uuid "{uid('outline')}"))
-  (gr_text "FALCON-01 CARRIER — PROTECTED-POWER PLACEMENT V0.6" (at 120 25 0)
+  (gr_text "FALCON-01 CARRIER — CONNECTOR PLACEMENT V0.7" (at 120 25 0)
     (layer "F.SilkS") (uuid "{uid('title')}")
     (effects (font (size 2.2 2.2) (thickness 0.4)) (justify bottom)))
   (gr_text "VERIFY EVERY MODULE, CONNECTOR AND HOLE AT 1:1 BEFORE FABRICATION" (at 120 176 0)

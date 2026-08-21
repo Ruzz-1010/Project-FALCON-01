@@ -53,8 +53,8 @@ ERC with zero errors and warnings. `generate_schematic.py` reproducibly rebuilds
 the native schematic and its project symbol library; do not hand-edit generated
 symbol geometry without updating the generator.
 
-PCB placement v0.2 contains provisional through-hole module/socket envelopes,
-named-net pads, four provisional M3 mounting holes, and an ESP32 antenna
+PCB placement v0.7 contains manufacturer-CAD module sockets, official-catalog
+JST GH/VH connector geometry, named-net pads, four provisional M3 mounting holes, and an ESP32 antenna
 keep-out. `generate_pcb.py` reproducibly builds this placement. The current DRC
 result is **zero geometry/rule violations and 64 expected unconnected ratsnest
 items**. Those connections must remain visible until deliberate copper routing;
@@ -104,8 +104,10 @@ Reference map:
 | H1–H4 | Provisional M3 mounting holes |
 | TP1–TP18 | Labeled power, bus, UART, sensor-input, and PWM test points |
 
-Every footprint outline, header spacing, mounting hole, and connector remains
-provisional until checked against the purchased hardware on a 1:1 print.
+Every footprint still requires a purchased-part check on a 1:1 print. The JST
+GH/VH geometry is captured from the official manufacturer catalogs, but mating
+direction, assembly clearance, and received-part revision must still be signed
+off before fabrication.
 
 The next release gate is [FOOTPRINT_VALIDATION.md](FOOTPRINT_VALIDATION.md).
 Record measurements in `footprint_measurements.csv`; do not start final copper
