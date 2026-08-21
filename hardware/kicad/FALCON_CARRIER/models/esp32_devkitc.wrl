@@ -1,12 +1,179 @@
 #VRML V2.0 utf8
-Transform {
-  translation 0 0 1.141732
-  children [
-    Shape {
-      appearance Appearance {
-        material Material { diffuseColor 0.05 0.28 0.18 specularColor 0.18 0.18 0.18 shininess 0.25 }
-      }
-      geometry Box { size 10.984252 18.976378 2.283465 }
-    }
-  ]
-}
+Group { children [
+Transform { translation 0.00000 0.00000 0.31496 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.03 0.3 0.16
+ specularColor 0.2 0.2 0.2 shininess .35 } }
+ geometry Box { size 10.98425 18.97638 0.62992 } } ] }
+Transform { translation 0.00000 2.36220 1.10236 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.62 0.66 0.68
+ specularColor 0.6 0.6 0.6 shininess .35 } }
+ geometry Box { size 7.08661 10.03937 0.94488 } } ] }
+Transform { translation 0.00000 8.26772 0.76772 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.72 0.62 0.3
+ specularColor 0.2 0.2 0.2 shininess .35 } }
+ geometry Box { size 7.08661 2.36220 0.27559 } } ] }
+Transform { translation 0.00000 -9.05512 1.22047 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.62 0.66 0.68
+ specularColor 0.7 0.7 0.7 shininess .35 } }
+ geometry Box { size 3.14961 2.55906 1.18110 } } ] }
+Transform { translation -5.00000 0.00000 1.12205 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.035 0.035 0.04
+ specularColor 0.2 0.2 0.2 shininess .35 } }
+ geometry Box { size 0.86614 18.86614 0.98425 } } ] }
+Transform { translation -5.00000 -9.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation -5.00000 -8.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation -5.00000 -7.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation -5.00000 -6.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation -5.00000 -5.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation -5.00000 -4.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation -5.00000 -3.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation -5.00000 -2.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation -5.00000 -1.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation -5.00000 0.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation -5.00000 1.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation -5.00000 2.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation -5.00000 3.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation -5.00000 4.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation -5.00000 5.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation -5.00000 6.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation -5.00000 7.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation -5.00000 8.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation -5.00000 9.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation 5.00000 0.00000 1.12205 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.035 0.035 0.04
+ specularColor 0.2 0.2 0.2 shininess .35 } }
+ geometry Box { size 0.86614 18.86614 0.98425 } } ] }
+Transform { translation 5.00000 -9.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation 5.00000 -8.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation 5.00000 -7.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation 5.00000 -6.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation 5.00000 -5.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation 5.00000 -4.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation 5.00000 -3.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation 5.00000 -2.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation 5.00000 -1.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation 5.00000 0.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation 5.00000 1.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation 5.00000 2.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation 5.00000 3.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation 5.00000 4.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation 5.00000 5.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation 5.00000 6.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation 5.00000 7.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation 5.00000 8.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+Transform { translation 5.00000 9.00000 1.71260 children [
+ Shape { appearance Appearance { material Material { diffuseColor 0.78 0.52 0.08
+ specularColor 0.5 0.5 0.5 shininess .35 } }
+ geometry Box { size 0.21654 0.21654 2.16535 } } ] }
+] }
