@@ -62,6 +62,16 @@ result is **zero geometry/rule violations and 64 expected unconnected ratsnest
 items**. Those connections must remain visible until deliberate copper routing;
 they are not to be suppressed or described as a finished PCB.
 
+Industrial placement v2.0 preserves the existing PCB pad/net assignments and
+the 165 x 125 mm outline while reorganizing all 55 footprints. GPS, BNO085,
+pressure, wind-speed, wind-direction, temperature, battery-monitor, and
+solar-monitor interfaces follow one outward-facing sensor edge; the ESP32 is
+centered; power follows one lower-edge service flow; communication/test points
+form an accessible bank; and fan circuitry occupies a separate corner.
+`professional_placement.py` reapplies this placement deterministically. This is
+a routing-ready placement candidate, not a fabrication release: the physical
+footprint, enclosure, and part-selection gates still apply.
+
 Placement v0.3 reorganizes the same validated nets into professional functional
 zones: field connectors on the left service edge, I2C modules in an addressable
 distribution column, pull-ups beside their inputs, BNO085/GPS in the quiet

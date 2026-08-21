@@ -10,7 +10,7 @@
 	(title_block
 		(title "FALCON-01 LOW-VOLTAGE CARRIER")
 		(date "2026-08-20")
-		(rev "COMPACT PREVIEW V1.0")
+		(rev "INDUSTRIAL PLACEMENT V2.0")
 		(company "PROJECT FALCON-01")
 		(comment 1 "MODULE AND CONNECTOR GEOMETRY — VERIFY AT 1:1")
 		(comment 2 "NOT APPROVED FOR FABRICATION")
@@ -83,7 +83,7 @@
 	(footprint "JST_GH_03P_TOP_BM03B-GHS-TBT"
 		(layer "F.Cu")
 		(uuid "00eb2f65-8d87-5ecb-ba02-4781a938c9f0")
-		(at 27 112)
+		(at 88 60)
 		(descr "JST BM03B-GHS-TBT official-catalog top-entry SMT land pattern")
 		(tags "JST GH 1.25MM TOP ENTRY OFFICIAL CATALOG")
 		(property "Reference" "J10"
@@ -220,7 +220,7 @@
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "0349417a-1cb5-5fc1-aea0-acdd8cd4dae9")
-		(at 75 117)
+		(at 75.4 118)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP12"
@@ -306,7 +306,7 @@
 	(footprint "FALCON_LOCKED_ADS1115_0X48"
 		(layer "F.Cu")
 		(uuid "129480e6-d898-5d39-87a0-e31659c6a491")
-		(at 55.5 120.5)
+		(at 112 46)
 		(descr "Adafruit ADS1115 PID 1085 STEMMA QT official Eagle CAD; receiving check still required")
 		(tags "FALCON MANUFACTURER CAD SOCKET")
 		(property "Reference" "U4"
@@ -523,7 +523,7 @@
 	(footprint "SOT-23_2N7002"
 		(layer "F.Cu")
 		(uuid "1309390e-da6b-5c82-a930-25fbb2017460")
-		(at 166 91)
+		(at 180 93)
 		(property "Reference" "Q2"
 			(at 0 -2.5 0)
 			(layer "F.SilkS")
@@ -622,7 +622,7 @@
 	(footprint "FALCON_LOCKED_INA260_SOLAR_0X41"
 		(layer "F.Cu")
 		(uuid "1cf3b574-5268-59d7-a524-ea7fa97367c4")
-		(at 57 68.5)
+		(at 167 43)
 		(descr "Adafruit INA260 PID 4226 official Eagle CAD; receiving check still required")
 		(tags "FALCON MANUFACTURER CAD SOCKET")
 		(property "Reference" "J5"
@@ -792,7 +792,7 @@
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "20863e51-58dd-5a7f-928a-558ba3ee100c")
-		(at 83.2 108)
+		(at 75.4 109)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP2"
@@ -878,7 +878,7 @@
 	(footprint "FALCON_LOCKED_BNO085_SPI"
 		(layer "F.Cu")
 		(uuid "21f3e68f-acb4-5edd-b8b5-0dcf62feeb71")
-		(at 121 49)
+		(at 68 47)
 		(descr "Adafruit BNO08x Rev C official Eagle CAD; receiving check still required")
 		(tags "FALCON MANUFACTURER CAD SOCKET")
 		(property "Reference" "U3"
@@ -1100,7 +1100,7 @@
 	(footprint "R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "2779721b-34a8-5b02-a6b2-ea95fe6771b6")
-		(at 155 83)
+		(at 172 84)
 		(property "Reference" "R5"
 			(at 0 -1.8 0)
 			(layer "F.SilkS")
@@ -1191,7 +1191,7 @@
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "28494773-6020-5cb5-8e72-3d2bde7b1736")
-		(at 83.2 117)
+		(at 82.8 118)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP13"
@@ -1277,7 +1277,7 @@
 	(footprint "JST_GH_04P_TOP_BM04B-GHS-TBT"
 		(layer "F.Cu")
 		(uuid "29b6db2d-f9e1-5bc4-adfe-04c9bc12d9ef")
-		(at 153.625 56.25)
+		(at 43 108)
 		(descr "JST BM04B-GHS-TBT official-catalog top-entry SMT land pattern")
 		(tags "JST GH 1.25MM TOP ENTRY OFFICIAL CATALOG")
 		(property "Reference" "J12"
@@ -1422,7 +1422,7 @@
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "2ef35dd9-eefb-5859-a2c4-8e761aceffae")
-		(at 132.4 117)
+		(at 127.2 118)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP19"
@@ -1508,7 +1508,7 @@
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "33d5d139-3601-595e-8012-c8b8bd1f21c8")
-		(at 91.4 117)
+		(at 90.2 118)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP14"
@@ -1594,7 +1594,7 @@
 	(footprint "R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "3abefac6-2819-5f1a-a78b-7c8cf335693b")
-		(at 145 99)
+		(at 164 102)
 		(property "Reference" "R7"
 			(at 0 -1.8 0)
 			(layer "F.SilkS")
@@ -1685,7 +1685,7 @@
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "3f464c17-8331-5ae5-9436-c7a18f594930")
-		(at 116 117)
+		(at 112.4 118)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP17"
@@ -1771,7 +1771,7 @@
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "44f4b88f-5780-51cf-8282-6d595971620e")
-		(at 124.2 117)
+		(at 119.8 118)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP18"
@@ -1857,7 +1857,7 @@
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "4bfab5f9-1f14-5712-a010-122a1fce4d4a")
-		(at 157 108)
+		(at 68 118)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP11"
@@ -2013,7 +2013,7 @@
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "5691acef-5209-52e9-b274-9337aa199aad")
-		(at 107.8 117)
+		(at 105 118)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP16"
@@ -2099,7 +2099,7 @@
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "56c33a29-9e1e-555c-977f-e54fcfcc743c")
-		(at 116 108)
+		(at 105 109)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP6"
@@ -2185,7 +2185,7 @@
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "5708f9e5-2acb-521a-9735-3412107247a5")
-		(at 75 108)
+		(at 68 109)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP1"
@@ -2271,7 +2271,7 @@
 	(footprint "JST_GH_03P_TOP_BM03B-GHS-TBT"
 		(layer "F.Cu")
 		(uuid "6486b48c-b6ac-5cbb-9bb0-215d1ff2f844")
-		(at 27 76)
+		(at 112 33)
 		(descr "JST BM03B-GHS-TBT official-catalog top-entry SMT land pattern")
 		(tags "JST GH 1.25MM TOP ENTRY OFFICIAL CATALOG")
 		(property "Reference" "J8"
@@ -2408,7 +2408,7 @@
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "68f52c81-7cdd-5fe4-82c9-84500bee68d8")
-		(at 99.6 117)
+		(at 97.6 118)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP15"
@@ -2494,7 +2494,7 @@
 	(footprint "R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "6e9bc3b5-b4aa-594f-b259-6b76edd244fe")
-		(at 88 132)
+		(at 100 132)
 		(property "Reference" "C2"
 			(at 0 -1.8 0)
 			(layer "F.SilkS")
@@ -2655,7 +2655,7 @@
 	(footprint "FALCON_LOCKED_ESP32_DEVKITC_V4"
 		(layer "F.Cu")
 		(uuid "74444334-81a8-5d25-9efd-2db00cfa03f0")
-		(at 131 68.5 -90)
+		(at 109 84 -90)
 		(descr "ESP32-DevKitC V4 geometry locked from official Espressif KiCad library")
 		(tags "ESP32 DevKitC V4 WROOM-32E OFFICIAL GEOMETRY")
 		(property "Reference" "U2"
@@ -3089,7 +3089,7 @@
 	(footprint "MOLEX_470531000_4PIN_FAN_HEADER"
 		(layer "F.Cu")
 		(uuid "7a7efda2-aa5e-5221-af49-84a878e137b5")
-		(at 151 132)
+		(at 150 132)
 		(descr "Molex 470531000 4-circuit 2.54 mm vertical fan header; outline verify on receipt")
 		(tags "MOLEX 47053 FAN PWM 2.54MM")
 		(property "Reference" "J11"
@@ -3224,7 +3224,7 @@
 	(footprint "JST_GH_04P_TOP_BM04B-GHS-TBT"
 		(layer "F.Cu")
 		(uuid "7b43fdae-f109-57e6-9c30-3f87c77247e9")
-		(at 56 90)
+		(at 170 68)
 		(descr "JST BM04B-GHS-TBT official-catalog top-entry SMT land pattern")
 		(tags "JST GH 1.25MM TOP ENTRY OFFICIAL CATALOG")
 		(property "Reference" "J6"
@@ -3369,7 +3369,7 @@
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "7fa461d4-d01e-5515-ad4b-7ae8b6d90658")
-		(at 132.4 108)
+		(at 119.8 109)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP8"
@@ -3590,7 +3590,7 @@
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "8a359650-f788-5659-a85b-bcf7e7a55bfa")
-		(at 148.8 108)
+		(at 134.6 109)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP10"
@@ -3746,7 +3746,7 @@
 	(footprint "FALCON_PROVISIONAL_PULLUP_10K"
 		(layer "F.Cu")
 		(uuid "922944de-eb18-52bf-b902-7acca3f35408")
-		(at 39 58)
+		(at 45 75)
 		(descr "PROVISIONAL Project FALCON module envelope")
 		(tags "FALCON PROVISIONAL VERIFY")
 		(property "Reference" "R1"
@@ -3841,7 +3841,7 @@
 	(footprint "JST_GH_03P_TOP_BM03B-GHS-TBT"
 		(layer "F.Cu")
 		(uuid "93c0b093-19f0-52fa-84a1-e95ab4cf5054")
-		(at 27 94)
+		(at 124 33)
 		(descr "JST BM03B-GHS-TBT official-catalog top-entry SMT land pattern")
 		(tags "JST GH 1.25MM TOP ENTRY OFFICIAL CATALOG")
 		(property "Reference" "J9"
@@ -3978,7 +3978,7 @@
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "95c47884-1c96-5784-9eab-f6823516aed6")
-		(at 124.2 108)
+		(at 112.4 109)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP7"
@@ -4064,7 +4064,7 @@
 	(footprint "R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "98823e3e-a7f6-5588-8197-ae2aebe877c0")
-		(at 145 83)
+		(at 164 84)
 		(property "Reference" "R3"
 			(at 0 -1.8 0)
 			(layer "F.SilkS")
@@ -4155,7 +4155,7 @@
 	(footprint "FALCON_LOCKED_GPS_UART"
 		(layer "F.Cu")
 		(uuid "a4ce6d7b-e869-5286-8868-91481f653db1")
-		(at 87 47)
+		(at 40 50)
 		(descr "Adafruit Ultimate GPS PID 746 official Eagle CAD; receiving check still required")
 		(tags "FALCON MANUFACTURER CAD SOCKET")
 		(property "Reference" "J3"
@@ -4333,7 +4333,7 @@
 	(footprint "R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "a7bc40cf-0923-5344-b32c-7e947b561a37")
-		(at 145 91)
+		(at 164 93)
 		(property "Reference" "R4"
 			(at 0 -1.8 0)
 			(layer "F.SilkS")
@@ -4424,7 +4424,7 @@
 	(footprint "R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "a83079c3-0710-59e0-95a7-776804246a17")
-		(at 76 132)
+		(at 84 132)
 		(property "Reference" "C1"
 			(at 0 -1.8 0)
 			(layer "F.SilkS")
@@ -4515,7 +4515,7 @@
 	(footprint "JST_VH_02P_B2P-VH-FB-B"
 		(layer "F.Cu")
 		(uuid "a9715b6c-353d-5470-817b-339b3c027f4e")
-		(at 132 132)
+		(at 40 132)
 		(descr "JST B2P-VH-FB-B official-catalog 3.96 mm THT geometry")
 		(tags "JST VH 3.96MM SHROUDED OFFICIAL CATALOG")
 		(property "Reference" "J1"
@@ -4632,7 +4632,7 @@
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "ad6032d7-4c2d-5f50-9ef7-91956a6a5ff2")
-		(at 140.6 117)
+		(at 134.6 118)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP20"
@@ -4718,7 +4718,7 @@
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "aecc162e-418a-5c83-a1e2-66d03ce4bb76")
-		(at 140.6 108)
+		(at 127.2 109)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP9"
@@ -4804,7 +4804,7 @@
 	(footprint "FALCON_LOCKED_INA260_BAT_LOGIC"
 		(layer "F.Cu")
 		(uuid "b069fac7-db21-5b88-ba52-dbb7d7fdbda8")
-		(at 58 41)
+		(at 143 43)
 		(descr "Adafruit INA260 PID 4226 official Eagle CAD; receiving check still required")
 		(tags "FALCON MANUFACTURER CAD SOCKET")
 		(property "Reference" "J4"
@@ -4974,7 +4974,7 @@
 	(footprint "FALCON_PROVISIONAL_PULLUP_4K7"
 		(layer "F.Cu")
 		(uuid "b33a47e4-44fb-5a7e-9444-c01b948437f4")
-		(at 39 94)
+		(at 60 75)
 		(descr "PROVISIONAL Project FALCON module envelope")
 		(tags "FALCON PROVISIONAL VERIFY")
 		(property "Reference" "R2"
@@ -5069,7 +5069,7 @@
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "c31b24e1-15d0-5a33-a9e5-1e0e18bf1c40")
-		(at 91.4 108)
+		(at 82.8 109)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP3"
@@ -5155,7 +5155,7 @@
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "c8f3fd65-bcdc-546e-8389-0f61010a3c21")
-		(at 107.8 108)
+		(at 97.6 109)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP5"
@@ -5311,7 +5311,7 @@
 	(footprint "R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "d12377b9-b9e7-5e7d-8c9e-9f6b0610cc19")
-		(at 155 99)
+		(at 172 102)
 		(property "Reference" "R8"
 			(at 0 -1.8 0)
 			(layer "F.SilkS")
@@ -5402,7 +5402,7 @@
 	(footprint "JST_GH_04P_TOP_BM04B-GHS-TBT"
 		(layer "F.Cu")
 		(uuid "d416dc64-e890-55df-b01b-f166b754f2d4")
-		(at 27 40)
+		(at 88 33)
 		(descr "JST BM04B-GHS-TBT official-catalog top-entry SMT land pattern")
 		(tags "JST GH 1.25MM TOP ENTRY OFFICIAL CATALOG")
 		(property "Reference" "J2"
@@ -5547,7 +5547,7 @@
 	(footprint "SOT-23_2N7002"
 		(layer "F.Cu")
 		(uuid "e5d2ae03-c8c5-56ee-8b7b-6d58f3b93c11")
-		(at 166 83)
+		(at 180 84)
 		(property "Reference" "Q1"
 			(at 0 -2.5 0)
 			(layer "F.SilkS")
@@ -5646,7 +5646,7 @@
 	(footprint "FALCON_PROVISIONAL_EFUSE_TPS25947_TBD"
 		(layer "F.Cu")
 		(uuid "e9fad25f-8b36-5338-933f-ed2c125dc241")
-		(at 116 132)
+		(at 57 132)
 		(descr "PROVISIONAL Project FALCON module envelope")
 		(tags "FALCON PROVISIONAL VERIFY")
 		(property "Reference" "U6"
@@ -5750,7 +5750,7 @@
 	(footprint "R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "eca4cd75-ec95-5c08-9111-d356eb7519a2")
-		(at 155 91)
+		(at 172 93)
 		(property "Reference" "R6"
 			(at 0 -1.8 0)
 			(layer "F.SilkS")
@@ -5841,7 +5841,7 @@
 	(footprint "SOT-25_AP2112K"
 		(layer "F.Cu")
 		(uuid "ecd625fc-98e0-51bf-aedd-333ea12b70b6")
-		(at 82 132)
+		(at 92 132)
 		(descr "Diodes AP2112K SOT25; official pin assignment and package geometry")
 		(tags "AP2112K SOT25 LDO 3V3")
 		(property "Reference" "U1"
@@ -5957,7 +5957,7 @@
 	(footprint "JST_GH_03P_TOP_BM03B-GHS-TBT"
 		(layer "F.Cu")
 		(uuid "f6513128-23ec-5574-ab8c-008e185c7111")
-		(at 27 58)
+		(at 100 33)
 		(descr "JST BM03B-GHS-TBT official-catalog top-entry SMT land pattern")
 		(tags "JST GH 1.25MM TOP ENTRY OFFICIAL CATALOG")
 		(property "Reference" "J7"
@@ -6094,7 +6094,7 @@
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "fa02a260-3d29-529a-a332-8dd6ec879c59")
-		(at 99.6 108)
+		(at 90.2 109)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP4"
@@ -6180,7 +6180,7 @@
 	(footprint "FALCON_PROVISIONAL_EXT_POWER_ENABLE"
 		(layer "F.Cu")
 		(uuid "fcd86199-34d3-54d2-93dc-59a4d99a0654")
-		(at 103 132)
+		(at 72 132)
 		(descr "PROVISIONAL Project FALCON module envelope")
 		(tags "FALCON PROVISIONAL VERIFY")
 		(property "Reference" "JP1"
@@ -6273,8 +6273,8 @@
 		)
 	)
 	(gr_rect
-		(start 174 42)
-		(end 184 72)
+		(start 127 69)
+		(end 143 99)
 		(stroke
 			(width 0.5)
 			(type dash_dot)
@@ -6306,66 +6306,6 @@
 			(justify bottom)
 		)
 	)
-	(gr_text "SERVICE TEST POINTS"
-		(at 116 103 0)
-		(layer "F.SilkS")
-		(uuid "39fa9e49-ae35-5e3c-98f3-3bd031b6dc16")
-		(effects
-			(font
-				(size 1 1)
-				(thickness 0.2)
-			)
-			(justify bottom)
-		)
-	)
-	(gr_text "FIELD SENSORS"
-		(at 30 29 0)
-		(layer "F.SilkS")
-		(uuid "d780e333-0518-5d2f-9d8f-1697385842e4")
-		(effects
-			(font
-				(size 1.1 1.1)
-				(thickness 0.22)
-			)
-			(justify bottom)
-		)
-	)
-	(gr_text "I2C DISTRIBUTION"
-		(at 56 25.5 0)
-		(layer "F.SilkS")
-		(uuid "305ef6d6-fe64-54cb-b1a1-99fdbe3bc6b9")
-		(effects
-			(font
-				(size 1.1 1.1)
-				(thickness 0.22)
-			)
-			(justify bottom)
-		)
-	)
-	(gr_text "MOTION / CONTROL"
-		(at 136 29 0)
-		(layer "F.SilkS")
-		(uuid "d203c9ee-cac8-5c84-af5f-86b386b7c56e")
-		(effects
-			(font
-				(size 1.1 1.1)
-				(thickness 0.22)
-			)
-			(justify bottom)
-		)
-	)
-	(gr_text "POWER / SERVICE"
-		(at 145 142 0)
-		(layer "F.SilkS")
-		(uuid "1916549a-8690-57f2-9100-d129de99a39b")
-		(effects
-			(font
-				(size 1.1 1.1)
-				(thickness 0.22)
-			)
-			(justify bottom)
-		)
-	)
 	(gr_text "VERIFY EVERY MODULE, CONNECTOR AND HOLE AT 1:1 BEFORE FABRICATION"
 		(at 102.5 143 0)
 		(layer "F.SilkS")
@@ -6378,7 +6318,7 @@
 			(justify bottom)
 		)
 	)
-	(gr_text "FALCON-01 CARRIER — COMPACT PREVIEW V1.0"
+	(gr_text "FALCON-01 CARRIER — INDUSTRIAL PLACEMENT V2.0"
 		(at 108.5 25 0)
 		(layer "F.SilkS")
 		(uuid "66292e11-d61c-5172-983b-a6f621065f26")
@@ -6391,7 +6331,7 @@
 		)
 	)
 	(gr_text "ESP32 ANTENNA KEEP-OUT"
-		(at 179 57 90)
+		(at 139 84 90)
 		(layer "Dwgs.User")
 		(uuid "feabeb23-057b-561a-b151-4495a81ea58c")
 		(effects
@@ -6402,35 +6342,70 @@
 			(justify bottom)
 		)
 	)
-	(gr_text "1:+  2:SCL  3:SDA  4:G"
-		(at 34.5 44.5 0)
-		(layer "F.SilkS")
-		(uuid "a958e4b3-467c-5d7c-a6f0-56e7623335fb")
-		(effects (font (size 0.58 0.58) (thickness 0.11)) (justify left bottom))
+	(gr_text "SENSOR INTERFACES"
+		(at 102.5 23 0) (layer "F.SilkS")
+		(uuid "c3790bf6-ea95-5605-8e5e-13137a702c82")
+		(effects (font (size 1.25 1.25) (thickness 0.16)) (justify bottom))
 	)
-	(gr_text "1:+  2:PULSE  3:G"
-		(at 34.5 62.5 0)
-		(layer "F.SilkS")
-		(uuid "450bcad9-5510-5849-913c-8a5a756c275d")
-		(effects (font (size 0.58 0.58) (thickness 0.11)) (justify left bottom))
+	(gr_text "GPS"
+		(at 40 27.5 0) (layer "F.SilkS")
+		(uuid "416b2a5b-910d-5f42-86bb-e032ead6a333")
+		(effects (font (size 0.75 0.75) (thickness 0.16)) (justify bottom))
 	)
-	(gr_text "1:+  2:VANE  3:G"
-		(at 34.5 80.5 0)
-		(layer "F.SilkS")
-		(uuid "f8c2902d-ed78-581f-8e72-a92a8a18b6cc")
-		(effects (font (size 0.58 0.58) (thickness 0.11)) (justify left bottom))
+	(gr_text "IMU"
+		(at 68 27.5 0) (layer "F.SilkS")
+		(uuid "82c5bcab-f64d-50e8-836e-4b484cb35e48")
+		(effects (font (size 0.75 0.75) (thickness 0.16)) (justify bottom))
 	)
-	(gr_text "1:+  2:TEMP  3:G"
-		(at 34.5 98.5 0)
-		(layer "F.SilkS")
-		(uuid "70d8dd2f-415a-521d-b22f-0bd362340a22")
-		(effects (font (size 0.58 0.58) (thickness 0.11)) (justify left bottom))
+	(gr_text "PRESSURE"
+		(at 88 27.5 0) (layer "F.SilkS")
+		(uuid "7ecd5fa2-b227-5f47-8f76-c21115cede83")
+		(effects (font (size 0.65 0.65) (thickness 0.16)) (justify bottom))
 	)
-	(gr_text "1:+  2:LEAK  3:G"
-		(at 34.5 116.5 0)
-		(layer "F.SilkS")
-		(uuid "b2209d5b-58d5-56b7-a82d-3c20703837b0")
-		(effects (font (size 0.58 0.58) (thickness 0.11)) (justify left bottom))
+	(gr_text "WIND SPD"
+		(at 100 27.5 0) (layer "F.SilkS")
+		(uuid "5aa1e518-a9a2-5b4c-8282-042ce452a61d")
+		(effects (font (size 0.65 0.65) (thickness 0.16)) (justify bottom))
+	)
+	(gr_text "WIND DIR"
+		(at 112 27.5 0) (layer "F.SilkS")
+		(uuid "9a50cfef-aa37-5918-a843-1b21caa0ad70")
+		(effects (font (size 0.65 0.65) (thickness 0.16)) (justify bottom))
+	)
+	(gr_text "TEMP"
+		(at 124 27.5 0) (layer "F.SilkS")
+		(uuid "7775b104-1d1a-5f3f-8a2a-687fbe55ecdb")
+		(effects (font (size 0.65 0.65) (thickness 0.16)) (justify bottom))
+	)
+	(gr_text "BAT MON"
+		(at 143 27.5 0) (layer "F.SilkS")
+		(uuid "d4e68270-96d1-5001-8a3c-913176b4fef0")
+		(effects (font (size 0.65 0.65) (thickness 0.16)) (justify bottom))
+	)
+	(gr_text "SOLAR MON"
+		(at 167 27.5 0) (layer "F.SilkS")
+		(uuid "a34c7e89-11ce-5351-8a50-dd75e112d796")
+		(effects (font (size 0.65 0.65) (thickness 0.16)) (justify bottom))
+	)
+	(gr_text "ESP32 CONTROLLER"
+		(at 109 65 0) (layer "F.SilkS")
+		(uuid "0fe1f57e-8fdf-531d-b06d-2f1555d8ee62")
+		(effects (font (size 1 1) (thickness 0.16)) (justify bottom))
+	)
+	(gr_text "COMM / SERVICE"
+		(at 93 104 0) (layer "F.SilkS")
+		(uuid "d244819f-f450-561e-8f6b-f3b7a1273735")
+		(effects (font (size 0.9 0.9) (thickness 0.16)) (justify bottom))
+	)
+	(gr_text "POWER MANAGEMENT"
+		(at 69 142 0) (layer "F.SilkS")
+		(uuid "2c847f90-8980-5e8f-81d6-15753c78a781")
+		(effects (font (size 0.9 0.9) (thickness 0.16)) (justify bottom))
+	)
+	(gr_text "FAN CONTROL"
+		(at 157 78 0) (layer "F.SilkS")
+		(uuid "9b442ef4-d98b-500d-9b2f-55721917ce6d")
+		(effects (font (size 0.8 0.8) (thickness 0.16)) (justify bottom))
 	)
 	(embedded_fonts no)
 )
