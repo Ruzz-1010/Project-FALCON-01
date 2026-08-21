@@ -34,14 +34,14 @@ logic power and I2C reach the carrier.
 
 The current control deck is documented as 250 x 210 mm inside the latest
 rectangular-pod concept. The first carrier outline shall be no larger than
-200 x 160 mm, leaving service and connector clearance. This is a planning
+165 x 125 mm, leaving service and connector clearance. This is a planning
 envelope only: mounting-hole coordinates and final outline remain TBD until the
 enclosure and modules are physically measured.
 
 ## Native KiCad files
 
 Native KiCad 10 `.kicad_pro`, `.kicad_sch`, and `.kicad_pcb` files are present.
-The board contains a 200 x 160 mm planning outline and labeled placement zones,
+The board contains a 165 x 125 mm compact-preview outline and labeled placement zones,
 not final footprints or routing. Do not manufacture from placeholder geometry
 or exported pictures.
 

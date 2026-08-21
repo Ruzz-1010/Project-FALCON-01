@@ -10,7 +10,7 @@
 	(title_block
 		(title "FALCON-01 LOW-VOLTAGE CARRIER")
 		(date "2026-08-20")
-		(rev "PLACEMENT V0.9")
+		(rev "COMPACT PREVIEW V1.0")
 		(company "PROJECT FALCON-01")
 		(comment 1 "MODULE AND CONNECTOR GEOMETRY — VERIFY AT 1:1")
 		(comment 2 "NOT APPROVED FOR FABRICATION")
@@ -83,7 +83,7 @@
 	(footprint "JST_GH_03P_TOP_BM03B-GHS-TBT"
 		(layer "F.Cu")
 		(uuid "00eb2f65-8d87-5ecb-ba02-4781a938c9f0")
-		(at 32 160)
+		(at 27 112)
 		(descr "JST BM03B-GHS-TBT official-catalog top-entry SMT land pattern")
 		(tags "JST GH 1.25MM TOP ENTRY OFFICIAL CATALOG")
 		(property "Reference" "J10"
@@ -205,16 +205,22 @@
 			(uuid "5da2cfee-4a21-5323-b023-00b565cb4ba1")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/jst_gh_3.wrl"
-		(offset (xyz 0.000 -2.125 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/jst_gh_3.wrl"
+			(offset
+				(xyz 0 -2.125 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "0349417a-1cb5-5fc1-aea0-acdd8cd4dae9")
-		(at 123 120)
+		(at 75 117)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP12"
@@ -285,16 +291,22 @@
 			(uuid "b5d9fd4e-35e8-569b-a7b4-56c53cb64843")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/testpoint.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/testpoint.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "FALCON_LOCKED_ADS1115_0X48"
 		(layer "F.Cu")
 		(uuid "129480e6-d898-5d39-87a0-e31659c6a491")
-		(at 78 138)
+		(at 56 116)
 		(descr "Adafruit ADS1115 PID 1085 STEMMA QT official Eagle CAD; receiving check still required")
 		(tags "FALCON MANUFACTURER CAD SOCKET")
 		(property "Reference" "U4"
@@ -496,16 +508,22 @@
 			(uuid "dc814cf0-8765-5fd4-be66-379259f0d333")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/ads1115.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/ads1115.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "SOT-23_2N7002"
 		(layer "F.Cu")
 		(uuid "1309390e-da6b-5c82-a930-25fbb2017460")
-		(at 198 132)
+		(at 166 91)
 		(property "Reference" "Q2"
 			(at 0 -2.5 0)
 			(layer "F.SilkS")
@@ -589,16 +607,22 @@
 			(uuid "6b11d6be-dd43-55fd-8cda-fb9d0620b22b")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/sot23.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/sot23.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "FALCON_LOCKED_INA260_SOLAR_0X41"
 		(layer "F.Cu")
 		(uuid "1cf3b574-5268-59d7-a524-ea7fa97367c4")
-		(at 78 78)
+		(at 56 65)
 		(descr "Adafruit INA260 PID 4226 official Eagle CAD; receiving check still required")
 		(tags "FALCON MANUFACTURER CAD SOCKET")
 		(property "Reference" "J5"
@@ -753,16 +777,22 @@
 			(uuid "cd1101f6-06cf-567e-adbd-0a130772ea2f")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/ina260.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/ina260.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "20863e51-58dd-5a7f-928a-558ba3ee100c")
-		(at 109.5 108)
+		(at 83.2 108)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP2"
@@ -833,16 +863,22 @@
 			(uuid "25d27036-b708-5032-beff-562534a01399")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/testpoint.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/testpoint.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "FALCON_LOCKED_BNO085_SPI"
 		(layer "F.Cu")
 		(uuid "21f3e68f-acb4-5edd-b8b5-0dcf62feeb71")
-		(at 144.66 75.39)
+		(at 89 79)
 		(descr "Adafruit BNO08x Rev C official Eagle CAD; receiving check still required")
 		(tags "FALCON MANUFACTURER CAD SOCKET")
 		(property "Reference" "U3"
@@ -1049,16 +1085,22 @@
 			(uuid "8b662b8d-aa03-5922-8ccb-f15f5991b099")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/bno085.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/bno085.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "2779721b-34a8-5b02-a6b2-ea95fe6771b6")
-		(at 186 124)
+		(at 155 83)
 		(property "Reference" "R5"
 			(at 0 -1.8 0)
 			(layer "F.SilkS")
@@ -1134,16 +1176,22 @@
 			(uuid "07deb526-5b48-55ff-a6ae-b00622151eb1")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/resistor_0603.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/resistor_0603.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "28494773-6020-5cb5-8e72-3d2bde7b1736")
-		(at 136.5 120)
+		(at 83.2 117)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP13"
@@ -1214,16 +1262,22 @@
 			(uuid "6836991a-3f7d-5e78-a935-2bbb5c62599e")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/testpoint.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/testpoint.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "JST_GH_04P_TOP_BM04B-GHS-TBT"
 		(layer "F.Cu")
 		(uuid "29b6db2d-f9e1-5bc4-adfe-04c9bc12d9ef")
-		(at 120 150)
+		(at 107 94)
 		(descr "JST BM04B-GHS-TBT official-catalog top-entry SMT land pattern")
 		(tags "JST GH 1.25MM TOP ENTRY OFFICIAL CATALOG")
 		(property "Reference" "J12"
@@ -1353,16 +1407,22 @@
 			(uuid "1ac0d0c5-82ae-5289-8069-6e0db8a29bc6")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/jst_gh_4.wrl"
-		(offset (xyz 0.000 -2.125 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/jst_gh_4.wrl"
+			(offset
+				(xyz 0 -2.125 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "2ef35dd9-eefb-5859-a2c4-8e761aceffae")
-		(at 96 132)
+		(at 132.4 117)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP19"
@@ -1433,16 +1493,22 @@
 			(uuid "1c6c94f0-ec8e-57b7-b77a-59a30988f273")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/testpoint.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/testpoint.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "33d5d139-3601-595e-8012-c8b8bd1f21c8")
-		(at 150 120)
+		(at 91.4 117)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP14"
@@ -1513,16 +1579,22 @@
 			(uuid "84bcd5f5-9f87-53a7-88d8-c3359587e286")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/testpoint.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/testpoint.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "3abefac6-2819-5f1a-a78b-7c8cf335693b")
-		(at 174 140)
+		(at 145 99)
 		(property "Reference" "R7"
 			(at 0 -1.8 0)
 			(layer "F.SilkS")
@@ -1598,16 +1670,22 @@
 			(uuid "a3324739-fe85-523d-8903-abd9590bf6a1")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/resistor_0603.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/resistor_0603.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "3f464c17-8331-5ae5-9436-c7a18f594930")
-		(at 190.5 120)
+		(at 116 117)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP17"
@@ -1678,16 +1756,22 @@
 			(uuid "9a559463-fffd-5a53-a3b1-dd4f6900dc3d")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/testpoint.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/testpoint.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "44f4b88f-5780-51cf-8282-6d595971620e")
-		(at 204 120)
+		(at 124.2 117)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP18"
@@ -1758,16 +1842,22 @@
 			(uuid "0a37e307-0ab8-53c9-99a6-fe30af34c1f0")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/testpoint.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/testpoint.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "4bfab5f9-1f14-5712-a010-122a1fce4d4a")
-		(at 109.5 120)
+		(at 157 108)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP11"
@@ -1838,16 +1928,22 @@
 			(uuid "d4388dce-613a-54a5-ae6b-4016a7031a43")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/testpoint.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/testpoint.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "FALCON_PROVISIONAL_M3_HOLE"
 		(layer "F.Cu")
 		(uuid "5233e8bc-bc73-5f02-942a-19706ab1ff87")
-		(at 214 26)
+		(at 180 25)
 		(property "Reference" "H2"
 			(at 0 -4 0)
 			(layer "F.SilkS")
@@ -1917,7 +2013,7 @@
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "5691acef-5209-52e9-b274-9337aa199aad")
-		(at 177 120)
+		(at 107.8 117)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP16"
@@ -1988,16 +2084,22 @@
 			(uuid "e57b9c2d-b3e9-54c3-a826-452376d3a38a")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/testpoint.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/testpoint.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "56c33a29-9e1e-555c-977f-e54fcfcc743c")
-		(at 163.5 108)
+		(at 116 108)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP6"
@@ -2068,16 +2170,22 @@
 			(uuid "6b564a6c-f968-56b6-8dd6-a3b1bb912a02")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/testpoint.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/testpoint.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "5708f9e5-2acb-521a-9735-3412107247a5")
-		(at 96 108)
+		(at 75 108)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP1"
@@ -2148,16 +2256,22 @@
 			(uuid "c3c1ab05-1429-5cf2-9876-e834278ed86b")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/testpoint.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/testpoint.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "JST_GH_03P_TOP_BM03B-GHS-TBT"
 		(layer "F.Cu")
 		(uuid "6486b48c-b6ac-5cbb-9bb0-215d1ff2f844")
-		(at 32 105)
+		(at 27 76)
 		(descr "JST BM03B-GHS-TBT official-catalog top-entry SMT land pattern")
 		(tags "JST GH 1.25MM TOP ENTRY OFFICIAL CATALOG")
 		(property "Reference" "J8"
@@ -2279,16 +2393,22 @@
 			(uuid "c8c44053-5a92-58c4-b0ad-f60466141291")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/jst_gh_3.wrl"
-		(offset (xyz 0.000 -2.125 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/jst_gh_3.wrl"
+			(offset
+				(xyz 0 -2.125 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "68f52c81-7cdd-5fe4-82c9-84500bee68d8")
-		(at 163.5 120)
+		(at 99.6 117)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP15"
@@ -2359,16 +2479,22 @@
 			(uuid "68cd60c5-6221-5165-a855-6e1e7634ff2d")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/testpoint.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/testpoint.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "6e9bc3b5-b4aa-594f-b259-6b76edd244fe")
-		(at 162 160)
+		(at 88 132)
 		(property "Reference" "C2"
 			(at 0 -1.8 0)
 			(layer "F.SilkS")
@@ -2444,16 +2570,22 @@
 			(uuid "9318938b-e866-507f-930f-dd2c2adab436")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/resistor_0603.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/resistor_0603.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "FALCON_PROVISIONAL_M3_HOLE"
 		(layer "F.Cu")
 		(uuid "710e8ab8-cb28-5bd7-a975-1fc796806cb8")
-		(at 214 174)
+		(at 180 140)
 		(property "Reference" "H4"
 			(at 0 -4 0)
 			(layer "F.SilkS")
@@ -2523,7 +2655,7 @@
 	(footprint "FALCON_LOCKED_ESP32_DEVKITC_V4"
 		(layer "F.Cu")
 		(uuid "74444334-81a8-5d25-9efd-2db00cfa03f0")
-		(at 173 90 -90)
+		(at 136 70 -90)
 		(descr "ESP32-DevKitC V4 geometry locked from official Espressif KiCad library")
 		(tags "ESP32 DevKitC V4 WROOM-32E OFFICIAL GEOMETRY")
 		(property "Reference" "U2"
@@ -2942,16 +3074,22 @@
 			(uuid "ab4cd2ed-1a93-5c99-9012-286f94e1c9ce")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/esp32_devkitc.wrl"
-		(offset (xyz 12.700 22.860 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/esp32_devkitc.wrl"
+			(offset
+				(xyz 12.7 22.86 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "MOLEX_470531000_4PIN_FAN_HEADER"
 		(layer "F.Cu")
 		(uuid "7a7efda2-aa5e-5221-af49-84a878e137b5")
-		(at 204 146)
+		(at 151 132)
 		(descr "Molex 470531000 4-circuit 2.54 mm vertical fan header; outline verify on receipt")
 		(tags "MOLEX 47053 FAN PWM 2.54MM")
 		(property "Reference" "J11"
@@ -3071,16 +3209,22 @@
 			(uuid "777cc5eb-9614-595d-a591-073f226d161f")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/fan_header.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/fan_header.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "JST_GH_04P_TOP_BM04B-GHS-TBT"
 		(layer "F.Cu")
 		(uuid "7b43fdae-f109-57e6-9c30-3f87c77247e9")
-		(at 78 108)
+		(at 56 90)
 		(descr "JST BM04B-GHS-TBT official-catalog top-entry SMT land pattern")
 		(tags "JST GH 1.25MM TOP ENTRY OFFICIAL CATALOG")
 		(property "Reference" "J6"
@@ -3210,16 +3354,22 @@
 			(uuid "650b3ab3-2b65-58ba-bbb3-c11a3ac4e618")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/jst_gh_4.wrl"
-		(offset (xyz 0.000 -2.125 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/jst_gh_4.wrl"
+			(offset
+				(xyz 0 -2.125 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "7fa461d4-d01e-5515-ad4b-7ae8b6d90658")
-		(at 190.5 108)
+		(at 132.4 108)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP8"
@@ -3290,16 +3440,22 @@
 			(uuid "82ef1fbc-0cf4-53ff-a2dd-ca9bd25835be")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/testpoint.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/testpoint.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "MOLEX_470531000_4PIN_FAN_HEADER"
 		(layer "F.Cu")
 		(uuid "88322a7c-e8b7-5241-80c6-ca30a7091cba")
-		(at 204 158)
+		(at 172 132)
 		(descr "Molex 470531000 4-circuit 2.54 mm vertical fan header; outline verify on receipt")
 		(tags "MOLEX 47053 FAN PWM 2.54MM")
 		(property "Reference" "J13"
@@ -3419,16 +3575,22 @@
 			(uuid "b12b9f2f-8101-5a71-b0cb-2c0edbcaec99")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/fan_header.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/fan_header.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "8a359650-f788-5659-a85b-bcf7e7a55bfa")
-		(at 96 120)
+		(at 148.8 108)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP10"
@@ -3499,16 +3661,22 @@
 			(uuid "cfef6875-f52f-5145-a490-1c228d1caf0a")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/testpoint.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/testpoint.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "FALCON_PROVISIONAL_M3_HOLE"
 		(layer "F.Cu")
 		(uuid "8cc592b2-b62e-5e72-82a8-eda8e37076d5")
-		(at 26 26)
+		(at 25 25)
 		(property "Reference" "H1"
 			(at 0 -4 0)
 			(layer "F.SilkS")
@@ -3578,7 +3746,7 @@
 	(footprint "FALCON_PROVISIONAL_PULLUP_10K"
 		(layer "F.Cu")
 		(uuid "922944de-eb18-52bf-b902-7acca3f35408")
-		(at 51 75)
+		(at 39 58)
 		(descr "PROVISIONAL Project FALCON module envelope")
 		(tags "FALCON PROVISIONAL VERIFY")
 		(property "Reference" "R1"
@@ -3658,16 +3826,22 @@
 			(uuid "9d7f248c-d36f-5482-aa30-f0f81134672c")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/resistor_0603.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/resistor_0603.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "JST_GH_03P_TOP_BM03B-GHS-TBT"
 		(layer "F.Cu")
 		(uuid "93c0b093-19f0-52fa-84a1-e95ab4cf5054")
-		(at 32 135)
+		(at 27 94)
 		(descr "JST BM03B-GHS-TBT official-catalog top-entry SMT land pattern")
 		(tags "JST GH 1.25MM TOP ENTRY OFFICIAL CATALOG")
 		(property "Reference" "J9"
@@ -3789,16 +3963,22 @@
 			(uuid "6b29da5c-1eca-5898-85ab-bc070de931d1")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/jst_gh_3.wrl"
-		(offset (xyz 0.000 -2.125 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/jst_gh_3.wrl"
+			(offset
+				(xyz 0 -2.125 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "95c47884-1c96-5784-9eab-f6823516aed6")
-		(at 177 108)
+		(at 124.2 108)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP7"
@@ -3869,16 +4049,22 @@
 			(uuid "3eff2ab9-26e9-5002-a1ad-b49e180ce56a")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/testpoint.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/testpoint.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "98823e3e-a7f6-5588-8197-ae2aebe877c0")
-		(at 174 124)
+		(at 145 83)
 		(property "Reference" "R3"
 			(at 0 -1.8 0)
 			(layer "F.SilkS")
@@ -3954,16 +4140,22 @@
 			(uuid "f81c1d19-4362-59c0-8595-a321a98e6605")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/resistor_0603.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/resistor_0603.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "FALCON_LOCKED_GPS_UART"
 		(layer "F.Cu")
 		(uuid "a4ce6d7b-e869-5286-8868-91481f653db1")
-		(at 145 45)
+		(at 87 43)
 		(descr "Adafruit Ultimate GPS PID 746 official Eagle CAD; receiving check still required")
 		(tags "FALCON MANUFACTURER CAD SOCKET")
 		(property "Reference" "J3"
@@ -4126,16 +4318,22 @@
 			(uuid "c07fe686-6fa3-5fc2-a6e8-760db019dd65")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/gps.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/gps.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "a7bc40cf-0923-5344-b32c-7e947b561a37")
-		(at 174 132)
+		(at 145 91)
 		(property "Reference" "R4"
 			(at 0 -1.8 0)
 			(layer "F.SilkS")
@@ -4211,16 +4409,22 @@
 			(uuid "c286b44a-e14b-5d4e-bf1b-4b8e8a054aa3")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/resistor_0603.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/resistor_0603.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "a83079c3-0710-59e0-95a7-776804246a17")
-		(at 146 160)
+		(at 76 132)
 		(property "Reference" "C1"
 			(at 0 -1.8 0)
 			(layer "F.SilkS")
@@ -4296,16 +4500,22 @@
 			(uuid "a904c846-8a95-5213-90d4-86eaa96d4096")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/resistor_0603.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/resistor_0603.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "JST_VH_02P_B2P-VH-FB-B"
 		(layer "F.Cu")
 		(uuid "a9715b6c-353d-5470-817b-339b3c027f4e")
-		(at 208 170)
+		(at 132 132)
 		(descr "JST B2P-VH-FB-B official-catalog 3.96 mm THT geometry")
 		(tags "JST VH 3.96MM SHROUDED OFFICIAL CATALOG")
 		(property "Reference" "J1"
@@ -4407,16 +4617,22 @@
 			(uuid "bf919b0d-da33-5216-9798-1e9436bb050c")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/jst_vh_2.wrl"
-		(offset (xyz 0.000 1.150 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/jst_vh_2.wrl"
+			(offset
+				(xyz 0 1.15 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "ad6032d7-4c2d-5f50-9ef7-91956a6a5ff2")
-		(at 109.5 132)
+		(at 140.6 117)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP20"
@@ -4487,16 +4703,22 @@
 			(uuid "2efdca13-ac7c-5ce9-b9a0-b5ac40c93426")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/testpoint.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/testpoint.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "aecc162e-418a-5c83-a1e2-66d03ce4bb76")
-		(at 204 108)
+		(at 140.6 108)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP9"
@@ -4567,16 +4789,22 @@
 			(uuid "f64666b2-8fec-5909-8ef1-275d6a413525")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/testpoint.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/testpoint.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "FALCON_LOCKED_INA260_BAT_LOGIC"
 		(layer "F.Cu")
 		(uuid "b069fac7-db21-5b88-ba52-dbb7d7fdbda8")
-		(at 78 48)
+		(at 56 40)
 		(descr "Adafruit INA260 PID 4226 official Eagle CAD; receiving check still required")
 		(tags "FALCON MANUFACTURER CAD SOCKET")
 		(property "Reference" "J4"
@@ -4731,16 +4959,22 @@
 			(uuid "d8f07450-5549-593e-acf2-a04f7d8dca99")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/ina260.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/ina260.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "FALCON_PROVISIONAL_PULLUP_4K7"
 		(layer "F.Cu")
 		(uuid "b33a47e4-44fb-5a7e-9444-c01b948437f4")
-		(at 51 135)
+		(at 39 94)
 		(descr "PROVISIONAL Project FALCON module envelope")
 		(tags "FALCON PROVISIONAL VERIFY")
 		(property "Reference" "R2"
@@ -4820,16 +5054,22 @@
 			(uuid "86b368c9-7779-5843-92c0-4f4d3f717c2a")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/resistor_0603.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/resistor_0603.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "c31b24e1-15d0-5a33-a9e5-1e0e18bf1c40")
-		(at 123 108)
+		(at 91.4 108)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP3"
@@ -4900,16 +5140,22 @@
 			(uuid "386c30fc-7de8-55b9-b7d0-af1ac1f4d8a6")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/testpoint.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/testpoint.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "c8f3fd65-bcdc-546e-8389-0f61010a3c21")
-		(at 150 108)
+		(at 107.8 108)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP5"
@@ -4980,16 +5226,22 @@
 			(uuid "511827b9-59e8-5e65-b030-307397e9f497")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/testpoint.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/testpoint.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "FALCON_PROVISIONAL_M3_HOLE"
 		(layer "F.Cu")
 		(uuid "cc02ff6f-854f-5377-98ac-87970d7798f8")
-		(at 26 174)
+		(at 25 140)
 		(property "Reference" "H3"
 			(at 0 -4 0)
 			(layer "F.SilkS")
@@ -5059,7 +5311,7 @@
 	(footprint "R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "d12377b9-b9e7-5e7d-8c9e-9f6b0610cc19")
-		(at 186 140)
+		(at 155 99)
 		(property "Reference" "R8"
 			(at 0 -1.8 0)
 			(layer "F.SilkS")
@@ -5135,16 +5387,22 @@
 			(uuid "0f50deaa-58fe-5f30-b587-450da5c393fc")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/resistor_0603.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/resistor_0603.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "JST_GH_04P_TOP_BM04B-GHS-TBT"
 		(layer "F.Cu")
 		(uuid "d416dc64-e890-55df-b01b-f166b754f2d4")
-		(at 32 45)
+		(at 27 40)
 		(descr "JST BM04B-GHS-TBT official-catalog top-entry SMT land pattern")
 		(tags "JST GH 1.25MM TOP ENTRY OFFICIAL CATALOG")
 		(property "Reference" "J2"
@@ -5274,16 +5532,22 @@
 			(uuid "2d096b1c-4cae-5f57-829f-fd0f27c8e762")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/jst_gh_4.wrl"
-		(offset (xyz 0.000 -2.125 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/jst_gh_4.wrl"
+			(offset
+				(xyz 0 -2.125 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "SOT-23_2N7002"
 		(layer "F.Cu")
 		(uuid "e5d2ae03-c8c5-56ee-8b7b-6d58f3b93c11")
-		(at 198 124)
+		(at 166 83)
 		(property "Reference" "Q1"
 			(at 0 -2.5 0)
 			(layer "F.SilkS")
@@ -5367,16 +5631,22 @@
 			(uuid "21f0bf31-7522-538f-a162-f07118189927")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/sot23.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/sot23.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "FALCON_PROVISIONAL_EFUSE_TPS25947_TBD"
 		(layer "F.Cu")
 		(uuid "e9fad25f-8b36-5338-933f-ed2c125dc241")
-		(at 190 158)
+		(at 116 132)
 		(descr "PROVISIONAL Project FALCON module envelope")
 		(tags "FALCON PROVISIONAL VERIFY")
 		(property "Reference" "U6"
@@ -5465,16 +5735,22 @@
 			(uuid "d8fcd3ed-2a3a-59a0-9a1f-5f3cff732108")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/module_generic.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/module_generic.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "eca4cd75-ec95-5c08-9111-d356eb7519a2")
-		(at 186 132)
+		(at 155 91)
 		(property "Reference" "R6"
 			(at 0 -1.8 0)
 			(layer "F.SilkS")
@@ -5550,16 +5826,22 @@
 			(uuid "930d6583-cef4-57f5-99ba-7b9b8b80cff4")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/resistor_0603.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/resistor_0603.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "SOT-25_AP2112K"
 		(layer "F.Cu")
 		(uuid "ecd625fc-98e0-51bf-aedd-333ea12b70b6")
-		(at 154 160)
+		(at 82 132)
 		(descr "Diodes AP2112K SOT25; official pin assignment and package geometry")
 		(tags "AP2112K SOT25 LDO 3V3")
 		(property "Reference" "U1"
@@ -5660,16 +5942,22 @@
 			(uuid "964e610c-951a-55fa-a46d-a8e68d6063a9")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/sot25.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/sot25.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "JST_GH_03P_TOP_BM03B-GHS-TBT"
 		(layer "F.Cu")
 		(uuid "f6513128-23ec-5574-ab8c-008e185c7111")
-		(at 32 75)
+		(at 27 58)
 		(descr "JST BM03B-GHS-TBT official-catalog top-entry SMT land pattern")
 		(tags "JST GH 1.25MM TOP ENTRY OFFICIAL CATALOG")
 		(property "Reference" "J7"
@@ -5791,16 +6079,22 @@
 			(uuid "d4d8b7ad-6a01-51d5-bdac-844c362bebab")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/jst_gh_3.wrl"
-		(offset (xyz 0.000 -2.125 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/jst_gh_3.wrl"
+			(offset
+				(xyz 0 -2.125 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "FALCON_TEST_POINT_THT"
 		(layer "F.Cu")
 		(uuid "fa02a260-3d29-529a-a332-8dd6ec879c59")
-		(at 136.5 108)
+		(at 99.6 108)
 		(descr "FALCON labeled through-hole service test point")
 		(tags "TEST POINT SERVICE")
 		(property "Reference" "TP4"
@@ -5871,16 +6165,22 @@
 			(uuid "728a3ca1-14d3-5f0f-aab1-d9b2433b64ba")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/testpoint.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/testpoint.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "FALCON_PROVISIONAL_EXT_POWER_ENABLE"
 		(layer "F.Cu")
 		(uuid "fcd86199-34d3-54d2-93dc-59a4d99a0654")
-		(at 175 158)
+		(at 103 132)
 		(descr "PROVISIONAL Project FALCON module envelope")
 		(tags "FALCON PROVISIONAL VERIFY")
 		(property "Reference" "JP1"
@@ -5960,15 +6260,21 @@
 			(uuid "9a15416b-bcbb-5e15-93fd-22e241a99eef")
 		)
 		(embedded_fonts no)
-	
-	(model "${KIPRJMOD}/models/module_generic.wrl"
-		(offset (xyz 0.000 0.000 0.000))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
-	))
+		(model "${KIPRJMOD}/models/module_generic.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(gr_rect
-		(start 205 62)
-		(end 219 95)
+		(start 174 42)
+		(end 184 72)
 		(stroke
 			(width 0.5)
 			(type dash_dot)
@@ -5979,7 +6285,7 @@
 	)
 	(gr_rect
 		(start 20 20)
-		(end 220 180)
+		(end 185 145)
 		(stroke
 			(width 0.5)
 			(type default)
@@ -5989,7 +6295,7 @@
 		(uuid "d5784478-7579-5c66-a34a-d8df309c894b")
 	)
 	(gr_text "EXT 5V — REMOVE USB FIRST"
-		(at 190 168 0)
+		(at 116 139 0)
 		(layer "F.SilkS")
 		(uuid "a3da3b6d-478a-5acc-b86d-c214c75cdcb0")
 		(effects
@@ -6001,7 +6307,7 @@
 		)
 	)
 	(gr_text "SERVICE TEST POINTS"
-		(at 150 101 0)
+		(at 116 103 0)
 		(layer "F.SilkS")
 		(uuid "39fa9e49-ae35-5e3c-98f3-3bd031b6dc16")
 		(effects
@@ -6013,7 +6319,7 @@
 		)
 	)
 	(gr_text "FIELD SENSORS"
-		(at 42 29 0)
+		(at 30 29 0)
 		(layer "F.SilkS")
 		(uuid "d780e333-0518-5d2f-9d8f-1697385842e4")
 		(effects
@@ -6025,7 +6331,7 @@
 		)
 	)
 	(gr_text "I2C DISTRIBUTION"
-		(at 78 29 0)
+		(at 56 29 0)
 		(layer "F.SilkS")
 		(uuid "305ef6d6-fe64-54cb-b1a1-99fdbe3bc6b9")
 		(effects
@@ -6037,7 +6343,7 @@
 		)
 	)
 	(gr_text "MOTION / CONTROL"
-		(at 160 29 0)
+		(at 136 29 0)
 		(layer "F.SilkS")
 		(uuid "d203c9ee-cac8-5c84-af5f-86b386b7c56e")
 		(effects
@@ -6049,7 +6355,7 @@
 		)
 	)
 	(gr_text "POWER / SERVICE"
-		(at 180 174 0)
+		(at 145 142 0)
 		(layer "F.SilkS")
 		(uuid "1916549a-8690-57f2-9100-d129de99a39b")
 		(effects
@@ -6061,7 +6367,7 @@
 		)
 	)
 	(gr_text "VERIFY EVERY MODULE, CONNECTOR AND HOLE AT 1:1 BEFORE FABRICATION"
-		(at 120 176 0)
+		(at 102.5 143 0)
 		(layer "F.SilkS")
 		(uuid "5f6ed1c9-3b9e-521c-880b-fb30387941b3")
 		(effects
@@ -6072,8 +6378,8 @@
 			(justify bottom)
 		)
 	)
-	(gr_text "FALCON-01 CARRIER — SENSOR-POWER PLACEMENT V0.9"
-		(at 120 25 0)
+	(gr_text "FALCON-01 CARRIER — COMPACT PREVIEW V1.0"
+		(at 102.5 25 0)
 		(layer "F.SilkS")
 		(uuid "66292e11-d61c-5172-983b-a6f621065f26")
 		(effects
@@ -6085,7 +6391,7 @@
 		)
 	)
 	(gr_text "ESP32 ANTENNA KEEP-OUT"
-		(at 213 78.5 90)
+		(at 179 57 90)
 		(layer "Dwgs.User")
 		(uuid "feabeb23-057b-561a-b151-4495a81ea58c")
 		(effects
