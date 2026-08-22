@@ -1,6 +1,11 @@
 # Project FALCON Animated Demo
 
-Format: 150 seconds, English on-screen text, background music only, 1920×1080.
+Format: 150 seconds, English on-screen text, background music only, 1920×1080 at 24 fps.
+
+The V2 presentation uses continuous motion rather than static slides: the approved
+buoy heaves and rolls with layered waves, wind crosses the mast, the wind sensor
+spins, sensor values update live, and moving data pulses follow the complete path
+from the sensors to ESP32, USB, Orange Pi, cloud, and dashboard.
 
 | Time | Sequence |
 | --- | --- |

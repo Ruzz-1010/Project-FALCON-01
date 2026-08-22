@@ -14,10 +14,10 @@ from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
 
 ROOT = Path(__file__).resolve().parent
 ASSETS = ROOT / "assets"
-OUT = ROOT / "Project_FALCON_Animated_Demo_1080p.mp4"
+OUT = ROOT / "Project_FALCON_Animated_Demo_V2_1080p.mp4"
 MUSIC = ROOT / "falcon_ambient_original.wav"
 FFMPEG = Path(shutil.which("ffmpeg") or "/tmp/falcon-ffmpeg/usr/bin/ffmpeg")
-W, H, FPS, DURATION = 1280, 720, 15, 150
+W, H, FPS, DURATION = 1280, 720, 24, 150
 
 NAVY = (5, 22, 34)
 PANEL = (8, 32, 45)
@@ -48,6 +48,45 @@ def cover(im: Image.Image, scale=1.0, pan_x=0.5, pan_y=0.5) -> Image.Image:
 
 def darken(im, amount=0.35):
     return ImageEnhance.Brightness(im).enhance(1 - amount)
+
+
+def moving_prototype(t, darkness=.24, zoom=1.08):
+    """Animate the approved photograph with buoy-like heave/roll and live water."""
+    heave = math.sin(t * math.tau * .32) * 7 + math.sin(t * math.tau * .13) * 3
+    roll = math.sin(t * math.tau * .21) * 1.15
+    base = cover(prototype, zoom + .008 * math.sin(t * .35), .60, .52)
+    base = base.rotate(roll, Image.Resampling.BICUBIC, center=(760, 440))
+    canvas = Image.new("RGB", (W, H), NAVY)
+    canvas.paste(base, (0, round(heave)))
+    canvas = darken(canvas, darkness)
+    d = ImageDraw.Draw(canvas, "RGBA")
+    for layer, (y0, amp, speed, alpha) in enumerate(((590, 13, 1.0, 105), (625, 9, 1.35, 80), (670, 7, .72, 58))):
+        pts = []
+        for x in range(-20, W + 21, 10):
+            y = y0 + amp * math.sin(x / (72 + layer * 18) - t * speed * 2.5) + 3 * math.sin(x / 24 + t)
+            pts.append((x, y))
+        d.line(pts, fill=(102, 210, 226, alpha), width=3 if layer == 0 else 2)
+        d.polygon(pts + [(W + 20, H), (-20, H)], fill=(7, 78, 104, 20 + layer * 7))
+    for i in range(9):
+        x = ((t * 150 + i * 173) % (W + 260)) - 180
+        y = 105 + (i % 5) * 38
+        d.arc((x, y, x + 125, y + 34), 195, 345, fill=(210, 240, 246, 65), width=2)
+    hub = (586, 81)
+    angle = t * 5.5
+    for i in range(4):
+        a = angle + i * math.pi / 2
+        ex, ey = hub[0] + math.cos(a) * 23, hub[1] + math.sin(a) * 12
+        d.line((hub[0], hub[1], ex, ey), fill=(235, 244, 246, 185), width=3)
+        d.ellipse((ex - 6, ey - 4, ex + 6, ey + 4), fill=(8, 20, 27, 220), outline=(220, 238, 242, 130))
+    d.ellipse((hub[0]-4, hub[1]-4,hub[0]+4,hub[1]+4),fill=GOLD)
+    return canvas
+
+
+def live_readout(draw, xy, label, value, color=CYAN):
+    x, y = xy
+    draw.rounded_rectangle((x, y, x + 205, y + 67), 11, fill=(4, 24, 35, 210), outline=(65, 102, 113, 180), width=2)
+    draw.text((x + 14, y + 10), label, font=F_TINY, fill=MUTED)
+    draw.text((x + 14, y + 31), value, font=F_H2, fill=color)
 
 
 def pill(draw, xy, text, color=CYAN, fill=(7, 31, 44, 230), size=16):
@@ -101,7 +140,7 @@ logo = Image.open(ASSETS / "falcon-logo.jpg").convert("RGB")
 
 
 def intro(local):
-    bg = darken(cover(prototype, 1 + .035 * local, .60 - .06 * local, .52), .22)
+    bg = moving_prototype(local * 12, .22, 1.03 + .03 * local)
     d = ImageDraw.Draw(bg, "RGBA")
     d.rectangle((0, 0, W, H), fill=(0, 15, 25, 40))
     d.text((65, 76), "PROJECT FALCON", font=F_TITLE, fill=WHITE)
@@ -112,7 +151,8 @@ def intro(local):
 
 
 def movement(local):
-    bg = darken(cover(prototype, 1.10, .61, .53), .36)
+    seconds = 12 + local * 18
+    bg = moving_prototype(seconds, .31, 1.08)
     d = ImageDraw.Draw(bg, "RGBA")
     header(d, "Stage 01 · Physical environment", "The ocean moves. FALCON measures.", "One buoy continuously converts real-world motion and weather into digital observations.")
     # Wave/motion traces.
@@ -125,6 +165,8 @@ def movement(local):
     for i,(text,pos) in enumerate(labels):
         alpha=min(1,max(0,local*3-i*.45));
         if alpha>0:pill(d,pos,text)
+    live_readout(d,(42,430),"LIVE HEAVE",f"{0.51 + .06*math.sin(seconds*1.7):.2f} m")
+    live_readout(d,(42,507),"IMU ROLL",f"{2.8*math.sin(seconds*1.31):+.1f}°",GOLD)
     return bg
 
 
@@ -139,7 +181,8 @@ def sensors(local):
         d.text((x+84,y+29),name,font=F_H2,fill=WHITE)
         pill(d,(x+24,y+92),bus,size=14)
         d.text((x+24,y+150),data,font=F_SMALL,fill=MUTED)
-        d.text((x+24,y+185),f"Sample #{18420+i:05d}",font=F_TINY,fill=GREEN)
+        sample = 18420 + int(local * 360) + i
+        d.text((x+24,y+185),f"Sample #{sample:05d}",font=F_TINY,fill=GREEN)
         q=(local*1.8+i*.18)%1; d.rectangle((x+24,y+213,x+24+210*q,y+218),fill=CYAN)
     arrow(d,(95,510),(1180,510),min(1,local*1.6)); data_dots(d,(95,510),(1180,510),local)
     d.text((470,548),"TIMESTAMPED SENSOR FRAME",font=F_H2,fill=WHITE)
@@ -220,7 +263,7 @@ def dashboard(local):
 
 
 def full_flow(local):
-    bg=darken(cover(prototype,1.08,.6,.52),.62); d=ImageDraw.Draw(bg,"RGBA")
+    bg=moving_prototype(140 + local * 7,.57,1.08); d=ImageDraw.Draw(bg,"RGBA")
     header(d,"Complete system","One continuous data journey","Every stage is connected, timestamped, and visible from the deployed buoy to the dashboard.")
     labels=[("MOVEMENT",90),("SENSORS",300),("ESP32",500),("USB",675),("ORANGE PI",820),("CLOUD",1010),("DASHBOARD",1160)]
     y=420
@@ -234,7 +277,7 @@ def full_flow(local):
 
 
 def outro(local):
-    bg=darken(cover(prototype,1.03+.025*local,.60,.52),.38); d=ImageDraw.Draw(bg,"RGBA")
+    bg=moving_prototype(147 + local * 3,.36,1.03+.025*local); d=ImageDraw.Draw(bg,"RGBA")
     d.rectangle((0,0,W,H),fill=(0,14,24,55))
     d.text((640,230),"PROJECT FALCON",font=F_TITLE,fill=WHITE,anchor="mm")
     d.text((640,305),"Coastal intelligence—from the water to the dashboard.",font=F_H2,fill=CYAN,anchor="mm")
@@ -246,11 +289,13 @@ SCENES=[(0,12,intro),(12,30,movement),(30,48,sensors),(48,67,wiring_scene),(67,8
 
 
 def render_frame(t):
-    for start,end,fn in SCENES:
+    for index, (start,end,fn) in enumerate(SCENES):
         if start<=t<end:
-            im=fn((t-start)/(end-start))
-            fade=min(1,(t-start)/.7,(end-t)/.7)
-            if fade<1: im=ImageEnhance.Brightness(im).enhance(max(.02,fade))
+            local=(t-start)/(end-start)
+            im=fn(local)
+            if index and t-start < 1.0:
+                previous=SCENES[index-1][2](1.0)
+                im=Image.blend(previous,im,(t-start))
             return im
     return outro(1)
 
@@ -270,7 +315,7 @@ def make_music():
 
 
 def main():
-    if not FFMPEG.exists(): raise SystemExit("Local ffmpeg not found at /tmp/falcon-ffmpeg/usr/bin/ffmpeg")
+    if not FFMPEG.exists(): raise SystemExit("ffmpeg was not found. Install it with: sudo apt install ffmpeg")
     make_music()
     cmd=[str(FFMPEG),'-y','-f','rawvideo','-pixel_format','rgb24','-video_size',f'{W}x{H}','-framerate',str(FPS),'-i','-', '-i',str(MUSIC),'-vf','scale=1920:1080:flags=lanczos','-c:v','libx264','-preset','veryfast','-crf','21','-pix_fmt','yuv420p','-c:a','aac','-b:a','160k','-shortest','-movflags','+faststart',str(OUT)]
     process=subprocess.Popen(cmd,stdin=subprocess.PIPE)
