@@ -1,13 +1,65 @@
 # Project FALCON — Flow AI Realistic Deployment Prompt Package
 
-## Reference image
+## Single required upload
 
-Upload and use this image as the visual reference for **every scene**:
+Upload only this image to Flow and use it as the visual reference for **every scene**:
 
 `assets/falcon-approved-prototype.png`
 
-The buoy in the reference image is the only approved Project FALCON prototype.
-Do not redesign, simplify, replace, or add parts to it.
+No additional electronics image, wiring diagram, dashboard screenshot, or 3D
+model is required. The buoy in this image is the only approved Project FALCON
+prototype. Do not redesign, simplify, replace, or add exterior parts to it.
+
+## Actual component lock
+
+When the video looks through the enclosure, show recognizable, physically
+plausible versions of these actual Project FALCON parts—not generic fictional
+electronics:
+
+- ESP32 DevKit sensor controller
+- Orange Pi Zero 3 edge computer
+- BNO085 IMU module
+- Bar02 water-pressure sensor interface
+- GPS module and antenna
+- Wind-speed anemometer and wind-direction sensor
+- Temperature sensor interface
+- Two INA260 current/power monitor modules: battery and solar
+- Battery pack, solar charge controller, fuse, power switch, buck converter,
+  3.3 V regulation, protection parts, and terminal/connectors
+- USB cable between ESP32 and Orange Pi
+- Waterproof cable glands and organized labeled wiring harnesses
+
+Keep internal parts inside the existing dark electronics enclosure. Show them
+only through a tracked X-ray/cutaway effect; do not permanently make the box
+transparent and do not mount exposed circuit boards outside the enclosure.
+
+## Quick-start prompt for Flow
+
+Copy this first after uploading the approved prototype image:
+
+> Create photorealistic cinematic deployment footage using the uploaded image
+> as a strict reference for the only approved Project FALCON buoy. Preserve the
+> exact float, tower, electronics enclosure, solar panels, antennas, sensors,
+> logo, colors, proportions, and component positions. The buoy is already
+> deployed in tropical Philippine coastal water and moves naturally with real
+> waves: continuous heave, gentle pitch and roll, water splashes, reflections,
+> moving wind, and a rotating cup anemometer. Slowly orbit the operating buoy.
+> Then create a smooth tracked X-ray window only over its existing dark
+> electronics enclosure while the exterior remains unchanged and the buoy keeps
+> moving. Inside the X-ray window show recognizable, realistically sized and
+> wired Project FALCON parts secured to a mounting tray: ESP32 DevKit, Orange Pi
+> Zero 3, BNO085 IMU, Bar02 pressure interface, GPS interface, two INA260 monitor
+> modules, power protection, fuse, regulators, terminal connectors, battery and
+> solar power connections, waterproof cable glands, and the physical USB cable
+> from ESP32 to Orange Pi. Animate data being read at the actual exterior sensors;
+> use thin cyan line-follow pulses through the cables to the ESP32, then through
+> USB to Orange Pi. Show edge-AI processing above the Orange Pi, followed by an
+> amber/cyan directional data line traveling through the communications antenna,
+> internet, secure cloud, and dashboard. Keep every overlay tracked to the moving
+> real object. Documentary realism, natural daylight, professional engineering
+> visualization, 16:9, smooth 24 fps, music only, no dialogue. No slideshow, no
+> static zoom, no exterior redesign, no exposed electronics, no fictional parts,
+> no different buoy, no science-fiction holograms.
 
 ## Recommended workflow
 
@@ -18,6 +70,10 @@ arrows, sensor values, dashboard screen recording, and music in a video editor.
 
 Target output: 16:9, 1920×1080, realistic documentary style, 24 or 30 fps,
 approximately 2–3 minutes after editing. Music only; no narrator and no dialogue.
+
+You only need to upload the approved buoy image once as the primary reference.
+For every new clip, select or reuse the last accepted frame/clip as a continuity
+reference if Flow provides that option.
 
 ## Master consistency prompt
 
@@ -80,8 +136,15 @@ view only after reaching the box. Show sensor cables entering through waterproof
 cable glands. Animated cyan signal pulses travel along the real cable paths into
 the ESP32 DevKit. Show the ESP32 reading IMU, pressure, GPS, wind, temperature,
 battery monitor, and solar monitor signals, validating and timestamping them.
-The cutaway must look like real maintainable marine electronics, not a futuristic
-hologram. Keep the exterior prototype unchanged.
+The camera remains outside the buoy. Create a smooth tracked X-ray window over
+the existing dark electronics enclosure so viewers can see the real components
+inside while the original enclosure outline remains visible. Inside, show the
+ESP32 DevKit, Orange Pi Zero 3, BNO085, GPS interface, two INA260 modules, power
+regulators, fuse, terminals, battery connection, and organized wiring secured to
+a mounting tray. Use cyan pulses to trace each sensor cable through a waterproof
+gland to the ESP32. The X-ray window must stay locked to the moving enclosure as
+the buoy heaves and rolls. It must look like real maintainable marine electronics,
+not a futuristic hologram. Keep the exterior prototype unchanged.
 
 Suggested caption: `Sensors → ESP32 data acquisition and validation`
 
@@ -95,6 +158,11 @@ clearly understand the direction. Show a brief readable telemetry overlay:
 The Orange Pi is powered separately as designed. Use realistic boards, connectors,
 wires, cable management, and enclosure lighting.
 
+Use the same exterior camera view and tracked X-ray window from Scene 4. Do not
+cut to an unrelated electronics table or a different enclosure. Clearly show the
+USB cable physically connecting the two boards, with animated packets traveling
+from ESP32 toward Orange Pi—not in the opposite direction.
+
 Suggested caption: `ESP32 → USB Serial → Orange Pi Zero 3`
 
 ### Scene 6 — Edge AI processing
@@ -105,6 +173,10 @@ through five steps: Ingest, Validate, Build Features, AI Prediction, and Alert
 Check. Data particles move through each step in order. Finish with a restrained
 result card: `Predicted wave height: 0.49 m`, `Confidence: 80%`, `Sea state: CALM`.
 The electronics remain realistic and the buoy continues moving gently outside.
+
+Keep the Orange Pi visible through the X-ray window in the buoy's existing
+electronics box. The processing graphic should originate directly above the
+Orange Pi and remain tracked to it as the buoy moves.
 
 Suggested caption: `Local edge AI continues even with unstable internet`
 
@@ -152,6 +224,11 @@ Final caption: `MEASURE → PROCESS → PREDICT → DELIVER`
 - No floating components, broken geometry, duplicated antennas, duplicated wind
   cups, warped solar cells, disconnected wires, or impossible cable routing.
 - No dry-land demonstration; the buoy must be visibly deployed and floating.
+- No separate workbench, floating PCB scene, generic circuit board, or unrelated
+  electronics enclosure. Internal parts appear inside the deployed buoy only.
+- Do not expose internal boards directly to seawater or mount them on the tower.
+- Do not substitute Arduino, Raspberry Pi, desktop computer, or a different SBC
+  for the ESP32 DevKit and Orange Pi Zero 3.
 - No static slideshow, still-photo sequence, or simple zoom-only animation.
 - No neon cyberpunk effects, excessive holograms, cartoon style, or fantasy UI.
 - No violent storm, capsizing, collision, or unsafe maintenance activity.
