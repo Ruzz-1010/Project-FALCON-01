@@ -8,6 +8,13 @@
 - Added power, thermal, calibration, privacy, security, maintenance, and
   sustainability conditions across the core engineering documents.
 - Added a concise thesis/presentation version of the upgrade plan.
+## 2026-08-23 - Rectangular pod front service door
+
+- Updated the existing rectangular-pod generator with a rerunnable front-door
+  retrofit instead of adding another component revision.
+- Added a 220 x 320 mm opening, raised lip, dual EPDM seals, left hinges and two
+  right compression latches aligned with the tower maintenance gate.
+
 ## 2026-08-23 - Tower gate dependency correction
 
 - Removed the optional inner sealed box/cooling system as a gate prerequisite.

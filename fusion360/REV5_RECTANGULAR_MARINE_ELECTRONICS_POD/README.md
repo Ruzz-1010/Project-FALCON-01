@@ -13,6 +13,12 @@ Included as separate editable components:
 - rear sealed thermal bridge interface;
 - downward IP68 cable-gland plate and hydrophobic membrane-vent boss.
 
-The old round pod is hidden only after successful generation. No completed
-component is moved, cut, joined, or deleted. Verify sealing, thermal, structural,
-salt-fog, vibration, EMC and flotation performance before fabrication.
+The old round pod is hidden only after successful generation. No unrelated
+completed component is moved, joined or deleted. The front service retrofit
+intentionally cuts only the rectangular pod wall. Verify sealing, thermal,
+structural, salt-fog, vibration, EMC and flotation performance before fabrication.
+
+Running the same script on an existing rectangular pod retrofits a 220 x 320 mm
+front opening, raised sealing lip, dual EPDM gasket paths, removable front door,
+left removable hinge pin and two right compression latches. It does not create
+a duplicate pod. The requested service opening is the only existing-body cut.
