@@ -342,6 +342,12 @@ The GPS page plots the live `/gps` position, deployment reference, 10 m geofence
 
 Cloud dashboards, mobile applications, fleet views, water-quality pages, camera feeds, additional prediction pages, and remote user management are outside Phase 1.
 
+A future camera page should open an authenticated on-demand live stream and stop
+it automatically when no authorized viewer remains; routine recording is not the
+baseline. New sensors must expose validity, calibration, stale, and unavailable
+states before receiving dashboard cards. See
+[`FUTURE_UPGRADES.md`](FUTURE_UPGRADES.md).
+
 ## Revision History
 
 | Version | Date | Change |

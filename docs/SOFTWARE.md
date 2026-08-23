@@ -353,6 +353,11 @@ Required software tests:
 
 Cloud services, fleet management, mobile applications, additional AI services, computer vision, and remote updates are outside Phase 1.
 
+Future software shall support optional on-demand camera streaming without routine
+recording, new sensor validity/calibration fields, store-and-forward remote links,
+and portable deployment to Raspberry Pi 5 only after Orange Pi benchmarks justify
+the migration. See [`FUTURE_UPGRADES.md`](FUTURE_UPGRADES.md).
+
 ## Database Implementation
 
 The Orange Pi Zero 3 (4GB) uses SQLite for local-first persistence. The v4 schema contains:

@@ -278,6 +278,11 @@ The implemented presentation model fits a damped linear trend to recent wave-hei
 
 Weather, current, storm, maintenance, water-quality, vision, cloud, and multi-model AI remain Future Expansion and require separate research approval.
 
+Additional sensor inputs or Raspberry Pi 5 deployment do not automatically
+improve model validity. Each requires a new dataset, chronological evaluation,
+baseline comparison, resource benchmark, and documented uncertainty. See
+[`FUTURE_UPGRADES.md`](FUTURE_UPGRADES.md).
+
 ## Revision History
 
 | Version | Date | Change |

@@ -505,6 +505,14 @@ The following are not part of the Phase 1 sensor baseline:
 - current meter;
 - and Water Quality Index inputs.
 These sensors shall not appear as active Phase 1 hardware in official claims. Dashboard placeholders for these sensors shall be removed or explicitly labeled Future Expansion.
+
+The controlled post-approval path for these sensors, an on-demand non-recording
+camera, communications improvements, and a conditional Raspberry Pi 5 4GB edge
+upgrade is defined in [`FUTURE_UPGRADES.md`](FUTURE_UPGRADES.md). Orange Pi Zero
+3 (4GB) remains the approved Phase 1 host, and no future item may be described as
+implemented before its procurement, calibration, integration, and validation
+evidence exists.
+
 ## Sensor Data Quality
 
 Every sensor value shall carry enough context to determine whether it is usable. Recommended metadata includes:

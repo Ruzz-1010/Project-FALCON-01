@@ -1,0 +1,66 @@
+# Project FALCON Future Upgrade Plan
+
+## Current Baseline
+
+Project FALCON will retain the Orange Pi Zero 3 (4GB) for the proposed Phase 1
+prototype. It is sufficient for sensor telemetry, local storage, the dashboard,
+and lightweight scikit-learn inference. The items below are future improvements
+for consideration only after approval, funding, and field validation.
+
+## Recommended Future Improvements
+
+### 1. Improve reliability before adding features
+
+The first upgrade should strengthen waterproofing, corrosion protection, cable
+labeling, modular connectors, thermal control, leak detection, remote recovery,
+and solar/battery monitoring. These changes make the buoy safer, easier to
+maintain, and more sustainable over repeated deployments.
+
+### 2. Add an on-demand viewing camera
+
+A weatherproof USB camera may provide live visual inspection of the buoy and its
+surroundings. It should stream only when an authorized operator opens the camera
+page. Routine video recording is not proposed, so the camera will not continually
+consume local storage. The design still requires power, bandwidth, waterproofing,
+condensation, cybersecurity, privacy, and maintenance testing.
+
+### 3. Add research-justified environmental sensors
+
+Possible sensors include pH, salinity/conductivity, turbidity, dissolved oxygen,
+water temperature, chlorophyll-a, rain, UV, water current, and a hydrophone. The
+team should not install every sensor simply to increase feature count. Each sensor
+must answer an approved research question and have a calibration method, reference
+instrument, uncertainty estimate, cleaning plan, power budget, and dashboard state.
+
+### 4. Improve long-distance communication
+
+Possible options include LTE/4G where cellular service is reliable, LoRa for
+low-rate links to a nearby gateway, and satellite messaging for essential compact
+telemetry in remote sites. FALCON should continue storing data locally and
+synchronize queued records after a connection returns.
+
+### 5. Upgrade to Raspberry Pi 5 4GB when justified
+
+Raspberry Pi 5 may provide smoother operation for heavier analytics, camera
+processing, additional services, or a larger dashboard workload. It is not needed
+for the current Phase 1 pipeline. Before upgrading, the team must demonstrate an
+Orange Pi performance limitation and redesign the regulated power branch, cooling,
+mounting tray, enclosure airflow, wiring, fuse, solar budget, and endurance tests.
+
+## Suggested Presentation Script
+
+> “For Phase 1, Project FALCON will use the Orange Pi Zero 3 because it is compact,
+> lower-power, and sufficient for our current sensor and lightweight machine-learning
+> workload. If the project is approved and receives additional funding, we will
+> improve reliability first, then consider an on-demand camera, calibrated
+> environmental sensors, and stronger remote communication. A Raspberry Pi 5 may
+> be adopted later if actual benchmarks show that heavier analytics require more
+> processing power. Every upgrade will undergo renewed power, calibration,
+> waterproofing, cybersecurity, and field validation before deployment.”
+
+## Important Claim Boundary
+
+These are proposed upgrades, not existing capabilities. They must not be presented
+as installed, tested, accurate, or deployment-ready until documented evidence is
+available. The detailed engineering gates are maintained in
+[`../docs/FUTURE_UPGRADES.md`](../docs/FUTURE_UPGRADES.md).

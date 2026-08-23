@@ -403,6 +403,16 @@ These software results do not replace physical electrical or marine testing.
 | Mechanical | [`MECHANICAL.md`](MECHANICAL.md) |
 | Calibration/tests | [`CALIBRATION_GUIDE.md`](CALIBRATION_GUIDE.md), [`TEST_PLAN.md`](TEST_PLAN.md) |
 | Deployment and safety | [`DEPLOYMENT_GUIDE.md`](DEPLOYMENT_GUIDE.md), [`SECURITY.md`](SECURITY.md) |
+| Conditional upgrades | [`FUTURE_UPGRADES.md`](FUTURE_UPGRADES.md) |
+
+## 18. Post-Approval Upgrade Direction
+
+Orange Pi Zero 3 (4GB) remains the Phase 1 edge host. After approval and measured
+field validation, the project may consider an on-demand non-recording camera,
+additional calibrated environmental sensors, improved communications and power,
+and a Raspberry Pi 5 4GB when benchmarks prove more compute is necessary. These
+features remain Future Expansion and are governed by
+[`FUTURE_UPGRADES.md`](FUTURE_UPGRADES.md).
 
 ## Revision History
 

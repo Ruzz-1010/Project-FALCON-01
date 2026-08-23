@@ -21,6 +21,7 @@ Read these documents in order:
 9. [`DASHBOARD.md`](DASHBOARD.md) — local dashboard information architecture
 10. [`API.md`](API.md) — approved local REST API contract
 11. [`MECHANICAL.md`](MECHANICAL.md) — approved buoy mechanical baseline
+12. [`FUTURE_UPGRADES.md`](FUTURE_UPGRADES.md) — conditional post-approval hardware and system roadmap
 
 These core documents were aligned to Project FALCON v5.0 and the single-body mechanical baseline on 2026-08-13.
 
@@ -54,6 +55,11 @@ Future assistants must also read [`CODEX.md`](CODEX.md) before changing the proj
 ## Phase 1 Boundary
 
 Project FALCON v5.0 is limited to real-time coastal monitoring and AI-assisted wave-height prediction at 5- and 15-minute horizons. The AI classifies sea state as Calm, Moderate, or Rough. Cloud services, camera vision, water-quality analytics, and autonomous control remain future expansion.
+
+The consolidated upgrade policy is maintained in
+[`FUTURE_UPGRADES.md`](FUTURE_UPGRADES.md). It covers a conditional Raspberry Pi
+5 migration, on-demand non-recording camera, additional calibrated sensors,
+communications, security, power, maintainability, and sustainability gates.
 
 ## Revision History
 

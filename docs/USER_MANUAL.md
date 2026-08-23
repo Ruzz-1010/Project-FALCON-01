@@ -22,6 +22,10 @@ Phone/laptop connects directly to ESP32; no router, internet, cloud, account, or
 ## Future Expansion
 Add settings, history, export, alerts, calibration, and real sensor interpretation when implemented.
 
+Future operator instructions may include authenticated on-demand camera viewing,
+additional calibrated sensor pages, remote-link status, and platform health after
+those upgrades pass the gates in [`FUTURE_UPGRADES.md`](FUTURE_UPGRADES.md).
+
 ## Engineering Notes
 Never use demo values for environmental, navigation, power, or safety decisions.
 

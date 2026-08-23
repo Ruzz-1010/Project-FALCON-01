@@ -46,6 +46,10 @@ alternate development transport.
 Add checksum/framing beyond newline JSON if field error testing demonstrates the
 need, plus authenticated LoRa/cellular transport and explicit time synchronization.
 
+An optional camera requires a separate authenticated streaming path and must not
+delay or congest safety-relevant telemetry. See
+[`FUTURE_UPGRADES.md`](FUTURE_UPGRADES.md).
+
 ## Engineering Notes
 Captive popup behavior varies by client. Manual fallback is `http://192.168.4.1`.
 

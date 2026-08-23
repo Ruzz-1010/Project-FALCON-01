@@ -31,6 +31,11 @@ Missing assets return 503; AP/DNS initialization failure stops service; dashboar
 ## Future Expansion
 Complete physical sensor drivers, Orange Pi deployment, authentication, and field validation while keeping ESP32 diagnostics available independently.
 
+The post-approval architecture may add an authenticated on-demand camera,
+calibrated environmental sensors, remote communications, and a conditional
+Raspberry Pi 5 4GB migration. ESP32 retains time-critical acquisition in every
+case. See [`FUTURE_UPGRADES.md`](FUTURE_UPGRADES.md).
+
 ## Engineering Notes
 No production watchdog policy, OTA, authentication, or fully validated physical sensor layer is implemented.
 

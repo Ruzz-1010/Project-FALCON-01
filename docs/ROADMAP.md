@@ -416,6 +416,12 @@ Possible later work includes:
 - maintenance prediction;
 - and autonomous capabilities.
 
+The ordered post-approval plan, including an on-demand non-recording camera,
+calibrated additional sensors, communications resilience, and a conditional
+Raspberry Pi 5 4GB migration, is defined in
+[`FUTURE_UPGRADES.md`](FUTURE_UPGRADES.md). Reliability improvements and measured
+Orange Pi benchmarks precede feature expansion.
+
 None of these are Phase 1 exit criteria.
 
 ## Revision History

@@ -18,6 +18,11 @@ Current controls are AP password protection, local-only operation, and absence o
 ## Future Expansion
 Per-device credentials, authenticated technician access, encrypted edge/remote links, secure storage, signed updates, and threat modeling.
 
+Any future camera must be opt-in, authenticated, encrypted, non-public, and
+on-demand by default, with no routine recording and a visible access log. Remote
+links and Raspberry Pi migration require renewed hardening, update, secret-storage,
+and recovery testing. See [`FUTURE_UPGRADES.md`](FUTURE_UPGRADES.md).
+
 ## Engineering Notes
 Do not present the current prototype as secure for unattended public deployment.
 

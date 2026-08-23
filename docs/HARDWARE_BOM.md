@@ -60,6 +60,15 @@ and physical board revisions are reviewed together.
 - [SparkFun Weather Meter Kit](https://www.sparkfun.com/weather-meter-kit.html)
 - [Bangko Sentral ng Pilipinas exchange-rate reference](https://www.bsp.gov.ph/SitePages/Statistics/exchangerate.aspx)
 
+## Future Upgrade Procurement
+
+Do not include future items in the Phase 1 purchase total. Conditional later
+procurement may include a weatherproof H.264-capable USB camera, additional
+calibratable environmental sensors, a remote modem, upgraded power hardware,
+and a Raspberry Pi 5 4GB with active cooling and a validated 5 V / 5 A-class
+supply. Exact products and prices must be researched again at purchase time.
+See [`FUTURE_UPGRADES.md`](FUTURE_UPGRADES.md).
+
 ## Receiving Checklist
 
 Record supplier, order number, exact SKU/revision, datasheet URL, photo of both

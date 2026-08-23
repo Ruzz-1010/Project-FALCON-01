@@ -409,6 +409,11 @@ Each endpoint requires tests for:
 
 Cloud APIs, authentication services, fleet endpoints, water-quality endpoints, camera endpoints, mobile APIs, and multi-buoy endpoints are outside Phase 1.
 
+Future camera APIs shall control authenticated on-demand streaming rather than
+routine recording. Additional sensor endpoints must preserve calibration,
+validity, stale, and unavailable metadata. See
+[`FUTURE_UPGRADES.md`](FUTURE_UPGRADES.md).
+
 ## Revision History
 
 | Version | Date | Change |

@@ -50,3 +50,12 @@ The Orange Pi Zero 3 provides a USB Type-C power input, 4GB LPDDR4 in the select
 - Physical Orange Pi integration: planned.
 - Current executable edge prototype: laptop-hosted Python service.
 - Cloud synchronization: Future Expansion.
+
+## Conditional Edge Upgrade
+
+Orange Pi Zero 3 (4GB) remains the Phase 1 selection. A Raspberry Pi 5 4GB may
+replace it only after measured CPU, memory, inference, storage, temperature, or
+camera-streaming results prove that optimization is insufficient. Migration
+requires a new protected power branch, active cooling, mounting and enclosure
+review, and full regression/endurance testing. See
+[`FUTURE_UPGRADES.md`](FUTURE_UPGRADES.md).

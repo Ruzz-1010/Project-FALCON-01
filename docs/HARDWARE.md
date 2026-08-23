@@ -475,6 +475,13 @@ Required categories:
 
 Future hardware may include water-quality sensors, camera, hydrophone, current meter, LTE, LoRa, satellite communication, alternate edge computers, larger power systems, and multi-buoy hardware.
 
+The preferred staged path is reliability first, then an on-demand weatherproof
+USB camera without routine recording, research-justified calibrated sensors,
+communications resilience, and finally a Raspberry Pi 5 4GB only if measured
+Orange Pi limits require it. Every option requires renewed power, thermal,
+enclosure, calibration, maintenance, and field validation. See
+[`FUTURE_UPGRADES.md`](FUTURE_UPGRADES.md).
+
 None are Phase 1 requirements.
 
 ## Revision History

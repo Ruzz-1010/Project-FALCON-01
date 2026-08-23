@@ -201,6 +201,13 @@ Start here:
 
 Cloud synchronization, LTE, LoRa, satellite communication, multi-buoy networking, mobile applications, water-quality sensing, computer vision, additional AI models, and autonomous capabilities are outside Phase 1.
 
+After Phase 1 approval, possible staged improvements include an authenticated
+on-demand camera with no routine recording, calibrated water-quality/current/
+weather sensors, resilient communications, and a Raspberry Pi 5 4GB only if
+Orange Pi workload benchmarks justify the added power and cooling. See
+[`docs/FUTURE_UPGRADES.md`](docs/FUTURE_UPGRADES.md) for the required technical,
+validation, privacy, and sustainability gates.
+
 ## Revision History
 
 | Version | Date | Change |

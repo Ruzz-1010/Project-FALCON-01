@@ -44,3 +44,12 @@ REAR / BULKHEAD SIDE
 - [ ] Thermal path tested at sealed-pod ambient worst case.
 - [ ] Condensation path cannot drip onto exposed terminals.
 - [ ] Every cable and both ends carry the same circuit identifier.
+
+## Future Layout Reservations
+
+Reserve no unverified holes, cutouts, or power capacity as if future equipment
+were already selected. After approval, layout studies may consider an isolated
+camera connector/power switch, extra sensor termination area, modem clearance,
+and a Raspberry Pi 5 tray with active-cooler airflow. Exact purchased dimensions
+and sealed-pod thermal tests are required. See
+[`FUTURE_UPGRADES.md`](FUTURE_UPGRADES.md).

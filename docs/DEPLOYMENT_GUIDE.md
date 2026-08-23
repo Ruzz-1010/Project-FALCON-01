@@ -20,6 +20,11 @@ Marine use additionally requires mechanical calculations, power/protection revie
 ## Future Expansion
 Add signed artifacts, rollback, provisioning, deployment coordinates, and maintenance schedules.
 
+Future camera, modem, additional-sensor, or Raspberry Pi deployments must repeat
+the relevant power, thermal, ingress, calibration, privacy/security, recovery,
+and supervised sea-trial gates. See
+[`FUTURE_UPGRADES.md`](FUTURE_UPGRADES.md).
+
 ## Engineering Notes
 The maintenance dashboard does not prove marine readiness.
 

@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-08-23 - Post-approval upgrade roadmap documented
+
+- Kept Orange Pi Zero 3 (4GB) as the Phase 1 edge baseline.
+- Added gated future paths for an on-demand non-recording camera, calibrated
+  environmental sensors, resilient communications, and Raspberry Pi 5 4GB.
+- Added power, thermal, calibration, privacy, security, maintenance, and
+  sustainability conditions across the core engineering documents.
+- Added a concise thesis/presentation version of the upgrade plan.
+
 ## 2026-08-15 - Dashboard Next promoted to canonical production UI
 
 - Made `dashboard-next/` the only full dashboard source.

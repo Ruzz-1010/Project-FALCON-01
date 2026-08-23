@@ -21,6 +21,10 @@ Static checks -> build -> bench -> client matrix -> endurance -> future field te
 ## Future Expansion
 Add unit/API/browser tests, sensor faults, calibration, power endurance, GPS false-alert analysis, storage limits, AI metrics, ingress, stability, and marine trials.
 
+Future camera, communications, sensor, or Raspberry Pi upgrades require their own
+regression, bandwidth, privacy/security, calibration, thermal, power, endurance,
+and supervised field evidence. See [`FUTURE_UPGRADES.md`](FUTURE_UPGRADES.md).
+
 ## Engineering Notes
 A compile is not device validation. Record date, hardware revision, commit, operator, environment, and result.
 

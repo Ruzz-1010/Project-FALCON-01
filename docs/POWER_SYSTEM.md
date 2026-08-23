@@ -34,6 +34,12 @@ Required artifacts: load table, energy budget, sizing calculations, protection/w
 ## Future Expansion
 Power modes, telemetry, controlled loads, and energy-aware AI after hardware approval.
 
+Optional cameras, remote modems, added sensors, and a possible Raspberry Pi 5
+shall trigger a complete energy-budget revision. A Pi 5 path requires a protected
+5 V / 5 A-class branch and active-cooling thermal validation; it must not be
+connected to the existing Orange Pi branch by assumption. See
+[`FUTURE_UPGRADES.md`](FUTURE_UPGRADES.md).
+
 ## Engineering Notes
 LM2596 is a regulator, not a charger/BMS/fuse. Verify its output before connection. Do not field-deploy an unreviewed battery system.
 
