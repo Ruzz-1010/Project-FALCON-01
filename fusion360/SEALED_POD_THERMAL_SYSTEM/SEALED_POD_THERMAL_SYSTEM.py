@@ -107,10 +107,11 @@ def _front_frame(component, width, height, border, thickness, name, material):
 
 
 def _fan(component, index, material):
-    _box(component, component.xZConstructionPlane, -4.0, -4.0, 4.0, 4.0,
+    # Horizontal cartridge, matching the installed Screenshot-693 geometry.
+    _box(component, component.xYConstructionPlane, -4.0, -4.0, 4.0, 4.0,
          '25 mm', 'INTERNAL_FAN_{:02d}_80MM_FRAME'.format(index), material)
-    hub = _child(component, 'INTERNAL_FAN_{:02d}_ROTOR_HUB'.format(index), 0, 0.3, 0)
-    sketch = hub.sketches.add(hub.xZConstructionPlane)
+    hub = _child(component, 'INTERNAL_FAN_{:02d}_ROTOR_HUB'.format(index), 0, 0, 0.3)
+    sketch = hub.sketches.add(hub.xYConstructionPlane)
     sketch.sketchCurves.sketchCircles.addByCenterRadius(
         adsk.core.Point3D.create(0, 0, 0), 2.2
     )
@@ -140,24 +141,33 @@ def run(context):
         pod_occurrence = _find(root, 'REV5_RECTANGULAR_MARINE_ELECTRONICS_POD')
         if not pod_occurrence:
             raise RuntimeError('REV5_RECTANGULAR_MARINE_ELECTRONICS_POD was not found.')
-        existing = (_find(root, 'REV5_RECTANGULAR_POD_COOLING_SYSTEM') or
+        # Prefer the installed original thermal assembly shown in Screenshot
+        # 693. Reuse it instead of replacing it with the later misplaced
+        # cooling-only occurrence.
+        existing = (_find(root, 'SEALED_POD_THERMAL_SYSTEM') or
+                    _find(root, 'REV5_RECTANGULAR_POD_COOLING_SYSTEM') or
                     _find(root, 'REV5_INNER_SEALED_BOX_COOLING'))
         if existing:
             # The buoy assembly may have been repositioned after earlier parts
             # were generated. Reuse the pod occurrence transform so this
             # system follows the completed pod without deleting/rebuilding it.
             existing.transform2 = pod_occurrence.transform2.copy()
-            existing.component.name = 'REV5_RECTANGULAR_POD_COOLING_SYSTEM'
+            existing.component.name = 'SEALED_POD_THERMAL_SYSTEM'
             existing.isLightBulbOn = True
             _hide_obsolete_inner_box(root)
-            old = _find(root, 'SEALED_POD_THERMAL_SYSTEM')
-            if old:
-                old.isLightBulbOn = False
+            obsolete_sensor = _find(root, 'POD_TEMP_HUMIDITY_SENSOR_BRACKET')
+            if obsolete_sensor:
+                obsolete_sensor.isLightBulbOn = False
+            duplicate = _find(root, 'REV5_RECTANGULAR_POD_COOLING_SYSTEM')
+            if duplicate and duplicate != existing:
+                duplicate.isLightBulbOn = False
             app.activeViewport.fit()
             ui.messageBox(
                 'SEALED_POD_THERMAL_SYSTEM repaired.\n\n'
-                'Cooling hardware reconnected to the current rectangular pod origin.\n'
-                'The obsolete second inner box is hidden.\n'
+                'Original Screenshot-693 thermal geometry retained.\n'
+                'Horizontal upper/lower fans and airflow guides retained.\n'
+                'Vertical bridge and rear 8-fin heat sink retained.\n'
+                'Obsolete humidity bracket and duplicate cooling occurrence hidden.\n'
                 'No body or component was deleted or duplicated.\n\n'
                 'Capture Position, save, then send a screenshot.',
                 'PROJECT FALCON-01'
@@ -166,7 +176,7 @@ def run(context):
 
         p = design.userParameters
         _parameter(p, 'rev5_cooling_fan_size', '80 mm', 'mm', 'Internal recirculation fan size')
-        _parameter(p, 'rev5_cold_plate_thickness', '6 mm', 'mm', 'Rear aluminum cold plate')
+        _parameter(p, 'rev5_airflow_guide_thickness', '4 mm', 'mm', 'Internal airflow guide thickness')
         _parameter(p, 'rev5_heat_sink_width', '180 mm', 'mm', 'External heat sink width')
         _parameter(p, 'rev5_heat_sink_height', '220 mm', 'mm', 'External heat sink height')
         _parameter(p, 'rev5_heat_sink_fin_count', '8', '', 'External heat sink fin count')
@@ -175,46 +185,52 @@ def run(context):
         # than assuming that the full assembly is still at the global origin.
         occurrence = root.occurrences.addNewComponent(pod_occurrence.transform2.copy())
         system = occurrence.component
-        system.name = 'REV5_RECTANGULAR_POD_COOLING_SYSTEM'
+        system.name = 'SEALED_POD_THERMAL_SYSTEM'
         polymer = _material(app, ('ABS Plastic', 'Plastic', 'Nylon'))
         aluminum = _material(app, ('Aluminum 6061-T6', 'Aluminum 6061', 'Aluminum'))
 
-        cold = _child(system, 'INNER_BOX_REAR_COLD_PLATE', 0, 9.8, 10.0)
-        _box(cold, cold.xZConstructionPlane, -9.0, 0, 9.0, 22.0,
-             '6 mm', 'SEALED_INTERNAL_COLD_PLATE', aluminum)
-        bridge = _child(system, 'SEALED_CLAMPED_THERMAL_BRIDGE', 0, 11.2, 10.0)
+        # Screenshot-693 layout: two horizontal fan cartridges move sealed
+        # air vertically between decks. The guides prevent a short airflow
+        # loop and direct return air toward the rear thermal interface.
+        fan1 = _child(system, 'POD_INTERNAL_FAN_LOWER', -5.0, 0, 23.0)
+        _fan(fan1, 1, polymer)
+        fan2 = _child(system, 'POD_INTERNAL_FAN_UPPER', 5.0, 0, 34.0)
+        _fan(fan2, 2, polymer)
+
+        baffles = _child(system, 'POD_INTERNAL_AIRFLOW_BAFFLES')
+        _box(baffles, baffles.xYConstructionPlane, -13.0, -2.0, 13.0, 2.0,
+             '4 mm', 'LOWER_AIR_GUIDE', polymer)
+        upper_baffle = _child(baffles, 'UPPER_RETURN_AIR_GUIDE', 0, 0, 34.0)
+        _box(upper_baffle, upper_baffle.xYConstructionPlane,
+             -13.0, -2.0, 13.0, 2.0, '4 mm', 'UPPER_AIR_GUIDE', polymer)
+
+        # One vertical clamped plate carries heat through the sealed rear wall.
+        # It is not an air duct and does not create an ingress path.
+        bridge = _child(system, 'POD_SEALED_THERMAL_BRIDGE', 0, -14.9, 16.0)
         _box(bridge, bridge.xZConstructionPlane, -9.0, 0, 9.0, 22.0,
-             '12 mm', 'CLAMPED_THERMAL_BRIDGE', aluminum)
+             '12 mm', 'INTERNAL_CLAMPED_THERMAL_BRIDGE', aluminum)
         bridge.attributes.add('PROJECT_FALCON_01', 'Seal',
                               'Compression gasket and thermal pad; solid conductor with no air passage')
 
-        fans = _child(system, 'TWO_INTERNAL_RECIRCULATION_FANS')
-        fan1 = _child(fans, 'INTERNAL_RECIRCULATION_FAN_LOWER', -7.5, 8.8, 10.0)
-        _fan(fan1, 1, polymer)
-        fan2 = _child(fans, 'INTERNAL_RECIRCULATION_FAN_UPPER', 7.5, 8.8, 24.0)
-        _fan(fan2, 2, polymer)
-        fans.attributes.add('PROJECT_FALCON_01', 'ControlSensor',
-                            'Use existing approved MCP9808 enclosure-temperature sensor only')
-
-        sink = _child(system, 'EXTERNAL_REAR_FINNED_HEAT_SINK', 0, 15.0, 10.0)
+        # Vertical rear base plus eight projecting fins. In transparent Fusion
+        # views the fins appear horizontal/in the middle, but they belong to
+        # this single external heat-sink assembly.
+        sink = _child(system, 'POD_EXTERNAL_FINNED_HEAT_SINK', 0, -16.6, 16.0)
         _box(sink, sink.xZConstructionPlane, -9.0, 0, 9.0, 22.0,
              '6 mm', 'EXTERNAL_HEAT_SINK_BASE', aluminum)
         for index, x in enumerate((-7.7, -5.5, -3.3, -1.1, 1.1, 3.3, 5.5, 7.7), 1):
-            fin = _child(sink, 'EXTERNAL_HEAT_SINK_FIN_{:02d}'.format(index), x, 0.6, 0)
-            _box(fin, fin.yZConstructionPlane, 0, 0, 2.5, 22.0,
+            fin = _child(sink, 'HEAT_SINK_FIN_{:02d}'.format(index), x, -0.6, 0)
+            _box(fin, fin.yZConstructionPlane, -2.5, 0, 0, 22.0,
                  '2 mm', 'EXTERNAL_FIN_{:02d}'.format(index), aluminum)
 
-        hood = _child(system, 'EXTERNAL_HEAT_SINK_SPLASH_HOOD', 0, 14.2, 33.2)
-        _box(hood, hood.xYConstructionPlane, -11.0, -1.0, 11.0, 3.8,
-             '4 mm', 'HEAT_SINK_TOP_SPLASH_HOOD', polymer)
-        hood.attributes.add('PROJECT_FALCON_01', 'Airflow',
-                            'Sides and bottom remain open; hood blocks direct rain/spray only')
+        system.attributes.add('PROJECT_FALCON_01', 'ControlSensor',
+                              'Use existing approved MCP9808 enclosure-temperature sensor only')
 
-        system.attributes.add('PROJECT_FALCON_01', 'PartNumber', 'FALCON-ISBC-R5-001')
+        system.attributes.add('PROJECT_FALCON_01', 'PartNumber', 'FALCON-PTS-R5-001')
         system.attributes.add('PROJECT_FALCON_01', 'Architecture',
                               'Cooling-only hardware inside the existing rectangular marine pod')
         system.attributes.add('PROJECT_FALCON_01', 'Cooling',
-                              'Two internal fans; cold plate; solid thermal bridge; external finned sink')
+                              'Two horizontal internal fans; two airflow guides; vertical sealed bridge; rear 8-fin sink')
         system.attributes.add('PROJECT_FALCON_01', 'SensorScope',
                               'Existing MCP9808 only; no humidity sensor and no leak sensor')
         system.attributes.add('PROJECT_FALCON_01', 'Ingress',
@@ -222,20 +238,18 @@ def run(context):
         system.attributes.add('PROJECT_FALCON_01', 'Validation',
                               'Thermal soak, IP, salt fog, vibration and service-access tests required')
 
-        old = _find(root, 'SEALED_POD_THERMAL_SYSTEM')
-        if old:
-            old.isLightBulbOn = False
         occurrence.isLightBulbOn = True
         app.activeViewport.fit()
         ui.messageBox(
             'SEALED_POD_THERMAL_SYSTEM completed.\n\n'
             'Uses the existing rectangular marine electronics pod\n'
             'No second electronics box was created\n'
-            '2 x 80 mm internal recirculation fans\n'
-            'Cold plate, sealed bridge and rear 8-fin heat sink\n'
+            '2 x horizontal 80 mm internal recirculation fans\n'
+            'Lower and upper horizontal airflow guides\n'
+            'Vertical sealed thermal bridge and rear 8-fin heat sink\n'
             'Existing MCP9808 only; no humidity/leak sensor\n'
             'No outside-air intake or exhaust\n'
-            'Old thermal concept hidden, not deleted.\n\n'
+            'Screenshot-693 geometry restored.\n\n'
             'Capture Position, save, then send a screenshot.',
             'PROJECT FALCON-01'
         )

@@ -8,6 +8,13 @@
 - Added power, thermal, calibration, privacy, security, maintenance, and
   sustainability conditions across the core engineering documents.
 - Added a concise thesis/presentation version of the upgrade plan.
+## 2026-08-23 - Screenshot-693 thermal geometry restoration
+
+- Restored the authoritative horizontal upper/lower fans and airflow guides.
+- Restored the vertical sealed thermal bridge and rear eight-fin heat sink.
+- The script now reuses the installed `SEALED_POD_THERMAL_SYSTEM`, hides the
+  obsolete humidity bracket, and hides later misplaced duplicates.
+
 ## 2026-08-23 - Cooling consolidated into thermal system
 
 - Moved the current REV5 cooling-only generator into the existing
