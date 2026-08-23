@@ -40,6 +40,24 @@ def _child(parent, name, x=0.0, y=0.0, z=0.0):
     return occurrence.component
 
 
+def _hide_obsolete_inner_box(root):
+    hidden = False
+    names = (
+        'INNER_SEALED_ELECTRONICS_BOX',
+        'INNER_BOX_RAISED_FRONT_SEAL_FRAME',
+        'INNER_BOX_OUTER_EPDM_GASKET',
+        'INNER_BOX_INNER_EPDM_GASKET',
+        'INNER_BOX_REMOVABLE_FRONT_SERVICE_DOOR',
+        'INNER_BOX_EQUIPMENT_DECKS',
+    )
+    for name in names:
+        occurrence = _find(root, name)
+        if occurrence and occurrence.isLightBulbOn:
+            occurrence.isLightBulbOn = False
+            hidden = True
+    return hidden
+
+
 def _box(component, plane, x1, y1, x2, y2, thickness, name, material):
     sketch = component.sketches.add(plane)
     sketch.name = 'SKETCH_' + name
@@ -122,20 +140,24 @@ def run(context):
         pod_occurrence = _find(root, 'REV5_RECTANGULAR_MARINE_ELECTRONICS_POD')
         if not pod_occurrence:
             raise RuntimeError('REV5_RECTANGULAR_MARINE_ELECTRONICS_POD was not found.')
-        existing = _find(root, 'REV5_INNER_SEALED_BOX_COOLING')
+        existing = (_find(root, 'REV5_RECTANGULAR_POD_COOLING_SYSTEM') or
+                    _find(root, 'REV5_INNER_SEALED_BOX_COOLING'))
         if existing:
             # The buoy assembly may have been repositioned after earlier parts
             # were generated. Reuse the pod occurrence transform so this
             # system follows the completed pod without deleting/rebuilding it.
             existing.transform2 = pod_occurrence.transform2.copy()
+            existing.component.name = 'REV5_RECTANGULAR_POD_COOLING_SYSTEM'
             existing.isLightBulbOn = True
+            _hide_obsolete_inner_box(root)
             old = _find(root, 'SEALED_POD_THERMAL_SYSTEM')
             if old:
                 old.isLightBulbOn = False
             app.activeViewport.fit()
             ui.messageBox(
-                'REV5_INNER_SEALED_BOX_COOLING repaired.\n\n'
-                'Existing component reconnected to the current rectangular pod origin.\n'
+                'REV5 cooling-only system repaired.\n\n'
+                'Cooling hardware reconnected to the current rectangular pod origin.\n'
+                'The obsolete second inner box is hidden.\n'
                 'No body or component was deleted or duplicated.\n\n'
                 'Capture Position, save, then send a screenshot.',
                 'PROJECT FALCON-01'
@@ -143,12 +165,6 @@ def run(context):
             return
 
         p = design.userParameters
-        _parameter(p, 'rev5_inner_box_width', '270 mm', 'mm', 'Inner sealed box outside width')
-        _parameter(p, 'rev5_inner_box_depth', '220 mm', 'mm', 'Inner sealed box outside depth')
-        _parameter(p, 'rev5_inner_box_height', '330 mm', 'mm', 'Inner sealed box outside height')
-        _parameter(p, 'rev5_inner_box_wall', '5 mm', 'mm', 'Inner enclosure wall thickness')
-        _parameter(p, 'rev5_inner_box_door', '8 mm', 'mm', 'Front service door thickness')
-        _parameter(p, 'rev5_inner_box_gasket', '5 mm', 'mm', 'Dual EPDM gasket section')
         _parameter(p, 'rev5_cooling_fan_size', '80 mm', 'mm', 'Internal recirculation fan size')
         _parameter(p, 'rev5_cold_plate_thickness', '6 mm', 'mm', 'Rear aluminum cold plate')
         _parameter(p, 'rev5_heat_sink_width', '180 mm', 'mm', 'External heat sink width')
@@ -159,49 +175,9 @@ def run(context):
         # than assuming that the full assembly is still at the global origin.
         occurrence = root.occurrences.addNewComponent(pod_occurrence.transform2.copy())
         system = occurrence.component
-        system.name = 'REV5_INNER_SEALED_BOX_COOLING'
+        system.name = 'REV5_RECTANGULAR_POD_COOLING_SYSTEM'
         polymer = _material(app, ('ABS Plastic', 'Plastic', 'Nylon'))
         aluminum = _material(app, ('Aluminum 6061-T6', 'Aluminum 6061', 'Aluminum'))
-        rubber = _material(app, ('EPDM', 'Rubber', 'Neoprene', 'Silicone Rubber'))
-
-        shell = _child(system, 'INNER_SEALED_ELECTRONICS_BOX', 0, 0, 3.0)
-        _box(shell, shell.xYConstructionPlane, -13.5, -11.0, 13.5, 11.0,
-             '5 mm', 'INNER_BOX_BOTTOM_PANEL', polymer)
-        top = _child(shell, 'INNER_BOX_TOP_PANEL', 0, 0, 32.5)
-        _box(top, top.xYConstructionPlane, -13.5, -11.0, 13.5, 11.0,
-             '5 mm', 'INNER_BOX_TOP_PANEL', polymer)
-        back = _child(shell, 'INNER_BOX_REAR_PANEL', 0, 10.5, 0)
-        _box(back, back.xZConstructionPlane, -13.5, 0, 13.5, 33.0,
-             '5 mm', 'INNER_BOX_REAR_PANEL', polymer)
-        left = _child(shell, 'INNER_BOX_LEFT_PANEL', -13.5, 0, 0)
-        _box(left, left.yZConstructionPlane, -11.0, 0, 11.0, 33.0,
-             '5 mm', 'INNER_BOX_LEFT_PANEL', polymer)
-        right = _child(shell, 'INNER_BOX_RIGHT_PANEL', 13.0, 0, 0)
-        _box(right, right.yZConstructionPlane, -11.0, 0, 11.0, 33.0,
-             '5 mm', 'INNER_BOX_RIGHT_PANEL', polymer)
-
-        seal = _child(system, 'INNER_BOX_RAISED_FRONT_SEAL_FRAME', 0, -11.0, 3.0)
-        _front_frame(seal, 27.0, 33.0, 1.2, '5 mm',
-                     'RAISED_FRONT_SEALING_LIP', polymer)
-        gasket_outer = _child(system, 'INNER_BOX_OUTER_EPDM_GASKET', 0, -11.55, 3.0)
-        _front_frame(gasket_outer, 25.8, 31.8, 0.5, '5 mm',
-                     'CONTINUOUS_EPDM_GASKET_OUTER', rubber)
-        gasket_inner = _child(system, 'INNER_BOX_INNER_EPDM_GASKET', 0, -12.1, 3.0)
-        _front_frame(gasket_inner, 24.2, 30.2, 0.5, '5 mm',
-                     'CONTINUOUS_EPDM_GASKET_INNER', rubber)
-        door = _child(system, 'INNER_BOX_REMOVABLE_FRONT_SERVICE_DOOR', 0, -12.6, 3.0)
-        _box(door, door.xZConstructionPlane, -14.2, 0, 14.2, 33.8,
-             '8 mm', 'FRONT_SERVICE_DOOR_8MM', polymer)
-        door.attributes.add('PROJECT_FALCON_01', 'Hardware',
-                            'Left hinge; right-side 316L compression latches; captive safety tether')
-
-        decks = _child(system, 'INNER_BOX_EQUIPMENT_DECKS')
-        lower = _child(decks, 'LOWER_BATTERY_POWER_DECK', 0, 0, 5.0)
-        _box(lower, lower.xYConstructionPlane, -12.5, -9.5, 12.5, 9.5,
-             '5 mm', 'BATTERY_MPPT_POWER_DECK', aluminum)
-        upper = _child(decks, 'UPPER_CONTROL_COMPUTE_DECK', 0, 0, 20.0)
-        _box(upper, upper.xYConstructionPlane, -12.5, -9.5, 12.5, 9.5,
-             '5 mm', 'ORANGE_PI_ESP32_CONTROL_DECK', aluminum)
 
         cold = _child(system, 'INNER_BOX_REAR_COLD_PLATE', 0, 9.8, 10.0)
         _box(cold, cold.xZConstructionPlane, -9.0, 0, 9.0, 22.0,
@@ -236,7 +212,7 @@ def run(context):
 
         system.attributes.add('PROJECT_FALCON_01', 'PartNumber', 'FALCON-ISBC-R5-001')
         system.attributes.add('PROJECT_FALCON_01', 'Architecture',
-                              'Double enclosure with front service door and sealed conduction cooling')
+                              'Cooling-only hardware inside the existing rectangular marine pod')
         system.attributes.add('PROJECT_FALCON_01', 'Cooling',
                               'Two internal fans; cold plate; solid thermal bridge; external finned sink')
         system.attributes.add('PROJECT_FALCON_01', 'SensorScope',
@@ -252,10 +228,9 @@ def run(context):
         occurrence.isLightBulbOn = True
         app.activeViewport.fit()
         ui.messageBox(
-            'REV5_INNER_SEALED_BOX_COOLING completed.\n\n'
-            '270 x 220 x 330 mm front-access inner sealed box\n'
-            'Raised lip, removable door and dual EPDM gasket paths\n'
-            'Separate lower power and upper control decks\n'
+            'REV5 cooling-only system completed.\n\n'
+            'Uses the existing rectangular marine electronics pod\n'
+            'No second electronics box was created\n'
             '2 x 80 mm internal recirculation fans\n'
             'Cold plate, sealed bridge and rear 8-fin heat sink\n'
             'Existing MCP9808 only; no humidity/leak sensor\n'

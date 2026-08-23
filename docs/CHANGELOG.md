@@ -8,6 +8,13 @@
 - Added power, thermal, calibration, privacy, security, maintenance, and
   sustainability conditions across the core engineering documents.
 - Added a concise thesis/presentation version of the upgrade plan.
+## 2026-08-23 - REV5 cooling-only correction
+
+- Removed the second inner enclosure from new cooling-system generation.
+- Existing runs now hide the obsolete inner-box geometry while retaining the
+  internal recirculation fans, cold plate, sealed bridge, external heat sink and
+  splash hood on the current rectangular pod.
+
 ## 2026-08-23 - Rectangular pod front service door
 
 - Updated the existing rectangular-pod generator with a rerunnable front-door
