@@ -3,9 +3,6 @@ import adsk.fusion
 import traceback
 
 
-POD_BASE_Z_CM = 58.0
-
-
 def _value(expression):
     return adsk.core.ValueInput.createByString(expression)
 
@@ -122,10 +119,28 @@ def run(context):
         root = design.rootComponent
         if design.snapshots.hasPendingSnapshot:
             raise RuntimeError('Click Capture Position, save, then run again.')
-        if _find(root, 'REV5_INNER_SEALED_BOX_COOLING'):
-            raise RuntimeError('REV5_INNER_SEALED_BOX_COOLING already exists; nothing was changed.')
-        if not _find(root, 'REV5_RECTANGULAR_MARINE_ELECTRONICS_POD'):
+        pod_occurrence = _find(root, 'REV5_RECTANGULAR_MARINE_ELECTRONICS_POD')
+        if not pod_occurrence:
             raise RuntimeError('REV5_RECTANGULAR_MARINE_ELECTRONICS_POD was not found.')
+        existing = _find(root, 'REV5_INNER_SEALED_BOX_COOLING')
+        if existing:
+            # The buoy assembly may have been repositioned after earlier parts
+            # were generated. Reuse the pod occurrence transform so this
+            # system follows the completed pod without deleting/rebuilding it.
+            existing.transform2 = pod_occurrence.transform2.copy()
+            existing.isLightBulbOn = True
+            old = _find(root, 'SEALED_POD_THERMAL_SYSTEM')
+            if old:
+                old.isLightBulbOn = False
+            app.activeViewport.fit()
+            ui.messageBox(
+                'REV5_INNER_SEALED_BOX_COOLING repaired.\n\n'
+                'Existing component reconnected to the current rectangular pod origin.\n'
+                'No body or component was deleted or duplicated.\n\n'
+                'Capture Position, save, then send a screenshot.',
+                'PROJECT FALCON-01'
+            )
+            return
 
         p = design.userParameters
         _parameter(p, 'rev5_inner_box_width', '270 mm', 'mm', 'Inner sealed box outside width')
@@ -140,9 +155,9 @@ def run(context):
         _parameter(p, 'rev5_heat_sink_height', '220 mm', 'mm', 'External heat sink height')
         _parameter(p, 'rev5_heat_sink_fin_count', '8', '', 'External heat sink fin count')
 
-        transform = adsk.core.Matrix3D.create()
-        transform.translation = adsk.core.Vector3D.create(0, 0, POD_BASE_Z_CM)
-        occurrence = root.occurrences.addNewComponent(transform)
+        # Create directly at the completed pod occurrence transform, rather
+        # than assuming that the full assembly is still at the global origin.
+        occurrence = root.occurrences.addNewComponent(pod_occurrence.transform2.copy())
         system = occurrence.component
         system.name = 'REV5_INNER_SEALED_BOX_COOLING'
         polymer = _material(app, ('ABS Plastic', 'Plastic', 'Nylon'))

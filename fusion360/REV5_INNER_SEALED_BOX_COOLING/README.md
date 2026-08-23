@@ -16,6 +16,11 @@ There is no outside-air intake or exhaust. No humidity or leak sensor is added.
 The existing MCP9808 enclosure-temperature sensor is the only thermal-control
 sensor in scope. Existing components are not moved, cut, joined, or deleted.
 
+The script is repairable and non-duplicating: if its component already exists,
+running it again reconnects that occurrence to the current rectangular-pod
+transform. This corrects assemblies moved away from the global origin without
+deleting or rebuilding any body.
+
 All dimensions are packaging geometry. Verify purchased-part dimensions, heat
 load, thermal resistance, sealing, galvanic isolation, vibration, salt fog, and
 service clearances before fabrication.

@@ -8,6 +8,12 @@
 - Added power, thermal, calibration, privacy, security, maintenance, and
   sustainability conditions across the core engineering documents.
 - Added a concise thesis/presentation version of the upgrade plan.
+## 2026-08-23 - Inner cooling assembly transform repair
+
+- Updated the existing inner-box/cooling script instead of creating another
+  revision folder or component.
+- Existing geometry now reconnects to the current rectangular-pod transform,
+  correcting displaced cooling parts after assembly repositioning.
 
 ## 2026-08-23 - Front tower maintenance gate
 
