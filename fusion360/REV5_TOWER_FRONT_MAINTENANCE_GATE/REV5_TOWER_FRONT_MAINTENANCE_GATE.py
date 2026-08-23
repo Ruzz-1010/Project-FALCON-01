@@ -131,9 +131,10 @@ def run(context):
             raise RuntimeError('Click Capture Position, save, then run again.')
         if _find(root, 'REV5_TOWER_FRONT_MAINTENANCE_GATE'):
             raise RuntimeError('REV5_TOWER_FRONT_MAINTENANCE_GATE already exists; nothing was changed.')
+        # The gate is mechanically independent of optional inner-box/cooling
+        # hardware. Only the tower and outer service pod define its opening.
         for required in ('REV5_TAPERED_MARINE_MAST',
-                         'REV5_RECTANGULAR_MARINE_ELECTRONICS_POD',
-                         'REV5_INNER_SEALED_BOX_COOLING'):
+                         'REV5_RECTANGULAR_MARINE_ELECTRONICS_POD'):
             if not _find(root, required):
                 raise RuntimeError('{} was not found.'.format(required))
 

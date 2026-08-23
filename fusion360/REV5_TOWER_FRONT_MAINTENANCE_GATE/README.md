@@ -3,6 +3,9 @@
 Creates a separate tapered, X-braced front maintenance gate aligned with the
 front doors of the rectangular outer pod and inner sealed electronics box.
 
+The optional inner sealed box/cooling assembly is not required to generate the
+gate. The only required components are the tapered mast and rectangular pod.
+
 - nominal opening: 340 mm lower width, 310 mm upper width, 390 mm height;
 - left-side 316L removable hinge pins and four hinge barrels;
 - right-side upper/lower captive compression-lock envelopes;

@@ -8,6 +8,11 @@
 - Added power, thermal, calibration, privacy, security, maintenance, and
   sustainability conditions across the core engineering documents.
 - Added a concise thesis/presentation version of the upgrade plan.
+## 2026-08-23 - Tower gate dependency correction
+
+- Removed the optional inner sealed box/cooling system as a gate prerequisite.
+- The tower gate now requires only the tapered mast and rectangular outer pod.
+
 ## 2026-08-23 - Inner cooling assembly transform repair
 
 - Updated the existing inner-box/cooling script instead of creating another
