@@ -9,6 +9,14 @@
   sustainability conditions across the core engineering documents.
 - Added a concise thesis/presentation version of the upgrade plan.
 
+## 2026-08-23 - Inner sealed box and closed-loop cooling
+
+- Added a front-access secondary sealed box inside the rectangular marine pod.
+- Added two internal recirculation fans, cold plate, sealed thermal bridge,
+  external eight-fin heat sink and open-sided splash hood.
+- Kept the approved MCP9808 as the only cooling-control sensor; no humidity or
+  leak sensor and no outside-air intake/exhaust were added.
+
 ## 2026-08-15 - Dashboard Next promoted to canonical production UI
 
 - Made `dashboard-next/` the only full dashboard source.

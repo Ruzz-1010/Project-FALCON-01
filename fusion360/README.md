@@ -83,6 +83,11 @@ terminate inside the main support clamp band at Z=385 mm.
 300 x 280 x 400 mm chamfered UV-HDPE cabinet containing separate leak, power,
 control, sealing, weather-protection, thermal and cable-interface components.
 
+`REV5_INNER_SEALED_BOX_COOLING` adds a front-access 270 x 220 x 330 mm secondary
+sealed box, dual EPDM door seals, internal power/control decks, two recirculation
+fans, a cold plate, solid thermal bridge, rear finned sink, and splash hood. It
+uses the existing MCP9808 only and adds no humidity or leak sensor.
+
 ## Current Mechanical Revision: 5.0
 
 The current production direction uses `MAIN_FLOAT_TRADITIONAL_V2`, a traditional Ø650 mm HDPE single-body buoy with a 240 mm rounded tapered underwater keel.
