@@ -9,6 +9,13 @@
   sustainability conditions across the core engineering documents.
 - Added a concise thesis/presentation version of the upgrade plan.
 
+## 2026-08-23 - Front tower maintenance gate
+
+- Added a separate tapered X-braced gate aligned with the outer and inner pod
+  service doors, with left removable hinge hardware and right captive locks.
+- Hidden only the front rails/X-braces obstructing the opening; no mast body or
+  completed component was deleted or repositioned.
+
 ## 2026-08-23 - Inner sealed box and closed-loop cooling
 
 - Added a front-access secondary sealed box inside the rectangular marine pod.

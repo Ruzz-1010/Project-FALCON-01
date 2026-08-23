@@ -88,6 +88,10 @@ sealed box, dual EPDM door seals, internal power/control decks, two recirculatio
 fans, a cold plate, solid thermal bridge, rear finned sink, and splash hood. It
 uses the existing MCP9808 only and adds no humidity or leak sensor.
 
+`REV5_TOWER_FRONT_MAINTENANCE_GATE` replaces only the obstructing front-face
+rails/braces with a separate tapered X-braced gate, left removable hinge pin,
+right captive locks, and EPDM stops. Side/rear mast members remain unchanged.
+
 ## Current Mechanical Revision: 5.0
 
 The current production direction uses `MAIN_FLOAT_TRADITIONAL_V2`, a traditional Ø650 mm HDPE single-body buoy with a 240 mm rounded tapered underwater keel.
