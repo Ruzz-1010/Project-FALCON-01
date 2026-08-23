@@ -1,7 +1,1 @@
-{
-  "autodeskProduct": "Fusion360",
-  "type": "script",
-  "author": "PROJECT FALCON-01",
-  "description": {"": "Sealed recirculating cooling and external heat rejection for upper pod"},
-  "supportedOS": "windows|mac"
-}
+{"autodeskProduct":"Fusion360","type":"script","author":"PROJECT FALCON-01","description":{"":"Cooling-only sealed recirculation and external heat rejection for the REV5 rectangular pod"},"supportedOS":"windows|mac"}

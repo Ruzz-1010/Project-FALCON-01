@@ -8,6 +8,14 @@
 - Added power, thermal, calibration, privacy, security, maintenance, and
   sustainability conditions across the core engineering documents.
 - Added a concise thesis/presentation version of the upgrade plan.
+## 2026-08-23 - Cooling consolidated into thermal system
+
+- Moved the current REV5 cooling-only generator into the existing
+  `SEALED_POD_THERMAL_SYSTEM` package.
+- Removed the redundant `REV5_INNER_SEALED_BOX_COOLING` script package.
+- Retained only recirculation fans, cold plate, sealed thermal bridge, external
+  heat sink and splash hood; no second electronics enclosure is generated.
+
 ## 2026-08-23 - REV5 cooling-only correction
 
 - Removed the second inner enclosure from new cooling-system generation.

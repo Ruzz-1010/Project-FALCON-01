@@ -1,14 +1,22 @@
 # SEALED_POD_THERMAL_SYSTEM
 
-Adds a sealed thermal-management assembly to `UPPER_ALL_ELECTRONICS_POD`:
-two internal 80 mm recirculation fans, internal airflow baffles, an aluminum
-thermal bridge, an external rear heat-sink base with eight fins, and a combined
-temperature/humidity sensor bracket.
+Adds closed-loop cooling hardware directly to
+`REV5_RECTANGULAR_MARINE_ELECTRONICS_POD`. It does not add a second enclosure.
 
-The design does not create an outside-air opening into the dry pod. Heat crosses
-the sealed wall through a clamped thermal interface. Existing components are not
-moved, hidden, or deleted.
+- two 80 mm internal recirculation fans;
+- rear 6 mm aluminum cold plate;
+- sealed clamped thermal bridge through the rear interface;
+- external 180 x 220 mm aluminum heat sink with eight fins; and
+- top/rear splash hood that leaves the heat-sink sides and bottom open.
 
-The shutdown threshold is stored as the unitless parameter
-`pod_thermal_shutdown_C = 65` because some Fusion builds reject `degC` in user
-parameter expressions.
+There is no outside-air intake or exhaust. No humidity or leak sensor is added.
+The existing MCP9808 enclosure-temperature sensor is the only thermal-control
+sensor in scope. Existing components are not moved, cut, joined, or deleted.
+
+The script is repairable and non-duplicating. If its component already exists,
+running it again reconnects the cooling hardware to the current rectangular-pod
+transform and hides the obsolete second-box geometry without deleting it.
+
+All dimensions are packaging geometry. Verify purchased-part dimensions, heat
+load, thermal resistance, sealing, galvanic isolation, vibration, salt fog, and
+service clearances before fabrication.

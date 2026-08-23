@@ -3,21 +3,19 @@ import adsk.fusion
 import traceback
 
 
-POD_BASE_Z_CM = 58.0
-
-
 def _value(expression):
     return adsk.core.ValueInput.createByString(expression)
 
 
-def _find_occurrence(root, name):
+def _find(root, prefix):
     for occurrence in root.allOccurrences:
-        if occurrence.component.name.upper() == name.upper():
+        name = occurrence.component.name.upper().replace(' ', '_')
+        if name.startswith(prefix.upper()):
             return occurrence
     return None
 
 
-def _add_parameter(parameters, name, expression, units, comment):
+def _parameter(parameters, name, expression, units, comment):
     existing = parameters.itemByName(name)
     return existing or parameters.add(name, _value(expression), units, comment)
 
@@ -26,15 +24,15 @@ def _material(app, names):
     for library in app.materialLibraries:
         for name in names:
             try:
-                result = library.materials.itemByName(name)
+                material = library.materials.itemByName(name)
             except Exception:
-                result = None
-            if result:
-                return result
+                material = None
+            if material:
+                return material
     return None
 
 
-def _child(parent, name, x=0, y=0, z=0):
+def _child(parent, name, x=0.0, y=0.0, z=0.0):
     transform = adsk.core.Matrix3D.create()
     transform.translation = adsk.core.Vector3D.create(x, y, z)
     occurrence = parent.occurrences.addNewComponent(transform)
@@ -42,11 +40,30 @@ def _child(parent, name, x=0, y=0, z=0):
     return occurrence.component
 
 
-def _box(component, plane, x1, y1, x2, y2, thickness, name, material=None):
+def _hide_obsolete_inner_box(root):
+    hidden = False
+    names = (
+        'INNER_SEALED_ELECTRONICS_BOX',
+        'INNER_BOX_RAISED_FRONT_SEAL_FRAME',
+        'INNER_BOX_OUTER_EPDM_GASKET',
+        'INNER_BOX_INNER_EPDM_GASKET',
+        'INNER_BOX_REMOVABLE_FRONT_SERVICE_DOOR',
+        'INNER_BOX_EQUIPMENT_DECKS',
+    )
+    for name in names:
+        occurrence = _find(root, name)
+        if occurrence and occurrence.isLightBulbOn:
+            occurrence.isLightBulbOn = False
+            hidden = True
+    return hidden
+
+
+def _box(component, plane, x1, y1, x2, y2, thickness, name, material):
     sketch = component.sketches.add(plane)
     sketch.name = 'SKETCH_' + name
     sketch.sketchCurves.sketchLines.addTwoPointRectangle(
-        adsk.core.Point3D.create(x1, y1, 0), adsk.core.Point3D.create(x2, y2, 0)
+        adsk.core.Point3D.create(x1, y1, 0),
+        adsk.core.Point3D.create(x2, y2, 0)
     )
     input_ = component.features.extrudeFeatures.createInput(
         sketch.profiles.item(0), adsk.fusion.FeatureOperations.NewBodyFeatureOperation
@@ -55,139 +72,174 @@ def _box(component, plane, x1, y1, x2, y2, thickness, name, material=None):
         adsk.fusion.DistanceExtentDefinition.create(_value(thickness)),
         adsk.fusion.ExtentDirections.PositiveExtentDirection
     )
-    feature = component.features.extrudeFeatures.add(input_)
-    feature.name = 'EXTRUDE_' + name
-    body = feature.bodies.item(0)
+    body = component.features.extrudeFeatures.add(input_).bodies.item(0)
     body.name = name
     if material:
         body.material = material
     return body
 
 
-def _fan(component, index, z_cm, material=None):
-    # Horizontal fan cartridge: plan-view envelope plus central rotor disc.
-    frame = _box(
-        component, component.xYConstructionPlane,
-        -4.0, -4.0, 4.0, 4.0, '25 mm',
-        'FAN_{:02d}_80MM_FRAME'.format(index), material
+def _front_frame(component, width, height, border, thickness, name, material):
+    sketch = component.sketches.add(component.xZConstructionPlane)
+    sketch.name = 'SKETCH_' + name
+    rectangles = sketch.sketchCurves.sketchLines
+    rectangles.addTwoPointRectangle(
+        adsk.core.Point3D.create(-width / 2, 0, 0),
+        adsk.core.Point3D.create(width / 2, height, 0)
     )
-    component.attributes.add(
-        'PROJECT_FALCON_01', 'Fan{:02d}'.format(index),
-        '80 mm sealed-bearing internal recirculation fan at local Z {} mm'.format(int(z_cm * 10))
+    rectangles.addTwoPointRectangle(
+        adsk.core.Point3D.create(-width / 2 + border, border, 0),
+        adsk.core.Point3D.create(width / 2 - border, height - border, 0)
     )
-    return frame
+    profiles = [sketch.profiles.item(i) for i in range(sketch.profiles.count)]
+    profile = min(profiles, key=lambda item: item.areaProperties().area)
+    input_ = component.features.extrudeFeatures.createInput(
+        profile, adsk.fusion.FeatureOperations.NewBodyFeatureOperation
+    )
+    input_.setOneSideExtent(
+        adsk.fusion.DistanceExtentDefinition.create(_value(thickness)),
+        adsk.fusion.ExtentDirections.PositiveExtentDirection
+    )
+    body = component.features.extrudeFeatures.add(input_).bodies.item(0)
+    body.name = name
+    if material:
+        body.material = material
+
+
+def _fan(component, index, material):
+    _box(component, component.xZConstructionPlane, -4.0, -4.0, 4.0, 4.0,
+         '25 mm', 'INTERNAL_FAN_{:02d}_80MM_FRAME'.format(index), material)
+    hub = _child(component, 'INTERNAL_FAN_{:02d}_ROTOR_HUB'.format(index), 0, 0.3, 0)
+    sketch = hub.sketches.add(hub.xZConstructionPlane)
+    sketch.sketchCurves.sketchCircles.addByCenterRadius(
+        adsk.core.Point3D.create(0, 0, 0), 2.2
+    )
+    input_ = hub.features.extrudeFeatures.createInput(
+        sketch.profiles.item(0), adsk.fusion.FeatureOperations.NewBodyFeatureOperation
+    )
+    input_.setOneSideExtent(
+        adsk.fusion.DistanceExtentDefinition.create(_value('20 mm')),
+        adsk.fusion.ExtentDirections.PositiveExtentDirection
+    )
+    body = hub.features.extrudeFeatures.add(input_).bodies.item(0)
+    body.name = 'INTERNAL_FAN_{:02d}_ROTOR'.format(index)
+    if material:
+        body.material = material
 
 
 def run(context):
     ui = None
     try:
-        app = adsk.core.Application.get()
-        ui = app.userInterface
+        app = adsk.core.Application.get(); ui = app.userInterface
         design = adsk.fusion.Design.cast(app.activeProduct)
         if not design:
             raise RuntimeError('Open PROJECT FALCON-01 before running this script.')
         root = design.rootComponent
         if design.snapshots.hasPendingSnapshot:
-            raise RuntimeError(
-                'Fusion has uncaptured component positions. Nothing was changed.\n\n'
-                'Click Capture Position, save, then run again.'
+            raise RuntimeError('Click Capture Position, save, then run again.')
+        pod_occurrence = _find(root, 'REV5_RECTANGULAR_MARINE_ELECTRONICS_POD')
+        if not pod_occurrence:
+            raise RuntimeError('REV5_RECTANGULAR_MARINE_ELECTRONICS_POD was not found.')
+        existing = (_find(root, 'REV5_RECTANGULAR_POD_COOLING_SYSTEM') or
+                    _find(root, 'REV5_INNER_SEALED_BOX_COOLING'))
+        if existing:
+            # The buoy assembly may have been repositioned after earlier parts
+            # were generated. Reuse the pod occurrence transform so this
+            # system follows the completed pod without deleting/rebuilding it.
+            existing.transform2 = pod_occurrence.transform2.copy()
+            existing.component.name = 'REV5_RECTANGULAR_POD_COOLING_SYSTEM'
+            existing.isLightBulbOn = True
+            _hide_obsolete_inner_box(root)
+            old = _find(root, 'SEALED_POD_THERMAL_SYSTEM')
+            if old:
+                old.isLightBulbOn = False
+            app.activeViewport.fit()
+            ui.messageBox(
+                'SEALED_POD_THERMAL_SYSTEM repaired.\n\n'
+                'Cooling hardware reconnected to the current rectangular pod origin.\n'
+                'The obsolete second inner box is hidden.\n'
+                'No body or component was deleted or duplicated.\n\n'
+                'Capture Position, save, then send a screenshot.',
+                'PROJECT FALCON-01'
             )
-        if _find_occurrence(root, 'SEALED_POD_THERMAL_SYSTEM'):
-            raise RuntimeError('SEALED_POD_THERMAL_SYSTEM already exists; nothing was changed.')
-        if not _find_occurrence(root, 'UPPER_ALL_ELECTRONICS_POD'):
-            raise RuntimeError('UPPER_ALL_ELECTRONICS_POD was not found.')
+            return
 
         p = design.userParameters
-        _add_parameter(p, 'pod_internal_fan_size', '80 mm', 'mm', 'Internal recirculation fan size')
-        _add_parameter(p, 'pod_internal_fan_thickness', '25 mm', 'mm', 'Fan cartridge thickness')
-        _add_parameter(p, 'pod_heat_sink_width', '180 mm', 'mm', 'External rear heat sink width')
-        _add_parameter(p, 'pod_heat_sink_height', '220 mm', 'mm', 'External rear heat sink height')
-        _add_parameter(p, 'pod_heat_sink_base', '6 mm', 'mm', 'Sealed aluminum heat-sink base')
-        _add_parameter(p, 'pod_heat_sink_fin_count', '8', '', 'External heat-sink fin count')
-        _add_parameter(p, 'pod_heat_sink_fin_depth', '25 mm', 'mm', 'External fin projection')
-        # Some Fusion builds reject temperature symbols in user-parameter
-        # expressions. Store the threshold as a documented Celsius number.
-        _add_parameter(p, 'pod_thermal_shutdown_C', '65', '',
-                       'Emergency electronics shutdown threshold in deg C')
+        _parameter(p, 'rev5_cooling_fan_size', '80 mm', 'mm', 'Internal recirculation fan size')
+        _parameter(p, 'rev5_cold_plate_thickness', '6 mm', 'mm', 'Rear aluminum cold plate')
+        _parameter(p, 'rev5_heat_sink_width', '180 mm', 'mm', 'External heat sink width')
+        _parameter(p, 'rev5_heat_sink_height', '220 mm', 'mm', 'External heat sink height')
+        _parameter(p, 'rev5_heat_sink_fin_count', '8', '', 'External heat sink fin count')
 
-        transform = adsk.core.Matrix3D.create()
-        transform.translation = adsk.core.Vector3D.create(0, 0, POD_BASE_Z_CM)
-        occurrence = root.occurrences.addNewComponent(transform)
+        # Create directly at the completed pod occurrence transform, rather
+        # than assuming that the full assembly is still at the global origin.
+        occurrence = root.occurrences.addNewComponent(pod_occurrence.transform2.copy())
         system = occurrence.component
-        system.name = 'SEALED_POD_THERMAL_SYSTEM'
+        system.name = 'REV5_RECTANGULAR_POD_COOLING_SYSTEM'
+        polymer = _material(app, ('ABS Plastic', 'Plastic', 'Nylon'))
         aluminum = _material(app, ('Aluminum 6061-T6', 'Aluminum 6061', 'Aluminum'))
-        plastic = _material(app, ('ABS Plastic', 'Plastic', 'Nylon'))
 
-        # Keep the battery zone clear: the lower fan sits above the power deck,
-        # while the upper fan provides return flow above the control deck.
-        fan1 = _child(system, 'POD_INTERNAL_FAN_LOWER', -5.0, 0, 23.0)
-        _fan(fan1, 1, 23.0, plastic)
-        fan2 = _child(system, 'POD_INTERNAL_FAN_UPPER', 5.0, 0, 34.0)
-        _fan(fan2, 2, 34.0, plastic)
+        cold = _child(system, 'INNER_BOX_REAR_COLD_PLATE', 0, 9.8, 10.0)
+        _box(cold, cold.xZConstructionPlane, -9.0, 0, 9.0, 22.0,
+             '6 mm', 'SEALED_INTERNAL_COLD_PLATE', aluminum)
+        bridge = _child(system, 'SEALED_CLAMPED_THERMAL_BRIDGE', 0, 11.2, 10.0)
+        _box(bridge, bridge.xZConstructionPlane, -9.0, 0, 9.0, 22.0,
+             '12 mm', 'CLAMPED_THERMAL_BRIDGE', aluminum)
+        bridge.attributes.add('PROJECT_FALCON_01', 'Seal',
+                              'Compression gasket and thermal pad; solid conductor with no air passage')
 
-        bridge = _child(system, 'POD_SEALED_THERMAL_BRIDGE', 0, -14.9, 16.0)
-        _box(
-            bridge, bridge.xZConstructionPlane,
-            -9.0, 0, 9.0, 22.0, '12 mm',
-            'INTERNAL_CLAMPED_THERMAL_BRIDGE', aluminum
-        )
-        bridge.attributes.add(
-            'PROJECT_FALCON_01', 'Seal',
-            'Thermal pad and clamped wall interface; no open air passage'
-        )
+        fans = _child(system, 'TWO_INTERNAL_RECIRCULATION_FANS')
+        fan1 = _child(fans, 'INTERNAL_RECIRCULATION_FAN_LOWER', -7.5, 8.8, 10.0)
+        _fan(fan1, 1, polymer)
+        fan2 = _child(fans, 'INTERNAL_RECIRCULATION_FAN_UPPER', 7.5, 8.8, 24.0)
+        _fan(fan2, 2, polymer)
+        fans.attributes.add('PROJECT_FALCON_01', 'ControlSensor',
+                            'Use existing approved MCP9808 enclosure-temperature sensor only')
 
-        sink = _child(system, 'POD_EXTERNAL_FINNED_HEAT_SINK', 0, -16.6, 16.0)
-        _box(
-            sink, sink.xZConstructionPlane,
-            -9.0, 0, 9.0, 22.0, '6 mm',
-            'EXTERNAL_HEAT_SINK_BASE', aluminum
-        )
+        sink = _child(system, 'EXTERNAL_REAR_FINNED_HEAT_SINK', 0, 15.0, 10.0)
+        _box(sink, sink.xZConstructionPlane, -9.0, 0, 9.0, 22.0,
+             '6 mm', 'EXTERNAL_HEAT_SINK_BASE', aluminum)
         for index, x in enumerate((-7.7, -5.5, -3.3, -1.1, 1.1, 3.3, 5.5, 7.7), 1):
-            fin = _child(sink, 'HEAT_SINK_FIN_{:02d}'.format(index), x, -0.6, 0)
-            _box(
-                fin, fin.yZConstructionPlane,
-                -2.5, 0, 0, 22.0, '2 mm',
-                'EXTERNAL_FIN_{:02d}'.format(index), aluminum
-            )
+            fin = _child(sink, 'EXTERNAL_HEAT_SINK_FIN_{:02d}'.format(index), x, 0.6, 0)
+            _box(fin, fin.yZConstructionPlane, 0, 0, 2.5, 22.0,
+                 '2 mm', 'EXTERNAL_FIN_{:02d}'.format(index), aluminum)
 
-        baffles = _child(system, 'POD_INTERNAL_AIRFLOW_BAFFLES')
-        _box(baffles, baffles.xYConstructionPlane, -13.0, -2.0, 13.0, 2.0,
-             '4 mm', 'LOWER_AIR_GUIDE', plastic)
-        upper_baffle = _child(baffles, 'UPPER_RETURN_AIR_GUIDE', 0, 0, 34.0)
-        _box(upper_baffle, upper_baffle.xYConstructionPlane, -13.0, -2.0, 13.0, 2.0,
-             '4 mm', 'UPPER_AIR_GUIDE', plastic)
+        hood = _child(system, 'EXTERNAL_HEAT_SINK_SPLASH_HOOD', 0, 14.2, 33.2)
+        _box(hood, hood.xYConstructionPlane, -11.0, -1.0, 11.0, 3.8,
+             '4 mm', 'HEAT_SINK_TOP_SPLASH_HOOD', polymer)
+        hood.attributes.add('PROJECT_FALCON_01', 'Airflow',
+                            'Sides and bottom remain open; hood blocks direct rain/spray only')
 
-        sensor = _child(system, 'POD_TEMP_HUMIDITY_SENSOR_BRACKET', 11.0, 0, 35.0)
-        _box(sensor, sensor.xYConstructionPlane, -2.0, -1.5, 2.0, 1.5,
-             '3 mm', 'TEMP_HUMIDITY_SENSOR_MOUNT', plastic)
-        sensor.attributes.add(
-            'PROJECT_FALCON_01', 'Control',
-            'Fan enable 40 degC; derate 55 degC; shutdown 65 degC; humidity alarm 75 percent RH'
-        )
+        system.attributes.add('PROJECT_FALCON_01', 'PartNumber', 'FALCON-ISBC-R5-001')
+        system.attributes.add('PROJECT_FALCON_01', 'Architecture',
+                              'Cooling-only hardware inside the existing rectangular marine pod')
+        system.attributes.add('PROJECT_FALCON_01', 'Cooling',
+                              'Two internal fans; cold plate; solid thermal bridge; external finned sink')
+        system.attributes.add('PROJECT_FALCON_01', 'SensorScope',
+                              'Existing MCP9808 only; no humidity sensor and no leak sensor')
+        system.attributes.add('PROJECT_FALCON_01', 'Ingress',
+                              'No outside-air intake or exhaust into either dry electronics volume')
+        system.attributes.add('PROJECT_FALCON_01', 'Validation',
+                              'Thermal soak, IP, salt fog, vibration and service-access tests required')
 
-        system.attributes.add('PROJECT_FALCON_01', 'PartNumber', 'FALCON-PTS-001')
-        system.attributes.add('PROJECT_FALCON_01', 'Cooling', 'Closed-loop internal air recirculation')
-        system.attributes.add('PROJECT_FALCON_01', 'Ingress', 'No outside-air opening into dry electronics volume')
-        system.attributes.add('PROJECT_FALCON_01', 'HeatRejection', 'Clamped thermal bridge to rear external finned sink')
-        system.attributes.add('PROJECT_FALCON_01', 'Validation', 'Thermal soak at solar load and sealed ingress test required')
-
+        old = _find(root, 'SEALED_POD_THERMAL_SYSTEM')
+        if old:
+            old.isLightBulbOn = False
+        occurrence.isLightBulbOn = True
         app.activeViewport.fit()
         ui.messageBox(
             'SEALED_POD_THERMAL_SYSTEM completed.\n\n'
+            'Uses the existing rectangular marine electronics pod\n'
+            'No second electronics box was created\n'
             '2 x 80 mm internal recirculation fans\n'
-            'Internal airflow guides and temperature/humidity bracket\n'
-            'Sealed thermal bridge through pod wall interface\n'
-            'Rear 180 x 220 mm heat sink with 8 external fins\n'
-            'No salt-air intake into the dry compartment\n'
-            'Control intent: fan 40 C, derate 55 C, shutdown 65 C\n\n'
-            'Click Capture Position, save, then send a screenshot.',
+            'Cold plate, sealed bridge and rear 8-fin heat sink\n'
+            'Existing MCP9808 only; no humidity/leak sensor\n'
+            'No outside-air intake or exhaust\n'
+            'Old thermal concept hidden, not deleted.\n\n'
+            'Capture Position, save, then send a screenshot.',
             'PROJECT FALCON-01'
         )
     except Exception:
         if ui:
-            ui.messageBox(
-                'SEALED_POD_THERMAL_SYSTEM failed:\n\n{}'.format(
-                    traceback.format_exc()
-                ),
-                'PROJECT FALCON-01'
-            )
+            ui.messageBox('SEALED_POD_THERMAL_SYSTEM failed:\n\n{}'.format(
+                traceback.format_exc()), 'PROJECT FALCON-01')
