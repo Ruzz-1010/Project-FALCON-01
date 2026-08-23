@@ -35,9 +35,9 @@ def _material(app, names):
     return None
 
 
-def _child(parent, name, z=0.0):
+def _child(parent, name, z=0.0, x=0.0, y=0.0):
     transform = adsk.core.Matrix3D.create()
-    transform.translation = adsk.core.Vector3D.create(0, 0, z)
+    transform.translation = adsk.core.Vector3D.create(x, y, z)
     occurrence = parent.occurrences.addNewComponent(transform)
     occurrence.component.name = name
     return occurrence.component
@@ -226,16 +226,20 @@ def _add_front_service_access(root, system, hdpe, rubber, stainless):
     if not _front_cut_exists(shell):
         _cut_front_opening(shell)
 
-    lip = _child(system, 'RECT_POD_FRONT_RAISED_SEALING_LIP', 0, -14.1, 4.0)
+    lip = _child(system, 'RECT_POD_FRONT_RAISED_SEALING_LIP',
+                 z=4.0, y=-14.1)
     _front_frame(lip, 25.0, 35.0, 1.5, '6 mm',
                  'FRONT_RAISED_SEALING_LIP', hdpe)
-    outer_gasket = _child(system, 'RECT_POD_FRONT_EPDM_GASKET_OUTER', 0, -14.75, 4.0)
+    outer_gasket = _child(system, 'RECT_POD_FRONT_EPDM_GASKET_OUTER',
+                          z=4.0, y=-14.75)
     _front_frame(outer_gasket, 23.8, 33.8, 0.5, '5 mm',
                  'FRONT_EPDM_GASKET_OUTER', rubber)
-    inner_gasket = _child(system, 'RECT_POD_FRONT_EPDM_GASKET_INNER', 0, -15.3, 4.0)
+    inner_gasket = _child(system, 'RECT_POD_FRONT_EPDM_GASKET_INNER',
+                          z=4.0, y=-15.3)
     _front_frame(inner_gasket, 22.6, 32.6, 0.5, '5 mm',
                  'FRONT_EPDM_GASKET_INNER', rubber)
-    door = _child(system, 'RECT_POD_FRONT_SERVICE_DOOR', 0, -15.9, 3.0)
+    door = _child(system, 'RECT_POD_FRONT_SERVICE_DOOR',
+                  z=3.0, y=-15.9)
     _front_panel(door, 25.0, 34.0, '10 mm',
                  'REMOVABLE_FRONT_SERVICE_DOOR_HDPE', hdpe)
     door.attributes.add('PROJECT_FALCON_01', 'Seal',
@@ -246,16 +250,17 @@ def _add_front_service_access(root, system, hdpe, rubber, stainless):
     hinges = _child(system, 'RECT_POD_FRONT_DOOR_LEFT_HINGES')
     for index, z in enumerate((7.0, 17.0, 27.0, 35.0), 1):
         hinge = _child(hinges, 'FRONT_DOOR_HINGE_{:02d}'.format(index),
-                       -13.0, -16.0, z)
+                       z=z, x=-13.0, y=-16.0)
         _cylinder(hinge, 1.2, '45 mm',
                   'FRONT_DOOR_HINGE_BARREL_{:02d}_316L'.format(index), stainless)
-    pin = _child(hinges, 'FRONT_DOOR_REMOVABLE_HINGE_PIN', -13.0, -16.0, 5.0)
+    pin = _child(hinges, 'FRONT_DOOR_REMOVABLE_HINGE_PIN',
+                 z=5.0, x=-13.0, y=-16.0)
     _cylinder(pin, 0.45, '340 mm', 'FRONT_DOOR_HINGE_PIN_9MM_316L', stainless)
 
     latches = _child(system, 'RECT_POD_FRONT_DOOR_RIGHT_COMPRESSION_LATCHES')
     for index, z in enumerate((10.0, 29.0), 1):
         latch = _child(latches, 'FRONT_DOOR_COMPRESSION_LATCH_{:02d}'.format(index),
-                       12.5, -16.8, z)
+                       z=z, x=12.5, y=-16.8)
         _rectangle(latch, 4.0, 2.5, '45 mm',
                    'FRONT_DOOR_LATCH_{:02d}_316L'.format(index), stainless)
     return True
