@@ -57,17 +57,32 @@ def _rear_child(parent, name, x=0.0, y=0.0, z=0.0):
     return occurrence.component
 
 
-def _repair_rear_thermal_side(system):
+def _repair_rear_thermal_side(system_occurrence):
+    """Move rear thermal children through root-context occurrence proxies.
+
+    Fusion does not allow ``transform2`` overrides on native occurrences that
+    belong to a nested component.  Each native child is therefore converted to
+    a proxy in the top-level thermal-system occurrence context.  The desired
+    child-local rear transform is then composed with the system's root
+    transform before the override is applied.
+    """
     repaired = []
     targets = {
         'POD_SEALED_THERMAL_BRIDGE': (0, 14.9, 16.0),
         'POD_EXTERNAL_FINNED_HEAT_SINK': (0, 16.6, 16.0),
     }
-    for occurrence in system.occurrences:
-        name = occurrence.component.name.upper().replace(' ', '_')
+    for native_occurrence in system_occurrence.component.occurrences:
+        name = native_occurrence.component.name.upper().replace(' ', '_')
         position = targets.get(name)
         if position:
-            occurrence.transform2 = _rear_transform(*position)
+            proxy = native_occurrence.createForAssemblyContext(system_occurrence)
+            if not proxy:
+                raise RuntimeError(
+                    'Could not create a root-context proxy for {}.'.format(name)
+                )
+            root_transform = system_occurrence.transform2.copy()
+            root_transform.transformBy(_rear_transform(*position))
+            proxy.transform2 = root_transform
             repaired.append(name)
     return repaired
 
@@ -186,7 +201,7 @@ def run(context):
             existing.transform2 = pod_occurrence.transform2.copy()
             existing.component.name = 'SEALED_POD_THERMAL_SYSTEM'
             existing.isLightBulbOn = True
-            repaired = _repair_rear_thermal_side(existing.component)
+            repaired = _repair_rear_thermal_side(existing)
             _hide_obsolete_inner_box(root)
             obsolete_sensor = _find(root, 'POD_TEMP_HUMIDITY_SENSOR_BRACKET')
             if obsolete_sensor:
