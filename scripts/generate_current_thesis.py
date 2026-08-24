@@ -3,10 +3,14 @@
 from pathlib import Path
 from shutil import copy2
 from docx import Document
+from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.shared import Inches, Pt
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "THESIS DOCUMENTATION" / "PROJECT FALCON-01.docx"
 OUTPUT = ROOT / "THESIS DOCUMENTATION" / "PROJECT FALCON-01 - CURRENT V2 REVISED.docx"
+VISUALS = ROOT / "THESIS DOCUMENTATION" / "visuals"
+SCREENSHOTS = Path(r"C:\Users\Admin\Pictures\Screenshots")
 
 # Paragraph indices intentionally match the original thesis. Replacing text in
 # place retains its sections, page setup, styles, headers, footers, and table.
@@ -105,6 +109,25 @@ def replace_text(paragraph, text):
         run.text = ""
 
 
+def clear_text(paragraph):
+    for run in paragraph.runs:
+        run.text = ""
+
+
+def add_figure(paragraph, image_path, caption, width=6.25):
+    """Embed a centered figure and caption in an existing blank paragraph."""
+    image_path = Path(image_path)
+    if not image_path.exists():
+        raise FileNotFoundError(image_path)
+    clear_text(paragraph)
+    paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    paragraph.add_run().add_picture(str(image_path), width=Inches(width))
+    caption_run = paragraph.add_run(f"\n{caption}")
+    caption_run.bold = True
+    caption_run.italic = True
+    caption_run.font.size = Pt(9)
+
+
 def main():
     if not SOURCE.exists():
         raise FileNotFoundError(SOURCE)
@@ -115,6 +138,37 @@ def main():
     for paragraph in document.paragraphs:
         for run in paragraph.runs:
             run.text = run.text.replace("Mini PC", "Orange Pi Zero 3")
+
+    # Replace the old text-only overall flow with one readable visual workflow.
+    for index in range(319, 351):
+        clear_text(document.paragraphs[index])
+    add_figure(
+        document.paragraphs[319],
+        VISUALS / "system-architecture.png",
+        "Figure 1. Current local-first workflow: sensing, ESP32 acquisition, Orange Pi edge processing, and dashboard presentation.",
+    )
+
+    # Actual current Fusion views are used instead of generic or legacy buoy art.
+    add_figure(
+        document.paragraphs[379],
+        SCREENSHOTS / "Screenshot (681).png",
+        "Figure 2. Actual Project FALCON-01 V2 Fusion assembly showing the single-body float, rounded keel, tower, opposed solar panels, and sensor deck.",
+    )
+    add_figure(
+        document.paragraphs[432],
+        SCREENSHOTS / "Screenshot (689).png",
+        "Figure 3. Actual V2 Fusion electronics placement inside the elevated rectangular marine pod.",
+    )
+    add_figure(
+        document.paragraphs[465],
+        SCREENSHOTS / "Screenshot (693).png",
+        "Figure 4. Actual sealed-pod thermal assembly: two internal recirculation fans, component heat sinks, airflow guides, vertical thermal bridge, and rear external finned heat sink.",
+    )
+    add_figure(
+        document.paragraphs[514],
+        VISUALS / "dashboard-overview.png",
+        "Figure 5. Current Dashboard Next interface for live measurements, wave forecast, sea-condition class, power status, GPS, and system health.",
+    )
     document.core_properties.title = "Project FALCON-01 — Current Revision 5 Thesis Documentation"
     document.save(OUTPUT)
 
@@ -126,6 +180,7 @@ def main():
         raise RuntimeError(f"Outdated terms remain: {found}")
     print(f"Revised thesis: {OUTPUT}")
     print(f"Preserved: {len(check.paragraphs)} paragraphs, {len(check.tables)} table, {len(check.sections)} section")
+    print(f"Embedded figures: {len(check.inline_shapes)}")
 
 
 if __name__ == "__main__":
