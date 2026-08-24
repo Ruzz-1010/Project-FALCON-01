@@ -9,6 +9,11 @@ Adds closed-loop cooling hardware directly to
 - external vertical 180 x 220 mm aluminum heat-sink base with eight projecting
   fins.
 
+The service door is on the negative-Y front side. The thermal bridge and finned
+heat sink are mounted on the opposite positive-Y rear side and rotated so the
+bridge clamps inward while the fins project outward. This keeps the front door
+and its service swing clear.
+
 There is no outside-air intake or exhaust. No humidity or leak sensor is added.
 The existing MCP9808 enclosure-temperature sensor is the only thermal-control
 sensor in scope. Existing components are not moved, cut, joined, or deleted.

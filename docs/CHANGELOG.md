@@ -8,6 +8,13 @@
 - Added power, thermal, calibration, privacy, security, maintenance, and
   sustainability conditions across the core engineering documents.
 - Added a concise thesis/presentation version of the upgrade plan.
+## 2026-08-24 - Thermal system moved behind the service pod
+
+- Moved and rotated the sealed bridge and external eight-fin heat sink from the
+  negative-Y front-door side to the positive-Y rear side.
+- Existing Screenshot-693 thermal occurrences are repaired in place; internal
+  fans, baffles and finished unrelated components are not moved.
+
 ## 2026-08-23 - Screenshot-693 thermal geometry restoration
 
 - Restored the authoritative horizontal upper/lower fans and airflow guides.

@@ -40,6 +40,38 @@ def _child(parent, name, x=0.0, y=0.0, z=0.0):
     return occurrence.component
 
 
+def _rear_transform(x, y, z):
+    transform = adsk.core.Matrix3D.create()
+    transform.setToRotation(
+        3.141592653589793,
+        adsk.core.Vector3D.create(0, 0, 1),
+        adsk.core.Point3D.create(0, 0, 0)
+    )
+    transform.translation = adsk.core.Vector3D.create(x, y, z)
+    return transform
+
+
+def _rear_child(parent, name, x=0.0, y=0.0, z=0.0):
+    occurrence = parent.occurrences.addNewComponent(_rear_transform(x, y, z))
+    occurrence.component.name = name
+    return occurrence.component
+
+
+def _repair_rear_thermal_side(system):
+    repaired = []
+    targets = {
+        'POD_SEALED_THERMAL_BRIDGE': (0, 14.9, 16.0),
+        'POD_EXTERNAL_FINNED_HEAT_SINK': (0, 16.6, 16.0),
+    }
+    for occurrence in system.occurrences:
+        name = occurrence.component.name.upper().replace(' ', '_')
+        position = targets.get(name)
+        if position:
+            occurrence.transform2 = _rear_transform(*position)
+            repaired.append(name)
+    return repaired
+
+
 def _hide_obsolete_inner_box(root):
     hidden = False
     names = (
@@ -154,6 +186,7 @@ def run(context):
             existing.transform2 = pod_occurrence.transform2.copy()
             existing.component.name = 'SEALED_POD_THERMAL_SYSTEM'
             existing.isLightBulbOn = True
+            repaired = _repair_rear_thermal_side(existing.component)
             _hide_obsolete_inner_box(root)
             obsolete_sensor = _find(root, 'POD_TEMP_HUMIDITY_SENSOR_BRACKET')
             if obsolete_sensor:
@@ -166,7 +199,8 @@ def run(context):
                 'SEALED_POD_THERMAL_SYSTEM repaired.\n\n'
                 'Original Screenshot-693 thermal geometry retained.\n'
                 'Horizontal upper/lower fans and airflow guides retained.\n'
-                'Vertical bridge and rear 8-fin heat sink retained.\n'
+                'Vertical bridge and 8-fin heat sink moved to the rear (+Y) side.\n'
+                'Front maintenance-door side remains unobstructed.\n'
                 'Obsolete humidity bracket and duplicate cooling occurrence hidden.\n'
                 'No body or component was deleted or duplicated.\n\n'
                 'Capture Position, save, then send a screenshot.',
@@ -206,7 +240,7 @@ def run(context):
 
         # One vertical clamped plate carries heat through the sealed rear wall.
         # It is not an air duct and does not create an ingress path.
-        bridge = _child(system, 'POD_SEALED_THERMAL_BRIDGE', 0, -14.9, 16.0)
+        bridge = _rear_child(system, 'POD_SEALED_THERMAL_BRIDGE', 0, 14.9, 16.0)
         _box(bridge, bridge.xZConstructionPlane, -9.0, 0, 9.0, 22.0,
              '12 mm', 'INTERNAL_CLAMPED_THERMAL_BRIDGE', aluminum)
         bridge.attributes.add('PROJECT_FALCON_01', 'Seal',
@@ -215,7 +249,7 @@ def run(context):
         # Vertical rear base plus eight projecting fins. In transparent Fusion
         # views the fins appear horizontal/in the middle, but they belong to
         # this single external heat-sink assembly.
-        sink = _child(system, 'POD_EXTERNAL_FINNED_HEAT_SINK', 0, -16.6, 16.0)
+        sink = _rear_child(system, 'POD_EXTERNAL_FINNED_HEAT_SINK', 0, 16.6, 16.0)
         _box(sink, sink.xZConstructionPlane, -9.0, 0, 9.0, 22.0,
              '6 mm', 'EXTERNAL_HEAT_SINK_BASE', aluminum)
         for index, x in enumerate((-7.7, -5.5, -3.3, -1.1, 1.1, 3.3, 5.5, 7.7), 1):
