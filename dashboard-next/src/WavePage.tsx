@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { AlertTriangle, Check, CheckCircle2, Gauge, Waves } from "lucide-react";
+import { AlertTriangle, Check, CheckCircle2, Gauge, Sparkles, Waves } from "lucide-react";
 import { getScenario, setScenario } from "./api";
 import type { DashboardData, ScenarioState } from "./types";
 
@@ -22,6 +22,14 @@ function LegacyForecastChart({data}:{data:DashboardData}) {
 }
 
 void LegacyForecastChart;
+function MeasuredWaveChart({data}:{data:DashboardData}){
+  const rows=data.wave.history.filter((item):item is typeof item&{waveHeight:number}=>item.waveHeight!=null).slice(-42);
+  if(rows.length<2)return <div className="chart-empty">Collecting measured wave history...</div>;
+  const values=rows.map(row=>row.waveHeight),min=Math.max(0,Math.min(...values)-.08),max=Math.max(...values)+.08,range=Math.max(.01,max-min),left=54,right=726,top=42,bottom=225;
+  const points=values.map((value,index)=>[left+index/(values.length-1)*(right-left),bottom-(value-min)/range*(bottom-top)]);
+  return <div className="connected-wave-shell"><div className="connected-wave-labels"><span>{data.status.dataSource==="simulator"?"Simulated wave history":"Estimated wave history"}<b>{n(values.at(-1),2)} m</b></span><span>AI prediction<b>OPTIONAL · OFF</b></span></div><svg className="connected-wave-chart" viewBox="0 0 780 270" role="img" aria-label="Measured wave-height history">{[0,1,2,3,4].map(row=>{const y=top+(bottom-top)*row/4,value=max-(max-min)*row/4;return <g key={row}><line x1={left} y1={y} x2={right} y2={y} className="connected-grid"/><text x={left-10} y={y+4} textAnchor="end">{value.toFixed(2)} m</text></g>})}<path d={smoothPath(points)} className="connected-current"/>{points.map((point,index)=><circle key={index} cx={point[0]} cy={point[1]} r="2.5" className="current-point"/>)}<text x={left} y="254">{new Date(rows[0].recordedAt).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})}</text><text x={right} y="254" textAnchor="end">{new Date(rows.at(-1)!.recordedAt).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})}</text></svg></div>;
+}
+
 function ConnectedWaveChart({data}:{data:DashboardData}){
   const history=data.wave.history.filter((item):item is typeof item&{waveHeight:number}=>item.waveHeight!=null).slice(-32),predicted=data.ai.predictedWaveHeight,[selected,setSelected]=useState<{label:string;value:number}|null>(null);
   if(history.length<2||predicted==null)return <div className="chart-empty">Collecting wave history and prediction...</div>;
@@ -39,7 +47,7 @@ function ConnectedWaveChart({data}:{data:DashboardData}){
 }
 
 export default function WavePage({data,horizon,onHorizon,onScenarioApplied}:{data:DashboardData;horizon:number;onHorizon:(value:number)=>void;onScenarioApplied:()=>void}){
-  const [scenario,setScenarioState]=useState<ScenarioState|null>(null),[busy,setBusy]=useState(false),[transitioning,setTransitioning]=useState(false),[controlError,setControlError]=useState<string|null>(null);
+  const [scenario,setScenarioState]=useState<ScenarioState|null>(null),[busy,setBusy]=useState(false),[transitioning,setTransitioning]=useState(false),[controlError,setControlError]=useState<string|null>(null),[aiEnabled,setAiEnabled]=useState(false);
   const transitionTimer=useRef<number|null>(null),refreshTimers=useRef<number[]>([]);
   useEffect(()=>{let active=true;const load=(attempt=0)=>getScenario().then(value=>{if(active){setScenarioState(value);setControlError(null)}}).catch(error=>{if(!active)return;if(attempt<2)window.setTimeout(()=>load(attempt+1),800*(attempt+1));else setControlError(error instanceof Error?error.message:"Scenario controls unavailable")});load();return()=>{active=false;if(transitionTimer.current!=null)window.clearTimeout(transitionTimer.current);refreshTimers.current.forEach(window.clearTimeout)};},[]);
   const applyScenario=async(value:string)=>{setBusy(true);setTransitioning(true);setControlError(null);setScenarioState(current=>current?{...current,active:value}:current);try{setScenarioState(await setScenario(value));refreshTimers.current.forEach(window.clearTimeout);refreshTimers.current=[0,800,2000,4000,7000,11000].map(delay=>window.setTimeout(onScenarioApplied,delay));if(transitionTimer.current!=null)window.clearTimeout(transitionTimer.current);transitionTimer.current=window.setTimeout(()=>setTransitioning(false),11500);}catch(error){setTransitioning(false);setControlError(error instanceof Error?error.message:"Scenario update failed");getScenario().then(setScenarioState).catch(()=>undefined);}finally{setBusy(false);}};
@@ -62,11 +70,11 @@ export default function WavePage({data,horizon,onHorizon,onScenarioApplied}:{dat
   },[ai.change,ai.direction,ai.sampleCount,data.status.sensorHistory,data.status.windSpeed,data.wave.pitch,data.wave.roll]);
 
   return <section className="content wave-page wave-report">
-    <div className="page-head"><div><span>AI-ASSISTED WAVE FORECAST</span><h1>Wave intelligence</h1><p>Current conditions, model evidence, and the expected wave state in one transparent operational view.</p></div><div className="wave-controls"><label>Horizon<select value={horizon} onChange={event=>onHorizon(Number(event.target.value))}><option value="5">5 minutes</option><option value="10">10 minutes</option><option value="15">15 minutes</option></select></label><label>Demo scenario<select disabled={busy||!scenario?.available} value={scenario?.active||"normal"} onChange={event=>applyScenario(event.target.value)}>{(scenario?.scenarios||["normal"]).map(value=><option key={value} value={value}>{scenarioLabels[value]||value}</option>)}</select></label></div></div>
+    <div className="page-head"><div><span>WAVE MONITORING</span><h1>Wave conditions</h1><p>Review the current wave record first. Experimental AI prediction is an optional research view.</p></div><div className="wave-controls"><button className={aiEnabled?"is-active":""} onClick={()=>setAiEnabled(value=>!value)}><Sparkles/>{aiEnabled?"Hide optional AI":"Open optional AI"}</button>{aiEnabled&&<label>Horizon<select value={horizon} onChange={event=>onHorizon(Number(event.target.value))}><option value="5">5 minutes</option><option value="10">10 minutes</option><option value="15">15 minutes</option></select></label>}<label>Demo scenario<select disabled={busy||!scenario?.available} value={scenario?.active||"normal"} onChange={event=>applyScenario(event.target.value)}>{(scenario?.scenarios||["normal"]).map(value=><option key={value} value={value}>{scenarioLabels[value]||value}</option>)}</select></label></div></div>
     {controlError&&<div className="inline-error">{controlError}</div>}
     {transitioning&&<div className="scenario-progress"><Gauge/><span><b>{scenarioLabels[scenario?.active||""]||"Demo scenario"} is active</b>Live samples and AI forecast are updating smoothly.</span></div>}
     <div className="wave-report-grid">
-      <article className="panel forecast-result">
+      {aiEnabled&&<article className="panel forecast-result">
         <header><div><span>AI PREDICTION</span><h2>Wave forecast result</h2></div><em>DEMO AI</em></header>
         <div className="result-core"><span>Predicted Wave Height</span><strong>{ready?n(predicted,2):"--"}<small>m</small></strong><p>Current: {n(current,2)} m · {ai.direction.toUpperCase()} trend</p></div>
         <dl className="result-metrics"><div><dt>Confidence</dt><dd>{ai.confidence}%</dd></div><div><dt>Prediction Time</dt><dd>Next {ai.horizonMinutes} minutes</dd></div><div><dt>Status</dt><dd>{ai.seaCondition}</dd></div></dl>
@@ -74,15 +82,15 @@ export default function WavePage({data,horizon,onHorizon,onScenarioApplied}:{dat
         <section className="prediction-inputs"><div className="inputs-heading"><span>Prediction based on</span><small>Configured demo-model input weights</small></div><strong className="weight-total">100% total</strong><div className="input-list">{weights.map(([label,value])=><div className="input-row" key={label}><i><Check/></i><span>{label}</span><b>{value}%</b><div className="input-track"><em style={{width:`${value}%`}}/></div></div>)}</div></section>
         <section className="compact-quality"><header><div><span>PREDICTION QUALITY</span><h3>Presentation validation</h3></div><em>DEMO</em></header><dl><div><dt>Samples</dt><dd>{ai.sampleCount}</dd></div><div><dt>Confidence</dt><dd>{ai.confidence}%</dd></div><div><dt>Agreement</dt><dd>{agreement}</dd></div><div><dt>Source</dt><dd>{ai.dataSource.toUpperCase()}</dd></div></dl><p>Presentation output · field validation still required.</p></section>
         <div className="ai-disclaimer"><AlertTriangle/><span><b>EXPERIMENTAL AI · RESEARCH DEMONSTRATION</b><br/>Not an official forecast. This prediction must not replace PAGASA or other official weather and marine agencies.</span></div>
-      </article>
+      </article>}
 
-      <article className="panel wave-chart-panel report-chart"><header><div><span>WAVE RESEARCH GRAPH</span><h2>{data.status.dataSource==="simulator"?"Simulated and predicted wave":"Estimated and predicted wave"}</h2></div><em>{data.status.dataSource.toUpperCase()}</em></header><ConnectedWaveChart data={data}/><footer><span>Left: {data.status.dataSource==="simulator"?"simulated":"estimated"} history with orange rolling model estimates</span><span>Right: experimental forecast with uncertainty band</span></footer></article>
+      <article className="panel wave-chart-panel report-chart"><header><div><span>WAVE RECORD</span><h2>{aiEnabled?(data.status.dataSource==="simulator"?"Simulated wave with optional prediction":"Estimated wave with optional prediction"):(data.status.dataSource==="simulator"?"Simulated wave history":"Estimated wave history")}</h2></div><em>{data.status.dataSource.toUpperCase()}</em></header>{aiEnabled?<ConnectedWaveChart data={data}/>:<MeasuredWaveChart data={data}/>}<footer><span>{aiEnabled?"Experimental AI is enabled for research demonstration.":"Showing wave history only; AI is not required for monitoring."}</span></footer></article>
 
-      <article className="panel ai-summary"><header><div><span>EXPLAINABLE AI</span><h2>AI analysis summary</h2></div><em>COMPLETE</em></header><ul>{analysis.map(item=><li key={item}><i/>{item}</li>)}</ul><div className="therefore"><span>Therefore</span><strong>{n(predicted,2)} meters · {ai.seaCondition}</strong><small>Expected within {ai.horizonMinutes} minutes</small></div></article>
+      {aiEnabled&&<><article className="panel ai-summary"><header><div><span>EXPLAINABLE AI</span><h2>AI analysis summary</h2></div><em>OPTIONAL</em></header><ul>{analysis.map(item=><li key={item}><i/>{item}</li>)}</ul><div className="therefore"><span>Therefore</span><strong>{n(predicted,2)} meters · {ai.seaCondition}</strong><small>Expected within {ai.horizonMinutes} minutes</small></div></article>
 
       <article className="panel report-confidence"><header><div><span>MODEL CONFIDENCE</span><h2>Prediction confidence</h2></div><CheckCircle2/></header><strong>{ai.confidence}%</strong><div className="confidence-bar"><i style={{width:`${ai.confidence}%`}}/></div><b>{quality}</b><p>Recent signals are stable and the trend fit has low disagreement.</p></article>
 
-      <article className="panel prediction-timeline"><header><div><span>PREDICTION TIMELINE</span><h2>Expected wave progression</h2></div><Waves/></header><div><section><span>NOW</span><strong>{n(current,2)} m</strong><small>Current estimate</small></section><i/><section><span>{Math.max(1,Math.round(ai.horizonMinutes/2))} MIN</span><strong>{n(midpoint,2)} m</strong><small>Near-term</small></section><i/><section><span>{ai.horizonMinutes} MIN</span><strong>{n(predicted,2)} m</strong><small>Selected horizon</small></section></div></article>
+      <article className="panel prediction-timeline"><header><div><span>PREDICTION TIMELINE</span><h2>Expected wave progression</h2></div><Waves/></header><div><section><span>NOW</span><strong>{n(current,2)} m</strong><small>Current estimate</small></section><i/><section><span>{Math.max(1,Math.round(ai.horizonMinutes/2))} MIN</span><strong>{n(midpoint,2)} m</strong><small>Near-term</small></section><i/><section><span>{ai.horizonMinutes} MIN</span><strong>{n(predicted,2)} m</strong><small>Selected horizon</small></section></div></article></>}
 
     </div>
   </section>;

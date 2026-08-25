@@ -39,15 +39,37 @@ All prediction surfaces carry an experimental-research disclaimer and must not b
 
 ## Information Architecture
 
+### Simplified Primary Navigation — 2026-08-25
+
+The adviser-review revision reduces the sidebar from fourteen entries to seven
+operational pages:
+
+1. Overview;
+2. Wave;
+3. Motion;
+4. Position;
+5. Sensors;
+6. Power; and
+7. System.
+
+History, Alerts, and Settings are compact header utilities. Logs are represented
+through the consolidated History view. Calibration is accessed through Settings.
+Security and architecture explanations remain documentation concerns rather than
+primary operator navigation. The Motion page is retained, while its final physical
+sensor method remains under adviser review.
+
+AI prediction is optional. The default Wave page shows the current wave record
+without prediction cards. A user must deliberately open the optional AI view,
+which remains labeled experimental and not an official forecast.
+
 ### Home
 
 Required cards:
 
 - System Status;
 - Wave Height;
-- Predicted Wave Height;
-- Sea Condition;
-- Prediction Confidence;
+- Sensor Channels;
+- Active Alerts;
 - Wind Speed;
 - Wind Direction;
 - GPS;
@@ -57,6 +79,9 @@ Required cards:
 - and Alerts.
 
 Home shall prioritize wave state and system readiness.
+
+Predicted wave height, sea condition, and model confidence appear only after the
+optional AI view is enabled.
 
 ### System Status
 
@@ -357,3 +382,4 @@ states before receiving dashboard cards. See
 | 4.2 | 2026-08-09 | Refined presentation hierarchy, replaced symbolic icons with SVG engineering icons, and added transparent supporting-sensor trend graphs. |
 | 5.0 | 2026-08-09 | Promoted the redesigned marine operations interface and simplified the Wave AI result while preserving the Motion/3D standard. |
 | 5.1 | 2026-08-09 | Completed Mission Control, flagship Wave Intelligence, GPS, Power, System, Alerts, Logs, Settings, exports, and responsive operational components; restored Motion as the locked visual standard. |
+| 5.2 | 2026-08-25 | Reduced primary navigation to seven operational pages, retained Motion, consolidated utilities, and made AI prediction opt-in. |
