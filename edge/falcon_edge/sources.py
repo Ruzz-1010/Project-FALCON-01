@@ -47,7 +47,7 @@ class SerialJsonSource:
 
 class SimulatorSource:
     name = "simulator"
-    scenarios = ("normal", "rough_sea", "low_battery", "overheating", "sensor_fault")
+    scenarios = ("normal", "rough_sea", "low_battery", "overheating", "sensor_fault", "tamper_alert", "geofence_alert")
 
     def __init__(self, seed: int = 101):
         self._random = random.Random(seed)
@@ -89,16 +89,10 @@ class SimulatorSource:
         self._overheat_mix += ((1.0 if scenario == "overheating" else 0.0) - self._overheat_mix) * transition_rate
         base_wave = 0.48 + slow * 0.07 + abs(swell) * 0.12 + chop * 0.018 + self._random.uniform(-0.012, 0.012)
         base_wind = 10.8 + slow * 1.7 + swell * 0.55 + self._random.uniform(-0.18, 0.18)
-        base_roll = swell * (1.15 + base_wave * 0.8) + chop * 0.35
-        base_pitch = math.sin(elapsed / 8.6 + .8) * (0.75 + base_wave * 0.55) + chop * 0.18
         rough_wave = 3.0 + abs(swell) * 0.72 + chop * 0.12
         rough_wind = 31.0 + abs(slow) * 7.0 + swell * 1.2
-        rough_roll = swell * 11.5 + chop * 2.1
-        rough_pitch = math.sin(elapsed / 8.6 + .8) * 7.5 + chop * 1.2
         wave = base_wave + (rough_wave - base_wave) * self._rough_mix
         wind_speed = base_wind + (rough_wind - base_wind) * self._rough_mix
-        roll = base_roll + (rough_roll - base_roll) * self._rough_mix
-        pitch = base_pitch + (rough_pitch - base_pitch) * self._rough_mix
         solar_irradiance = 0.92 + slow * 0.045 + math.sin(elapsed / 95.0 + .4) * .025
         solar_voltage = 18.35 + solar_irradiance * .42
         solar_current = 2.02 + solar_irradiance * .22
@@ -118,7 +112,8 @@ class SimulatorSource:
         intake_rpm = 1120 + fan_demand * 1710 + abs(chop) * 38
         exhaust_rpm = 1240 + fan_demand * 1880 + abs(chop) * 44
         gps_angle = elapsed / 31.0
-        north_m = math.sin(gps_angle) * 2.55
+        geofence_offset = 15.0 if scenario == "geofence_alert" else 0.0
+        north_m = math.sin(gps_angle) * 2.55 + geofence_offset
         east_m = math.cos(gps_angle * .91) * 2.35
         latitude = 9.7421 + north_m / 111_320.0
         longitude = 118.7353 + east_m / (111_320.0 * math.cos(math.radians(9.7421)))
@@ -133,15 +128,24 @@ class SimulatorSource:
             "monitoring": True,
             "battery": round(max(0.0, battery), 1),
             "temperature": round(28.4 + slow * 0.3, 2),
-            "tilt": round(math.sqrt(roll * roll + pitch * pitch), 2),
             "waveLevel": round(wave, 2),
             "seaCondition": "CALM" if wave < 0.6 else "MODERATE" if wave < 2.5 else "ROUGH",
             "gps": "3D FIX · 12 SAT",
             "solar": "STANDBY" if self._low_battery_mix > .55 else "CHARGING",
-            "security": "ARMED",
+            "security": "ALERT" if scenario in ("tamper_alert", "geofence_alert") else "SECURE",
             "windSpeed": round(wind_speed, 1),
             "windDirection": compass[round(wind_heading / 45.0) % 8],
             "waterPressure": round(114.9 + wave * 0.72 + swell * 0.16 + self._random.uniform(-0.025, 0.025), 2),
+            "filteredPressure": round(114.9 + wave * 0.72 + swell * 0.12, 2),
+            "pressureBaseline": 114.90,
+            "pressureCalibration": "CALIBRATION REQUIRED",
+            "waterDepth": round(1.48 + swell * .04, 2),
+            "waterTemperature": round(28.1 + slow * .28, 2),
+            "salinity": round(32.4 + slow * .35, 1),
+            "salinityState": "ESTIMATED · CALIBRATION REQUIRED",
+            "vibrationDetected": scenario == "tamper_alert",
+            "enclosureOpen": scenario == "tamper_alert",
+            "buzzerActive": scenario in ("tamper_alert", "geofence_alert"),
             # Puerto Princesa coastal demo reference with a smooth mooring swing.
             # Replace this reference with the surveyed coordinate for field use.
             "latitude": round(latitude, 6),
@@ -149,9 +153,7 @@ class SimulatorSource:
             "satellites": round(11.5 + math.sin(elapsed / 67.0) * .7),
             "anchorDistance": round(anchor_distance, 1),
             "surfaceSpeed": round(0.08 + self._rough_mix * .22 + abs(math.sin(gps_angle)) * .03, 2),
-            "roll": round(roll, 2),
-            "pitch": round(pitch, 2),
-            "yaw": round(heading_degrees, 1),
+            "heading": round(heading_degrees, 1),
             "batteryVoltage": round(11.85 + battery / 100.0 * .98, 2),
             "batteryCurrent": round(.34 - self._low_battery_mix * .78 + slow * .04, 2),
             "solarVoltage": round(solar_voltage, 1),

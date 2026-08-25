@@ -154,7 +154,7 @@ def build_wave_prediction(records: list[dict[str, Any]], horizon_minutes: int = 
         "historicalPredictionSeries": _historical_prediction_series(points),
         "explanation": {
             "method": "damped linear trend over recent wave-height history",
-            "input": "wave-height estimates derived from pressure and IMU telemetry",
+            "input": "calibrated wave-height estimates derived from underwater pressure variations",
             "steps": ["validate wave samples", "fit recent linear trend", "project to selected horizon",
                       "dampen long-horizon movement", "apply short-horizon change limit", "classify sea condition"],
             "details": details,

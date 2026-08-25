@@ -10,18 +10,21 @@ markup. Confirm the live exchange rate, stock, revision, and ratings before orde
 | Qty | Selected item | Budget | Procurement note |
 | ---: | --- | ---: | --- |
 | 1 | Espressif ESP32-DevKitC V4 with ESP32-WROOM-32E, 38-pin | PHP 620–1,235 | Exact carrier reference; do not substitute WROVER because GPIO16/17 are required |
-| 1 | Adafruit BNO085, PID 4754 | PHP 1,540 | Use SPI with INT/RST; add headers/cable |
 | 1 | Blue Robotics Bar02 R2 | PHP 4,940–5,555 | Select Bar02, JST-GH lead, bulkhead seal |
 | 1 | Adafruit Ultimate GPS, PID 746 | PHP 1,850 | UART; external antenna optional |
 | 2 | Adafruit INA260, PID 4226 | PHP 1,230 | Battery `0x40`, solar `0x41`; verify current range |
 | 1 | Adafruit ADS1115, PID 1085 | PHP 925 | Wind vane A0; 3.3 V divider |
-| 1 | MCP9808 breakout | PHP 620–925 | Enclosure temperature, `0x18` |
+| 1 | Enclosure-temperature sensor | PHP 250–925 | Exact model/address TBD after interface review |
 | 1 | SparkFun Weather Meter SEN-15901 | PHP 4,935 | Prototype only; salt-exposure maintenance required |
-| 1 | Sealed DS18B20 probe | PHP 495–925 | Optional water temperature; verify genuine waterproof build |
+| 1 | Sealed DS18B20 probe | PHP 495–925 | Supporting water temperature; verify genuine waterproof build |
+| 1 | Conductivity/salinity interface | TBD | Supporting indicator; reference solutions and calibration required |
+| 1 | Vibration/tamper input | TBD | Exact model and debounce/persistence testing required |
+| 1 | Reed/limit enclosure switch | PHP 100–500 | Confirm marine installation and contact logic |
+| 1 | Buzzer and driver/protection | PHP 100–500 | Verify voltage, current, transistor driver and acoustic limit |
 | 1 | Orange Pi Zero 3 4 GB | PHP 2,160–3,705 | Buy from an authorized listing; include storage/heatsink |
 | 2 | Noctua NF-A8 5V PWM, 80 mm | Verify local quote | Reference cooling candidate; 5 V, 0.15 A max each, four-wire PWM/tach, dry enclosure only |
 
-Known sensor/control subtotal is approximately **PHP 19,320–21,050**, excluding fans,
+The previous subtotal is obsolete because adviser-approved security and conductivity parts remain TBD. Recalculate the procurement total only after exact models and current supplier quotations are verified. It excludes fans,
 power, connectors, enclosure, shipping, and optional antenna.
 
 ## Power and Installation Allowance
@@ -52,7 +55,6 @@ and physical board revisions are reviewed together.
 
 ## Primary Sources
 
-- [Adafruit BNO085 product](https://www.adafruit.com/product/4754)
 - [Blue Robotics Bar02/Bar30 product](https://bluerobotics.com/store/sensors-cameras/sensors/bar-depth-pressure-sensor/)
 - [Adafruit INA260 product](https://www.adafruit.com/product/4226)
 - [Adafruit ADS1115 product](https://www.adafruit.com/product/1085)

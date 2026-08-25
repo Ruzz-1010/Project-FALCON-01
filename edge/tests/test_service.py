@@ -1,7 +1,10 @@
 import unittest
+import tempfile
+from pathlib import Path
 
 from falcon_edge.service import EdgeRuntime
 from falcon_edge.sources import SimulatorSource
+from falcon_edge.storage import TelemetryStore
 
 
 class MemoryStore:
@@ -13,6 +16,27 @@ class MemoryStore:
 
 
 class ForecastHistoryTests(unittest.TestCase):
+    def test_grouped_dashboard_contract_uses_adviser_sections(self):
+        with tempfile.TemporaryDirectory() as directory:
+            runtime = EdgeRuntime(SimulatorSource(), TelemetryStore(Path(directory) / "test.db"), 2.0)
+            runtime.collect_once()
+            payload = runtime.current_telemetry()
+            self.assertTrue({"system", "wave", "environment", "gps", "power", "security", "health", "assistant", "alerts"}.issubset(payload))
+            self.assertEqual(payload["wave"]["estimationMethod"], "pressure-calibration-v1")
+            self.assertEqual(payload["assistant"]["mode"], "RULE_BASED")
+            self.assertNotIn("roll", payload["wave"])
+
+    def test_tamper_requires_three_consecutive_frames(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source = SimulatorSource()
+            source.set_scenario("tamper_alert")
+            runtime = EdgeRuntime(source, TelemetryStore(Path(directory) / "security.db"), 2.0)
+            runtime.collect_once()
+            self.assertEqual(runtime.current_telemetry()["security"]["state"], "WARNING")
+            runtime.collect_once()
+            self.assertEqual(runtime.current_telemetry()["security"]["state"], "WARNING")
+            runtime.collect_once()
+            self.assertEqual(runtime.current_telemetry()["security"]["state"], "ALERT")
     def test_smooth_scenario_boundary_keeps_recent_ai_history(self):
         records = [
             {"recordedAt": f"2026-08-11T00:00:{index * 2:02d}+00:00", "waveLevel": 0.50 + index * 0.01,

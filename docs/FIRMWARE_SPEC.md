@@ -1,5 +1,7 @@
 # Firmware Specification
 
+> Adviser revision v6.0 governs: pressure estimation and security inputs are required; BNO085/load-cell logic is not; optional AI runs on the edge and cannot block acquisition.
+
 ## Purpose
 Specify current observable ESP32 firmware behavior.
 

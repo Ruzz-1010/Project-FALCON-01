@@ -14,12 +14,13 @@ async function getWave(): Promise<DashboardData["wave"]> {
 }
 
 export async function getOverview(horizon = 10): Promise<DashboardData> {
-  const [status, wave, gps, battery, solar, ai] = await Promise.all([
+  const [status, wave, gps, battery, solar, ai, current] = await Promise.all([
     get<DashboardData["status"]>("/status"), getWave(),
     get<DashboardData["gps"]>("/gps"), get<DashboardData["battery"]>("/battery"),
-    get<DashboardData["solar"]>("/solar"), get<DashboardData["ai"]>(`/ai?horizon=${horizon}`)
+    get<DashboardData["solar"]>("/solar"), get<DashboardData["ai"]>(`/ai?horizon=${horizon}`),
+    get<DashboardData["current"]>("/api/telemetry/current")
   ]);
-  return { status, wave, gps, battery, solar, ai };
+  return { status, wave, gps, battery, solar, ai, current };
 }
 
 export const getScenario = () => get<ScenarioState>("/api/scenario");

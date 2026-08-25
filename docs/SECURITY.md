@@ -1,32 +1,7 @@
-# Security
+# Anti-Theft and Tamper Security v6.0
 
-## Purpose
-Document current security posture and required future controls.
+FALCON uses GPS geofence persistence, a generic vibration/tamper input, an enclosure reed/limit switch, and a buzzer. Exact tamper and switch parts remain TBD.
 
-## Scope
-Wi-Fi, HTTP/API, credentials, physical access, updates, and remote links.
+States are `SECURE`, `WARNING`, `ALERT`, and `DISARMED`. A momentary GPS error or ordinary wave movement enters evaluation/debounce, not an immediate theft alert. `ALERT` requires a persistent geofence violation, persistent tamper input, or enclosure opening while armed. Authorized maintenance uses `DISARMED` and is logged.
 
-## Current Status
-Prototype only: WPA2 AP password exists, but HTTP/API have no authentication or TLS. The shared password is hard-coded and documented.
-
-## Architecture
-Any nearby user who knows the AP password can access dashboard controls, including restart.
-
-## Implementation
-Current controls are AP password protection, local-only operation, and absence of cloud credentials/remote commands. Missing controls include roles, sessions, CSRF defense, rate limits, audit logs, signed updates, and secure provisioning.
-
-## Future Expansion
-Per-device credentials, authenticated technician access, encrypted edge/remote links, secure storage, signed updates, and threat modeling.
-
-Any future camera must be opt-in, authenticated, encrypted, non-public, and
-on-demand by default, with no routine recording and a visible access log. Remote
-links and Raspberry Pi migration require renewed hardening, update, secret-storage,
-and recovery testing. See [`FUTURE_UPGRADES.md`](FUTURE_UPGRADES.md).
-
-## Engineering Notes
-Do not present the current prototype as secure for unattended public deployment.
-
-## Revision History
-| Version | Date | Change |
-| --- | --- | --- |
-| 1.0 | 2026-08-05 | Initial security assessment. |
+Validation must document geofence radius, GPS accuracy, persistence time, input debounce, buzzer behavior, false positives under wave-like motion, deliberate tamper detection, enclosure access, communication loss, and recovery. This is a prototype deterrence/notification feature, not a certified security system.

@@ -1,4 +1,6 @@
-# Electronics Pod Layout Baseline
+# Electronics Pod Layout — Revision Pending
+
+> These notes preserve the earlier carrier. BNO085 is no longer required, and security/environment interfaces must be added after exact part selection.
 
 This layout coordinates the existing 485 × 325 mm removable-tray concept with
 electrical segregation. Purchased-part dimensions remain required before holes

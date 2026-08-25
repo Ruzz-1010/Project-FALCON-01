@@ -134,10 +134,11 @@ void PortalServer::handleStatus() {
   json += String(state.battery, 0);
   json += F(",\"temperature\":");
   json += String(state.temperature, 1);
-  json += F(",\"tilt\":");
-  json += String(state.tilt, 1);
   json += F(",\"waveLevel\":");
   json += String(state.waveLevel, 1);
+  json += F(",\"waveHeightState\":\"SIMULATED_ESTIMATE\",\"waterPressure\":");
+  json += String(state.waterPressure, 2);
+  json += F(",\"pressureCalibration\":\"CALIBRATION_REQUIRED\"");
   json += F(",\"seaCondition\":\"");
   json += escapeJson(state.seaCondition);
   json += F("\",\"gps\":\"");

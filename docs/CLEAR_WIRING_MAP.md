@@ -1,4 +1,6 @@
-# FALCON-01 Clear Wiring Map
+# FALCON-01 Clear Wiring Map — Historical Prototype
+
+> Do not fabricate from this older BNO085-centered map. Use `PINOUT.md`; the final harness awaits exact purchased parts.
 
 Status: **bench-wiring reference; not a final marine harness**.
 

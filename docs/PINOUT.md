@@ -1,80 +1,19 @@
-# FALCON-01 Prototype Pinout Register
+# Adviser-Revised Pinout Register v6.0
 
-## Status
+Status: provisional bench allocation. Exact purchased modules and PCB revision must be verified before wiring or fabrication.
 
-**Prototype baseline v0.1 — for 3.3 V bench assembly only.** Verify the printed
-pin labels and exact breakout revision before power. Marine power wiring remains
-subject to physical load, fuse, cable, connector, and waterproofing review.
-
-Controller PCB reference: **Espressif ESP32-DevKitC V4 fitted with
-ESP32-WROOM-32E**, 38-pin header version. A visually similar WROVER version is
-not an approved substitute because GPIO16 and GPIO17 are reserved by WROVER.
-
-## ESP32 Assignments
-
-| Function | GPIO | Interface | Device pin / note |
-| --- | ---: | --- | --- |
-| Shared SDA | 21 | I2C | All SDA pins; 3.3 V bus |
-| Shared SCL | 22 | I2C | All SCL pins; 3.3 V bus |
-| BNO085 clock | 18 | SPI | SCL/SCK |
-| BNO085 data out | 19 | SPI | SDA/MISO |
-| BNO085 data in | 23 | SPI | DI/MOSI |
-| BNO085 select | 13 | SPI | CS, active low |
-| BNO085 interrupt | 27 | Input | INT, required |
-| BNO085 reset | 14 | Output | RST, required |
-| GPS receive | 16 | UART2 RX | GPS TX -> ESP RX |
-| GPS transmit | 17 | UART2 TX | GPS RX <- ESP TX |
-| Anemometer | 25 | Input | Reed to GND; external 10 kOhm pull-up |
-| Optional DS18B20 | 26 | OneWire | DQ; external 4.7 kOhm pull-up |
-| Leak/tamper | 32 | Input | Exact sensor TBD |
-| Fan PWM source | 33 | 25 kHz PWM output | Drives two separate 2N7002 open-drain stages; never direct fan |
-| Fan 1 tach | 34 | Input only | Independent open-collector RPM input with 10 kΩ pull-up |
-| Fan 2 tach | 35 | Input only | Independent open-collector RPM input with 10 kΩ pull-up |
-| Edge link | USB | USB serial | Preferred prototype link to Orange Pi |
-
-GPIO 0, 2, 5, 12, and 15 remain unused because they are strapping pins. GPIO 1
-and 3 remain reserved for programming and logs.
-
-The carrier uses the official DevKitC header numbering: J2 pads 1–19 become PCB
-pads 1–19, while J3 runs from PCB pad 38 at its top/GND end down to pad 20 at
-its CLK end. The project schematic and PCB generator map only the approved
-functional pads; flash pins remain physically socketed but electrically open.
-
-## Shared I2C Bus
-
-| Device | Address | Supply | Purpose |
-| --- | --- | --- | --- |
-| Blue Robotics Bar02 | `0x76` | 3.3 V | Pressure/wave input; JST-GH 1 Vin, 2 SCL, 3 SDA, 4 GND |
-| INA260 battery | `0x40` | 3.3 V | Battery branch monitor |
-| INA260 solar | `0x41` | 3.3 V | Solar/charger monitor |
-| MCP9808 | `0x18` | 3.3 V | Enclosure temperature |
-| ADS1115 | `0x48` | 3.3 V | Wind-vane analog input on A0 |
-
-Set the second INA260 address to `0x41`. Inspect breakout pull-ups before adding
-any. Wire the wind vane as a 3.3 V divider with an external 10 kOhm resistor and
-calibrate its ADC bands after physical north alignment.
-
-## BNO085
-
-Use SPI, not I2C: the BNO085 I2C implementation has a documented ESP32
-compatibility problem. Connect VIN to 3.3 V, common GND, and P0/P1 to 3.3 V for
-SPI mode. Do not omit INT or RST.
-
-## Power Rules
-
-- ESP32 GPIO and sensor logic are 3.3 V; never apply a 5 V GPIO signal.
-- Never connect raw 12.8 V to ESP32, Orange Pi, or sensor logic.
-- Give Orange Pi a dedicated regulated 5 V / 3 A branch.
-- Use a separate regulated branch for ESP32 and its peripherals.
-- Join logic grounds at protected low-voltage distribution.
-- INA260 high-current terminals are not interchangeable with logic pins.
-
-See [ELECTRONICS_WIRING.md](ELECTRONICS_WIRING.md) and the
-[visual wiring diagram](diagrams/FALCON-01-electronics-wiring.svg).
-
-## Revision History
-
-| Version | Date | Change |
+| Function | Provisional ESP32 interface | Note |
 | --- | --- | --- |
-| 1.1 | 2026-08-15 | Added reviewed prototype GPIO and bus allocation. |
-| 1.0 | 2026-08-05 | Unassigned pin register. |
+| Shared I2C SDA/SCL | GPIO21 / GPIO22 | Bar02 and compatible 3.3 V I2C modules; verify addresses/pull-ups |
+| GPS RX/TX | GPIO16 / GPIO17 | Cross TX/RX; verify GPS logic voltage |
+| Wind speed | GPIO25 | Pulse input with appropriate pull-up/debounce |
+| Water temperature | GPIO26 | DS18B20 OneWire with 4.7 kOhm pull-up |
+| Wind direction | ADS1115 A0 | Calibrated 3.3 V divider; ADS1115 on I2C |
+| Tamper/vibration | GPIO32 | Exact module and active level TBD |
+| Enclosure switch | GPIO33 | Debounced digital input; active level TBD |
+| Buzzer driver | GPIO27 | GPIO drives transistor/MOSFET, never an unverified load directly |
+| Edge link | ESP32 USB | Preferred prototype USB serial to Orange Pi |
+
+Battery, solar, enclosure-temperature, and conductivity interfaces remain subject to exact part selection and address/range review. The BNO085 SPI assignments in older revisions are released from the required Phase 1 design. Load cell/HX711 pins are not assigned.
+
+Use 3.3 V logic, protected regulated power, common documented ground, external-connector transient protection, and test points for VBAT/5V/3V3/GND/UART/SDA/SCL. Do not connect raw battery voltage to ESP32 or Orange Pi pins.

@@ -5,8 +5,8 @@ namespace {
 // Centralized simulated readings are replaced here as sensor drivers come online.
 constexpr float kDemoBattery = 94.0F;
 constexpr float kDemoTemperature = 28.6F;
-constexpr float kDemoTilt = 2.4F;
 constexpr float kDemoWaveLevel = 0.3F;
+constexpr float kDemoWaterPressure = 115.1F;
 
 }  // namespace
 
@@ -20,12 +20,12 @@ DashboardSnapshot SystemState::snapshot(uint32_t nowMs,
           monitoringEnabled_,
           kDemoBattery,
           kDemoTemperature,
-          kDemoTilt,
           kDemoWaveLevel,
+          kDemoWaterPressure,
           "CALM",
           "WAITING FOR GPS",
           "STANDBY",
-          "ARMED"};
+          "SECURE"};
 }
 
 bool SystemState::toggleMonitoring() {

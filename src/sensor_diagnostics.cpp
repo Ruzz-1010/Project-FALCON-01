@@ -1,6 +1,5 @@
 #include "sensor_diagnostics.h"
 
-#include <SPI.h>
 #include <Wire.h>
 
 #include "config.h"
@@ -15,21 +14,11 @@ const char* state(bool present) {
 
 void SensorDiagnostics::begin() {
   Wire.begin(FalconConfig::kI2cSdaPin, FalconConfig::kI2cSclPin);
-  SPI.begin(FalconConfig::kBnoSckPin, FalconConfig::kBnoMisoPin,
-            FalconConfig::kBnoMosiPin, FalconConfig::kBnoCsPin);
-  pinMode(FalconConfig::kBnoCsPin, OUTPUT);
-  digitalWrite(FalconConfig::kBnoCsPin, HIGH);
-  pinMode(FalconConfig::kBnoResetPin, OUTPUT);
-  digitalWrite(FalconConfig::kBnoResetPin, HIGH);
-  pinMode(FalconConfig::kBnoIntPin, INPUT_PULLUP);
   pinMode(FalconConfig::kAnemometerPin, INPUT_PULLUP);
-  pinMode(FalconConfig::kLeakPin, INPUT_PULLUP);
-  pinMode(FalconConfig::kFanPwmPin, OUTPUT);
-  // LOW leaves both external open-drain transistors off. The fans' internal
-  // PWM pull-ups then command fail-safe full speed until normal control starts.
-  digitalWrite(FalconConfig::kFanPwmPin, LOW);
-  pinMode(FalconConfig::kFan1TachPin, INPUT);
-  pinMode(FalconConfig::kFan2TachPin, INPUT);
+  pinMode(FalconConfig::kTamperPin, INPUT_PULLUP);
+  pinMode(FalconConfig::kEnclosureSwitchPin, INPUT_PULLUP);
+  pinMode(FalconConfig::kBuzzerPin, OUTPUT);
+  digitalWrite(FalconConfig::kBuzzerPin, LOW);
   gps_.begin(9600, SERIAL_8N1, FalconConfig::kGpsRxPin,
              FalconConfig::kGpsTxPin);
   printInventory();
@@ -53,7 +42,7 @@ void SensorDiagnostics::printInventory() {
     Serial.printf("[DIAG] I2C 0x%02X %-16s %s\n", device.address,
                   device.name, state(addressPresent(device.address)));
   }
-  Serial.println(F("[DIAG] BNO085 SPI: wiring initialized; driver self-test pending"));
+  Serial.println(F("[DIAG] BNO085: deprecated optional sensor; not required"));
   Serial.println(F("[DIAG] GPS UART2: waiting for receiver bytes"));
 }
 
@@ -79,12 +68,15 @@ void SensorDiagnostics::emitTelemetry(uint32_t nowMs) {
       "{\"protocol\":\"falcon.telemetry\",\"version\":1,\"sequence\":%lu,"
       "\"uptimeMs\":%lu,\"source\":\"hardware-diagnostic\","
       "\"monitoring\":true,\"sensors\":{\"bar02\":\"%s\","
-      "\"bno085\":\"UNTESTED\",\"gps\":\"%s\",\"batteryIna260\":\"%s\","
+      "\"gps\":\"%s\",\"batteryIna260\":\"%s\","
       "\"solarIna260\":\"%s\",\"mcp9808\":\"%s\",\"ads1115\":\"%s\"},"
-      "\"measurements\":{}}\n",
+      "\"security\":{\"tamper\":\"%s\",\"enclosure\":\"%s\"},"
+      "\"measurements\":{\"waveHeightState\":\"CALIBRATION_REQUIRED\"}}\n",
       static_cast<unsigned long>(sequence_++), static_cast<unsigned long>(nowMs),
       bar02 ? "DETECTED" : "NOT_DETECTED",
       nowMs - lastGpsByteMs_ < 5000 && lastGpsByteMs_ > 0 ? "BYTES" : "WAITING",
       battery ? "DETECTED" : "NOT_DETECTED", solar ? "DETECTED" : "NOT_DETECTED",
-      enclosure ? "DETECTED" : "NOT_DETECTED", windAdc ? "DETECTED" : "NOT_DETECTED");
+      enclosure ? "DETECTED" : "NOT_DETECTED", windAdc ? "DETECTED" : "NOT_DETECTED",
+      digitalRead(FalconConfig::kTamperPin) == LOW ? "DETECTED" : "CLEAR",
+      digitalRead(FalconConfig::kEnclosureSwitchPin) == LOW ? "OPEN" : "CLOSED");
 }

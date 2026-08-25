@@ -9,8 +9,8 @@ struct DashboardSnapshot {
   bool monitoring;
   float battery;
   float temperature;
-  float tilt;
   float waveLevel;
+  float waterPressure;
   const char* seaCondition;
   const char* gps;
   const char* solar;

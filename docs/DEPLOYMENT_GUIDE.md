@@ -1,5 +1,7 @@
 # Deployment Guide
 
+> Phase 1 uses passive mooring with adequate line scope. Set the surveyed geofence, calibrate pressure at measured depth, test security debounce, and verify data labels. No load-cell connection is used.
+
 ## Purpose
 Define software deployment and future field gates.
 

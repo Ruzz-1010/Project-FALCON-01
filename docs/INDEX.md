@@ -1,69 +1,17 @@
-# PROJECT FALCON Documentation Index
+# Project FALCON Documentation Index v6.0
 
-## Authority
+Start with [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md), the current source of truth, then [CURRENT_PROJECT_DOCUMENTATION.md](CURRENT_PROJECT_DOCUMENTATION.md).
 
-[`PROJECT_CONTEXT.md`](PROJECT_CONTEXT.md) is the single source of truth for approved project scope, architecture, terminology, and implementation priorities. If another document conflicts with it, the project context takes precedence.
+## Current adviser-approved specifications
 
-Current authoritative mechanical revision: **5.0**, using the traditional single-body rounded-keel buoy. Existing August 9 dashboard/CAD exports remain Legacy Revision 4 until replaced by a verified Revision 5 export.
+- [HARDWARE.md](HARDWARE.md), [HARDWARE_BOM.md](HARDWARE_BOM.md), [PINOUT.md](PINOUT.md), [ELECTRONICS_WIRING.md](ELECTRONICS_WIRING.md)
+- [SENSOR_SPEC.md](SENSOR_SPEC.md), [SECURITY.md](SECURITY.md), [POWER_SYSTEM.md](POWER_SYSTEM.md)
+- [SOFTWARE.md](SOFTWARE.md), [API.md](API.md), [DASHBOARD.md](DASHBOARD.md), [AI.md](AI.md)
+- [TEST_PLAN.md](TEST_PLAN.md), [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md), [FUTURE_UPGRADES.md](FUTURE_UPGRADES.md)
+- [ADVISER_REVISION_AUDIT.md](ADVISER_REVISION_AUDIT.md) explains current, legacy, and pending records.
+- [IMPLEMENTATION_REPORT_V6.md](IMPLEMENTATION_REPORT_V6.md) records delivered code, verification, commands, and remaining work.
+- [Adviser architecture diagram](diagrams/FALCON-01-adviser-architecture.svg) is the current high-level visual.
 
-## Core v5.0 Documentation
+The current thesis file is `THESIS DOCUMENTATION/PROJECT FALCON-01 - V3 ADVISER REVISED.docx`.
 
-Read these documents in order:
-
-1. [`CURRENT_PROJECT_DOCUMENTATION.md`](CURRENT_PROJECT_DOCUMENTATION.md) — consolidated current-state guide and verified implementation status
-2. [`PROJECT_CONTEXT.md`](PROJECT_CONTEXT.md) — master engineering context and scope
-3. [`README.md`](../README.md) — repository entry point and quick start
-4. [`ROADMAP.md`](ROADMAP.md) — gated delivery plan
-5. [`HARDWARE.md`](HARDWARE.md) — Phase 1 electronics and sensor baseline
-6. [`SOFTWARE.md`](SOFTWARE.md) — ESP32 and Orange Pi software responsibilities
-7. [`ORANGE_PI_EDGE.md`](ORANGE_PI_EDGE.md) — selected Orange Pi Zero 3 architecture and responsibility boundary
-8. [`AI.md`](AI.md) — 5- and 15-minute wave-height prediction contract
-9. [`DASHBOARD.md`](DASHBOARD.md) — local dashboard information architecture
-10. [`API.md`](API.md) — approved local REST API contract
-11. [`MECHANICAL.md`](MECHANICAL.md) — approved buoy mechanical baseline
-12. [`FUTURE_UPGRADES.md`](FUTURE_UPGRADES.md) — conditional post-approval hardware and system roadmap
-
-These core documents were aligned to Project FALCON v5.0 and the single-body mechanical baseline on 2026-08-13.
-
-## Supporting Documentation
-
-- [`SYSTEM_ARCHITECTURE.md`](SYSTEM_ARCHITECTURE.md)
-- [`FIRMWARE_SPEC.md`](FIRMWARE_SPEC.md)
-- [`PINOUT.md`](PINOUT.md)
-- [`SENSOR_SPEC.md`](SENSOR_SPEC.md)
-- [`POWER_SYSTEM.md`](POWER_SYSTEM.md)
-- [`POWER_CALCULATIONS.md`](POWER_CALCULATIONS.md)
-- [`HARDWARE_BOM.md`](HARDWARE_BOM.md)
-- [`ELECTRONICS_WIRING.md`](ELECTRONICS_WIRING.md)
-- [`ELECTRONICS_LAYOUT.md`](ELECTRONICS_LAYOUT.md)
-- [`WOKWI.md`](WOKWI.md)
-- [`NETWORK_PROTOCOL.md`](NETWORK_PROTOCOL.md)
-- [`SECURITY.md`](SECURITY.md)
-- [`TEST_PLAN.md`](TEST_PLAN.md)
-- [`TROUBLESHOOTING.md`](TROUBLESHOOTING.md)
-- [`USER_MANUAL.md`](USER_MANUAL.md)
-- [`ASSEMBLY_GUIDE.md`](ASSEMBLY_GUIDE.md)
-- [`DEPLOYMENT_GUIDE.md`](DEPLOYMENT_GUIDE.md)
-- [`CALIBRATION_GUIDE.md`](CALIBRATION_GUIDE.md)
-- [`CHANGELOG.md`](CHANGELOG.md)
-- [`VERSION_HISTORY.md`](VERSION_HISTORY.md)
-
-Supporting documents describe implementation details and historical work. They must not expand Phase 1 scope or override the core v5.0 documents. Future updates should migrate them to the same terminology as the master context.
-
-Future assistants must also read [`CODEX.md`](CODEX.md) before changing the project.
-
-## Phase 1 Boundary
-
-Project FALCON v5.0 is limited to real-time coastal monitoring and AI-assisted wave-height prediction at 5- and 15-minute horizons. The AI classifies sea state as Calm, Moderate, or Rough. Cloud services, camera vision, water-quality analytics, and autonomous control remain future expansion.
-
-The consolidated upgrade policy is maintained in
-[`FUTURE_UPGRADES.md`](FUTURE_UPGRADES.md). It covers a conditional Raspberry Pi
-5 migration, on-demand non-recording camera, additional calibrated sensors,
-communications, security, power, maintainability, and sustainability gates.
-
-## Revision History
-
-| Version | Date | Change |
-| --- | --- | --- |
-| 1.0 | 2026-08-05 | Initial documentation index. |
-| 4.0 | 2026-08-09 | Reordered documentation around the v4.0 source of truth and added all core subsystem documents. |
+Older Wokwi, PCB, motion, IMU, and wiring visuals may remain for historical engineering traceability. They are not the approved final build baseline unless explicitly revised to v6.0.

@@ -20,8 +20,11 @@ export type Status = {
 
 export type Wave = {
   waveHeight: number | null; waveHeightState: string; pressure: number | null;
-  recordedAt: string; valid: boolean; roll: number | null; pitch: number | null;
-  yaw: number | null; waveMotion: number | null; quality: number;
+  rawPressure:number|null; filteredPressure:number|null; pressureBaseline:number|null;
+  depth:number|null; calibration:string; estimationMethod:string;
+  /** @deprecated Optional legacy motion prototype fields; not required in Phase 1. */
+  roll?:number|null; pitch?:number|null; yaw?:number|null; waveMotion?:number|null;
+  recordedAt: string; valid: boolean; quality: number;
   history: Array<{ recordedAt: string; waveHeight: number | null }>;
 };
 
@@ -50,4 +53,11 @@ export type Prediction = {
 
 export type ScenarioState = { available: boolean; active: string | null; scenarios: string[]; appliedAt?: string; aiState?: string };
 
-export type DashboardData = { status: Status; wave: Wave; gps: Gps; battery: Battery; solar: Solar; ai: Prediction };
+export type CurrentTelemetry = {
+  system:{state:string;source:string;recordedAt:string;labels:string[]};
+  environment:{windSpeed:number|null;windDirection:string|null;waterTemperature:number|null;salinity:number|null;salinityState:string;enclosureTemperature:number|null};
+  security:{state:string;geofenceState:string;geofenceRadiusMeters:number;distanceMeters:number|null;vibrationDetected:boolean;enclosureOpen:boolean;buzzerActive:boolean;persistence:string};
+  health:{esp32:string;edgeComputer:string;api:string;database:string;activeAlertCount:number};
+  assistant:{state:string;message:string;mode:string;optional:boolean};
+};
+export type DashboardData = { status: Status; wave: Wave; gps: Gps; battery: Battery; solar: Solar; ai: Prediction; current:CurrentTelemetry };

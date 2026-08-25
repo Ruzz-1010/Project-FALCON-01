@@ -28,9 +28,28 @@ class EdgeRuntime:
         self._stop = threading.Event()
         self._lock = threading.Lock()
         self._last_prediction_save = 0.0
+        self._tamper_streak = 0
+        self._geofence_streak = 0
+
+    def _apply_security_persistence(self, payload: dict[str, Any]) -> None:
+        """Require three consecutive frames before a security alert."""
+        raw_tamper = bool(payload.get("vibrationDetected") or payload.get("enclosureOpen"))
+        distance = payload.get("anchorDistance")
+        raw_geofence = isinstance(distance, (int, float)) and float(distance) >= 10.0
+        self._tamper_streak = self._tamper_streak + 1 if raw_tamper else 0
+        self._geofence_streak = self._geofence_streak + 1 if raw_geofence else 0
+        payload["tamperRaw"] = raw_tamper
+        payload["geofenceRaw"] = raw_geofence
+        payload["tamperPending"] = raw_tamper and self._tamper_streak < 3
+        payload["geofencePending"] = raw_geofence and self._geofence_streak < 3
+        payload["vibrationDetected"] = bool(payload.get("vibrationDetected")) and self._tamper_streak >= 3
+        payload["enclosureOpen"] = bool(payload.get("enclosureOpen")) and self._tamper_streak >= 3
+        payload["geofenceViolation"] = self._geofence_streak >= 3
+        payload["buzzerActive"] = payload["vibrationDetected"] or payload["enclosureOpen"] or payload["geofenceViolation"]
 
     def collect_once(self) -> dict[str, Any]:
         payload = self.source.read()
+        self._apply_security_persistence(payload)
         alerts = [alert.as_dict() for alert in analyze(payload)]
         recorded_at = datetime.now(timezone.utc).isoformat()
         telemetry_id = self.store.save(recorded_at, self.source.name, payload, alerts)
@@ -73,7 +92,7 @@ class EdgeRuntime:
         alerts = latest.get("alerts", [])
         source = latest.get("source", getattr(self.source, "name", "unknown"))
         online = bool(latest) and error is None
-        expected = 8
+        expected = 11
         sensor_fault = data.get("scenario") == "sensor_fault"
         recent = sorted(self.forecast_records(60), key=lambda item: item["recordedAt"])
         sensor_history = [{"recordedAt": item["recordedAt"], "windSpeed": item.get("windSpeed"),
@@ -105,15 +124,16 @@ class EdgeRuntime:
         valid = isinstance(value, (int, float)) and not isinstance(value, bool)
         recent = sorted(self.forecast_records(60), key=lambda item: item["recordedAt"])
         wave_history = [{"recordedAt": item["recordedAt"], "waveHeight": item.get("waveLevel"),
-                         "waterPressure": item.get("waterPressure"), "roll": item.get("roll"), "pitch": item.get("pitch")}
+                         "rawPressure": item.get("waterPressure"), "filteredPressure": item.get("filteredPressure")}
                         for item in recent]
         return {"recordedAt": latest.get("recordedAt"), "waveHeight": value if valid else None,
                 "waveHeightUnit": "m", "waveHeightState": "SIMULATED" if latest.get("source") == "simulator" else "ESTIMATED",
-                "estimationMethod": "presentation-simulator" if latest.get("source") == "simulator" else "pressure-imu-v1",
-                "pressure": data.get("waterPressure"), "pressureUnit": "kPa", "pitch": data.get("pitch"),
-                "roll": data.get("roll"), "yaw": data.get("yaw"), "angleUnit": "deg",
-                "waveMotion": data.get("tilt"), "quality": 0.88 if valid else 0.0,
-                "history": wave_history, "valid": valid}
+                "estimationMethod": "pressure-calibration-v1", "pressure": data.get("waterPressure"),
+                "rawPressure": data.get("waterPressure"), "filteredPressure": data.get("filteredPressure"),
+                "pressureBaseline": data.get("pressureBaseline"), "pressureUnit": "kPa",
+                "depth": data.get("waterDepth"), "depthUnit": "m",
+                "calibration": data.get("pressureCalibration", "CALIBRATION REQUIRED"),
+                "quality": 0.88 if valid else 0.0, "history": wave_history, "valid": valid}
 
     def gps(self) -> dict[str, Any]:
         with self._lock:
@@ -126,9 +146,46 @@ class EdgeRuntime:
                 "deploymentName": "Puerto Princesa City, Palawan Coast",
                 "deploymentReferenceState": "DEMO_REFERENCE",
                 "anchorDistanceMeters": data.get("anchorDistance"),
-                "driftStatus": "SECURE" if valid and float(data.get("anchorDistance", 999)) < 10 else "WARNING",
-                "headingDegrees": data.get("yaw"), "surfaceSpeedKnots": data.get("surfaceSpeed"),
+                "driftStatus": "ALERT" if data.get("geofenceViolation") else "WARNING" if data.get("geofencePending") else "SECURE" if valid else "OFFLINE",
+                "geofenceRadiusMeters": 10, "headingDegrees": data.get("heading"), "surfaceSpeedKnots": data.get("surfaceSpeed"),
                 "signalQuality": "EXCELLENT" if valid and data.get("satellites", 0) >= 10 else "LIMITED", "valid": valid}
+
+    def current_telemetry(self) -> dict[str, Any]:
+        """Return the adviser-approved grouped contract while preserving legacy endpoints."""
+        with self._lock:
+            latest = self.latest
+        data = latest.get("data", {})
+        source = latest.get("source", getattr(self.source, "name", "unknown"))
+        recorded_at = latest.get("recordedAt")
+        wave, gps, battery, solar = self.wave(), self.gps(), self.battery(), self.solar()
+        pending = bool(data.get("tamperPending") or data.get("geofencePending"))
+        security_state = "ALERT" if data.get("geofenceViolation") or data.get("vibrationDetected") or data.get("enclosureOpen") else "WARNING" if pending else "SECURE"
+        assistant_state = "ALERT" if security_state == "ALERT" else "WARNING" if security_state == "WARNING" or latest.get("alerts") else "NORMAL"
+        messages = {
+            "NORMAL": "Station readings are within configured monitoring limits.",
+            "WARNING": "One or more readings need review. Check alerts and calibration labels.",
+            "ALERT": "Security condition detected. Verify buoy position and enclosure status.",
+        }
+        return {
+            "system": {"state": "ONLINE" if latest else "OFFLINE", "source": source, "recordedAt": recorded_at,
+                       "labels": ["SIMULATED"] if source == "simulator" else ["LIVE"]},
+            "wave": wave,
+            "environment": {"windSpeed": data.get("windSpeed"), "windDirection": data.get("windDirection"),
+                            "waterTemperature": data.get("waterTemperature"), "salinity": data.get("salinity"),
+                            "salinityState": data.get("salinityState", "CALIBRATION REQUIRED"),
+                            "enclosureTemperature": data.get("internalTemperature")},
+            "gps": gps,
+            "power": {"battery": battery, "solar": solar},
+            "security": {"state": security_state, "geofenceState": gps["driftStatus"],
+                         "geofenceRadiusMeters": gps["geofenceRadiusMeters"], "distanceMeters": gps["anchorDistanceMeters"],
+                         "vibrationDetected": bool(data.get("vibrationDetected")), "enclosureOpen": bool(data.get("enclosureOpen")),
+                         "buzzerActive": bool(data.get("buzzerActive")),
+                         "persistence": "PENDING" if pending else "CONFIRMED" if security_state == "ALERT" else "DEBOUNCED"},
+            "health": {"esp32": "SIMULATED" if source == "simulator" else "ONLINE", "edgeComputer": "ONLINE",
+                       "api": "ONLINE", "database": "ONLINE", "activeAlertCount": len(latest.get("alerts", []))},
+            "assistant": {"state": assistant_state, "message": messages[assistant_state], "mode": "RULE_BASED", "optional": True},
+            "alerts": latest.get("alerts", []),
+        }
 
     def battery(self) -> dict[str, Any]:
         with self._lock:
@@ -285,6 +342,8 @@ def make_handler(runtime: EdgeRuntime, store: TelemetryStore):
             elif parsed.path == "/solar":
                 solar = runtime.solar()
                 self._send(200 if solar["valid"] else 503, solar)
+            elif parsed.path in ("/api/telemetry/current", "/api/dashboard"):
+                self._send(200, runtime.current_telemetry())
             elif parsed.path in ("/ai", "/prediction"):
                 try:
                     horizon = int(parse_qs(parsed.query).get("horizon", ["15"])[0])
@@ -348,7 +407,7 @@ def make_handler(runtime: EdgeRuntime, store: TelemetryStore):
                 else:
                     sensor = str(payload.get("sensor", ""))
                     operation = str(payload.get("operation", "start"))
-                    if sensor not in ("bno085", "water-pressure", "wind", "gps", "battery", "solar") or operation != "start":
+                    if sensor not in ("water-pressure", "water-temperature", "salinity", "wind", "gps", "battery", "solar", "security") or operation != "start":
                         raise ValueError("Unsupported sensor or calibration operation")
                     calibration_id = f"cal-{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}"
                     store.log_event(datetime.now(timezone.utc).isoformat(), "CALIBRATION", sensor, "IN_PROGRESS", payload)

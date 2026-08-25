@@ -7,19 +7,21 @@ from falcon_edge.sources import SimulatorSource
 
 class RulesTest(unittest.TestCase):
     def test_nominal_reading_has_no_alerts(self):
-        data = {"battery": 87, "temperature": 28.4, "tilt": 1.8, "waveLevel": 0.4,
+        data = {"battery": 87, "temperature": 28.4, "waveLevel": 0.4,
                 "waterPressure": 115.2, "windSpeed": 8.4, "internalTemperature": 34.2}
         self.assertEqual(analyze(data), [])
 
     def test_critical_conditions_are_detected(self):
-        data = {"battery": 10, "temperature": 28, "tilt": 40, "waveLevel": 0.5,
-                "waterPressure": 115.2, "windSpeed": 8.4, "internalTemperature": 34.2}
+        data = {"battery": 10, "temperature": 28, "waveLevel": 0.5,
+                "waterPressure": 115.2, "windSpeed": 8.4, "internalTemperature": 34.2,
+                "anchorDistance": 12.0, "vibrationDetected": True}
         codes = {alert.code for alert in analyze(data)}
         self.assertIn("BATTERY_CRITICAL", codes)
-        self.assertIn("TILT_CRITICAL", codes)
+        self.assertIn("GEOFENCE_ALERT", codes)
+        self.assertIn("TAMPER_ALERT", codes)
 
     def test_missing_sensor_is_reported(self):
-        data = {"battery": 90, "temperature": 28, "tilt": 2,
+        data = {"battery": 90, "temperature": 28,
                 "waterPressure": 115.2, "windSpeed": 8.4, "internalTemperature": 34.2}
         self.assertIn("WAVELEVEL_INVALID", {alert.code for alert in analyze(data)})
 
@@ -70,6 +72,22 @@ class RulesTest(unittest.TestCase):
         north = (reading["latitude"] - 9.7421) * 111_320.0
         east = (reading["longitude"] - 118.7353) * 111_320.0 * math.cos(math.radians(9.7421))
         self.assertAlmostEqual(reading["anchorDistance"], math.hypot(north, east), delta=.15)
+
+    def test_adviser_security_scenarios_are_explicit(self):
+        for scenario, expected in (("tamper_alert", "TAMPER_ALERT"), ("geofence_alert", "GEOFENCE_ALERT")):
+            with self.subTest(scenario=scenario):
+                source = SimulatorSource()
+                source.set_scenario(scenario)
+                reading = source.read()
+                self.assertIn(expected, {alert.code for alert in analyze(reading)})
+                self.assertEqual(reading["security"], "ALERT")
+
+    def test_pressure_and_supporting_environment_fields_are_available(self):
+        reading = SimulatorSource().read()
+        self.assertIn("filteredPressure", reading)
+        self.assertEqual(reading["pressureCalibration"], "CALIBRATION REQUIRED")
+        self.assertIn("waterTemperature", reading)
+        self.assertIn("salinity", reading)
 
 
 if __name__ == "__main__":

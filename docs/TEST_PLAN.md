@@ -1,5 +1,7 @@
 # Test Plan
 
+> Apply v6.0 gates: pressure reference accuracy, conductivity calibration, geofence/tamper persistence and false alerts, three-page dashboard usability, and optional AI isolation supersede mandatory IMU/AI tests.
+
 ## Purpose
 Define repeatable acceptance evidence.
 

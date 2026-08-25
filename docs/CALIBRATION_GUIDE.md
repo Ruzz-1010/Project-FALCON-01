@@ -1,4 +1,6 @@
-# Calibration Guide
+# Calibration Guide v6.0
+
+> Current priorities are pressure baseline/depth/reference comparison, DS18B20 reference comparison, conductivity solutions, GPS geofence accuracy/persistence, wind/power calibration, and tamper false-alert testing. IMU alignment is optional legacy work.
 
 ## Purpose
 Define traceable calibration for future measurements.
