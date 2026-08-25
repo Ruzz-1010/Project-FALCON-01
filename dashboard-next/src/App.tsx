@@ -3,6 +3,7 @@ import { Activity, BatteryCharging, Bell, Gauge, LayoutDashboard, Menu, Navigati
 import { getOverview } from "./api";
 import type { DashboardData } from "./types";
 import TelemetryChart from "./TelemetryChart";
+import FalconAssistant from "./FalconAssistant";
 
 const ActivityHub=lazy(()=>import("./ActivityHub"));
 const SettingsPage=lazy(()=>import("./SettingsPage"));
@@ -37,6 +38,6 @@ export default function App(){
     {!data?fallback:page==="motion"?<Suspense fallback={fallback}><MotionPage data={data}/></Suspense>:page==="sensors"?<Suspense fallback={fallback}><SensorsPage data={data}/></Suspense>:page==="activity"?<Suspense fallback={fallback}><ActivityHub data={data}/></Suspense>:page==="settings"?<Suspense fallback={fallback}><SettingsPage horizon={horizon} onHorizon={setHorizon} pollInterval={pollInterval} onPollInterval={setPollInterval} onRefresh={()=>setRefreshToken(value=>value+1)}/></Suspense>:<section className="content overview-page operator-overview">
       <div className="dashboard-grid"><article className="panel chart-panel"><header><div className="panel-title"><Waves/><div><span>Current conditions</span><h2>Estimated wave height</h2></div></div><strong className="wave-value">{n(data.wave.waveHeight,2)} m</strong></header><Trend data={data}/><footer>{data.wave.calibration} · Based on underwater pressure</footer></article>
       <article className="panel snapshot"><header><div className="panel-title"><Gauge/><div><span>Current readings</span><h2>Station status</h2></div></div><em className={data.current.security.state==="SECURE"?"status-good":"status-danger"}>{data.current.security.state}</em></header><dl><div><dt><Wind/>Wind</dt><dd>{n(data.status.windSpeed)} km/h · {data.status.windDirection}</dd></div><div><dt><Waves/>Pressure</dt><dd>{n(data.wave.filteredPressure,2)} kPa</dd></div><div><dt><Navigation/>GPS security</dt><dd>{data.current.security.geofenceState}</dd></div><div><dt><BatteryCharging/>Battery</dt><dd>{n(data.battery.percentage,0)}% · {data.battery.status}</dd></div><div><dt><Zap/>Solar</dt><dd>{data.solar.status} · {n(data.solar.power)} W</dd></div><div><dt><Thermometer/>Temperature</dt><dd>Water {n(data.current.environment.waterTemperature)} °C<br/>Enclosure {n(data.status.internalTemperature)} °C</dd></div></dl></article></div>
-    </section>}</main>
+    </section>}{data&&<FalconAssistant data={data}/>}</main>
   </div>;
 }
