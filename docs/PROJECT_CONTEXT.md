@@ -118,7 +118,7 @@ Normal wave-driven motion must not generate an alert by itself. Geofence and tam
 
 Four primary navigation pages are approved:
 
-1. **Overview** — estimated wave, pressure/calibration state, GPS, power, security, environment, health, alerts, and optional FALCON Assistant.
+1. **Overview** — one large estimated-wave chart and one Station Status card containing wind, pressure, GPS security, battery, solar, and water/enclosure temperature. Optional AI is not shown in the default operator view.
 2. **Buoy Motion** — optional 3D visual model driven by estimated sea context; it is not a required BNO085 measurement channel.
 3. **Sensors** — grouped core, supporting, health, and security readings with source, units, validity, update age, and calibration labels.
 4. **Logs & Alerts** — active alerts, persisted telemetry, security events, calibration events, operator actions, search, and export.

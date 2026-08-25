@@ -187,7 +187,7 @@ def build() -> None:
 
     heading(document, "11. Dashboard Design")
     numbered(document, [
-        "Overview: estimated wave and pressure/calibration state, environment, GPS, power, security, health, alerts, and optional FALCON Assistant.",
+        "Overview: one large estimated-wave chart plus one Station Status summary for wind, pressure, GPS security, battery, solar, and water/enclosure temperature; optional AI is absent from the default operator view.",
         "Buoy Motion: optional interactive 3D response model driven by estimated sea context, not a required IMU measurement.",
         "Sensors: grouped core, supporting, health, and security channels with units, quality, source, update age, and calibration status.",
         "Logs & Alerts: current warnings, security/calibration/operator events, persisted telemetry, acknowledgement, search, and export.",
