@@ -106,7 +106,7 @@ def build() -> None:
         "How can a low-cost solar-powered buoy acquire and retain near-real-time coastal measurements using an ESP32 and local Orange Pi edge computer?",
         "How accurately and repeatably can calibrated underwater-pressure variation be processed into an estimated wave-height signal under controlled conditions?",
         "How reliably can GPS geofence, vibration/tamper, and enclosure-access rules detect persistent security events without being triggered by normal wave movement?",
-        "How clearly can a three-page local dashboard communicate wave, environment, GPS, power, security, health, and alert information?",
+        "How clearly can a four-page local dashboard communicate wave, environment, GPS, power, security, health, and alert information?",
         "How does the prototype perform in sensor accuracy, communication reliability, dashboard usability, energy use, data retention, and system recovery?",
         "If optional AI is evaluated, does it improve a documented baseline without interrupting the core monitoring system?",
     ])
@@ -124,7 +124,7 @@ def build() -> None:
         "Develop a traceable pipeline that retains raw and filtered pressure, baseline, optional depth, estimated wave height, validity, timestamp, and calibration metadata.",
         "Implement persistent/debounced geofence, tamper, and enclosure security rules with SECURE, WARNING, ALERT, and DISARMED states.",
         "Implement local serial ingestion, SQLite storage, REST API, logs, alerts, and automatic service recovery on the Orange Pi.",
-        "Develop a responsive dashboard with only Overview, Sensors, and Logs & Alerts as primary pages.",
+        "Develop a responsive dashboard with Overview, Buoy Motion, Sensors, and Logs & Alerts as primary pages while keeping motion visualization optional.",
         "Evaluate subsystem accuracy, reliability, latency, false alerts, usability, power consumption, and controlled deployment readiness.",
     ])
 
@@ -188,6 +188,7 @@ def build() -> None:
     heading(document, "11. Dashboard Design")
     numbered(document, [
         "Overview: estimated wave and pressure/calibration state, environment, GPS, power, security, health, alerts, and optional FALCON Assistant.",
+        "Buoy Motion: optional interactive 3D response model driven by estimated sea context, not a required IMU measurement.",
         "Sensors: grouped core, supporting, health, and security channels with units, quality, source, update age, and calibration status.",
         "Logs & Alerts: current warnings, security/calibration/operator events, persisted telemetry, acknowledgement, search, and export.",
     ])
@@ -210,7 +211,7 @@ def build() -> None:
     paragraph(document, "Marine deployment requires permission, site-risk review, electrical protection, waterproofing, safe battery handling, retrieval planning, and weather limits. GPS data and future camera features require privacy controls. The dashboard must state that FALCON is a research prototype and does not replace PAGASA, coast guard instructions, navigation equipment, or emergency-warning systems.")
 
     heading(document, "14. Current Implementation and Limitations")
-    paragraph(document, "The repository currently includes the ESP32 firmware shell, diagnostic portal, versioned serial frame, Python simulator/edge service, SQLite storage, deterministic alerts, grouped API, three-page dashboard, optional assistant, and optional presentation prediction. The software build and automated tests demonstrate implementation behavior only. They do not prove physical sensor accuracy or coastal readiness.")
+    paragraph(document, "The repository currently includes the ESP32 firmware shell, diagnostic portal, versioned serial frame, Python simulator/edge service, SQLite storage, deterministic alerts, grouped API, four-page dashboard, optional motion visualization, optional assistant, and optional presentation prediction. The software build and automated tests demonstrate implementation behavior only. They do not prove physical sensor accuracy or coastal readiness.")
     paragraph(document, "Physical pressure calibration, exact supporting/security part selection, final PCB/wiring release, Orange Pi installation, waterproofing, power autonomy, and controlled field trials remain pending. These limitations must remain visible in presentations, results, and conclusions.")
 
     heading(document, "15. Expected Output and Beneficiaries")

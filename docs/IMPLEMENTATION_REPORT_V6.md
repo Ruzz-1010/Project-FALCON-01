@@ -9,7 +9,7 @@ Date: 2026-08-25
 - Added simulator tamper and geofence scenarios plus three-frame security persistence.
 - Replaced required tilt/IMU safety rules with geofence and tamper alerts.
 - Retained legacy REST and prediction routes for backward compatibility.
-- Reduced primary dashboard navigation to Overview, Sensors, and Logs & Alerts; Settings remains a header icon.
+- Consolidated primary dashboard navigation to Overview, Buoy Motion, Sensors, and Logs & Alerts; Settings remains a header icon. Motion is visualization-only and does not require BNO085.
 - Consolidated environment, GPS, power, security, health, and optional rule-based assistant on Overview.
 - Removed mooring-tension UI/calibration and made optional AI hidden by default.
 - Removed required BNO085 firmware initialization/pins and assigned provisional tamper, enclosure, and buzzer GPIOs.

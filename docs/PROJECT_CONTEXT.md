@@ -28,7 +28,7 @@ The core undergraduate contribution is the integration and evaluation of an acce
 2. Acquire timestamped pressure, GPS, wind, environmental, power, security, and health readings.
 3. Filter and calibrate underwater pressure to produce an explicitly labeled estimated wave height.
 4. Detect persistent GPS geofence, vibration/tamper, and enclosure-access events without treating normal wave motion as theft.
-5. Store telemetry and events locally on the Orange Pi and present them through a simple three-page dashboard.
+5. Store telemetry and events locally on the Orange Pi and present them through a simple four-page dashboard.
 6. Evaluate accuracy, reliability, latency, power use, usability, and false-alert behavior through documented tests.
 7. Explore short-term AI wave prediction only as an optional extension after the monitoring baseline is validated.
 
@@ -116,13 +116,14 @@ Normal wave-driven motion must not generate an alert by itself. Geofence and tam
 
 ## Dashboard information architecture
 
-Only three primary navigation pages are approved:
+Four primary navigation pages are approved:
 
 1. **Overview** — estimated wave, pressure/calibration state, GPS, power, security, environment, health, alerts, and optional FALCON Assistant.
-2. **Sensors** — grouped core, supporting, health, and security readings with source, units, validity, update age, and calibration labels.
-3. **Logs & Alerts** — active alerts, persisted telemetry, security events, calibration events, operator actions, search, and export.
+2. **Buoy Motion** — optional 3D visual model driven by estimated sea context; it is not a required BNO085 measurement channel.
+3. **Sensors** — grouped core, supporting, health, and security readings with source, units, validity, update age, and calibration labels.
+4. **Logs & Alerts** — active alerts, persisted telemetry, security events, calibration events, operator actions, search, and export.
 
-Settings are available through a compact icon and are not a fourth primary navigation item. The former Wave, Motion, GPS, Power, System, History, and separate Alerts pages are legacy UI modules; their useful information is consolidated into the three approved pages.
+Settings are available through a compact icon and are not a primary navigation item. The former separate Wave, GPS, Power, System, History, and Alerts pages remain consolidated. Motion is retained strictly as an optional visual model and does not restore BNO085 as a required sensor.
 
 ## FALCON Assistant
 
@@ -161,7 +162,7 @@ Implemented in the repository:
 - grouped adviser-approved telemetry endpoint;
 - pressure-data fields and simulated pressure-based wave estimate;
 - GPS geofence and tamper/enclosure simulation states;
-- three-page responsive dashboard with settings icon;
+- four-page responsive dashboard with settings icon;
 - optional rule-based assistant and opt-in prediction display;
 - local logs, alerts, search, and export.
 

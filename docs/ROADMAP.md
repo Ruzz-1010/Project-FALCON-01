@@ -4,7 +4,7 @@
 
 - approve exact models/datasheets for all TBD sensors and security inputs;
 - remove BNO085 and load-cell requirements from purchasing/fabrication;
-- approve pressure-based estimated-wave wording, passive mooring, optional AI, and three-page dashboard.
+- approve pressure-based estimated-wave wording, passive mooring, optional AI, and four-page dashboard.
 
 ## Gate 2 — Electrical and bench integration
 
