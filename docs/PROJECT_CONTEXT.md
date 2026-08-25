@@ -120,14 +120,14 @@ Four primary navigation pages are approved:
 
 1. **Overview** — one large estimated-wave chart and one Station Status card containing wind, pressure, GPS security, battery, solar, and water/enclosure temperature. Optional AI is not shown in the default operator view.
 2. **Buoy Motion** — optional 3D visual model driven by estimated sea context; it is not a required BNO085 measurement channel.
-3. **Sensors** — grouped core, supporting, health, and security readings with source, units, validity, update age, and calibration labels.
+3. **Sensors** — six readable operator groups: Wave & Pressure, GPS & Security, Wind, Water, Power, and System. Exact device models, sampling, quality, freshness, and calibration diagnostics remain available through expandable details.
 4. **Logs & Alerts** — active alerts, persisted telemetry, security events, calibration events, operator actions, search, and export.
 
 Settings are available through a compact icon and are not a primary navigation item. The former separate Wave, GPS, Power, System, History, and Alerts pages remain consolidated. Motion is retained strictly as an optional visual model and does not restore BNO085 as a required sensor.
 
 ## FALCON Assistant
 
-The assistant is an optional animated, rule-based visual status aid. It is not a chatbot, language model, voice assistant, or autonomous controller. States are `IDLE/NORMAL`, `WARNING`, `ALERT`, and `OFFLINE`. Messages must be short, factual, and derived from deterministic station rules. It must never issue an official safety advisory or replace PAGASA or authorized coastal agencies.
+The assistant is a saved optional animated, rule-based visual status aid and is currently hidden from the dashboard while its final design is being reviewed. It is not a chatbot, language model, voice assistant, or autonomous controller. States are `IDLE/NORMAL`, `WARNING`, `ALERT`, and `OFFLINE`. Messages must be short, factual, and derived from deterministic station rules. It must never issue an official safety advisory or replace PAGASA or authorized coastal agencies.
 
 ## Optional AI
 

@@ -68,6 +68,7 @@ The canonical dashboard has four primary pages:
 4. Logs & Alerts
 
 Settings are opened using the header icon. Optional AI is hidden by default and cannot interrupt the monitoring baseline.
+The Sensors page presents six operator-friendly groups—Wave & Pressure, GPS & Security, Wind, Water, Power, and System—with technical device diagnostics available through **View Details**.
 
 ## API
 

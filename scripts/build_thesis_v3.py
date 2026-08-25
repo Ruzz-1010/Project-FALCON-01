@@ -189,10 +189,10 @@ def build() -> None:
     numbered(document, [
         "Overview: one large estimated-wave chart plus one Station Status summary for wind, pressure, GPS security, battery, solar, and water/enclosure temperature; optional AI is absent from the default operator view.",
         "Buoy Motion: optional interactive 3D response model driven by estimated sea context, not a required IMU measurement.",
-        "Sensors: grouped core, supporting, health, and security channels with units, quality, source, update age, and calibration status.",
+        "Sensors: six user-facing groups—Wave & Pressure, GPS & Security, Wind, Water, Power, and System—with exact hardware, quality, source, update age, sampling, and calibration diagnostics available through expandable details.",
         "Logs & Alerts: current warnings, security/calibration/operator events, persisted telemetry, acknowledgement, search, and export.",
     ])
-    paragraph(document, "Settings is a compact header icon. Optional AI is hidden by default. The FALCON Assistant is a rule-based animation with NORMAL, WARNING, ALERT, and OFFLINE states; it is not a chatbot or autonomous decision-maker.")
+    paragraph(document, "Settings is a compact header icon. Optional AI is hidden by default. The saved FALCON Assistant concept is also hidden while its final operator design is under review; it is not a chatbot or autonomous decision-maker.")
 
     heading(document, "12. Testing and Evaluation Plan")
     table(document, ["Test area", "Evidence and metrics"], [
