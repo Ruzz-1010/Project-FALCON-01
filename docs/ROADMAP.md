@@ -1,4 +1,4 @@
-# Project FALCON Adviser-Revised Roadmap v6.0
+# Project FALCON Adviser-Revised Roadmap v6.1
 
 ## Gate 1 — Scope and component freeze
 

@@ -1,4 +1,4 @@
-# Anti-Theft and Tamper Security v6.0
+# Anti-Theft and Tamper Security v6.1
 
 FALCON uses GPS geofence persistence, a generic vibration/tamper input, an enclosure reed/limit switch, and a buzzer. Exact tamper and switch parts remain TBD.
 

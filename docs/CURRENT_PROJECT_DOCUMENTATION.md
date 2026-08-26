@@ -1,4 +1,4 @@
-# Current Project Documentation v6.0
+# Current Project Documentation v6.1
 
 Project FALCON is now a pressure-based smart coastal observation buoy. The authoritative scope, architecture, sensor groups, truthful claims, validation requirements, and implementation status are in [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md).
 
@@ -16,6 +16,8 @@ Project FALCON is now a pressure-based smart coastal observation buoy. The autho
 ## Current physical status
 
 Most final sensors, the Orange Pi, PCB, waterproof enclosure, solar system, and complete buoy have not been physically integrated or field-validated. The current simulator is for software demonstration. The pressure-to-wave method, water-temperature channel, geofence thresholds, and tamper thresholds require reference calibration/testing.
+
+The physical and visual prototype is now **under redesign**. All existing mechanical CAD, dimensions, enclosure layouts, component placements, renders, dashboard models, and video reference images are retained only as references until replaced and approved under [PROTOTYPE_REDESIGN_BASELINE.md](PROTOTYPE_REDESIGN_BASELINE.md).
 
 ## Adviser changes applied
 
@@ -40,11 +42,12 @@ Open `http://127.0.0.1:8765/`. Use Node.js 20.19+ only when running the Vite dev
 
 ## Next engineering gates
 
-1. Finalize exact TBD part models and datasheets.
-2. Freeze new adviser-approved wiring/pinout/PCB revision.
-3. Connect and bench-test the physical Bar02 pressure sensor.
-4. Define and execute pressure baseline and wave-reference calibration.
-5. Implement and test real geofence/tamper persistence.
-6. Install and harden the Orange Pi service.
-7. Complete waterproofing, power-budget, endurance, and controlled coastal tests.
-8. Evaluate optional AI only after traceable calibrated data exists.
+1. Define and approve the replacement prototype geometry and component placement.
+2. Finalize exact TBD part models and datasheets.
+3. Freeze new wiring/pinout/PCB revision after physical-fit review.
+4. Connect and bench-test the physical Bar02 pressure sensor.
+5. Define and execute pressure baseline and wave-reference calibration.
+6. Implement and test real geofence/tamper persistence.
+7. Install and harden the Orange Pi service.
+8. Complete waterproofing, power-budget, endurance, and controlled coastal tests.
+9. Evaluate optional AI only after traceable calibrated data exists.

@@ -1,5 +1,7 @@
 # Assembly Guide
 
+> **REDESIGN HOLD:** Use this file as a process reference only. Prototype geometry, dimensions, placement, brackets, enclosure interfaces, and assembly order must be revised after the replacement design is approved under `PROTOTYPE_REDESIGN_BASELINE.md`.
+
 ## Purpose
 Define safe current setup and gates for future assembly.
 

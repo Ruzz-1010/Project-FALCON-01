@@ -1,4 +1,6 @@
-# Dashboard Specification v6.0
+# Dashboard Specification v6.1
+
+> Prototype visual status: the current 3D buoy asset is a reference model under redesign. Live data behavior and the four-page information architecture remain valid; replace the model only from the approved new mechanical revision.
 
 The Orange Pi-hosted `dashboard-next/` application has four primary pages: **Overview**, **Buoy Motion**, **Sensors**, and **Logs & Alerts**. Settings is a compact header action.
 

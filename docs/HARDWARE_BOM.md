@@ -1,5 +1,7 @@
 # FALCON-01 Phase 1 Procurement Baseline
 
+> This is a planning BOM, not a fabrication release. Reconfirm quantities, dimensions, connector variants, cable lengths, brackets, enclosure parts, ballast, and solar mounting hardware after the replacement prototype is approved.
+
 Status: budgetary prototype BOM, checked 2026-08-15. Prices are shown in
 Philippine pesos using an indicative rate of **PHP 61.71 per USD**. They are raw
 list-price conversions before shipping, import fees, tax, and Philippine reseller

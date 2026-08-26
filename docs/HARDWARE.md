@@ -1,4 +1,6 @@
-# Project FALCON Hardware Baseline v6.0
+# Project FALCON Hardware Baseline v6.1
+
+> Hardware functions remain the Phase 1 baseline. Physical placement, enclosure integration, brackets, harness lengths, and mechanical interfaces are under redesign and remain TBD until the replacement prototype is approved.
 
 Status: adviser-approved design baseline; procurement and physical validation remain pending. [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md) is authoritative.
 

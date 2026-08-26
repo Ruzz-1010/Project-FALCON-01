@@ -1,4 +1,4 @@
-# Project FALCON Local API v6.0
+# Project FALCON Local API v6.1
 
 Authority: [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md). Host: Orange Pi Zero 3 or development laptop. Format: UTF-8 JSON with ISO 8601 timestamps.
 
@@ -30,8 +30,6 @@ Authority: [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md). Host: Orange Pi Zero 3 or d
     "windSpeed": 11.2,
     "windDirection": "NE",
     "waterTemperature": 28.2,
-    "salinity": 32.5,
-    "salinityState": "ESTIMATED · CALIBRATION REQUIRED",
     "enclosureTemperature": 34.0
   },
   "gps": {},

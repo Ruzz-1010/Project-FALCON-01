@@ -1,4 +1,6 @@
-# Adviser-Revised Electronics Wiring v6.0
+# Adviser-Revised Electronics Wiring v6.1
+
+> Functional net requirements remain useful, but connector positions, cable lengths, glands, and enclosure routing are under redesign. Verify the exact selected parts and replacement prototype before fabrication.
 
 The previous BNO085-centered wiring drawings are retained only as historical prototype visuals and must not be used as the final Phase 1 harness. Use [PINOUT.md](PINOUT.md) and [HARDWARE.md](HARDWARE.md) for the current baseline.
 

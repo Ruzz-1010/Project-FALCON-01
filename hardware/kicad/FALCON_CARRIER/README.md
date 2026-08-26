@@ -1,5 +1,7 @@
 # FALCON-01 Low-Voltage Carrier PCB
 
+> **HISTORICAL ELECTRICAL DRAFT:** This project predates the v6.1 sensor baseline and still contains a BNO085 footprint and older physical-placement assumptions. Do not fabricate it or adapt its board outline to the replacement prototype. Rebuild the release schematic/PCB only after exact parts and mechanical interfaces are approved.
+
 Status: **native KiCad pre-schematic and placement-zone draft; not approved for
 fabrication**.
 

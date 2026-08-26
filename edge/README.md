@@ -1,14 +1,14 @@
-# FALCON Edge Service v4.0
+# FALCON Edge Service — Current v6.1 Baseline
 
-Local-first Python service for the selected Project FALCON Orange Pi Zero 3 (4GB). It collects ESP32 telemetry, validates approved sensors, evaluates deterministic alerts, stores operational records in SQLite, serves the dashboard, and provides AI-assisted wave-height predictions. A laptop currently performs the same role during development.
+Local-first Python service for the selected Project FALCON Orange Pi Zero 3 (4 GB). It collects ESP32 telemetry, validates approved sensors, evaluates deterministic alerts, stores operational records in SQLite, and serves the dashboard. Optional wave prediction is isolated from these core functions. A laptop currently performs the same role during development.
 
 ## Run the Presentation Simulator
 
 From the repository root:
 
-```powershell
-cd "C:\Users\Admin\Documents\PlatformIO\Projects\Project FALCON-01\edge"
-python -m falcon_edge.service
+```bash
+cd "/home/ruzz/Documents/PlatformIO/Projects/Project FALCON-01/edge"
+python3 -m falcon_edge.service
 ```
 
 Open `http://127.0.0.1:8765/`.
@@ -16,7 +16,7 @@ Open `http://127.0.0.1:8765/`.
 This URL serves the bundled production build of `dashboard-next`. Rebuild it with
 `npm run build` inside `dashboard-next/` after frontend changes.
 
-## Approved v4 API
+## API compatibility routes
 
 - `GET /status`
 - `GET /wave`
@@ -37,10 +37,10 @@ The route remains `GET /ai`; `horizon` selects one of the two approved predictio
 
 The AI predicts wave height only. It returns current and predicted values, confidence, model status, and Calm, Moderate, or Rough classification. It does not predict other sensors and is not validated for safety decisions.
 
-Presentation scenarios use gradual state transitions. Rough Sea ramps wave height, wind, roll, and pitch over multiple samples and settles gradually when Normal operation is restored, preventing unrealistic graph steps.
+Presentation scenarios use gradual state transitions. Rough Sea ramps pressure-based estimated wave height and related wind context over multiple samples and settles gradually when Normal operation is restored. Buoy Motion also provides separate local visual presets that never overwrite telemetry.
 
 The presentation simulator also correlates related channels: wave height with
-pressure and motion, coordinates with anchor distance, solar input with battery
+pressure, coordinates with anchor distance, solar input with battery
 voltage/current, and enclosure temperature with fan demand. Low Battery and
 Overheating now ramp gradually instead of stepping directly to their alert values.
 

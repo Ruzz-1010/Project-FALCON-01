@@ -1,4 +1,4 @@
-# Adviser-Revised Pinout Register v6.0
+# Adviser-Revised Pinout Register v6.1
 
 Status: provisional bench allocation. Exact purchased modules and PCB revision must be verified before wiring or fabrication.
 

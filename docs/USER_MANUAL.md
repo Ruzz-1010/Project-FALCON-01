@@ -1,35 +1,42 @@
-# User Manual
+# FALCON Operator User Manual v6.1
 
 ## Purpose
-Explain current offline dashboard operation.
 
-## Scope
-Wi-Fi connection, portal access, readings, controls, and limitations.
+Use the local FALCON dashboard to inspect current station readings, visualize pressure-based buoy movement, review grouped sensors, and examine logs or alerts.
 
-## Current Status
-Applies to dashboard v2.1 with simulated sensor values.
+## Start the local station
 
-## Architecture
-Phone/laptop connects directly to ESP32; no router, internet, cloud, account, or app is required.
+```bash
+cd "/home/ruzz/Documents/PlatformIO/Projects/Project FALCON-01/edge"
+python3 -m falcon_edge.service
+```
 
-## Implementation
-1. Power ESP32 and wait 5-10 seconds.
-2. Join `FALCON-01` using `falcon123` and accept no-internet mode.
-3. Use captive portal or `http://192.168.4.1`.
-4. Read online state, clients, uptime, and clearly labeled demo values.
-5. Monitoring toggle changes temporary state only; restart temporarily disconnects Wi-Fi.
+Open <http://127.0.0.1:8765/> on the development laptop. On the deployed local network, use the Orange Pi address configured by the team.
 
-## Future Expansion
-Add settings, history, export, alerts, calibration, and real sensor interpretation when implemented.
+## Source labels
 
-Future operator instructions may include authenticated on-demand camera viewing,
-additional calibrated sensor pages, remote-link status, and platform health after
-those upgrades pass the gates in [`FUTURE_UPGRADES.md`](FUTURE_UPGRADES.md).
+- `LIVE`: received from connected hardware.
+- `SIMULATED`: software-generated development data.
+- `ESTIMATED`: calculated from another reading; wave height is estimated from pressure.
+- `CALIBRATION REQUIRED`: do not make accuracy claims yet.
+- `STALE` or `OFFLINE`: the reading is not current or unavailable.
+- `OPTIONAL`: not required for core monitoring.
 
-## Engineering Notes
-Never use demo values for environmental, navigation, power, or safety decisions.
+Never hide or reinterpret these labels.
 
-## Revision History
-| Version | Date | Change |
-| --- | --- | --- |
-| 1.0 | 2026-08-05 | Initial dashboard manual. |
+## Main pages
+
+1. **Overview:** read estimated wave height and the station summary for wind, pressure, GPS security, battery, solar, and temperature.
+2. **Buoy Motion:** view the optional pressure-driven 3D model. `Current Data` follows the received estimate. `Calm`, `Moderate`, `Rough`, and `Pressure Offline` are labeled local demonstrations and do not modify telemetry. The visible buoy is a reference model under redesign.
+3. **Sensors:** open a group and use **View Details** when technical quality, freshness, calibration, or source information is needed.
+4. **Logs & Alerts:** review active conditions and stored events. Acknowledgement records that an operator saw an alert; it does not erase the evidence.
+
+Settings is opened from the header icon. Optional prediction remains hidden from the normal operator flow and is not an official forecast.
+
+## ESP32 diagnostic portal
+
+The ESP32 may expose a small setup/diagnostic portal at `http://192.168.4.1` while connected to its configured access point. This portal is not the full dashboard and must not substitute simulated diagnostic values for edge-service telemetry.
+
+## Limits
+
+FALCON is a research prototype, not an official weather, navigation, storm, tsunami, or emergency-warning service. Report persistent offline, calibration, geofence, enclosure, battery, or thermal states to the responsible project operator and follow the approved maintenance procedure.

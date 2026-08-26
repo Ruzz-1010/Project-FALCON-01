@@ -1,9 +1,11 @@
 # Project FALCON — DOST Idea Presentation Package
 
+> Presentation baseline updated for v6.1. The physical/visual prototype is under redesign; replace all prototype figures and placement explanations only after approval. Do not present an older CAD model or render as the current unit.
+
 | Field | Value |
 | --- | --- |
 | Presentation type | Initial idea and funding presentation |
-| Project | FALCON-01 — Fullbright College's AI-powered Live Coastal Observation Network |
+| Project | FALCON-01 — Fullbright College's Local Coastal Observation Network |
 | Institution | Fullbright College |
 | Current stage | Software and engineering concept prototype |
 | Funding purpose | Physical development, integration, calibration, and field validation |
@@ -12,9 +14,9 @@
 ## 1. Core Presentation Message
 
 Project FALCON is a proposed affordable, solar-powered smart coastal observation
-buoy. It is designed to collect localized wave-related measurements, process and
+buoy. It is designed to collect localized coastal measurements, process and
 store data near the source, display present conditions through a responsive
-dashboard, evaluate short-horizon wave prediction after local data collection,
+dashboard, optionally evaluate short-horizon wave prediction after the monitoring baseline is validated,
 and detect abnormal buoy displacement or system-health conditions.
 
 The project is not being presented as a finished oceanographic product. The team
@@ -125,7 +127,7 @@ Project FALCON combines:
 - solar power with battery storage;
 - a responsive local dashboard;
 - offline buffering for intermittent connectivity; and
-- GPS/IMU-assisted abnormal-displacement alerts.
+- persistent GPS geofence, vibration/tamper, and enclosure-access alerts.
 
 **Speaker note:** Explain the system in plain language: measure, validate, store,
 analyze, display, and alert.
@@ -407,7 +409,7 @@ Target duration: **3–5 minutes**.
 
 1. Open the Overview page and identify the simulator source label.
 2. Explain that the present values demonstrate the intended telemetry pipeline.
-3. Open Wave AI and show measured history, the present boundary, and forecast side.
+3. Open Buoy Motion and demonstrate Current Data, Calm, Moderate, Rough, and Pressure Offline while explaining that they are local visual presets.
 4. State clearly that the forecast is a presentation model, not a field-trained AI.
 5. Open Motion to demonstrate orientation and sea visualization.
 6. Open GPS and explain the proposed reference point, geofence, and drift logic.
@@ -488,7 +490,7 @@ alerts for an educational and community-oriented use case.
 ### How will you prevent false theft alarms?
 
 A single GPS threshold is insufficient. The proposed logic combines a sustained
-geofence breach, displacement behavior, GPS quality, unusual IMU motion, and time
+geofence breach, displacement behavior, GPS quality, vibration/tamper persistence, and time
 persistence. Normal anchor swing, receiver noise, strong waves, authorized handling,
 anchor drag, and simulated removal will be included in testing.
 

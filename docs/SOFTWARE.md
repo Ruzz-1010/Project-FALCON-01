@@ -1,4 +1,4 @@
-# Software Architecture v6.0
+# Software Architecture v6.1
 
 ```text
 ESP32 drivers/acquisition -> versioned USB/UART telemetry -> Orange Pi ingestion

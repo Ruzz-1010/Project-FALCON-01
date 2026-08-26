@@ -1,6 +1,8 @@
 # Fusion 360 CAD Scripts
 
-## Current Solar Elevation Upgrade
+> **REDESIGN HOLD — 26 August 2026:** None of the assemblies or component positions below is the approved replacement prototype. All scripts are preserved as editable historical/reference geometry. Do not call any entry current, final, fabrication-ready, or deployment-ready until a new revision passes `docs/PROTOTYPE_REDESIGN_BASELINE.md`.
+
+## Previous CAD development sequence
 
 `COMPACT_ELEVATED_UPPER_TOWER` is the active correction. It retains the four
 panels at +150 mm, raises the sensor array and navigation light by the same
@@ -92,9 +94,9 @@ uses the existing MCP9808 only and adds no humidity or leak sensor.
 rails/braces with a separate tapered X-braced gate, left removable hinge pin,
 right captive locks, and EPDM stops. Side/rear mast members remain unchanged.
 
-## Current Mechanical Revision: 5.0
+## Previous Mechanical Revision: 5.0
 
-The current production direction uses `MAIN_FLOAT_TRADITIONAL_V2`, a traditional Ø650 mm HDPE single-body buoy with a 240 mm rounded tapered underwater keel.
+Revision 5 used `MAIN_FLOAT_TRADITIONAL_V2`, a traditional Ø650 mm HDPE single-body buoy with a 240 mm rounded tapered underwater keel. These values are not automatically valid for the replacement design.
 
 Current Revision 5 scripts include the V2 main float, top cap, electronics/cooling system, structural frames, solar array, upper sensors, central ballast, and single-anchor mooring system. The ballast position must be revised below the deeper V2 keel before the assembly is considered interference-free.
 

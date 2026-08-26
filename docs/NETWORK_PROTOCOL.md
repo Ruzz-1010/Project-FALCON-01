@@ -24,7 +24,7 @@ frames never fabricate measurements; absent driver values leave `measurements`
 empty and report sensor state explicitly.
 
 ```json
-{"protocol":"falcon.telemetry","version":1,"sequence":7,"uptimeMs":4200,"source":"hardware-diagnostic","monitoring":true,"sensors":{"bar02":"DETECTED","bno085":"UNTESTED"},"measurements":{}}
+{"protocol":"falcon.telemetry","version":1,"sequence":7,"uptimeMs":4200,"source":"hardware-diagnostic","monitoring":true,"sensors":{"bar02":"DETECTED","gps":"DETECTED","waterTemperature":"UNTESTED","tamper":"UNTESTED"},"measurements":{}}
 ```
 
 Required envelope fields are `protocol`, `version`, integer `sequence`,

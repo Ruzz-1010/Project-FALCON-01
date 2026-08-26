@@ -1,4 +1,4 @@
-# Optional AI and FALCON Assistant v6.0
+# Optional AI and FALCON Assistant v6.1
 
 AI is not required for the Phase 1 monitoring baseline. The core system must acquire, validate, log, display, and alert without a trained model.
 

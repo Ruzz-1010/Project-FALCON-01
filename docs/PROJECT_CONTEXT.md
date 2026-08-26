@@ -1,4 +1,4 @@
-# Project FALCON Master Context v6.0
+# Project FALCON Master Context v6.1
 
 ## Document control
 
@@ -13,8 +13,11 @@
 | Primary wave method | Pressure-based estimated wave height |
 | AI | Optional supporting research feature |
 | Adviser revision | 2026-08-25 |
+| Physical prototype | UNDER REDESIGN; geometry and placement TBD |
 
 This file supersedes older descriptions that made the BNO085 IMU, anchor-chain tension sensing, or AI forecasting mandatory. Working code remains the authority for what is implemented. Planned hardware must not be described as installed or field-validated.
+
+The system-function baseline remains approved, but the physical and visual prototype is being replaced. `PROTOTYPE_REDESIGN_BASELINE.md` governs that work. Existing CAD, renderings, dashboard models, dimensions, enclosure layouts, solar arrangements, and component positions are reference material only until the replacement passes its acceptance checklist.
 
 ## Project definition
 
@@ -195,13 +198,14 @@ FALCON does not provide tsunami, typhoon, storm, or weather prediction; autonomo
 
 ## Immediate priorities
 
-1. Select exact pressure, GPS, wind, water-temperature, tamper, enclosure-switch, and power-interface parts.
-2. Freeze the adviser-approved pinout and wiring after electrical review.
-3. Implement physical pressure acquisition and a documented calibration routine.
-4. Implement security persistence/debounce on real hardware.
-5. Integrate the Orange Pi service and verify automatic startup.
-6. Collect controlled reference data before performance or accuracy claims.
+1. Define and review the proposed replacement prototype using `PROTOTYPE_REDESIGN_BASELINE.md`.
+2. Select exact pressure, GPS, wind, water-temperature, tamper, enclosure-switch, and power-interface parts.
+3. Freeze component placement, pinout, wiring, and PCB only after electrical and physical-fit review.
+4. Implement physical pressure acquisition and a documented calibration routine.
+5. Implement security persistence/debounce on real hardware.
+6. Integrate the Orange Pi service and verify automatic startup.
+7. Collect controlled reference data before performance or accuracy claims.
 
 ## Change control
 
-Any document that conflicts with this v6.0 context is outdated unless it is explicitly labeled historical. New sensor, AI, cloud, or mechanical scope requires adviser approval and corresponding updates to requirements, BOM, firmware, API, tests, dashboard, thesis, and risk documentation.
+Any document that conflicts with this v6.1 context is outdated unless it is explicitly labeled historical. New sensor, AI, cloud, or mechanical scope requires adviser approval and corresponding updates to requirements, BOM, firmware, API, tests, dashboard, thesis, and risk documentation.

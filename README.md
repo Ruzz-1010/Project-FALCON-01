@@ -2,7 +2,7 @@
 
 Project FALCON is a solar-powered smart coastal observation buoy for near-real-time local monitoring. Its Phase 1 baseline uses an ESP32 for sensor acquisition and an Orange Pi Zero 3 (4 GB) for local logging, API hosting, and the web dashboard.
 
-The current adviser-approved direction is documented in [PROJECT_CONTEXT.md](docs/PROJECT_CONTEXT.md). It supersedes older mandatory-IMU, anchor-tension, and AI-first descriptions.
+The current adviser-approved functional direction is documented in [PROJECT_CONTEXT.md](docs/PROJECT_CONTEXT.md). The physical/visual buoy is currently being replaced; [PROTOTYPE_REDESIGN_BASELINE.md](docs/PROTOTYPE_REDESIGN_BASELINE.md) controls that redesign. Existing CAD and renders are references, not the approved replacement prototype.
 
 ## Phase 1 focus
 
@@ -20,6 +20,8 @@ BNO085 is not required in the primary baseline. Load cell/HX711 anchor-chain sen
 ## Current truth
 
 The repository contains working firmware, simulator, local edge API, database, and dashboard prototypes. Most physical sensors and the Orange Pi have not yet been integrated or field-validated. Simulator readings are labeled `SIMULATED`; wave values are labeled `ESTIMATED`; uncalibrated channels say `CALIBRATION REQUIRED`.
+
+The current mechanical geometry, component placement, presentation image, and dashboard 3D model are under redesign. Dimensions and placements from older revisions must not be reused without verification.
 
 ## Run the full local dashboard on Linux Mint
 

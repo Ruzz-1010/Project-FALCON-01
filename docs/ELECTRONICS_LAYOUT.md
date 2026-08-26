@@ -1,5 +1,7 @@
 # Electronics Pod Layout — Revision Pending
 
+> The enclosure and component placement are under redesign. Do not use this layout for fabrication or harness-length decisions. Replace it only after exact parts and the new physical prototype are approved.
+
 > These notes preserve the earlier carrier. BNO085 is no longer required, and security/environment interfaces must be added after exact part selection.
 
 This layout coordinates the existing 485 × 325 mm removable-tray concept with

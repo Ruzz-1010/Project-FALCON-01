@@ -1,12 +1,12 @@
-# Project FALCON Mechanical Baseline v5.0
+# Project FALCON Mechanical Reference — Redesign Hold
 
 ## Authority
 
-Authority: `PROJECT_CONTEXT.md` v5.0.
+Authority: `PROJECT_CONTEXT.md` v6.1 and `PROTOTYPE_REDESIGN_BASELINE.md`.
 
-Status: approved Phase 1 design direction; CAD and physical validation ongoing.
+Status: **SUPERSEDED REFERENCE — NOT THE CURRENT PROTOTYPE.** The replacement body, dimensions, frame, enclosure, solar arrangement, ballast, sensor placement, and dashboard model are TBD.
 
-## Approved Assembly
+## Previous Revision 5 Assembly Reference
 
 - `MAIN_FLOAT_TRADITIONAL_V2`: marine-grade HDPE single-body float;
 - Ø650 mm cylindrical upper body with the existing removable top-cap interface;
@@ -18,7 +18,7 @@ Status: approved Phase 1 design direction; CAD and physical validation ongoing.
 - tilted four-panel solar array;
 - navigation light, GNSS, wind-speed/direction sensor, and approved antennas.
 
-The former four-stabilizer arrangement, aluminum outrigger arms, stabilizer cradles, and radial tension cables are **Legacy Revision 4**. They remain in CAD and source control for traceability but are not part of the Revision 5 production baseline.
+This entire Revision 5 assembly and the earlier four-stabilizer Revision 4 arrangement remain in CAD only for traceability. Neither is the approved replacement prototype.
 
 ## Single-Body Main Float
 
@@ -75,14 +75,18 @@ The enclosure design intent remains IP67 or better, subject to validation. Intak
 
 The removable upper structure carries the tilted solar array and approved sensors. Requirements include wind-resistant brackets, direct load paths to the structural frame, antenna separation, unobstructed wind exposure, drainage, protected wiring, and top-cap service access.
 
-## CAD Configuration
+## Archived CAD Configuration
 
-- Current body: `MAIN_FLOAT_TRADITIONAL_V2` (`FALCON-MF-002`).
+- Previous Revision 5 body: `MAIN_FLOAT_TRADITIONAL_V2` (`FALCON-MF-002`).
 - Legacy body: `MAIN_FLOAT` (`FALCON-MF-001`).
 - Legacy stabilizer scripts remain archived and must not be used for new Revision 5 assemblies.
 - Never delete legacy CAD components from the master design; suppress/hide them in the Revision 5 representation.
 - Exported F3D/FBX/GLB files must identify their mechanical revision.
-- Dashboard models must not be labelled Revision 5 until exported from the verified V2 assembly.
+- Dashboard models must be labeled `REFERENCE MODEL` until replaced from the newly approved assembly.
+
+## Replacement design rule
+
+Do not revise this old geometry into a new baseline by changing isolated dimensions. Create a named new mechanical revision, then complete the calculation, fit, interference, serviceability, and controlled-test gates in `PROTOTYPE_REDESIGN_BASELINE.md`. Only after approval should the new verified values replace this reference.
 
 ## Assembly Inspection
 
@@ -122,3 +126,4 @@ The removable upper structure carries the tilted solar array and approved sensor
 | --- | --- | --- |
 | 4.0 | 2026-08-09 | Controlled four-stabilizer mechanical baseline. |
 | 5.0 | 2026-08-13 | Replaced the production direction with a compact single-body Ø650 HDPE buoy and 240 mm rounded tapered keel; moved the outrigger system to Legacy Revision 4. |
+| HOLD | 2026-08-26 | Superseded Revision 5 as the active prototype; all replacement geometry and placement reset to TBD. |

@@ -1,4 +1,4 @@
-# Sensor Specification v6.0
+# Sensor Specification v6.1
 
 | Group | Channel | Output | Required truth label |
 | --- | --- | --- | --- |

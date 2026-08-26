@@ -1,6 +1,6 @@
 # Adviser Revision Documentation Audit
 
-Date: 2026-08-25. Authority: `PROJECT_CONTEXT.md` v6.0.
+Date: 2026-08-26. Authority: `PROJECT_CONTEXT.md` v6.1.
 
 ## Current primary documents
 
@@ -9,11 +9,14 @@ Date: 2026-08-25. Authority: `PROJECT_CONTEXT.md` v6.0.
 - `CURRENT_PROJECT_DOCUMENTATION.md`
 - `HARDWARE.md`, `HARDWARE_BOM.md`, `PINOUT.md`, `ELECTRONICS_WIRING.md`
 - `SENSOR_SPEC.md`, `SECURITY.md`, `SOFTWARE.md`, `API.md`, `DASHBOARD.md`, `AI.md`
-- `PROJECT FALCON-01 - V3 ADVISER REVISED.docx`
+- `THESIS DOCUMENTATION/PROJECT FALCON-01 - V3 Documentation.docx`
+- `PROTOTYPE_REDESIGN_BASELINE.md` controls the physical/visual replacement.
 
 ## Historical/engineering records requiring a later physical-design revision
 
-The following files preserve earlier BNO085/PCB/Wokwi work for traceability and are not the adviser-approved final wiring baseline: `WOKWI.md`, `CLEAR_WIRING_MAP.md`, `ELECTRONICS_LAYOUT.md`, `PCB_VALIDATION_REGISTER.md`, existing electronics-wiring SVG/PNG files, KiCad carrier files, and BNO085 chip definitions. They must not be used for final fabrication until revised against exact purchased parts and v6.0 pinout.
+The following files preserve earlier BNO085/PCB/Wokwi work for traceability and are not the adviser-approved final wiring baseline: `WOKWI.md`, `CLEAR_WIRING_MAP.md`, `ELECTRONICS_LAYOUT.md`, `PCB_VALIDATION_REGISTER.md`, existing electronics-wiring SVG/PNG files, KiCad carrier files, and BNO085 chip definitions. They must not be used for final fabrication until revised against exact purchased parts and v6.1 pinout.
+
+All Fusion 360 component READMEs, exported models, prototype images, dashboard 3D geometry, and video prompts describe earlier visual/mechanical revisions. They are under redesign hold and must not be used as the replacement prototype without review.
 
 `CHANGELOG.md` and `VERSION_HISTORY.md` intentionally retain old terminology as historical records. Mechanical references to structural tension cables describe legacy CAD and are not anchor-chain load sensing.
 

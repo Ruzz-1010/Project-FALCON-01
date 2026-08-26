@@ -1,5 +1,7 @@
 # Project FALCON — Flow AI Realistic Deployment Prompt Package
 
+> **ARCHIVED PROMPT PACKAGE — DO NOT GENERATE THE REPLACEMENT VIDEO FROM THIS FILE.** It is retained to preserve the earlier concept. After the proposed replacement prototype is approved, rebuild the prompts from its verified exterior, sensor placement, enclosure layout, and data flow. The replacement must follow `docs/PROTOTYPE_REDESIGN_BASELINE.md`.
+
 ## Single required upload
 
 Upload only this image to Flow and use it as the visual reference for **every scene**:

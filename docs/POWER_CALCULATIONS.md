@@ -1,5 +1,7 @@
 # FALCON-01 Provisional Power and Protection Schedule
 
+> Power values are preliminary design envelopes. Recalculate them from measured normal/peak consumption and the approved replacement prototype before freezing the solar panel, battery, converter, thermal, enclosure, or cable design.
+
 ## Energy Model
 
 Baseline battery energy: `12.8 V × 20 Ah = 256 Wh nominal`. At 80% usable,
