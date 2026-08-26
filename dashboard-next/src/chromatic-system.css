@@ -47,3 +47,6 @@ html[data-theme=light] .content[class$="-page"] .panel,html[data-theme=light] .w
 html[data-theme=light] .nav-item b{color:#294b50}
 
 @media(max-width:720px){.nav-item>svg{width:36px;height:36px;flex-basis:36px}.summary article svg{width:42px;height:42px;flex-basis:42px}.content[class$="-page"] .panel header>svg,.wave-page .panel header>svg{width:38px;height:38px;flex-basis:38px}}
+
+/* Buoy Motion presentation scenarios are local visual presets, never telemetry. */
+.scenario-panel{margin-bottom:14px}.scenario-panel header{align-items:center}.scenario-panel>p{margin:12px 0 0;color:var(--muted);font-size:11px;line-height:1.55}.scenario-buttons{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}.scenario-buttons button{min-height:42px;padding:9px 15px;border:1px solid var(--line);border-radius:9px;background:var(--panel);color:var(--text);font:inherit;font-size:12px;font-weight:750;cursor:pointer;transition:border-color .18s ease,background .18s ease,color .18s ease,transform .18s ease}.scenario-buttons button:hover{border-color:var(--cyan);transform:translateY(-1px)}.scenario-buttons button.active{border-color:var(--cyan);background:var(--cyan);color:#fff}
