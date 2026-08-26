@@ -119,7 +119,7 @@ Normal wave-driven motion must not generate an alert by itself. Geofence and tam
 Four primary navigation pages are approved:
 
 1. **Overview** — one large estimated-wave chart and one Station Status card containing wind, pressure, GPS security, battery, solar, and water/enclosure temperature. Optional AI is not shown in the default operator view.
-2. **Buoy Motion** — optional 3D visual model driven by estimated sea context; it is not a required BNO085 measurement channel.
+2. **Buoy Motion** — optional 3D visual model whose water-surface amplitude, heave, and tilt are generated from pressure-based estimated wave height; GPS may provide heading context. It has no required IMU, roll, or pitch measurement channel.
 3. **Sensors** — six readable operator groups: Wave & Pressure, GPS & Security, Wind, Water, Power, and System. Exact device models, sampling, quality, freshness, and calibration diagnostics remain available through expandable details.
 4. **Logs & Alerts** — active alerts, persisted telemetry, security events, calibration events, operator actions, search, and export.
 

@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
-type Telemetry = { roll: number; pitch: number; yaw: number; wave: number; rough: boolean; fault: "sensor"|"thermal"|"power"|null };
+type Telemetry = { yaw: number; wave: number; rough: boolean; fault: "sensor"|"thermal"|"power"|null; source:string };
 
 export default function MotionScene({ telemetry }: { telemetry: Telemetry }) {
   const host = useRef<HTMLDivElement>(null);
@@ -65,18 +65,18 @@ export default function MotionScene({ telemetry }: { telemetry: Telemetry }) {
     const up=()=>{pointer=null}; const wheel=(e:WheelEvent)=>{e.preventDefault();target.distance=THREE.MathUtils.clamp(target.distance+e.deltaY*.003,2.7,7)};
     canvas.addEventListener("pointerdown",down);canvas.addEventListener("pointermove",move);canvas.addEventListener("pointerup",up);canvas.addEventListener("wheel",wheel,{passive:false});
     const resize=()=>{const w=container.clientWidth,h=container.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/Math.max(1,h);camera.updateProjectionMatrix()}; const observer=new ResizeObserver(resize);observer.observe(container);resize();
-    const clock=new THREE.Clock(); let frame=0,phase=0,previous=0,normalFrame=0; const motion={roll:0,pitch:0,yaw:0,wave:.4};
+    const clock=new THREE.Clock(); let frame=0,phase=0,previous=0,normalFrame=0; const motion={yaw:0,wave:.4};
     const surface=(x:number,z:number,a:number)=>Math.sin(x*.52+phase)*a+Math.sin(z*.64-phase*.58+x*.14)*a*.38+Math.sin((x+z)*.96+phase*.82)*a*.1;
     const deepSea=new THREE.Color(0x205b72),midSea=new THREE.Color(0x397f97),waveCrest=new THREE.Color(0x75a9b9),seaShade=new THREE.Color();
     const animate=()=>{frame=requestAnimationFrame(animate);const elapsed=clock.getElapsedTime(),dt=Math.min(.05,Math.max(.001,elapsed-previous));previous=elapsed;const t=live.current;
-      motion.roll=THREE.MathUtils.damp(motion.roll,t.roll,1.25,dt);motion.pitch=THREE.MathUtils.damp(motion.pitch,t.pitch,1.25,dt);motion.yaw=THREE.MathUtils.damp(motion.yaw,t.yaw,1,dt);motion.wave=THREE.MathUtils.damp(motion.wave,t.wave,.72,dt);phase+=dt*(t.rough?.72:.38);
+      motion.yaw=THREE.MathUtils.damp(motion.yaw,t.yaw,1,dt);motion.wave=THREE.MathUtils.damp(motion.wave,t.wave,.72,dt);phase+=dt*(t.rough?.72:.38);
       const amp=THREE.MathUtils.lerp(.055,.25,THREE.MathUtils.clamp(motion.wave/3.5,0,1)),p=seaGeometry.attributes.position,colors=seaGeometry.attributes.color;
       for(let i=0;i<p.count;i++){const o=i*3,height=surface(base[o],base[o+2],amp),crest=THREE.MathUtils.smoothstep(height,-amp*.2,amp*1.25);seaShade.copy(deepSea).lerp(midSea,crest*.82).lerp(waveCrest,Math.max(0,(crest-.8)/.2)*.72);p.setY(i,height);colors.setXYZ(i,seaShade.r,seaShade.g,seaShade.b)}p.needsUpdate=true;colors.needsUpdate=true;if((normalFrame++%2)===0)seaGeometry.computeVertexNormals();
       const sway=Math.sin(phase*.38)*(.015+motion.wave*.009),surge=Math.sin(phase*.51+1.4)*(.014+motion.wave*.008),h=surface(sway,surge,amp),sample=.13,slopeX=(surface(sway+sample,surge,amp)-surface(sway-sample,surge,amp))/(sample*2),slopeZ=(surface(sway,surge+sample,amp)-surface(sway,surge-sample,amp))/(sample*2),waveRoll=THREE.MathUtils.radToDeg(Math.atan(slopeX))*.72,wavePitch=THREE.MathUtils.radToDeg(Math.atan(slopeZ))*.72;
-      pose.position.x=THREE.MathUtils.damp(pose.position.x,sway,1.65,dt);pose.position.z=THREE.MathUtils.damp(pose.position.z,surge,1.65,dt);pose.position.y=THREE.MathUtils.damp(pose.position.y,-.58+h+modelWaterlineOffset,2.15,dt);pose.rotation.z=THREE.MathUtils.damp(pose.rotation.z,THREE.MathUtils.degToRad(-motion.roll*.38-waveRoll),2.15,dt);pose.rotation.x=THREE.MathUtils.damp(pose.rotation.x,THREE.MathUtils.degToRad(motion.pitch*.38+wavePitch),2.15,dt);pose.rotation.y=THREE.MathUtils.damp(pose.rotation.y,THREE.MathUtils.degToRad(motion.yaw),1.45,dt);ring.position.set(pose.position.x,-.555+h,pose.position.z);ring.rotation.z=-Math.atan(slopeX);ring.rotation.x=-Math.PI/2+Math.atan(slopeZ);ring.scale.setScalar(1+Math.sin(phase)*.035+Math.min(.12,motion.wave*.025));ringMaterial.opacity=.18+Math.max(0,Math.sin(phase*1.2))*.07;
+      pose.position.x=THREE.MathUtils.damp(pose.position.x,sway,1.65,dt);pose.position.z=THREE.MathUtils.damp(pose.position.z,surge,1.65,dt);pose.position.y=THREE.MathUtils.damp(pose.position.y,-.58+h+modelWaterlineOffset,2.15,dt);pose.rotation.z=THREE.MathUtils.damp(pose.rotation.z,THREE.MathUtils.degToRad(-waveRoll),2.15,dt);pose.rotation.x=THREE.MathUtils.damp(pose.rotation.x,THREE.MathUtils.degToRad(wavePitch),2.15,dt);pose.rotation.y=THREE.MathUtils.damp(pose.rotation.y,THREE.MathUtils.degToRad(motion.yaw),1.45,dt);ring.position.set(pose.position.x,-.555+h,pose.position.z);ring.rotation.z=-Math.atan(slopeX);ring.rotation.x=-Math.PI/2+Math.atan(slopeZ);ring.scale.setScalar(1+Math.sin(phase)*.035+Math.min(.12,motion.wave*.025));ringMaterial.opacity=.18+Math.max(0,Math.sin(phase*1.2))*.07;
       Object.entries(diagnostic).forEach(([name,materials])=>materials.forEach(item=>{const active=t.fault===name;item.material.emissive?.setHex(active?0xff302c:item.base);item.material.emissiveIntensity=active?.8+Math.max(0,Math.sin(elapsed*7))*2.4:item.intensity}));
       orbit.yaw=THREE.MathUtils.damp(orbit.yaw,target.yaw,10,dt);orbit.pitch=THREE.MathUtils.damp(orbit.pitch,target.pitch,10,dt);orbit.distance=THREE.MathUtils.damp(orbit.distance,target.distance,10,dt);const horizontal=orbit.distance*Math.cos(orbit.pitch);camera.position.set(horizontal*Math.sin(orbit.yaw),.05+orbit.distance*Math.sin(orbit.pitch),horizontal*Math.cos(orbit.yaw));camera.lookAt(0,.05,0);if(ready)renderer.render(scene,camera)};animate();
     return()=>{cancelAnimationFrame(frame);observer.disconnect();renderer.dispose();canvas.remove()};
   }, []);
-  return <div className="motion-scene" ref={host}><span className="model-state">FUSION CAD · LIVE</span><span className="model-help">Drag to orbit · Scroll to zoom</span></div>;
+  return <div className="motion-scene" ref={host}><span className="model-state">PRESSURE MODEL · {telemetry.source.toUpperCase()}</span><span className="model-help">Drag to orbit · Scroll to zoom</span></div>;
 }

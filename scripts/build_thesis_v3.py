@@ -187,7 +187,7 @@ def build() -> None:
     heading(document, "11. Dashboard Design")
     numbered(document, [
         "Overview: one large estimated-wave chart plus one Station Status summary for wind, pressure, GPS security, battery, solar, and water/enclosure temperature; optional AI is absent from the default operator view.",
-        "Buoy Motion: optional interactive 3D response model driven by estimated sea context, not a required IMU measurement.",
+        "Buoy Motion: optional 3D response model whose water-surface amplitude, heave, and tilt are generated from pressure-based estimated wave height; GPS provides heading context only, with no IMU, roll, or pitch sensor input.",
         "Sensors: six user-facing groups—Wave & Pressure, GPS & Security, Wind, Water, Power, and System—with exact hardware, quality, source, update age, sampling, and calibration diagnostics available through expandable details.",
         "Logs & Alerts: current warnings, security/calibration/operator events, persisted telemetry, acknowledgement, search, and export.",
     ])

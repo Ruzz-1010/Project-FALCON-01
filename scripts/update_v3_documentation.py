@@ -16,6 +16,8 @@ REPLACEMENTS = {
         "The operator interface uses four primary navigation pages. Detailed diagnostics remain available through expandable views rather than one card per physical sensor.",
     "2. Optional Buoy Motion: an advanced/demo visualization driven by estimated sea context. It is not a primary navigation page and is not presented as an IMU measurement.":
         "2. Buoy Motion: an optional advanced/demo visualization driven by estimated sea context. It remains available in navigation but is not presented as an IMU measurement.",
+    "2. Buoy Motion: an optional advanced/demo visualization driven by estimated sea context. It remains available in navigation but is not presented as an IMU measurement.":
+        "2. Buoy Motion: an optional 3D visualization whose water-surface amplitude, heave, and tilt are generated from pressure-based estimated wave height. GPS supplies heading context only; no IMU, roll, or pitch sensor input is used.",
     "2. Sensors: six grouped user-facing cards—Wave & Pressure, GPS & Security, Wind, Water, Power, and System. Technical details such as exact sensor model, sampling rate, calibration state, signal quality, and update age remain available through expandable details.":
         "3. Sensors: six grouped user-facing cards—Wave & Pressure, GPS & Security, Wind, Water, Power, and System. Technical details such as exact sensor model, sampling rate, calibration state, signal quality, and update age remain available through expandable details.",
     "3. Logs & Alerts: current warnings, security/calibration/operator events, persisted telemetry, acknowledgement, search, and export.":
@@ -34,6 +36,7 @@ REPLACEMENTS = {
         "Sensors → ESP32 acquisition/validation → USB serial/UART → Orange Pi local processing/storage/API → local dashboard → user. The saved FALCON Assistant is currently disabled; if re-enabled, it may consume validated system state but shall never control or replace the core monitoring pipeline.",
     "Provide simplified three-page browser dashboard.": "Provide simplified four-page browser dashboard.",
     "Display current state, sensors, logs, alerts, and optional assistant": "Display current state, optional motion visualization, grouped sensors, logs, and alerts",
+    "optional motion visualization": "optional pressure-driven motion visualization",
     "It does not claim laboratory-grade salinity": "It does not claim laboratory-grade water-quality analysis",
     "3. Bench-integrate Bar02, GPS, wind, DS18B20, conductivity, health, and security channels.":
         "3. Bench-integrate Bar02, GPS, wind, DS18B20, health, and security channels.",
