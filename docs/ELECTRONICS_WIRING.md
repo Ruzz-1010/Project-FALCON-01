@@ -9,7 +9,6 @@ Bar02 + health I2C devices -> protected 3.3 V I2C -> ESP32
 GPS -> protected UART -> ESP32
 Wind speed/direction -> digital pulse + ADC interface -> ESP32
 DS18B20 -> protected OneWire -> ESP32
-Conductivity interface -> TBD protected ADC/I2C -> ESP32
 Tamper + enclosure switch -> filtered/debounced GPIO -> ESP32
 ESP32 GPIO -> buzzer transistor/driver -> buzzer
 ESP32 USB serial -> Orange Pi Zero 3

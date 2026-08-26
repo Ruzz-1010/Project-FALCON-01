@@ -17,14 +17,13 @@ markup. Confirm the live exchange rate, stock, revision, and ratings before orde
 | 1 | Enclosure-temperature sensor | PHP 250–925 | Exact model/address TBD after interface review |
 | 1 | SparkFun Weather Meter SEN-15901 | PHP 4,935 | Prototype only; salt-exposure maintenance required |
 | 1 | Sealed DS18B20 probe | PHP 495–925 | Supporting water temperature; verify genuine waterproof build |
-| 1 | Conductivity/salinity interface | TBD | Supporting indicator; reference solutions and calibration required |
 | 1 | Vibration/tamper input | TBD | Exact model and debounce/persistence testing required |
 | 1 | Reed/limit enclosure switch | PHP 100–500 | Confirm marine installation and contact logic |
 | 1 | Buzzer and driver/protection | PHP 100–500 | Verify voltage, current, transistor driver and acoustic limit |
 | 1 | Orange Pi Zero 3 4 GB | PHP 2,160–3,705 | Buy from an authorized listing; include storage/heatsink |
 | 2 | Noctua NF-A8 5V PWM, 80 mm | Verify local quote | Reference cooling candidate; 5 V, 0.15 A max each, four-wire PWM/tach, dry enclosure only |
 
-The previous subtotal is obsolete because adviser-approved security and conductivity parts remain TBD. Recalculate the procurement total only after exact models and current supplier quotations are verified. It excludes fans,
+The previous subtotal is obsolete because adviser-approved security parts remain TBD. Recalculate the procurement total only after exact models and current supplier quotations are verified. It excludes fans,
 power, connectors, enclosure, shipping, and optional antenna.
 
 ## Power and Installation Allowance

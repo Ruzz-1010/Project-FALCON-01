@@ -5,6 +5,19 @@
 Baseline battery energy: `12.8 V × 20 Ah = 256 Wh nominal`. At 80% usable,
 budget `204.8 Wh`.
 
+## Provisional Electronics Consumption
+
+These are supply envelopes and planning assumptions, not measured continuous
+consumption. Replace them with a 24-hour current log before final sizing.
+
+| Load | Preliminary electrical basis | Required evidence |
+| --- | --- | --- |
+| Orange Pi Zero 3, storage, Wi-Fi | 5 V / 3 A supply envelope (15 W maximum available, not average draw) | Startup, idle, Wi-Fi, and SQLite-write current |
+| ESP32 and complete sensor carrier | Separate 5 V / 2 A branch envelope (10 W maximum available) | ESP32 plus every installed sensor at idle and active sampling |
+| Two optional enclosure fans | `2 × 5 V × 0.15 A = 1.5 W` maximum | Fan startup, normal PWM duty, and sealed-enclosure thermal need |
+| Pressure, GPS, wind, water, power, security sensors | Included in the ESP32/sensor branch | Exact purchased-part datasheets and individual bench measurements |
+| Buck/MPPT/wiring losses | Included in the conservative system-efficiency assumption | Efficiency versus battery voltage, load, and enclosure temperature |
+
 | Average complete load | No-solar runtime | Daily energy |
 | ---: | ---: | ---: |
 | 6 W | 34.1 h | 144 Wh/day |

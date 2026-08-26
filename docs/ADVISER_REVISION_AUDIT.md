@@ -23,4 +23,4 @@ The following files preserve earlier BNO085/PCB/Wokwi work for traceability and 
 
 ## Remaining release gates
 
-Exact conductivity, tamper, enclosure switch, GPS, wind, and health-monitor models remain TBD. Final schematics, PCB, diagrams, and BOM total must wait for datasheet/footprint/current/rating verification. Physical pressure calibration and security persistence validation are not complete.
+Exact tamper, enclosure switch, GPS, wind, and health-monitor models remain TBD. Conductivity/salinity is excluded from the required Phase 1 scope. Final schematics, PCB, diagrams, and BOM total must wait for datasheet/footprint/current/rating verification. Physical pressure calibration, DS18B20 reference comparison, and security persistence validation are not complete.

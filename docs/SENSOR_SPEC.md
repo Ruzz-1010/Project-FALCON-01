@@ -7,7 +7,6 @@
 | Core | Wind speed | speed and units | LIVE or SIMULATED |
 | Core | Wind direction | direction/heading | LIVE or SIMULATED |
 | Supporting | Sealed DS18B20 | water temperature | LIVE or SIMULATED |
-| Supporting | Conductivity/salinity | indicator and estimated salinity | ESTIMATED; CALIBRATION REQUIRED |
 | Health | Battery monitor | voltage, current, state estimate | LIVE or SIMULATED |
 | Health | Solar monitor | voltage, current, power/charging | LIVE or SIMULATED |
 | Health | Enclosure temperature | temperature | LIVE or SIMULATED |

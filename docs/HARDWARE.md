@@ -20,7 +20,6 @@ The Orange Pi is powered separately from the sensor carrier and is not placed on
 | Core | Wind-speed sensor | Exact model TBD |
 | Core | Wind-direction sensor | Exact model TBD |
 | Supporting | Sealed DS18B20 water-temperature probe | Selected family |
-| Supporting | Conductivity/salinity indicator | Exact model TBD; calibration required; not laboratory-grade |
 | Health | Battery voltage/current monitor | Exact design/range TBD |
 | Health | Solar voltage/current monitor | Exact design/range TBD |
 | Health | Enclosure-temperature sensor | Exact model TBD |

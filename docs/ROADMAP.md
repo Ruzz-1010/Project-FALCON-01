@@ -10,12 +10,12 @@
 
 - revise schematic/PCB/wiring against purchased modules;
 - verify rails, protection, addresses, logic levels, connectors, and test points;
-- integrate Bar02, GPS, wind, DS18B20, conductivity, power/health, tamper, enclosure switch, and buzzer one at a time.
+- integrate Bar02, GPS, wind, DS18B20, power/health, tamper, enclosure switch, and buzzer one at a time.
 
 ## Gate 3 — Calibration and software integration
 
 - record pressure baseline/depth/reference method and coefficients;
-- calibrate water temperature, conductivity indicator, wind, and power channels;
+- calibrate water temperature, wind, and power channels;
 - validate serial ingestion, grouped API, storage, stale state, security persistence, and automatic restart.
 
 ## Gate 4 — Controlled validation

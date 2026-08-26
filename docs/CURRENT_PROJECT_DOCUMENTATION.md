@@ -10,18 +10,19 @@ Project FALCON is now a pressure-based smart coastal observation buoy. The autho
 - SQLite telemetry, alerts, prediction compatibility records, and operator events.
 - Grouped `/api/telemetry/current` contract plus legacy endpoints.
 - Pressure fields, simulated wave estimate, geofence/tamper scenarios, deterministic alerts, and rule-based assistant.
+- Water-temperature monitoring through a sealed DS18B20; physical reference comparison remains pending.
 - Responsive four-page dashboard: Overview, Buoy Motion, Sensors, Logs & Alerts; settings is an icon. Sensors are simplified into six operator-facing groups, with research diagnostics hidden behind expandable details.
 
 ## Current physical status
 
-Most final sensors, the Orange Pi, PCB, waterproof enclosure, solar system, and complete buoy have not been physically integrated or field-validated. The current simulator is for software demonstration. The pressure-to-wave method, salinity indicator, geofence thresholds, and tamper thresholds require reference calibration/testing.
+Most final sensors, the Orange Pi, PCB, waterproof enclosure, solar system, and complete buoy have not been physically integrated or field-validated. The current simulator is for software demonstration. The pressure-to-wave method, water-temperature channel, geofence thresholds, and tamper thresholds require reference calibration/testing.
 
 ## Adviser changes applied
 
 - BNO085 removed from the required Phase 1 baseline; old motion files remain only as deprecated optional prototypes.
 - Load cell/HX711 and anchor-chain tension sensing removed.
 - Pressure sensor is the primary wave input; output is **estimated wave height**.
-- DS18B20 and calibration-required conductivity/salinity indicator added.
+- Sealed DS18B20 water-temperature channel retained; conductivity/salinity removed from the required Phase 1 scope.
 - GPS geofence, tamper input, enclosure switch, and buzzer security concept added.
 - AI made optional and hidden by default.
 - Dashboard consolidated to four primary pages while retaining motion as an optional visualization.

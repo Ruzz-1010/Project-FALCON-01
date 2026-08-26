@@ -64,10 +64,10 @@ Internet and cloud synchronization are not required. The ESP32 continues basic a
 - Wind-speed sensor: local wind-speed context.
 - Wind-direction sensor: local wind-direction context.
 
-### Supporting environmental sensors
+### Supporting environmental sensor
 
-- Sealed DS18B20: water temperature.
-- Conductivity/salinity sensor: supporting indicator only. Its exact model is TBD and readings must say `ESTIMATED` and `CALIBRATION REQUIRED` until reference calibration is completed. It is not a laboratory-grade salinity claim.
+- Sealed DS18B20: water temperature with timestamp, validity, freshness, and reference-comparison status.
+- Conductivity/salinity sensing is excluded from the required Phase 1 scope. Legacy API fields may remain temporarily for backward compatibility but are not displayed or evaluated.
 
 ### System-health sensors
 
@@ -172,7 +172,7 @@ Not yet physically validated:
 - pressure-to-wave calibration coefficients and reference accuracy;
 - real GPS geofence false-positive performance;
 - tamper component selection and debounce thresholds;
-- conductivity-to-salinity calibration;
+- water-temperature reference comparison;
 - full waterproofing, corrosion protection, power autonomy, and coastal endurance;
 - Orange Pi installation on the buoy;
 - field-trained or field-validated AI.
@@ -181,7 +181,7 @@ Not yet physically validated:
 
 1. Bench-test each sensor independently and record raw values, units, range, and failures.
 2. Calibrate pressure zero/baseline and compare estimated wave height with a documented physical reference.
-3. Compare DS18B20 with a reference thermometer and conductivity readings with reference solutions.
+3. Compare the sealed DS18B20 with a traceable reference thermometer across the intended operating range.
 4. Survey the GPS deployment reference and test inside/outside geofence persistence.
 5. Test vibration and enclosure inputs under ordinary wave-like motion and deliberate tampering; record false positives/negatives.
 6. Measure serial packet loss, latency, stale-data behavior, storage retention, and restart recovery.
@@ -195,7 +195,7 @@ FALCON does not provide tsunami, typhoon, storm, or weather prediction; autonomo
 
 ## Immediate priorities
 
-1. Select exact pressure, GPS, wind, conductivity, tamper, enclosure-switch, and power-interface parts.
+1. Select exact pressure, GPS, wind, water-temperature, tamper, enclosure-switch, and power-interface parts.
 2. Freeze the adviser-approved pinout and wiring after electrical review.
 3. Implement physical pressure acquisition and a documented calibration routine.
 4. Implement security persistence/debounce on real hardware.

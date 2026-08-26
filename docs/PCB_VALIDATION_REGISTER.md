@@ -1,6 +1,6 @@
 # FALCON-01 Carrier PCB Validation Register — Historical Revision
 
-> Not manufacturing-ready under adviser revision v6.0. Revise after exact pressure, conductivity, security, wind, GPS, and health modules are approved.
+> Not manufacturing-ready under adviser revision v6.0. Revise after exact pressure, water-temperature, security, wind, GPS, and health modules are approved.
 
 ## Status
 

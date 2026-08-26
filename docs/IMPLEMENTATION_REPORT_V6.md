@@ -5,7 +5,7 @@ Date: 2026-08-25
 ## Implemented
 
 - Added grouped `/api/telemetry/current` and `/api/dashboard` contracts.
-- Added raw/filtered pressure, baseline, depth, calibration, estimated-wave, water-temperature, conductivity/salinity, security, health, and assistant fields.
+- Added raw/filtered pressure, baseline, depth, calibration, estimated-wave, water-temperature, security, health, and assistant fields. Legacy salinity compatibility fields are excluded from the required Phase 1 UI and evaluation.
 - Added simulator tamper and geofence scenarios plus three-frame security persistence.
 - Replaced required tilt/IMU safety rules with geofence and tamper alerts.
 - Retained legacy REST and prediction routes for backward compatibility.
@@ -50,4 +50,4 @@ python3 scripts/build_thesis_v3.py
 
 ## Honest remaining work
 
-Exact TBD components, final schematic/PCB/wiring, physical Bar02 integration, pressure reference calibration, conductivity calibration, real geofence/tamper thresholds, Orange Pi installation, waterproofing, energy validation, and controlled coastal trials remain incomplete. Legacy Wokwi/PCB/motion files are preserved but explicitly classified as historical/optional rather than silently deleted.
+Exact TBD components, final schematic/PCB/wiring, physical Bar02 integration, pressure and water-temperature reference validation, real geofence/tamper thresholds, Orange Pi installation, waterproofing, energy validation, and controlled coastal trials remain incomplete. Legacy Wokwi/PCB/motion files are preserved but explicitly classified as historical/optional rather than silently deleted.

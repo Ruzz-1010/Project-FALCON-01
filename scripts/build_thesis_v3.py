@@ -88,7 +88,7 @@ def build() -> None:
     subtitle.runs[0].font.size = Pt(15)
     version = document.add_paragraph()
     version.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    version.add_run("V3 — ADVISER REVISED\nUndergraduate Thesis Documentation\n25 August 2026")
+    version.add_run("V3.3 — CURRENT IMPLEMENTATION ALIGNED\nUndergraduate Thesis Documentation\n26 August 2026")
     document.add_page_break()
 
     heading(document, "Executive Summary")
@@ -106,7 +106,7 @@ def build() -> None:
         "How can a low-cost solar-powered buoy acquire and retain near-real-time coastal measurements using an ESP32 and local Orange Pi edge computer?",
         "How accurately and repeatably can calibrated underwater-pressure variation be processed into an estimated wave-height signal under controlled conditions?",
         "How reliably can GPS geofence, vibration/tamper, and enclosure-access rules detect persistent security events without being triggered by normal wave movement?",
-        "How clearly can a four-page local dashboard communicate wave, environment, GPS, power, security, health, and alert information?",
+        "How clearly can a simplified four-page local dashboard communicate wave, environment, GPS, power, security, health, and alert information with minimal navigation for non-technical users?",
         "How does the prototype perform in sensor accuracy, communication reliability, dashboard usability, energy use, data retention, and system recovery?",
         "If optional AI is evaluated, does it improve a documented baseline without interrupting the core monitoring system?",
     ])
@@ -124,13 +124,13 @@ def build() -> None:
         "Develop a traceable pipeline that retains raw and filtered pressure, baseline, optional depth, estimated wave height, validity, timestamp, and calibration metadata.",
         "Implement persistent/debounced geofence, tamper, and enclosure security rules with SECURE, WARNING, ALERT, and DISARMED states.",
         "Implement local serial ingestion, SQLite storage, REST API, logs, alerts, and automatic service recovery on the Orange Pi.",
-        "Develop a responsive dashboard with Overview, Buoy Motion, Sensors, and Logs & Alerts as primary pages while keeping motion visualization optional.",
+        "Develop a responsive dashboard with Overview, Buoy Motion, Sensors, and Logs & Alerts as four primary navigation pages while clearly labeling Buoy Motion as optional visualization.",
         "Evaluate subsystem accuracy, reliability, latency, false alerts, usability, power consumption, and controlled deployment readiness.",
     ])
 
     heading(document, "5. Scope and Delimitations")
     paragraph(document, "Phase 1 covers a single near-shore prototype, passive single-anchor mooring, local ESP32 acquisition, USB/UART transfer, Orange Pi local processing, pressure-based estimated wave height, core/supporting environmental readings, power monitoring, basic security, local logging, and a browser dashboard. Physical models marked TBD require selection before final wiring or procurement.")
-    paragraph(document, "The study does not provide official weather, storm, typhoon, tsunami, navigation, or emergency warnings. It does not claim laboratory-grade salinity, professional oceanographic accuracy, autonomous navigation, satellite communication, camera AI, or multi-buoy operation. Internet connectivity is optional. AI wave prediction is an optional extension and not a required study outcome.")
+    paragraph(document, "The study does not provide official weather, storm, typhoon, tsunami, navigation, or emergency warnings. It does not claim laboratory-grade water-quality analysis, professional oceanographic accuracy, autonomous navigation, satellite communication, camera AI, or multi-buoy operation. Internet connectivity is optional. AI wave prediction is an optional extension and not a required study outcome.")
 
     heading(document, "6. System Architecture")
     table(document, ["Layer", "Primary responsibility", "Failure behavior"], [
@@ -147,7 +147,6 @@ def build() -> None:
         ["Core", "GPS receiver", "Position, time, fix quality, geofence; exact model TBD"],
         ["Core", "Wind speed/direction", "Local wind context; exact models TBD"],
         ["Supporting", "Sealed DS18B20", "Water temperature; reference comparison required"],
-        ["Supporting", "Conductivity/salinity interface", "Estimated indicator only; exact model and calibration TBD"],
         ["Health", "Battery, solar, enclosure temperature", "Energy and electronics health; exact interfaces verified before fabrication"],
         ["Security", "GPS geofence, tamper input, enclosure switch, buzzer", "Debounced/persistent anti-theft awareness; exact hardware TBD where stated"],
         ["Controller", "ESP32 DevKit", "Deterministic sensor acquisition and serial telemetry"],
@@ -192,7 +191,7 @@ def build() -> None:
         "Sensors: six user-facing groups—Wave & Pressure, GPS & Security, Wind, Water, Power, and System—with exact hardware, quality, source, update age, sampling, and calibration diagnostics available through expandable details.",
         "Logs & Alerts: current warnings, security/calibration/operator events, persisted telemetry, acknowledgement, search, and export.",
     ])
-    paragraph(document, "Settings is a compact header icon. Optional AI is hidden by default. The saved FALCON Assistant concept is also hidden while its final operator design is under review; it is not a chatbot or autonomous decision-maker.")
+    paragraph(document, "Settings is a compact header icon. Optional AI is hidden by default. The saved FALCON Assistant concept, mascot, and animation files are preserved but not currently mounted in the dashboard while the final operator design is under review.")
 
     heading(document, "12. Testing and Evaluation Plan")
     table(document, ["Test area", "Evidence and metrics"], [
@@ -211,7 +210,7 @@ def build() -> None:
     paragraph(document, "Marine deployment requires permission, site-risk review, electrical protection, waterproofing, safe battery handling, retrieval planning, and weather limits. GPS data and future camera features require privacy controls. The dashboard must state that FALCON is a research prototype and does not replace PAGASA, coast guard instructions, navigation equipment, or emergency-warning systems.")
 
     heading(document, "14. Current Implementation and Limitations")
-    paragraph(document, "The repository currently includes the ESP32 firmware shell, diagnostic portal, versioned serial frame, Python simulator/edge service, SQLite storage, deterministic alerts, grouped API, four-page dashboard, optional motion visualization, optional assistant, and optional presentation prediction. The software build and automated tests demonstrate implementation behavior only. They do not prove physical sensor accuracy or coastal readiness.")
+    paragraph(document, "The repository currently includes the ESP32 firmware shell, diagnostic portal, versioned serial frame, Python simulator/edge service, SQLite storage, deterministic alerts, grouped API, four-page dashboard, optional motion visualization, saved but disabled assistant assets, and optional presentation prediction. The software build and automated tests demonstrate implementation behavior only. They do not prove physical sensor accuracy or coastal readiness.")
     paragraph(document, "Physical pressure calibration, exact supporting/security part selection, final PCB/wiring release, Orange Pi installation, waterproofing, power autonomy, and controlled field trials remain pending. These limitations must remain visible in presentations, results, and conclusions.")
 
     heading(document, "15. Expected Output and Beneficiaries")
@@ -220,14 +219,14 @@ def build() -> None:
     heading(document, "16. Development Roadmap")
     numbered(document, [
         "Approve exact component models and datasheets.", "Freeze the adviser-approved electrical interfaces and revised PCB.",
-        "Bench-integrate Bar02, GPS, wind, DS18B20, conductivity, health, and security channels.",
+        "Bench-integrate Bar02, GPS, wind, DS18B20, health, and security channels.",
         "Complete pressure/environment/security calibration and controlled reference tests.",
         "Install and harden Orange Pi automatic services.", "Complete enclosure, solar, mooring, and safe controlled water trials.",
         "Analyze results and revise claims based on evidence.", "Evaluate optional AI only if sufficient calibrated data and time remain.",
     ])
 
     heading(document, "17. Documentation Status")
-    paragraph(document, "This V3 adviser-revised document supersedes conflicting V2 descriptions. The repository master context is docs/PROJECT_CONTEXT.md v6.0. Older CAD, Wokwi, motion, IMU, forecast, and PCB records may remain for historical traceability but are not the current required Phase 1 baseline unless revised and explicitly approved.")
+    paragraph(document, "This V3.3 implementation-aligned document supersedes conflicting V2 and earlier V3 descriptions. The repository master context is docs/PROJECT_CONTEXT.md v6.0. Older CAD, Wokwi, motion, IMU, forecast, and PCB records may remain for historical traceability but are not the current required Phase 1 baseline unless revised and explicitly approved.")
 
     document.add_page_break()
     heading(document, "Appendix A — Approved Telemetry Sections")

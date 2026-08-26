@@ -86,7 +86,7 @@ Unavailable readings are `null`, never a fabricated zero. Units and source must 
 
 ## Calibration channels
 
-Accepted calibration targets are `water-pressure`, `water-temperature`, `salinity`, `wind`, `gps`, `battery`, `solar`, and `security`. BNO085 and mooring-tension channels are not part of the approved primary contract.
+Accepted Phase 1 calibration targets are `water-pressure`, `water-temperature`, `wind`, `gps`, `battery`, `solar`, and `security`. The legacy `salinity` field/target may remain temporarily for backward compatibility but is excluded from the required dashboard, hardware baseline, and evaluation. BNO085 and mooring-tension channels are not part of the approved primary contract.
 
 ## Errors
 

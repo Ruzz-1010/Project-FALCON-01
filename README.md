@@ -9,7 +9,7 @@ The current adviser-approved direction is documented in [PROJECT_CONTEXT.md](doc
 - pressure-based **estimated** wave height using Bar02 or a compatible sensor;
 - GPS position and persistent geofence monitoring;
 - wind speed and direction;
-- sealed water temperature and a calibration-required salinity/conductivity indicator;
+- sealed DS18B20 water-temperature monitoring;
 - battery, solar, and enclosure health;
 - simple vibration/tamper and enclosure-access detection;
 - local SQLite records and responsive dashboard;
