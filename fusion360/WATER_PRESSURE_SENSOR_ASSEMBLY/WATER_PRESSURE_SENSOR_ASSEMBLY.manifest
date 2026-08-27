@@ -1,0 +1,7 @@
+{
+  "autodeskProduct": "Fusion360",
+  "type": "script",
+  "author": "Project FALCON-01",
+  "description": "Adds a proposed, editable, non-destructive water-pressure sensor assembly to the current prototype.",
+  "supportedOS": "windows|mac"
+}
