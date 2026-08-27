@@ -29,7 +29,7 @@ REPLACEMENTS = {
     "The repository currently includes the ESP32 firmware shell, diagnostic portal, versioned serial frame, Python simulator/edge service, SQLite storage, deterministic alerts, grouped API, four-page dashboard, optional motion visualization, optional assistant, and optional presentation prediction. The software build and automated tests demonstrate implementation behavior only. They do not prove physical sensor accuracy or coastal readiness.":
         "The repository currently includes the ESP32 firmware shell, diagnostic portal, versioned serial frame, Python simulator/edge service, SQLite storage, deterministic alerts, grouped API, four-page dashboard, optional motion visualization, saved but disabled assistant assets, and optional presentation prediction. The software build and automated tests demonstrate implementation behavior only. They do not prove physical sensor accuracy or coastal readiness.",
     "This V3.2 system-architecture-completed document supersedes conflicting V2 descriptions. The repository master context is docs/PROJECT_CONTEXT.md v6.0.":
-        "This V3.3 implementation-aligned document supersedes conflicting V2 and earlier V3 descriptions. The repository master context is docs/PROJECT_CONTEXT.md v6.0.",
+        "This V3.3 implementation-aligned document supersedes conflicting V2 and earlier V3 descriptions. The repository master context is docs/PROJECT_CONTEXT.md v6.1. The physical and visual prototype is under redesign; old CAD geometry and placement remain historical references until adviser approval.",
     "The FALCON Assistant appears as a small animated overlay near the lower edge of the dashboard. It may perform simple idle/wave animations and show short text bubbles such as system-normal summaries, calibration reminders, sensor-offline notices, low-battery messages, or security alerts. The assistant translates existing system states into simpler language; it does not create independent safety decisions.":
         "The FALCON Assistant concept, mascot, and animation files are retained for possible future use, but the assistant is currently hidden from the dashboard while its final operator design is reviewed. If approved and re-enabled, it may translate existing validated system states into short explanations; it shall not create independent safety decisions.",
     "The default operator interface is intentionally simplified for quick use by non-technical and older users. The three primary pages are Overview, Sensors, and Logs & Alerts. Important information should be understandable with minimal clicking, large readable labels, high contrast, and clear status colors.":
@@ -49,6 +49,12 @@ REPLACEMENTS = {
 def replace_text(text: str) -> str:
     for old, new in REPLACEMENTS.items():
         text = text.replace(old, new)
+    text = text.replace("docs/PROJECT_CONTEXT.md v6.0", "docs/PROJECT_CONTEXT.md v6.1")
+    if text.startswith("This V3.3 implementation-aligned document supersedes") and "under redesign" not in text:
+        text += (
+            " The physical and visual prototype is under redesign. Old CAD dimensions, component placement, "
+            "solar arrangement, cooling geometry, and renders are historical references until adviser approval."
+        )
     return text
 
 
@@ -205,7 +211,7 @@ def update() -> None:
 
     document.core_properties.title = "Project FALCON-01 - V3.3 Documentation"
     document.core_properties.subject = "Current implementation-aligned pressure-based coastal monitoring buoy documentation"
-    document.core_properties.comments = "Aligned with repository master context v6.0 and dashboard implementation on 2026-08-26."
+    document.core_properties.comments = "Aligned with repository master context v6.1 and dashboard implementation on 2026-08-27. Physical prototype under redesign."
     temporary = DOCUMENT.with_suffix(".updated.docx")
     document.save(temporary)
     temporary.replace(DOCUMENT)

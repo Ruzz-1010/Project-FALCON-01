@@ -226,7 +226,7 @@ def build() -> None:
     ])
 
     heading(document, "17. Documentation Status")
-    paragraph(document, "This V3.3 implementation-aligned document supersedes conflicting V2 and earlier V3 descriptions. The repository master context is docs/PROJECT_CONTEXT.md v6.0. Older CAD, Wokwi, motion, IMU, forecast, and PCB records may remain for historical traceability but are not the current required Phase 1 baseline unless revised and explicitly approved.")
+    paragraph(document, "This V3.3 implementation-aligned document supersedes conflicting V2 and earlier V3 descriptions. The repository master context is docs/PROJECT_CONTEXT.md v6.1. The physical and visual prototype is under redesign; dimensions, placement, solar arrangement, cooling geometry, and old CAD renders remain historical references until adviser approval. Older CAD, Wokwi, motion, IMU, forecast, and PCB records may remain for traceability but are not the current required Phase 1 baseline unless revised and explicitly approved.")
 
     document.add_page_break()
     heading(document, "Appendix A — Approved Telemetry Sections")

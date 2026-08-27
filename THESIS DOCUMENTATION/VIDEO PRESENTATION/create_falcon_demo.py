@@ -173,7 +173,7 @@ def movement(local):
 def sensors(local):
     bg = Image.new("RGB",(W,H),NAVY)
     d=ImageDraw.Draw(bg,"RGBA"); header(d,"Stage 02 · Sensor acquisition","Multiple sensors. One synchronized sample.","The ESP32 reads each interface using the protocol best suited to that sensor.")
-    cards=[("BNO085 IMU","SPI","ROLL · PITCH · HEADING"),("BAR02 PRESSURE","I²C","WATER PRESSURE"),("GPS MODULE","UART","LATITUDE · LONGITUDE"),("WIND SENSORS","GPIO / ADC","SPEED · DIRECTION")]
+    cards=[("BAR02 PRESSURE","I²C","PRESSURE · EST. WAVE"),("GPS + SECURITY","UART / GPIO","GEOFENCE · TAMPER"),("WIND SENSORS","GPIO / ADC","SPEED · DIRECTION"),("DS18B20 WATER","ONEWIRE","WATER TEMPERATURE")]
     for i,(name,bus,data) in enumerate(cards):
         x=58+i*300; y=210
         d.rounded_rectangle((x,y,x+264,y+235),18,fill=PANEL,outline=(45,78,91),width=2)
@@ -315,6 +315,10 @@ def make_music():
 
 
 def main():
+    raise SystemExit(
+        "Archived V2 visual generator disabled: the physical prototype is under redesign. "
+        "Use FLOW_AI_REALISTIC_DEPLOYMENT_PROMPTS.md for the current non-mechanical system-flow brief."
+    )
     if not FFMPEG.exists(): raise SystemExit("ffmpeg was not found. Install it with: sudo apt install ffmpeg")
     make_music()
     cmd=[str(FFMPEG),'-y','-f','rawvideo','-pixel_format','rgb24','-video_size',f'{W}x{H}','-framerate',str(FPS),'-i','-', '-i',str(MUSIC),'-vf','scale=1920:1080:flags=lanczos','-c:v','libx264','-preset','veryfast','-crf','21','-pix_fmt','yuv420p','-c:a','aac','-b:a','160k','-shortest','-movflags','+faststart',str(OUT)]
