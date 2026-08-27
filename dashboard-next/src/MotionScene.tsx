@@ -39,22 +39,24 @@ export default function MotionScene({ telemetry }: { telemetry: Telemetry }) {
     let ready = false;
     let modelWaterlineOffset = -.08;
     const diagnostic: Record<string, Array<{material:THREE.MeshStandardMaterial;base:number;intensity:number}>> = {};
-    new GLTFLoader().load("/models/FALCON-01.glb?v=4", gltf => {
+    new GLTFLoader().load("/models/PROJECT-FALCON-V2.glb?v=20260827", gltf => {
       const model = gltf.scene; model.rotation.x = -Math.PI / 2;
-      model.traverse(object => { if (object.name.toUpperCase().startsWith("ANCHOR_MOORING_SYSTEM")) object.visible = false; });
+      const hiddenMotionPrefixes=["ANCHOR_MOORING_SYSTEM","BALLAST_SUSPENSION_CHAIN","ADJUSTABLE_LOW_BALLAST_V2","BALLAST_V2_ANCHOR_CONNECTOR","BALLAST"];
+      model.traverse(object => { const name=object.name.toUpperCase(); if(hiddenMotionPrefixes.some(prefix=>name.startsWith(prefix))) object.visible=false; });
       model.updateMatrixWorld(true);
       const bounds = new THREE.Box3().setFromObject(model), size = bounds.getSize(new THREE.Vector3()), center = bounds.getCenter(new THREE.Vector3());
       const scale = 3.15 / Math.max(size.x, size.y, size.z, .001); model.scale.setScalar(scale); model.position.copy(center).multiplyScalar(-scale); pose.add(model);
       model.updateMatrixWorld(true);
-      const mainFloat=model.getObjectByName("MAIN_FLOAT_TRADITIONAL_V2")||model.getObjectByName("MAIN_FLOAT_TRADITIONAL_V2:2")||model.getObjectByName("MAIN_FLOAT_TRADITIONAL_V2_HDPE_BODY");
+      const findPart=(prefixes:string[])=>{let found:THREE.Object3D|undefined;model.traverse(object=>{if(!found&&prefixes.some(prefix=>object.name.toUpperCase().startsWith(prefix)))found=object});return found};
+      const mainFloat=findPart(["MAIN_FLOAT_TRADITIONAL_V2","MAIN_FLOAT_TRADITIONAL_V2_HDPE_BODY"]);
       if(mainFloat){
         const floatBounds=new THREE.Box3().setFromObject(mainFloat),floatSize=floatBounds.getSize(new THREE.Vector3());
-        // Presentation datum: water crosses 42% up from the rounded hull bottom.
+        // Working preview datum: water crosses 35% up from the rounded hull bottom.
         // Use only the main float geometry, excluding ballast, chain and tower.
-        modelWaterlineOffset=-(floatBounds.min.y+floatSize.y*.42);
+        modelWaterlineOffset=-(floatBounds.min.y+floatSize.y*.35);
       }
-      const register=(keyName:string,names:string[])=>{const part=names.map(name=>model.getObjectByName(name)||model.getObjectByName(`${name}:2`)||model.getObjectByName(`${name}:3`)).find(Boolean);diagnostic[keyName]=[];part?.traverse(object=>{const mesh=object as THREE.Mesh;if(!mesh.isMesh||!mesh.material)return;const materials=Array.isArray(mesh.material)?mesh.material:[mesh.material];materials.forEach(raw=>{const material=raw.clone() as THREE.MeshStandardMaterial;mesh.material=material;diagnostic[keyName].push({material,base:material.emissive?.getHex?.()||0,intensity:material.emissiveIntensity||0})})})};
-      register("sensor",["TOP_SENSOR_ARRAY"]);register("thermal",["ELECTRONICS_BOX_V3"]);register("power",["ELECTRONICS_BOX_V3"]);
+      const register=(keyName:string,names:string[])=>{const part=findPart(names.map(name=>name.toUpperCase()));diagnostic[keyName]=[];part?.traverse(object=>{const mesh=object as THREE.Mesh;if(!mesh.isMesh||!mesh.material)return;const materials=Array.isArray(mesh.material)?mesh.material:[mesh.material];materials.forEach(raw=>{const material=raw.clone() as THREE.MeshStandardMaterial;mesh.material=material;diagnostic[keyName].push({material,base:material.emissive?.getHex?.()||0,intensity:material.emissiveIntensity||0})})})};
+      register("sensor",["WATER_PRESSURE_SENSOR_ASSEMBLY_REV6_PROPOSED"]);register("thermal",["REV5_RECTANGULAR_MARINE_ELECTRONICS_POD","ELECTRONICS_BOX_V3"]);register("power",["REV5_RECTANGULAR_MARINE_ELECTRONICS_POD","ELECTRONICS_BOX_V3"]);
       [[-.28,.8,.02,0x72d99d],[0,.94,.02,0x56d7df],[.28,.8,.02,0xefbb70]].forEach(([x,y,z,color]) => { const light = new THREE.Mesh(new THREE.SphereGeometry(.035, 12, 8), new THREE.MeshBasicMaterial({color:color as number})); light.position.set(x as number,y as number,z as number); pose.add(light); });
       ready = true; container.classList.add("is-ready");
     }, undefined, () => container.classList.add("is-error"));
