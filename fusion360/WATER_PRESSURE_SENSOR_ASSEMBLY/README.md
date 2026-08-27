@@ -16,5 +16,7 @@ Final placement requires a waterline check, cable-routing review, and controlled
 pressure calibration. Report wave height as **ESTIMATED** and **CALIBRATION
 REQUIRED** until validation is complete.
 
-The generator stops before changes when positions are uncaptured or the target
-component already exists. It does not move, hide, edit, or delete existing parts.
+The generator stops before changes when positions are uncaptured. On rerun, it
+repairs only an existing pressure-sensor occurrence by applying the underside
+orientation; it does not rebuild or duplicate it. No other part is moved,
+hidden, edited, or deleted.

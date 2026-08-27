@@ -40,6 +40,19 @@ def _material(app, names):
     return None
 
 
+def _underside_transform(float_occurrence):
+    """Compose the float placement with its revolved-profile Z-axis correction."""
+    transform = float_occurrence.transform2.copy()
+    correction = adsk.core.Matrix3D.create()
+    correction.setToRotation(
+        math.pi,
+        adsk.core.Vector3D.create(1, 0, 0),
+        adsk.core.Point3D.create(0, 0, 0)
+    )
+    transform.transformBy(correction)
+    return transform
+
+
 def _plane(component, z_expression, name):
     plane_input = component.constructionPlanes.createInput()
     plane_input.setByOffset(component.xYConstructionPlane, _value(z_expression))
@@ -109,11 +122,25 @@ def run(context):
                 'Fusion has uncaptured component positions. Nothing was changed.\n\n'
                 'Click Capture Position, save, then run again.'
             )
-        if _find(root, (SYSTEM_NAME,)):
-            raise RuntimeError('{} already exists; nothing was changed.'.format(SYSTEM_NAME))
         float_occurrence = _find(root, ('MAIN_FLOAT_TRADITIONAL_V2', 'MAIN_FLOAT'))
         if not float_occurrence:
             raise RuntimeError('MAIN_FLOAT_TRADITIONAL_V2 or MAIN_FLOAT was not found.')
+        existing = _find(root, (SYSTEM_NAME,))
+        if existing:
+            existing.transform2 = _underside_transform(float_occurrence)
+            existing.component.attributes.add(
+                'PROJECT_FALCON_01', 'PlacementRepair',
+                'Reoriented to permanently submerged underside'
+            )
+            app.activeViewport.fit()
+            ui.messageBox(
+                'Existing WATER_PRESSURE_SENSOR_ASSEMBLY corrected.\n\n'
+                'The complete sensor and 316L saddle were flipped from the upper/inside location\n'
+                'to the permanently submerged underside. No other component was changed.\n\n'
+                'Capture Position, save, then send a side-view screenshot.',
+                'PROJECT FALCON-01'
+            )
+            return
 
         parameters = design.userParameters
         _parameter(parameters, 'pressure_sensor_radial_offset', '125 mm', 'mm',
@@ -131,7 +158,7 @@ def run(context):
         _parameter(parameters, 'pressure_guard_rod_diameter', '6 mm', 'mm',
                    'Six open guard rod diameters')
 
-        occurrence = root.occurrences.addNewComponent(float_occurrence.transform2.copy())
+        occurrence = root.occurrences.addNewComponent(_underside_transform(float_occurrence))
         component = occurrence.component
         component.name = SYSTEM_NAME
 
