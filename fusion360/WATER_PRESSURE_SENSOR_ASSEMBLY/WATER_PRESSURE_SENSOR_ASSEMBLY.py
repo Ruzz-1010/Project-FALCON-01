@@ -116,10 +116,10 @@ def run(context):
             raise RuntimeError('MAIN_FLOAT_TRADITIONAL_V2 or MAIN_FLOAT was not found.')
 
         parameters = design.userParameters
-        _parameter(parameters, 'pressure_sensor_radial_offset', '220 mm', 'mm',
-                   'Editable sensor offset from buoy centerline')
-        _parameter(parameters, 'pressure_sensor_mount_z', '105 mm', 'mm',
-                   'Proposed local height on submerged lower shoulder')
+        _parameter(parameters, 'pressure_sensor_radial_offset', '125 mm', 'mm',
+                   'Underside offset that clears the central ballast and mooring line')
+        _parameter(parameters, 'pressure_sensor_mount_z', '198 mm', 'mm',
+                   'Proposed mounting level at the underside of the rounded keel')
         _parameter(parameters, 'pressure_sensor_body_diameter', '24 mm', 'mm',
                    'Bar02-compatible packaging envelope diameter')
         _parameter(parameters, 'pressure_sensor_body_height', '42 mm', 'mm',
@@ -139,42 +139,56 @@ def run(context):
         stainless = _material(app, ('Stainless Steel', 'Steel, Stainless', '316 Stainless Steel'))
         rubber = _material(app, ('Rubber', 'Neoprene Rubber', 'Silicone Rubber'))
 
-        # Local coordinates intentionally follow the selected float occurrence.
-        # The guard is offset from the centerline and leaves the central ballast/
-        # mooring path clear. All dimensions remain editable user parameters.
-        x = 22.0
+        # Local coordinates follow the selected float occurrence. The sensor is
+        # below the rounded keel and offset from the central ballast/mooring path.
+        x = 12.5
         y = 0.0
-        _box(component, 18.0, -4.2, 26.0, 4.2, '105 mm', '6 mm',
-             'PRESSURE_SENSOR_MOUNTING_PLATE_316L', stainless)
-        _disk(component, x, y, '111 mm', 'pressure_guard_diameter', '6 mm',
+        _box(component, 8.0, -4.5, 17.0, 4.5, '198 mm', '8 mm',
+             'UNDERSIDE_SENSOR_SADDLE_PLATE_316L', stainless)
+        _box(component, 8.7, -4.1, 9.7, -3.1, '206 mm', '20 mm',
+             'SADDLE_STANDOFF_316L_01', stainless)
+        _box(component, 15.3, -4.1, 16.3, -3.1, '206 mm', '20 mm',
+             'SADDLE_STANDOFF_316L_02', stainless)
+        _box(component, 8.7, 3.1, 9.7, 4.1, '206 mm', '20 mm',
+             'SADDLE_STANDOFF_316L_03', stainless)
+        _box(component, 15.3, 3.1, 16.3, 4.1, '206 mm', '20 mm',
+             'SADDLE_STANDOFF_316L_04', stainless)
+        _box(component, 8.5, -4.2, 16.5, 4.2, '222 mm', '4 mm',
+             'SENSOR_GUARD_CARRIER_PLATE_316L', stainless)
+        for index, (bolt_x, bolt_y) in enumerate(((9.7, -3.0), (15.3, -3.0),
+                                                  (9.7, 3.0), (15.3, 3.0)), 1):
+            _disk(component, bolt_x, bolt_y, '198 mm', '8 mm', '12 mm',
+                  'M8_SADDLE_FASTENER_316L_{:02d}'.format(index), stainless)
+
+        _disk(component, x, y, '226 mm', 'pressure_guard_diameter', '6 mm',
               'PRESSURE_GUARD_TOP_RING', plastic)
-        _disk(component, x, y, '177 mm', 'pressure_guard_diameter', '6 mm',
+        _disk(component, x, y, '292 mm', 'pressure_guard_diameter', '6 mm',
               'PRESSURE_GUARD_BOTTOM_RING', plastic)
         for index in range(6):
             angle = math.radians(index * 60.0)
             rod_x = x + 2.7 * math.cos(angle)
             rod_y = y + 2.7 * math.sin(angle)
-            _disk(component, rod_x, rod_y, '117 mm', 'pressure_guard_rod_diameter',
+            _disk(component, rod_x, rod_y, '232 mm', 'pressure_guard_rod_diameter',
                   '60 mm', 'PRESSURE_GUARD_OPEN_ROD_{:02d}'.format(index + 1), plastic)
 
-        _disk(component, x, y, '122 mm', 'pressure_sensor_body_diameter',
+        _disk(component, x, y, '237 mm', 'pressure_sensor_body_diameter',
               'pressure_sensor_body_height', 'BAR02_COMPATIBLE_SENSOR_ENVELOPE', plastic)
-        _disk(component, x, y, '164 mm', '10 mm', '12 mm',
+        _disk(component, x, y, '279 mm', '10 mm', '12 mm',
               'DOWNWARD_OPEN_PRESSURE_PORT', stainless)
-        _disk(component, x, y, '111 mm', '18 mm', '10 mm',
+        _disk(component, x, y, '226 mm', '18 mm', '10 mm',
               'IP68_SENSOR_CABLE_GLAND', rubber)
 
         component.attributes.add('PROJECT_FALCON_01', 'Status', 'PROPOSED - physical integration TBD')
         component.attributes.add('PROJECT_FALCON_01', 'Function', 'Pressure-based estimated wave input')
-        component.attributes.add('PROJECT_FALCON_01', 'Placement', 'Submerged lower shoulder, clear of central ballast and anchor chain')
+        component.attributes.add('PROJECT_FALCON_01', 'Placement', 'Permanently submerged underside, offset from central ballast and anchor chain')
         component.attributes.add('PROJECT_FALCON_01', 'Calibration', 'CALIBRATION REQUIRED before wave-height claims')
         component.attributes.add('PROJECT_FALCON_01', 'Safety', 'No existing component moved, hidden, edited, or deleted')
 
         app.activeViewport.fit()
         ui.messageBox(
             'WATER_PRESSURE_SENSOR_ASSEMBLY completed.\n\n'
-            'Proposed location: submerged lower shoulder\n'
-            'Includes: mounting plate, Bar02-compatible envelope, downward port,\n'
+            'Proposed location: permanently submerged underside\n'
+            'Includes: 316L saddle bracket, Bar02-compatible envelope, downward port,\n'
             'open protective guard, and IP68 gland.\n\n'
             'No existing component was changed. Capture Position, save, then send a screenshot.',
             'PROJECT FALCON-01'

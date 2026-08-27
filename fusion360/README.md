@@ -6,8 +6,8 @@
 
 `WATER_PRESSURE_SENSOR_ASSEMBLY` is a new proposed integration study for the
 replacement prototype. It adds a separate Bar02-compatible sensor envelope,
-downward pressure port, open protective guard, mounting plate, and cable-gland
-envelope on the submerged lower shoulder. Placement remains editable and must
+downward pressure port, open protective guard, 316L saddle bracket, and
+cable-gland envelope on the permanently submerged underside. Placement remains editable and must
 be checked against the approved waterline, ballast, mooring, and cable route.
 
 `COMPACT_ELEVATED_UPPER_TOWER` was a historical correction. It retains the four
