@@ -95,8 +95,13 @@ class EdgeRuntime:
         expected = 11
         sensor_fault = data.get("scenario") == "sensor_fault"
         recent = sorted(self.forecast_records(60), key=lambda item: item["recordedAt"])
-        sensor_history = [{"recordedAt": item["recordedAt"], "windSpeed": item.get("windSpeed"),
-                           "internalTemperature": item.get("internalTemperature", item.get("enclosureTemperature"))}
+        sensor_history = [{"recordedAt": item["recordedAt"],
+                           "windSpeed": item.get("windSpeed"),
+                           "waterTemperature": item.get("waterTemperature"),
+                           "internalTemperature": item.get("internalTemperature", item.get("enclosureTemperature")),
+                           "anchorDistance": item.get("anchorDistance"),
+                           "solarPower": round(float(item.get("solarVoltage", 0)) * float(item.get("chargingCurrent", 0)), 1)
+                           if isinstance(item.get("solarVoltage"), (int, float)) and isinstance(item.get("chargingCurrent"), (int, float)) else None}
                           for item in recent]
         return {"system": "ONLINE" if online else "DEGRADED", "monitoring": bool(data.get("monitoring", online)),
                 "uptimeSeconds": int(data.get("uptime", 0)), "esp32": "SIMULATED" if source == "simulator" else ("ONLINE" if online else "OFFLINE"),

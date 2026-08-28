@@ -26,6 +26,15 @@ class ForecastHistoryTests(unittest.TestCase):
             self.assertEqual(payload["assistant"]["mode"], "RULE_BASED")
             self.assertNotIn("roll", payload["wave"])
 
+    def test_status_history_supports_operator_overview_graphs(self):
+        with tempfile.TemporaryDirectory() as directory:
+            runtime = EdgeRuntime(SimulatorSource(), TelemetryStore(Path(directory) / "graphs.db"), 2.0)
+            runtime.collect_once()
+            history = runtime.v4_status()["sensorHistory"]
+            self.assertTrue(history)
+            self.assertTrue({"recordedAt", "windSpeed", "waterTemperature", "internalTemperature",
+                             "anchorDistance", "solarPower"}.issubset(history[-1]))
+
     def test_tamper_requires_three_consecutive_frames(self):
         with tempfile.TemporaryDirectory() as directory:
             source = SimulatorSource()

@@ -10,7 +10,7 @@ export type Status = {
   dataSource: string; windSpeed: number | null; windDirection: string | null;
   internalTemperature: number | null; alerts: Alert[];
   intakeFanRpm: number | null; exhaustFanRpm: number | null;
-  sensorHistory: Array<{recordedAt:string;windSpeed:number|null;internalTemperature:number|null}>;
+  sensorHistory: Array<{recordedAt:string;windSpeed:number|null;waterTemperature:number|null;internalTemperature:number|null;anchorDistance:number|null;solarPower:number|null}>;
   monitoring:boolean; uptimeSeconds:number; esp32:string; miniPc:string; uart:string; api:string;
   cpuUsage:number|null; memoryUsage:number|null; storageUsage:number|null; wifiSignalDbm:number|null;
   databaseSizeMb:number|null; communicationLatencyMs:number|null; packetLossPercent:number|null;
@@ -25,7 +25,7 @@ export type Wave = {
   /** @deprecated Optional legacy motion prototype fields; not required in Phase 1. */
   roll?:number|null; pitch?:number|null; yaw?:number|null; waveMotion?:number|null;
   recordedAt: string; valid: boolean; quality: number;
-  history: Array<{ recordedAt: string; waveHeight: number | null }>;
+  history: Array<{ recordedAt: string; waveHeight: number | null; rawPressure?:number|null; filteredPressure?:number|null }>;
 };
 
 export type Gps = {
