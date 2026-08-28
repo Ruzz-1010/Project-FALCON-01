@@ -1,0 +1,42 @@
+/* Final low-glare operator palette. Loaded last so every dashboard section agrees. */
+:root,html[data-theme="light"],html[data-theme="dark"]{
+  color-scheme:light;
+  --bg:#F5F6F4;--panel:#FCFCFA;--panel2:#F7F8F6;
+  --text:#263238;--muted:#667085;--line:#E2E5E3;
+  --cyan:#3F7F7A;--aqua:#3F7F7A;--blue:#6B8FA3;
+  --green:#5F8369;--lime:#5F8369;--amber:#9A7C55;--gold:#9A7C55;
+  --coral:#A65F5A;--violet:#80758A;--indigo:#6F7F91;
+}
+html body,html[data-theme="light"] body,html[data-theme="dark"] body{background:#F5F6F4;color:#263238}
+main,.topbar{background:#F5F6F4}.topbar{border-color:#E2E5E3}
+.sidebar,html[data-theme="light"] .sidebar,html[data-theme="dark"] .sidebar{border-color:#E2E5E3;background:#FAFBF9;box-shadow:1px 0 6px rgba(38,50,56,.035)}
+.brand,.side-foot{border-color:#E2E5E3}.brand strong,.title h1,.side-foot b{color:#263238}.brand span,.side-foot small{color:#667085}
+.nav-item,.nav-item:nth-child(n){color:#667085}.nav-item span,.nav-item b,.nav-item small{color:inherit}.nav-item>svg,.nav-item:nth-child(n)>svg{border:0;color:#667085;background:transparent;box-shadow:none}
+.nav-item:hover{color:#3F6865;background:#F1F4F2}.nav-item.is-active,html[data-theme="light"] .nav-item.is-active,html[data-theme="dark"] .nav-item.is-active{border-color:#CBDCD8;color:#3F6865;background:#EDF3F1;box-shadow:inset 3px 0 #5C8E89}.nav-item.is-active>svg,.nav-item.is-active:nth-child(n)>svg{border:0;color:#3F6865;background:transparent;box-shadow:none}
+.collapse,.mobile-menu,.top-actions button{border-color:#E2E5E3;color:#667085;background:#FCFCFA}.top-actions>div{border-color:#E2E5E3}.top-actions>div span{color:#667085}.top-actions>div b{color:#263238}.title span{color:#3F7F7A!important}
+.content[class$="-page"],.wave-page,.grouped-sensors{--page-accent:#5C7F7B;--page-soft:#F7F9F7}
+.content[class$="-page"] .panel,.wave-page .panel,.grouped-sensors .panel,.alerts-page .panel,.logs-page .panel,.settings-page .panel{border-color:#E2E5E3;background:#FCFCFA;box-shadow:0 2px 8px rgba(38,50,56,.035)}
+.content[class$="-page"] .panel:hover,.wave-page .panel:hover,.grouped-sensors .panel:hover{border-color:#D3D8D5}
+.page-head h1,.panel h2,.panel strong,.panel b{color:#263238}.page-head p,.panel p,.panel small,.panel footer,.panel dt{color:#667085}
+.page-head>div:first-child>span,.panel header span,.content[class$="-page"] .panel header span,.wave-page .panel header span{color:#667085!important}
+.content[class$="-page"] .panel header>svg,.wave-page .panel header>svg,.sensor-group-icon{border-color:#DDE7E4;color:#527C78;background:#EEF4F2;box-shadow:none}
+.sensor-chip{border-color:#D6E2DE;color:#52756A;background:#F2F6F3}.sensor-chip i,.side-foot>i.online,.live i{background:#6F9177;box-shadow:none}
+.live,.live.is-online{border-color:#D5E2D8;color:#5F8369;background:#F1F6F2}
+.good{color:#5F8369!important}.warn{color:#9A7C55!important}.danger{color:#A65F5A!important}
+.sensor-summary{border-color:#E2E5E3;color:#667085;background:#FCFCFA}.sensor-summary svg{color:#527C78}.sensor-summary strong{color:#263238}
+.sensor-group:before{background:#75927C}.sensor-group.status-review:before,.sensor-group.status-warning:before{background:#A78A62}.sensor-group.status-offline:before{background:#AF706B}
+.sensor-group header h2,.sensor-group-values strong,.sensor-technical dd{color:#263238}.sensor-group header p,.sensor-group-values span,.sensor-group-values small,.sensor-technical dt{color:#667085}
+.sensor-group header>em{border-color:#D5E2D8;color:#5F8369;background:#F1F6F2}.sensor-group.status-review header>em,.sensor-group.status-warning header>em,.calibration-badge{border-color:#E7DAC7;color:#8B704C;background:#FAF6EF}.sensor-group.status-offline header>em{border-color:#E8CFCD;color:#9D5C57;background:#FAF3F2}
+.sensor-group-values>div,.sensor-technical{border-color:#E2E5E3;background:#F7F8F6}.sensor-technical div{border-color:#E5E8E6}.sensor-details-toggle{border-color:#DCE2DF;color:#527C78;background:#FCFCFA}.sensor-details-toggle:hover{border-color:#9CB8B3;background:#F1F5F3}
+.activity-switch button,.settings-button,.scenario-buttons button{border-color:#DCE2DF;color:#59666B;background:#FCFCFA;box-shadow:none}.activity-switch button:hover,.settings-button:hover,.scenario-buttons button:hover{border-color:#A9BDB8;background:#F2F5F3}.activity-switch button.is-active,.scenario-buttons button.active{border-color:#6F9994;color:#355F5B;background:#EAF2F0}
+.setting-field select,.setting-field input,.log-filters input,.log-filters select,.alert-filters button{border-color:#DCE2DF;color:#263238;background:#FCFCFA}.setting-field select:focus,.setting-field input:focus,.log-filters input:focus{border-color:#759B96;outline:2px solid #E2EFEC}
+.settings-notice{border-color:#D5E2D8;color:#52725D;background:#F1F6F2}.inline-error,.error-banner{border-color:#E8CFCD;color:#8F5652;background:#FAF3F2}.settings-button.is-danger{border-color:#E2C8C6;color:#965B57;background:#FAF3F2}
+.log-table,.alerts-list,.history-table,.event-table{border-color:#E2E5E3;background:#FCFCFA}.log-table th,.history-table th,.event-table th{color:#667085;background:#F3F5F3}.log-table td,.history-table td,.event-table td{border-color:#E8EAE8;color:#344247}
+.alert-item,.history-item,.log-item{border-color:#E2E5E3;background:#F8F9F7}.alert-item.is-critical,.alert-item.is-error{border-color:#E6CECC;background:#FAF4F3}.alert-item.is-warning{border-color:#E8DCCB;background:#FAF7F1}
+.gps-page .coordinates header>svg,.gps-page .drift-card header>svg,.motion-page .pose-readout header>svg,.motion-page .motion-quality header>svg{color:#527C78}
+.gps-source span,.axes span{color:#667085}.gps-source b,.axes b{color:#263238}.drift-status{border-color:#E2E5E3;background:#F7F8F6}
+.scenario-panel>p,.motion-quality p{color:#667085}.quality-line{background:#E4E8E5}.quality-line i{background:#75927C;box-shadow:none}
+.model-state,.model-help{border-color:rgba(221,231,228,.35);background:rgba(29,55,61,.72)}
+.pro-grid,.mini-trend svg line{stroke:#E8EAE8}.pro-axis,.pro-time{fill:#667085}.pro-chart-legend{color:#667085}.chart-tooltip rect{fill:#FCFCFA;stroke:#DCE2DF}.chart-tooltip text{fill:#263238}.chart-tooltip text+text{fill:#667085}
+.wave-reading{display:flex;align-items:center;gap:12px}.wave-reading .sea-condition{min-width:90px;padding:8px 12px;border:1px solid #D5E2D8;border-radius:999px;color:#5F8369;background:#F1F6F2;font-size:12px;font-style:normal;font-weight:850;text-align:center}.wave-reading .sea-condition.is-moderate{border-color:#E7DAC7;color:#8B704C;background:#FAF6EF}.wave-reading .sea-condition.is-rough{border-color:#E8CFCD;color:#9D5C57;background:#FAF3F2}.wave-reading .sea-condition.is-unknown{border-color:#DCE2DF;color:#667085;background:#F5F6F4}
+@media(max-width:720px){.content[class$="-page"] .panel,.wave-page .panel,.grouped-sensors .panel{box-shadow:0 1px 5px rgba(38,50,56,.03)}}

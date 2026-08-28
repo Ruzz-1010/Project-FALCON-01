@@ -8,6 +8,8 @@ Overview requires no graph-selection controls. It shows one large Estimated Wave
 
 The operator palette uses a warm light-gray background, soft-white cards, charcoal text, muted teal accents, pale borders, and low-opacity graph fills. Strong green, amber, and red are reserved for meaningful status changes and alerts to reduce visual fatigue for older users.
 
+The Overview automatically shows a large `CALM`, `MODERATE`, or `ROUGH` sea-condition badge beside the current estimated wave height. Thresholds are consistent with the edge classification: below 0.60 m is Calm, 0.60–2.49 m is Moderate, and 2.50 m or higher is Rough. This is a current monitoring classification, not a forecast and not a clickable scenario control.
+
 All values must distinguish `LIVE`, `SIMULATED`, `ESTIMATED`, `CALIBRATION REQUIRED`, `STALE`, `OFFLINE`, and `OPTIONAL`. Optional AI is absent from the default operator view. The former separate Wave, GPS, Power, System, History, and Alerts modules are legacy implementation files and are not primary navigation.
 
 The dashboard must remain responsive at 320 px and above, keyboard usable, readable in light/dark themes, and functional when optional AI is unavailable.
