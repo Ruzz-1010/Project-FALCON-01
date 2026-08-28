@@ -62,12 +62,13 @@ pio run
 
 ## Dashboard
 
-The canonical dashboard has four primary pages:
+The canonical dashboard has five primary pages:
 
 1. Overview
-2. Buoy Motion (optional visualization, not a required IMU reading)
-3. Sensors
-4. Logs & Alerts
+2. Sensors
+3. Buoy Motion (optional visualization, not a required IMU reading)
+4. GPS
+5. Logs & Alerts
 
 Settings are opened using the header icon. Optional AI is hidden by default and cannot interrupt the monitoring baseline.
 The Sensors page presents six operator-friendly groups—Wave & Pressure, GPS & Security, Wind, Water, Power, and System—with technical device diagnostics available through **View Details**.

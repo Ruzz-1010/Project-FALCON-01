@@ -2,7 +2,7 @@
 
 ```text
 ESP32 drivers/acquisition -> versioned USB/UART telemetry -> Orange Pi ingestion
--> validation/filtering -> SQLite -> REST API -> four-page local dashboard
+-> validation/filtering -> SQLite -> REST API -> five-page local dashboard
 ```
 
 The ESP32 performs deterministic acquisition, calibration application, range checks, security input debounce, watchdog handling, and serial framing. It must continue sensing when the Orange Pi is unavailable.

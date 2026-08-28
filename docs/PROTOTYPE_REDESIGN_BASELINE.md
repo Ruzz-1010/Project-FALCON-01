@@ -17,7 +17,7 @@ The redesign must preserve the approved functional architecture unless a later a
 - USB/UART transfer to an Orange Pi Zero 3 (4 GB);
 - GPS, wind speed/direction, sealed water temperature, power, security, and enclosure-health monitoring;
 - passive single-anchor mooring;
-- local storage, API, and four-page dashboard;
+- local storage, API, and five-page dashboard;
 - optional AI isolated from core monitoring;
 - no required BNO085, salinity sensor, or anchor-chain load cell.
 

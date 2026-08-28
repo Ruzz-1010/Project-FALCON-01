@@ -11,7 +11,7 @@ Project FALCON is now a pressure-based smart coastal observation buoy. The autho
 - Grouped `/api/telemetry/current` contract plus legacy endpoints.
 - Pressure fields, simulated wave estimate, geofence/tamper scenarios, deterministic alerts, and rule-based assistant.
 - Water-temperature monitoring through a sealed DS18B20; physical reference comparison remains pending.
-- Responsive four-page dashboard: Overview, Buoy Motion, Sensors, Logs & Alerts; settings is an icon. Sensors are simplified into six operator-facing groups, with research diagnostics hidden behind expandable details.
+- Responsive five-page dashboard: Overview, Sensors, Buoy Motion, GPS, Logs & Alerts; settings is an icon. Sensors are simplified into six operator-facing groups, with research diagnostics hidden behind expandable details.
 
 ## Current physical status
 
@@ -27,7 +27,7 @@ The physical and visual prototype is now **under redesign**. All existing mechan
 - Sealed DS18B20 water-temperature channel retained; conductivity/salinity removed from the required Phase 1 scope.
 - GPS geofence, tamper input, enclosure switch, and buzzer security concept added.
 - AI made optional and hidden by default.
-- Dashboard consolidated to four primary pages while retaining motion as an optional visualization.
+- Dashboard consolidated to five primary pages, including a dedicated GPS page, while retaining motion as an optional visualization.
 
 ## Run and verify
 

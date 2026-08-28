@@ -31,7 +31,7 @@ The core undergraduate contribution is the integration and evaluation of an acce
 2. Acquire timestamped pressure, GPS, wind, environmental, power, security, and health readings.
 3. Filter and calibrate underwater pressure to produce an explicitly labeled estimated wave height.
 4. Detect persistent GPS geofence, vibration/tamper, and enclosure-access events without treating normal wave motion as theft.
-5. Store telemetry and events locally on the Orange Pi and present them through a simple four-page dashboard.
+5. Store telemetry and events locally on the Orange Pi and present them through a simple five-page dashboard.
 6. Evaluate accuracy, reliability, latency, power use, usability, and false-alert behavior through documented tests.
 7. Explore short-term AI wave prediction only as an optional extension after the monitoring baseline is validated.
 
@@ -119,12 +119,13 @@ Normal wave-driven motion must not generate an alert by itself. Geofence and tam
 
 ## Dashboard information architecture
 
-Four primary navigation pages are approved:
+Five primary navigation pages are approved:
 
 1. **Overview** — one large estimated-wave chart and one Station Status card containing wind, pressure, GPS security, battery, solar, and water/enclosure temperature. Optional AI is not shown in the default operator view.
-2. **Buoy Motion** — optional 3D visual model whose water-surface amplitude, heave, and tilt are generated from pressure-based estimated wave height; GPS may provide heading context. It has no required IMU, roll, or pitch measurement channel. It includes Current Data plus clearly labeled Calm, Moderate, Rough, and Pressure Offline presentation scenarios. The scenarios are local visual presets and do not modify stored or live telemetry.
-3. **Sensors** — six readable operator groups: Wave & Pressure, GPS & Security, Wind, Water, Power, and System. Exact device models, sampling, quality, freshness, and calibration diagnostics remain available through expandable details.
-4. **Logs & Alerts** — active alerts, persisted telemetry, security events, calibration events, operator actions, search, and export.
+2. **Sensors** — six readable operator groups: Wave & Pressure, GPS & Security, Wind, Water, Power, and System. Exact device models, sampling, quality, freshness, and calibration diagnostics remain available through expandable details.
+3. **Buoy Motion** — optional 3D visual model whose water-surface amplitude, heave, and tilt are generated from pressure-based estimated wave height; GPS may provide heading context. It has no required IMU, roll, or pitch measurement channel. It includes Current Data plus clearly labeled Calm, Moderate, Rough, and Pressure Offline presentation scenarios. The scenarios are local visual presets and do not modify stored or live telemetry.
+4. **GPS** — readable position, fix, security/geofence state, and distance from the deployment or anchor reference.
+5. **Logs & Alerts** — active alerts, persisted telemetry, security events, calibration events, operator actions, search, and export. It remains the final sidebar item.
 
 Settings are available through a compact icon and are not a primary navigation item. The former separate Wave, GPS, Power, System, History, and Alerts pages remain consolidated. Motion is retained strictly as an optional visual model and does not restore BNO085 as a required sensor.
 
@@ -165,7 +166,7 @@ Implemented in the repository:
 - grouped adviser-approved telemetry endpoint;
 - pressure-data fields and simulated pressure-based wave estimate;
 - GPS geofence and tamper/enclosure simulation states;
-- four-page responsive dashboard with settings icon;
+- five-page responsive dashboard with settings icon;
 - optional rule-based assistant and opt-in prediction display;
 - local logs, alerts, search, and export.
 

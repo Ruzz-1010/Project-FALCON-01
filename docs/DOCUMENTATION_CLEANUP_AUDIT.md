@@ -20,7 +20,7 @@ The cleanup does not delete earlier engineering work. Instead, documents now fol
 - Removed old “current/approved production prototype” authority from Revision 5 CAD and export notes.
 - Preserved system requirements that do not depend on external shape or component placement.
 - Kept BNO085, salinity, anchor-load sensing, AI-first operation, and cloud dependency outside the required Phase 1 baseline.
-- Aligned dashboard documentation to Overview, Buoy Motion, Sensors, and Logs & Alerts.
+- Aligned dashboard documentation to Overview, Sensors, Buoy Motion, GPS, and Logs & Alerts.
 - Documented Current Data, Calm, Moderate, Rough, and Pressure Offline motion scenarios as non-telemetry presentation presets.
 - Corrected Linux Mint run instructions and the current thesis DOCX filename.
 - Marked old deployment-video prompts and visual assets as references awaiting replacement.
