@@ -52,3 +52,12 @@ p,small,dt,.brand span,.side-foot small,.panel p,.panel small,.panel footer,.pan
 .sensor-summary,.sensor-group header p,.sensor-details-toggle,.gps-source span,.axes span,.scenario-panel>p,.motion-quality p{color:#66747A}.sensor-summary strong,.gps-source b,.axes b{color:#35434A}
 .setting-field span,.notification-setting span,.log-filters label,.activity-switch button,.settings-button,.scenario-buttons button{color:#55636A}
 .good,.live.is-online,.sensor-group header>em,.sea-condition-scale span.is-calm{color:#55715E!important}.warn,.sensor-group.status-review header>em,.sensor-group.status-warning header>em,.calibration-badge,.sea-condition-scale span.is-moderate{color:#806B4D!important}.danger,.sensor-group.status-offline header>em,.sea-condition-scale span.is-rough{color:#8A5753!important}
+
+/* Charts use one quiet data palette instead of competing bright colors. */
+.pro-line.is-measured,.wave-line,.connected-current,.power-chart polyline,.mini-trend svg polyline{stroke:#657F83!important;filter:none!important}
+.pro-line.is-trend{stroke:#879598!important;filter:none!important}
+.history-dot,.current-dot,.current-point,.trend-dot{fill:#657F83!important;filter:none!important}
+.pro-chart stop:first-child{stop-color:#789094!important;stop-opacity:.13!important}.pro-chart stop:last-child{stop-color:#789094!important;stop-opacity:.015!important}
+.pro-area{opacity:.72!important}.pro-grid,.connected-grid,.gridline,.mini-trend svg line{stroke:#E6E9E7!important}
+.connected-prediction,.historic-prediction,.pro-forecast{stroke:#95846D!important;filter:none!important}.prediction-point,.historic-point,.forecast-dot,.forecast-target-core{fill:#95846D!important}.forecast-band,.prediction-half,.forecast-zone{fill:#F4F1EC!important}.center-divider,.threshold-line{stroke:#A18E76!important}.forecast-value,.forecast-zone-label,.threshold-label{fill:#85745E!important}
+.chart-legend i,.pro-chart-legend i{background:#657F83!important}.chart-legend span:last-child i,.pro-chart-legend i.is-forecast{border-color:#95846D!important;background:transparent!important}

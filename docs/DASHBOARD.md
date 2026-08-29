@@ -10,6 +10,8 @@ The operator palette uses a warm light-gray background, soft-white cards, charco
 
 Typography is intentionally neutral across every page: soft charcoal for headings and primary values, calm gray for labels and explanations, and no decorative colored text. Green, amber, and red text is reserved only for genuine normal, warning, and alert states.
 
+Graph styling is also standardized across Overview and technical pages: measured data uses one muted blue-gray/teal line, rolling trends use a nearby neutral gray, fills remain very light, and grid lines remain pale. Forecast, limit, or warning references may use subdued brown/amber solely to distinguish their meaning; bright cyan, orange, purple, and green graph lines are not used.
+
 The Overview automatically shows a large `CALM`, `MODERATE`, or `ROUGH` sea-condition badge beside the current estimated wave height. Thresholds are consistent with the edge classification: below 0.60 m is Calm, 0.60–2.49 m is Moderate, and 2.50 m or higher is Rough. This is a current monitoring classification, not a forecast and not a clickable scenario control.
 
 All values must distinguish `LIVE`, `SIMULATED`, `ESTIMATED`, `CALIBRATION REQUIRED`, `STALE`, `OFFLINE`, and `OPTIONAL`. Optional AI is absent from the default operator view. The former separate Wave, GPS, Power, System, History, and Alerts modules are legacy implementation files and are not primary navigation.
