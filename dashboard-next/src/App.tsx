@@ -2,7 +2,7 @@ import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Activity, ArrowRight, BatteryCharging, Bell, BrainCircuit, Gauge, LayoutDashboard, Menu, Navigation, Orbit, PanelLeftClose, PanelLeftOpen, Radio, Settings2, Thermometer, Waves, Wind, X, Zap } from "lucide-react";
 import { getOverview } from "./api";
 import type { DashboardData } from "./types";
-import TelemetryChart from "./TelemetryChart";
+import OverviewWaveChart from "./OverviewWaveChart";
 
 const ActivityHub=lazy(()=>import("./ActivityHub"));
 const SettingsPage=lazy(()=>import("./SettingsPage"));
@@ -16,8 +16,7 @@ const n=(value:number|null|undefined,digits=1)=>value==null?"--":value.toFixed(d
 const seaCondition=(wave:number|null|undefined)=>wave==null?"UNKNOWN":wave<.6?"CALM":wave<2.5?"MODERATE":"ROUGH";
 
 function OverviewTrend({data}:{data:DashboardData}){
-  const prediction=data.ai.status==="READY"?data.ai.predictedWaveHeight:null;
-  return <><TelemetryChart points={data.wave.history.slice(-42).map(item=>({value:item.waveHeight,recordedAt:item.recordedAt}))} unit=" m" color="#3F7F7A" primaryLabel="Current estimate" forecast={prediction} forecastLabel={`AI · +${data.ai.horizonMinutes||10} MIN`} minimumZero label="Estimated wave height with AI prediction" variant="standard" showSecondary={false} interactive={false}/><footer>{data.wave.calibration} · Current line from underwater pressure · Red line is the AI estimate</footer></>;
+  return <><OverviewWaveChart data={data}/><footer>{data.wave.calibration} · Blue-gray line is the current estimate · Red line is the AI prediction</footer></>;
 }
 function MiniTrend({label,value,unit,color,icon:Icon,points}:{label:string;value:number|null|undefined;unit:string;color:string;icon:typeof Gauge;points:Array<number|null|undefined>}){
   const valid=points.filter((item):item is number=>typeof item==="number").slice(-30),min=Math.min(...valid),max=Math.max(...valid),range=Math.max(.01,max-min),coords=valid.map((item,index)=>[12+index/Math.max(1,valid.length-1)*276,82-(item-min)/range*54]);
