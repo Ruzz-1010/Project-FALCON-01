@@ -70,7 +70,7 @@ The canonical dashboard has five primary pages:
 4. GPS
 5. Logs & Alerts
 
-Settings are opened using the header icon. Optional AI is hidden by default and cannot interrupt the monitoring baseline.
+Settings are opened using the header icon. FALCON AI wave prediction is always visible on Overview and estimates the selected 5-, 10-, or 15-minute wave height from recent pressure-based wave records. Its status, input source, sample count, confidence, and limitations are shown clearly; prediction failure cannot interrupt monitoring or logging.
 The Sensors page presents six operator-friendly groups—Wave & Pressure, GPS & Security, Wind, Water, Power, and System—with technical device diagnostics available through **View Details**.
 
 ## API

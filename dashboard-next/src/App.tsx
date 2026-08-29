@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
-import { Activity, BatteryCharging, Bell, Gauge, LayoutDashboard, Menu, Navigation, Orbit, PanelLeftClose, PanelLeftOpen, Radio, Settings2, Thermometer, Waves, Wind, X, Zap } from "lucide-react";
+import { Activity, ArrowRight, BatteryCharging, Bell, BrainCircuit, Gauge, LayoutDashboard, Menu, Navigation, Orbit, PanelLeftClose, PanelLeftOpen, Radio, Settings2, Thermometer, Waves, Wind, X, Zap } from "lucide-react";
 import { getOverview } from "./api";
 import type { DashboardData } from "./types";
 import TelemetryChart from "./TelemetryChart";
@@ -23,6 +23,22 @@ function MiniTrend({label,value,unit,color,icon:Icon,points}:{label:string;value
   return <article className="panel mini-trend"><header><div className="panel-title"><Icon/><div><span>Recent trend</span><h2>{label}</h2></div></div><strong>{n(value,label==="Water pressure"?2:1)}{unit}</strong></header>{valid.length>1?<svg viewBox="0 0 300 96" role="img" aria-label={`${label} recent trend`}><line x1="12" y1="28" x2="288" y2="28"/><line x1="12" y1="55" x2="288" y2="55"/><line x1="12" y1="82" x2="288" y2="82"/><polyline points={coords} style={{stroke:color}}/></svg>:<p>Collecting history…</p>}</article>;
 }
 
+function AiWavePrediction({data}:{data:DashboardData}){
+  const prediction=data.ai,ready=prediction.status==="READY"&&prediction.predictedWaveHeight!=null;
+  const current=prediction.currentWaveHeight??data.wave.waveHeight;
+  const source=data.status.dataSource?.toUpperCase()==="SIMULATOR"?"SIMULATED AI DEMO":"EDGE AI MODEL";
+  return <article className={`panel ai-wave-card ${ready?"is-ready":"is-collecting"}`}>
+    <header><div className="panel-title"><BrainCircuit/><div><span>FALCON AI</span><h2>Wave prediction</h2></div></div><em>{source}</em></header>
+    <div className="ai-prediction-flow">
+      <div><span>Current estimate</span><strong>{n(current,2)} m</strong><small>Pressure-based reading</small></div>
+      <ArrowRight aria-hidden="true"/>
+      <div><span>In {prediction.horizonMinutes||10} minutes</span><strong>{ready?`${n(prediction.predictedWaveHeight,2)} m`:"Collecting data"}</strong><small>{ready?`${prediction.direction||"stable"} trend`:"At least 8 readings required"}</small></div>
+    </div>
+    <dl className="ai-prediction-details"><div><dt>Expected condition</dt><dd>{ready?prediction.seaCondition:"PENDING"}</dd></div><div><dt>Confidence</dt><dd>{ready&&prediction.confidence!=null?`${prediction.confidence}%`:"--"}</dd></div><div><dt>Model status</dt><dd>{ready?"ACTIVE":"COLLECTING"}</dd></div><div><dt>Samples used</dt><dd>{prediction.sampleCount??0}</dd></div></dl>
+    <footer>{ready?"Short-term estimate from recent wave-height records. For research monitoring, not an official marine forecast.":"The AI prediction will start automatically when enough wave records are available."}</footer>
+  </article>;
+}
+
 export default function App(){
   const [data,setData]=useState<DashboardData|null>(null),[error,setError]=useState<string|null>(null),[page,setPage]=useState<Page>("overview"),[sidebarOpen,setSidebarOpen]=useState(false),[collapsed,setCollapsed]=useState(false),[horizon,setHorizon]=useState(10),[refreshToken,setRefreshToken]=useState(0);
   const [pollInterval,setPollInterval]=useState(()=>Number(localStorage.getItem("falcon-next-poll"))||2000);
@@ -43,6 +59,7 @@ export default function App(){
     {!data?fallback:page==="motion"?<Suspense fallback={fallback}><MotionPage data={data}/></Suspense>:page==="gps"?<Suspense fallback={fallback}><GpsPage data={data}/></Suspense>:page==="sensors"?<Suspense fallback={fallback}><SensorsPage data={data}/></Suspense>:page==="activity"?<Suspense fallback={fallback}><ActivityHub data={data}/></Suspense>:page==="settings"?<Suspense fallback={fallback}><SettingsPage horizon={horizon} onHorizon={setHorizon} pollInterval={pollInterval} onPollInterval={setPollInterval} onRefresh={()=>setRefreshToken(value=>value+1)}/></Suspense>:<section className="content overview-page operator-overview">
       <div className="dashboard-grid"><article className="panel chart-panel sensor-history-card"><header><div className="panel-title"><Waves/><div><span>Main reading</span><h2>Estimated wave height</h2></div></div><strong className="wave-value">{n(data.wave.waveHeight,2)} m</strong></header><div className="sea-condition-summary"><span>Sea condition</span><div className="sea-condition-scale" aria-label={`Current sea condition: ${seaCondition(data.wave.waveHeight)}`}>{([{name:"CALM",range:"Below 0.60 m"},{name:"MODERATE",range:"0.60–2.49 m"},{name:"ROUGH",range:"2.50 m and above"}] as const).map(condition=><div key={condition.name} className={seaCondition(data.wave.waveHeight)===condition.name?`is-current is-${condition.name.toLowerCase()}`:""}><b>{condition.name}</b><small>{condition.range}</small></div>)}</div></div><OverviewTrend data={data}/></article>
       <article className="panel snapshot"><header><div className="panel-title"><Gauge/><div><span>Current readings</span><h2>Station status</h2></div></div><em className={data.current.security.state==="SECURE"?"status-good":"status-danger"}>{data.current.security.state}</em></header><dl><div><dt><Wind/>Wind</dt><dd>{n(data.status.windSpeed)} km/h · {data.status.windDirection}</dd></div><div><dt><Waves/>Pressure</dt><dd>{n(data.wave.filteredPressure,2)} kPa</dd></div><div><dt><Navigation/>GPS security</dt><dd>{data.current.security.geofenceState}</dd></div><div><dt><BatteryCharging/>Battery</dt><dd>{n(data.battery.percentage,0)}% · {data.battery.status}</dd></div><div><dt><Zap/>Solar</dt><dd>{data.solar.status} · {n(data.solar.power)} W</dd></div><div><dt><Thermometer/>Temperature</dt><dd>Water {n(data.current.environment.waterTemperature)} °C<br/>Enclosure {n(data.status.internalTemperature)} °C</dd></div></dl></article></div>
+      <AiWavePrediction data={data}/>
       <div className="always-visible-trends"><MiniTrend label="Water pressure" value={data.wave.filteredPressure} unit=" kPa" color="#6B8FA3" icon={Gauge} points={data.wave.history.map(item=>item.filteredPressure)}/><MiniTrend label="Wind speed" value={data.status.windSpeed} unit=" km/h" color="#3F7F7A" icon={Wind} points={data.status.sensorHistory.map(item=>item.windSpeed)}/><MiniTrend label="GPS distance from anchor" value={data.gps.anchorDistanceMeters} unit=" m" color="#9A7C55" icon={Navigation} points={data.status.sensorHistory.map(item=>item.anchorDistance)}/></div>
     </section>}</main>
   </div>;

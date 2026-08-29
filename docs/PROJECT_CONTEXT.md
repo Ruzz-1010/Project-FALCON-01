@@ -121,7 +121,7 @@ Normal wave-driven motion must not generate an alert by itself. Geofence and tam
 
 Five primary navigation pages are approved:
 
-1. **Overview** — one large estimated-wave chart and one Station Status card containing wind, pressure, GPS security, battery, solar, and water/enclosure temperature. Optional AI is not shown in the default operator view.
+1. **Overview** — one large estimated-wave chart, one Station Status card containing wind, pressure, GPS security, battery, solar, and water/enclosure temperature, and one always-visible FALCON AI short-term wave-prediction card.
 2. **Sensors** — six readable operator groups: Wave & Pressure, GPS & Security, Wind, Water, Power, and System. Exact device models, sampling, quality, freshness, and calibration diagnostics remain available through expandable details.
 3. **Buoy Motion** — optional 3D visual model whose water-surface amplitude, heave, and tilt are generated from pressure-based estimated wave height; GPS may provide heading context. It has no required IMU, roll, or pitch measurement channel. It includes Current Data plus clearly labeled Calm, Moderate, Rough, and Pressure Offline presentation scenarios. The scenarios are local visual presets and do not modify stored or live telemetry.
 4. **GPS** — readable position, fix, security/geofence state, and distance from the deployment or anchor reference.
@@ -133,9 +133,9 @@ Settings are available through a compact icon and are not a primary navigation i
 
 The assistant is a saved optional animated, rule-based visual status aid and is currently hidden from the dashboard while its final design is being reviewed. It is not a chatbot, language model, voice assistant, or autonomous controller. States are `IDLE/NORMAL`, `WARNING`, `ALERT`, and `OFFLINE`. Messages must be short, factual, and derived from deterministic station rules. It must never issue an official safety advisory or replace PAGASA or authorized coastal agencies.
 
-## Optional AI
+## Required FALCON AI wave prediction
 
-Short-term wave prediction may remain as an opt-in research demonstration after the pressure-monitoring baseline is functional. It must be hidden by default, labeled `OPTIONAL`, identify simulated versus live inputs, expose model/version/sample context, and never be described as an official forecast. Failure of the optional model must not interrupt data acquisition, logging, security, or the dashboard.
+Short-term wave-height prediction is a required, always-visible FALCON feature. The edge service estimates the wave height 5, 10, or 15 minutes ahead from recent pressure-based estimated-wave records and reports its condition, confidence, model version, sample count, and live/simulated source. The current implementation is a transparent short-term trend baseline, not yet a field-trained or officially validated marine forecast. Calibrated field data, held-out evaluation, MAE/RMSE/bias reporting, and model-version records are required before claiming validated predictive performance. Prediction failure is isolated and must not interrupt acquisition, logging, security, or live readings.
 
 ## Canonical grouped telemetry contract
 
@@ -191,7 +191,7 @@ Not yet physically validated:
 6. Measure serial packet loss, latency, stale-data behavior, storage retention, and restart recovery.
 7. Validate battery/solar readings against a calibrated meter and complete an energy budget.
 8. Test dashboard readability and responsiveness on desktop, tablet, and phone.
-9. Evaluate optional AI separately and only with traceable live/calibrated data.
+9. Validate and improve the required AI wave-prediction feature using traceable calibrated data, while keeping monitoring independent of prediction availability.
 
 ## Scope limits and safe claims
 

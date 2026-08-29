@@ -18,7 +18,7 @@ The redesign must preserve the approved functional architecture unless a later a
 - GPS, wind speed/direction, sealed water temperature, power, security, and enclosure-health monitoring;
 - passive single-anchor mooring;
 - local storage, API, and five-page dashboard;
-- optional AI isolated from core monitoring;
+- required AI wave prediction isolated from core monitoring failures;
 - no required BNO085, salinity sensor, or anchor-chain load cell.
 
 These requirements define system function, not the new external form or component placement.

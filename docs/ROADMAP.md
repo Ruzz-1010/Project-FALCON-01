@@ -4,7 +4,7 @@
 
 - approve exact models/datasheets for all TBD sensors and security inputs;
 - remove BNO085 and load-cell requirements from purchasing/fabrication;
-- approve pressure-based estimated-wave wording, passive mooring, optional AI, and five-page dashboard.
+- approve pressure-based estimated-wave wording, passive mooring, required wave-prediction scope, and five-page dashboard.
 
 ## Gate 2 — Electrical and bench integration
 
@@ -30,4 +30,4 @@
 - obtain permissions and follow deployment/retrieval safety limits;
 - collect traceable live data and document failures;
 - update results, conclusions, BOM, drawings, and limitations from evidence;
-- evaluate optional AI only if calibrated data and schedule permit.
+- evaluate the implemented AI wave-prediction baseline against calibrated field data and report MAE/RMSE/bias before making accuracy claims.

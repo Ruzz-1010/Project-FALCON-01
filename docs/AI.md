@@ -1,7 +1,9 @@
-# Optional AI and FALCON Assistant v6.1
+# FALCON AI Wave Prediction and Assistant v6.2
 
-AI is not required for the Phase 1 monitoring baseline. The core system must acquire, validate, log, display, and alert without a trained model.
+AI wave prediction is a required visible Project FALCON feature. The core monitoring path still acquires, validates, logs, displays, and alerts independently so a prediction error cannot erase live coastal readings.
 
-The current `/ai` output is a clearly labeled optional research/presentation model using estimated wave history. It is not field-trained, not an official forecast, and must remain hidden by default. Any later AI evaluation requires calibrated live data, traceable train/test separation, baseline comparison, error metrics, model/version records, and failure isolation.
+The `/ai` endpoint produces a 5-, 10-, or 15-minute wave-height estimate from recent pressure-based estimated-wave history. Overview always displays the current estimate, predicted value, expected `CALM`/`MODERATE`/`ROUGH` condition, confidence indicator, sample count, model state, and live or simulated input label. With fewer than eight valid records it displays `COLLECTING` instead of inventing a prediction.
+
+The present `wave-short-term` implementation is a transparent damped-trend research baseline. It is implemented software, but it is not yet a trained or field-validated AI model and is not an official marine forecast. The next model stage requires calibrated live data, traceable train/validation/test separation, comparison against the current baseline, MAE/RMSE/bias reporting, uncertainty checks, and versioned evaluation records. Only then may the thesis report measured AI prediction accuracy.
 
 The FALCON Assistant is separate from AI. It is a deterministic rule-based visual status aid with `NORMAL`, `WARNING`, `ALERT`, and `OFFLINE` states. It is not a chatbot, LLM, voice interface, or autonomous controller. Its messages summarize configured station rules and never issue official safety instructions.

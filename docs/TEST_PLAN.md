@@ -1,6 +1,6 @@
 # Test Plan
 
-> Apply v6.1 gates: pressure reference accuracy, DS18B20 water-temperature reference comparison, geofence/tamper persistence and false alerts, five-page dashboard usability, optional AI isolation, and replacement-prototype fit/stability validation supersede mandatory IMU/AI tests.
+> Apply v6.2 gates: pressure reference accuracy, DS18B20 water-temperature reference comparison, geofence/tamper persistence and false alerts, five-page dashboard usability, required AI prediction output and failure isolation, and replacement-prototype fit/stability validation supersede mandatory IMU tests.
 
 ## Purpose
 Define repeatable acceptance evidence.

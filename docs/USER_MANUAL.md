@@ -31,7 +31,7 @@ Never hide or reinterpret these labels.
 3. **Sensors:** open a group and use **View Details** when technical quality, freshness, calibration, or source information is needed.
 4. **Logs & Alerts:** review active conditions and stored events. Acknowledgement records that an operator saw an alert; it does not erase the evidence.
 
-Settings is opened from the header icon. Optional prediction remains hidden from the normal operator flow and is not an official forecast.
+Settings is opened from the header icon. FALCON AI wave prediction is always visible on Overview; it is a research estimate and not an official marine forecast.
 
 ## ESP32 diagnostic portal
 

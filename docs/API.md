@@ -77,7 +77,7 @@ Unavailable readings are `null`, never a fabricated zero. Units and source must 
 | `GET /battery` | battery state | Supported |
 | `GET /solar` | solar state | Supported |
 | `GET /logs` | telemetry, optional predictions, alerts, and events | Supported |
-| `GET /ai?horizon=10` | optional research prediction | Optional compatibility route |
+| `GET /ai?horizon=10` | required short-term wave prediction | Used by the always-visible Overview AI card; research output, not an official forecast |
 | `GET/POST /api/scenario` | simulator scenarios | Development only |
 | `POST /calibrate` | audited calibration request | Supported |
 | `POST /restart` | audited maintenance request | Supported |

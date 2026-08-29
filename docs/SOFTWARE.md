@@ -11,7 +11,7 @@ The Orange Pi performs ingestion, stale-data detection, pressure filtering/wave 
 
 Primary software sections follow the grouped schema: `system`, `wave`, `environment`, `gps`, `power`, `security`, `health`, `assistant`, and `alerts`. Missing values stay null. Every value carries or inherits timestamp, source, state, and units.
 
-The FALCON Assistant is deterministic and rule-based. AI prediction is optional, hidden by default, and cannot block monitoring. Legacy IMU/motion modules may remain for historical traceability but are not loaded by the primary dashboard or required by firmware/API tests.
+The FALCON Assistant is deterministic and rule-based. AI wave prediction is a required Overview feature, while its execution remains isolated so it cannot block monitoring. Legacy IMU/motion modules may remain for historical traceability but are not loaded by the primary dashboard or required by firmware/API tests.
 
 Security rules use debounce/persistence. Normal wave movement alone never triggers theft. All configuration and calibration actions must be logged.
 

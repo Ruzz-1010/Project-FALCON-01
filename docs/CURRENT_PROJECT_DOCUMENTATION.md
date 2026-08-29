@@ -26,7 +26,7 @@ The physical and visual prototype is now **under redesign**. All existing mechan
 - Pressure sensor is the primary wave input; output is **estimated wave height**.
 - Sealed DS18B20 water-temperature channel retained; conductivity/salinity removed from the required Phase 1 scope.
 - GPS geofence, tamper input, enclosure switch, and buzzer security concept added.
-- AI made optional and hidden by default.
+- AI wave prediction made a required, always-visible Overview feature while remaining isolated from live monitoring failures.
 - Dashboard consolidated to five primary pages, including a dedicated GPS page, while retaining motion as an optional visualization.
 
 ## Run and verify
@@ -50,4 +50,4 @@ Open `http://127.0.0.1:8765/`. Use Node.js 20.19+ only when running the Vite dev
 6. Implement and test real geofence/tamper persistence.
 7. Install and harden the Orange Pi service.
 8. Complete waterproofing, power-budget, endurance, and controlled coastal tests.
-9. Evaluate optional AI only after traceable calibrated data exists.
+9. Validate the implemented AI wave-prediction baseline using traceable calibrated data before reporting prediction accuracy.
