@@ -128,8 +128,7 @@ def cad_edges(doc, blob):
                 keep = len(normals) == 1
                 if len(normals) > 1:
                     dot = sum(normals[0][k] * normals[1][k] for k in range(3))
-                    silhouette = any(normals[0][k] * normals[1][k] <= 0 for k in range(3))
-                    keep = dot < 0.88 or silhouette
+                    keep = dot < 0.88
                 if keep:
                     result.append((vertices[a], vertices[b], name))
     return result
@@ -137,108 +136,6 @@ def cad_edges(doc, blob):
 
 def esc(value):
     return value.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-
-
-def clip_segment(x1, y1, x2, y2, left, top, right, bottom):
-    """Clip a projected feature instead of dropping a partly visible line."""
-    dx, dy = x2 - x1, y2 - y1
-    p = (-dx, dx, -dy, dy)
-    q = (x1 - left, right - x1, y1 - top, bottom - y1)
-    u1, u2 = 0.0, 1.0
-    for pi, qi in zip(p, q):
-        if abs(pi) < 1e-12:
-            if qi < 0:
-                return None
-            continue
-        t = qi / pi
-        if pi < 0:
-            u1 = max(u1, t)
-        else:
-            u2 = min(u2, t)
-        if u1 > u2:
-            return None
-    return x1 + u1 * dx, y1 + u1 * dy, x1 + u2 * dx, y1 + u2 * dy
-
-
-def finish_svg(svg):
-    """Apply consistent print-safe line rendering to every blueprint sheet."""
-    common = ("svg{shape-rendering:geometricPrecision}"
-              "path,line,polyline,polygon,rect,circle,ellipse{"
-              "vector-effect:non-scaling-stroke;stroke-linejoin:round;"
-              "stroke-linecap:round}")
-    return svg.replace("<style>", f"<style>{common}", 1)
-
-
-def cad_detail_sheet(edges, title, drawing_no, panels, register):
-    """Create a real CAD-projected detail sheet from selected Fusion geometry."""
-    width, height = 1684, 1191
-    out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">',
-           '<defs><style>.b{fill:none;stroke:#263746;stroke-width:1}.o{fill:none;stroke:#3f5362;stroke-width:.9}.c{fill:none;stroke:#94a3b8;stroke-width:.7;stroke-dasharray:10 3 2 3}.d{fill:none;stroke:#475569;stroke-width:.9}.title{font-family:Arial,sans-serif;font-size:24px;font-weight:700;fill:#172635}.h{font-family:Arial,sans-serif;font-size:13px;font-weight:700;fill:#243746}.t{font-family:Arial,sans-serif;font-size:11px;fill:#334155}.s{font-family:Arial,sans-serif;font-size:9px;fill:#475569}.w{font-family:Arial,sans-serif;font-size:13px;font-weight:700;fill:#9f1239}</style><marker id="cadarr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M8 4 0 0v8z" fill="#475569"/></marker></defs>',
-           '<rect width="1684" height="1191" fill="#f8fafc"/><rect x="20" y="20" width="1644" height="1151" class="b"/>',
-           f'<text x="45" y="58" class="title">{esc(title)}</text>',
-           '<text x="45" y="84" class="t">FUSION V2 CAD-PROJECTED FEATURE LINEWORK · ORTHOGRAPHIC REFERENCE · DIMENSIONS IN mm</text>']
-
-    for panel in panels:
-        label, terms, ax, ay, box = panel
-        x, y, w, h = box
-        selected_edges = [e for e in edges if any(term in e[2].upper() for term in terms)]
-        out += [f'<rect x="{x}" y="{y}" width="{w}" height="{h}" class="b"/>',
-                f'<text x="{x+12}" y="{y+24}" class="h">{esc(label)}</text>']
-        if not selected_edges:
-            out.append(f'<text x="{x+20}" y="{y+60}" class="w">NO MATCHING CAD GEOMETRY</text>')
-            continue
-        points = [p for e in selected_edges for p in e[:2]]
-        lo = [min(p[i] for p in points) for i in range(3)]
-        hi = [max(p[i] for p in points) for i in range(3)]
-        # GLB coordinates are metres. Use a millimetre-scale epsilon; using
-        # `1` here incorrectly forced every sub-metre component into a 1 m
-        # envelope and made its projected linework look tiny/incomplete.
-        spanx, spany = max(hi[ax]-lo[ax], .001), max(hi[ay]-lo[ay], .001)
-        scale = min((w-90)/spanx, (h-105)/spany)
-        ox = x+w/2-(lo[ax]+hi[ax])*scale/2
-        oy = y+h/2+(lo[ay]+hi[ay])*scale/2+8
-        out += [f'<line x1="{x+w/2}" y1="{y+38}" x2="{x+w/2}" y2="{y+h-30}" class="c"/>',
-                f'<line x1="{x+20}" y1="{y+h/2}" x2="{x+w-20}" y2="{y+h/2}" class="c"/>']
-        unique = {}
-        for a, b, _ in selected_edges:
-            segment = clip_segment(ox+a[ax]*scale, oy-a[ay]*scale,
-                                   ox+b[ax]*scale, oy-b[ay]*scale,
-                                   x+8, y+35, x+w-8, y+h-32)
-            if not segment:
-                continue
-            x1,y1,x2,y2 = segment
-            q1,q2=(round(x1,1),round(y1,1)),(round(x2,1),round(y2,1))
-            if q1 != q2:
-                unique[tuple(sorted((q1,q2)))] = segment
-        paths = [f'M{x1:.1f} {y1:.1f}L{x2:.1f} {y2:.1f}' for x1,y1,x2,y2 in unique.values()]
-        out.append(f'<path d="{" ".join(paths)}" class="o"/>')
-        out.append(f'<text x="{x+12}" y="{y+h-10}" class="s">CAD ENVELOPE: {spanx*1000:.0f} × {spany*1000:.0f} mm · DO NOT SCALE</text>')
-
-    out += ['<rect x="40" y="790" width="1010" height="305" class="b"/>',
-            '<text x="55" y="817" class="h">CONTROLLED COMPONENT / DIMENSION REGISTER</text>',
-            '<line x1="40" y1="835" x2="1050" y2="835" class="b"/>']
-    yy = 864
-    for code, item, dimension, note in register:
-        out += [f'<text x="55" y="{yy}" class="h">{esc(code)}</text>',
-                f'<text x="105" y="{yy}" class="t">{esc(item)}</text>',
-                f'<text x="390" y="{yy}" class="t">{esc(dimension)}</text>',
-                f'<text x="610" y="{yy}" class="s">{esc(note)}</text>',
-                f'<line x1="40" y1="{yy+11}" x2="1050" y2="{yy+11}" class="b"/>']
-        yy += 36
-    out += ['<rect x="1080" y="790" width="560" height="305" class="b"/>',
-            '<text x="1095" y="817" class="h">ENGINEERING / RELEASE NOTES</text>',
-            '<text x="1095" y="852" class="t">1. LINEWORK IS PROJECTED FROM THE CURRENT FUSION V2 GLB.</text>',
-            '<text x="1095" y="882" class="t">2. VERIFY ALL DIMENSIONS IN THE NATIVE PARAMETRIC MODEL.</text>',
-            '<text x="1095" y="912" class="t">3. COMPLETE MATERIAL, LOAD, SEAL AND INTERFERENCE REVIEWS.</text>',
-            '<text x="1095" y="942" class="t">4. PURCHASED-PART HOLES REQUIRE APPROVED DATASHEETS.</text>',
-            '<text x="1095" y="982" class="w">REFERENCE — NOT FOR FABRICATION</text>',
-            '<line x1="1080" y1="1010" x2="1640" y2="1010" class="b"/>',
-            f'<text x="1095" y="1040" class="s">DRAWING</text><text x="1180" y="1040" class="h">{esc(drawing_no)}</text>',
-            '<text x="1370" y="1040" class="s">REV.</text><text x="1430" y="1040" class="h">P4</text>',
-            '<text x="1095" y="1075" class="s">PROJECT</text><text x="1180" y="1075" class="h">FALCON-01</text>',
-            '<text x="1370" y="1075" class="s">STATUS</text><text x="1430" y="1075" class="w">REFERENCE</text>',
-            '</svg>']
-    return finish_svg("\n".join(out))
 
 
 def drawing(edges):
@@ -267,7 +164,7 @@ def drawing(edges):
         ("PLAN VIEW", 0, 1, (1250, 145, 380, 345), exterior, 4500),
     ]
     out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">',
-           '<defs><style>.border{fill:none;stroke:#253746;stroke-width:1}.object{fill:none;stroke:#3f5362;stroke-width:.82}.center{fill:none;stroke:#94a3b8;stroke-width:.65;stroke-dasharray:10 3 2 3}.dim{fill:none;stroke:#334155;stroke-width:.75}.title{font-family:Arial,sans-serif;font-size:24px;font-weight:700;fill:#172635}.head{font-family:Arial,sans-serif;font-size:13px;font-weight:700;fill:#243746}.txt{font-family:Arial,sans-serif;font-size:12px;fill:#334155}.small{font-family:Arial,sans-serif;font-size:10px;fill:#475569}.tiny{font-family:Arial,sans-serif;font-size:8px;fill:#64748b}.warn{font-family:Arial,sans-serif;font-size:14px;font-weight:700;fill:#9f1239}</style><marker id="arr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M8 4 0 0v8z" fill="#334155"/></marker></defs>',
+           '<defs><style>.border{fill:none;stroke:#253746;stroke-width:1}.object{fill:none;stroke:#526574;stroke-width:.58;stroke-linecap:round}.center{fill:none;stroke:#94a3b8;stroke-width:.65;stroke-dasharray:10 3 2 3}.dim{fill:none;stroke:#334155;stroke-width:.75}.title{font-family:Arial,sans-serif;font-size:24px;font-weight:700;fill:#172635}.head{font-family:Arial,sans-serif;font-size:13px;font-weight:700;fill:#243746}.txt{font-family:Arial,sans-serif;font-size:12px;fill:#334155}.small{font-family:Arial,sans-serif;font-size:10px;fill:#475569}.tiny{font-family:Arial,sans-serif;font-size:8px;fill:#64748b}.warn{font-family:Arial,sans-serif;font-size:14px;font-weight:700;fill:#9f1239}</style><marker id="arr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M8 4 0 0v8z" fill="#334155"/></marker></defs>',
            '<rect width="1684" height="1191" fill="#f8fafc"/><rect x="20" y="20" width="1644" height="1151" class="border"/>',
            '<text x="45" y="60" class="title">PROJECT FALCON — CAD-DERIVED GENERAL ARRANGEMENT</text>',
            '<text x="45" y="86" class="txt">PROPOSED REPLACEMENT PROTOTYPE · V2 REFERENCE GEOMETRY · DIMENSIONS IN mm UNLESS NOTED</text>']
@@ -289,9 +186,7 @@ def drawing(edges):
         for a, b, _ in view_edges:
             x1, y1 = ox+a[ax]*scale, oy-a[ay]*scale
             x2, y2 = ox+b[ax]*scale, oy-b[ay]*scale
-            clipped = clip_segment(x1, y1, x2, y2, x+2, y+32, x+w-2, y+h-2)
-            if clipped:
-                x1, y1, x2, y2 = clipped
+            if x-2 <= x1 <= x+w+2 and y-2 <= y1 <= y+h+2 and x-2 <= x2 <= x+w+2 and y-2 <= y2 <= y+h+2:
                 q1, q2 = (round(x1), round(y1)), (round(x2), round(y2))
                 if q1 == q2:
                     continue
@@ -300,7 +195,7 @@ def drawing(edges):
         # GLB tessellation can duplicate coincident triangle boundaries. Keep a
         # bounded set of the longest unique projected features for readable,
         # performant engineering linework.
-        selected = sorted(projected.values(), key=lambda item: item[4], reverse=True)[:max(limit, 20000)]
+        selected = sorted(projected.values(), key=lambda item: item[4], reverse=True)[:limit]
         paths = [f'M{x1:.1f} {y1:.1f}L{x2:.1f} {y2:.1f}' for x1,y1,x2,y2,_ in selected]
         out.append(f'<path d="{" ".join(paths)}" class="object"/>')
 
@@ -349,7 +244,7 @@ def drawing(edges):
             '<text x="1195" y="1060" class="small">STATUS</text><text x="1270" y="1060" class="warn">REFERENCE</text>',
             '<text x="860" y="1087" class="tiny">UNCONTROLLED WHEN PRINTED · APPROVAL SIGNATURES REQUIRED FOR RELEASE</text>',
             '</svg>']
-    return finish_svg("\n".join(out))
+    return "\n".join(out)
 
 
 def pod_drawing(edges):
@@ -591,86 +486,11 @@ def main():
     doc, blob = load_glb(MODEL)
     edges = cad_edges(doc, blob)
     OUT.write_text(drawing(edges), encoding="utf-8")
-    pod = ("RECT_POD", "TOP_SERVICE_LID", "FRONT_DOOR_",
-           "FRONT_EPDM_", "FRONT_RAISED_", "IP68_DOWNWARD_",
-           "IP67_MEMBRANE_", "SEALED_REAR_", "INTERNAL_LEAK_")
-    OUT_POD.write_text(cad_detail_sheet(edges,
-        "PROJECT FALCON — ELECTRONICS POD CAD FABRICATION REFERENCE", "FALCON-BP-002",
-        [("FRONT ELEVATION", pod, 0, 2, (40,115,520,300)),
-         ("RIGHT ELEVATION", pod, 1, 2, (580,115,500,300)),
-         ("PLAN VIEW", pod, 0, 1, (1100,115,540,300)),
-         ("FRONT DOOR / SEAL DETAIL", ("FRONT_DOOR_","FRONT_EPDM_","FRONT_RAISED_"), 0, 2, (40,435,780,325)),
-         ("DECK / CABLE INTERFACE", ("BATTERY_MINIPC_MPPT_DECK","ESP32_MODEM_SENSOR_DECK","IP68_DOWNWARD_"), 0, 2, (840,435,800,325))],
-        [("P01","Pod shell","300 × 280 × 400 / wall 8","UV-HDPE; chamfer 35; base 8"),
-         ("P02","Service lid / hood","316 × 296 × 18 / 330 × 310 × 5","Dual EPDM paths"),
-         ("P03","Door / opening","250 × 340 × 10 / 220 × 320","Open ≥100°"),
-         ("P04","Hinges / latches","4 × Ø24×45 / 2 × 40×25×45","Final 316L SKU TBD"),
-         ("P05","Internal decks","250×200×6 / 250×210×5","Load and isolation TBD"),
-         ("P06","Gland plate","180 × 60 × 8","Hole pattern by selected glands")]), encoding="utf-8")
-
-    float_terms = ("MAIN_FLOAT_TRADITIONAL", "MAIN_FLOAT_EDGE", "MAIN_FLOAT_UPPER", "MAIN_FLOAT_LOWER")
-    OUT_FLOAT.write_text(cad_detail_sheet(edges,
-        "PROJECT FALCON — MAIN FLOAT / DRUM CAD DIMENSION CONTROL", "FALCON-BP-003",
-        [("FRONT ELEVATION", float_terms, 0, 2, (40,115,520,300)),
-         ("RIGHT ELEVATION", float_terms, 1, 2, (580,115,500,300)),
-         ("PLAN VIEW", float_terms, 0, 1, (1100,115,540,300)),
-         ("UPPER FAIRING DETAIL", ("MAIN_FLOAT_UPPER",), 0, 2, (40,435,780,325)),
-         ("LOWER FAIRING / KEEL DETAIL", ("MAIN_FLOAT_LOWER",), 0, 2, (840,435,800,325))],
-        [("F01","Main float overall","Ø650 × 620","Final material and displacement TBD"),
-         ("F02","Upper cylindrical body","Ø650 × 380","Wall thickness design-required"),
-         ("F03","Lower rounded keel","Ø650 × 240","Hydrodynamic fairing"),
-         ("F04","Service opening","Ø340 CAD reference","Seal and clamp TBD"),
-         ("F05","Support interface","Ø620 / clamp Ø690","Verify frame fit"),
-         ("F06","Drain pattern","8 × Ø10 CAD reference","Final placement TBD")]), encoding="utf-8")
-
-    frame = ("MAST_", "BAY_", "LEVEL_", "FRAME_PAD_", "DIAGONAL_FRAME",
-             "LOWER_TO_MAIN_FRAME_", "GATE_", "RISER_GUSSET_")
-    OUT_STRUCTURE.write_text(cad_detail_sheet(edges,
-        "PROJECT FALCON — TOWER / FRAME CAD STRUCTURAL CONTROL", "FALCON-BP-004",
-        [("FRONT ELEVATION", frame, 0, 2, (40,115,520,300)),
-         ("RIGHT ELEVATION", frame, 1, 2, (580,115,500,300)),
-         ("PLAN VIEW", frame, 0, 1, (1100,115,540,300)),
-         ("MAST / X-BRACING DETAIL", ("MAST_","BAY_","LEVEL_"), 0, 2, (40,435,780,325)),
-         ("LOWER CAGE / GATE DETAIL", ("LOWER_TO_MAIN_FRAME_","GATE_"), 0, 2, (840,435,800,325))],
-        [("M01","Mast legs","4 × Ø32 / 800 high","6061-T6; wall TBD"),
-         ("M02","Rails / X-braces","Ø20","Joint design TBD"),
-         ("M03","Main support risers","Ø30","CAD envelope"),
-         ("M04","Lower support tubes","4 × Ø32","Bottom radius 365"),
-         ("M05","Maintenance gate","340 / 310 × 390","Hinge/latch hardware TBD"),
-         ("M06","Deck / clamp","Ø620 / Ø690","Opening Ø340")]), encoding="utf-8")
-
-    OUT_HARDWARE.write_text(cad_detail_sheet(edges,
-        "PROJECT FALCON — EXTERNAL HARDWARE CAD DETAIL REGISTER", "FALCON-BP-005",
-        [("DUAL SOLAR ARRAY", ("DUAL_SOLAR",), 0, 2, (40,115,520,300)),
-         ("TOP SENSOR ARRAY", ("WIND_","GNSS_","NAVIGATION_LIGHT"), 0, 2, (580,115,500,300)),
-         ("PRESSURE SENSOR ASSEMBLY", ("PRESSURE_","BAR02_","SENSOR_GUARD"), 0, 2, (1100,115,540,300)),
-         ("BALLAST / CONNECTOR", ("BALLAST_V2",), 0, 2, (40,435,780,325)),
-         ("ANCHOR / MOORING CHAIN", ("ANCHOR_",), 0, 2, (840,435,800,325))],
-        [("H01","Solar panels","2 × 450 × 300 × 20","30 W each; verify purchased panel"),
-         ("H02","Sensor platform","Top deck Z882","GNSS, wind, light and antennas"),
-         ("H03","Pressure guard","Ø64 × 72","Sensor Ø24 × 42"),
-         ("H04","Ballast rail / plates","Ø40×500 / 4×Ø220×25","Mass and retention TBD"),
-         ("H05","Mooring chain","Wire Ø12 / link Ø52","WLL and corrosion review"),
-         ("H06","Concrete anchor","650/450 × 500","Mass calculation and approval required")]), encoding="utf-8")
-
-    equipment = ("LIFEPO4_BATTERY_12V_ENVELOPE_BODY", "BATTERY_BMS_ENVELOPE_BODY",
-                 "MPPT_CONTROLLER_ENVELOPE_BODY", "DC_DC_CONVERTER_ENVELOPE_BODY",
-                 "FUSED_POWER_DISTRIBUTION_BODY", "MAIN_BATTERY_DISCONNECT_BODY",
-                 "ESP32_CONTROLLER_ENVELOPE_BODY", "LTE_4G_MODEM_ENVELOPE_BODY",
-                 "SENSOR_DISTRIBUTION_BOARD_BODY")
-    OUT_EQUIPMENT.write_text(cad_detail_sheet(edges,
-        "PROJECT FALCON — POD EQUIPMENT CAD PACKAGING LAYOUT", "FALCON-BP-006",
-        [("FRONT PACKAGING ELEVATION", equipment, 0, 2, (40,115,520,300)),
-         ("RIGHT PACKAGING ELEVATION", equipment, 1, 2, (580,115,500,300)),
-         ("PLAN PACKAGING VIEW", equipment, 0, 1, (1100,115,540,300)),
-         ("POWER EQUIPMENT DETAIL", ("LIFEPO4_BATTERY_12V_ENVELOPE_BODY","BATTERY_BMS_ENVELOPE_BODY","MPPT_CONTROLLER_ENVELOPE_BODY","DC_DC_CONVERTER_ENVELOPE_BODY","FUSED_POWER_DISTRIBUTION_BODY","MAIN_BATTERY_DISCONNECT_BODY"), 0, 2, (40,435,780,325)),
-         ("CONTROL / COMMUNICATION DETAIL", ("ESP32_CONTROLLER_ENVELOPE_BODY","LTE_4G_MODEM_ENVELOPE_BODY","SENSOR_DISTRIBUTION_BOARD_BODY"), 0, 2, (840,435,800,325))],
-        [("E01","LiFePO4 battery","240 × 180 × 105 envelope","Selected physical size TBD"),
-         ("E02","MPPT controller","110 × 80 × 45","PV/BAT/LOAD"),
-         ("E03","DC-DC regulator","90 × 70 × 35","5 V rail"),
-         ("E04","ESP32 controller","80 × 55 × 22 envelope","Exact DevKit footprint TBD"),
-         ("E05","LTE/4G modem","90 × 50 × 25","Antenna and bend clearance"),
-         ("E06","Sensor distribution PCB","90 × 50 × 20","Connector access required")]), encoding="utf-8")
+    OUT_POD.write_text(pod_fabrication_drawing(), encoding="utf-8")
+    OUT_EQUIPMENT.write_text(pod_equipment_drawing(), encoding="utf-8")
+    OUT_FLOAT.write_text(float_drawing(), encoding="utf-8")
+    OUT_STRUCTURE.write_text(structural_drawing(), encoding="utf-8")
+    OUT_HARDWARE.write_text(external_hardware_drawing(), encoding="utf-8")
     print(f"Generated {OUT.relative_to(ROOT)} from {len(edges):,} feature edges")
     print(f"Generated {OUT_POD.relative_to(ROOT)}")
     print(f"Generated {OUT_FLOAT.relative_to(ROOT)}")
