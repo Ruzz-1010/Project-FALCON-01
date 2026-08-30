@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1684" height="1191" viewBox="0 0 1684 1191">
+<defs>
+ <style>.border{fill:none;stroke:#253746;stroke-width:1}.obj{fill:none;stroke:#334155;stroke-width:2}.cut{fill:#e2e8f0;stroke:#334155;stroke-width:1.4}.hidden{fill:none;stroke:#94a3b8;stroke-width:1;stroke-dasharray:7 5}.center{fill:none;stroke:#94a3b8;stroke-width:.8;stroke-dasharray:12 3 2 3}.dim{fill:none;stroke:#475569;stroke-width:1}.title{font-family:Arial,sans-serif;font-size:24px;font-weight:700;fill:#172635}.head{font-family:Arial,sans-serif;font-size:13px;font-weight:700;fill:#243746}.txt{font-family:Arial,sans-serif;font-size:12px;fill:#334155}.small{font-family:Arial,sans-serif;font-size:10px;fill:#475569}.warn{font-family:Arial,sans-serif;font-size:14px;font-weight:700;fill:#9f1239}</style>
+ <marker id="darr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M8 4 0 0v8z" fill="#475569"/></marker>
+</defs>
+<rect width="1684" height="1191" fill="#f8fafc"/><rect x="20" y="20" width="1644" height="1151" class="border"/>
+<text x="45" y="60" class="title">PROJECT FALCON — METAL DRUM / FLOAT DIMENSIONAL CONTROL</text>
+<text x="45" y="86" class="txt">PRELIMINARY METAL ADAPTATION OF V2 FLOAT GEOMETRY · ALL DIMENSIONS IN mm · DO NOT SCALE</text>
+
+<rect x="55" y="130" width="760" height="660" class="border"/><text x="70" y="155" class="head">SECTION A–A — PRINCIPAL FLOAT BODY</text>
+<path d="M190 215H610V462 C610 535 540 618 400 618 C260 618 190 535 190 462Z" class="cut"/>
+<path d="M200 225H600V457 C600 522 532 606 400 606 C268 606 200 522 200 457Z" class="hidden"/>
+<path d="M170 205H630V228H170Z" class="obj"/><path d="M170 215H630M400 175V650" class="center"/>
+<path d="M205 285H595M205 385H595" class="hidden"/>
+<path d="M630 215H685M610 462H685M675 215V462" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
+<text x="690" y="345" class="head" transform="rotate(-90 690 345)">380 CYLINDRICAL SECTION — CAD REF</text>
+<path d="M610 462H735M400 618H735M725 462V618" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
+<text x="740" y="570" class="head" transform="rotate(-90 740 570)">240 KEEL DEPTH — CAD REF</text>
+<path d="M610 215H785M400 618H785M775 215V618" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
+<text x="790" y="475" class="head" transform="rotate(-90 790 475)">620 OVERALL BODY — CAD REF</text>
+<path d="M190 675V705M610 675V705M190 695H610" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
+<text x="355" y="690" class="head">Ø650 O.D. — CAD REF</text>
+<path d="M325 618V650M475 618V650M325 642H475" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
+<text x="343" y="638" class="small">Ø200 KEEL ZONE — CAD REF</text>
+<text x="90" y="755" class="small">SHELL THICKNESS: TBD FOR SELECTED METAL, LOADS, WELD PROCESS AND CORROSION SYSTEM.</text>
+
+<rect x="845" y="130" width="785" height="410" class="border"/><text x="860" y="155" class="head">PLAN VIEW — STRUCTURAL INTERFACES</text>
+<circle cx="1100" cy="335" r="175" class="obj"/><circle cx="1100" cy="335" r="165" class="hidden"/><circle cx="1100" cy="335" r="85" class="obj"/>
+<path d="M880 335H1320M1100 115V555" class="center"/><path d="M925 525V555M1275 525V555M925 545H1275" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
+<text x="1035" y="540" class="head">Ø690 SUPPORT CLAMP O.D.</text>
+<path d="M935 495V520M1265 495V520M935 510H1265" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
+<text x="1035" y="505" class="small">Ø654 LINED CLAMP I.D.</text>
+<path d="M1015 450V480M1185 450V480M1015 470H1185" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
+<text x="1040" y="465" class="small">Ø340 SERVICE OPENING</text>
+<text x="1350" y="210" class="head">INTERFACE REGISTER</text><text x="1350" y="240" class="txt">Support deck O.D.  Ø620</text><text x="1350" y="268" class="txt">Support clamp I.D. Ø654</text><text x="1350" y="296" class="txt">Support clamp O.D. Ø690</text><text x="1350" y="324" class="txt">Clamp height       70</text><text x="1350" y="352" class="txt">Drain holes        8 × Ø10</text><text x="1350" y="380" class="txt">Drain-hole PCD     Ø672</text><text x="1350" y="420" class="small">Values are V2 CAD references.</text>
+
+<rect x="845" y="565" width="785" height="225" class="border"/><text x="860" y="590" class="head">ENGINEERING VALUES REQUIRED BEFORE METAL FABRICATION</text>
+<text x="860" y="620" class="txt">□ Selected alloy/steel grade and certified mechanical properties</text><text x="860" y="648" class="txt">□ Calculated shell, top, bottom and local reinforcement thicknesses</text><text x="860" y="676" class="txt">□ Weld joint details, process, inspection and leak-test requirements</text><text x="860" y="704" class="txt">□ Coating/anode/isolation system for marine corrosion and mixed metals</text><text x="860" y="732" class="txt">□ Loaded displacement, design waterline, freeboard, C.G. and stability</text><text x="860" y="760" class="txt">□ Lifting, frame, ballast and mooring design loads with safety factors</text>
+
+<rect x="55" y="820" width="1020" height="280" class="border"/><text x="70" y="845" class="head">FABRICATION / DESIGN NOTES</text>
+<text x="70" y="875" class="txt">1. CURRENT FUSION V2 SOURCE DEFINES A 6 mm HDPE BODY; IT DOES NOT VALIDATE A METAL SHELL.</text>
+<text x="70" y="903" class="txt">2. DO NOT COPY THE 6 mm HDPE WALL VALUE INTO A METAL FABRICATION DRAWING.</text>
+<text x="70" y="931" class="txt">3. FINAL PLATE THICKNESS AND REINFORCEMENT REQUIRE STRUCTURAL, BUOYANCY AND FATIGUE REVIEW.</text>
+<text x="70" y="959" class="txt">4. PROVIDE CONTINUOUS WATERTIGHT JOINTS; WELD SYMBOLS AND NDT ACCEPTANCE REMAIN TBD.</text>
+<text x="70" y="987" class="txt">5. ISOLATE DISSIMILAR METALS; INCLUDE DRAINAGE, SEALED PENETRATIONS AND SERVICE ACCESS.</text>
+<text x="70" y="1015" class="txt">6. VERIFY DIMENSIONS AGAINST THE SELECTED PHYSICAL DRUM/SHELL BEFORE DETAIL DESIGN.</text>
+<text x="70" y="1055" class="warn">PRELIMINARY ENGINEERING REFERENCE / NOT FOR FABRICATION</text>
+
+<rect x="1100" y="820" width="530" height="280" class="border"/><line x1="1100" y1="900" x2="1630" y2="900" class="border"/><line x1="1360" y1="820" x2="1360" y2="1100" class="border"/>
+<text x="1115" y="850" class="small">PROJECT</text><text x="1115" y="880" class="title">FALCON-01</text><text x="1375" y="850" class="small">DRAWING TITLE</text><text x="1375" y="875" class="head">METAL DRUM DIMENSIONAL CONTROL</text>
+<text x="1115" y="935" class="small">DRAWING NO.</text><text x="1210" y="935" class="head">FALCON-BP-003</text><text x="1375" y="935" class="small">REVISION</text><text x="1455" y="935" class="head">P0</text>
+<text x="1115" y="975" class="small">SCALE</text><text x="1210" y="975" class="head">NTS</text><text x="1375" y="975" class="small">DATE</text><text x="1455" y="975" class="head">2026-08-30</text>
+<text x="1115" y="1015" class="small">SOURCE</text><text x="1210" y="1015" class="txt">FUSION V2 REF.</text><text x="1375" y="1015" class="small">STATUS</text><text x="1455" y="1015" class="warn">PRELIMINARY</text>
+<text x="1115" y="1060" class="small">ENGINEER</text><text x="1210" y="1060" class="txt">________________</text><text x="1375" y="1060" class="small">APPROVAL</text><text x="1455" y="1060" class="txt">________________</text>
+</svg>
