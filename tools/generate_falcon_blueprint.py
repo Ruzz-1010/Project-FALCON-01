@@ -126,13 +126,22 @@ def cad_edges(doc, blob):
                 for a, b in ((tri[0],tri[1]), (tri[1],tri[2]), (tri[2],tri[0])):
                     adjacency[tuple(sorted((a,b)))].append(n)
             for (a, b), normals in adjacency.items():
-                keep = len(normals) == 1
+                boundary = len(normals) == 1
+                hard = boundary
+                silhouette_axes = set()
                 if len(normals) > 1:
                     dot = sum(normals[0][k] * normals[1][k] for k in range(3))
-                    silhouette = any(normals[0][k] * normals[1][k] <= 0 for k in range(3))
-                    keep = dot < 0.88 or silhouette
-                if keep:
-                    result.append((vertices[a], vertices[b], name))
+                    hard = dot < 0.88
+                    silhouette_axes = {
+                        k for k in range(3)
+                        if normals[0][k] * normals[1][k] <= 0
+                    }
+                if hard or silhouette_axes:
+                    # Store why an edge was retained. A silhouette is valid
+                    # only for its matching viewing axis; drawing every axis'
+                    # silhouette in every view caused radial/triangulation
+                    # clutter in the earlier detail sheets.
+                    result.append((vertices[a], vertices[b], name, hard, silhouette_axes))
     return result
 
 
@@ -182,7 +191,12 @@ def cad_detail_sheet(edges, title, drawing_no, panels, register):
     for panel in panels:
         label, terms, ax, ay, box = panel
         x, y, w, h = box
-        selected_edges = [e for e in edges if any(term in e[2].upper() for term in terms)]
+        view_axis = ({0, 1, 2} - {ax, ay}).pop()
+        selected_edges = [
+            e for e in edges
+            if any(term in e[2].upper() for term in terms)
+            and (e[3] or view_axis in e[4])
+        ]
         out += [f'<rect x="{x}" y="{y}" width="{w}" height="{h}" class="b"/>',
                 f'<text x="{x+12}" y="{y+24}" class="h">{esc(label)}</text>']
         if not selected_edges:
@@ -201,7 +215,7 @@ def cad_detail_sheet(edges, title, drawing_no, panels, register):
         out += [f'<line x1="{x+w/2}" y1="{y+38}" x2="{x+w/2}" y2="{y+h-30}" class="c"/>',
                 f'<line x1="{x+20}" y1="{y+h/2}" x2="{x+w-20}" y2="{y+h/2}" class="c"/>']
         unique = {}
-        for a, b, _ in selected_edges:
+        for a, b, _, _, _ in selected_edges:
             segment = clip_segment(ox+a[ax]*scale, oy-a[ay]*scale,
                                    ox+b[ax]*scale, oy-b[ay]*scale,
                                    x+8, y+35, x+w-8, y+h-32)
@@ -211,7 +225,10 @@ def cad_detail_sheet(edges, title, drawing_no, panels, register):
             q1,q2=(round(x1,1),round(y1,1)),(round(x2,1),round(y2,1))
             if q1 != q2:
                 unique[tuple(sorted((q1,q2)))] = segment
-        paths = [f'M{x1:.1f} {y1:.1f}L{x2:.1f} {y2:.1f}' for x1,y1,x2,y2 in unique.values()]
+        # Discard sub-pixel tessellation remnants that do not survive print.
+        clean = [segment for segment in unique.values()
+                 if math.hypot(segment[2]-segment[0], segment[3]-segment[1]) >= 1.25]
+        paths = [f'M{x1:.1f} {y1:.1f}L{x2:.1f} {y2:.1f}' for x1,y1,x2,y2 in clean]
         out.append(f'<path d="{" ".join(paths)}" class="o"/>')
         out.append(f'<text x="{x+12}" y="{y+h-10}" class="s">CAD ENVELOPE: {spanx:.3f} × {spany:.3f} m · DO NOT SCALE</text>')
 
@@ -274,7 +291,9 @@ def drawing(edges):
            '<text x="45" y="86" class="txt">PROPOSED REPLACEMENT PROTOTYPE · V2 REFERENCE GEOMETRY · DIMENSIONS IN mm UNLESS NOTED</text>']
 
     for label, ax, ay, (x, y, w, h), predicate, limit in views:
-        view_edges = [edge for edge in edges if predicate(edge)]
+        view_axis = ({0, 1, 2} - {ax, ay}).pop()
+        view_edges = [edge for edge in edges
+                      if predicate(edge) and (edge[3] or view_axis in edge[4])]
         all_points = [p for edge in view_edges for p in edge[:2]]
         mins = [min(p[i] for p in all_points) for i in range(3)]
         maxs = [max(p[i] for p in all_points) for i in range(3)]
@@ -287,7 +306,7 @@ def drawing(edges):
                 f'<text x="{x+10}" y="{y+20}" class="head">{label}</text>',
                 f'<line x1="{x+w/2}" y1="{y+30}" x2="{x+w/2}" y2="{y+h-10}" class="center"/><line x1="{x+10}" y1="{y+h/2}" x2="{x+w-10}" y2="{y+h/2}" class="center"/>']
         projected = {}
-        for a, b, _ in view_edges:
+        for a, b, _, _, _ in view_edges:
             x1, y1 = ox+a[ax]*scale, oy-a[ay]*scale
             x2, y2 = ox+b[ax]*scale, oy-b[ay]*scale
             clipped = clip_segment(x1, y1, x2, y2, x+2, y+32, x+w-2, y+h-2)
@@ -374,7 +393,9 @@ def pod_drawing(edges):
            '<text x="45" y="60" class="title">PROJECT FALCON — SEALED ELECTRONICS POD ARRANGEMENT</text>',
            '<text x="45" y="86" class="txt">MECHANICAL PLACEMENT REFERENCE · 300 × 280 × 400 mm POD · ORANGE PI EXCLUDED</text>']
     for label, ax, ay, (x, y, w, h), limit in views:
-        pts = [p for e in pod_edges for p in e[:2]]
+        view_axis = ({0, 1, 2} - {ax, ay}).pop()
+        visible_edges = [e for e in pod_edges if e[3] or view_axis in e[4]]
+        pts = [p for e in visible_edges for p in e[:2]]
         mins = [min(p[i] for p in pts) for i in range(3)]
         maxs = [max(p[i] for p in pts) for i in range(3)]
         lowx, highx, lowy, highy = mins[ax], maxs[ax], mins[ay], maxs[ay]
@@ -384,7 +405,7 @@ def pod_drawing(edges):
                 f'<text x="{x+10}" y="{y+20}" class="head">{label}</text>',
                 f'<line x1="{x+w/2}" y1="{y+30}" x2="{x+w/2}" y2="{y+h-10}" class="center"/><line x1="{x+10}" y1="{y+h/2}" x2="{x+w-10}" y2="{y+h/2}" class="center"/>']
         projected = {}
-        for a,b,_ in pod_edges:
+        for a,b,_,_,_ in visible_edges:
             x1,y1,x2,y2=ox+a[ax]*scale,oy-a[ay]*scale,ox+b[ax]*scale,oy-b[ay]*scale
             if x-2<=x1<=x+w+2 and y-2<=y1<=y+h+2 and x-2<=x2<=x+w+2 and y-2<=y2<=y+h+2:
                 q1,q2=(round(x1),round(y1)),(round(x2),round(y2))
