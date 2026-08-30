@@ -18,3 +18,5 @@ The current thesis file is `THESIS DOCUMENTATION/PROJECT FALCON-01 - V3 Document
 ## Design records on hold
 
 All `fusion360/` component notes, `exports/MODEL_STATUS.md`, existing prototype renders, dashboard 3D models, video prompts, and prototype-specific mechanical dimensions are retained for traceability only. They are not the approved replacement design. Older Wokwi, PCB, motion, IMU, and wiring visuals likewise remain historical until explicitly revised against v6.1 and the selected physical parts.
+
+- [Proposed blueprint package](blueprints/README.md) documents the current Fusion V2 reference geometry and component layout. Every sheet is marked **REFERENCE / NOT FOR FABRICATION** until the redesign acceptance gates are completed.
