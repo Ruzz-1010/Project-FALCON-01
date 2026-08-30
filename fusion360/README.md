@@ -30,9 +30,11 @@ generators were removed on 2026-08-30. Their history remains recoverable in Git.
 - `REV5_TOWER_FRONT_MAINTENANCE_GATE`
 - `WATER_PRESSURE_SENSOR_ASSEMBLY`
 
-`MAIN_FLOAT` is retained only as the foundational dependency used when creating
-`MAIN_FLOAT_TRADITIONAL_V2`. `REV5_FINAL_ASSEMBLY_CLEANUP` is retained as the
-visibility and completeness checker for the finalized export set.
+The legacy `MAIN_FLOAT` generator and the temporary
+`REV5_FINAL_ASSEMBLY_CLEANUP` utility were removed during the screenshot-based
+folder audit on 2026-08-30. The resulting source directory now matches the 20
+component groups visible in the shared Fusion V2 browser tree. Their previous
+versions remain recoverable from Git history.
 
 ## Safety rules
 
