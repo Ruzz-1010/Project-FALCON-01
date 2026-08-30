@@ -11,6 +11,7 @@ from __future__ import annotations
 import json
 import math
 import struct
+import sys
 from collections import defaultdict
 from pathlib import Path
 
@@ -176,7 +177,7 @@ def cad_detail_sheet(edges, title, drawing_no, panels, register):
            '<defs><style>.b{fill:none;stroke:#263746;stroke-width:1}.o{fill:none;stroke:#3f5362;stroke-width:.9}.c{fill:none;stroke:#94a3b8;stroke-width:.7;stroke-dasharray:10 3 2 3}.d{fill:none;stroke:#475569;stroke-width:.9}.title{font-family:Arial,sans-serif;font-size:24px;font-weight:700;fill:#172635}.h{font-family:Arial,sans-serif;font-size:13px;font-weight:700;fill:#243746}.t{font-family:Arial,sans-serif;font-size:11px;fill:#334155}.s{font-family:Arial,sans-serif;font-size:9px;fill:#475569}.w{font-family:Arial,sans-serif;font-size:13px;font-weight:700;fill:#9f1239}</style><marker id="cadarr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M8 4 0 0v8z" fill="#475569"/></marker></defs>',
            '<rect width="1684" height="1191" fill="#f8fafc"/><rect x="20" y="20" width="1644" height="1151" class="b"/>',
            f'<text x="45" y="58" class="title">{esc(title)}</text>',
-           '<text x="45" y="84" class="t">FUSION V2 CAD-PROJECTED FEATURE LINEWORK · ORTHOGRAPHIC REFERENCE · DIMENSIONS IN mm</text>']
+           '<text x="45" y="84" class="t">FUSION V2 CAD-PROJECTED FEATURE LINEWORK · ORTHOGRAPHIC REFERENCE · DIMENSIONS IN metres (m)</text>']
 
     for panel in panels:
         label, terms, ax, ay, box = panel
@@ -212,7 +213,7 @@ def cad_detail_sheet(edges, title, drawing_no, panels, register):
                 unique[tuple(sorted((q1,q2)))] = segment
         paths = [f'M{x1:.1f} {y1:.1f}L{x2:.1f} {y2:.1f}' for x1,y1,x2,y2 in unique.values()]
         out.append(f'<path d="{" ".join(paths)}" class="o"/>')
-        out.append(f'<text x="{x+12}" y="{y+h-10}" class="s">CAD ENVELOPE: {spanx*1000:.0f} × {spany*1000:.0f} mm · DO NOT SCALE</text>')
+        out.append(f'<text x="{x+12}" y="{y+h-10}" class="s">CAD ENVELOPE: {spanx:.3f} × {spany:.3f} m · DO NOT SCALE</text>')
 
     out += ['<rect x="40" y="790" width="1010" height="305" class="b"/>',
             '<text x="55" y="817" class="h">CONTROLLED COMPONENT / DIMENSION REGISTER</text>',
@@ -590,7 +591,9 @@ def external_hardware_drawing():
 def main():
     doc, blob = load_glb(MODEL)
     edges = cad_edges(doc, blob)
-    OUT.write_text(drawing(edges), encoding="utf-8")
+    details_only = "--details-only" in sys.argv
+    if not details_only:
+        OUT.write_text(drawing(edges), encoding="utf-8")
     pod = ("RECT_POD", "TOP_SERVICE_LID", "FRONT_DOOR_",
            "FRONT_EPDM_", "FRONT_RAISED_", "IP68_DOWNWARD_",
            "IP67_MEMBRANE_", "SEALED_REAR_", "INTERNAL_LEAK_")
@@ -601,12 +604,12 @@ def main():
          ("PLAN VIEW", pod, 0, 1, (1100,115,540,300)),
          ("FRONT DOOR / SEAL DETAIL", ("FRONT_DOOR_","FRONT_EPDM_","FRONT_RAISED_"), 0, 2, (40,435,780,325)),
          ("DECK / CABLE INTERFACE", ("BATTERY_MINIPC_MPPT_DECK","ESP32_MODEM_SENSOR_DECK","IP68_DOWNWARD_"), 0, 2, (840,435,800,325))],
-        [("P01","Pod shell","300 × 280 × 400 / wall 8","UV-HDPE; chamfer 35; base 8"),
-         ("P02","Service lid / hood","316 × 296 × 18 / 330 × 310 × 5","Dual EPDM paths"),
-         ("P03","Door / opening","250 × 340 × 10 / 220 × 320","Open ≥100°"),
-         ("P04","Hinges / latches","4 × Ø24×45 / 2 × 40×25×45","Final 316L SKU TBD"),
-         ("P05","Internal decks","250×200×6 / 250×210×5","Load and isolation TBD"),
-         ("P06","Gland plate","180 × 60 × 8","Hole pattern by selected glands")]), encoding="utf-8")
+        [("P01","Pod shell","0.300 × 0.280 × 0.400 m / wall 0.008 m","UV-HDPE; chamfer 0.035 m; base 0.008 m"),
+         ("P02","Service lid / hood","0.316×0.296×0.018 m / 0.330×0.310×0.005 m","Dual EPDM paths"),
+         ("P03","Door / opening","0.250×0.340×0.010 m / 0.220×0.320 m","Open ≥100°"),
+         ("P04","Hinges / latches","4×Ø0.024×0.045 m / 2×0.040×0.025×0.045 m","Final 316L SKU TBD"),
+         ("P05","Internal decks","0.250×0.200×0.006 m / 0.250×0.210×0.005 m","Load and isolation TBD"),
+         ("P06","Gland plate","0.180 × 0.060 × 0.008 m","Hole pattern by selected glands")]), encoding="utf-8")
 
     float_terms = ("MAIN_FLOAT_TRADITIONAL", "MAIN_FLOAT_EDGE", "MAIN_FLOAT_UPPER", "MAIN_FLOAT_LOWER")
     OUT_FLOAT.write_text(cad_detail_sheet(edges,
@@ -616,12 +619,12 @@ def main():
          ("PLAN VIEW", float_terms, 0, 1, (1100,115,540,300)),
          ("UPPER FAIRING DETAIL", ("MAIN_FLOAT_UPPER",), 0, 2, (40,435,780,325)),
          ("LOWER FAIRING / KEEL DETAIL", ("MAIN_FLOAT_LOWER",), 0, 2, (840,435,800,325))],
-        [("F01","Main float overall","Ø650 × 620","Final material and displacement TBD"),
-         ("F02","Upper cylindrical body","Ø650 × 380","Wall thickness design-required"),
-         ("F03","Lower rounded keel","Ø650 × 240","Hydrodynamic fairing"),
-         ("F04","Service opening","Ø340 CAD reference","Seal and clamp TBD"),
-         ("F05","Support interface","Ø620 / clamp Ø690","Verify frame fit"),
-         ("F06","Drain pattern","8 × Ø10 CAD reference","Final placement TBD")]), encoding="utf-8")
+        [("F01","Main float overall","Ø0.650 × 0.620 m","Final material and displacement TBD"),
+         ("F02","Upper cylindrical body","Ø0.650 × 0.380 m","Wall thickness design-required"),
+         ("F03","Lower rounded keel","Ø0.650 × 0.240 m","Hydrodynamic fairing"),
+         ("F04","Service opening","Ø0.340 m CAD reference","Seal and clamp TBD"),
+         ("F05","Support interface","Ø0.620 m / clamp Ø0.690 m","Verify frame fit"),
+         ("F06","Drain pattern","8 × Ø0.010 m CAD reference","Final placement TBD")]), encoding="utf-8")
 
     frame = ("MAST_", "BAY_", "LEVEL_", "FRAME_PAD_", "DIAGONAL_FRAME",
              "LOWER_TO_MAIN_FRAME_", "GATE_", "RISER_GUSSET_")
@@ -632,12 +635,12 @@ def main():
          ("PLAN VIEW", frame, 0, 1, (1100,115,540,300)),
          ("MAST / X-BRACING DETAIL", ("MAST_","BAY_","LEVEL_"), 0, 2, (40,435,780,325)),
          ("LOWER CAGE / GATE DETAIL", ("LOWER_TO_MAIN_FRAME_","GATE_"), 0, 2, (840,435,800,325))],
-        [("M01","Mast legs","4 × Ø32 / 800 high","6061-T6; wall TBD"),
-         ("M02","Rails / X-braces","Ø20","Joint design TBD"),
-         ("M03","Main support risers","Ø30","CAD envelope"),
-         ("M04","Lower support tubes","4 × Ø32","Bottom radius 365"),
-         ("M05","Maintenance gate","340 / 310 × 390","Hinge/latch hardware TBD"),
-         ("M06","Deck / clamp","Ø620 / Ø690","Opening Ø340")]), encoding="utf-8")
+        [("M01","Mast legs","4 × Ø0.032 m / 0.800 m high","6061-T6; wall TBD"),
+         ("M02","Rails / X-braces","Ø0.020 m","Joint design TBD"),
+         ("M03","Main support risers","Ø0.030 m","CAD envelope"),
+         ("M04","Lower support tubes","4 × Ø0.032 m","Bottom radius 0.365 m"),
+         ("M05","Maintenance gate","0.340 / 0.310 × 0.390 m","Hinge/latch hardware TBD"),
+         ("M06","Deck / clamp","Ø0.620 / Ø0.690 m","Opening Ø0.340 m")]), encoding="utf-8")
 
     OUT_HARDWARE.write_text(cad_detail_sheet(edges,
         "PROJECT FALCON — EXTERNAL HARDWARE CAD DETAIL REGISTER", "FALCON-BP-005",
@@ -646,12 +649,12 @@ def main():
          ("PRESSURE SENSOR ASSEMBLY", ("PRESSURE_","BAR02_","SENSOR_GUARD"), 0, 2, (1100,115,540,300)),
          ("BALLAST / CONNECTOR", ("BALLAST_V2",), 0, 2, (40,435,780,325)),
          ("ANCHOR / MOORING CHAIN", ("ANCHOR_",), 0, 2, (840,435,800,325))],
-        [("H01","Solar panels","2 × 450 × 300 × 20","30 W each; verify purchased panel"),
-         ("H02","Sensor platform","Top deck Z882","GNSS, wind, light and antennas"),
-         ("H03","Pressure guard","Ø64 × 72","Sensor Ø24 × 42"),
-         ("H04","Ballast rail / plates","Ø40×500 / 4×Ø220×25","Mass and retention TBD"),
-         ("H05","Mooring chain","Wire Ø12 / link Ø52","WLL and corrosion review"),
-         ("H06","Concrete anchor","650/450 × 500","Mass calculation and approval required")]), encoding="utf-8")
+        [("H01","Solar panels","2 × 0.450 × 0.300 × 0.020 m","30 W each; verify purchased panel"),
+         ("H02","Sensor platform","Top deck Z = 0.882 m","GNSS, wind, light and antennas"),
+         ("H03","Pressure guard","Ø0.064 × 0.072 m","Sensor Ø0.024 × 0.042 m"),
+         ("H04","Ballast rail / plates","Ø0.040×0.500 m / 4×Ø0.220×0.025 m","Mass and retention TBD"),
+         ("H05","Mooring chain","Wire Ø0.012 m / link Ø0.052 m","WLL and corrosion review"),
+         ("H06","Concrete anchor","0.650/0.450 × 0.500 m","Mass calculation and approval required")]), encoding="utf-8")
 
     equipment = ("LIFEPO4_BATTERY_12V_ENVELOPE_BODY", "BATTERY_BMS_ENVELOPE_BODY",
                  "MPPT_CONTROLLER_ENVELOPE_BODY", "DC_DC_CONVERTER_ENVELOPE_BODY",
@@ -665,13 +668,14 @@ def main():
          ("PLAN PACKAGING VIEW", equipment, 0, 1, (1100,115,540,300)),
          ("POWER EQUIPMENT DETAIL", ("LIFEPO4_BATTERY_12V_ENVELOPE_BODY","BATTERY_BMS_ENVELOPE_BODY","MPPT_CONTROLLER_ENVELOPE_BODY","DC_DC_CONVERTER_ENVELOPE_BODY","FUSED_POWER_DISTRIBUTION_BODY","MAIN_BATTERY_DISCONNECT_BODY"), 0, 2, (40,435,780,325)),
          ("CONTROL / COMMUNICATION DETAIL", ("ESP32_CONTROLLER_ENVELOPE_BODY","LTE_4G_MODEM_ENVELOPE_BODY","SENSOR_DISTRIBUTION_BOARD_BODY"), 0, 2, (840,435,800,325))],
-        [("E01","LiFePO4 battery","240 × 180 × 105 envelope","Selected physical size TBD"),
-         ("E02","MPPT controller","110 × 80 × 45","PV/BAT/LOAD"),
-         ("E03","DC-DC regulator","90 × 70 × 35","5 V rail"),
-         ("E04","ESP32 controller","80 × 55 × 22 envelope","Exact DevKit footprint TBD"),
-         ("E05","LTE/4G modem","90 × 50 × 25","Antenna and bend clearance"),
-         ("E06","Sensor distribution PCB","90 × 50 × 20","Connector access required")]), encoding="utf-8")
-    print(f"Generated {OUT.relative_to(ROOT)} from {len(edges):,} feature edges")
+        [("E01","LiFePO4 battery","0.240 × 0.180 × 0.105 m envelope","Selected physical size TBD"),
+         ("E02","MPPT controller","0.110 × 0.080 × 0.045 m","PV/BAT/LOAD"),
+         ("E03","DC-DC regulator","0.090 × 0.070 × 0.035 m","5 V rail"),
+         ("E04","ESP32 controller","0.080 × 0.055 × 0.022 m envelope","Exact DevKit footprint TBD"),
+         ("E05","LTE/4G modem","0.090 × 0.050 × 0.025 m","Antenna and bend clearance"),
+         ("E06","Sensor distribution PCB","0.090 × 0.050 × 0.020 m","Connector access required")]), encoding="utf-8")
+    if not details_only:
+        print(f"Generated {OUT.relative_to(ROOT)} from {len(edges):,} feature edges")
     print(f"Generated {OUT_POD.relative_to(ROOT)}")
     print(f"Generated {OUT_FLOAT.relative_to(ROOT)}")
     print(f"Generated {OUT_STRUCTURE.relative_to(ROOT)}")
