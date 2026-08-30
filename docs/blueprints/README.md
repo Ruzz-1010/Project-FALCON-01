@@ -4,10 +4,17 @@ Status: **PROPOSED REPLACEMENT PROTOTYPE — REFERENCE / NOT FOR FABRICATION**
 Source model: `exports/PROJECT FALCON -V2.f3d` and dashboard conversion `dashboard-next/public/models/PROJECT-FALCON-V2.glb`  
 Drawing basis date: 2026-08-30
 
-## Sheets
+## Current drawing
 
-1. [`FALCON-BP-001-general-arrangement.svg`](FALCON-BP-001-general-arrangement.svg) — front, top, component callouts, and principal reference dimensions.
-2. [`FALCON-BP-002-systems-layout.svg`](FALCON-BP-002-systems-layout.svg) — electronics pod, sensor placement, pressure-sensor assembly, power/data flow, and exclusions.
+1. [`FALCON-BP-001-cad-orthographic.svg`](FALCON-BP-001-cad-orthographic.svg) — professional CAD-derived front elevation, right elevation, plan view, controlled dimension register, engineering notes, and title block.
+
+The earlier concept-style infographic sheets were withdrawn. The current sheet
+uses projected feature linework extracted directly from the V2 GLB geometry.
+Regenerate it with:
+
+```bash
+python3 tools/generate_falcon_blueprint.py
+```
 
 Open either SVG directly in VS Code and select **Open Preview**, or open it in Firefox.
 
@@ -40,4 +47,3 @@ Before changing these sheets to **FOR PROTOTYPE FABRICATION**, record and approv
 - battery and solar sizing based on measured consumption;
 - CAD interference check and controlled leak/flotation tests;
 - adviser/team design approval and a new mechanical revision identifier.
-
