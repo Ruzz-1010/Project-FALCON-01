@@ -1,9 +1,0 @@
-{
-  "autodeskProduct": "Fusion360",
-  "type": "script",
-  "author": "PROJECT FALCON-01",
-  "description": {
-    "": "Add editable professional wind-speed anemometer and wind-direction vane to the existing sensor mast"
-  },
-  "supportedOS": "windows|mac"
-}

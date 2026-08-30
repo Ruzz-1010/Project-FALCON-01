@@ -4,20 +4,26 @@ import traceback
 
 
 ACTIVE_PREFIXES = (
-    'MAIN_FLOAT_TRADITIONAL_V2',
     'TOP_CAP',
+    'BALLAST_SUSPENSION_CHAIN',
+    'BALLAST',
+    'MAIN_FLOAT_EDGE_FAIRING',
+    'TOP_SENSOR_ARRAY',
+    'NAVIGATION_LIGHT',
+    'ANCHOR_MOORING_SYSTEM',
+    'MAIN_FLOAT_TRADITIONAL_V2',
+    'DUAL_30W_SOLAR_ARRAY',
+    'SEALED_POD_THERMAL_SYSTEM',
+    'UPPER_POD_ELECTRONICS_LAYOUT',
+    'POD_MARINE_PROTECTION_HARDWARE',
+    'ADJUSTABLE_LOW_BALLAST_V2',
+    'BALLAST_V2_ANCHOR_CONNECTOR',
     'REV5_MAIN_BUOY_FRAME_SUPPORT',
     'REV5_TAPERED_MARINE_MAST',
     'REV5_LOWER_TO_MAIN_FRAME_SUPPORT_CAGE_V2',
-    'DUAL_30W_SOLAR_ARRAY',
     'REV5_RECTANGULAR_MARINE_ELECTRONICS_POD',
-    'REV5_INNER_SEALED_BOX_COOLING',
     'REV5_TOWER_FRONT_MAINTENANCE_GATE',
-    'TOP_SENSOR_ARRAY',
-    'NAVIGATION_LIGHT',
-    'ADJUSTABLE_LOW_BALLAST_V2',
-    'BALLAST_V2_ANCHOR_CONNECTOR',
-    'ANCHOR_MOORING_SYSTEM'
+    'WATER_PRESSURE_SENSOR_ASSEMBLY_REV6_PROPOSED'
 )
 
 LEGACY_PREFIXES = (
@@ -98,8 +104,8 @@ def run(context):
                 hidden += 1
 
         missing = [name for name in ACTIVE_PREFIXES if name not in found_active]
-        root.attributes.add('PROJECT_FALCON_01', 'ActiveMechanicalRevision', '5.0')
-        root.attributes.add('PROJECT_FALCON_01', 'AssemblyRepresentation', 'Single body; dual 30 W solar; sealed upper service pod')
+        root.attributes.add('PROJECT_FALCON_01', 'ActiveMechanicalRevision', 'PROJECT FALCON V2 finalized export set')
+        root.attributes.add('PROJECT_FALCON_01', 'AssemblyRepresentation', 'Matches exports/PROJECT FALCON -V2.fbx top-level systems')
         root.attributes.add('PROJECT_FALCON_01', 'CleanupSafety', 'Visibility only; no occurrence moved or deleted')
         root.attributes.add('PROJECT_FALCON_01', 'ExportStatus', 'CAD review required before R5 export')
 

@@ -1,7 +1,0 @@
-{
-  "autodeskProduct": "Fusion360",
-  "type": "script",
-  "author": "PROJECT FALCON-01",
-  "description": {"": "Raise four solar panels 150 mm and add extension struts"},
-  "supportedOS": "windows|mac"
-}

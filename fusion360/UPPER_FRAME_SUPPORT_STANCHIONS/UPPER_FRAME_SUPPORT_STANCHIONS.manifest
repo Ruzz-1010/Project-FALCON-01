@@ -1,9 +1,0 @@
-{
-  "autodeskProduct": "Fusion360",
-  "type": "script",
-  "author": "PROJECT FALCON-01",
-  "description": {
-    "": "Four editable external stanchions connecting the lower main frame to the upper equipment frame"
-  },
-  "supportedOS": "windows|mac"
-}

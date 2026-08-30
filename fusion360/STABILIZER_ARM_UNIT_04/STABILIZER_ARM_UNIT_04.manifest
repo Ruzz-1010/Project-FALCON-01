@@ -1,9 +1,0 @@
-{
-  "autodeskProduct": "Fusion360",
-  "type": "script",
-  "author": "PROJECT FALCON-01",
-  "description": {
-    "": "Unified fourth stabilizer arm, mounting foot, and corrected twin gussets"
-  },
-  "supportedOS": "windows|mac"
-}

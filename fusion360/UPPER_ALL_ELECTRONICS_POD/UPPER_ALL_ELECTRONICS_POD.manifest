@@ -1,7 +1,0 @@
-{
-  "autodeskProduct": "Fusion360",
-  "type": "script",
-  "author": "PROJECT FALCON-01",
-  "description": {"": "Sealed removable upper pod for all serviceable electronics and battery"},
-  "supportedOS": "windows|mac"
-}

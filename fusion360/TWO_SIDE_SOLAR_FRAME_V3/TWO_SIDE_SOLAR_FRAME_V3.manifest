@@ -1,7 +1,0 @@
-{
-  "autodeskProduct": "Fusion360",
-  "type": "script",
-  "author": "PROJECT FALCON-01",
-  "description": {"": "Two open side frames for the opposed dual 30 W solar panels"},
-  "supportedOS": "windows|mac"
-}
