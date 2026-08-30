@@ -10,27 +10,27 @@
 <rect x="55" y="130" width="760" height="660" class="border"/><text x="70" y="155" class="head">SECTION A–A — PRINCIPAL FLOAT BODY</text>
 <path d="M190 215H610V462 C610 535 540 618 400 618 C260 618 190 535 190 462Z" class="cut"/>
 <path d="M200 225H600V457 C600 522 532 606 400 606 C268 606 200 522 200 457Z" class="hidden"/>
-<path d="M170 205H630V228H170Z" class="obj"/><path d="M170 215H630M400 175V650" class="center"/>
+<rect x="170" y="205" width="460" height="23" class="obj"/><line x1="170" y1="215" x2="630" y2="215" class="center"/><line x1="400" y1="175" x2="400" y2="650" class="center"/>
 <path d="M205 285H595M205 385H595" class="hidden"/>
-<path d="M630 215H685M610 462H685M675 215V462" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
+<line x1="630" y1="215" x2="685" y2="215" class="dim"/><line x1="610" y1="462" x2="685" y2="462" class="dim"/><line x1="675" y1="215" x2="675" y2="462" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
 <text x="690" y="345" class="head" transform="rotate(-90 690 345)">380 CYLINDRICAL SECTION — CAD REF</text>
-<path d="M610 462H735M400 618H735M725 462V618" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
+<line x1="610" y1="462" x2="735" y2="462" class="dim"/><line x1="400" y1="618" x2="735" y2="618" class="dim"/><line x1="725" y1="462" x2="725" y2="618" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
 <text x="740" y="570" class="head" transform="rotate(-90 740 570)">240 KEEL DEPTH — CAD REF</text>
-<path d="M610 215H785M400 618H785M775 215V618" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
+<line x1="610" y1="215" x2="785" y2="215" class="dim"/><line x1="400" y1="618" x2="785" y2="618" class="dim"/><line x1="775" y1="215" x2="775" y2="618" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
 <text x="790" y="475" class="head" transform="rotate(-90 790 475)">620 OVERALL BODY — CAD REF</text>
-<path d="M190 675V705M610 675V705M190 695H610" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
+<line x1="190" y1="675" x2="190" y2="705" class="dim"/><line x1="610" y1="675" x2="610" y2="705" class="dim"/><line x1="190" y1="695" x2="610" y2="695" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
 <text x="355" y="690" class="head">Ø650 O.D. — CAD REF</text>
-<path d="M325 618V650M475 618V650M325 642H475" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
+<line x1="325" y1="618" x2="325" y2="650" class="dim"/><line x1="475" y1="618" x2="475" y2="650" class="dim"/><line x1="325" y1="642" x2="475" y2="642" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
 <text x="343" y="638" class="small">Ø200 KEEL ZONE — CAD REF</text>
 <text x="90" y="755" class="small">SHELL THICKNESS: TBD FOR SELECTED METAL, LOADS, WELD PROCESS AND CORROSION SYSTEM.</text>
 
 <rect x="845" y="130" width="785" height="410" class="border"/><text x="860" y="155" class="head">PLAN VIEW — STRUCTURAL INTERFACES</text>
 <circle cx="1100" cy="335" r="175" class="obj"/><circle cx="1100" cy="335" r="165" class="hidden"/><circle cx="1100" cy="335" r="85" class="obj"/>
-<path d="M880 335H1320M1100 115V555" class="center"/><path d="M925 525V555M1275 525V555M925 545H1275" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
+<line x1="880" y1="335" x2="1320" y2="335" class="center"/><line x1="1100" y1="115" x2="1100" y2="555" class="center"/><line x1="925" y1="525" x2="925" y2="555" class="dim"/><line x1="1275" y1="525" x2="1275" y2="555" class="dim"/><line x1="925" y1="545" x2="1275" y2="545" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
 <text x="1035" y="540" class="head">Ø690 SUPPORT CLAMP O.D.</text>
-<path d="M935 495V520M1265 495V520M935 510H1265" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
+<line x1="935" y1="495" x2="935" y2="520" class="dim"/><line x1="1265" y1="495" x2="1265" y2="520" class="dim"/><line x1="935" y1="510" x2="1265" y2="510" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
 <text x="1035" y="505" class="small">Ø654 LINED CLAMP I.D.</text>
-<path d="M1015 450V480M1185 450V480M1015 470H1185" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
+<line x1="1015" y1="450" x2="1015" y2="480" class="dim"/><line x1="1185" y1="450" x2="1185" y2="480" class="dim"/><line x1="1015" y1="470" x2="1185" y2="470" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
 <text x="1040" y="465" class="small">Ø340 SERVICE OPENING</text>
 <text x="1350" y="210" class="head">INTERFACE REGISTER</text><text x="1350" y="240" class="txt">Support deck O.D.  Ø620</text><text x="1350" y="268" class="txt">Support clamp I.D. Ø654</text><text x="1350" y="296" class="txt">Support clamp O.D. Ø690</text><text x="1350" y="324" class="txt">Clamp height       70</text><text x="1350" y="352" class="txt">Drain holes        8 × Ø10</text><text x="1350" y="380" class="txt">Drain-hole PCD     Ø672</text><text x="1350" y="420" class="small">Values are V2 CAD references.</text>
 

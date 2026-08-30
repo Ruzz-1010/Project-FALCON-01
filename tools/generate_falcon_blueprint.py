@@ -178,7 +178,7 @@ def drawing(edges):
         oy = y + h/2 + (lowy+highy)/2*scale
         out += [f'<rect x="{x}" y="{y}" width="{w}" height="{h}" class="border"/>',
                 f'<text x="{x+10}" y="{y+20}" class="head">{label}</text>',
-                f'<path d="M{x+w/2} {y+30}V{y+h-10} M{x+10} {y+h/2}H{x+w-10}" class="center"/>']
+                f'<line x1="{x+w/2}" y1="{y+30}" x2="{x+w/2}" y2="{y+h-10}" class="center"/><line x1="{x+10}" y1="{y+h/2}" x2="{x+w-10}" y2="{y+h/2}" class="center"/>']
         projected = {}
         for a, b, _ in view_edges:
             x1, y1 = ox+a[ax]*scale, oy-a[ay]*scale
@@ -196,9 +196,9 @@ def drawing(edges):
         paths = [f'M{x1:.1f} {y1:.1f}L{x2:.1f} {y2:.1f}' for x1,y1,x2,y2,_ in selected]
         out.append(f'<path d="{" ".join(paths)}" class="object"/>')
 
-    out += ['<path d="M210 575V596 M660 575V596 M210 590H660" class="dim" marker-start="url(#arr)" marker-end="url(#arr)"/>',
+    out += ['<line x1="210" y1="575" x2="210" y2="596" class="dim"/><line x1="660" y1="575" x2="660" y2="596" class="dim"/><line x1="210" y1="590" x2="660" y2="590" class="dim" marker-start="url(#arr)" marker-end="url(#arr)"/>',
             '<text x="405" y="585" class="head">Ø650 CAD REF</text>',
-            '<path d="M785 205H803 M785 530H803 M798 205V530" class="dim" marker-start="url(#arr)" marker-end="url(#arr)"/>',
+            '<line x1="785" y1="205" x2="803" y2="205" class="dim"/><line x1="785" y1="530" x2="803" y2="530" class="dim"/><line x1="798" y1="205" x2="798" y2="530" class="dim" marker-start="url(#arr)" marker-end="url(#arr)"/>',
             '<text x="790" y="385" class="head" transform="rotate(-90 790 385)">800 MAST CAD REF</text>']
 
     # Reference dimension register and release notes.
@@ -273,7 +273,7 @@ def pod_drawing(edges):
         ox = x+w/2-(lowx+highx)/2*scale; oy = y+h/2+(lowy+highy)/2*scale
         out += [f'<rect x="{x}" y="{y}" width="{w}" height="{h}" class="border"/>',
                 f'<text x="{x+10}" y="{y+20}" class="head">{label}</text>',
-                f'<path d="M{x+w/2} {y+30}V{y+h-10} M{x+10} {y+h/2}H{x+w-10}" class="center"/>']
+                f'<line x1="{x+w/2}" y1="{y+30}" x2="{x+w/2}" y2="{y+h-10}" class="center"/><line x1="{x+10}" y1="{y+h/2}" x2="{x+w-10}" y2="{y+h/2}" class="center"/>']
         projected = {}
         for a,b,_ in pod_edges:
             x1,y1,x2,y2=ox+a[ax]*scale,oy-a[ay]*scale,ox+b[ax]*scale,oy-b[ay]*scale
@@ -353,27 +353,27 @@ def float_drawing():
 <rect x="55" y="130" width="760" height="660" class="border"/><text x="70" y="155" class="head">SECTION A–A — PRINCIPAL FLOAT BODY</text>
 <path d="M190 215H610V462 C610 535 540 618 400 618 C260 618 190 535 190 462Z" class="cut"/>
 <path d="M200 225H600V457 C600 522 532 606 400 606 C268 606 200 522 200 457Z" class="hidden"/>
-<path d="M170 205H630V228H170Z" class="obj"/><path d="M170 215H630M400 175V650" class="center"/>
+<rect x="170" y="205" width="460" height="23" class="obj"/><line x1="170" y1="215" x2="630" y2="215" class="center"/><line x1="400" y1="175" x2="400" y2="650" class="center"/>
 <path d="M205 285H595M205 385H595" class="hidden"/>
-<path d="M630 215H685M610 462H685M675 215V462" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
+<line x1="630" y1="215" x2="685" y2="215" class="dim"/><line x1="610" y1="462" x2="685" y2="462" class="dim"/><line x1="675" y1="215" x2="675" y2="462" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
 <text x="690" y="345" class="head" transform="rotate(-90 690 345)">380 CYLINDRICAL SECTION — CAD REF</text>
-<path d="M610 462H735M400 618H735M725 462V618" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
+<line x1="610" y1="462" x2="735" y2="462" class="dim"/><line x1="400" y1="618" x2="735" y2="618" class="dim"/><line x1="725" y1="462" x2="725" y2="618" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
 <text x="740" y="570" class="head" transform="rotate(-90 740 570)">240 KEEL DEPTH — CAD REF</text>
-<path d="M610 215H785M400 618H785M775 215V618" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
+<line x1="610" y1="215" x2="785" y2="215" class="dim"/><line x1="400" y1="618" x2="785" y2="618" class="dim"/><line x1="775" y1="215" x2="775" y2="618" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
 <text x="790" y="475" class="head" transform="rotate(-90 790 475)">620 OVERALL BODY — CAD REF</text>
-<path d="M190 675V705M610 675V705M190 695H610" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
+<line x1="190" y1="675" x2="190" y2="705" class="dim"/><line x1="610" y1="675" x2="610" y2="705" class="dim"/><line x1="190" y1="695" x2="610" y2="695" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
 <text x="355" y="690" class="head">Ø650 O.D. — CAD REF</text>
-<path d="M325 618V650M475 618V650M325 642H475" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
+<line x1="325" y1="618" x2="325" y2="650" class="dim"/><line x1="475" y1="618" x2="475" y2="650" class="dim"/><line x1="325" y1="642" x2="475" y2="642" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
 <text x="343" y="638" class="small">Ø200 KEEL ZONE — CAD REF</text>
 <text x="90" y="755" class="small">SHELL THICKNESS: TBD FOR SELECTED METAL, LOADS, WELD PROCESS AND CORROSION SYSTEM.</text>
 
 <rect x="845" y="130" width="785" height="410" class="border"/><text x="860" y="155" class="head">PLAN VIEW — STRUCTURAL INTERFACES</text>
 <circle cx="1100" cy="335" r="175" class="obj"/><circle cx="1100" cy="335" r="165" class="hidden"/><circle cx="1100" cy="335" r="85" class="obj"/>
-<path d="M880 335H1320M1100 115V555" class="center"/><path d="M925 525V555M1275 525V555M925 545H1275" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
+<line x1="880" y1="335" x2="1320" y2="335" class="center"/><line x1="1100" y1="115" x2="1100" y2="555" class="center"/><line x1="925" y1="525" x2="925" y2="555" class="dim"/><line x1="1275" y1="525" x2="1275" y2="555" class="dim"/><line x1="925" y1="545" x2="1275" y2="545" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
 <text x="1035" y="540" class="head">Ø690 SUPPORT CLAMP O.D.</text>
-<path d="M935 495V520M1265 495V520M935 510H1265" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
+<line x1="935" y1="495" x2="935" y2="520" class="dim"/><line x1="1265" y1="495" x2="1265" y2="520" class="dim"/><line x1="935" y1="510" x2="1265" y2="510" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
 <text x="1035" y="505" class="small">Ø654 LINED CLAMP I.D.</text>
-<path d="M1015 450V480M1185 450V480M1015 470H1185" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
+<line x1="1015" y1="450" x2="1015" y2="480" class="dim"/><line x1="1185" y1="450" x2="1185" y2="480" class="dim"/><line x1="1015" y1="470" x2="1185" y2="470" class="dim" marker-start="url(#darr)" marker-end="url(#darr)"/>
 <text x="1040" y="465" class="small">Ø340 SERVICE OPENING</text>
 <text x="1350" y="210" class="head">INTERFACE REGISTER</text><text x="1350" y="240" class="txt">Support deck O.D.  Ø620</text><text x="1350" y="268" class="txt">Support clamp I.D. Ø654</text><text x="1350" y="296" class="txt">Support clamp O.D. Ø690</text><text x="1350" y="324" class="txt">Clamp height       70</text><text x="1350" y="352" class="txt">Drain holes        8 × Ø10</text><text x="1350" y="380" class="txt">Drain-hole PCD     Ø672</text><text x="1350" y="420" class="small">Values are V2 CAD references.</text>
 
@@ -398,11 +398,58 @@ def float_drawing():
 </svg>'''
 
 
+def pod_equipment_drawing():
+    """Detailed three-deck pod layout using the controlled Fusion envelopes."""
+    return '''<svg xmlns="http://www.w3.org/2000/svg" width="1684" height="1191" viewBox="0 0 1684 1191">
+<defs><style>.b{fill:none;stroke:#263746;stroke-width:1}.o{fill:#f8fafc;stroke:#334155;stroke-width:1.4}.pcb{fill:#e5eef3;stroke:#334155;stroke-width:1.3}.metal{fill:#e2e8f0;stroke:#334155;stroke-width:1.2}.keep{fill:none;stroke:#94a3b8;stroke-width:1;stroke-dasharray:7 5}.wire{fill:none;stroke:#64748b;stroke-width:1}.ctr{fill:none;stroke:#94a3b8;stroke-width:.8;stroke-dasharray:10 3 2 3}.title{font-family:Arial,sans-serif;font-size:24px;font-weight:700;fill:#172635}.h{font-family:Arial,sans-serif;font-size:13px;font-weight:700;fill:#243746}.t{font-family:Arial,sans-serif;font-size:11px;fill:#334155}.s{font-family:Arial,sans-serif;font-size:9px;fill:#475569}.xs{font-family:Arial,sans-serif;font-size:7px;fill:#475569}.w{font-family:Arial,sans-serif;font-size:13px;font-weight:700;fill:#9f1239}</style></defs>
+<rect width="1684" height="1191" fill="#f8fafc"/><rect x="20" y="20" width="1644" height="1151" class="b"/>
+<text x="45" y="58" class="title">PROJECT FALCON — ELECTRONICS POD EQUIPMENT LAYOUT</text><text x="45" y="84" class="t">THREE REMOVABLE DECKS · CONTROLLED PACKAGING ENVELOPES · POD 300 W × 280 D × 400 H mm</text>
+
+<!-- LEVEL 1 -->
+<rect x="40" y="115" width="505" height="350" class="b"/><text x="55" y="140" class="h">LEVEL 1 — BATTERY / LOWEST DECK</text><rect x="105" y="158" width="360" height="270" rx="18" class="o"/><line x1="285" y1="145" x2="285" y2="440" class="ctr"/><line x1="90" y1="293" x2="480" y2="293" class="ctr"/>
+<rect x="142" y="185" width="288" height="216" rx="8" class="metal"/><text x="213" y="282" class="h">12.8 V 20 Ah LiFePO₄</text><text x="230" y="302" class="s">240 × 180 × 105 envelope</text><circle cx="176" cy="215" r="10" class="o"/><text x="172" y="219" class="h">+</text><circle cx="396" cy="215" r="10" class="o"/><text x="392" y="219" class="h">−</text><rect x="214" y="370" width="144" height="24" class="pcb"/><text x="260" y="386" class="s">BMS 120×40×50</text><line x1="176" y1="225" x2="214" y2="375" class="wire"/><line x1="396" y1="225" x2="358" y2="375" class="wire"/><rect x="126" y="172" width="320" height="242" rx="12" class="keep"/><text x="112" y="449" class="s">25 mm minimum provisional service/restraint clearance · retain battery in all axes</text>
+
+<!-- LEVEL 2 -->
+<rect x="565" y="115" width="505" height="350" class="b"/><text x="580" y="140" class="h">LEVEL 2 — POWER CONVERSION / PROTECTION</text><rect x="630" y="158" width="360" height="270" rx="18" class="o"/><line x1="810" y1="145" x2="810" y2="440" class="ctr"/><line x1="615" y1="293" x2="1005" y2="293" class="ctr"/>
+<rect x="652" y="185" width="132" height="96" rx="5" class="metal"/><text x="697" y="211" class="h">MPPT</text><text x="670" y="228" class="s">110×80×45</text><rect x="665" y="245" width="105" height="22" class="o"/><line x1="700" y1="245" x2="700" y2="267" class="b"/><line x1="735" y1="245" x2="735" y2="267" class="b"/><text x="671" y="260" class="xs">PV</text><text x="705" y="260" class="xs">BAT</text><text x="740" y="260" class="xs">LOAD</text>
+<rect x="842" y="185" width="108" height="84" class="pcb"/><text x="879" y="205" class="h">DC–DC</text><text x="870" y="222" class="s">90×70×35</text><circle cx="872" cy="245" r="13" class="o"/><rect x="912" y="235" width="22" height="20" class="metal"/><text x="866" y="249" class="xs">L1</text>
+<rect x="652" y="322" width="108" height="48" class="o"/><text x="677" y="341" class="h">FUSE BLOCK</text><text x="681" y="357" class="s">90×40×30</text><rect x="660" y="328" width="13" height="32" class="metal"/><rect x="678" y="328" width="13" height="32" class="metal"/><rect x="696" y="328" width="13" height="32" class="metal"/><rect x="714" y="328" width="13" height="32" class="metal"/>
+<rect x="862" y="322" width="72" height="48" rx="5" class="o"/><circle cx="898" cy="346" r="15" class="metal"/><line x1="898" y1="346" x2="909" y2="335" class="b"/><text x="867" y="388" class="s">DISCONNECT 60×40×40</text><text x="630" y="449" class="s">High-current wiring kept short; fuse and isolation controls remain service-accessible</text>
+
+<!-- LEVEL 3 -->
+<rect x="1090" y="115" width="550" height="350" class="b"/><text x="1105" y="140" class="h">LEVEL 3 — CONTROL / CELLULAR / SENSOR I/O</text><rect x="1155" y="158" width="360" height="270" rx="18" class="o"/><line x1="1335" y1="145" x2="1335" y2="440" class="ctr"/><line x1="1140" y1="293" x2="1530" y2="293" class="ctr"/>
+<rect x="1180" y="185" width="96" height="66" rx="4" class="pcb"/><text x="1202" y="205" class="h">ESP32</text><text x="1192" y="220" class="s">80×55×22 env.</text><rect x="1203" y="225" width="49" height="18" class="metal"/><text x="1213" y="238" class="xs">WROOM-32E</text><rect x="1180" y="213" width="12" height="18" class="o"/><line x1="1263" y1="190" x2="1263" y2="246" class="b"/><text x="1177" y="264" class="s">USB / EN / BOOT accessible</text>
+<rect x="1382" y="185" width="108" height="60" rx="4" class="pcb"/><text x="1410" y="204" class="h">LTE/4G</text><text x="1401" y="219" class="s">90×50×25 env.</text><rect x="1392" y="225" width="35" height="14" class="o"/><text x="1398" y="236" class="xs">SIM</text><circle cx="1474" cy="230" r="6" class="o"/><text x="1455" y="258" class="s">u.FL/SMA → gland</text>
+<rect x="1180" y="320" width="108" height="60" rx="4" class="pcb"/><text x="1192" y="338" class="h">SENSOR I/O PCB</text><text x="1196" y="353" class="s">90×50×20 env.</text><rect x="1186" y="360" width="15" height="12" class="o"/><rect x="1205" y="360" width="15" height="12" class="o"/><rect x="1224" y="360" width="15" height="12" class="o"/><rect x="1243" y="360" width="15" height="12" class="o"/><rect x="1262" y="360" width="15" height="12" class="o"/>
+<rect x="1370" y="310" width="125" height="82" rx="4" class="pcb"/><text x="1390" y="327" class="h">INTERFACE DEVICES</text><rect x="1380" y="338" width="30" height="20" class="metal"/><text x="1384" y="351" class="xs">ADS1115</text><rect x="1416" y="338" width="30" height="20" class="metal"/><text x="1422" y="351" class="xs">INA260</text><rect x="1452" y="338" width="30" height="20" class="metal"/><text x="1458" y="351" class="xs">INA260</text><rect x="1380" y="365" width="45" height="18" class="o"/><text x="1386" y="377" class="xs">GPS UART</text><rect x="1433" y="365" width="49" height="18" class="o"/><text x="1437" y="377" class="xs">SECURITY</text><text x="1160" y="449" class="s">Former Orange Pi zone retained as service/cable space — no Bay Station computer onboard</text>
+
+<!-- SIDE SECTION -->
+<rect x="40" y="495" width="650" height="330" class="b"/><text x="55" y="520" class="h">SECTION B–B — DECK HEIGHTS / CABLE ENTRY</text><rect x="185" y="545" width="300" height="245" rx="16" class="o"/><line x1="195" y1="715" x2="475" y2="715" class="b"/><line x1="195" y1="640" x2="475" y2="640" class="b"/><line x1="195" y1="570" x2="475" y2="570" class="b"/><text x="500" y="575" class="h">LEVEL 3 — CONTROL</text><text x="500" y="645" class="h">LEVEL 2 — POWER</text><text x="500" y="720" class="h">LEVEL 1 — BATTERY</text><rect x="235" y="720" width="200" height="55" class="metal"/><text x="278" y="752" class="t">BATTERY + BMS</text><rect x="220" y="652" width="95" height="45" class="metal"/><text x="247" y="679" class="s">MPPT</text><rect x="350" y="660" width="80" height="35" class="pcb"/><text x="372" y="681" class="s">DC–DC</text><rect x="220" y="582" width="90" height="34" class="pcb"/><text x="242" y="603" class="s">ESP32</text><rect x="350" y="582" width="90" height="34" class="pcb"/><text x="369" y="603" class="s">LTE/SENSORS</text><rect x="250" y="790" width="18" height="20" class="o"/><rect x="282" y="790" width="18" height="20" class="o"/><rect x="314" y="790" width="18" height="20" class="o"/><rect x="346" y="790" width="18" height="20" class="o"/><rect x="378" y="790" width="18" height="20" class="o"/><text x="215" y="815" class="s">DOWNWARD IP68 GLANDS: SOLAR · PRESSURE · WIND · TEMP · SECURITY</text><line x1="170" y1="545" x2="170" y2="790" class="b"/><text x="145" y="690" class="h" transform="rotate(-90 145 690)">400 POD HEIGHT</text>
+
+<!-- SCHEDULE -->
+<rect x="710" y="495" width="930" height="330" class="b"/><text x="725" y="520" class="h">EQUIPMENT / ENVELOPE / INTERFACE SCHEDULE</text>
+<line x1="710" y1="540" x2="1640" y2="540" class="b"/><line x1="755" y1="495" x2="755" y2="825" class="b"/><line x1="1030" y1="495" x2="1030" y2="825" class="b"/><line x1="1170" y1="495" x2="1170" y2="825" class="b"/><line x1="1320" y1="495" x2="1320" y2="825" class="b"/>
+<text x="720" y="536" class="s">ID</text><text x="770" y="536" class="s">EQUIPMENT</text><text x="1040" y="536" class="s">ENVELOPE mm</text><text x="1180" y="536" class="s">DECK</text><text x="1330" y="536" class="s">PRIMARY INTERFACE / STATUS</text>
+<text x="720" y="568" class="t">01</text><text x="770" y="568" class="t">12.8 V 20 Ah LiFePO₄</text><text x="1040" y="568" class="t">240×180×105</text><text x="1180" y="568" class="t">L1</text><text x="1330" y="568" class="t">VBAT · selected rating; physical size verify</text>
+<text x="720" y="596" class="t">02</text><text x="770" y="596" class="t">LiFePO₄ MPPT controller</text><text x="1040" y="596" class="t">110×80×45</text><text x="1180" y="596" class="t">L2</text><text x="1330" y="596" class="t">PV/BAT/LOAD · exact product TBD</text>
+<text x="720" y="624" class="t">03</text><text x="770" y="624" class="t">DC–DC regulated branch</text><text x="1040" y="624" class="t">90×70×35</text><text x="1180" y="624" class="t">L2</text><text x="1330" y="624" class="t">5 V/3V3 rails · rating TBD by load test</text>
+<text x="720" y="652" class="t">04</text><text x="770" y="652" class="t">Fused distribution</text><text x="1040" y="652" class="t">90×40×30</text><text x="1180" y="652" class="t">L2</text><text x="1330" y="652" class="t">Branch fuses · service accessible</text>
+<text x="720" y="680" class="t">05</text><text x="770" y="680" class="t">Battery disconnect</text><text x="1040" y="680" class="t">60×40×40</text><text x="1180" y="680" class="t">L2</text><text x="1330" y="680" class="t">Main isolation · lockable/guarded TBD</text>
+<text x="720" y="708" class="t">06</text><text x="770" y="708" class="t">ESP32-DevKitC V4</text><text x="1040" y="708" class="t">80×55×22 env.</text><text x="1180" y="708" class="t">L3</text><text x="1330" y="708" class="t">USB/UART/I2C/GPIO · exact selected controller</text>
+<text x="720" y="736" class="t">07</text><text x="770" y="736" class="t">LTE/4G modem</text><text x="1040" y="736" class="t">90×50×25</text><text x="1180" y="736" class="t">L3</text><text x="1330" y="736" class="t">UART/USB + antenna · exact model TBD</text>
+<text x="720" y="764" class="t">08</text><text x="770" y="764" class="t">Sensor distribution PCB</text><text x="1040" y="764" class="t">90×50×20</text><text x="1180" y="764" class="t">L3</text><text x="1330" y="764" class="t">Bar02/GPS/wind/temp/security terminations</text>
+<text x="720" y="792" class="t">09</text><text x="770" y="792" class="t">Thermal interface / fan</text><text x="1040" y="792" class="t">TBD</text><text x="1180" y="792" class="t">REAR</text><text x="1330" y="792" class="t">Install only if sealed thermal test requires</text>
+
+<rect x="40" y="850" width="1050" height="245" class="b"/><text x="55" y="875" class="h">INSTALLATION / DRAWING NOTES</text><text x="55" y="905" class="t">1. ALL SHOWN EQUIPMENT DIMENSIONS ARE CONTROLLED PACKAGING ENVELOPES, NOT MANUFACTURER-CERTIFIED MODELS.</text><text x="55" y="933" class="t">2. MEASURE RECEIVED PARTS, CONNECTORS, CABLE BEND RADII AND TOOL CLEARANCE BEFORE DRILLING DECKS.</text><text x="55" y="961" class="t">3. ROUTE POWER AND SENSOR/DATA HARNESSES SEPARATELY; CROSS ONLY AT 90° AND PROVIDE LABELED TIE POINTS.</text><text x="55" y="989" class="t">4. TERMINATE EXTERNAL SENSOR CABLES AT LOCKING CONNECTORS; USE DRIP LOOPS AND DOWNWARD IP68 GLANDS.</text><text x="55" y="1017" class="t">5. BATTERY SHALL NOT CONTACT ELECTRONICS UNDER SHOCK/INVERSION; KEEP EXPOSED TERMINALS ABOVE LEAK TRAY.</text><text x="55" y="1045" class="t">6. ORANGE PI / BAY-STATION COMPUTER IS EXCLUDED. FORMER ENVELOPE IS SERVICE AND CABLE-ROUTING SPACE.</text><text x="55" y="1078" class="w">REFERENCE / VERIFY PHYSICAL PARTS / NOT FOR FABRICATION</text>
+<rect x="1110" y="850" width="530" height="245" class="b"/><line x1="1110" y1="925" x2="1640" y2="925" class="b"/><line x1="1360" y1="850" x2="1360" y2="1095" class="b"/><text x="1125" y="877" class="s">PROJECT</text><text x="1125" y="910" class="title">FALCON-01</text><text x="1375" y="877" class="s">TITLE</text><text x="1375" y="903" class="h">ELECTRONICS POD EQUIPMENT LAYOUT</text><text x="1125" y="960" class="s">DRAWING NO.</text><text x="1220" y="960" class="h">FALCON-BP-002</text><text x="1375" y="960" class="s">REVISION</text><text x="1455" y="960" class="h">P2</text><text x="1125" y="1000" class="s">SCALE</text><text x="1220" y="1000" class="h">NTS</text><text x="1375" y="1000" class="s">DATE</text><text x="1455" y="1000" class="h">2026-08-30</text><text x="1125" y="1040" class="s">SOURCE</text><text x="1220" y="1040" class="t">FUSION ENVELOPES + BOM</text><text x="1375" y="1040" class="s">STATUS</text><text x="1455" y="1040" class="w">REFERENCE</text><text x="1125" y="1075" class="s">APPROVAL</text><text x="1220" y="1075" class="t">________________________</text>
+</svg>'''
+
+
 def main():
     doc, blob = load_glb(MODEL)
     edges = cad_edges(doc, blob)
     OUT.write_text(drawing(edges), encoding="utf-8")
-    OUT_POD.write_text(pod_drawing(edges), encoding="utf-8")
+    OUT_POD.write_text(pod_equipment_drawing(), encoding="utf-8")
     OUT_FLOAT.write_text(float_drawing(), encoding="utf-8")
     print(f"Generated {OUT.relative_to(ROOT)} from {len(edges):,} feature edges")
     print(f"Generated {OUT_POD.relative_to(ROOT)}")
