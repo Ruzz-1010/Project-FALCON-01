@@ -9,6 +9,8 @@ Drawing basis date: 2026-08-30
 1. [`FALCON-BP-001-cad-orthographic.svg`](FALCON-BP-001-cad-orthographic.svg) — professional CAD-derived front elevation, right elevation, plan view, controlled dimension register, engineering notes, and title block.
 2. [`FALCON-BP-002-electronics-pod.svg`](FALCON-BP-002-electronics-pod.svg) — dedicated electronics-pod front, right, and plan arrangement with power/control deck schedule, installation requirements, service notes, and explicit Bay Station computer exclusion.
 3. [`FALCON-BP-003-metal-drum-dimensions.svg`](FALCON-BP-003-metal-drum-dimensions.svg) — separate engineering dimensional-control sheet for a proposed metal drum/float adaptation, including body geometry, clamp/service interfaces, required calculations, fabrication notes, and approval fields.
+4. [`FALCON-BP-004-tower-structural-dimensions.svg`](FALCON-BP-004-tower-structural-dimensions.svg) — tower, main support, lower cage, maintenance gate, and controlled structural-member dimension schedule.
+5. [`FALCON-BP-005-external-hardware-dimensions.svg`](FALCON-BP-005-external-hardware-dimensions.svg) — solar, top sensors, pressure guard, ballast, chain/connector, and concrete-anchor dimension register.
 
 The earlier concept-style infographic sheets were withdrawn. The current sheet
 uses projected feature linework extracted directly from the V2 GLB geometry.
