@@ -35,6 +35,16 @@ class ForecastHistoryTests(unittest.TestCase):
             self.assertTrue({"recordedAt", "windSpeed", "waterTemperature", "internalTemperature",
                              "anchorDistance", "solarPower"}.issubset(history[-1]))
 
+    def test_status_exposes_bay_station_transport_names(self):
+        with tempfile.TemporaryDirectory() as directory:
+            runtime = EdgeRuntime(SimulatorSource(), TelemetryStore(Path(directory) / "bay-station.db"), 2.0)
+            runtime.collect_once()
+            status = runtime.v4_status()
+            self.assertEqual(status["bayStation"], "ONLINE")
+            self.assertEqual(status["telemetryLink"], "SIMULATED")
+            self.assertIn("miniPc", status)  # temporary compatibility alias
+            self.assertIn("uart", status)  # temporary compatibility alias
+
     def test_tamper_requires_three_consecutive_frames(self):
         with tempfile.TemporaryDirectory() as directory:
             source = SimulatorSource()

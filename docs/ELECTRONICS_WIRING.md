@@ -13,7 +13,9 @@ Wind speed/direction -> digital pulse + ADC interface -> ESP32
 DS18B20 -> protected OneWire -> ESP32
 Tamper + enclosure switch -> filtered/debounced GPIO -> ESP32
 ESP32 GPIO -> buzzer transistor/driver -> buzzer
-ESP32 USB serial -> Orange Pi Zero 3
+ESP32 -> approved LTE/cellular modem -> mobile network -> shore Bay Station
+
+USB serial to the development laptop remains a bench-only substitute. No Bay Station computer is wired into or powered by the buoy enclosure.
 ```
 
 Disconnect power before wiring. Confirm exact pin labels, logic voltage, connector pin 1, polarity, pull-ups, cable shield/ground strategy, and module revision. Add one device at a time, verify rail voltage/current, scan interfaces, record raw readings, then test invalid/disconnected behavior. Never infer final marine wiring from illustrative 3D images.

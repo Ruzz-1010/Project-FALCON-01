@@ -1,6 +1,6 @@
 # FALCON Edge Service — Current v6.1 Baseline
 
-Local-first Python service for the selected Project FALCON Orange Pi Zero 3 (4 GB). It collects ESP32 telemetry, validates approved sensors, evaluates deterministic alerts, stores operational records in SQLite, and serves the dashboard. Optional wave prediction is isolated from these core functions. A laptop currently performs the same role during development.
+Shore-based Python Bay Station service for Project FALCON. It receives ESP32 buoy telemetry, validates approved channels, evaluates deterministic alerts, stores operational records in SQLite, performs pressure-based wave processing and short-term prediction, and serves the dashboard. Prediction is isolated from core ingestion and logging. A development laptop currently performs the Bay Station role; the final mini PC is pending approval.
 
 ## Run the Presentation Simulator
 
@@ -57,7 +57,7 @@ Runtime database files are ignored by Git.
 
 ## Read from the ESP32
 
-Connect the Orange Pi or development laptop to the ESP32 endpoint and run:
+Connect the Bay Station development laptop to the configured telemetry endpoint and run:
 
 ```powershell
 python -m falcon_edge.service --source esp32 --esp32-url http://192.168.4.1
@@ -65,7 +65,7 @@ python -m falcon_edge.service --source esp32 --esp32-url http://192.168.4.1
 
 ESP32 connection failures are reported explicitly. The service never silently replaces physical-source failures with simulated readings.
 
-For ESP32 USB serial telemetry on Linux:
+For current ESP32 USB serial bench telemetry on Linux (development transport only; deployed LTE transport remains pending):
 
 ```bash
 python3 -m pip install -r edge/requirements-hardware.txt

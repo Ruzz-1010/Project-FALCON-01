@@ -2,7 +2,7 @@ import { BrainCircuit, Cpu, Database, Gauge, LayoutDashboard, Radio, Server, Sli
 const nodes=[
   {name:"Sensors",detail:"Motion · pressure · wind · GPS · power",icon:Waves},
   {name:"ESP32",detail:"Acquisition · checks · telemetry framing",icon:Cpu},
-  {name:"Orange Pi",detail:"Local edge service · offline operation",icon:Server},
+  {name:"Bay Station",detail:"Shore processing · storage · AI · dashboard",icon:Server},
   {name:"SQLite",detail:"Telemetry · alerts · predictions · events",icon:Database},
   {name:"Feature engineering",detail:"Validated windows · trends · quality gates",icon:SlidersHorizontal},
   {name:"AI prediction",detail:"5 / 10 / 15 minute research horizons",icon:BrainCircuit},

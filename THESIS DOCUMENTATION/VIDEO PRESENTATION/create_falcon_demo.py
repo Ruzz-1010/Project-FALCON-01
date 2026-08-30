@@ -205,17 +205,17 @@ def wiring_scene(local):
 
 def usb_scene(local):
     bg=darken(cover(wiring,1.0,.5,.5),.44); d=ImageDraw.Draw(bg,"RGBA")
-    header(d,"Stage 04 · Local transfer","ESP32 → USB serial → Orange Pi","A wired USB link carries validated telemetry into the edge computer inside the enclosure.")
+    header(d,"Stage 04 · Cellular telemetry","ESP32 → LTE/cellular → Bay Station","The buoy buffers and sends validated telemetry through the approved mobile network.")
     start,end=(630,360),(1015,485)
     arrow(d,start,end,min(1,local*1.5),CYAN,8); data_dots(d,start,end,local,8,GOLD)
     pill(d,(635,420),"USB SERIAL · JSON LINES",GOLD)
-    panel(d,(60,505,500,660),"Why a wired link?",["Stable inside the sealed enclosure","Simple diagnostics and recovery","Independent power for the Orange Pi"],CYAN)
+    panel(d,(60,505,500,660),"Why this split?",["Lower buoy power and heat","Short-outage buffering","Protected shore compute and storage"],CYAN)
     return bg
 
 
 def edge_ai(local):
     bg=Image.new("RGB",(W,H),NAVY); d=ImageDraw.Draw(bg,"RGBA")
-    header(d,"Stage 05 · Edge intelligence","Orange Pi processes data near the source","Local processing continues even when the internet connection is unstable.")
+    header(d,"Stage 05 · Bay Station intelligence","Shore computer processes received data","The Bay Station stores records, estimates waves, runs AI, and serves the dashboard.")
     stages=[("1","INGEST","Read USB telemetry"),("2","VALIDATE","Reject stale or invalid data"),("3","FEATURES","Build wave and motion history"),("4","AI MODEL","Predict near-term wave height"),("5","ALERTS","Evaluate operational limits")]
     for i,(n,t,b) in enumerate(stages):
         x=45+i*246; y=240
@@ -231,8 +231,8 @@ def edge_ai(local):
 
 def cloud_scene(local):
     bg=Image.new("RGB",(W,H),NAVY); d=ImageDraw.Draw(bg,"RGBA")
-    header(d,"Stage 06 · Internet and cloud","Send results—not raw confusion","The Orange Pi publishes compact telemetry and AI results through the internet while retaining a local copy.")
-    nodes=[((155,350),"ORANGE PI","EDGE"),((640,250),"SECURE CLOUD","STORE · RELAY"),((1080,350),"DASHBOARD","DISPLAY")]
+    header(d,"Stage 06 · Bay Station services","Store, analyze, display, and alert","The Bay Station retains telemetry and provides authenticated dashboard access.")
+    nodes=[((155,350),"BUOY LTE","TELEMETRY"),((640,250),"BAY STATION","STORE · AI · API"),((1080,350),"DASHBOARD","DISPLAY")]
     for (x,y),a,b in nodes:
         d.ellipse((x-82,y-82,x+82,y+82),fill=PANEL,outline=CYAN,width=3)
         d.text((x,y-15),a,font=F_H2,fill=WHITE,anchor="mm"); d.text((x,y+24),b,font=F_TINY,fill=MUTED,anchor="mm")
@@ -265,7 +265,7 @@ def dashboard(local):
 def full_flow(local):
     bg=moving_prototype(140 + local * 7,.57,1.08); d=ImageDraw.Draw(bg,"RGBA")
     header(d,"Complete system","One continuous data journey","Every stage is connected, timestamped, and visible from the deployed buoy to the dashboard.")
-    labels=[("MOVEMENT",90),("SENSORS",300),("ESP32",500),("USB",675),("ORANGE PI",820),("CLOUD",1010),("DASHBOARD",1160)]
+    labels=[("MOVEMENT",90),("SENSORS",300),("ESP32",500),("LTE",675),("BAY STATION",820),("AI/API",1010),("DASHBOARD",1160)]
     y=420
     for i,(text,x) in enumerate(labels):
         d.ellipse((x-42,y-42,x+42,y+42),fill=(5,31,43,235),outline=CYAN,width=3)

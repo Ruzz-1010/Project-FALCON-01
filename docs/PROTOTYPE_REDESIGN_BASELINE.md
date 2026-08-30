@@ -14,10 +14,10 @@ The redesign must preserve the approved functional architecture unless a later a
 
 - pressure-based **estimated wave height**;
 - ESP32 sensor acquisition;
-- USB/UART transfer to an Orange Pi Zero 3 (4 GB);
+- LTE/cellular transfer to a shore-based Bay Station; USB/UART is bench-only;
 - GPS, wind speed/direction, sealed water temperature, power, security, and enclosure-health monitoring;
 - passive single-anchor mooring;
-- local storage, API, and five-page dashboard;
+- shore-based storage, API, required AI prediction, and four-page dashboard;
 - required AI wave prediction isolated from core monitoring failures;
 - no required BNO085, salinity sensor, or anchor-chain load cell.
 

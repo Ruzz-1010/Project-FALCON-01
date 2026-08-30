@@ -1,6 +1,6 @@
 # FALCON-01 Wokwi View — Historical BNO085 Prototype
 
-> Historical record only. This predates adviser revision v6.0 and is not the required sensor/wiring baseline. BNO085 is optional/deprecated; use `PROJECT_CONTEXT.md` and `PINOUT.md` for current work.
+> Historical record only. This predates the Bay Station baseline and is not the required sensor/wiring design. BNO085 and Orange Pi visual blocks are deprecated; use `PROJECT_CONTEXT.md`, `BAY_STATION_ARCHITECTURE.md`, and `PINOUT.md` for current work.
 
 ## Open the Interactive Wiring
 

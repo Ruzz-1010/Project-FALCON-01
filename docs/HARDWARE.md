@@ -7,11 +7,11 @@ Status: adviser-approved design baseline; procurement and physical validation re
 ## Architecture
 
 ```text
-Sensors -> protected interfaces -> ESP32 -> USB/UART -> Orange Pi Zero 3
+Sensors -> protected interfaces -> ESP32 -> approved LTE/cellular modem -> mobile network -> shore Bay Station
 Solar -> charge controller -> LiFePO4 battery -> protected DC rails
 ```
 
-The Orange Pi is powered separately from the sensor carrier and is not placed on the ESP32 PCB. It provides local storage, API, dashboard, and optional future AI.
+No single-board computer or mini PC is installed on the buoy. The shore Bay Station is facility powered or uses a separately designed UPS and provides storage, pressure processing, required AI prediction, API, dashboard, and alerts. USB/UART is retained only for bench commissioning; the exact LTE modem/interface must be approved before PCB release.
 
 ## Required Phase 1 groups
 

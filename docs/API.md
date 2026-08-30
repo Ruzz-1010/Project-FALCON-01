@@ -1,6 +1,6 @@
 # Project FALCON Local API v6.1
 
-Authority: [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md). Host: Orange Pi Zero 3 or development laptop. Format: UTF-8 JSON with ISO 8601 timestamps.
+Authority: [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md). Host: shore-based Bay Station mini PC or development laptop substitute. Format: UTF-8 JSON with ISO 8601 timestamps. Deployed buoy ingestion requires an authenticated LTE/cellular transport that remains pending exact modem/protocol selection.
 
 ## Primary grouped endpoint
 

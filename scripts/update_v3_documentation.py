@@ -1,3 +1,5 @@
+"""LEGACY updater for the superseded pre-Bay-Station V3 document."""
+
 from pathlib import Path
 
 from docx import Document
@@ -219,4 +221,4 @@ def update() -> None:
 
 
 if __name__ == "__main__":
-    update()
+    raise SystemExit("Legacy updater blocked: use update_baystation_docx.py")

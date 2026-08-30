@@ -1,4 +1,8 @@
-"""Build the adviser-revised FALCON thesis DOCX from the latest V2 template."""
+"""LEGACY generator for the superseded onboard-Orange-Pi architecture.
+
+Do not run for current documentation. BayStation.docx and PROJECT_CONTEXT.md v7.0
+are authoritative; use update_baystation_docx.py for approved corrections.
+"""
 
 from pathlib import Path
 import sys
@@ -246,4 +250,4 @@ def build() -> None:
 
 
 if __name__ == "__main__":
-    build()
+    raise SystemExit("Legacy generator blocked: use BayStation.docx and update_baystation_docx.py")

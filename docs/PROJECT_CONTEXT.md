@@ -1,4 +1,4 @@
-# Project FALCON Master Context v6.1
+# Project FALCON Master Context v7.0 — Bay Station Baseline
 
 ## Document control
 
@@ -8,20 +8,21 @@
 | Project type | Solar-powered smart coastal observation buoy |
 | Status | Undergraduate Phase 1 prototype; hardware integration pending |
 | Authority | Master repository source of truth |
-| Edge host | Orange Pi Zero 3 (4 GB), with laptop substitute during development |
+| Bay Station | Shore-based mini PC; exact model TBD, development laptop substitute |
 | Controller | ESP32 |
 | Primary wave method | Pressure-based estimated wave height |
-| AI | Optional supporting research feature |
-| Adviser revision | 2026-08-25 |
+| AI | Required Bay Station short-term wave-height prediction; validation pending |
+| Telemetry | LTE/cellular; exact modem, protocol, antenna, and provider TBD |
+| Adviser revision | 2026-08-29 |
 | Physical prototype | UNDER REDESIGN; geometry and placement TBD |
 
-This file supersedes older descriptions that made the BNO085 IMU, anchor-chain tension sensing, or AI forecasting mandatory. Working code remains the authority for what is implemented. Planned hardware must not be described as installed or field-validated.
+This file supersedes older Orange Pi-on-buoy, USB-only deployment, BNO085, and anchor-chain load-cell descriptions. The Bay Station AI predictor is required, but its trained model and accuracy remain unvalidated. Working code remains the authority for implemented behavior. Planned hardware must not be described as installed or field-validated.
 
 The system-function baseline remains approved, but the physical and visual prototype is being replaced. `PROTOTYPE_REDESIGN_BASELINE.md` governs that work. Existing CAD, renderings, dashboard models, dimensions, enclosure layouts, solar arrangements, and component positions are reference material only until the replacement passes its acceptance checklist.
 
 ## Project definition
 
-Project FALCON is a low-cost, modular, solar-powered coastal observation buoy intended to collect near-real-time coastal, position, power, security, and system-health data. An ESP32 acquires sensor readings and sends them to an Orange Pi Zero 3 through USB/UART. The Orange Pi logs data locally, serves a REST API, and hosts a responsive web dashboard without requiring Internet connectivity.
+Project FALCON is a low-cost, modular, solar-powered coastal observation buoy intended to collect near-real-time coastal, position, power, security, and system-health data. An ESP32 buoy node acquires and validates sensor readings, maintains local security logic, buffers short communication outages, and sends versioned telemetry through an approved LTE/cellular link. A shore-based Bay Station mini PC stores records, performs pressure-based wave processing and AI prediction, serves the REST API/dashboard, and manages alerts. No mini PC is installed on the buoy.
 
 The core undergraduate contribution is the integration and evaluation of an accessible local coastal-monitoring prototype. The system estimates wave height from calibrated underwater-pressure variations. It does not claim direct laboratory-grade wave measurement, official forecasting, navigation control, or disaster-warning capability.
 
@@ -31,9 +32,9 @@ The core undergraduate contribution is the integration and evaluation of an acce
 2. Acquire timestamped pressure, GPS, wind, environmental, power, security, and health readings.
 3. Filter and calibrate underwater pressure to produce an explicitly labeled estimated wave height.
 4. Detect persistent GPS geofence, vibration/tamper, and enclosure-access events without treating normal wave motion as theft.
-5. Store telemetry and events locally on the Orange Pi and present them through a simple five-page dashboard.
+5. Transmit telemetry to a shore Bay Station for SQLite storage, processing, alerts, and a simple four-page dashboard.
 6. Evaluate accuracy, reliability, latency, power use, usability, and false-alert behavior through documented tests.
-7. Explore short-term AI wave prediction only as an optional extension after the monitoring baseline is validated.
+7. Develop and evaluate required short-term AI wave prediction against a documented non-AI baseline using chronological held-out data.
 
 ## Research gap and novelty
 
@@ -46,17 +47,17 @@ Pressure / GPS / wind / environment / power / security sensors
                               |
                             ESP32
                               |
-                         USB serial/UART
+                    LTE/cellular telemetry
                               |
-                    Orange Pi Zero 3 (4 GB)
+                  shore-based Bay Station mini PC
                  +------------+-------------+
                  |            |             |
-              SQLite       REST API    Local dashboard
+              SQLite       REST API    Web dashboard + AI
                                               |
                                    laptop / tablet / phone
 ```
 
-Internet and cloud synchronization are not required. The ESP32 continues basic acquisition when the edge computer is temporarily unavailable. The Orange Pi performs logging, aggregation, API hosting, dashboard hosting, and optional future model inference.
+The deployed path requires available cellular coverage between the buoy and Bay Station. The ESP32 continues acquisition and local security during outages and buffers a defined amount of telemetry for later retransmission. The Bay Station performs ingestion, pressure processing, logging, API/dashboard hosting, alerts, and required AI inference. USB serial remains a bench-development transport only.
 
 ## Sensor baseline
 
@@ -89,7 +90,7 @@ Internet and cloud synchronization are not required. The ESP32 continues basic a
 
 - BNO085 IMU: deprecated as a required Phase 1 sensor. Old code/visualization may remain only as a clearly labeled optional historical prototype and must not be required by the API, dashboard, BOM, objectives, or validation plan.
 - Load cell/HX711/anchor-chain tension measurement: removed. FALCON uses passive mooring. Mooring line scope must allow tides, waves, and ordinary movement.
-- Mandatory AI prediction: removed. AI is optional and supporting.
+- On-buoy AI or mini PC: excluded. Required short-term AI prediction runs only at the shore Bay Station.
 
 ## Pressure-based estimated wave height
 
@@ -119,13 +120,12 @@ Normal wave-driven motion must not generate an alert by itself. Geofence and tam
 
 ## Dashboard information architecture
 
-Five primary navigation pages are approved:
+Four primary navigation pages are approved:
 
 1. **Overview** — one large estimated-wave chart, one Station Status card containing wind, pressure, GPS security, battery, solar, and water/enclosure temperature, and one always-visible FALCON AI short-term wave-prediction card.
-2. **Sensors** — six readable operator groups: Wave & Pressure, GPS & Security, Wind, Water, Power, and System. Exact device models, sampling, quality, freshness, and calibration diagnostics remain available through expandable details.
-3. **Buoy Motion** — optional 3D visual model whose water-surface amplitude, heave, and tilt are generated from pressure-based estimated wave height; GPS may provide heading context. It has no required IMU, roll, or pitch measurement channel. It includes Current Data plus clearly labeled Calm, Moderate, Rough, and Pressure Offline presentation scenarios. The scenarios are local visual presets and do not modify stored or live telemetry.
-4. **GPS** — readable position, fix, security/geofence state, and distance from the deployment or anchor reference.
-5. **Logs & Alerts** — active alerts, persisted telemetry, security events, calibration events, operator actions, search, and export. It remains the final sidebar item.
+2. **Buoy Motion** — optional 3D visual model whose water-surface amplitude, heave, and tilt are generated from pressure-based estimated wave height; GPS may provide heading context. It has no required IMU, roll, or pitch measurement channel. It includes Current Data plus clearly labeled Calm, Moderate, Rough, and Pressure Offline presentation scenarios. The scenarios are local visual presets and do not modify stored or live telemetry.
+3. **Sensors** — six readable operator groups: Wave & Pressure, GPS & Security, Wind, Water, Power, and System. Exact device models, sampling, quality, freshness, and calibration diagnostics remain available through expandable details.
+4. **Logs & Alerts** — active alerts, persisted telemetry, security events, calibration events, operator actions, search, and export. It remains the final sidebar item.
 
 Settings are available through a compact icon and are not a primary navigation item. The former separate Wave, GPS, Power, System, History, and Alerts pages remain consolidated. Motion is retained strictly as an optional visual model and does not restore BNO085 as a required sensor.
 
@@ -135,7 +135,7 @@ The assistant is a saved optional animated, rule-based visual status aid and is 
 
 ## Required FALCON AI wave prediction
 
-Short-term wave-height prediction is a required, always-visible FALCON feature. The edge service estimates the wave height 5, 10, or 15 minutes ahead from recent pressure-based estimated-wave records and reports its condition, confidence, model version, sample count, and live/simulated source. The current implementation is a transparent short-term trend baseline, not yet a field-trained or officially validated marine forecast. Calibrated field data, held-out evaluation, MAE/RMSE/bias reporting, and model-version records are required before claiming validated predictive performance. Prediction failure is isolated and must not interrupt acquisition, logging, security, or live readings.
+Short-term wave-height prediction is a required, always-visible FALCON Bay Station feature. The service estimates the wave height 5, 10, or 15 minutes ahead from recent pressure-based estimated-wave records and reports its condition, model version, sample count, and live/simulated source. The Overview uses a clearly labeled red AI comparison line and a separate numeric future-prediction card; it does not imply that predictions are measured data. The current implementation is a transparent short-term trend baseline, not yet a trained or field-validated model. Calibrated field data, chronological train/validation/test partitions, baseline comparison, MAE/RMSE/bias reporting, and versioned evaluation records are required before claiming AI accuracy.
 
 ## Canonical grouped telemetry contract
 
@@ -162,12 +162,12 @@ Legacy endpoints `/status`, `/wave`, `/gps`, `/battery`, `/solar`, `/ai`, `/logs
 Implemented in the repository:
 
 - ESP32 PlatformIO firmware shell, captive setup/diagnostic portal, and telemetry framing prototype;
-- Python edge service with simulator, serial ingestion, SQLite logging, deterministic alerts, REST API, and static dashboard hosting;
+- Python Bay Station service prototype with simulator, bench serial ingestion, SQLite logging, deterministic alerts, REST API, prediction baseline, and static dashboard hosting;
 - grouped adviser-approved telemetry endpoint;
 - pressure-data fields and simulated pressure-based wave estimate;
 - GPS geofence and tamper/enclosure simulation states;
-- five-page responsive dashboard with settings icon;
-- optional rule-based assistant and opt-in prediction display;
+- four-page responsive Bay Station dashboard with settings icon;
+- optional rule-based assistant assets and required always-visible prediction display;
 - local logs, alerts, search, and export.
 
 Not yet physically validated:
@@ -178,7 +178,7 @@ Not yet physically validated:
 - tamper component selection and debounce thresholds;
 - water-temperature reference comparison;
 - full waterproofing, corrosion protection, power autonomy, and coastal endurance;
-- Orange Pi installation on the buoy;
+- selected LTE/cellular modem integration and shore Bay Station installation;
 - field-trained or field-validated AI.
 
 ## Validation plan
@@ -188,7 +188,7 @@ Not yet physically validated:
 3. Compare the sealed DS18B20 with a traceable reference thermometer across the intended operating range.
 4. Survey the GPS deployment reference and test inside/outside geofence persistence.
 5. Test vibration and enclosure inputs under ordinary wave-like motion and deliberate tampering; record false positives/negatives.
-6. Measure serial packet loss, latency, stale-data behavior, storage retention, and restart recovery.
+6. Measure cellular packet loss, latency, coverage, reconnect/buffered retransmission, duplicate prevention, stale-data behavior, storage retention, and restart recovery.
 7. Validate battery/solar readings against a calibrated meter and complete an energy budget.
 8. Test dashboard readability and responsiveness on desktop, tablet, and phone.
 9. Validate and improve the required AI wave-prediction feature using traceable calibrated data, while keeping monitoring independent of prediction availability.
@@ -204,9 +204,9 @@ FALCON does not provide tsunami, typhoon, storm, or weather prediction; autonomo
 3. Freeze component placement, pinout, wiring, and PCB only after electrical and physical-fit review.
 4. Implement physical pressure acquisition and a documented calibration routine.
 5. Implement security persistence/debounce on real hardware.
-6. Integrate the Orange Pi service and verify automatic startup.
+6. Select and integrate the LTE modem and shore Bay Station, then verify authentication, buffering, automatic startup, and recovery.
 7. Collect controlled reference data before performance or accuracy claims.
 
 ## Change control
 
-Any document that conflicts with this v6.1 context is outdated unless it is explicitly labeled historical. New sensor, AI, cloud, or mechanical scope requires adviser approval and corresponding updates to requirements, BOM, firmware, API, tests, dashboard, thesis, and risk documentation.
+Any document that conflicts with this v7.0 Bay Station context is outdated unless explicitly labeled historical. New sensor, AI, cloud, cellular, or mechanical scope requires adviser approval and corresponding updates to requirements, BOM, firmware, API, tests, dashboard, thesis, and risk documentation.

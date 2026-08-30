@@ -13,7 +13,7 @@ The presentation may describe this data path without inventing physical
 placement:
 
 `Pressure + GPS + wind speed + wind direction + supporting water temperature`
-`→ ESP32 acquisition and validation → USB serial/UART → Orange Pi Zero 3`
+`→ ESP32 acquisition, validation, and buffering → LTE/cellular → shore Bay Station mini PC`
 `→ SQLite/local processing → REST API → local dashboard`
 
 Security monitoring includes persistent GPS geofence, a generic
@@ -38,7 +38,7 @@ Simulated values must be labelled **SIMULATED**.
 > water pressure, GPS, wind speed, wind direction, and supporting sealed water
 > temperature. Animate signals entering an ESP32, being validated and
 > timestamped, then traveling through a visible USB serial/UART link to an
-> Orange Pi Zero 3. Show local SQLite storage, deterministic pressure-derived
+> shore Bay Station mini PC. Show SQLite storage, pressure-derived
 > estimated-wave processing, security and health alerts, a REST API, and a
 > four-page local dashboard: Overview, Buoy Motion, Sensors, and Logs & Alerts.
 > Label wave height ESTIMATED and CALIBRATION REQUIRED. Label all demonstration

@@ -4,7 +4,7 @@
 
 - approve exact models/datasheets for all TBD sensors and security inputs;
 - remove BNO085 and load-cell requirements from purchasing/fabrication;
-- approve pressure-based estimated-wave wording, passive mooring, required wave-prediction scope, and five-page dashboard.
+- approve pressure-based estimated-wave wording, passive mooring, shore Bay Station/LTE split, required wave-prediction scope, and four-page dashboard.
 
 ## Gate 2 — Electrical and bench integration
 

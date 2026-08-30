@@ -1,4 +1,6 @@
-# Orange Pi Edge Architecture
+# Historical Orange Pi Edge Architecture — Superseded
+
+> **Do not use for current design or procurement.** The adviser-approved Bay Station baseline removes the Orange Pi from the buoy. See [BAY_STATION_ARCHITECTURE.md](BAY_STATION_ARCHITECTURE.md). The content below is retained only for historical traceability.
 
 ## Decision
 

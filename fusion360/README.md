@@ -1,5 +1,7 @@
 # Project FALCON V2 — Final Fusion Script Set
 
+> **Mechanical reference under Bay Station revision:** any generator that places an Orange Pi/mini PC inside the buoy is superseded and must not be used for the replacement electronics pod. Preserve the external geometry only until ESP32 + sensors + LTE + power/security placement is approved.
+
 This directory has been cleaned against the top-level component structure in
 `exports/PROJECT FALCON -V2.fbx` dated 2026-08-27. Superseded prototype,
 stabilizer, electronics-box, ventilation, solar-frame, and structural-cage

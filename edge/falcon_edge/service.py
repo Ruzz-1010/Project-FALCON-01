@@ -105,6 +105,8 @@ class EdgeRuntime:
                           for item in recent]
         return {"system": "ONLINE" if online else "DEGRADED", "monitoring": bool(data.get("monitoring", online)),
                 "uptimeSeconds": int(data.get("uptime", 0)), "esp32": "SIMULATED" if source == "simulator" else ("ONLINE" if online else "OFFLINE"),
+                "bayStation": "ONLINE", "telemetryLink": "SIMULATED" if source == "simulator" else ("BENCH_SERIAL" if online else "DISCONNECTED"),
+                # Backward-compatible aliases retained until stored clients migrate.
                 "miniPc": "ONLINE", "uart": "SIMULATED" if source == "simulator" else ("CONNECTED" if online else "DISCONNECTED"),
                 "api": "ONLINE", "sensorsOnline": expected - (1 if sensor_fault else 0), "sensorsExpected": expected,
                 "lastUpdate": latest.get("recordedAt"), "dataSource": source, "activeAlertCount": len(alerts),

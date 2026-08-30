@@ -1,6 +1,6 @@
 # Electronics Pod Layout — Revision Pending
 
-> The enclosure and component placement are under redesign. Do not use this layout for fabrication or harness-length decisions. Replace it only after exact parts and the new physical prototype are approved.
+> The enclosure and component placement are under redesign. Orange Pi/mini-PC placement below is obsolete: the buoy contains ESP32, sensors/interfaces, LTE modem, power, and security only; the Bay Station is shore based. Do not use this layout for fabrication or harness-length decisions.
 
 > These notes preserve the earlier carrier. BNO085 is no longer required, and security/environment interfaces must be added after exact part selection.
 

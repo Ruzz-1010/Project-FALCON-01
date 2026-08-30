@@ -2,10 +2,7 @@
 
 ## Current Baseline
 
-Project FALCON will retain the Orange Pi Zero 3 (4GB) for the proposed Phase 1
-prototype. It is sufficient for sensor telemetry, local storage, the dashboard,
-and lightweight scikit-learn inference. The items below are future improvements
-for consideration only after approval, funding, and field validation.
+Project FALCON Phase 1 uses a shore-based Bay Station architecture. The final mini PC remains subject to approval and measured workload requirements; no Orange Pi or mini PC is installed on the buoy. The items below are future improvements only after approval, funding, and field validation.
 
 ## Recommended Future Improvements
 
@@ -34,7 +31,7 @@ instrument, uncertainty estimate, cleaning plan, power budget, and dashboard sta
 
 ### 4. Improve long-distance communication
 
-Possible options include LTE/4G where cellular service is reliable, LoRa for
+Phase 1 requires an approved LTE/4G link where cellular service is reliable. Future resilience may add LoRa for
 low-rate links to a nearby gateway, and satellite messaging for essential compact
 telemetry in remote sites. FALCON should continue storing data locally and
 synchronize queued records after a connection returns.
@@ -44,14 +41,11 @@ synchronize queued records after a connection returns.
 Raspberry Pi 5 may provide smoother operation for heavier analytics, camera
 processing, additional services, or a larger dashboard workload. It is not needed
 for the current Phase 1 pipeline. Before upgrading, the team must demonstrate an
-Orange Pi performance limitation and redesign the regulated power branch, cooling,
-mounting tray, enclosure airflow, wiring, fuse, solar budget, and endurance tests.
+Bay Station performance limitation and revise shore power/UPS, cooling, storage, networking, and recovery tests. Raspberry Pi 5 remains shore based and never enters the buoy solar budget.
 
 ## Suggested Presentation Script
 
-> “For Phase 1, Project FALCON will use the Orange Pi Zero 3 because it is compact,
-> lower-power, and sufficient for our current sensor and lightweight machine-learning
-> workload. If the project is approved and receives additional funding, we will
+> “For Phase 1, Project FALCON will use a shore-based Bay Station mini PC selected from measured storage, dashboard, and AI requirements. No mini PC is installed on the buoy. If the project is approved and receives additional funding, we will
 > improve reliability first, then consider an on-demand camera, calibrated
 > environmental sensors, and stronger remote communication. A Raspberry Pi 5 may
 > be adopted later if actual benchmarks show that heavier analytics require more

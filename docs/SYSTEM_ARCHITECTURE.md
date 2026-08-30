@@ -7,7 +7,7 @@ Define implemented boundaries and future integration points.
 ESP32 firmware, local dashboard, planned sensors, edge AI, and remote systems.
 
 ## Current Status
-The ESP32 acquisition/diagnostic foundation and laptop-hosted edge prototype are implemented. The Orange Pi and physical sensor integrations remain pending.
+The ESP32 acquisition/diagnostic foundation and laptop-hosted Bay Station prototype are implemented. LTE/cellular transport, final shore mini PC, and physical sensor integrations remain pending.
 
 ## Architecture
 ```mermaid
@@ -29,7 +29,7 @@ flowchart LR
 Missing assets return 503; AP/DNS initialization failure stops service; dashboard polling failure shows connection loss.
 
 ## Future Expansion
-Complete physical sensor drivers, Orange Pi deployment, authentication, and field validation while keeping ESP32 diagnostics available independently.
+Complete physical sensor drivers, LTE modem/transport selection, authenticated Bay Station deployment, buffering/retransmission, and field validation while keeping ESP32 diagnostics available independently.
 
 The post-approval architecture may add an authenticated on-demand camera,
 calibrated environmental sensors, remote communications, and a conditional

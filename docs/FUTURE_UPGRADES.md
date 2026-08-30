@@ -10,12 +10,12 @@ show a justified need.
 ## Upgrade Principles
 
 - Preserve the ESP32 as the deterministic sensor-acquisition and basic safety controller.
-- Keep the Orange Pi Zero 3 (4GB) as the Phase 1 edge computer.
+- Keep compute hardware at the shore Bay Station; select it from measured service requirements.
 - Upgrade only when measurements identify a performance, reliability, or research need.
 - Prefer modular, replaceable interfaces rather than redesigning the complete buoy.
 - Recalculate energy, thermal, enclosure, network, and maintenance requirements before purchase.
 - Treat every new sensor as unavailable until calibrated against a traceable reference.
-- Preserve local-first operation when Internet service is absent.
+- Preserve ESP32 sensing/security and buffered records when cellular service is absent.
 
 ## Proposed Upgrade Stages
 
@@ -25,25 +25,21 @@ show a justified need.
 | 2 | On-demand viewing camera | Remote visual inspection without continuous recording | Privacy, bandwidth, power, and ingress review |
 | 3 | Additional environmental sensors | Broader coastal research measurements | Research question, calibration method, and reference instrument approved |
 | 4 | Communications resilience | Remote operation beyond local Wi-Fi | Site survey and recurring-service budget approved |
-| 5 | Raspberry Pi 5 4GB edge upgrade | More compute margin for heavier analytics | Orange Pi benchmarks demonstrate a real limitation |
+| 5 | Raspberry Pi 5 4GB Bay Station option | More compute margin for heavier analytics | Bay Station benchmarks demonstrate a real limitation |
 | 6 | Fleet and advanced analytics | Multi-buoy regional observations | Single-buoy field performance is repeatable |
 
 ## Raspberry Pi 5 4GB Upgrade
 
-The Raspberry Pi 5 4GB is a possible future replacement for the Orange Pi Zero
-3 when heavier analytics, higher dashboard load, camera processing, or additional
-services exceed measured Orange Pi capacity. It is not required for the current
-scikit-learn telemetry and wave-prediction pipeline.
+The Raspberry Pi 5 4GB is a possible shore Bay Station computer when heavier analytics, higher dashboard load, camera processing, or additional services exceed the final measured requirement. It is never installed on or powered by the buoy.
 
 Before migration:
 
-1. Benchmark Orange Pi CPU, memory, prediction latency, storage I/O, temperature,
+1. Benchmark the development/final Bay Station CPU, memory, prediction latency, storage I/O, temperature,
    boot time, and service recovery under the complete measured workload.
 2. Confirm that optimization cannot meet the requirement more efficiently.
-3. Provide a protected regulated 5 V / 5 A-class supply sized from measured peaks.
-4. Add an approved active cooler and verify sealed-enclosure thermal performance.
-5. Revise the mounting tray, cable clearance, USB link, fuse, wire, connector,
-   solar-energy budget, battery endurance, and spare-parts plan.
+3. Provide a manufacturer-compliant shore power supply and separately evaluate UPS needs.
+4. Add approved cooling and verify the Bay Station room/enclosure environment.
+5. Revise shore mounting, network, storage, service, and spare-parts plans; do not charge this load to the buoy solar budget.
 6. Re-run software installation, watchdog, brownout, reboot, 24/72-hour endurance,
    and supervised deployment tests.
 
@@ -57,7 +53,7 @@ output. It is for remote visual inspection only, not Phase 1 measurement or AI.
 
 Proposed behavior:
 
-`Camera -> Orange Pi -> authenticated on-demand stream -> dashboard viewer`
+`Future camera -> authenticated cellular/network path -> shore Bay Station -> dashboard viewer`
 
 - 720p at approximately 10–15 frames per second;
 - streaming starts only while an authorized user is viewing;

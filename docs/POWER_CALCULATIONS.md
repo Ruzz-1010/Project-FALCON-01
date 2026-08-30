@@ -1,63 +1,39 @@
-# FALCON-01 Provisional Power and Protection Schedule
+# Provisional Buoy Power Calculations — Bay Station Baseline
 
-> Power values are preliminary design envelopes. Recalculate them from measured normal/peak consumption and the approved replacement prototype before freezing the solar panel, battery, converter, thermal, enclosure, or cable design.
+Authority: [POWER_SYSTEM.md](POWER_SYSTEM.md). Values below are planning envelopes only.
 
-## Energy Model
+## Load worksheet to complete
 
-Baseline battery energy: `12.8 V × 20 Ah = 256 Wh nominal`. At 80% usable,
-budget `204.8 Wh`.
+| Load | Voltage | Idle | Active | Peak | Duty cycle | Daily Wh | Evidence |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| ESP32 controller | TBD | TBD | TBD | TBD | TBD | TBD | 24-hour bench log |
+| Bar02 + approved sensors | TBD | TBD | TBD | TBD | TBD | TBD | Datasheets + bench log |
+| LTE/cellular modem | TBD | TBD | TBD | TBD | TBD | TBD | Registration/reconnect/transmit test |
+| Security electronics | TBD | TBD | TBD | TBD | TBD | TBD | Armed/alarm test |
+| Conversion losses | — | — | — | — | — | TBD | Measured converter efficiency |
 
-## Provisional Electronics Consumption
+Do not total or finalize the design until exact parts and measured duty cycles exist.
 
-These are supply envelopes and planning assumptions, not measured continuous
-consumption. Replace them with a 24-hour current log before final sizing.
+## Battery planning
 
-| Load | Preliminary electrical basis | Required evidence |
-| --- | --- | --- |
-| Orange Pi Zero 3, storage, Wi-Fi | 5 V / 3 A supply envelope (15 W maximum available, not average draw) | Startup, idle, Wi-Fi, and SQLite-write current |
-| ESP32 and complete sensor carrier | Separate 5 V / 2 A branch envelope (10 W maximum available) | ESP32 plus every installed sensor at idle and active sampling |
-| Two optional enclosure fans | `2 × 5 V × 0.15 A = 1.5 W` maximum | Fan startup, normal PWM duty, and sealed-enclosure thermal need |
-| Pressure, GPS, wind, water, power, security sensors | Included in the ESP32/sensor branch | Exact purchased-part datasheets and individual bench measurements |
-| Buck/MPPT/wiring losses | Included in the conservative system-efficiency assumption | Efficiency versus battery voltage, load, and enclosure temperature |
+- Nominal provisional battery: `12.8 V × 20 Ah = 256 Wh`.
+- Provisional usable energy at 80%: `256 Wh × 0.80 = 204.8 Wh`.
+- No-solar runtime: `usable Wh ÷ measured average W`.
 
-| Average complete load | No-solar runtime | Daily energy |
-| ---: | ---: | ---: |
-| 6 W | 34.1 h | 144 Wh/day |
-| 8 W | 25.6 h | 192 Wh/day |
-| 10 W | 20.5 h | 240 Wh/day |
+## Solar planning
 
-Solar estimate at four peak-sun-hours and 70% net efficiency:
+- Preliminary harvest: `panel W × 4 peak-sun-hours × 0.70`.
+- 40 W candidate: `112 Wh/day`.
+- 60 W candidate: `168 Wh/day`.
+- Required margin must cover poor weather, temperature, fouling, orientation, conversion losses, charge limits, and LTE peaks.
 
-| Panel | Estimated harvest | Margin at 6 W load | Margin at 8 W load |
-| ---: | ---: | ---: | ---: |
-| 60 W | 168 Wh/day | +24 Wh | -24 Wh |
-| 80 W | 224 Wh/day | +80 Wh | +32 Wh |
+## Bay Station exclusion
 
-Therefore 60 W is a supervised-test minimum; 80 W is the preferred prototype
-starting point. Neither is an endurance claim for a cloudy marine deployment.
+The mini PC is shore based and facility powered or separately backed by a UPS. Its energy use is measured separately and never included in buoy autonomy.
 
-## Provisional Branch Schedule
+## Acceptance gates
 
-| Branch | Design envelope | Provisional protection | Provisional copper |
-| --- | ---: | ---: | --- |
-| Battery to distribution | <=10 A design envelope | 10 A DC fuse near battery | 16 AWG marine tinned |
-| MPPT/battery charge | Set by panel Isc/controller | Per both manufacturers | 16–18 AWG after calculation |
-| Orange Pi buck input | <=3 A at 12 V transient envelope | 5 A DC branch fuse | 18 AWG |
-| ESP32/sensor buck input | <=2 A at 12 V envelope | 3 A DC branch fuse | 18 AWG |
-| 5 V low-voltage outputs | Per measured load | Fuse to converter/cable limit | 20 AWG short runs |
-| 3.3 V sensor signals | milliamp-scale | No branch fuse; protected supply | 22–26 AWG twisted/shielded as needed |
-
-These are prototype starting values, not final marine authorization. Final fuse
-selection must be above normal/startup current but below the ampacity of every
-downstream conductor and connector. Verify DC interrupt rating. Panel-side
-protection must follow panel Isc, conductor count, and MPPT instructions.
-
-## Validation Gates
-
-1. Log current at 12.8 V and both 5 V rails for 24 hours.
-2. Capture Orange Pi startup peak, Wi-Fi load, storage writes, and fan startup.
-3. Verify each buck at minimum/maximum battery voltage, temperature, and load.
-4. Check voltage drop at the Orange Pi; reject brownouts or unstable USB power.
-5. Run a fused short/fault test using a protected bench setup.
-6. Run 72-hour solar endurance before unattended operation.
-7. Replace estimates with measured averages and recalculate autonomy.
+1. No brownout during repeated modem registration and transmit peaks.
+2. Every branch fuse and conductor is sized from measured peak/fault requirements.
+3. Battery/MPPT/panel compatibility is documented from exact datasheets.
+4. 24-hour load logging and at least 72-hour supervised solar endurance pass.

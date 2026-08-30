@@ -1,6 +1,6 @@
 # Test Plan
 
-> Apply v6.2 gates: pressure reference accuracy, DS18B20 water-temperature reference comparison, geofence/tamper persistence and false alerts, five-page dashboard usability, required AI prediction output and failure isolation, and replacement-prototype fit/stability validation supersede mandatory IMU tests.
+> Apply v7.0 Bay Station gates: pressure reference accuracy, DS18B20 reference comparison, geofence/tamper persistence and false alerts, LTE coverage/packet-loss/reconnect/buffer tests, four-page dashboard usability, required AI baseline/held-out evaluation and failure isolation, and replacement-prototype fit/stability validation supersede mandatory IMU tests.
 
 ## Purpose
 Define repeatable acceptance evidence.

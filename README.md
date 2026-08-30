@@ -1,6 +1,6 @@
 # Project FALCON-01
 
-Project FALCON is a solar-powered smart coastal observation buoy for near-real-time local monitoring. Its Phase 1 baseline uses an ESP32 for sensor acquisition and an Orange Pi Zero 3 (4 GB) for local logging, API hosting, and the web dashboard.
+Project FALCON is a solar-powered smart coastal observation buoy for near-real-time monitoring. Its Phase 1 baseline uses an ESP32 buoy node for acquisition, validation, local security, and temporary outage buffering; an approved LTE/cellular link sends telemetry to a shore-based Bay Station mini PC for SQLite storage, pressure-based wave processing, AI prediction, API hosting, alerts, and the web dashboard. No mini PC is installed on the buoy.
 
 The current adviser-approved functional direction is documented in [PROJECT_CONTEXT.md](docs/PROJECT_CONTEXT.md). The physical/visual buoy is currently being replaced; [PROTOTYPE_REDESIGN_BASELINE.md](docs/PROTOTYPE_REDESIGN_BASELINE.md) controls that redesign. Existing CAD and renders are references, not the approved replacement prototype.
 
@@ -19,7 +19,7 @@ BNO085 is not required in the primary baseline. Load cell/HX711 anchor-chain sen
 
 ## Current truth
 
-The repository contains working firmware, simulator, local edge API, database, and dashboard prototypes. Most physical sensors and the Orange Pi have not yet been integrated or field-validated. Simulator readings are labeled `SIMULATED`; wave values are labeled `ESTIMATED`; uncalibrated channels say `CALIBRATION REQUIRED`.
+The repository contains working firmware, simulator, Bay Station service prototype, database, and dashboard. Physical LTE integration, final Bay Station hardware, most physical sensors, pressure reference calibration, and field validation remain pending. Simulator readings are labeled `SIMULATED`; wave values are labeled `ESTIMATED`; uncalibrated channels say `CALIBRATION REQUIRED`.
 
 The current mechanical geometry, component placement, presentation image, and dashboard 3D model are under redesign. Dimensions and placements from older revisions must not be reused without verification.
 
@@ -62,13 +62,12 @@ pio run
 
 ## Dashboard
 
-The canonical dashboard has five primary pages:
+The canonical Bay Station dashboard has four primary pages:
 
 1. Overview
-2. Sensors
-3. Buoy Motion (optional visualization, not a required IMU reading)
-4. GPS
-5. Logs & Alerts
+2. Buoy Motion (optional visualization, not a required IMU reading)
+3. Sensors (including GPS and security details)
+4. Logs & Alerts
 
 Settings are opened using the header icon. FALCON AI wave prediction is always visible on Overview and estimates the selected 5-, 10-, or 15-minute wave height from recent pressure-based wave records. Its status, input source, sample count, confidence, and limitations are shown clearly; prediction failure cannot interrupt monitoring or logging.
 The Sensors page presents six operator-friendly groups—Wave & Pressure, GPS & Security, Wind, Water, Power, and System—with technical device diagnostics available through **View Details**.
@@ -93,6 +92,8 @@ edge/             Python service, tests, database, bundled dashboard
 src/              ESP32 firmware
 THESIS DOCUMENTATION/ thesis and presentation files
 ```
+
+Bay Station authority and unresolved cellular selection gates are documented in [BAY_STATION_ARCHITECTURE.md](docs/BAY_STATION_ARCHITECTURE.md) and [BAY_STATION_SELECTION_REGISTER.md](docs/BAY_STATION_SELECTION_REGISTER.md).
 
 ## Safety and research limits
 

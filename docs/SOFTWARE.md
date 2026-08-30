@@ -1,13 +1,13 @@
 # Software Architecture v6.1
 
 ```text
-ESP32 drivers/acquisition -> versioned USB/UART telemetry -> Orange Pi ingestion
--> validation/filtering -> SQLite -> REST API -> five-page local dashboard
+Sensors -> ESP32 acquisition/validation -> LTE/cellular telemetry -> Internet
+-> shore Bay Station ingestion -> pressure processing -> SQLite + AI -> REST API -> four-page dashboard
 ```
 
-The ESP32 performs deterministic acquisition, calibration application, range checks, security input debounce, watchdog handling, and serial framing. It must continue sensing when the Orange Pi is unavailable.
+The ESP32 performs deterministic acquisition, engineering-unit/range checks, security debounce, watchdog handling, versioned telemetry framing, and short-outage buffering. It must continue sensing and local security when cellular connectivity or the Bay Station is unavailable. USB serial remains a bench transport until the LTE path is selected and implemented.
 
-The Orange Pi performs ingestion, stale-data detection, pressure filtering/wave estimation, GPS geofence persistence, event aggregation, SQLite storage, API/dashboard hosting, and optional isolated model inference.
+The shore Bay Station performs authenticated ingestion, stale-data detection, pressure filtering/wave estimation, event aggregation, SQLite storage, API/dashboard hosting, alerts, and required isolated AI prediction. The final mini PC, LTE modem, transport protocol, authentication, and deployment network remain selection gates.
 
 Primary software sections follow the grouped schema: `system`, `wave`, `environment`, `gps`, `power`, `security`, `health`, `assistant`, and `alerts`. Missing values stay null. Every value carries or inherits timestamp, source, state, and units.
 

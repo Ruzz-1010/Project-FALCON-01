@@ -1,4 +1,4 @@
-"""Align the existing sensor-list DOCX with PROJECT_CONTEXT.md v6.1."""
+"""LEGACY v6.1 updater retained only for traceability after Bay Station v7.0."""
 
 from pathlib import Path
 
@@ -84,4 +84,4 @@ def align():
 
 
 if __name__ == "__main__":
-    align()
+    raise SystemExit("Legacy updater blocked: align future records with PROJECT_CONTEXT.md v7.0")

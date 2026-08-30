@@ -2,7 +2,7 @@
 
 > This is a planning BOM, not a fabrication release. Reconfirm quantities, dimensions, connector variants, cable lengths, brackets, enclosure parts, ballast, and solar mounting hardware after the replacement prototype is approved.
 
-Status: budgetary prototype BOM, checked 2026-08-15. Prices are shown in
+Status: budgetary Bay Station baseline, revised 2026-08-30. Prices are shown in
 Philippine pesos using an indicative rate of **PHP 61.71 per USD**. They are raw
 list-price conversions before shipping, import fees, tax, and Philippine reseller
 markup. Confirm the live exchange rate, stock, revision, and ratings before ordering.
@@ -22,8 +22,9 @@ markup. Confirm the live exchange rate, stock, revision, and ratings before orde
 | 1 | Vibration/tamper input | TBD | Exact model and debounce/persistence testing required |
 | 1 | Reed/limit enclosure switch | PHP 100–500 | Confirm marine installation and contact logic |
 | 1 | Buzzer and driver/protection | PHP 100–500 | Verify voltage, current, transistor driver and acoustic limit |
-| 1 | Orange Pi Zero 3 4 GB | PHP 2,160–3,705 | Buy from an authorized listing; include storage/heatsink |
-| 2 | Noctua NF-A8 5V PWM, 80 mm | Verify local quote | Reference cooling candidate; 5 V, 0.15 A max each, four-wire PWM/tach, dry enclosure only |
+| 1 | LTE/cellular modem + antenna + SIM interface | TBD | Freeze only after coverage survey, protocol, peak-current, logic-level, carrier-band, and antenna review |
+| 1 | Shore Bay Station mini PC | TBD; separate shore budget | Facility powered; exact model selected from measured database/dashboard/AI workload; never installed on buoy |
+| 0–1 | Enclosure fan/auxiliary cooling | TBD after thermal test | Include only if the buoy electronics enclosure demonstrates a measured need |
 
 The previous subtotal is obsolete because adviser-approved security parts remain TBD. Recalculate the procurement total only after exact models and current supplier quotations are verified. It excludes fans,
 power, connectors, enclosure, shipping, and optional antenna.
@@ -33,10 +34,10 @@ power, connectors, enclosure, shipping, and optional antenna.
 | Qty | Item | Budget | Release condition |
 | ---: | --- | ---: | --- |
 | 1 | 12.8 V 20 Ah LiFePO4 with BMS | PHP 4,940–9,875 | Supplier datasheet and charge limits recorded |
-| 1 | 60 W panel (80 W preferred) | PHP 3,395–7,405 | Voc/Isc compatible with MPPT |
+| 1 | 40 W or 60 W panel candidate | PHP 3,395–7,405 | Final rating follows measured buoy-only load; verify Voc/Isc with MPPT |
 | 1 | LiFePO4 MPPT controller | PHP 3,085–8,025 | Genuine MPPT; programmable LiFePO4 profile |
-| 1 | 5 V / 3 A synchronous buck | PHP 925–2,470 | Orange Pi brownout/ripple/thermal test |
-| 1 | Separate 5 V / 2 A buck | PHP 620–1,850 | ESP32/sensor branch test |
+| 1 | LTE modem regulated branch | TBD | Size from selected modem registration/transmit peaks and brownout test |
+| 1 | ESP32/sensor regulated branch | PHP 620–1,850 | Final voltage/current from complete measured carrier load |
 | lot | Fuses, disconnect, terminals, glands, marine wire | PHP 4,320–9,875 | Rated schedule and ingress review |
 
 Internal connector baseline: JST GH 4-position (`BM04B-GHS-TBT`) for Bar02/I2C,
@@ -48,11 +49,7 @@ harness is pending physical connector inspection. Include matching housings, cor
 contacts, authorized crimp tooling, and spares; verify availability before
 locking the PCB footprints.
 
-Raw converted planning total: **PHP 36,600–60,550** before enclosure fabrication,
-freight, taxes, and spares. A more practical landed budget is approximately
-**PHP 42,000–79,000**, allowing 15–30% for shipping, import costs, local markup,
-connectors, and spares. Do not purchase every item until the exact supplier links
-and physical board revisions are reviewed together.
+The previous total is withdrawn because the LTE modem, Bay Station, security inputs, final power branches, and enclosure needs are unresolved. Recalculate the buoy and shore budgets separately after exact supplier quotations and measured power requirements exist.
 
 ## Primary Sources
 
