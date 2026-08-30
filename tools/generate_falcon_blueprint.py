@@ -17,6 +17,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 MODEL = ROOT / "dashboard-next/public/models/PROJECT-FALCON-V2.glb"
 OUT = ROOT / "docs/blueprints/FALCON-BP-001-cad-orthographic.svg"
+OUT_POD = ROOT / "docs/blueprints/FALCON-BP-002-electronics-pod.svg"
 
 
 def mat_mul(a, b):
@@ -135,22 +136,40 @@ def esc(value):
 
 def drawing(edges):
     width, height = 1684, 1191
-    all_points = [p for edge in edges for p in edge[:2]]
-    mins = [min(p[i] for p in all_points) for i in range(3)]
-    maxs = [max(p[i] for p in all_points) for i in range(3)]
+    internal_terms = (
+        "BATTERY", "BMS", "MPPT", "DC_DC", "FUSED", "DISCONNECT",
+        "ORANGE_PI", "ESP32", "MODEM_ENVELOPE", "DISTRIBUTION_BOARD",
+        "FAN_", "AIR_GUIDE", "HEAT_SINK", "THERMAL_BRIDGE", "LEAK_TRAY",
+        "GASKET", "HINGE", "LATCH", "FASTENER", "MEMBRANE_VENT",
+    )
+    mooring_terms = ("ANCHOR", "CHAIN", "BALLAST", "SHACKLE", "LANYARD", "CLEVIS")
+
+    def exterior(edge):
+        name = edge[2].upper()
+        return (not any(term in name for term in internal_terms + mooring_terms)
+                and max(edge[0][2], edge[1][2]) > 1.8)
+
+    def mooring(edge):
+        name = edge[2].upper()
+        return any(term in name for term in mooring_terms)
 
     views = [
-        ("FRONT ELEVATION", 0, 2, (55, 145, 760, 720)),
-        ("RIGHT ELEVATION", 1, 2, (845, 145, 380, 345)),
-        ("PLAN VIEW", 0, 1, (1250, 145, 380, 345)),
+        ("FRONT ELEVATION — BUOY ASSEMBLY", 0, 2, (55, 145, 760, 465), exterior, 7000),
+        ("MOORING / BALLAST ELEVATION", 0, 2, (55, 625, 760, 240), mooring, 4500),
+        ("RIGHT ELEVATION", 1, 2, (845, 145, 380, 345), exterior, 4500),
+        ("PLAN VIEW", 0, 1, (1250, 145, 380, 345), exterior, 4500),
     ]
     out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">',
-           '<defs><style>.border{fill:none;stroke:#111;stroke-width:1}.object{fill:none;stroke:#111;stroke-width:.72;stroke-linecap:round}.center{fill:none;stroke:#555;stroke-width:.7;stroke-dasharray:10 3 2 3}.dim{fill:none;stroke:#222;stroke-width:.75}.title{font-family:Arial,sans-serif;font-size:24px;font-weight:700}.head{font-family:Arial,sans-serif;font-size:13px;font-weight:700}.txt{font-family:Arial,sans-serif;font-size:12px}.small{font-family:Arial,sans-serif;font-size:10px}.tiny{font-family:Arial,sans-serif;font-size:8px}.warn{font-family:Arial,sans-serif;font-size:14px;font-weight:700;fill:#b00020}</style><marker id="arr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M8 4 0 0v8z" fill="#222"/></marker></defs>',
-           '<rect width="1684" height="1191" fill="#fff"/><rect x="20" y="20" width="1644" height="1151" class="border"/>',
+           '<defs><style>.border{fill:none;stroke:#253746;stroke-width:1}.object{fill:none;stroke:#526574;stroke-width:.58;stroke-linecap:round}.center{fill:none;stroke:#94a3b8;stroke-width:.65;stroke-dasharray:10 3 2 3}.dim{fill:none;stroke:#334155;stroke-width:.75}.title{font-family:Arial,sans-serif;font-size:24px;font-weight:700;fill:#172635}.head{font-family:Arial,sans-serif;font-size:13px;font-weight:700;fill:#243746}.txt{font-family:Arial,sans-serif;font-size:12px;fill:#334155}.small{font-family:Arial,sans-serif;font-size:10px;fill:#475569}.tiny{font-family:Arial,sans-serif;font-size:8px;fill:#64748b}.warn{font-family:Arial,sans-serif;font-size:14px;font-weight:700;fill:#9f1239}</style><marker id="arr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M8 4 0 0v8z" fill="#334155"/></marker></defs>',
+           '<rect width="1684" height="1191" fill="#f8fafc"/><rect x="20" y="20" width="1644" height="1151" class="border"/>',
            '<text x="45" y="60" class="title">PROJECT FALCON — CAD-DERIVED GENERAL ARRANGEMENT</text>',
            '<text x="45" y="86" class="txt">PROPOSED REPLACEMENT PROTOTYPE · V2 REFERENCE GEOMETRY · DIMENSIONS IN mm UNLESS NOTED</text>']
 
-    for label, ax, ay, (x, y, w, h) in views:
+    for label, ax, ay, (x, y, w, h), predicate, limit in views:
+        view_edges = [edge for edge in edges if predicate(edge)]
+        all_points = [p for edge in view_edges for p in edge[:2]]
+        mins = [min(p[i] for p in all_points) for i in range(3)]
+        maxs = [max(p[i] for p in all_points) for i in range(3)]
         lowx, highx = mins[ax], maxs[ax]
         lowy, highy = mins[ay], maxs[ay]
         scale = min((w-40)/(highx-lowx), (h-55)/(highy-lowy))
@@ -160,7 +179,7 @@ def drawing(edges):
                 f'<text x="{x+10}" y="{y+20}" class="head">{label}</text>',
                 f'<path d="M{x+w/2} {y+30}V{y+h-10} M{x+10} {y+h/2}H{x+w-10}" class="center"/>']
         projected = {}
-        for a, b, _ in edges:
+        for a, b, _ in view_edges:
             x1, y1 = ox+a[ax]*scale, oy-a[ay]*scale
             x2, y2 = ox+b[ax]*scale, oy-b[ay]*scale
             if x-2 <= x1 <= x+w+2 and y-2 <= y1 <= y+h+2 and x-2 <= x2 <= x+w+2 and y-2 <= y2 <= y+h+2:
@@ -172,13 +191,18 @@ def drawing(edges):
         # GLB tessellation can duplicate coincident triangle boundaries. Keep a
         # bounded set of the longest unique projected features for readable,
         # performant engineering linework.
-        selected = sorted(projected.values(), key=lambda item: item[4], reverse=True)[:10000]
+        selected = sorted(projected.values(), key=lambda item: item[4], reverse=True)[:limit]
         paths = [f'M{x1:.1f} {y1:.1f}L{x2:.1f} {y2:.1f}' for x1,y1,x2,y2,_ in selected]
         out.append(f'<path d="{" ".join(paths)}" class="object"/>')
 
+    out += ['<path d="M210 575V596 M660 575V596 M210 590H660" class="dim" marker-start="url(#arr)" marker-end="url(#arr)"/>',
+            '<text x="405" y="585" class="head">Ø650 CAD REF</text>',
+            '<path d="M785 205H803 M785 530H803 M798 205V530" class="dim" marker-start="url(#arr)" marker-end="url(#arr)"/>',
+            '<text x="790" y="385" class="head" transform="rotate(-90 790 385)">800 MAST CAD REF</text>']
+
     # Reference dimension register and release notes.
     out += ['<rect x="845" y="515" width="785" height="350" class="border"/>',
-            '<text x="860" y="540" class="head">PRINCIPAL DIMENSION REGISTER — CAD REFERENCE ONLY</text>']
+            '<text x="860" y="540" class="head">COMPONENT / DIMENSION SCHEDULE — CAD REFERENCE ONLY</text>']
     rows = [
         ("A", "MAIN FLOAT", "Ø650 × 620 O/A", "6 mm HDPE wall; upper cylinder 380; keel 240"),
         ("B", "MAST / FRAME", "800 high", "420 base / 380 shoulder / 260 top"),
@@ -187,13 +211,15 @@ def drawing(edges):
         ("E", "PRESSURE GUARD", "Ø64 × 72", "Sensor envelope Ø24 × 42; offset 125"),
         ("F", "BALLAST RAIL", "Ø40 × 500", "4 × Ø220 × 25 removable plates"),
         ("G", "ANCHOR", "650 / 450 × 500", "Nominal 367 kg — calculation/approval required"),
+        ("H", "TOP SENSOR ARRAY", "LOCATION TBD", "Wind + GNSS + LTE + navigation light"),
+        ("I", "CONTROL SYSTEM", "INTERNAL FIT TBD", "ESP32 + LTE modem + protected sensor I/O"),
     ]
-    yy = 570
+    yy = 566
     for code, item, dim, note in rows:
-        out += [f'<line x1="845" y1="{yy+12}" x2="1630" y2="{yy+12}" class="border"/>',
+        out += [f'<line x1="845" y1="{yy+10}" x2="1630" y2="{yy+10}" class="border"/>',
                 f'<text x="860" y="{yy}" class="head">{code}</text>', f'<text x="900" y="{yy}" class="txt">{esc(item)}</text>',
                 f'<text x="1100" y="{yy}" class="txt">{esc(dim)}</text>', f'<text x="1280" y="{yy}" class="small">{esc(note)}</text>']
-        yy += 40
+        yy += 34
     out += ['<rect x="55" y="895" width="780" height="205" class="border"/>',
             '<text x="70" y="920" class="head">GENERAL NOTES</text>',
             '<text x="70" y="947" class="txt">1. LINEWORK IS PROJECTED DIRECTLY FROM PROJECT-FALCON-V2.GLB.</text>',
@@ -217,11 +243,108 @@ def drawing(edges):
     return "\n".join(out)
 
 
+def pod_drawing(edges):
+    """Create a dedicated electronics-pod mechanical arrangement sheet."""
+    pod_terms = (
+        "RECT_POD", "LIFEPO4", "BATTERY_BMS", "MPPT", "DC_DC",
+        "FUSED_POWER", "MAIN_BATTERY", "ESP32", "LTE_4G_MODEM",
+        "SENSOR_DISTRIBUTION", "SOLAR_SURGE", "FAN_", "THERMAL_BRIDGE",
+        "HEAT_SINK", "AIR_GUIDE", "AIRFLOW_BAFFLE",
+    )
+    pod_edges = [e for e in edges if any(t in e[2].upper() for t in pod_terms)
+                 and "ORANGE_PI" not in e[2].upper()]
+    views = [
+        ("FRONT INTERNAL ARRANGEMENT", 0, 2, (55, 145, 760, 545), 7500),
+        ("PLAN / DECK ARRANGEMENT", 0, 1, (845, 145, 785, 330), 6500),
+        ("RIGHT ELEVATION", 1, 2, (845, 500, 380, 300), 4500),
+    ]
+    out = ['<svg xmlns="http://www.w3.org/2000/svg" width="1684" height="1191" viewBox="0 0 1684 1191">',
+           '<defs><style>.border{fill:none;stroke:#253746;stroke-width:1}.object{fill:none;stroke:#526574;stroke-width:.62;stroke-linecap:round}.center{fill:none;stroke:#94a3b8;stroke-width:.65;stroke-dasharray:10 3 2 3}.dim{fill:none;stroke:#334155;stroke-width:.75}.call{fill:#f8fafc;stroke:#334155;stroke-width:1}.title{font-family:Arial,sans-serif;font-size:24px;font-weight:700;fill:#172635}.head{font-family:Arial,sans-serif;font-size:13px;font-weight:700;fill:#243746}.txt{font-family:Arial,sans-serif;font-size:12px;fill:#334155}.small{font-family:Arial,sans-serif;font-size:10px;fill:#475569}.tiny{font-family:Arial,sans-serif;font-size:8px;fill:#64748b}.warn{font-family:Arial,sans-serif;font-size:14px;font-weight:700;fill:#9f1239}</style><marker id="arr2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M8 4 0 0v8z" fill="#334155"/></marker></defs>',
+           '<rect width="1684" height="1191" fill="#f8fafc"/><rect x="20" y="20" width="1644" height="1151" class="border"/>',
+           '<text x="45" y="60" class="title">PROJECT FALCON — SEALED ELECTRONICS POD ARRANGEMENT</text>',
+           '<text x="45" y="86" class="txt">MECHANICAL PLACEMENT REFERENCE · 300 × 280 × 400 mm POD · ORANGE PI EXCLUDED</text>']
+    for label, ax, ay, (x, y, w, h), limit in views:
+        pts = [p for e in pod_edges for p in e[:2]]
+        mins = [min(p[i] for p in pts) for i in range(3)]
+        maxs = [max(p[i] for p in pts) for i in range(3)]
+        lowx, highx, lowy, highy = mins[ax], maxs[ax], mins[ay], maxs[ay]
+        scale = min((w-50)/(highx-lowx), (h-55)/(highy-lowy))
+        ox = x+w/2-(lowx+highx)/2*scale; oy = y+h/2+(lowy+highy)/2*scale
+        out += [f'<rect x="{x}" y="{y}" width="{w}" height="{h}" class="border"/>',
+                f'<text x="{x+10}" y="{y+20}" class="head">{label}</text>',
+                f'<path d="M{x+w/2} {y+30}V{y+h-10} M{x+10} {y+h/2}H{x+w-10}" class="center"/>']
+        projected = {}
+        for a,b,_ in pod_edges:
+            x1,y1,x2,y2=ox+a[ax]*scale,oy-a[ay]*scale,ox+b[ax]*scale,oy-b[ay]*scale
+            if x-2<=x1<=x+w+2 and y-2<=y1<=y+h+2 and x-2<=x2<=x+w+2 and y-2<=y2<=y+h+2:
+                q1,q2=(round(x1),round(y1)),(round(x2),round(y2))
+                if q1!=q2: projected[tuple(sorted((q1,q2)))]=(x1,y1,x2,y2,math.hypot(x2-x1,y2-y1))
+        selected=sorted(projected.values(),key=lambda q:q[4],reverse=True)[:limit]
+        out.append('<path d="'+' '.join(f'M{a:.1f} {b:.1f}L{c:.1f} {d:.1f}' for a,b,c,d,_ in selected)+'" class="object"/>')
+
+    out += ['<path d="M275 670V696 M595 670V696 M275 690H595" class="dim" marker-start="url(#arr2)" marker-end="url(#arr2)"/>',
+            '<text x="418" y="685" class="head">300</text>',
+            '<path d="M600 172H632 M600 598H632 M625 172V598" class="dim" marker-start="url(#arr2)" marker-end="url(#arr2)"/>',
+            '<text x="618" y="400" class="head" transform="rotate(-90 618 400)">400</text>',
+            '<path d="M1110 455V480 M1390 455V480 M1110 472H1390" class="dim" marker-start="url(#arr2)" marker-end="url(#arr2)"/>',
+            '<text x="1238" y="467" class="head">280</text>',
+            '<path d="M180 520H300" class="dim"/><circle cx="170" cy="520" r="13" class="call"/><text x="163" y="525" class="head">01</text>',
+            '<path d="M180 450H330" class="dim"/><circle cx="170" cy="450" r="13" class="call"/><text x="163" y="455" class="head">02</text>',
+            '<path d="M690 450H545" class="dim"/><circle cx="700" cy="450" r="13" class="call"/><text x="693" y="455" class="head">03</text>',
+            '<path d="M180 418H330" class="dim"/><circle cx="170" cy="418" r="13" class="call"/><text x="163" y="423" class="head">04</text>',
+            '<path d="M690 418H545" class="dim"/><circle cx="700" cy="418" r="13" class="call"/><text x="693" y="423" class="head">05</text>',
+            '<path d="M180 385H330" class="dim"/><circle cx="170" cy="385" r="13" class="call"/><text x="163" y="390" class="head">06</text>',
+            '<path d="M690 385H545" class="dim"/><circle cx="700" cy="385" r="13" class="call"/><text x="693" y="390" class="head">07</text>',
+            '<path d="M180 310H350" class="dim"/><circle cx="170" cy="310" r="13" class="call"/><text x="163" y="315" class="head">08</text>',
+            '<path d="M690 310H545" class="dim"/><circle cx="700" cy="310" r="13" class="call"/><text x="693" y="315" class="head">09</text>',
+            '<text x="285" y="245" class="head">UPPER CONTROL / COMMUNICATION DECK</text>',
+            '<text x="310" y="625" class="head">LOWER POWER / BATTERY DECK</text>']
+
+    out += ['<rect x="55" y="715" width="760" height="350" class="border"/>',
+            '<text x="70" y="740" class="head">CONTROLLED COMPONENT PLACEMENT SCHEDULE</text>']
+    rows = [
+        ("01", "12 V LiFePO₄ BATTERY + BMS", "LOWER DECK", "Retained; strapped; terminal cover"),
+        ("02", "MPPT SOLAR CONTROLLER", "LOWER DECK", "Heat/service clearance TBD"),
+        ("03", "DC–DC REGULATOR", "LOWER DECK", "Protected regulated supply"),
+        ("04", "FUSED POWER DISTRIBUTION", "LOWER DECK", "Accessible after door opening"),
+        ("05", "MAIN BATTERY DISCONNECT", "LOWER DECK", "Service-accessible isolation"),
+        ("06", "ESP32 CONTROLLER", "UPPER DECK", "Sensor acquisition controller"),
+        ("07", "LTE/4G MODEM", "UPPER DECK", "Antenna/coax bend radius TBD"),
+        ("08", "SENSOR DISTRIBUTION BOARD", "UPPER DECK", "Protected field connectors"),
+        ("09", "THERMAL INTERFACE / FANS", "REAR/INTERNAL", "Final need based on heat test"),
+    ]
+    yy=768
+    for no,item,zone,note in rows:
+        out += [f'<line x1="55" y1="{yy+9}" x2="815" y2="{yy+9}" class="border"/>',
+                f'<text x="70" y="{yy}" class="head">{no}</text>',f'<text x="110" y="{yy}" class="txt">{esc(item)}</text>',
+                f'<text x="365" y="{yy}" class="small">{esc(zone)}</text>',f'<text x="485" y="{yy}" class="small">{esc(note)}</text>']
+        yy+=32
+    out += ['<rect x="845" y="825" width="785" height="240" class="border"/>',
+            '<text x="860" y="850" class="head">ENCLOSURE / INSTALLATION NOTES</text>',
+            '<text x="860" y="878" class="txt">1. OUTER ENVELOPE: 300 W × 280 D × 400 H; 8 mm UV-HDPE; 18 mm LID.</text>',
+            '<text x="860" y="904" class="txt">2. MAINTAIN PHYSICAL SEPARATION BETWEEN POWER AND SENSOR/DATA HARNESS.</text>',
+            '<text x="860" y="930" class="txt">3. USE DOWNWARD-FACING IP68 GLANDS, STRAIN RELIEF, DRIP LOOPS AND LABELS.</text>',
+            '<text x="860" y="956" class="txt">4. KEEP BATTERY LOW; VERIFY DECK LOAD, C.G., CONNECTOR AND TOOL CLEARANCE.</text>',
+            '<text x="860" y="982" class="txt">5. VALIDATE GASKETS, VENT, CONDENSATION CONTROL AND THERMAL PERFORMANCE.</text>',
+            '<text x="860" y="1008" class="txt">6. ORANGE PI / BAY-STATION COMPUTER SHALL NOT BE INSTALLED IN THIS POD.</text>',
+            '<text x="860" y="1042" class="warn">REFERENCE / NOT FOR FABRICATION</text>',
+            '<rect x="845" y="1080" width="785" height="70" class="border"/>',
+            '<line x1="1180" y1="1080" x2="1180" y2="1150" class="border"/>',
+            '<text x="860" y="1105" class="small">DRAWING NO.</text><text x="950" y="1105" class="head">FALCON-BP-002</text>',
+            '<text x="860" y="1135" class="small">SOURCE</text><text x="950" y="1135" class="txt">FUSION V2 / GLB</text>',
+            '<text x="1195" y="1105" class="small">TITLE</text><text x="1260" y="1105" class="head">ELECTRONICS POD ARRANGEMENT</text>',
+            '<text x="1195" y="1135" class="small">REV / STATUS</text><text x="1290" y="1135" class="warn">P1 / REFERENCE</text>',
+            '</svg>']
+    return "\n".join(out)
+
+
 def main():
     doc, blob = load_glb(MODEL)
     edges = cad_edges(doc, blob)
     OUT.write_text(drawing(edges), encoding="utf-8")
+    OUT_POD.write_text(pod_drawing(edges), encoding="utf-8")
     print(f"Generated {OUT.relative_to(ROOT)} from {len(edges):,} feature edges")
+    print(f"Generated {OUT_POD.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":

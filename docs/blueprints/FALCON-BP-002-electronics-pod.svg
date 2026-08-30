@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1684" height="1191" viewBox="0 0 1684 1191">
+<defs><style>.border{fill:none;stroke:#253746;stroke-width:1}.object{fill:none;stroke:#526574;stroke-width:.62;stroke-linecap:round}.center{fill:none;stroke:#94a3b8;stroke-width:.65;stroke-dasharray:10 3 2 3}.dim{fill:none;stroke:#334155;stroke-width:.75}.call{fill:#f8fafc;stroke:#334155;stroke-width:1}.title{font-family:Arial,sans-serif;font-size:24px;font-weight:700;fill:#172635}.head{font-family:Arial,sans-serif;font-size:13px;font-weight:700;fill:#243746}.txt{font-family:Arial,sans-serif;font-size:12px;fill:#334155}.small{font-family:Arial,sans-serif;font-size:10px;fill:#475569}.tiny{font-family:Arial,sans-serif;font-size:8px;fill:#64748b}.warn{font-family:Arial,sans-serif;font-size:14px;font-weight:700;fill:#9f1239}</style><marker id="arr2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M8 4 0 0v8z" fill="#334155"/></marker></defs>
+<rect width="1684" height="1191" fill="#f8fafc"/><rect x="20" y="20" width="1644" height="1151" class="border"/>
+<text x="45" y="60" class="title">PROJECT FALCON — SEALED ELECTRONICS POD ARRANGEMENT</text>
+<text x="45" y="86" class="txt">MECHANICAL PLACEMENT REFERENCE · 300 × 280 × 400 mm POD · ORANGE PI EXCLUDED</text>
+<rect x="55" y="145" width="760" height="545" class="border"/>
+<text x="65" y="165" class="head">FRONT INTERNAL ARRANGEMENT</text>
+<path d="M435.0 175V680 M65 417.5H805" class="center"/>
+<path d="M312.5 172.5L312.5 598.6 M275.2 172.5L275.2 598.6 M557.5 172.5L557.5 598.6 M594.8 172.5L594.8 598.6 M283.7 172.5L283.7 598.6 M586.3 172.5L586.3 598.6 M573.5 236.4L296.5 236.4 M296.5 232.2L573.5 232.2 M573.5 598.6L296.5 598.6 M296.5 594.3L573.5 594.3 M568.2 550.7L301.8 550.7 M568.2 544.3L301.8 544.3 M568.2 311.0L301.8 311.0 M301.8 305.7L568.2 305.7 M562.8 596.5L307.2 596.5 M562.8 484.6L307.2 484.6 M312.5 598.6L557.5 598.6 M312.5 590.1L557.5 590.1 M312.5 172.5L557.5 172.5 M339.1 662.5L339.1 428.2 M530.9 662.5L530.9 428.2 M339.1 662.5L530.9 662.5 M339.1 428.2L530.9 428.2 M371.1 587.9L498.9 587.9 M371.1 534.7L498.9 534.7 M419.0 462.2L301.8 462.2 M301.8 414.3L419.0 414.3 M307.2 484.6L307.2 596.5 M562.8 484.6L562.8 596.5 M552.2 462.2L456.3 462.2 M456.3 425.0L552.2 425.0 M403.0 462.2L307.2 462.2 M307.2 430.3L403.0 430.3 M413.7 358.9L317.8 358.9 M413.7 332.3L317.8 332.3 M456.3 337.6L552.2 337.6 M552.2 358.9L456.3 358.9 M546.8 358.9L461.6 358.9 M461.6 335.5L546.8 335.5 M424.3 470.8L339.1 470.8 M339.1 444.1L424.3 444.1 M530.9 289.7L445.7 289.7 M445.7 263.0L530.9 263.0 M546.8 462.2L482.9 462.2 M482.9 419.6L546.8 419.6 M371.1 534.7L371.1 587.9 M498.9 534.7L498.9 587.9 M301.8 414.3L301.8 462.2 M419.0 414.3L419.0 462.2 M482.9 419.6L482.9 462.2 M546.8 419.6L546.8 462.2 M456.3 425.0L456.3 462.2 M552.2 425.0L552.2 462.2 M275.2 598.6L312.5 598.6 M557.5 590.1L594.8 590.1 M275.2 590.1L312.5 590.1 M594.8 598.6L557.5 598.6 M557.5 172.5L594.8 172.5 M275.2 172.5L312.5 172.5 M307.2 430.3L307.2 462.2 M403.0 430.3L403.0 462.2 M283.7 598.6L312.5 598.6 M557.5 172.5L586.3 172.5 M312.5 172.5L283.7 172.5 M586.3 598.6L557.5 598.6 M339.1 444.1L339.1 470.8 M424.3 444.1L424.3 470.8 M445.7 263.0L445.7 289.7 M530.9 263.0L530.9 289.7 M317.8 332.3L317.8 358.9 M413.7 332.3L413.7 358.9 M461.6 335.5L461.6 358.9 M546.8 335.5L546.8 358.9 M456.3 337.6L456.3 358.9 M552.2 337.6L552.2 358.9 M312.5 590.1L312.5 598.6 M275.2 590.1L275.2 598.6 M557.5 590.1L557.5 598.6 M594.8 590.1L594.8 598.6 M301.8 544.3L301.8 550.7 M568.2 544.3L568.2 550.7 M301.8 305.7L301.8 311.0 M568.2 305.7L568.2 311.0 M296.5 232.2L296.5 236.4 M573.5 232.2L573.5 236.4 M296.5 594.3L296.5 598.6 M573.5 594.3L573.5 598.6" class="object"/>
+<rect x="845" y="145" width="785" height="330" class="border"/>
+<text x="855" y="165" class="head">PLAN / DECK ARRANGEMENT</text>
+<path d="M1237.5 175V465 M855 310.0H1620" class="center"/>
+<path d="M1354.3 303.7L1120.7 303.7 M1354.3 339.7L1120.7 339.7 M1349.8 411.6L1125.2 411.6 M1349.8 231.8L1125.2 231.8 M1349.8 227.3L1125.2 227.3 M1349.8 416.0L1125.2 416.0 M1345.3 402.6L1129.7 402.6 M1345.3 240.8L1129.7 240.8 M1134.2 447.5L1340.8 447.5 M1134.2 195.9L1340.8 195.9 M1134.2 203.1L1340.8 203.1 M1134.2 440.3L1340.8 440.3 M1372.3 416.0L1372.3 227.3 M1102.7 416.0L1102.7 227.3 M1109.9 416.0L1109.9 227.3 M1365.1 227.3L1365.1 416.0 M1349.8 416.0L1349.8 227.3 M1125.2 416.0L1125.2 227.3 M1349.8 411.6L1349.8 231.8 M1125.2 411.6L1125.2 231.8 M1345.3 240.8L1345.3 402.6 M1129.7 402.6L1129.7 240.8 M1156.6 187.8L1318.4 187.8 M1318.4 198.6L1156.6 198.6 M1318.4 177.9L1156.6 177.9 M1156.6 172.5L1318.4 172.5 M1183.6 407.1L1291.4 407.1 M1291.4 443.0L1183.6 443.0 M1224.0 357.6L1125.2 357.6 M1224.0 285.7L1125.2 285.7 M1255.5 353.1L1336.4 353.1 M1336.4 290.2L1255.5 290.2 M1210.5 263.3L1129.7 263.3 M1210.5 227.3L1129.7 227.3 M1219.5 267.8L1138.6 267.8 M1219.5 222.8L1138.6 222.8 M1336.4 267.8L1255.5 267.8 M1336.4 222.8L1255.5 222.8 M1228.5 357.6L1228.5 285.7 M1156.6 357.6L1156.6 285.7 M1318.4 357.6L1318.4 285.7 M1246.5 357.6L1246.5 285.7 M1224.0 357.6L1224.0 285.7 M1125.2 357.6L1125.2 285.7 M1156.6 357.6L1228.5 357.6 M1228.5 285.7L1156.6 285.7 M1318.4 357.6L1246.5 357.6 M1318.4 285.7L1246.5 285.7 M1331.9 346.4L1260.0 346.4 M1331.9 297.0L1260.0 297.0 M1336.4 353.1L1336.4 290.2 M1255.5 353.1L1255.5 290.2 M1277.9 263.3L1331.9 263.3 M1331.9 227.3L1277.9 227.3 M1331.9 297.0L1331.9 346.4 M1260.0 346.4L1260.0 297.0 M1219.5 267.8L1219.5 222.8 M1138.6 267.8L1138.6 222.8 M1336.4 222.8L1336.4 267.8 M1255.5 267.8L1255.5 222.8 M1372.3 416.0L1340.8 447.5 M1102.7 416.0L1134.2 447.5 M1102.7 227.3L1134.2 195.9 M1340.8 195.9L1372.3 227.3 M1291.4 407.1L1291.4 443.0 M1183.6 407.1L1183.6 443.0 M1210.5 227.3L1210.5 263.3 M1129.7 263.3L1129.7 227.3 M1331.9 263.3L1331.9 227.3 M1277.9 263.3L1277.9 227.3 M1354.3 303.7L1354.3 339.7 M1120.7 339.7L1120.7 303.7 M1134.2 440.3L1109.9 416.0 M1365.1 416.0L1340.8 440.3 M1109.9 227.3L1134.2 203.1 M1365.1 227.3L1340.8 203.1 M1318.4 198.6L1318.4 187.8 M1156.6 198.6L1156.6 187.8 M1318.4 177.9L1318.4 172.5 M1156.6 177.9L1156.6 172.5" class="object"/>
+<rect x="845" y="500" width="380" height="300" class="border"/>
+<text x="855" y="520" class="head">RIGHT ELEVATION</text>
+<path d="M1035.0 530V790 M855 650.0H1215" class="center"/>
+<path d="M953.5 527.5L953.5 740.5 M972.2 527.5L972.2 740.5 M1084.0 527.5L1084.0 740.5 M1102.6 527.5L1102.6 740.5 M957.8 527.5L957.8 740.5 M1098.4 527.5L1098.4 740.5 M1107.4 772.5L1107.4 655.3 M1101.0 772.5L1101.0 655.3 M1113.3 772.5L1113.3 655.3 M1116.5 772.5L1116.5 655.3 M1084.0 740.5L972.2 740.5 M972.2 736.3L1084.0 736.3 M972.2 527.5L1084.0 527.5 M972.2 596.7L1084.0 596.7 M1084.0 594.1L972.2 594.1 M974.8 716.6L1081.3 716.6 M1081.3 713.4L974.8 713.4 M980.1 739.5L1076.0 739.5 M1076.0 683.6L980.1 683.6 M980.1 683.6L980.1 739.5 M1076.0 683.6L1076.0 739.5 M1006.8 676.6L1049.4 676.6 M1049.4 663.3L1006.8 663.3 M1006.8 586.1L1049.4 586.1 M1049.4 572.8L1006.8 572.8 M1006.8 672.4L1049.4 672.4 M1049.4 648.4L1006.8 648.4 M1009.4 672.4L1046.7 672.4 M1046.7 653.7L1009.4 653.7 M1013.4 620.7L1042.7 620.7 M1042.7 609.0L1013.4 609.0 M956.2 708.6L956.2 735.2 M977.5 708.6L977.5 735.2 M1060.0 620.7L1086.7 620.7 M1086.7 607.4L1060.0 607.4 M1086.7 610.1L1060.0 610.1 M1006.8 648.4L1006.8 672.4 M1049.4 648.4L1049.4 672.4 M1038.7 559.5L1017.4 559.5 M1038.7 557.3L1017.4 557.3 M1038.7 740.5L1017.4 740.5 M1038.7 738.4L1017.4 738.4 M977.5 735.2L956.2 735.2 M977.5 708.6L956.2 708.6 M1062.7 672.4L1084.0 672.4 M1084.0 656.4L1062.7 656.4 M1084.0 651.1L1062.7 651.1 M1062.7 651.1L1062.7 672.4 M1084.0 651.1L1084.0 672.4 M1102.6 740.5L1084.0 740.5 M1084.0 736.3L1102.6 736.3 M1084.0 527.5L1102.6 527.5 M972.2 736.3L953.5 736.3 M972.2 740.5L953.5 740.5 M972.2 527.5L953.5 527.5 M1009.4 653.7L1009.4 672.4 M1046.7 653.7L1046.7 672.4 M1062.7 656.4L1062.7 672.4 M1084.0 656.4L1084.0 672.4 M1084.0 740.5L1098.4 740.5 M1084.0 527.5L1098.4 527.5 M972.2 740.5L957.8 740.5 M957.8 527.5L972.2 527.5 M1006.8 663.3L1006.8 676.6 M1049.4 663.3L1049.4 676.6 M1006.8 572.8L1006.8 586.1 M1049.4 572.8L1049.4 586.1 M1060.0 607.4L1060.0 620.7 M1086.7 607.4L1086.7 620.7 M1013.4 609.0L1013.4 620.7 M1042.7 609.0L1042.7 620.7 M1060.0 610.1L1060.0 620.7 M1086.7 610.1L1086.7 620.7 M1101.0 655.3L1107.4 655.3 M1101.0 772.5L1107.4 772.5 M953.5 736.3L953.5 740.5 M972.2 736.3L972.2 740.5 M1084.0 736.3L1084.0 740.5 M1102.6 736.3L1102.6 740.5 M1113.3 655.3L1116.5 655.3 M1113.3 772.5L1116.5 772.5 M974.8 713.4L974.8 716.6 M1081.3 713.4L1081.3 716.6 M972.2 594.1L972.2 596.7 M1084.0 594.1L1084.0 596.7 M1017.4 557.3L1017.4 559.5 M1038.7 557.3L1038.7 559.5 M1017.4 738.4L1017.4 740.5 M1038.7 738.4L1038.7 740.5" class="object"/>
+<path d="M275 670V696 M595 670V696 M275 690H595" class="dim" marker-start="url(#arr2)" marker-end="url(#arr2)"/>
+<text x="418" y="685" class="head">300</text>
+<path d="M600 172H632 M600 598H632 M625 172V598" class="dim" marker-start="url(#arr2)" marker-end="url(#arr2)"/>
+<text x="618" y="400" class="head" transform="rotate(-90 618 400)">400</text>
+<path d="M1110 455V480 M1390 455V480 M1110 472H1390" class="dim" marker-start="url(#arr2)" marker-end="url(#arr2)"/>
+<text x="1238" y="467" class="head">280</text>
+<path d="M180 520H300" class="dim"/><circle cx="170" cy="520" r="13" class="call"/><text x="163" y="525" class="head">01</text>
+<path d="M180 450H330" class="dim"/><circle cx="170" cy="450" r="13" class="call"/><text x="163" y="455" class="head">02</text>
+<path d="M690 450H545" class="dim"/><circle cx="700" cy="450" r="13" class="call"/><text x="693" y="455" class="head">03</text>
+<path d="M180 418H330" class="dim"/><circle cx="170" cy="418" r="13" class="call"/><text x="163" y="423" class="head">04</text>
+<path d="M690 418H545" class="dim"/><circle cx="700" cy="418" r="13" class="call"/><text x="693" y="423" class="head">05</text>
+<path d="M180 385H330" class="dim"/><circle cx="170" cy="385" r="13" class="call"/><text x="163" y="390" class="head">06</text>
+<path d="M690 385H545" class="dim"/><circle cx="700" cy="385" r="13" class="call"/><text x="693" y="390" class="head">07</text>
+<path d="M180 310H350" class="dim"/><circle cx="170" cy="310" r="13" class="call"/><text x="163" y="315" class="head">08</text>
+<path d="M690 310H545" class="dim"/><circle cx="700" cy="310" r="13" class="call"/><text x="693" y="315" class="head">09</text>
+<text x="285" y="245" class="head">UPPER CONTROL / COMMUNICATION DECK</text>
+<text x="310" y="625" class="head">LOWER POWER / BATTERY DECK</text>
+<rect x="55" y="715" width="760" height="350" class="border"/>
+<text x="70" y="740" class="head">CONTROLLED COMPONENT PLACEMENT SCHEDULE</text>
+<line x1="55" y1="777" x2="815" y2="777" class="border"/>
+<text x="70" y="768" class="head">01</text>
+<text x="110" y="768" class="txt">12 V LiFePO₄ BATTERY + BMS</text>
+<text x="365" y="768" class="small">LOWER DECK</text>
+<text x="485" y="768" class="small">Retained; strapped; terminal cover</text>
+<line x1="55" y1="809" x2="815" y2="809" class="border"/>
+<text x="70" y="800" class="head">02</text>
+<text x="110" y="800" class="txt">MPPT SOLAR CONTROLLER</text>
+<text x="365" y="800" class="small">LOWER DECK</text>
+<text x="485" y="800" class="small">Heat/service clearance TBD</text>
+<line x1="55" y1="841" x2="815" y2="841" class="border"/>
+<text x="70" y="832" class="head">03</text>
+<text x="110" y="832" class="txt">DC–DC REGULATOR</text>
+<text x="365" y="832" class="small">LOWER DECK</text>
+<text x="485" y="832" class="small">Protected regulated supply</text>
+<line x1="55" y1="873" x2="815" y2="873" class="border"/>
+<text x="70" y="864" class="head">04</text>
+<text x="110" y="864" class="txt">FUSED POWER DISTRIBUTION</text>
+<text x="365" y="864" class="small">LOWER DECK</text>
+<text x="485" y="864" class="small">Accessible after door opening</text>
+<line x1="55" y1="905" x2="815" y2="905" class="border"/>
+<text x="70" y="896" class="head">05</text>
+<text x="110" y="896" class="txt">MAIN BATTERY DISCONNECT</text>
+<text x="365" y="896" class="small">LOWER DECK</text>
+<text x="485" y="896" class="small">Service-accessible isolation</text>
+<line x1="55" y1="937" x2="815" y2="937" class="border"/>
+<text x="70" y="928" class="head">06</text>
+<text x="110" y="928" class="txt">ESP32 CONTROLLER</text>
+<text x="365" y="928" class="small">UPPER DECK</text>
+<text x="485" y="928" class="small">Sensor acquisition controller</text>
+<line x1="55" y1="969" x2="815" y2="969" class="border"/>
+<text x="70" y="960" class="head">07</text>
+<text x="110" y="960" class="txt">LTE/4G MODEM</text>
+<text x="365" y="960" class="small">UPPER DECK</text>
+<text x="485" y="960" class="small">Antenna/coax bend radius TBD</text>
+<line x1="55" y1="1001" x2="815" y2="1001" class="border"/>
+<text x="70" y="992" class="head">08</text>
+<text x="110" y="992" class="txt">SENSOR DISTRIBUTION BOARD</text>
+<text x="365" y="992" class="small">UPPER DECK</text>
+<text x="485" y="992" class="small">Protected field connectors</text>
+<line x1="55" y1="1033" x2="815" y2="1033" class="border"/>
+<text x="70" y="1024" class="head">09</text>
+<text x="110" y="1024" class="txt">THERMAL INTERFACE / FANS</text>
+<text x="365" y="1024" class="small">REAR/INTERNAL</text>
+<text x="485" y="1024" class="small">Final need based on heat test</text>
+<rect x="845" y="825" width="785" height="240" class="border"/>
+<text x="860" y="850" class="head">ENCLOSURE / INSTALLATION NOTES</text>
+<text x="860" y="878" class="txt">1. OUTER ENVELOPE: 300 W × 280 D × 400 H; 8 mm UV-HDPE; 18 mm LID.</text>
+<text x="860" y="904" class="txt">2. MAINTAIN PHYSICAL SEPARATION BETWEEN POWER AND SENSOR/DATA HARNESS.</text>
+<text x="860" y="930" class="txt">3. USE DOWNWARD-FACING IP68 GLANDS, STRAIN RELIEF, DRIP LOOPS AND LABELS.</text>
+<text x="860" y="956" class="txt">4. KEEP BATTERY LOW; VERIFY DECK LOAD, C.G., CONNECTOR AND TOOL CLEARANCE.</text>
+<text x="860" y="982" class="txt">5. VALIDATE GASKETS, VENT, CONDENSATION CONTROL AND THERMAL PERFORMANCE.</text>
+<text x="860" y="1008" class="txt">6. ORANGE PI / BAY-STATION COMPUTER SHALL NOT BE INSTALLED IN THIS POD.</text>
+<text x="860" y="1042" class="warn">REFERENCE / NOT FOR FABRICATION</text>
+<rect x="845" y="1080" width="785" height="70" class="border"/>
+<line x1="1180" y1="1080" x2="1180" y2="1150" class="border"/>
+<text x="860" y="1105" class="small">DRAWING NO.</text><text x="950" y="1105" class="head">FALCON-BP-002</text>
+<text x="860" y="1135" class="small">SOURCE</text><text x="950" y="1135" class="txt">FUSION V2 / GLB</text>
+<text x="1195" y="1105" class="small">TITLE</text><text x="1260" y="1105" class="head">ELECTRONICS POD ARRANGEMENT</text>
+<text x="1195" y="1135" class="small">REV / STATUS</text><text x="1290" y="1135" class="warn">P1 / REFERENCE</text>
+</svg>
