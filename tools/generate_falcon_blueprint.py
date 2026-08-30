@@ -131,7 +131,12 @@ def cad_edges(doc, blob):
                 silhouette_axes = set()
                 if len(normals) > 1:
                     dot = sum(normals[0][k] * normals[1][k] for k in range(3))
-                    hard = dot < 0.88
+                    # Preserve moderately curved manufactured features in the
+                    # general arrangement (sensor cups, guards, fairings and
+                    # tube transitions) instead of retaining only sharp 28°+
+                    # edges. View-specific silhouette filtering below prevents
+                    # unrelated triangle clutter from leaking into each view.
+                    hard = dot < 0.96
                     silhouette_axes = {
                         k for k in range(3)
                         if normals[0][k] * normals[1][k] <= 0
@@ -645,8 +650,12 @@ def main():
     doc, blob = load_glb(MODEL)
     edges = cad_edges(doc, blob)
     details_only = "--details-only" in sys.argv
+    general_only = "--general-only" in sys.argv
     if not details_only:
         OUT.write_text(drawing(edges), encoding="utf-8")
+    if general_only:
+        print(f"Generated {OUT.relative_to(ROOT)} from {len(edges):,} feature edges")
+        return
     pod = ("RECT_POD", "TOP_SERVICE_LID", "FRONT_DOOR_",
            "FRONT_EPDM_", "FRONT_RAISED_", "IP68_DOWNWARD_",
            "IP67_MEMBRANE_", "SEALED_REAR_", "INTERNAL_LEAK_")
