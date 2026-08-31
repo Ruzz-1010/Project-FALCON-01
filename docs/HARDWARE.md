@@ -1,4 +1,4 @@
-# Project FALCON Hardware Baseline v6.1
+# Project FALCON Hardware Baseline v6.2
 
 > Hardware functions remain the Phase 1 baseline. Physical placement, enclosure integration, brackets, harness lengths, and mechanical interfaces are under redesign and remain TBD until the replacement prototype is approved.
 
@@ -17,17 +17,17 @@ No single-board computer or mini PC is installed on the buoy. The shore Bay Stat
 
 | Group | Device/function | Status |
 | --- | --- | --- |
-| Core | Blue Robotics Bar02 or compatible waterproof pressure sensor | Selected family; exact interface/range verification required |
-| Core | GPS receiver | Exact model TBD |
-| Core | Wind-speed sensor | Exact model TBD |
-| Core | Wind-direction sensor | Exact model TBD |
-| Supporting | Sealed DS18B20 water-temperature probe | Selected family |
-| Health | Battery voltage/current monitor | Exact design/range TBD |
-| Health | Solar voltage/current monitor | Exact design/range TBD |
-| Health | Enclosure-temperature sensor | Exact model TBD |
+| Core | Blue Robotics Bar02 R2, BR-100891 | Confirmed prototype; continuous-submersion/service limitation must be resolved |
+| Core | Adafruit Ultimate GPS, PID 746 | Confirmed prototype; field accuracy and geofence persistence testing required |
+| Core | SparkFun Weather Meter, SEN-15901 | Confirmed prototype; marine durability remains unqualified |
+| Supporting | Blue Robotics Celsius R2, BR-100317 | Recommended deployment water-temperature candidate; procurement and seal test pending |
+| Supporting | Adafruit waterproof DS18B20, PID 381 | Bench only; not approved for salt-water or long-term deployment |
+| Health | Adafruit INA260, PID 4226, battery branch | Confirmed prototype; range, thermal and reference-meter tests pending |
+| Health | Adafruit INA260, PID 4226, solar branch | Confirmed prototype; address and charging-direction tests pending |
+| Health | Adafruit MCP9808, PID 1782 | Recommended enclosure-temperature selection at `0x18` |
 | Security | GPS geofence | Software function using GPS |
-| Security | Vibration/tamper input | Exact part TBD |
-| Security | Reed/limit enclosure switch | Exact part TBD |
+| Security | Adafruit LIS3DH, PID 2809 | Optional tamper candidate only; not used for wave-height estimation |
+| Security | Adafruit magnetic contact switch, PID 375 | Recommended prototype selection; sealed installation and debounce pending |
 | Security | Buzzer | Exact part/driver TBD |
 
 ## Removed or optional items
@@ -36,6 +36,8 @@ No single-board computer or mini PC is installed on the buoy. The shore Bay Stat
 - Load cell and HX711 anchor-chain tension sensing are removed.
 - Passive single-anchor mooring uses adequate line scope for tides, waves, and ordinary buoy movement.
 - AI hardware acceleration is not required.
+
+The detailed selection evidence, interface allocation, calibration plan and manufacturer references are in [SENSOR_SELECTION_BASELINE.md](SENSOR_SELECTION_BASELINE.md). That document is the component-selection authority where this summary is abbreviated.
 
 ## Pressure installation
 

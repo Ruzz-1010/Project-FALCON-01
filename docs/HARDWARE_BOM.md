@@ -16,13 +16,14 @@ markup. Confirm the live exchange rate, stock, revision, and ratings before orde
 | 1 | Adafruit Ultimate GPS, PID 746 | PHP 1,850 | UART; external antenna optional |
 | 2 | Adafruit INA260, PID 4226 | PHP 1,230 | Battery `0x40`, solar `0x41`; verify current range |
 | 1 | Adafruit ADS1115, PID 1085 | PHP 925 | Wind vane A0; 3.3 V divider |
-| 1 | Enclosure-temperature sensor | PHP 250–925 | Exact model/address TBD after interface review |
+| 1 | Adafruit MCP9808, PID 1782 | PHP 925 | Enclosure temperature at `0x18`; mount away from heat sources |
 | 1 | SparkFun Weather Meter SEN-15901 | PHP 4,935 | Prototype only; salt-exposure maintenance required |
-| 1 | Sealed DS18B20 probe | PHP 495–925 | Supporting water temperature; verify genuine waterproof build |
-| 1 | Vibration/tamper input | TBD | Exact model and debounce/persistence testing required |
-| 1 | Reed/limit enclosure switch | PHP 100–500 | Confirm marine installation and contact logic |
+| 1 | Blue Robotics Celsius R2, BR-100317 | PHP TBD from current quotation | Recommended marine water-temperature candidate; validate bulkhead installation |
+| 0–1 | Adafruit waterproof DS18B20, PID 381 | PHP 495–925 | Bench-only alternative; manufacturer excludes salt water and long-term use |
+| 0–1 | Adafruit LIS3DH, PID 2809 | PHP TBD | Optional security/tamper aid only; not a wave-height sensor |
+| 1 | Adafruit magnetic contact switch, PID 375 | PHP 100–500 | Prototype enclosure-open input; dry/sealed installation and debounce required |
 | 1 | Buzzer and driver/protection | PHP 100–500 | Verify voltage, current, transistor driver and acoustic limit |
-| 1 | LTE/cellular modem + antenna + SIM interface | TBD | Freeze only after coverage survey, protocol, peak-current, logic-level, carrier-band, and antenna review |
+| 1 | Waveshare SIM7600G-H 4G HAT candidate + antenna/SIM | TBD | Proposal only; freeze after Philippine coverage, peak-current, interface, antenna and reconnect tests |
 | 1 | Shore Bay Station mini PC | TBD; separate shore budget | Facility powered; exact model selected from measured database/dashboard/AI workload; never installed on buoy |
 | 0–1 | Enclosure fan/auxiliary cooling | TBD after thermal test | Include only if the buoy electronics enclosure demonstrates a measured need |
 
@@ -58,6 +59,11 @@ The previous total is withdrawn because the LTE modem, Bay Station, security inp
 - [Adafruit ADS1115 product](https://www.adafruit.com/product/1085)
 - [Adafruit Ultimate GPS product](https://www.adafruit.com/product/746)
 - [SparkFun Weather Meter Kit](https://www.sparkfun.com/weather-meter-kit.html)
+- [Blue Robotics Celsius R2](https://bluerobotics.com/store/sensors-cameras/sensors/celsius-sensor-r1/)
+- [Adafruit MCP9808 PID 1782](https://www.adafruit.com/product/1782)
+- [Adafruit waterproof DS18B20 PID 381](https://www.adafruit.com/product/381)
+- [Adafruit magnetic contact switch PID 375](https://www.adafruit.com/product/375)
+- [Waveshare SIM7600G-H 4G HAT](https://www.waveshare.com/product/iot-communication/sim7600g-h-4g-hat.htm)
 - [Bangko Sentral ng Pilipinas exchange-rate reference](https://www.bsp.gov.ph/SitePages/Statistics/exchangerate.aspx)
 
 ## Future Upgrade Procurement
