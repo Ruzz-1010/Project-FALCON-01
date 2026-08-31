@@ -25,6 +25,21 @@ Preliminary solar harvest uses `panel rating × 4 peak-sun-hours × 70% net effi
 | 40 W | 112 Wh/day | Accept only if measured load and modem peaks retain margin |
 | 60 W | 168 Wh/day | Preferred prototype starting candidate pending measurements |
 
+At the 4 W design-planning load, the 40 W candidate leaves only 16 Wh/day of
+nominal recovery energy, while the 60 W candidate leaves 72 Wh/day. With a 25%
+planning margin, the calculated minimum panel is 42.9 W. Therefore, use **60 W
+as the provisional prototype baseline**, subject to panel Voc/Isc, MPPT,
+mounting, and measured-load verification.
+
+The 20 Ah battery provides only about 51.2 hours at 4 W. If the project adopts
+a 72-hour no-solar requirement at that load, the calculation requires 28.1 Ah;
+select at least a nominal 30 Ah LiFePO4 battery after verifying its BMS and
+charge limits. Keep 20 Ah only as an early-test option or for a shorter verified
+autonomy requirement.
+
+Detailed nominal, margin, poor-weather, and 72-hour calculations are recorded
+in [POWER_CALCULATIONS.md](POWER_CALCULATIONS.md).
+
 ## Required measurements before release
 
 - 24-hour current log covering sampling, idle, security, network registration, reconnect, and LTE transmit peaks.
