@@ -28,92 +28,69 @@ svg{shape-rendering:geometricPrecision;background:#f7fafc}path,line,polyline,pol
 <line x1="1240.0" y1="480" x2="1240.0" y2="705" class="ctr"/>
 <text x="1240" y="730" class="small" text-anchor="middle">Orange Pi excluded · shore Bay Station only</text>
 <rect x="1510" y="120" width="470" height="630" class="box"/>
-<text x="1524" y="146" class="head">E — ASSEMBLY HIERARCHY · NTS</text>
-<rect x="1580" y="156" width="300" height="44" rx="4" class="part"/>
-<text x="1594" y="184" class="code">E01</text>
-<text x="1640" y="184" class="text">TOP SENSOR PLATFORM</text>
-<line x1="1730" y1="200" x2="1730" y2="234" class="data"/>
-<rect x="1580" y="236" width="300" height="44" rx="4" class="part"/>
-<text x="1594" y="264" class="code">E02</text>
-<text x="1640" y="264" class="text">DUAL SOLAR ARRAY</text>
-<line x1="1730" y1="280" x2="1730" y2="314" class="data"/>
-<rect x="1580" y="316" width="300" height="44" rx="4" class="part"/>
-<text x="1594" y="344" class="code">E03</text>
-<text x="1640" y="344" class="text">TAPERED MAST / FRAME</text>
-<line x1="1730" y1="360" x2="1730" y2="394" class="data"/>
-<rect x="1580" y="396" width="300" height="44" rx="4" class="part"/>
-<text x="1594" y="424" class="code">E04</text>
-<text x="1640" y="424" class="text">SEALED ELECTRONICS POD</text>
-<line x1="1730" y1="440" x2="1730" y2="474" class="data"/>
-<rect x="1580" y="476" width="300" height="44" rx="4" class="part"/>
-<text x="1594" y="504" class="code">E05</text>
-<text x="1640" y="504" class="text">MAIN FLOAT / KEEL</text>
-<line x1="1730" y1="520" x2="1730" y2="554" class="data"/>
-<rect x="1580" y="556" width="300" height="44" rx="4" class="part"/>
-<text x="1594" y="584" class="code">E06</text>
-<text x="1640" y="584" class="text">ADJUSTABLE BALLAST</text>
-<line x1="1730" y1="600" x2="1730" y2="634" class="data"/>
-<rect x="1580" y="636" width="300" height="44" rx="4" class="part"/>
-<text x="1594" y="664" class="code">E07</text>
-<text x="1640" y="664" class="text">SINGLE-ANCHOR MOORING</text>
-<text x="1745" y="720" class="small" text-anchor="middle">Hierarchy only; separation distances are not dimensions.</text>
+<text x="1524" y="146" class="head">E — EXPLODED ASSEMBLY VIEW · NTS</text>
+<line x1="1715" y1="160" x2="1715" y2="704" class="ctr"/>
+<path d="M1620 228H1810M1640 228V196M1790 228V184M1705 228V205Q1715 190 1725 205V228" class="strong"/>
+<path d="M1662 211V174M1640 174H1684M1662 174L1646 162M1662 174L1678 162M1646 162a10 6 0 1 0 0-12M1678 162a10 6 0 1 1 0-12" class="obj"/>
+<path d="M1584 282L1644 258L1657 325L1597 347ZM1773 258L1834 282L1821 347L1760 325" class="strong"/>
+<path d="M1591 297L1648 276M1594 314L1651 293M1600 331L1654 310M1770 276L1827 297M1767 293L1824 314M1764 310L1818 331" class="thin"/>
+<path d="M1660 260L1680 392M1770 260L1750 392M1668 312H1762M1674 350H1756M1668 312L1756 350M1762 312L1674 350" class="strong"/>
+<path d="M1647 414L1662 390H1768L1783 414V482L1768 496H1662L1647 482Z" class="strong"/>
+<path d="M1665 410H1765V474H1665ZM1680 426H1735V458H1680M1690 438H1725M1690 447H1725" class="obj"/>
+<circle cx="1750" cy="443" r="4" class="strong"/><path d="M1668 496v12m22-12v12m22-12v12m22-12v12" class="thin"/>
+<ellipse cx="1715" cy="536" rx="112" ry="22" class="strong"/><path d="M1603 536V596M1827 536V596" class="strong"/><ellipse cx="1715" cy="596" rx="112" ry="22" class="strong"/>
+<path d="M1603 570C1640 590 1790 590 1827 570M1660 614Q1715 668 1770 614" class="obj"/>
+<path d="M1692 674H1738M1698 682H1732M1704 690H1726" class="strong"/><path d="M1715 690q-16 10 0 20q16 10 0 20" class="obj"/>
+<path d="M1812 205H1870M1834 303H1870M1770 354H1870M1783 448H1870M1827 566H1870M1738 682H1870" class="thin"/>
+<text x="1880" y="201" class="code">E01</text>
+<text x="1880" y="216" class="small">SENSOR PLATFORM</text>
+<text x="1880" y="299" class="code">E02</text>
+<text x="1880" y="314" class="small">DUAL SOLAR ARRAY</text>
+<text x="1880" y="350" class="code">E03</text>
+<text x="1880" y="365" class="small">TAPERED FRAME</text>
+<text x="1880" y="444" class="code">E04</text>
+<text x="1880" y="459" class="small">SEALED ELECTRONICS POD</text>
+<text x="1880" y="562" class="code">E05</text>
+<text x="1880" y="577" class="small">FLOAT / KEEL</text>
+<text x="1880" y="678" class="code">E06</text>
+<text x="1880" y="693" class="small">BALLAST + MOORING</text>
+<text x="1745" y="730" class="small" text-anchor="middle">Exploded reference only · separation gaps are not dimensions</text>
 <rect x="50" y="775" width="940" height="400" class="box"/>
 <text x="64" y="801" class="head">F — SUBSYSTEM INTERCONNECTION / DATA FLOW</text>
-<rect x="90" y="850" width="145" height="78" rx="5" class="part"/>
-<text x="162.5" y="881" class="subhead" text-anchor="middle">PRESSURE</text>
-<text x="162.5" y="902" class="small" text-anchor="middle">Bar02 R2</text>
-<rect x="90" y="955" width="145" height="78" rx="5" class="part"/>
-<text x="162.5" y="986" class="subhead" text-anchor="middle">WIND</text>
-<text x="162.5" y="1007" class="small" text-anchor="middle">SEN-15901</text>
-<rect x="90" y="1060" width="145" height="78" rx="5" class="part"/>
-<text x="162.5" y="1091" class="subhead" text-anchor="middle">GPS / TEMP</text>
-<text x="162.5" y="1112" class="small" text-anchor="middle">PID 746 / Celsius R2</text>
-<rect x="300" y="865" width="180" height="110" rx="5" class="part"/>
-<text x="390.0" y="896" class="subhead" text-anchor="middle">PROTECTED I/O</text>
-<text x="390.0" y="917" class="small" text-anchor="middle">I2C · UART · ADC · GPIO</text>
-<rect x="530" y="865" width="180" height="110" rx="5" class="part"/>
-<text x="620.0" y="896" class="subhead" text-anchor="middle">ESP32</text>
-<text x="620.0" y="917" class="small" text-anchor="middle">Acquisition · validation · buffer</text>
-<rect x="760" y="865" width="180" height="110" rx="5" class="part"/>
-<text x="850.0" y="896" class="subhead" text-anchor="middle">LTE MODEM</text>
-<text x="850.0" y="917" class="small" text-anchor="middle">SIM7600G-H candidate</text>
-<rect x="760" y="1035" width="180" height="95" rx="5" class="part"/>
-<text x="850.0" y="1066" class="subhead" text-anchor="middle">SHORE BAY STATION</text>
-<text x="850.0" y="1087" class="small" text-anchor="middle">DB · API · AI · dashboard</text>
-<path d="M235 889H275Q288 889 288 950V920H300" class="data"/>
-<path d="M235 994H275Q288 994 288 950V920H300" class="data"/>
-<path d="M235 1099H275Q288 1099 288 950V920H300" class="data"/>
-<path d="M480 920H530" class="data"/>
-<path d="M710 920H760" class="data"/>
-<path d="M850 975V1035" class="data"/>
-<text x="510" y="1145" class="small" text-anchor="middle">Pressure-derived estimated wave height · AI prediction is processed at the shore Bay Station.</text>
+<path d="M105 875V835M82 835H128M105 835L88 820M105 835L122 820M88 820a12 7 0 1 0 0-14M122 820a12 7 0 1 1 0-14" class="strong"/>
+<text x="105" y="900" class="subhead" text-anchor="middle">WIND</text><text x="105" y="915" class="small" text-anchor="middle">pulse + ADC</text>
+<path d="M190 846q20-28 40 0v18h-40zM210 864v18" class="strong"/><text x="210" y="900" class="subhead" text-anchor="middle">GPS</text><text x="210" y="915" class="small" text-anchor="middle">UART</text>
+<path d="M88 990v-48h34v48m-17-48v-20m-10 68h20" class="strong"/><text x="105" y="1010" class="subhead" text-anchor="middle">BAR02</text><text x="105" y="1025" class="small" text-anchor="middle">pressure / I2C</text>
+<path d="M200 930v50a14 14 0 1 0 20 0v-50a10 10 0 0 0-20 0m10 18v39" class="strong"/><text x="210" y="1010" class="subhead" text-anchor="middle">TEMP</text><text x="210" y="1025" class="small" text-anchor="middle">water / I2C</text>
+<path d="M320 830L340 805H650L670 830V1045L650 1065H340L320 1045Z" class="strong"/>
+<text x="495" y="790" class="head" text-anchor="middle">SEALED ELECTRONICS POD</text>
+<path d="M350 850H445V1010H350ZM365 875H430M365 895H430M365 915H430M365 935H430M365 955H430M365 975H430" class="obj"/>
+<text x="397" y="1030" class="small" text-anchor="middle">LOCKING SENSOR TERMINALS</text>
+<path d="M475 850H570V975H475M487 870H558V930H487M487 945H510M535 945H558" class="strong"/>
+<text x="522" y="995" class="subhead" text-anchor="middle">ESP32 DevKit</text>
+<path d="M595 850H645V975H595M605 865H635V905H605M610 935h20" class="strong"/><path d="M620 850V825M608 830q12-14 24 0M612 836q8-9 16 0" class="obj"/>
+<text x="620" y="995" class="subhead" text-anchor="middle">4G MODEM</text>
+<path d="M445 880H475M445 920H475M445 960H475M570 900H595" class="data"/>
+<path d="M760 850H925V980H760ZM785 875H900V950H785M815 980v22h55v-22" class="strong"/>
+<path d="M790 930l25-22 22 10 30-35 25 20" class="obj"/><text x="842" y="1025" class="subhead" text-anchor="middle">SHORE BAY STATION</text>
+<path d="M735 825q18-28 38-7q27-20 43 8q24 0 24 22h-105q-12-14 0-23" class="obj"/><text x="786" y="810" class="small" text-anchor="middle">CELLULAR / INTERNET</text>
+<path d="M670 900C710 900 720 850 752 850" class="data"/>
+<text x="495" y="1100" class="small" text-anchor="middle">Sensor data → protected terminals → ESP32 validation/buffer → cellular telemetry → shore database, AI and dashboard</text>
 <rect x="1010" y="775" width="480" height="400" class="box"/>
 <text x="1024" y="801" class="head">G — POWER MANAGEMENT</text>
-<rect x="1045" y="840" width="115" height="70" rx="4" class="part"/>
-<text x="1102.5" y="868" class="subhead" text-anchor="middle">2× SOLAR</text>
-<text x="1102.5" y="888" class="small" text-anchor="middle">30 W CAD ref</text>
-<rect x="1200" y="840" width="120" height="70" rx="4" class="part"/>
-<text x="1260.0" y="868" class="subhead" text-anchor="middle">MPPT</text>
-<text x="1260.0" y="888" class="small" text-anchor="middle">LiFePO4 profile</text>
-<rect x="1360" y="840" width="95" height="70" rx="4" class="part"/>
-<text x="1407.5" y="868" class="subhead" text-anchor="middle">BATTERY</text>
-<text x="1407.5" y="888" class="small" text-anchor="middle">12.8 V 20 Ah</text>
-<rect x="1090" y="975" width="115" height="70" rx="4" class="part"/>
-<text x="1147.5" y="1003" class="subhead" text-anchor="middle">FUSE / TVS</text>
-<text x="1147.5" y="1023" class="small" text-anchor="middle">disconnect</text>
-<rect x="1250" y="975" width="95" height="70" rx="4" class="part"/>
-<text x="1297.5" y="1003" class="subhead" text-anchor="middle">5 V DC-DC</text>
-<text x="1297.5" y="1023" class="small" text-anchor="middle">rating TBD</text>
-<rect x="1380" y="975" width="75" height="70" rx="4" class="part"/>
-<text x="1417.5" y="1003" class="subhead" text-anchor="middle">3V3</text>
-<text x="1417.5" y="1023" class="small" text-anchor="middle">local rail</text>
-<path d="M1160 875H1200" class="power"/>
-<path d="M1320 875H1360" class="power"/>
-<path d="M1408 910V945H1148V975" class="power"/>
-<path d="M1205 1010H1250" class="power"/>
-<path d="M1345 1010H1380" class="power"/>
-<text x="1250" y="1090" class="small" text-anchor="middle">INA260 battery 0x40 · INA260 solar 0x41</text>
-<text x="1250" y="1110" class="warn" text-anchor="middle">Final fuses, converters and autonomy require measured load tests.</text>
+<path d="M1040 840h105v90h-105zM1075 840v90m35-90v90m-70-30h105m-105-30h105" class="strong"/>
+<text x="1092" y="950" class="subhead" text-anchor="middle">2 × 30 W SOLAR · CAD REF</text>
+<path d="M1200 850h105v70h-105zM1215 870h45v25h-45m60-20h12m-12 12h12" class="strong"/><text x="1252" y="940" class="subhead" text-anchor="middle">MPPT · LiFePO4</text>
+<line x1="1350" y1="865" x2="1350" y2="905" class="strong"/><line x1="1370" y1="855" x2="1370" y2="915" class="strong"/><text x="1347" y="846" class="subhead">−</text><text x="1367" y="846" class="subhead">+</text>
+<text x="1360" y="940" class="subhead" text-anchor="middle">12.8 V 20 Ah LiFePO4</text>
+<path d="M1140 1020h30l8-15 15 30 15-30 15 30 15-15h25" class="strong"/><text x="1200" y="1060" class="small" text-anchor="middle">FUSE · TVS · REVERSE-POLARITY · SWITCH</text>
+<path d="M1290 1020q8-18 16 0q8-18 16 0q8-18 16 0h18" class="strong"/><path d="M1375 995h70v50h-70zM1388 1020h44" class="strong"/>
+<text x="1320" y="1060" class="subhead" text-anchor="middle">5 V BUCK</text><text x="1410" y="1060" class="subhead" text-anchor="middle">3V3 LDO</text>
+<path d="M1145 885H1200M1305 885H1350M1370 885H1445V980H1140V1020M1263 1020H1290M1356 1020H1375" class="power"/>
+<circle cx="1445" cy="885" r="5" class="part"/><text x="1432" y="870" class="code">TP_VBAT</text>
+<circle cx="1356" cy="1020" r="5" class="part"/><text x="1332" y="1000" class="code">TP_5V</text>
+<circle cx="1445" cy="1020" r="5" class="part"/><text x="1417" y="990" class="code">TP_3V3</text>
+<text x="1250" y="1100" class="small" text-anchor="middle">INA260 battery 0x40 · INA260 solar 0x41 · final protection ratings require measured load tests</text>
 <rect x="1510" y="775" width="470" height="400" class="box"/>
 <text x="1524" y="801" class="head">H — MOORING / ANCHORAGE</text>
 <path class="obj" d="M1673.5 1082.0L1586.5 1082.0 M1599.9 1015.0L1586.5 1082.0 M1660.1 1015.0L1673.5 1082.0 M1627.3 941.3L1627.3 874.3 M1632.7 874.3L1632.7 941.3 M1635.8 874.3L1635.8 938.6 M1635.0 874.3L1635.0 938.6 M1660.1 1015.0L1599.9 1015.0 M1673.5 1082.0L1630.0 1082.0 M1630.0 1082.0L1586.5 1082.0 M1660.1 1015.0L1666.8 1048.5 M1599.9 1015.0L1593.2 1048.5 M1666.8 1048.5L1673.5 1082.0 M1593.2 1048.5L1586.5 1082.0 M1660.1 1015.0L1630.0 1015.0 M1630.0 1015.0L1599.9 1015.0 M1626.0 1015.0L1626.0 1001.6 M1634.0 1015.0L1634.0 1001.6 M1617.9 909.5L1617.9 896.4 M1642.1 909.5L1642.1 896.4 M1630.0 909.5L1617.9 909.5 M1630.0 909.5L1642.1 909.5 M1630.0 909.5L1642.0 909.5 M1630.0 909.5L1618.0 909.5 M1630.0 909.5L1641.9 909.5 M1630.0 909.5L1618.1 909.5 M1630.0 909.5L1618.4 909.5 M1630.0 909.5L1641.6 909.5 M1630.0 909.5L1641.2 909.5 M1630.0 909.5L1618.8 909.5 M1630.0 892.8L1641.2 892.8 M1630.0 909.5L1640.7 909.5 M1630.0 909.5L1619.3 909.5 M1630.0 892.8L1640.7 892.8 M1630.6 892.8L1641.2 892.8 M1630.0 909.5L1619.9 909.5 M1630.0 909.5L1640.1 909.5 M1630.0 892.8L1640.1 892.8 M1641.2 892.8L1631.2 892.8 M1641.2 892.8L1631.8 892.8 M1630.0 909.5L1639.4 909.5 M1630.0 909.5L1620.6 909.5 M1630.0 892.8L1639.4 892.8 M1618.0 892.8L1627.2 892.8 M1618.1 892.8L1627.2 892.8 M1618.0 892.8L1626.9 892.8 M1641.2 892.8L1632.4 892.8 M1627.2 892.8L1618.4 892.8 M1626.7 892.8L1617.9 892.8 M1642.0 892.8L1633.3 892.8 M1633.3 892.8L1642.1 892.8 M1618.0 892.8L1626.7 892.8 M1633.3 892.8L1641.9 892.8 M1626.7 892.8L1618.1 892.8 M1630.0 909.5L1638.5 909.5 M1630.0 909.5L1621.5 909.5 M1630.0 892.8L1638.5 892.8 M1626.9 892.8L1618.4 892.8 M1641.6 892.8L1633.1 892.8 M1626.7 892.8L1627.5 901.1 M1633.3 892.8L1632.5 901.1 M1641.2 892.8L1632.8 892.8 M1627.2 892.8L1618.8 892.8 M1633.3 892.8L1641.6 892.8 M1618.4 892.8L1626.7 892.8 M1618.8 892.8L1626.9 892.8 M1633.1 892.8L1641.2 892.8 M1627.2 892.8L1619.3 892.8 M1640.7 892.8L1632.8 892.8 M1630.0 909.5L1622.4 909.5 M1630.0 909.5L1637.6 909.5 M1630.0 892.8L1637.6 892.8 M1626.9 892.8L1619.3 892.8 M1633.1 892.8L1640.7 892.8 M1627.2 892.8L1619.9 892.8 M1632.8 892.8L1640.1 892.8 M1627.6 892.8L1620.6 892.8 M1639.4 892.8L1632.4 892.8 M1630.0 909.5L1636.6 909.5 M1630.0 909.5L1623.4 909.5 M1630.0 892.8L1636.6 892.8 M1627.2 892.8L1620.6 892.8 M1632.8 892.8L1639.4 892.8 M1627.6 892.8L1621.5 892.8 M1632.4 892.8L1638.5 892.8 M1634.4 944.0L1634.4 950.0 M1633.6 944.0L1633.6 950.0 M1632.9 894.8L1627.1 894.8 M1627.1 896.4L1632.9 896.4 M1628.2 892.8L1622.4 892.8 M1637.6 892.8L1631.8 892.8 M1630.0 909.5L1635.5 909.5 M1630.0 909.5L1624.5 909.5 M1630.0 892.8L1635.5 892.8 M1622.4 892.8L1627.6 892.8 M1632.4 892.8L1637.6 892.8 M1613.3 894.8L1618.3 894.8 M1618.3 896.4L1613.3 896.4 M1646.7 896.4L1641.7 896.4 M1646.7 894.8L1641.7 894.8 M1628.2 892.8L1623.4 892.8 M1631.8 892.8L1636.6 892.8 M1627.1 896.4L1627.5 901.1 M1632.9 896.4L1632.5 901.1 M1630.0 909.5L1625.6 909.5 M1630.0 909.5L1634.4 909.5 M1630.0 892.8L1634.4 892.8 M1628.8 892.8L1624.5 892.8 M1635.5 892.8L1631.2 892.8 M1630.0 1001.6L1626.0 1001.6 M1630.0 1015.0L1634.0 1015.0 M1630.0 1015.0L1626.0 1015.0 M1630.0 1001.6L1634.0 1001.6 M1630.0 1015.0L1626.1 1015.0 M1630.0 1015.0L1633.9 1015.0 M1630.0 1001.6L1633.9 1001.6 M1630.0 1001.6L1626.1 1001.6 M1630.0 1015.0L1633.7 1015.0 M1630.0 1015.0L1626.3 1015.0 M1630.0 1001.6L1626.3 1001.6 M1630.0 1001.6L1633.7 1001.6 M1624.5 892.8L1628.2 892.8 M1631.8 892.8L1635.5 892.8 M1626.7 892.8L1627.1 896.4 M1633.3 892.8L1632.9 896.4 M1630.0 1015.0L1633.6 1015.0 M1630.0 1015.0L1626.4 1015.0 M1630.0 1001.6L1626.4 1001.6 M1630.0 1001.6L1633.6 1001.6 M1630.0 1015.0L1626.6 1015.0 M1630.0 1015.0L1633.4 1015.0 M1630.0 1001.6L1633.4 1001.6 M1630.0 1001.6L1626.6 1001.6 M1630.0 889.7L1633.3 889.7 M1630.0 909.5L1633.3 909.5 M1630.0 909.5L1626.7 909.5 M1630.0 892.8L1633.3 892.8 M1630.0 889.7L1626.7 889.7 M1628.8 892.8L1625.6 892.8 M1631.2 892.8L1634.4 892.8 M1630.0 1015.0L1633.1 1015.0 M1630.0 1015.0L1626.9 1015.0 M1630.0 1001.6L1626.9 1001.6 M1630.0 1001.6L1633.1 1001.6 M1630.0 889.7L1626.9 889.7 M1630.0 889.7L1633.1 889.7 M1626.7 892.8L1626.7 889.7 M1633.3 892.8L1633.3 889.7 M1630.0 894.8L1627.1 894.8 M1632.9 894.8L1630.0 894.8 M1630.0 896.4L1632.9 896.4 M1627.1 896.4L1630.0 896.4 M1630.0 1015.0L1632.8 1015.0 M1630.0 1015.0L1627.2 1015.0 M1630.0 1001.6L1627.2 1001.6 M1630.0 1001.6L1632.8 1001.6 M1630.0 910.5L1632.8 910.5 M1630.0 931.9L1632.8 931.9 M1630.0 929.5L1627.2 929.5 M1630.0 889.7L1627.2 889.7 M1630.0 889.7L1632.8 889.7 M1630.0 910.5L1627.2 910.5 M1630.0 908.1L1627.2 908.1 M1630.0 929.5L1632.8 929.5 M1615.5 894.8L1618.3 894.8 M1618.3 896.4L1615.5 896.4 M1641.7 896.4L1644.5 896.4 M1644.5 894.8L1641.7 894.8 M1627.1 894.8L1629.8 894.8 M1632.9 894.8L1630.2 894.8 M1632.9 896.4L1630.2 896.4 M1627.1 896.4L1629.8 896.4 M1630.0 908.1L1632.8 908.1 M1630.0 931.9L1627.2 931.9 M1629.4 892.8L1626.7 892.8 M1633.3 892.8L1630.6 892.8 M1630.0 910.5L1627.3 910.5 M1630.0 910.5L1632.7 910.5 M1630.0 908.1L1632.7 908.1 M1630.0 908.1L1627.3 908.1 M1630.0 931.9L1627.3 931.9 M1630.0 931.9L1632.7 931.9 M1630.0 929.5L1632.7 929.5 M1630.0 929.5L1627.3 929.5 M1630.0 941.3L1632.7 941.3 M1630.0 874.3L1632.7 874.3 M1630.0 874.3L1627.3 874.3 M1630.0 941.3L1627.3 941.3 M1628.9 944.0L1628.9 941.3 M1631.1 944.0L1631.1 941.3 M1630.0 944.0L1632.7 944.0 M1630.0 942.4L1627.3 942.4 M1630.0 942.4L1632.7 942.4 M1630.0 944.0L1627.3 944.0 M1630.0 948.8L1632.7 948.8 M1630.0 947.2L1627.3 947.2 M1630.0 947.2L1632.7 947.2 M1630.0 948.8L1627.3 948.8 M1630.0 941.3L1627.4 941.3 M1630.0 941.3L1632.6 941.3 M1630.0 874.3L1632.6 874.3 M1630.0 874.3L1627.4 874.3 M1630.0 944.0L1627.4 944.0 M1630.0 942.4L1632.6 942.4 M1630.0 948.8L1627.4 948.8 M1630.0 947.2L1632.6 947.2 M1630.0 910.5L1632.6 910.5 M1630.0 910.5L1627.4 910.5 M1630.0 908.1L1627.4 908.1 M1630.0 908.1L1632.6 908.1 M1630.0 931.9L1632.6 931.9 M1630.0 931.9L1627.4 931.9 M1630.0 929.5L1627.4 929.5 M1630.0 929.5L1632.6 929.5 M1618.3 894.8L1615.7 894.8 M1618.3 896.4L1615.7 896.4 M1641.7 896.4L1644.3 896.4 M1644.3 894.8L1641.7 894.8 M1627.1 894.8L1629.7 894.8 M1632.9 894.8L1630.3 894.8 M1632.9 896.4L1630.3 896.4 M1627.1 896.4L1629.7 896.4 M1630.0 942.4L1627.4 942.4 M1630.0 944.0L1632.6 944.0 M1630.0 947.2L1627.4 947.2 M1630.0 948.8L1632.6 948.8 M1630.0 1015.0L1627.5 1015.0 M1630.0 1015.0L1632.5 1015.0 M1630.0 1001.6L1632.5 1001.6 M1630.0 1001.6L1627.5 1001.6 M1615.8 894.8L1613.3 894.8 M1613.3 896.4L1615.8 896.4 M1646.7 896.4L1644.2 896.4 M1646.7 894.8L1644.2 894.8 M1615.8 894.8L1618.3 894.8 M1615.8 896.4L1618.3 896.4 M1644.2 896.4L1641.7 896.4 M1641.7 894.8L1644.2 894.8 M1630.0 910.5L1632.5 910.5 M1630.0 910.5L1627.5 910.5 M1630.0 908.1L1627.5 908.1 M1630.0 908.1L1632.5 908.1 M1630.0 931.9L1632.5 931.9 M1630.0 931.9L1627.5 931.9 M1630.0 929.5L1627.5 929.5 M1630.0 929.5L1632.5 929.5 M1630.0 941.3L1632.5 941.3 M1630.0 941.3L1627.5 941.3 M1630.0 874.3L1627.5 874.3 M1630.0 874.3L1632.5 874.3 M1630.0 944.0L1632.5 944.0 M1630.0 944.0L1627.5 944.0 M1630.0 942.4L1627.5 942.4 M1630.0 942.4L1632.5 942.4 M1630.0 948.8L1632.5 948.8 M1630.0 948.8L1627.5 948.8 M1630.0 947.2L1627.5 947.2 M1630.0 947.2L1632.5 947.2 M1627.1 894.8L1629.5 894.8 M1632.9 894.8L1630.5 894.8 M1632.9 896.4L1630.5 896.4 M1627.1 896.4L1629.5 896.4 M1618.3 894.8L1615.9 894.8 M1618.3 896.4L1615.9 896.4 M1644.1 896.4L1641.7 896.4 M1641.7 894.8L1644.1 894.8 M1627.2 908.1L1627.2 910.5 M1632.8 908.1L1632.8 910.5 M1627.2 929.5L1627.2 931.9 M1632.8 929.5L1632.8 931.9 M1630.0 944.0L1632.4 944.0 M1630.0 942.4L1627.6 942.4 M1630.0 942.4L1632.4 942.4 M1630.0 944.0L1627.6 944.0 M1630.0 948.8L1632.4 948.8 M1630.0 947.2L1627.6 947.2 M1630.0 947.2L1632.4 947.2 M1630.0 948.8L1627.6 948.8 M1630.0 889.7L1632.4 889.7 M1630.0 889.7L1627.6 889.7 M1630.0 910.5L1627.6 910.5 M1630.0 910.5L1632.4 910.5 M1630.0 908.1L1632.4 908.1 M1630.0 908.1L1627.6 908.1 M1630.0 931.9L1627.6 931.9 M1630.0 931.9L1632.4 931.9 M1630.0 929.5L1632.4 929.5 M1630.0 929.5L1627.6 929.5 M1627.1 894.8L1629.3 894.8 M1632.9 894.8L1630.7 894.8 M1632.9 896.4L1630.7 896.4 M1627.1 896.4L1629.3 896.4 M1615.5 894.8L1613.3 894.8 M1615.5 896.4L1613.3 896.4 M1646.7 896.4L1644.5 896.4 M1646.7 894.8L1644.5 894.8 M1618.3 894.8L1616.0 894.8 M1616.0 896.4L1618.3 896.4 M1644.0 896.4L1641.7 896.4 M1641.7 894.8L1644.0 894.8 M1618.0 894.8L1615.8 894.8 M1615.8 896.4L1618.0 896.4 M1644.2 896.4L1642.0 896.4 M1644.2 894.8L1642.0 894.8 M1630.0 941.3L1632.2 941.3 M1630.0 874.3L1627.8 874.3 M1630.0 874.3L1632.2 874.3 M1630.0 941.3L1627.8 941.3 M1630.0 944.0L1632.2 944.0 M1630.0 942.4L1632.2 942.4 M1630.0 942.4L1627.8 942.4 M1630.0 944.0L1627.8 944.0 M1630.0 948.8L1632.2 948.8 M1630.0 947.2L1632.2 947.2 M1630.0 947.2L1627.8 947.2 M1630.0 948.8L1627.8 948.8 M1630.0 1015.0L1632.2 1015.0 M1630.0 1015.0L1627.8 1015.0 M1630.0 1001.6L1627.8 1001.6 M1630.0 1001.6L1632.2 1001.6 M1630.0 909.5L1632.2 909.5 M1630.0 909.5L1627.8 909.5 M1630.0 892.8L1632.2 892.8 M1630.0 910.5L1632.2 910.5 M1630.0 910.5L1627.8 910.5 M1630.0 908.1L1627.8 908.1 M1630.0 908.1L1632.2 908.1 M1630.0 931.9L1632.2 931.9 M1630.0 931.9L1627.8 931.9 M1630.0 929.5L1627.8 929.5 M1630.0 929.5L1632.2 929.5 M1627.1 894.8L1629.2 894.8 M1632.9 894.8L1630.8 894.8 M1629.2 896.4L1627.1 896.4 M1632.9 896.4L1630.8 896.4 M1613.3 894.8L1615.4 894.8 M1613.3 896.4L1615.4 896.4 M1646.7 896.4L1644.6 896.4 M1646.7 894.8L1644.6 894.8 M1626.7 892.8L1628.8 892.8 M1631.2 892.8L1633.3 892.8 M1630.0 942.4L1627.9 942.4 M1630.0 942.4L1632.1 942.4 M1630.0 944.0L1632.1 944.0 M1630.0 944.0L1627.9 944.0 M1630.0 947.2L1627.9 947.2 M1630.0 947.2L1632.1 947.2 M1630.0 948.8L1632.1 948.8 M1630.0 948.8L1627.9 948.8 M1617.9 894.8L1617.9 892.8 M1642.1 894.8L1642.1 892.8 M1632.9 894.8L1630.9 894.8 M1632.9 896.4L1630.9 896.4 M1627.1 894.8L1629.1 894.8 M1627.1 896.4L1629.1 896.4 M1618.0 894.8L1616.0 894.8 M1618.0 896.4L1616.0 896.4 M1644.0 896.4L1642.0 896.4 M1644.0 894.8L1642.0 894.8 M1630.0 910.5L1632.0 910.5 M1630.0 910.5L1628.0 910.5 M1630.0 908.1L1628.0 908.1 M1630.0 908.1L1632.0 908.1 M1630.0 931.9L1632.0 931.9 M1630.0 931.9L1628.0 931.9 M1630.0 929.5L1628.0 929.5 M1630.0 929.5L1632.0 929.5 M1613.3 894.8L1615.2 894.8 M1613.3 896.4L1615.2 896.4 M1646.7 896.4L1644.8 896.4 M1646.7 894.8L1644.8 894.8 M1630.0 941.3L1628.1 941.3 M1630.0 874.3L1631.9 874.3 M1630.0 874.3L1628.1 874.3 M1630.0 941.3L1631.9 941.3 M1630.0 944.0L1628.1 944.0 M1630.0 942.4L1628.1 942.4 M1630.0 942.4L1631.9 942.4 M1630.0 944.0L1631.9 944.0 M1630.0 948.8L1628.1 948.8 M1630.0 947.2L1628.1 947.2 M1630.0 947.2L1631.9 947.2 M1630.0 948.8L1631.9 948.8 M1630.0 1015.0L1631.8 1015.0 M1630.0 1015.0L1628.2 1015.0 M1630.0 1001.6L1628.2 1001.6 M1630.0 1001.6L1631.8 1001.6 M1618.0 894.8L1616.2 894.8 M1618.0 896.4L1616.2 896.4 M1643.8 896.4L1642.0 896.4 M1643.8 894.8L1642.0 894.8 M1630.0 889.7L1628.2 889.7 M1630.0 889.7L1631.8 889.7 M1630.0 910.5L1628.2 910.5 M1630.0 910.5L1631.8 910.5 M1630.0 908.1L1631.8 908.1 M1630.0 908.1L1628.2 908.1 M1630.0 931.9L1628.2 931.9 M1630.0 931.9L1631.8 931.9 M1630.0 929.5L1631.8 929.5 M1630.0 929.5L1628.2 929.5 M1613.3 894.8L1615.0 894.8 M1613.3 896.4L1615.0 896.4 M1646.7 896.4L1645.0 896.4 M1646.7 894.8L1645.0 894.8 M1618.0 894.8L1616.3 894.8 M1618.0 896.4L1616.3 896.4 M1642.0 896.4L1643.7 896.4 M1642.0 894.8L1643.7 894.8 M1630.0 944.0L1628.3 944.0 M1630.0 942.4L1631.7 942.4 M1630.0 942.4L1628.3 942.4 M1630.0 944.0L1631.7 944.0 M1630.0 948.8L1628.3 948.8 M1630.0 947.2L1631.7 947.2 M1630.0 947.2L1628.3 947.2 M1630.0 948.8L1631.7 948.8 M1616.4 894.8L1618.0 894.8 M1616.4 896.4L1618.0 896.4 M1642.0 896.4L1643.6 896.4 M1642.0 894.8L1643.6 894.8 M1613.3 894.8L1614.9 894.8 M1613.3 896.4L1614.9 896.4 M1646.7 896.4L1645.1 896.4 M1646.7 894.8L1645.1 894.8 M1627.3 942.4L1627.3 944.0 M1632.7 944.0L1632.7 942.4 M1627.3 947.2L1627.3 948.8 M1632.7 948.8L1632.7 947.2 M1627.1 896.4L1627.1 894.8 M1618.3 894.8L1618.3 896.4 M1632.9 894.8L1632.9 896.4 M1641.7 896.4L1641.7 894.8 M1613.3 894.8L1613.3 896.4 M1646.7 896.4L1646.7 894.8 M1629.1 894.8L1629.1 896.4 M1630.9 896.4L1630.9 894.8 M1643.5 894.8L1643.5 896.4 M1645.4 894.8L1645.4 896.4 M1614.6 894.8L1614.6 896.4 M1616.5 894.8L1616.5 896.4 M1629.4 892.8L1627.8 892.8 M1630.6 892.8L1632.2 892.8 M1617.9 894.8L1616.4 894.8 M1617.9 896.4L1616.4 896.4 M1642.1 896.4L1643.6 896.4 M1642.1 894.8L1643.6 894.8 M1630.0 910.5L1631.5 910.5 M1630.0 910.5L1628.5 910.5 M1630.0 908.1L1628.5 908.1 M1630.0 908.1L1631.5 908.1 M1630.0 931.9L1631.5 931.9 M1630.0 931.9L1628.5 931.9 M1630.0 929.5L1628.5 929.5 M1630.0 929.5L1631.5 929.5 M1645.3 894.8L1646.7 894.8 M1630.0 896.4L1631.5 896.4 M1630.0 894.8L1631.5 894.8 M1628.5 894.8L1630.0 894.8 M1628.5 896.4L1630.0 896.4 M1617.9 894.8L1616.5 894.8 M1617.9 896.4L1616.5 896.4 M1642.1 896.4L1643.5 896.4 M1630.0 1015.0L1628.5 1015.0 M1630.0 1015.0L1631.5 1015.0 M1630.0 1001.6L1631.5 1001.6 M1630.0 1001.6L1628.5 1001.6 M1642.1 894.8L1643.5 894.8 M1630.0 941.3L1631.5 941.3 M1630.0 941.3L1628.5 941.3 M1630.0 874.3L1628.5 874.3 M1630.0 874.3L1631.5 874.3 M1630.0 944.0L1631.5 944.0 M1630.0 944.0L1628.5 944.0 M1630.0 942.4L1628.5 942.4 M1630.0 942.4L1631.5 942.4 M1630.0 948.8L1631.5 948.8 M1630.0 948.8L1628.5 948.8 M1630.0 947.2L1628.5 947.2 M1630.0 947.2L1631.5 947.2 M1632.9 896.4L1631.5 896.4 M1631.5 894.8L1632.9 894.8 M1627.1 894.8L1628.5 894.8 M1628.5 896.4L1627.1 896.4 M1613.3 894.8L1614.7 894.8 M1613.3 896.4L1614.7 896.4 M1646.7 896.4L1645.3 896.4 M1645.4 896.4L1646.7 896.4 M1613.3 894.8L1614.6 894.8 M1613.3 896.4L1614.6 896.4 M1645.4 894.8L1646.7 894.8 M1630.0 910.5L1631.3 910.5 M1630.0 910.5L1628.7 910.5 M1630.0 908.1L1628.7 908.1 M1630.0 908.1L1631.3 908.1 M1630.0 931.9L1631.3 931.9 M1630.0 931.9L1628.7 931.9 M1630.0 929.5L1628.7 929.5 M1630.0 929.5L1631.3 929.5 M1630.0 889.7L1628.8 889.7 M1630.0 889.7L1631.2 889.7 M1630.0 944.0L1631.2 944.0 M1630.0 942.4L1628.8 942.4 M1630.0 942.4L1631.2 942.4 M1630.0 944.0L1628.8 944.0 M1630.0 948.8L1631.2 948.8 M1630.0 947.2L1628.8 947.2 M1630.0 947.2L1631.2 947.2 M1630.0 948.8L1628.8 948.8 M1630.3 894.8L1631.5 894.8 M1628.5 894.8L1629.7 894.8 M1629.7 896.4L1628.5 896.4 M1631.5 896.4L1630.3 896.4 M1632.2 909.5L1633.3 909.5 M1626.7 909.5L1627.8 909.5 M1626.7 892.8L1627.8 892.8 M1632.2 892.8L1633.3 892.8 M1625.6 909.5L1626.7 909.5 M1633.3 909.5L1634.4 909.5 M1626.7 892.8L1625.6 892.8 M1633.3 892.8L1634.4 892.8 M1627.8 909.5L1628.9 909.5 M1631.1 909.5L1632.2 909.5 M1627.8 892.8L1628.9 892.8 M1631.1 892.8L1632.2 892.8 M1630.0 1015.0L1631.1 1015.0 M1630.0 1015.0L1628.9 1015.0 M1630.0 1001.6L1628.9 1001.6 M1630.0 1001.6L1631.1 1001.6"/>
@@ -188,53 +165,26 @@ svg{shape-rendering:geometricPrecision;background:#f7fafc}path,line,polyline,pol
 <text x="430" y="1650" class="small">TBD</text>
 <text x="545" y="1650" class="small">Audible security alarm</text>
 <rect x="750" y="1200" width="740" height="520" class="box"/>
-<text x="764" y="1226" class="head">K — CONTROLLED INTERFACE MATRIX · NOT A NETLIST</text>
-<text x="775" y="1260" class="code">VBAT</text>
-<line x1="900" y1="1256" x2="1455" y2="1256" class="thin"/>
-<text x="775" y="1310" class="code">+5 V</text>
-<line x1="900" y1="1306" x2="1455" y2="1306" class="thin"/>
-<text x="775" y="1360" class="code">+3V3</text>
-<line x1="900" y1="1356" x2="1455" y2="1356" class="thin"/>
-<text x="775" y="1410" class="code">GND</text>
-<line x1="900" y1="1406" x2="1455" y2="1406" class="thin"/>
-<text x="775" y="1460" class="code">I2C SDA/SCL</text>
-<line x1="900" y1="1456" x2="1455" y2="1456" class="thin"/>
-<text x="775" y="1510" class="code">GPS UART</text>
-<line x1="900" y1="1506" x2="1455" y2="1506" class="thin"/>
-<text x="775" y="1560" class="code">WIND PULSE/ADC</text>
-<line x1="900" y1="1556" x2="1455" y2="1556" class="thin"/>
-<text x="775" y="1610" class="code">LTE UART/USB</text>
-<line x1="900" y1="1606" x2="1455" y2="1606" class="thin"/>
-<rect x="940" y="1275" width="105" height="360" rx="4" class="pcb"/>
-<text x="992" y="1300" class="subhead" text-anchor="middle">ESP32</text>
-<rect x="1080" y="1275" width="105" height="360" rx="4" class="pcb"/>
-<text x="1132" y="1300" class="subhead" text-anchor="middle">SENSOR I/O</text>
-<rect x="1225" y="1275" width="105" height="360" rx="4" class="pcb"/>
-<text x="1277" y="1300" class="subhead" text-anchor="middle">LTE</text>
-<rect x="1355" y="1275" width="105" height="360" rx="4" class="pcb"/>
-<text x="1407" y="1300" class="subhead" text-anchor="middle">TEST POINTS</text>
-<circle cx="940" cy="1306" r="4" class="part"/>
-<circle cx="1185" cy="1306" r="4" class="part"/>
-<circle cx="1330" cy="1306" r="4" class="part"/>
-<circle cx="940" cy="1356" r="4" class="part"/>
-<circle cx="1185" cy="1356" r="4" class="part"/>
-<circle cx="1330" cy="1356" r="4" class="part"/>
-<circle cx="940" cy="1406" r="4" class="part"/>
-<circle cx="1185" cy="1406" r="4" class="part"/>
-<circle cx="1330" cy="1406" r="4" class="part"/>
-<circle cx="940" cy="1456" r="4" class="part"/>
-<circle cx="1185" cy="1456" r="4" class="part"/>
-<circle cx="1330" cy="1456" r="4" class="part"/>
-<circle cx="940" cy="1506" r="4" class="part"/>
-<circle cx="1185" cy="1506" r="4" class="part"/>
-<circle cx="1330" cy="1506" r="4" class="part"/>
-<circle cx="940" cy="1556" r="4" class="part"/>
-<circle cx="1185" cy="1556" r="4" class="part"/>
-<circle cx="1330" cy="1556" r="4" class="part"/>
-<circle cx="940" cy="1606" r="4" class="part"/>
-<circle cx="1185" cy="1606" r="4" class="part"/>
-<circle cx="1330" cy="1606" r="4" class="part"/>
-<text x="1120" y="1688" class="small" text-anchor="middle">Availability matrix only—not pin-to-pin wiring. No hydraulics · no Orange Pi onboard · locking sensor connectors.</text>
+<text x="764" y="1226" class="head">K — SIMPLIFIED SENSOR / CONTROLLER WIRING</text>
+<path d="M1050 1290h155v300h-155zM1080 1315h95v80h-95M1088 1330h78v45h-78" class="strong"/>
+<path d="M1050 1320h-14m14 30h-14m14 30h-14m14 30h-14m14 30h-14m14 30h-14m14 30h-14m14 30h-14m14 30h-14M1205 1320h14m-14 30h14m-14 30h14m-14 30h14m-14 30h14m-14 30h14m-14 30h14m-14 30h14" class="thin"/>
+<text x="1127" y="1425" class="head" text-anchor="middle">ESP32-DevKitC V4</text><text x="1127" y="1445" class="small" text-anchor="middle">acquisition · validation · buffering</text>
+<path d="M795 1285h55v34h-55m0 50h55v34h-55m0 50h55v34h-55m0 50h55v34h-55m0 50h55v34h-55" class="strong"/>
+<text x="790" y="1274" class="subhead">LOCKING FIELD CONNECTORS</text>
+<text x="860" y="1307" class="text">J2 BAR02 · 3V3 / SDA / SCL / GND</text><text x="860" y="1391" class="text">J3 GPS · 5V / TX / RX / GND</text>
+<text x="860" y="1475" class="text">J7 WIND SPEED · 3V3 / PULSE / GND</text><text x="860" y="1559" class="text">J8 WIND DIR · 3V3 / ADC / GND</text>
+<text x="860" y="1643" class="text">J9 WATER TEMP · 3V3 / SDA / SCL / GND</text>
+<path d="M850 1302H990V1350H1036M850 1386H975V1410H1036M850 1470H960V1470H1036M850 1554H975V1530H1036M850 1638H990V1560H1036" class="data"/>
+<text x="950" y="1295" class="code">I2C_SDA / I2C_SCL</text><text x="930" y="1377" class="code">GPS_TX / GPS_RX</text><text x="925" y="1462" class="code">WIND_SPEED</text><text x="930" y="1546" class="code">WIND_DIR_ADC</text>
+<path d="M1219 1360H1300M1219 1410H1300M1219 1460H1300M1219 1510H1300" class="data"/>
+<path d="M1300 1335v50h120v-50zM1300 1395v50h120v-50zM1300 1455v50h120v-50zM1300 1515v50h120v-50z" class="strong"/>
+<text x="1360" y="1366" class="subhead" text-anchor="middle">J10 LTE UART / USB</text><text x="1360" y="1426" class="subhead" text-anchor="middle">J11 DEBUG UART</text>
+<text x="1360" y="1486" class="subhead" text-anchor="middle">J12 FUTURE I2C</text><text x="1360" y="1546" class="subhead" text-anchor="middle">J13 EXPANSION</text>
+<path d="M1240 1595v-45m25 45v-45M1230 1550h20m5 0h20" class="strong"/><text x="1252" y="1615" class="small" text-anchor="middle">4.7 kΩ I2C PULL-UPS</text>
+<circle cx="1320" cy="1600" r="5" class="part"/><circle cx="1350" cy="1600" r="5" class="part"/><circle cx="1380" cy="1600" r="5" class="part"/><circle cx="1410" cy="1600" r="5" class="part"/>
+<text x="1365" y="1622" class="small" text-anchor="middle">TP: 3V3 · 5V · SDA · SCL · TX · RX · GND</text>
+<line x1="780" y1="1665" x2="1455" y2="1665" class="strong"/><text x="790" y="1658" class="code">GND</text>
+<text x="1120" y="1695" class="small" text-anchor="middle">Functional wiring only—KiCad schematic controls pin numbers and manufacturing netlist · Orange Pi remains ashore</text>
 <rect x="1510" y="1200" width="470" height="260" class="box"/>
 <text x="1524" y="1226" class="head">L — GENERAL NOTES</text>
 <text x="1530" y="1245" class="text">1. Orthographic linework is projected from PROJECT-FALCON-V2.glb.</text>

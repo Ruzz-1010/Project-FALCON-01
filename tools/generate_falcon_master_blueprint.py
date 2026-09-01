@@ -85,29 +85,74 @@ svg{shape-rendering:geometricPrecision;background:#f7fafc}path,line,polyline,pol
     panel(out,990,440,500,310,"D — ELECTRONICS POD / EQUIPMENT PLAN")
     project(out,edges,1015,480,450,225,0,1,equipment,3500)
     out.append('<text x="1240" y="730" class="small" text-anchor="middle">Orange Pi excluded · shore Bay Station only</text>')
-    panel(out,1510,120,470,630,"E — ASSEMBLY HIERARCHY · NTS")
-    # Truthful exploded hierarchy (not fake CAD separation).
-    parts=[("E01","TOP SENSOR PLATFORM",184), ("E02","DUAL SOLAR ARRAY",264), ("E03","TAPERED MAST / FRAME",344), ("E04","SEALED ELECTRONICS POD",424), ("E05","MAIN FLOAT / KEEL",504), ("E06","ADJUSTABLE BALLAST",584), ("E07","SINGLE-ANCHOR MOORING",664)]
-    for code,label,yy in parts:
-        out += [f'<rect x="1580" y="{yy-28}" width="300" height="44" rx="4" class="part"/>',f'<text x="1594" y="{yy}" class="code">{code}</text>',f'<text x="1640" y="{yy}" class="text">{label}</text>']
-        if yy<664: out.append(f'<line x1="1730" y1="{yy+16}" x2="1730" y2="{yy+50}" class="data"/>')
-    out.append('<text x="1745" y="720" class="small" text-anchor="middle">Hierarchy only; separation distances are not dimensions.</text>')
+    panel(out,1510,120,470,630,"E — EXPLODED ASSEMBLY VIEW · NTS")
+    # Recognizable exploded line-art; gaps indicate assembly sequence, not dimensions.
+    out += ['<line x1="1715" y1="160" x2="1715" y2="704" class="ctr"/>',
+            # top rail, antennas, GPS dome and cup anemometer
+            '<path d="M1620 228H1810M1640 228V196M1790 228V184M1705 228V205Q1715 190 1725 205V228" class="strong"/>',
+            '<path d="M1662 211V174M1640 174H1684M1662 174L1646 162M1662 174L1678 162M1646 162a10 6 0 1 0 0-12M1678 162a10 6 0 1 1 0-12" class="obj"/>',
+            # solar panels and mast
+            '<path d="M1584 282L1644 258L1657 325L1597 347ZM1773 258L1834 282L1821 347L1760 325" class="strong"/>',
+            '<path d="M1591 297L1648 276M1594 314L1651 293M1600 331L1654 310M1770 276L1827 297M1767 293L1824 314M1764 310L1818 331" class="thin"/>',
+            '<path d="M1660 260L1680 392M1770 260L1750 392M1668 312H1762M1674 350H1756M1668 312L1756 350M1762 312L1674 350" class="strong"/>',
+            # pod with door, gland row and internal board hint
+            '<path d="M1647 414L1662 390H1768L1783 414V482L1768 496H1662L1647 482Z" class="strong"/>',
+            '<path d="M1665 410H1765V474H1665ZM1680 426H1735V458H1680M1690 438H1725M1690 447H1725" class="obj"/>',
+            '<circle cx="1750" cy="443" r="4" class="strong"/><path d="M1668 496v12m22-12v12m22-12v12m22-12v12" class="thin"/>',
+            # float collar / cylindrical hull / keel
+            '<ellipse cx="1715" cy="536" rx="112" ry="22" class="strong"/><path d="M1603 536V596M1827 536V596" class="strong"/><ellipse cx="1715" cy="596" rx="112" ry="22" class="strong"/>',
+            '<path d="M1603 570C1640 590 1790 590 1827 570M1660 614Q1715 668 1770 614" class="obj"/>',
+            # ballast and mooring
+            '<path d="M1692 674H1738M1698 682H1732M1704 690H1726" class="strong"/><path d="M1715 690q-16 10 0 20q16 10 0 20" class="obj"/>',
+            # leaders
+            '<path d="M1812 205H1870M1834 303H1870M1770 354H1870M1783 448H1870M1827 566H1870M1738 682H1870" class="thin"/>']
+    for code,label,yy in [("E01","SENSOR PLATFORM",205),("E02","DUAL SOLAR ARRAY",303),("E03","TAPERED FRAME",354),("E04","SEALED ELECTRONICS POD",448),("E05","FLOAT / KEEL",566),("E06","BALLAST + MOORING",682)]:
+        out += [f'<text x="1880" y="{yy-4}" class="code">{code}</text>',f'<text x="1880" y="{yy+11}" class="small">{label}</text>']
+    out.append('<text x="1745" y="730" class="small" text-anchor="middle">Exploded reference only · separation gaps are not dimensions</text>')
 
     # Middle subsystem flow.
     panel(out,50,775,940,400,"F — SUBSYSTEM INTERCONNECTION / DATA FLOW")
-    blocks=[(90,850,145,78,"PRESSURE","Bar02 R2"),(90,955,145,78,"WIND","SEN-15901"),(90,1060,145,78,"GPS / TEMP","PID 746 / Celsius R2"),(300,865,180,110,"PROTECTED I/O","I2C · UART · ADC · GPIO"),(530,865,180,110,"ESP32","Acquisition · validation · buffer"),(760,865,180,110,"LTE MODEM","SIM7600G-H candidate"),(760,1035,180,95,"SHORE BAY STATION","DB · API · AI · dashboard")]
-    for x,y,w,h,a,b in blocks:
-        out += [f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="5" class="part"/>',f'<text x="{x+w/2}" y="{y+31}" class="subhead" text-anchor="middle">{esc(a)}</text>',f'<text x="{x+w/2}" y="{y+52}" class="small" text-anchor="middle">{esc(b)}</text>']
-    for sy in (889,994,1099): out.append(f'<path d="M235 {sy}H275Q288 {sy} 288 950V920H300" class="data"/>')
-    out += ['<path d="M480 920H530" class="data"/>','<path d="M710 920H760" class="data"/>','<path d="M850 975V1035" class="data"/>',
-            '<text x="510" y="1145" class="small" text-anchor="middle">Pressure-derived estimated wave height · AI prediction is processed at the shore Bay Station.</text>']
+    out += [# field sensor silhouettes
+            '<path d="M105 875V835M82 835H128M105 835L88 820M105 835L122 820M88 820a12 7 0 1 0 0-14M122 820a12 7 0 1 1 0-14" class="strong"/>',
+            '<text x="105" y="900" class="subhead" text-anchor="middle">WIND</text><text x="105" y="915" class="small" text-anchor="middle">pulse + ADC</text>',
+            '<path d="M190 846q20-28 40 0v18h-40zM210 864v18" class="strong"/><text x="210" y="900" class="subhead" text-anchor="middle">GPS</text><text x="210" y="915" class="small" text-anchor="middle">UART</text>',
+            '<path d="M88 990v-48h34v48m-17-48v-20m-10 68h20" class="strong"/><text x="105" y="1010" class="subhead" text-anchor="middle">BAR02</text><text x="105" y="1025" class="small" text-anchor="middle">pressure / I2C</text>',
+            '<path d="M200 930v50a14 14 0 1 0 20 0v-50a10 10 0 0 0-20 0m10 18v39" class="strong"/><text x="210" y="1010" class="subhead" text-anchor="middle">TEMP</text><text x="210" y="1025" class="small" text-anchor="middle">water / I2C</text>',
+            # pod outline, glands, controller PCB, modem and terminals
+            '<path d="M320 830L340 805H650L670 830V1045L650 1065H340L320 1045Z" class="strong"/>',
+            '<text x="495" y="790" class="head" text-anchor="middle">SEALED ELECTRONICS POD</text>',
+            '<path d="M350 850H445V1010H350ZM365 875H430M365 895H430M365 915H430M365 935H430M365 955H430M365 975H430" class="obj"/>',
+            '<text x="397" y="1030" class="small" text-anchor="middle">LOCKING SENSOR TERMINALS</text>',
+            '<path d="M475 850H570V975H475M487 870H558V930H487M487 945H510M535 945H558" class="strong"/>',
+            '<text x="522" y="995" class="subhead" text-anchor="middle">ESP32 DevKit</text>',
+            '<path d="M595 850H645V975H595M605 865H635V905H605M610 935h20" class="strong"/><path d="M620 850V825M608 830q12-14 24 0M612 836q8-9 16 0" class="obj"/>',
+            '<text x="620" y="995" class="subhead" text-anchor="middle">4G MODEM</text>',
+            '<path d="M445 880H475M445 920H475M445 960H475M570 900H595" class="data"/>',
+            # shore station as monitor + cloud
+            '<path d="M760 850H925V980H760ZM785 875H900V950H785M815 980v22h55v-22" class="strong"/>',
+            '<path d="M790 930l25-22 22 10 30-35 25 20" class="obj"/><text x="842" y="1025" class="subhead" text-anchor="middle">SHORE BAY STATION</text>',
+            '<path d="M735 825q18-28 38-7q27-20 43 8q24 0 24 22h-105q-12-14 0-23" class="obj"/><text x="786" y="810" class="small" text-anchor="middle">CELLULAR / INTERNET</text>',
+            '<path d="M670 900C710 900 720 850 752 850" class="data"/>',
+            '<text x="495" y="1100" class="small" text-anchor="middle">Sensor data → protected terminals → ESP32 validation/buffer → cellular telemetry → shore database, AI and dashboard</text>']
 
     panel(out,1010,775,480,400,"G — POWER MANAGEMENT")
-    pblocks=[(1045,840,115,70,"2× SOLAR","30 W CAD ref"),(1200,840,120,70,"MPPT","LiFePO4 profile"),(1360,840,95,70,"BATTERY","12.8 V 20 Ah"),(1090,975,115,70,"FUSE / TVS","disconnect"),(1250,975,95,70,"5 V DC-DC","rating TBD"),(1380,975,75,70,"3V3","local rail")]
-    for x,y,w,h,a,b in pblocks:
-        out += [f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="4" class="part"/>',f'<text x="{x+w/2}" y="{y+28}" class="subhead" text-anchor="middle">{esc(a)}</text>',f'<text x="{x+w/2}" y="{y+48}" class="small" text-anchor="middle">{esc(b)}</text>']
-    out += ['<path d="M1160 875H1200" class="power"/>','<path d="M1320 875H1360" class="power"/>','<path d="M1408 910V945H1148V975" class="power"/>','<path d="M1205 1010H1250" class="power"/>','<path d="M1345 1010H1380" class="power"/>',
-            '<text x="1250" y="1090" class="small" text-anchor="middle">INA260 battery 0x40 · INA260 solar 0x41</text>','<text x="1250" y="1110" class="warn" text-anchor="middle">Final fuses, converters and autonomy require measured load tests.</text>']
+    out += [# two solar modules with cell grids
+            '<path d="M1040 840h105v90h-105zM1075 840v90m35-90v90m-70-30h105m-105-30h105" class="strong"/>',
+            '<text x="1092" y="950" class="subhead" text-anchor="middle">2 × 30 W SOLAR · CAD REF</text>',
+            # MPPT device with terminals
+            '<path d="M1200 850h105v70h-105zM1215 870h45v25h-45m60-20h12m-12 12h12" class="strong"/><text x="1252" y="940" class="subhead" text-anchor="middle">MPPT · LiFePO4</text>',
+            # battery conventional symbol
+            '<line x1="1350" y1="865" x2="1350" y2="905" class="strong"/><line x1="1370" y1="855" x2="1370" y2="915" class="strong"/><text x="1347" y="846" class="subhead">−</text><text x="1367" y="846" class="subhead">+</text>',
+            '<text x="1360" y="940" class="subhead" text-anchor="middle">12.8 V 20 Ah LiFePO4</text>',
+            '<path d="M1140 1020h30l8-15 15 30 15-30 15 30 15-15h25" class="strong"/><text x="1200" y="1060" class="small" text-anchor="middle">FUSE · TVS · REVERSE-POLARITY · SWITCH</text>',
+            # buck and LDO symbols
+            '<path d="M1290 1020q8-18 16 0q8-18 16 0q8-18 16 0h18" class="strong"/><path d="M1375 995h70v50h-70zM1388 1020h44" class="strong"/>',
+            '<text x="1320" y="1060" class="subhead" text-anchor="middle">5 V BUCK</text><text x="1410" y="1060" class="subhead" text-anchor="middle">3V3 LDO</text>',
+            '<path d="M1145 885H1200M1305 885H1350M1370 885H1445V980H1140V1020M1263 1020H1290M1356 1020H1375" class="power"/>',
+            '<circle cx="1445" cy="885" r="5" class="part"/><text x="1432" y="870" class="code">TP_VBAT</text>',
+            '<circle cx="1356" cy="1020" r="5" class="part"/><text x="1332" y="1000" class="code">TP_5V</text>',
+            '<circle cx="1445" cy="1020" r="5" class="part"/><text x="1417" y="990" class="code">TP_3V3</text>',
+            '<text x="1250" y="1100" class="small" text-anchor="middle">INA260 battery 0x40 · INA260 solar 0x41 · final protection ratings require measured load tests</text>']
 
     panel(out,1510,775,470,400,"H — MOORING / ANCHORAGE")
     project(out,edges,1540,825,180,280,0,2,mooring,3500)
@@ -123,16 +168,30 @@ svg{shape-rendering:geometricPrecision;background:#f7fafc}path,line,polyline,pol
     for rid,name,status,func in rows:
         out += [f'<line x1="50" y1="{yy-20}" x2="730" y2="{yy-20}" class="thin"/>',f'<text x="65" y="{yy}" class="code">{rid}</text>',f'<text x="120" y="{yy}" class="text">{esc(name)}</text>',f'<text x="430" y="{yy}" class="small">{esc(status)}</text>',f'<text x="545" y="{yy}" class="small">{esc(func)}</text>']; yy+=37
 
-    panel(out,750,1200,740,520,"K — CONTROLLED INTERFACE MATRIX · NOT A NETLIST")
-    rails=[("VBAT",1260),("+5 V",1310),("+3V3",1360),("GND",1410),("I2C SDA/SCL",1460),("GPS UART",1510),("WIND PULSE/ADC",1560),("LTE UART/USB",1610)]
-    for label,yy in rails:
-        out += [f'<text x="775" y="{yy}" class="code">{label}</text>',f'<line x1="900" y1="{yy-4}" x2="1455" y2="{yy-4}" class="thin"/>']
-    nodes=[(940,"ESP32"),(1080,"SENSOR I/O"),(1225,"LTE"),(1355,"TEST POINTS")]
-    for xx,label in nodes:
-        out += [f'<rect x="{xx}" y="1275" width="105" height="360" rx="4" class="pcb"/>',f'<text x="{xx+52}" y="1300" class="subhead" text-anchor="middle">{label}</text>']
-    for yy in [1306,1356,1406,1456,1506,1556,1606]:
-        out += [f'<circle cx="940" cy="{yy}" r="4" class="part"/>',f'<circle cx="1185" cy="{yy}" r="4" class="part"/>',f'<circle cx="1330" cy="{yy}" r="4" class="part"/>']
-    out += ['<text x="1120" y="1688" class="small" text-anchor="middle">Availability matrix only—not pin-to-pin wiring. No hydraulics · no Orange Pi onboard · locking sensor connectors.</text>']
+    panel(out,750,1200,740,520,"K — SIMPLIFIED SENSOR / CONTROLLER WIRING")
+    out += [# ESP32 board with castellated/header pins and module
+            '<path d="M1050 1290h155v300h-155zM1080 1315h95v80h-95M1088 1330h78v45h-78" class="strong"/>',
+            '<path d="M1050 1320h-14m14 30h-14m14 30h-14m14 30h-14m14 30h-14m14 30h-14m14 30h-14m14 30h-14m14 30h-14M1205 1320h14m-14 30h14m-14 30h14m-14 30h14m-14 30h14m-14 30h14m-14 30h14m-14 30h14" class="thin"/>',
+            '<text x="1127" y="1425" class="head" text-anchor="middle">ESP32-DevKitC V4</text><text x="1127" y="1445" class="small" text-anchor="middle">acquisition · validation · buffering</text>',
+            # left locking connectors and sensor symbols
+            '<path d="M795 1285h55v34h-55m0 50h55v34h-55m0 50h55v34h-55m0 50h55v34h-55m0 50h55v34h-55" class="strong"/>',
+            '<text x="790" y="1274" class="subhead">LOCKING FIELD CONNECTORS</text>',
+            '<text x="860" y="1307" class="text">J2 BAR02 · 3V3 / SDA / SCL / GND</text><text x="860" y="1391" class="text">J3 GPS · 5V / TX / RX / GND</text>',
+            '<text x="860" y="1475" class="text">J7 WIND SPEED · 3V3 / PULSE / GND</text><text x="860" y="1559" class="text">J8 WIND DIR · 3V3 / ADC / GND</text>',
+            '<text x="860" y="1643" class="text">J9 WATER TEMP · 3V3 / SDA / SCL / GND</text>',
+            # clean named nets to MCU
+            '<path d="M850 1302H990V1350H1036M850 1386H975V1410H1036M850 1470H960V1470H1036M850 1554H975V1530H1036M850 1638H990V1560H1036" class="data"/>',
+            '<text x="950" y="1295" class="code">I2C_SDA / I2C_SCL</text><text x="930" y="1377" class="code">GPS_TX / GPS_RX</text><text x="925" y="1462" class="code">WIND_SPEED</text><text x="930" y="1546" class="code">WIND_DIR_ADC</text>',
+            # right communications, I2C pullups, testpoints
+            '<path d="M1219 1360H1300M1219 1410H1300M1219 1460H1300M1219 1510H1300" class="data"/>',
+            '<path d="M1300 1335v50h120v-50zM1300 1395v50h120v-50zM1300 1455v50h120v-50zM1300 1515v50h120v-50z" class="strong"/>',
+            '<text x="1360" y="1366" class="subhead" text-anchor="middle">J10 LTE UART / USB</text><text x="1360" y="1426" class="subhead" text-anchor="middle">J11 DEBUG UART</text>',
+            '<text x="1360" y="1486" class="subhead" text-anchor="middle">J12 FUTURE I2C</text><text x="1360" y="1546" class="subhead" text-anchor="middle">J13 EXPANSION</text>',
+            '<path d="M1240 1595v-45m25 45v-45M1230 1550h20m5 0h20" class="strong"/><text x="1252" y="1615" class="small" text-anchor="middle">4.7 kΩ I2C PULL-UPS</text>',
+            '<circle cx="1320" cy="1600" r="5" class="part"/><circle cx="1350" cy="1600" r="5" class="part"/><circle cx="1380" cy="1600" r="5" class="part"/><circle cx="1410" cy="1600" r="5" class="part"/>',
+            '<text x="1365" y="1622" class="small" text-anchor="middle">TP: 3V3 · 5V · SDA · SCL · TX · RX · GND</text>',
+            '<line x1="780" y1="1665" x2="1455" y2="1665" class="strong"/><text x="790" y="1658" class="code">GND</text>',
+            '<text x="1120" y="1695" class="small" text-anchor="middle">Functional wiring only—KiCad schematic controls pin numbers and manufacturing netlist · Orange Pi remains ashore</text>']
 
     panel(out,1510,1200,470,260,"L — GENERAL NOTES")
     text_rows(out,1530,1245,["1. Orthographic linework is projected from PROJECT-FALCON-V2.glb.","2. V2 geometry remains a proposed replacement reference.","3. Do not scale this drawing; verify native CAD and purchased parts.","4. Dimensions, mass and placement marked TBD must not be invented.","5. Complete stability, structure, ingress, thermal and mooring reviews.","6. Orange Pi/Bay Station computer remains ashore."],30)
