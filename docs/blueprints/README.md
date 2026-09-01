@@ -13,6 +13,7 @@ Drawing basis date: 2026-08-30
 5. [`FALCON-BP-004-tower-structural-dimensions.svg`](FALCON-BP-004-tower-structural-dimensions.svg) — tower, main support, lower cage, maintenance gate, and controlled structural-member dimension schedule.
 6. [`FALCON-BP-005-external-hardware-dimensions.svg`](FALCON-BP-005-external-hardware-dimensions.svg) — solar, top sensors, pressure guard, ballast, chain/connector, and concrete-anchor dimension register.
 7. [`FALCON-BP-006-electronics-equipment-layout.svg`](FALCON-BP-006-electronics-equipment-layout.svg) — separate three-deck internal equipment packaging layout; this is not the enclosure fabrication drawing.
+8. [`FALCON-BP-007-illustrated-wiring-diagram.svg`](FALCON-BP-007-illustrated-wiring-diagram.svg) — illustrated Phase 1 wiring reference using recognizable drawings of the selected modules, controlled connector labels, separated power/signal paths, and explicit validation warnings. A print copy is provided as [`FALCON-BP-007-illustrated-wiring-diagram.pdf`](FALCON-BP-007-illustrated-wiring-diagram.pdf).
 
 The earlier concept-style infographic sheets were withdrawn. The current sheet
 uses projected feature linework extracted directly from the V2 GLB geometry.
@@ -21,6 +22,7 @@ Regenerate it with:
 ```bash
 python3 tools/generate_falcon_blueprint.py
 python3 tools/generate_falcon_master_blueprint.py
+python3 tools/generate_falcon_wiring_blueprint.py
 ```
 
 Open either SVG directly in VS Code and select **Open Preview**, or open it in Firefox.

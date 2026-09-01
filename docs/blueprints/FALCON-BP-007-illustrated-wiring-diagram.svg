@@ -1,0 +1,139 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1200" viewBox="0 0 1800 1200">
+<defs><style>
+svg{background:#f8fafb;shape-rendering:geometricPrecision}path,line,polyline,polygon,rect,circle,ellipse{vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}.sheet{fill:#f8fafb;stroke:#18394d;stroke-width:2}.panel{fill:none;stroke:#31556a;stroke-width:1.2}.device{fill:#fff;stroke:#24485d;stroke-width:1.4}.detail{fill:none;stroke:#24485d;stroke-width:1.1}.fine{fill:none;stroke:#607b8a;stroke-width:.75}.pin{fill:#fff;stroke:#24485d;stroke-width:1}.pwr{fill:none;stroke:#a16207;stroke-width:2}.i2c{fill:none;stroke:#2563eb;stroke-width:1.7}.uart{fill:none;stroke:#7c3aed;stroke-width:1.7}.gpio{fill:none;stroke:#0f766e;stroke-width:1.7}.gnd{fill:none;stroke:#374151;stroke-width:2}.radio{fill:none;stroke:#be123c;stroke-width:1.7;stroke-dasharray:7 4}.title{font:700 25px Arial;fill:#102f42}.subtitle{font:600 10px Arial;letter-spacing:.7px;fill:#526b79}.head{font:700 13px Arial;fill:#17394d}.devtitle{font:700 8px Arial;fill:#17394d}.ref{font:700 8px Consolas;fill:#8b1e3f}.txt{font:7.5px Arial;fill:#304c5c}.small{font:6.5px Arial;fill:#536b78}.net{font:700 7px Consolas;fill:#17394d}.warn{font:700 8.5px Arial;fill:#a61b3c}.num{font:700 8px Arial;fill:#fff}.call{fill:#17394d;stroke:none}
+</style><marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#31556a"/></marker></defs>
+<rect x="18" y="18" width="1764" height="1164" class="sheet"/>
+<text x="45" y="58" class="title" text-anchor="start">PROJECT FALCON-01 — ILLUSTRATED ELECTRONICS WIRING DIAGRAM</text>
+<text x="45" y="81" class="subtitle" text-anchor="start">ACTUAL-PART DRAWING STYLE · ADVISER-ALIGNED PHASE 1 BASELINE · POWER / SENSOR / TELEMETRY INTERFACES</text>
+<rect x="1450" y="38" width="285" height="46" class="panel"/>
+<text x="1592" y="66" class="warn" text-anchor="middle">REFERENCE — VERIFY BEFORE WIRING</text>
+<rect x="40" y="110" width="420" height="770" class="panel"/>
+<text x="54" y="135" class="head" text-anchor="start">A — FIELD SENSORS</text>
+<rect x="480" y="110" width="650" height="770" class="panel"/>
+<text x="494" y="135" class="head" text-anchor="start">B — ESP32 CONTROL &amp; SIGNAL WIRING</text>
+<rect x="1150" y="110" width="610" height="420" class="panel"/>
+<text x="1164" y="135" class="head" text-anchor="start">C — POWER &amp; HEALTH MONITORING</text>
+<rect x="1150" y="550" width="610" height="330" class="panel"/>
+<text x="1164" y="575" class="head" text-anchor="start">D — TELEMETRY / SHORE LINK</text>
+<g transform="translate(58 150)"><path d="M0 12L12 0H185V165H0Z" class="device"/><text x="92.5" y="20" class="devtitle" text-anchor="middle">BLUE ROBOTICS BAR02 R2</text><text x="14" y="40" class="ref" text-anchor="start">S01</text><path d="M18 48H155V128H18Z" class="detail"/><path d="M38 62h45v24H38m70-2a21 21 0 1 0 0-1" class="detail"/><circle cx="108" cy="83" r="10" class="fine"/><path d="M98 104h20v23H98M31 128v17m14-17v17m14-17v17m14-17v17" class="fine"/></g>
+<text x="258" y="190" class="net" text-anchor="start">J2 · JST-GH-4</text>
+<text x="258" y="211" class="txt" text-anchor="start">1 RED   +3V3_SENSOR</text>
+<text x="258" y="230" class="txt" text-anchor="start">2 GREEN I2C_SCL</text>
+<text x="258" y="249" class="txt" text-anchor="start">3 WHITE I2C_SDA</text>
+<text x="258" y="268" class="txt" text-anchor="start">4 BLACK GND</text>
+<text x="258" y="292" class="small" text-anchor="start">Pressure sensing face exposed to water;</text>
+<text x="258" y="307" class="small" text-anchor="start">rear electronics remain dry.</text>
+<g transform="translate(58 335)"><path d="M0 12L12 0H185V165H0Z" class="device"/><text x="92.5" y="20" class="devtitle" text-anchor="middle">ADAFRUIT ULTIMATE GPS</text><text x="14" y="40" class="ref" text-anchor="start">S02</text><path d="M18 45H160V132H18Z" class="detail"/><rect x="35" y="58" width="62" height="55" class="detail"/><path d="M112 58h32v26h-32m0 14h32m-32 12h32" class="fine"/><circle cx="148" cy="120" r="5" class="detail"/><path d="M30 132v14m20-14v14m20-14v14m20-14v14" class="fine"/></g>
+<text x="258" y="377" class="net" text-anchor="start">J3 · MODULE HEADER</text>
+<text x="258" y="400" class="txt" text-anchor="start">PAD 2  +3V3_SENSOR</text>
+<text x="258" y="420" class="txt" text-anchor="start">PAD 3  GND</text>
+<text x="258" y="440" class="txt" text-anchor="start">PAD 4  GPS_RX ← GPIO17</text>
+<text x="258" y="460" class="txt" text-anchor="start">PAD 5  GPS_TX → GPIO16</text>
+<text x="258" y="485" class="small" text-anchor="start">TX/RX cross at the controller.</text>
+<g transform="translate(58 520)"><path d="M0 12L12 0H185V175H0Z" class="device"/><text x="92.5" y="20" class="devtitle" text-anchor="middle">SPARKFUN WEATHER METER</text><text x="14" y="40" class="ref" text-anchor="start">S03</text><path d="M90 45v92M55 72h70M90 72L58 52M90 72l32-20M58 52a17 10 0 1 0 0-18M122 52a17 10 0 1 1 0-18M90 72v-25" class="detail"/><path d="M112 108h42l-22-18v36zM112 108H72" class="detail"/><path d="M78 137h25v15H78" class="fine"/></g>
+<text x="258" y="560" class="net" text-anchor="start">J7 · ANEMOMETER</text>
+<text x="258" y="580" class="txt" text-anchor="start">1 +3V3 · 2 PULSE · 3 GND</text>
+<text x="258" y="610" class="net" text-anchor="start">J8 · WIND VANE</text>
+<text x="258" y="630" class="txt" text-anchor="start">1 +3V3 · 2 VANE · 3 GND</text>
+<text x="258" y="653" class="small" text-anchor="start">Vane → ADS1115 A0 / 3.3 V divider</text>
+<g transform="translate(58 715)"><path d="M0 12L12 0H185V135H0Z" class="device"/><text x="92.5" y="20" class="devtitle" text-anchor="middle">BLUE ROBOTICS CELSIUS R2</text><text x="14" y="40" class="ref" text-anchor="start">S04</text><path d="M30 80h82v34H30zM112 87h30v20h-30M142 97h20M30 90H16m14 14H16" class="detail"/><path d="M44 80v34m54-34v34" class="fine"/></g>
+<text x="258" y="754" class="net" text-anchor="start">J9 · DEPLOYMENT CANDIDATE</text>
+<text x="258" y="776" class="txt" text-anchor="start">+3V3 · I2C_SCL · I2C_SDA · GND</text>
+<text x="258" y="800" class="small" text-anchor="start">Verify exact harness/address</text>
+<text x="258" y="814" class="small" text-anchor="start">before PCB freeze.</text>
+<text x="258" y="834" class="small" text-anchor="start">DS18B20: bench-only alternative.</text>
+<g transform="translate(665 175)"><path d="M0 12L12 0H275V430H0Z" class="device"/><text x="137.5" y="20" class="devtitle" text-anchor="middle">ESP32-DEVKITC V4</text><text x="14" y="40" class="ref" text-anchor="start">U3</text><path d="M42 55H232V385H42Z" class="detail"/><path d="M78 70h118v104H78M92 82h90v65H92" class="detail"/><path d="M102 295h72v52h-72M115 307h46v28h-46" class="detail"/><path d="M42 83H25m17 25H25m17 25H25m17 25H25m17 25H25m17 25H25m17 25H25m17 25H25m17 25H25m17 25H25m17 25H25m190-250h17m-17 25h17m-17 25h17m-17 25h17m-17 25h17m-17 25h17m-17 25h17m-17 25h17m-17 25h17m-17 25h17m-17 25h17" class="fine"/><circle cx="72" cy="355" r="10" class="detail"/><circle cx="202" cy="355" r="10" class="detail"/></g>
+<text x="802" y="625" class="small" text-anchor="middle">USB / 5 V commissioning only</text>
+<text x="802" y="642" class="small" text-anchor="middle">3.3 V logic · common documented GND</text>
+<path d="M460 220H550V280H665" class="i2c"/>
+<text x="535" y="210" class="net" text-anchor="start">I2C SDA/SCL</text>
+<path d="M460 420H575V360H665" class="uart"/>
+<text x="535" y="410" class="net" text-anchor="start">GPS UART · GPIO16/17</text>
+<path d="M460 600H600V470H665" class="gpio"/>
+<text x="520" y="590" class="net" text-anchor="start">WIND_PULSE · GPIO25</text>
+<path d="M460 640H620V530H665" class="gpio"/>
+<text x="500" y="665" class="net" text-anchor="start">WIND_VANE → ADS1115 A0</text>
+<path d="M460 770H550V330H665" class="i2c"/>
+<text x="485" y="760" class="net" text-anchor="start">CELSIUS I2C · VERIFY</text>
+<g transform="translate(955 180)"><path d="M0 12L12 0H155V145H0Z" class="device"/><text x="77.5" y="20" class="devtitle" text-anchor="middle">ADS1115 ADC</text><text x="14" y="40" class="ref" text-anchor="start">U4</text><path d="M18 48H142V125H18Z" class="detail"/><rect x="56" y="66" width="44" height="38" class="detail"/><path d="M25 58h20m-20 15h20m-20 15h20m-20 15h20m70-45h20m-20 15h20m-20 15h20m-20 15h20" class="fine"/></g>
+<g transform="translate(955 340)"><path d="M0 12L12 0H155V145H0Z" class="device"/><text x="77.5" y="20" class="devtitle" text-anchor="middle">MCP9808</text><text x="14" y="40" class="ref" text-anchor="start">H01</text><path d="M18 48H142V125H18Z" class="detail"/><rect x="57" y="68" width="42" height="36" class="detail"/><circle cx="30" cy="60" r="4" class="fine"/><circle cx="130" cy="60" r="4" class="fine"/><path d="M24 116h112" class="fine"/></g>
+<text x="1032" y="500" class="net" text-anchor="middle">I2C 0x48 / 0x18</text>
+<text x="1032" y="518" class="small" text-anchor="middle">MCP9808: mount away from heat</text>
+<path d="M965 575h55v20h-55m72 0h55v-20h-55" class="detail"/>
+<text x="1028" y="615" class="net" text-anchor="middle">CONTACT SWITCH · GPIO33</text>
+<path d="M975 690h32l18-18v56l-18-18h-32zM1025 686q18 8 0 16M1034 678q30 16 0 32" class="detail"/>
+<text x="1028" y="750" class="net" text-anchor="middle">BUZZER + MOSFET · GPIO27</text>
+<text x="1028" y="768" class="warn" text-anchor="middle">Exact buzzer/driver remains TBD</text>
+<path d="M940 590H965" class="gpio"/>
+<path d="M940 700H975" class="gpio"/>
+<path d="M1175 160h120v85h-120zM1215 160v85m40-85v85m-80-28h120m-120-29h120" class="detail"/>
+<text x="1235" y="264" class="devtitle" text-anchor="middle">P1 · 2 × 30 W SOLAR</text>
+<path d="M1335 170h110v68h-110zM1350 187h45v25h-45m60-15h20" class="detail"/>
+<text x="1390" y="264" class="devtitle" text-anchor="middle">P2 · MPPT</text>
+<path d="M1495 165h185v80h-185zM1515 185h145v40h-145" class="detail"/>
+<text x="1587" y="264" class="devtitle" text-anchor="middle">P3 · 12.8 V LiFePO4</text>
+<path d="M1295 202H1335M1445 202H1495" class="pwr"/>
+<g transform="translate(1180 300)"><path d="M0 12L12 0H165V145H0Z" class="device"/><text x="82.5" y="20" class="devtitle" text-anchor="middle">INA260 SOLAR · 0x41</text><text x="14" y="40" class="ref" text-anchor="start">H03</text><path d="M15 45H150V125H15Z" class="detail"/><path d="M28 58h38v28H28m75-4h32v25h-32" class="detail"/><rect x="68" y="62" width="30" height="35" class="detail"/><path d="M28 112h105" class="fine"/></g>
+<g transform="translate(1385 300)"><path d="M0 12L12 0H165V145H0Z" class="device"/><text x="82.5" y="20" class="devtitle" text-anchor="middle">INA260 BATTERY · 0x40</text><text x="14" y="40" class="ref" text-anchor="start">H02</text><path d="M15 45H150V125H15Z" class="detail"/><path d="M28 58h38v28H28m75-4h32v25h-32" class="detail"/><rect x="68" y="62" width="30" height="35" class="detail"/><path d="M28 112h105" class="fine"/></g>
+<path d="M1235 245V300" class="pwr"/><path d="M1490 245V300" class="pwr"/>
+<text x="1580" y="325" class="net" text-anchor="start">HIGH-CURRENT PATHS</text>
+<text x="1580" y="345" class="small" text-anchor="start">stay off carrier headers</text>
+<text x="1580" y="365" class="small" text-anchor="start">Logic header only:</text>
+<text x="1580" y="380" class="small" text-anchor="start">3V3 · GND · SDA · SCL</text>
+<path d="M1180 470H1650" class="pwr"/>
+<text x="1415" y="490" class="net" text-anchor="middle">FUSED INPUT → REVERSE POLARITY / TVS → 5 V BUCK → 3V3 LDO</text>
+<text x="1415" y="510" class="small" text-anchor="middle">TP: VBAT · +5V · +3V3 · GND · validate ratings by load test</text>
+<g transform="translate(1175 590)"><path d="M0 12L12 0H270V245H0Z" class="device"/><text x="135.0" y="20" class="devtitle" text-anchor="middle">WAVESHARE SIM7600G-H 4G HAT</text><text x="14" y="40" class="ref" text-anchor="start">C02</text><path d="M18 48H250V210H18Z" class="detail"/><rect x="55" y="72" width="118" height="85" class="detail"/><path d="M68 86h92v58H68" class="fine"/><rect x="188" y="72" width="42" height="58" class="detail"/><circle cx="45" cy="182" r="8" class="detail"/><circle cx="75" cy="182" r="8" class="detail"/><circle cx="105" cy="182" r="8" class="detail"/><path d="M185 160h45v28h-45" class="detail"/></g>
+<text x="1310" y="850" class="small" text-anchor="middle">Separate regulated 5 V branch</text>
+<text x="1310" y="864" class="small" text-anchor="middle">Peak current and interface: TBD</text>
+<path d="M1450 685H1515" class="uart"/>
+<text x="1482" y="675" class="net" text-anchor="middle">UART/USB</text>
+<path d="M1515 625h200v150h-200zM1540 650h150v90h-150M1580 775v25h50v-25" class="detail"/>
+<text x="1615" y="825" class="devtitle" text-anchor="middle">SHORE BAY STATION</text>
+<path d="M1310 590V565q15-22 30 0M1320 575q5-8 10 0" class="radio"/><path d="M1445 650q40-55 75 0" class="radio"/>
+<text x="1615" y="845" class="small" text-anchor="middle">Database · pressure processing</text>
+<text x="1615" y="860" class="small" text-anchor="middle">AI prediction · dashboard · alerts</text>
+<rect x="40" y="900" width="1720" height="230" class="panel"/>
+<text x="55" y="926" class="head" text-anchor="start">E — CONTROLLED CONNECTOR SUMMARY / DRAWING NOTES</text>
+<text x="60" y="955" class="net" text-anchor="start">J2 BAR02</text>
+<text x="155" y="955" class="txt" text-anchor="start">3V3 · SCL · SDA · GND</text>
+<text x="60" y="980" class="net" text-anchor="start">J3 GPS</text>
+<text x="155" y="980" class="txt" text-anchor="start">3V3 · GND · GPS_RX · GPS_TX</text>
+<text x="60" y="1005" class="net" text-anchor="start">J4/J5 INA260</text>
+<text x="155" y="1005" class="txt" text-anchor="start">3V3 · GND · SCL · SDA (logic only)</text>
+<text x="460" y="955" class="net" text-anchor="start">J6 MCP9808</text>
+<text x="600" y="955" class="txt" text-anchor="start">3V3 · SCL · SDA · GND</text>
+<text x="460" y="980" class="net" text-anchor="start">J7 ANEMOMETER</text>
+<text x="600" y="980" class="txt" text-anchor="start">3V3 · WIND_PULSE · GND</text>
+<text x="460" y="1005" class="net" text-anchor="start">J8 WIND VANE</text>
+<text x="600" y="1005" class="txt" text-anchor="start">3V3 · WIND_VANE · GND</text>
+<text x="850" y="955" class="net" text-anchor="start">J9 CELSIUS</text>
+<text x="960" y="955" class="txt" text-anchor="start">Final I2C harness/address: VERIFY</text>
+<text x="850" y="980" class="net" text-anchor="start">LTE LINK</text>
+<text x="960" y="980" class="txt" text-anchor="start">UART/USB and voltage levels: NOT FROZEN</text>
+<text x="850" y="1005" class="net" text-anchor="start">SERVICE</text>
+<text x="960" y="1005" class="txt" text-anchor="start">USB/UART for bench commissioning only</text>
+<line x1="60" y1="1030" x2="1740" y2="1030" class="fine"/>
+<line x1="70" y1="1055" x2="110" y2="1055" class="pwr"/>
+<text x="120" y="1059" class="net" text-anchor="start">POWER</text>
+<line x1="210" y1="1055" x2="250" y2="1055" class="i2c"/>
+<text x="260" y="1059" class="net" text-anchor="start">I2C</text>
+<line x1="335" y1="1055" x2="375" y2="1055" class="uart"/>
+<text x="385" y="1059" class="net" text-anchor="start">UART/USB</text>
+<line x1="495" y1="1055" x2="535" y2="1055" class="gpio"/>
+<text x="545" y="1059" class="net" text-anchor="start">GPIO/ANALOG</text>
+<line x1="680" y1="1055" x2="720" y2="1055" class="radio"/>
+<text x="730" y="1059" class="net" text-anchor="start">CELLULAR</text>
+<text x="60" y="1092" class="small" text-anchor="start">NOTES: 1) Pin numbers are provisional until exact purchased modules and connector orientations are verified.  2) Disconnect USB, battery and solar before rewiring.</text>
+<text x="60" y="1110" class="small" text-anchor="start">3) No BNO085 or Orange Pi is part of the Phase 1 buoy harness.  4) KiCad schematic and verified harness register control fabrication—not this illustrated reference.</text>
+<rect x="1220" y="1042" width="520" height="70" class="panel"/>
+<text x="1235" y="1064" class="small" text-anchor="start">DRAWING</text>
+<text x="1340" y="1064" class="head" text-anchor="start">FALCON-BP-007</text>
+<text x="1235" y="1086" class="small" text-anchor="start">STATUS</text>
+<text x="1340" y="1086" class="warn" text-anchor="start">REFERENCE / NOT FOR FABRICATION</text>
+<text x="1580" y="1064" class="small" text-anchor="start">REV</text>
+<text x="1625" y="1064" class="head" text-anchor="start">P0</text>
+<text x="1580" y="1086" class="small" text-anchor="start">DATE</text>
+<text x="1625" y="1086" class="head" text-anchor="start">2026-09-01</text>
+<text x="45" y="1162" class="subtitle" text-anchor="start">PROJECT FALCON-01 · COASTAL MONITORING BUOY · VERIFY EVERY PURCHASED MODULE, CONNECTOR, VOLTAGE AND PIN 1 BEFORE ENERGIZING</text>
+</svg>
