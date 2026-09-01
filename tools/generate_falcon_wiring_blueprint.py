@@ -19,7 +19,7 @@ def device(x,y,w,h,title,ref,art):
 def drawing():
     W,H=1800,1200
     s=[f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}">', '''<defs><style>
-svg{background:#f8fafb;shape-rendering:geometricPrecision}path,line,polyline,polygon,rect,circle,ellipse{vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}.sheet{fill:#f8fafb;stroke:#18394d;stroke-width:2}.panel{fill:none;stroke:#31556a;stroke-width:1.2}.device{fill:#fff;stroke:#24485d;stroke-width:1.4}.detail{fill:none;stroke:#24485d;stroke-width:1.1}.fine{fill:none;stroke:#607b8a;stroke-width:.75}.pin{fill:#fff;stroke:#24485d;stroke-width:1}.pwr{fill:none;stroke:#a16207;stroke-width:2}.i2c{fill:none;stroke:#2563eb;stroke-width:1.7}.uart{fill:none;stroke:#7c3aed;stroke-width:1.7}.gpio{fill:none;stroke:#0f766e;stroke-width:1.7}.gnd{fill:none;stroke:#374151;stroke-width:2}.radio{fill:none;stroke:#be123c;stroke-width:1.7;stroke-dasharray:7 4}.title{font:700 25px Arial;fill:#102f42}.subtitle{font:600 10px Arial;letter-spacing:.7px;fill:#526b79}.head{font:700 13px Arial;fill:#17394d}.devtitle{font:700 8px Arial;fill:#17394d}.ref{font:700 8px Consolas;fill:#8b1e3f}.txt{font:7.5px Arial;fill:#304c5c}.small{font:6.5px Arial;fill:#536b78}.net{font:700 7px Consolas;fill:#17394d}.warn{font:700 8.5px Arial;fill:#a61b3c}.num{font:700 8px Arial;fill:#fff}.call{fill:#17394d;stroke:none}
+svg{background:#f8fafb;shape-rendering:geometricPrecision}path,line,polyline,polygon,rect,circle,ellipse{vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}.sheet{fill:#f8fafb;stroke:#18394d;stroke-width:2}.panel{fill:none;stroke:#31556a;stroke-width:1.2}.device{fill:#fff;stroke:#24485d;stroke-width:1.4}.detail{fill:none;stroke:#24485d;stroke-width:1.1}.fine{fill:none;stroke:#607b8a;stroke-width:.75}.pin{fill:#fff;stroke:#24485d;stroke-width:1}.junction{fill:#17394d;stroke:#fff;stroke-width:.7}.pwr{fill:none;stroke:#a16207;stroke-width:2}.i2c{fill:none;stroke:#2563eb;stroke-width:1.7}.uart{fill:none;stroke:#7c3aed;stroke-width:1.7}.gpio{fill:none;stroke:#0f766e;stroke-width:1.7}.gnd{fill:none;stroke:#374151;stroke-width:2}.radio{fill:none;stroke:#be123c;stroke-width:1.7;stroke-dasharray:7 4}.title{font:700 25px Arial;fill:#102f42}.subtitle{font:600 10px Arial;letter-spacing:.7px;fill:#526b79}.head{font:700 13px Arial;fill:#17394d}.devtitle{font:700 8px Arial;fill:#17394d}.ref{font:700 8px Consolas;fill:#8b1e3f}.txt{font:7.5px Arial;fill:#304c5c}.small{font:6.5px Arial;fill:#536b78}.net{font:700 7px Consolas;fill:#17394d}.warn{font:700 8.5px Arial;fill:#a61b3c}.num{font:700 8px Arial;fill:#fff}.call{fill:#17394d;stroke:none}
 </style><marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#31556a"/></marker></defs>''',
        '<rect x="18" y="18" width="1764" height="1164" class="sheet"/>',
        text(45,58,"PROJECT FALCON-01 — ILLUSTRATED ELECTRONICS WIRING DIAGRAM","title"),
@@ -57,7 +57,7 @@ svg{background:#f8fafb;shape-rendering:geometricPrecision}path,line,polyline,pol
     s += [text(802,625,"USB / 5 V commissioning only","small","middle"),text(802,642,"3.3 V logic · common documented GND","small","middle")]
 
     # Left nets from sensor area into ESP32.
-    paths=[("M460 220H550V280H665","i2c","I2C SDA/SCL",535,210),("M460 420H575V360H665","uart","GPS UART · GPIO16/17",535,410),("M460 600H600V470H665","gpio","WIND_PULSE · GPIO25",520,590),("M460 640H620V530H665","gpio","WIND_VANE → ADS1115 A0",500,665),("M460 770H550V330H665","i2c","CELSIUS I2C · VERIFY",485,760)]
+    paths=[("M460 220H550V280H707","i2c","I2C SDA/SCL",535,210),("M460 420H575V360H707","uart","GPS UART · GPIO16/17",535,410),("M460 600H600V470H707","gpio","WIND_PULSE · GPIO25",520,590),("M460 640H620V530H973","gpio","WIND_VANE → ADS1115 A0",500,665),("M460 770H550V330H707","i2c","CELSIUS I2C · VERIFY",485,760)]
     for d,c,l,x,y in paths: s += [f'<path d="{d}" class="{c}"/>',text(x,y,l,"net")]
 
     # Supporting breakout cards beside MCU.
@@ -65,12 +65,13 @@ svg{background:#f8fafb;shape-rendering:geometricPrecision}path,line,polyline,pol
     s.append(device(955,180,155,145,"ADS1115 ADC","U4",ads))
     mcp='''<path d="M18 48H142V125H18Z" class="detail"/><rect x="57" y="68" width="42" height="36" class="detail"/><circle cx="30" cy="60" r="4" class="fine"/><circle cx="130" cy="60" r="4" class="fine"/><path d="M24 116h112" class="fine"/>'''
     s.append(device(955,340,155,145,"MCP9808","H01",mcp))
-    s += [text(1032,500,"I2C 0x48 / 0x18","net","middle"),text(1032,518,"MCP9808: mount away from heat","small","middle")]
+    s += [text(1032,500,"I2C 0x48 / 0x18","net","middle"),text(1032,518,"MCP9808: mount away from heat","small","middle"),
+          '<path d="M955 250H930V300H897" class="i2c"/>','<path d="M955 410H920V320H897" class="i2c"/>']
 
     # Security contact + buzzer driver, clearly provisional.
     s += ['<path d="M965 575h55v20h-55m72 0h55v-20h-55" class="detail"/>',text(1028,615,"CONTACT SWITCH · GPIO33","net","middle"),
           '<path d="M975 690h32l18-18v56l-18-18h-32zM1025 686q18 8 0 16M1034 678q30 16 0 32" class="detail"/>',text(1028,750,"BUZZER + MOSFET · GPIO27","net","middle"),text(1028,768,"Exact buzzer/driver remains TBD","warn","middle")]
-    s += ['<path d="M940 590H965" class="gpio"/>','<path d="M940 700H975" class="gpio"/>']
+    s += ['<path d="M897 590H965" class="gpio"/>','<path d="M897 700H975" class="gpio"/>']
 
     # Power sources and actual breakout-style INA260 boards.
     s += ['<path d="M1175 160h120v85h-120zM1215 160v85m40-85v85m-80-28h120m-120-29h120" class="detail"/>',text(1235,264,"P1 · 2 × 30 W SOLAR","devtitle","middle"),
@@ -80,6 +81,7 @@ svg{background:#f8fafb;shape-rendering:geometricPrecision}path,line,polyline,pol
     ina='''<path d="M15 45H150V125H15Z" class="detail"/><path d="M28 58h38v28H28m75-4h32v25h-32" class="detail"/><rect x="68" y="62" width="30" height="35" class="detail"/><path d="M28 112h105" class="fine"/>'''
     s.append(device(1180,300,165,145,"INA260 SOLAR · 0x41","H03",ina)); s.append(device(1385,300,165,145,"INA260 BATTERY · 0x40","H02",ina))
     s += ['<path d="M1235 245V300" class="pwr"/><path d="M1490 245V300" class="pwr"/>',text(1580,325,"HIGH-CURRENT PATHS","net"),text(1580,345,"stay off carrier headers","small"),text(1580,365,"Logic header only:","small"),text(1580,380,"3V3 · GND · SDA · SCL","small"),
+          '<path d="M1180 390H1135V300H897M1385 390H1135" class="i2c"/>',text(1138,288,"INA260 LOGIC I2C","net"),
           '<path d="M1180 470H1650" class="pwr"/>',text(1415,490,"FUSED INPUT → REVERSE POLARITY / TVS → 5 V BUCK → 3V3 LDO","net","middle"),text(1415,510,"TP: VBAT · +5V · +3V3 · GND · validate ratings by load test","small","middle")]
 
     # SIM7600 detailed HAT and shore station.
@@ -90,6 +92,22 @@ svg{background:#f8fafb;shape-rendering:geometricPrecision}path,line,polyline,pol
           '<path d="M1515 625h200v150h-200zM1540 650h150v90h-150M1580 775v25h50v-25" class="detail"/>',text(1615,825,"SHORE BAY STATION","devtitle","middle"),
           '<path d="M1310 590V565q15-22 30 0M1320 575q5-8 10 0" class="radio"/><path d="M1445 650q40-55 75 0" class="radio"/>',
           text(1615,845,"Database · pressure processing","small","middle"),text(1615,860,"AI prediction · dashboard · alerts","small","middle")]
+
+    # Continuous controller-to-modem link and distributed power/ground rails.
+    s += ['<path d="M897 430H1120V700H1175" class="uart"/>',text(1005,420,"ESP32 ↔ LTE UART/USB · LEVELS TBD","net","middle"),
+          # 3V3 distribution runs on the lower/left service edge, not through devices.
+          '<path d="M1150 470H1120V845H52V185M52 220H58M52 405H58M52 590H58M52 785H58M690 845V605M1000 845V485" class="pwr"/>',
+          text(70,838,"+3V3_SENSOR DISTRIBUTION","net"),
+          # common ground parallel rail
+          '<path d="M45 195V855H1110M45 235H58M45 420H58M45 605H58M45 800H58M705 855V605M1015 855V485M1110 855H1175" class="gnd"/>',
+          text(70,868,"COMMON GND","net"),
+          # protected 5 V branches terminate at ESP32 and modem boundaries
+          '<path d="M1150 490H1135V825H900V805" class="pwr"/>',text(1015,818,"+5V_PROTECTED → ESP32","net"),
+          '<path d="M1135 825H1160V835H1175" class="pwr"/>',text(1160,818,"SEPARATE 5 V MODEM BRANCH","net")]
+
+    # Filled junctions make every intentional electrical connection explicit.
+    for x,y in [(707,280),(707,330),(707,360),(707,470),(897,300),(897,320),(897,430),(897,590),(897,700),(973,530),(1135,390),(1180,390),(1385,390),(1120,700),(1175,700),(52,220),(52,405),(52,590),(52,785),(690,845),(1000,845),(705,855),(1015,855),(1150,470),(1150,490),(1135,825),(1175,835)]:
+        s.append(f'<circle cx="{x}" cy="{y}" r="3.2" class="junction"/>')
 
     # Bottom connector table / legend / controls.
     s += ['<rect x="40" y="900" width="1720" height="230" class="panel"/>',text(55,926,"E — CONTROLLED CONNECTOR SUMMARY / DRAWING NOTES","head"),
