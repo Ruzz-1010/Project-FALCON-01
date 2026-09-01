@@ -19,7 +19,7 @@ def device(x,y,w,h,title,ref,art):
 def drawing():
     W,H=1800,1200
     s=[f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}">', '''<defs><style>
-svg{background:#f8fafb;shape-rendering:geometricPrecision}path,line,polyline,polygon,rect,circle,ellipse{vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}.sheet{fill:#f8fafb;stroke:#18394d;stroke-width:2}.panel{fill:none;stroke:#31556a;stroke-width:1.2}.device{fill:#fff;stroke:#24485d;stroke-width:1.4}.detail{fill:none;stroke:#24485d;stroke-width:1.1}.fine{fill:none;stroke:#607b8a;stroke-width:.75}.pin{fill:#fff;stroke:#24485d;stroke-width:1}.junction{fill:#17394d;stroke:#fff;stroke-width:.7}.pwr{fill:none;stroke:#a16207;stroke-width:2}.i2c{fill:none;stroke:#2563eb;stroke-width:1.7}.uart{fill:none;stroke:#7c3aed;stroke-width:1.7}.gpio{fill:none;stroke:#0f766e;stroke-width:1.7}.gnd{fill:none;stroke:#374151;stroke-width:2}.radio{fill:none;stroke:#be123c;stroke-width:1.7;stroke-dasharray:7 4}.title{font:700 25px Arial;fill:#102f42}.subtitle{font:600 10px Arial;letter-spacing:.7px;fill:#526b79}.head{font:700 13px Arial;fill:#17394d}.devtitle{font:700 8px Arial;fill:#17394d}.ref{font:700 8px Consolas;fill:#8b1e3f}.txt{font:7.5px Arial;fill:#304c5c}.small{font:6.5px Arial;fill:#536b78}.net{font:700 7px Consolas;fill:#17394d}.warn{font:700 8.5px Arial;fill:#a61b3c}.num{font:700 8px Arial;fill:#fff}.call{fill:#17394d;stroke:none}
+svg{background:#f8fafb;shape-rendering:geometricPrecision}path,line,polyline,polygon,rect,circle,ellipse{vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}.sheet{fill:#f8fafb;stroke:#18394d;stroke-width:2}.panel{fill:none;stroke:#31556a;stroke-width:1.2}.device{fill:#fff;stroke:#24485d;stroke-width:1.4}.detail{fill:none;stroke:#24485d;stroke-width:1.1}.fine{fill:none;stroke:#607b8a;stroke-width:.75}.pin{fill:#fff;stroke:#24485d;stroke-width:1}.labelbg{fill:#fff;stroke:none}.junction{fill:#17394d;stroke:#fff;stroke-width:.7}.pwr{fill:none;stroke:#a16207;stroke-width:2}.i2c{fill:none;stroke:#2563eb;stroke-width:1.7}.uart{fill:none;stroke:#7c3aed;stroke-width:1.7}.gpio{fill:none;stroke:#0f766e;stroke-width:1.7}.gnd{fill:none;stroke:#374151;stroke-width:2}.radio{fill:none;stroke:#be123c;stroke-width:1.7;stroke-dasharray:7 4}.title{font:700 25px Arial;fill:#102f42}.subtitle{font:600 10px Arial;letter-spacing:.7px;fill:#526b79}.head{font:700 13px Arial;fill:#17394d}.devtitle{font:700 8px Arial;fill:#17394d}.ref{font:700 8px Consolas;fill:#8b1e3f}.txt{font:7.5px Arial;fill:#304c5c}.small{font:6.5px Arial;fill:#536b78}.net{font:700 7px Consolas;fill:#17394d}.warn{font:700 8.5px Arial;fill:#a61b3c}.num{font:700 8px Arial;fill:#fff}.call{fill:#17394d;stroke:none}
 </style><marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#31556a"/></marker></defs>''',
        '<rect x="18" y="18" width="1764" height="1164" class="sheet"/>',
        text(45,58,"PROJECT FALCON-01 — ILLUSTRATED ELECTRONICS WIRING DIAGRAM","title"),
@@ -54,11 +54,28 @@ svg{background:#f8fafb;shape-rendering:geometricPrecision}path,line,polyline,pol
     # ESP32 actual module drawing.
     esp='''<path d="M42 55H232V385H42Z" class="detail"/><path d="M78 70h118v104H78M92 82h90v65H92" class="detail"/><path d="M102 295h72v52h-72M115 307h46v28h-46" class="detail"/><path d="M42 83H25m17 25H25m17 25H25m17 25H25m17 25H25m17 25H25m17 25H25m17 25H25m17 25H25m17 25H25m17 25H25m190-250h17m-17 25h17m-17 25h17m-17 25h17m-17 25h17m-17 25h17m-17 25h17m-17 25h17m-17 25h17m-17 25h17m-17 25h17" class="fine"/><circle cx="72" cy="355" r="10" class="detail"/><circle cx="202" cy="355" r="10" class="detail"/>'''
     s.append(device(665,175,275,430,"ESP32-DEVKITC V4","U3",esp))
-    s += [text(802,625,"USB / 5 V commissioning only","small","middle"),text(802,642,"3.3 V logic · common documented GND","small","middle")]
+    s += [text(802,625,"USB / 5 V commissioning only","small","middle"),text(802,642,"3.3 V logic · common documented GND","small","middle"),
+          '<rect x="713" y="267" width="172" height="280" class="labelbg"/>',
+          # Explicit controller header pins used by the Phase 1 baseline.
+          '<circle cx="707" cy="280" r="4" class="pin"/><circle cx="707" cy="310" r="4" class="pin"/>',
+          '<circle cx="707" cy="360" r="4" class="pin"/><circle cx="707" cy="390" r="4" class="pin"/>',
+          '<circle cx="707" cy="470" r="4" class="pin"/>',
+          '<circle cx="897" cy="530" r="4" class="pin"/><circle cx="897" cy="590" r="4" class="pin"/>',
+          '<circle cx="897" cy="430" r="4" class="pin"/>',
+          text(718,284,"GPIO21 · SDA","net"),text(718,314,"GPIO22 · SCL","net"),
+          text(718,364,"GPIO16 · RX2","net"),text(718,394,"GPIO17 · TX2","net"),
+          text(718,474,"GPIO25 · WIND SPD","net"),
+          text(886,534,"GPIO27 · BUZZER","net","end"),text(886,594,"GPIO33 · CONTACT","net","end"),
+          text(886,434,"LTE UART/USB","net","end")]
 
-    # Left nets from sensor area into ESP32.
-    paths=[("M460 220H550V280H707","i2c","I2C SDA/SCL",535,210),("M460 420H575V360H707","uart","GPS UART · GPIO16/17",535,410),("M460 600H600V470H707","gpio","WIND_PULSE · GPIO25",520,590),("M460 640H620V530H973","gpio","WIND_VANE → ADS1115 A0",500,665),("M460 770H550V330H707","i2c","CELSIUS I2C · VERIFY",485,760)]
-    for d,c,l,x,y in paths: s += [f'<path d="{d}" class="{c}"/>',text(x,y,l,"net")]
+    # Orthogonal signal lanes. SDA and SCL are intentionally separate.
+    s += ['<path d="M460 220H545V280H707" class="i2c"/>',text(475,212,"SDA","net"),
+          '<path d="M460 235H560V310H707" class="i2c"/>',text(505,247,"SCL","net"),
+          '<path d="M460 770H545V280" class="i2c"/><path d="M460 785H560V310" class="i2c"/>',
+          '<path d="M460 420H585V360H707" class="uart"/>',text(475,412,"GPS_TX → RX2","net"),
+          '<path d="M460 440H600V390H707" class="uart"/>',text(475,455,"GPS_RX ← TX2","net"),
+          '<path d="M460 600H625V470H707" class="gpio"/>',text(475,592,"WIND_PULSE","net"),
+          '<path d="M460 640H650V160H970V250H955" class="gpio"/>',text(475,660,"WIND_VANE → ADS1115 A0","net")]
 
     # Supporting breakout cards beside MCU.
     ads='''<path d="M18 48H142V125H18Z" class="detail"/><rect x="56" y="66" width="44" height="38" class="detail"/><path d="M25 58h20m-20 15h20m-20 15h20m-20 15h20m70-45h20m-20 15h20m-20 15h20m-20 15h20" class="fine"/>'''
@@ -66,12 +83,13 @@ svg{background:#f8fafb;shape-rendering:geometricPrecision}path,line,polyline,pol
     mcp='''<path d="M18 48H142V125H18Z" class="detail"/><rect x="57" y="68" width="42" height="36" class="detail"/><circle cx="30" cy="60" r="4" class="fine"/><circle cx="130" cy="60" r="4" class="fine"/><path d="M24 116h112" class="fine"/>'''
     s.append(device(955,340,155,145,"MCP9808","H01",mcp))
     s += [text(1032,500,"I2C 0x48 / 0x18","net","middle"),text(1032,518,"MCP9808: mount away from heat","small","middle"),
-          '<path d="M955 250H930V300H897" class="i2c"/>','<path d="M955 410H920V320H897" class="i2c"/>']
+          '<path d="M955 250H925V280H897" class="i2c"/><path d="M955 265H940V310H897" class="i2c"/>',
+          '<path d="M955 410H910V280H897" class="i2c"/><path d="M955 425H925V310H897" class="i2c"/>']
 
     # Security contact + buzzer driver, clearly provisional.
     s += ['<path d="M965 575h55v20h-55m72 0h55v-20h-55" class="detail"/>',text(1028,615,"CONTACT SWITCH · GPIO33","net","middle"),
           '<path d="M975 690h32l18-18v56l-18-18h-32zM1025 686q18 8 0 16M1034 678q30 16 0 32" class="detail"/>',text(1028,750,"BUZZER + MOSFET · GPIO27","net","middle"),text(1028,768,"Exact buzzer/driver remains TBD","warn","middle")]
-    s += ['<path d="M897 590H965" class="gpio"/>','<path d="M897 700H975" class="gpio"/>']
+    s += ['<path d="M897 590H965" class="gpio"/>','<path d="M897 530H950V700H975" class="gpio"/>']
 
     # Power sources and actual breakout-style INA260 boards.
     s += ['<path d="M1175 160h120v85h-120zM1215 160v85m40-85v85m-80-28h120m-120-29h120" class="detail"/>',text(1235,264,"P1 · 2 × 30 W SOLAR","devtitle","middle"),
@@ -81,7 +99,8 @@ svg{background:#f8fafb;shape-rendering:geometricPrecision}path,line,polyline,pol
     ina='''<path d="M15 45H150V125H15Z" class="detail"/><path d="M28 58h38v28H28m75-4h32v25h-32" class="detail"/><rect x="68" y="62" width="30" height="35" class="detail"/><path d="M28 112h105" class="fine"/>'''
     s.append(device(1180,300,165,145,"INA260 SOLAR · 0x41","H03",ina)); s.append(device(1385,300,165,145,"INA260 BATTERY · 0x40","H02",ina))
     s += ['<path d="M1235 245V300" class="pwr"/><path d="M1490 245V300" class="pwr"/>',text(1580,325,"HIGH-CURRENT PATHS","net"),text(1580,345,"stay off carrier headers","small"),text(1580,365,"Logic header only:","small"),text(1580,380,"3V3 · GND · SDA · SCL","small"),
-          '<path d="M1180 390H1135V300H897M1385 390H1135" class="i2c"/>',text(1138,288,"INA260 LOGIC I2C","net"),
+          '<path d="M1180 390H1135V280H897M1385 390H1135" class="i2c"/>',
+          '<path d="M1180 405H1150V310H897M1385 405H1150" class="i2c"/>',text(1138,270,"INA260 SDA / SCL","net"),
           '<path d="M1180 470H1650" class="pwr"/>',text(1415,490,"FUSED INPUT → REVERSE POLARITY / TVS → 5 V BUCK → 3V3 LDO","net","middle"),text(1415,510,"TP: VBAT · +5V · +3V3 · GND · validate ratings by load test","small","middle")]
 
     # SIM7600 detailed HAT and shore station.
@@ -106,7 +125,7 @@ svg{background:#f8fafb;shape-rendering:geometricPrecision}path,line,polyline,pol
           '<path d="M1135 825H1160V835H1175" class="pwr"/>',text(1160,818,"SEPARATE 5 V MODEM BRANCH","net")]
 
     # Filled junctions make every intentional electrical connection explicit.
-    for x,y in [(707,280),(707,330),(707,360),(707,470),(897,300),(897,320),(897,430),(897,590),(897,700),(973,530),(1135,390),(1180,390),(1385,390),(1120,700),(1175,700),(52,220),(52,405),(52,590),(52,785),(690,845),(1000,845),(705,855),(1015,855),(1150,470),(1150,490),(1135,825),(1175,835)]:
+    for x,y in [(707,280),(707,310),(707,360),(707,390),(707,470),(897,280),(897,310),(897,430),(897,530),(897,590),(973,250),(1135,280),(1135,310),(1180,390),(1180,405),(1385,390),(1385,405),(1120,700),(1175,700),(52,220),(52,405),(52,590),(52,785),(690,845),(1000,845),(705,855),(1015,855),(1150,470),(1150,490),(1135,825),(1175,835)]:
         s.append(f'<circle cx="{x}" cy="{y}" r="3.2" class="junction"/>')
 
     # Bottom connector table / legend / controls.
