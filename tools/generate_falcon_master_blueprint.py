@@ -93,7 +93,7 @@ def drawing(edges):
         return lambda e: any(t in e[2].upper() for t in terms)
 
     out=[f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}">', '''<defs><style>
-svg{shape-rendering:geometricPrecision;background:#f7fafc}path,line,polyline,polygon,rect,circle{vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}.sheet{fill:#f7fafc;stroke:#18364a;stroke-width:2}.box{fill:#fbfdfe;stroke:#29485c;stroke-width:1.2}.obj{fill:none;stroke:#21465c;stroke-width:.78}.strong{fill:none;stroke:#18364a;stroke-width:1.6}.thin{fill:none;stroke:#4e6878;stroke-width:.8}.ctr{fill:none;stroke:#9aabb5;stroke-width:.65;stroke-dasharray:9 3 2 3}.wire{fill:none;stroke:#345d73;stroke-width:1.2;marker-end:url(#arrow)}.data{fill:none;stroke:#6b7280;stroke-width:1.1;stroke-dasharray:7 4;marker-end:url(#arrow)}.power{fill:none;stroke:#8a633a;stroke-width:1.3;marker-end:url(#arrow)}.title{font-family:Arial,sans-serif;font-size:27px;font-weight:800;fill:#102b3c}.subtitle{font-family:Arial,sans-serif;font-size:11px;font-weight:600;fill:#4b6473;letter-spacing:.7px}.head{font-family:Arial,sans-serif;font-size:13px;font-weight:800;fill:#17384c}.subhead{font-family:Arial,sans-serif;font-size:11px;font-weight:800;fill:#284b5f}.text{font-family:Arial,sans-serif;font-size:10px;fill:#304b5c}.small{font-family:Arial,sans-serif;font-size:8px;fill:#4e6573}.tiny{font-family:Arial,sans-serif;font-size:7px;fill:#607582}.code{font-family:Consolas,monospace;font-size:9px;font-weight:700;fill:#1f4257}.warn{font-family:Arial,sans-serif;font-size:11px;font-weight:800;fill:#9f1239}.tag{fill:#edf4f7;stroke:#78909c;stroke-width:.8}.part{fill:#f0f5f7;stroke:#284b5f;stroke-width:1}.pcb{fill:#e7f0f3;stroke:#31566b;stroke-width:1}.battery{fill:#e8ecef;stroke:#2f4e60;stroke-width:1.2}.solar{fill:#edf3f6;stroke:#284b5f;stroke-width:1}.water{fill:#edf6f7;stroke:#5d8491;stroke-width:.8;stroke-dasharray:5 4}
+svg{shape-rendering:geometricPrecision;background:#f7fafc}path,line,polyline,polygon,rect,circle{vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}.sheet{fill:#f7fafc;stroke:#18364a;stroke-width:2}.box{fill:#fbfdfe;stroke:#29485c;stroke-width:1.2}.obj{fill:none;stroke:#21465c;stroke-width:.78}.strong{fill:none;stroke:#18364a;stroke-width:1.6}.thin{fill:none;stroke:#4e6878;stroke-width:.8}.ctr{fill:none;stroke:#9aabb5;stroke-width:.65;stroke-dasharray:9 3 2 3}.wire{fill:none;stroke:#345d73;stroke-width:1.2;marker-end:url(#arrow)}.data{fill:none;stroke:#6b7280;stroke-width:1.1;stroke-dasharray:7 4;marker-end:url(#arrow)}.power{fill:none;stroke:#8a633a;stroke-width:1.3;marker-end:url(#arrow)}.title{font-family:Arial,sans-serif;font-size:27px;font-weight:800;fill:#102b3c}.subtitle{font-family:Arial,sans-serif;font-size:11px;font-weight:600;fill:#4b6473;letter-spacing:.7px}.head{font-family:Arial,sans-serif;font-size:13px;font-weight:800;fill:#17384c}.subhead{font-family:Arial,sans-serif;font-size:11px;font-weight:800;fill:#284b5f}.text{font-family:Arial,sans-serif;font-size:10px;fill:#304b5c}.small{font-family:Arial,sans-serif;font-size:8px;fill:#4e6573}.tiny{font-family:Arial,sans-serif;font-size:7px;fill:#607582}.code{font-family:Consolas,monospace;font-size:9px;font-weight:700;fill:#1f4257}.warn{font-family:Arial,sans-serif;font-size:11px;font-weight:800;fill:#9f1239}.tag{fill:#edf4f7;stroke:#78909c;stroke-width:.8}.part{fill:#f0f5f7;stroke:#284b5f;stroke-width:1}.pcb{fill:#e7f0f3;stroke:#31566b;stroke-width:1}.battery{fill:#d9e3e8;stroke:#2f4e60;stroke-width:1.2}.solar{fill:#274c68;stroke:#17384c;stroke-width:1.2}.podface{fill:#dfe7eb;stroke:#24485d;stroke-width:1.4}.podside{fill:#b9c8d0;stroke:#24485d;stroke-width:1.2}.hardware{fill:#cbd7dd;stroke:#24485d;stroke-width:1.2}.screen{fill:#eef5f7;stroke:#31566b;stroke-width:.9}.water{fill:#edf6f7;stroke:#5d8491;stroke-width:.8;stroke-dasharray:5 4}
 </style><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#345d73"/></marker></defs>''',
          '<rect x="18" y="18" width="2012" height="2012" class="sheet"/>',
          '<text x="50" y="62" class="title">PROJECT FALCON-01 — COASTAL MONITORING BUOY</text>',
@@ -111,17 +111,15 @@ svg{shape-rendering:geometricPrecision;background:#f7fafc}path,line,polyline,pol
     out.append('<text x="805" y="730" class="small" text-anchor="middle">ORTHOGRAPHIC · DO NOT SCALE</text>')
     panel(out,990,120,500,300,"C — PLAN VIEW")
     project(out,edges,1010,160,460,225,0,1,exterior,5000)
-    panel(out,990,440,500,310,"D — ELECTRONICS POD / EQUIPMENT PLAN")
-    project(out,edges,1015,480,215,155,0,1,named("LIFEPO4_BATTERY","BATTERY_BMS","MPPT_CONTROLLER","DC_DC_CONVERTER","FUSED_POWER","MAIN_BATTERY_DISCONNECT"),3000)
-    project(out,edges,1250,480,215,155,0,1,named("ESP32_CONTROLLER","LTE_4G_MODEM","SENSOR_DISTRIBUTION"),3000)
-    out += ['<text x="1122" y="655" class="subhead" text-anchor="middle">LOWER POWER DECK</text>',
-            '<text x="1357" y="655" class="subhead" text-anchor="middle">UPPER CONTROL DECK</text>',
-            '<path d="M1025 682H1218M1260 682H1455" class="thin"/>',
-            '<text x="1025" y="700" class="small">D1 BATTERY · D2 BMS · D3 MPPT</text>',
-            '<text x="1025" y="718" class="small">D4 FUSE/DISCONNECT · D5 DC-DC</text>',
-            '<text x="1260" y="700" class="small">D6 ESP32 · D7 SENSOR I/O</text>',
-            '<text x="1260" y="718" class="small">D8 LTE MODEM · locking headers</text>',
-            '<text x="1240" y="738" class="small" text-anchor="middle">CAD equipment envelopes · Orange Pi excluded (shore Bay Station only)</text>']
+    panel(out,990,440,500,310,"D — SEALED ELECTRONICS POD · CLOSED EXTERIOR")
+    out += ['<path d="M1080 515L1140 480H1370L1430 515V665L1370 705H1140L1080 665Z" class="podface"/>',
+            '<path d="M1370 515L1430 515V665L1370 705Z" class="podside"/>',
+            '<path d="M1105 535H1360V675H1105Z" class="screen"/><path d="M1120 550H1345V660H1120Z" class="strong"/>',
+            '<path d="M1095 505L1140 475H1370L1418 505H1095Z" class="hardware"/>',
+            '<circle cx="1330" cy="605" r="7" class="strong"/><path d="M1095 560h-18m18 45h-18m18 45h-18M1360 560h18m-18 45h18m-18 45h18" class="strong"/>',
+            '<path d="M1160 705v18m45-18v18m45-18v18m45-18v18" class="strong"/>',
+            '<text x="1245" y="730" class="small" text-anchor="middle">OPAQUE CLOSED POD · service door, gasket, compression latches and downward glands shown</text>',
+            '<text x="1245" y="744" class="tiny" text-anchor="middle">Internal deck placement is controlled separately by FALCON-BP-006</text>']
     panel(out,1510,120,470,630,"E — EXPLODED ASSEMBLY VIEW · NTS")
     # Every exploded item below is projected from named V2 CAD geometry.
     out.append('<line x1="1710" y1="155" x2="1710" y2="710" class="ctr"/>')
@@ -145,7 +143,9 @@ svg{shape-rendering:geometricPrecision;background:#f7fafc}path,line,polyline,pol
     project_iso(out,edges,75,940,170,100,named("WATER_PRESSURE_SENSOR","PRESSURE_GUARD","BAR02_"),2200)
     out += ['<text x="160" y="930" class="subhead" text-anchor="middle">TOP SENSOR ARRAY</text>',
             '<text x="160" y="1055" class="subhead" text-anchor="middle">PRESSURE SENSOR ASSEMBLY</text>']
-    project_iso(out,edges,280,820,255,225,named("RECT_POD_","UPPER_POD_ELECTRONICS","ESP32_CONTROLLER","LTE_4G_MODEM","SENSOR_DISTRIBUTION"),3500)
+    out += ['<path d="M305 870L350 835H480L525 870V1010L480 1040H350L305 1010Z" class="podface"/>',
+            '<path d="M480 870L525 870V1010L480 1040Z" class="podside"/>',
+            '<path d="M330 890H472V1015H330Z" class="screen"/><circle cx="455" cy="952" r="5" class="strong"/>']
     out += ['<text x="407" y="1070" class="subhead" text-anchor="middle">SEALED ELECTRONICS POD</text>',
             '<text x="407" y="1088" class="small" text-anchor="middle">protected I/O · ESP32 · cellular modem</text>']
     project_iso(out,edges,570,835,150,190,named("ESP32_CONTROLLER","SENSOR_DISTRIBUTION"),1800)
@@ -157,9 +157,11 @@ svg{shape-rendering:geometricPrecision;background:#f7fafc}path,line,polyline,pol
             '<text x="495" y="1125" class="small" text-anchor="middle">SENSORS → PROTECTED POD I/O → ESP32 ACQUISITION → LTE/INTERNET → SHORE BAY STATION / DASHBOARD</text>']
 
     panel(out,1010,775,480,400,"G — POWER MANAGEMENT")
-    project_iso(out,edges,1030,815,120,115,named("SOLAR_30W","DUAL_SOLAR"),2200)
-    project_iso(out,edges,1200,815,95,115,named("MPPT_CONTROLLER"),1200)
-    project_iso(out,edges,1340,815,120,115,named("LIFEPO4_BATTERY","BATTERY_BMS"),1800)
+    # Filled hardware illustrations replace transparent CAD envelopes.
+    out += ['<path d="M1035 835L1140 815L1150 905L1045 925Z" class="solar"/>',
+            '<path d="M1070 828l10 90m25-96l10 90m-75-48l105-20m-101 52l105-20" class="thin"/>',
+            '<path d="M1200 830h105v86h-105z" class="hardware"/><rect x="1215" y="845" width="52" height="30" rx="3" class="screen"/><circle cx="1285" cy="855" r="5" class="strong"/><circle cx="1285" cy="875" r="5" class="strong"/><path d="M1215 896h18m12 0h18m12 0h18" class="strong"/>',
+            '<path d="M1340 835h120v80h-120z" class="battery"/><path d="M1360 825h18v10h-18m62-10h18v10h-18" class="strong"/><text x="1369" y="822" class="code">−</text><text x="1428" y="822" class="code">+</text><rect x="1360" y="855" width="80" height="35" rx="3" class="screen"/><text x="1400" y="878" class="code" text-anchor="middle">LiFePO4</text>']
     out += ['<text x="1090" y="950" class="subhead" text-anchor="middle">P1 · 2 × 30 W SOLAR</text>',
             '<text x="1247" y="950" class="subhead" text-anchor="middle">P2 · MPPT</text>',
             '<text x="1400" y="950" class="subhead" text-anchor="middle">P3 · LiFePO4</text>',
@@ -192,31 +194,11 @@ svg{shape-rendering:geometricPrecision;background:#f7fafc}path,line,polyline,pol
     for rid,name,status,func in rows:
         out += [f'<line x1="50" y1="{yy-20}" x2="730" y2="{yy-20}" class="thin"/>',f'<text x="65" y="{yy}" class="code">{rid}</text>',f'<text x="120" y="{yy}" class="text">{esc(name)}</text>',f'<text x="430" y="{yy}" class="small">{esc(status)}</text>',f'<text x="545" y="{yy}" class="small">{esc(func)}</text>']; yy+=37
 
-    panel(out,750,1200,740,520,"K — SENSOR / CONTROLLER INTERFACE SCHEMATIC")
-    out += ['<text x="775" y="1250" class="subhead">FIELD CONNECTORS</text><text x="1085" y="1250" class="subhead">U3 · ESP32-DEVKITC V4</text><text x="1310" y="1250" class="subhead">COMMUNICATION / SERVICE</text>',
-            # ESP32 controller symbol and readable named pins
-            '<path d="M1070 1270H1240V1625H1070Z" class="strong"/>',
-            '<text x="1155" y="1300" class="head" text-anchor="middle">ESP32</text>',
-            '<text x="1082" y="1345" class="code">GPIO21 · SDA</text><text x="1082" y="1395" class="code">GPIO22 · SCL</text>',
-            '<text x="1082" y="1445" class="code">GPIO16 · RX2</text><text x="1082" y="1495" class="code">GPIO17 · TX2</text>',
-            '<text x="1082" y="1545" class="code">GPIO27 · WIND_SPD</text><text x="1082" y="1595" class="code">GPIO34 · WIND_DIR</text>',
-            # five compact locking connectors, one signal row each
-            '<path d="M785 1318H825V1342H785M785 1388H825V1412H785M785 1458H825V1482H785M785 1528H825V1552H785M785 1598H825V1622H785" class="strong"/>',
-            '<text x="835" y="1336" class="text">J2 BAR02</text><text x="835" y="1406" class="text">J3 GPS</text><text x="835" y="1476" class="text">J7 WIND SPEED</text><text x="835" y="1546" class="text">J8 WIND DIRECTION</text><text x="835" y="1616" class="text">J9 WATER TEMP</text>',
-            # nets kept on separate horizontal levels
-            '<path d="M825 1330H1045V1340H1070M825 1400H1015V1440H1070M825 1470H995V1540H1070M825 1540H1015V1590H1070M825 1610H1045V1390H1070" class="data"/>',
-            '<text x="930" y="1322" class="code">I2C_SDA</text><text x="940" y="1392" class="code">GPS_TX/RX</text><text x="900" y="1462" class="code">WIND_SPEED</text><text x="900" y="1532" class="code">WIND_DIR_ADC</text><text x="955" y="1602" class="code">I2C_SCL</text>',
-            # right side connectors and clearly separated nets
-            '<path d="M1240 1360H1300M1240 1430H1300M1240 1500H1300M1240 1570H1300" class="data"/>',
-            '<path d="M1300 1343H1435V1377H1300M1300 1413H1435V1447H1300M1300 1483H1435V1517H1300M1300 1553H1435V1587H1300" class="strong"/>',
-            '<text x="1367" y="1365" class="text" text-anchor="middle">J10 · LTE UART / USB</text><text x="1367" y="1435" class="text" text-anchor="middle">J11 · DEBUG UART</text>',
-            '<text x="1367" y="1505" class="text" text-anchor="middle">J12 · FUTURE I2C</text><text x="1367" y="1575" class="text" text-anchor="middle">J13 · EXPANSION</text>',
-            # pullups and test points on dedicated bottom rail
-            '<line x1="775" y1="1655" x2="1455" y2="1655" class="strong"/><text x="780" y="1647" class="code">GND</text>',
-            '<path d="M1040 1668v-20m28 20v-20M1030 1668h20m8 0h20" class="strong"/><text x="1054" y="1690" class="small" text-anchor="middle">R1/R2 · 4.7 kΩ I2C PULL-UPS</text>',
-            '<circle cx="1260" cy="1668" r="5" class="part"/><circle cx="1300" cy="1668" r="5" class="part"/><circle cx="1340" cy="1668" r="5" class="part"/><circle cx="1380" cy="1668" r="5" class="part"/><circle cx="1420" cy="1668" r="5" class="part"/>',
-            '<text x="1340" y="1690" class="small" text-anchor="middle">TP: 3V3 · 5V · SDA · SCL · UART · GND</text>',
-            '<text x="1120" y="1708" class="small" text-anchor="middle">Functional overview only · KiCad controls final pin numbers, protection and manufacturing netlist</text>']
+    panel(out,750,1200,740,520,"K — COMPLETE BUOY ASSEMBLY · ISOMETRIC CAD VIEW")
+    project_iso(out,edges,790,1240,660,420,exterior,8500)
+    out += ['<path d="M790 1672H1450" class="thin"/>',
+            '<text x="1120" y="1692" class="subhead" text-anchor="middle">PROJECT FALCON-01 · COMPLETE ABOVE-WATER ASSEMBLY</text>',
+            '<text x="1120" y="1708" class="small" text-anchor="middle">V2 CAD-projected geometry · closed pod configuration · orthographic dimensions remain controlled by BP-001</text>']
 
     panel(out,1510,1200,470,260,"L — GENERAL NOTES")
     text_rows(out,1530,1245,["1. Orthographic linework is projected from PROJECT-FALCON-V2.glb.","2. V2 geometry remains a proposed replacement reference.","3. Do not scale this drawing; verify native CAD and purchased parts.","4. Dimensions, mass and placement marked TBD must not be invented.","5. Complete stability, structure, ingress, thermal and mooring reviews.","6. Orange Pi/Bay Station computer remains ashore."],30)
