@@ -236,7 +236,7 @@ def drawing(edges):
     def exterior(e): return not any(t in e[2].upper() for t in excluded) and max(e[0][2],e[1][2])>.35
     def mooring(e): return any(t in e[2].upper() for t in ("ANCHOR","CHAIN","SHACKLE","SNUBBER","BALLAST"))
     out=[f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}">','''<defs><style>
-svg{shape-rendering:geometricPrecision;background:#f8fafb}path,line,polyline,polygon,rect,circle,ellipse{vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}.sheet{fill:#f8fafb;stroke:#17394d;stroke-width:2}.box{fill:#fbfdfe;stroke:#294b5f;stroke-width:1.25}.obj{fill:none;stroke:#173f56;stroke-width:.8}.strong{fill:none;stroke:#17394d;stroke-width:1.55}.thin{fill:none;stroke:#607786;stroke-width:.75}.ctr{fill:none;stroke:#a4b1b9;stroke-width:.6;stroke-dasharray:8 3 2 3}.data{fill:none;stroke:#526c7b;stroke-width:1.1;marker-end:url(#arrow)}.power{fill:none;stroke:#825f38;stroke-width:1.25;marker-end:url(#arrow)}.podface{fill:#e1e8ec;stroke:#24485d;stroke-width:1.35}.podside{fill:#bdcbd2;stroke:#24485d;stroke-width:1.2}.hardware{fill:#cbd7dd;stroke:#24485d;stroke-width:1.1}.solar{fill:#274c68;stroke:#17384c;stroke-width:1.2}.battery{fill:#d9e3e8;stroke:#2f4e60;stroke-width:1.2}.title{font:800 25px Arial;fill:#102f42}.subtitle{font:600 10px Arial;letter-spacing:.7px;fill:#526b79}.head{font:800 12px Arial;fill:#17394d}.subhead{font:800 10px Arial;fill:#284b5f}.text{font:9px Arial;fill:#304c5c}.small{font:7.5px Arial;fill:#536b78}.tiny{font:6.5px Arial;fill:#607582}.code{font:700 8px Consolas;fill:#1f4257}.warn{font:800 10px Arial;fill:#a21c3a}
+svg{shape-rendering:geometricPrecision;background:#f8fafb}path,line,polyline,polygon,rect,circle,ellipse{vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}.sheet{fill:#f8fafb;stroke:#102f42;stroke-width:2.4}.box{fill:#ffffff;stroke:#23475c;stroke-width:1.55}.obj{fill:none;stroke:#173f56;stroke-width:1}.strong{fill:none;stroke:#12384e;stroke-width:1.85}.thin{fill:none;stroke:#496574;stroke-width:.95}.ctr{fill:none;stroke:#8799a4;stroke-width:.75;stroke-dasharray:8 3 2 3}.data{fill:none;stroke:#385d70;stroke-width:1.4;marker-end:url(#arrow)}.power{fill:none;stroke:#7a552c;stroke-width:1.55;marker-end:url(#arrow)}.podface{fill:#e1e8ec;stroke:#173f56;stroke-width:1.65}.podside{fill:#bdcbd2;stroke:#173f56;stroke-width:1.45}.hardware{fill:#cbd7dd;stroke:#173f56;stroke-width:1.35}.solar{fill:#274c68;stroke:#102f42;stroke-width:1.5}.battery{fill:#d9e3e8;stroke:#28495b;stroke-width:1.5}.title{font:800 29px Arial;fill:#0b293b}.subtitle{font:700 11px Arial;letter-spacing:.7px;fill:#405d6c}.head{font:800 13.5px Arial;fill:#12384e}.subhead{font:800 11px Arial;fill:#1e465b}.text{font:10px Arial;fill:#213f50}.small{font:8.5px Arial;fill:#3f5c6b}.tiny{font:7.25px Arial;fill:#4e6876}.code{font:700 9px Consolas;fill:#143d53}.warn{font:800 11px Arial;fill:#941b36}
 </style><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#526c7b"/></marker></defs>''',
          '<rect x="20" y="20" width="2008" height="2008" class="sheet"/>',
          '<text x="48" y="62" class="title">PROJECT FALCON-01 — COASTAL MONITORING BUOY — ASSEMBLY &amp; SUBSYSTEMS BLUEPRINT</text>',
@@ -244,19 +244,19 @@ svg{shape-rendering:geometricPrecision;background:#f8fafb}path,line,polyline,pol
 
     # Gemini-matched top composition: elevation, side, plan/pod, exploded/BOM.
     panel(out,48,120,585,850,"A — FRONT ELEVATION · BUOY ASSEMBLY")
-    project(out,edges,70,160,540,610,0,2,exterior,8000)
+    project(out,edges,70,160,540,610,0,2,exterior,6000)
     out += ['<path d="M100 800H575M100 790v20M575 790v20" class="strong"/>','<text x="337" y="824" class="subhead" text-anchor="middle">MAIN FLOAT Ø650 · V2 CAD REF</text>',
             '<path d="M190 300H250M190 300l12-6v12M250 300l-12-6v12" class="thin"/><text x="75" y="292" class="code">TOP SENSOR ARRAY</text>',
             '<path d="M190 520H250M190 520l12-6v12M250 520l-12-6v12" class="thin"/><text x="75" y="512" class="code">TAPERED MAST</text>',
             '<path d="M190 650H250M190 650l12-6v12M250 650l-12-6v12" class="thin"/><text x="75" y="642" class="code">SEALED POD / FLOAT</text>',
             '<text x="337" y="910" class="small" text-anchor="middle">Overall height, loaded waterline and freeboard: VERIFY IN NATIVE CAD</text>',
             '<text x="337" y="928" class="small" text-anchor="middle">Complete displacement, stability and flotation testing before fabrication.</text>']
-    panel(out,650,120,365,850,"B — RIGHT ELEVATION / SECTION REFERENCE")
-    project(out,edges,672,160,320,610,1,2,exterior,6500)
+    panel(out,650,120,365,850,"B — RIGHT ELEVATION / SECTION")
+    project(out,edges,672,160,320,610,1,2,exterior,5000)
     project(out,edges,700,790,265,130,0,1,named("MAIN_FLOAT_TRADITIONAL","MAIN_FLOAT_EDGE"),3500)
     out += ['<text x="832" y="940" class="small" text-anchor="middle">PLAN SECTION AT FLOAT · CAD-PROJECTED</text>']
     panel(out,1032,120,455,410,"C — PLAN VIEW · TOP")
-    project(out,edges,1050,155,420,335,0,1,exterior,6500)
+    project(out,edges,1050,155,420,335,0,1,exterior,4500)
     panel(out,1032,548,455,422,"D — SEALED ELECTRONICS POD · CLOSED")
     out += ['<path d="M1085 650L1135 615H1370L1425 650V835L1370 875H1135L1085 835Z" class="podface"/>','<path d="M1370 650H1425V835L1370 875Z" class="podside"/>',
             '<path d="M1110 670H1360V845H1110Z" class="hardware"/><path d="M1125 685H1345V830H1125Z" class="strong"/><circle cx="1325" cy="758" r="7" class="strong"/>',
@@ -264,10 +264,10 @@ svg{shape-rendering:geometricPrecision;background:#f8fafb}path,line,polyline,pol
             '<text x="1258" y="915" class="small" text-anchor="middle">OPAQUE EXTERIOR · gasketed service door · compression latches</text>',
             '<text x="1258" y="933" class="small" text-anchor="middle">Downward cable glands · internal arrangement: FALCON-BP-006</text>']
     panel(out,1505,120,475,850,"E — EXPLODED ASSEMBLY / CONTROLLED PARTS")
-    groups=[("F-01","TOP SENSOR ARRAY",155,named("WIND_","GNSS_","NAVIGATION_LIGHT","LTE_4G_ANTENNA")),("F-02","SENSOR PLATFORM",245,named("TOP_SENSOR_PLATFORM","TOP_SENSOR_CROSS")),("F-03","DUAL SOLAR ARRAY",330,named("SOLAR_30W","DUAL_SOLAR")),("F-04","TAPERED MAST",415,named("REV5_MAST_","BAY_")),("F-05","SEALED POD",505,named("RECT_POD_","REV5_RECTANGULAR")),("F-06","MAIN FLOAT / KEEL",600,named("MAIN_FLOAT_TRADITIONAL","MAIN_FLOAT_EDGE","MAIN_FLOAT_UPPER","MAIN_FLOAT_LOWER")),("F-07","BALLAST CONNECTOR",695,named("ADJUSTABLE_LOW_BALLAST","BALLAST_V2_"))]
+    groups=[("F-01","TOP SENSOR ARRAY",155,named("WIND_","GNSS_","NAVIGATION_LIGHT","LTE_4G_ANTENNA")),("F-02","SENSOR PLATFORM",245,named("TOP_SENSOR_PLATFORM","TOP_SENSOR_CROSS")),("F-03","DUAL SOLAR ARRAY",330,named("SOLAR_30W","DUAL_SOLAR")),("F-04","TAPERED MAST",415,named("REV5_MAST_","BAY_")),("F-05","SEALED POD",505,named("RECT_POD_","REV5_RECTANGULAR")),("F-06","MAIN FLOAT / KEEL",600,named("MAIN_FLOAT_TRADITIONAL","MAIN_FLOAT_EDGE","MAIN_FLOAT_UPPER","MAIN_FLOAT_LOWER")),("F-07","BALLAST LINK",695,named("ADJUSTABLE_LOW_BALLAST","BALLAST_V2_"))]
     out.append('<line x1="1668" y1="148" x2="1668" y2="750" class="ctr"/>')
     for ref,label,y,pred in groups:
-        project_iso(out,edges,1540,y,250,70,pred,2600)
+        project_iso(out,edges,1540,y,250,70,pred,1800)
         out += [f'<path d="M1795 {y+35}H1840" class="thin"/>',f'<text x="1850" y="{y+31}" class="code">{ref}</text>',f'<text x="1850" y="{y+46}" class="small">{label}</text>']
     out += ['<line x1="1525" y1="785" x2="1960" y2="785" class="strong"/>','<text x="1525" y="810" class="head">PARTS LIST / BILL OF MATERIALS</text>']
     bom=[("F-01","Top sensor array","wind · GNSS · nav light"),("F-02","Sensor platform","6061 structure · CAD ref"),("F-03","Solar array","2 × 30 W · candidate"),("F-04","Tapered mast","6061 frame · CAD ref"),("F-05","Electronics pod","UV-HDPE · sealed"),("F-06","Main float / keel","Ø650 · V2 CAD ref"),("F-07","Ballast / mooring","site engineering TBD")]
@@ -300,7 +300,8 @@ svg{shape-rendering:geometricPrecision;background:#f8fafb}path,line,polyline,pol
     rails=[("I2C SDA / SCL",1420),("GPS UART RX / TX",1470),("WIND PULSE / ADC",1520),("LTE UART / USB",1570),("3V3 / 5V / GND",1620)]
     for lab,y in rails: out += [f'<text x="1025" y="{y}" class="code">{lab}</text>',f'<path d="M1145 {y-4}H1450" class="thin"/>']
     out += ['<path d="M1190 1400V1640M1320 1400V1640" class="strong"/>','<text x="1190" y="1390" class="subhead" text-anchor="middle">ESP32</text><text x="1320" y="1390" class="subhead" text-anchor="middle">PROTECTED I/O</text>',
-            '<text x="1245" y="1650" class="small" text-anchor="middle">Functional overview only · KiCad schematic and verified harness control fabrication</text>']
+            '<text x="1245" y="1645" class="small" text-anchor="middle">FUNCTIONAL OVERVIEW ONLY</text>',
+            '<text x="1245" y="1660" class="tiny" text-anchor="middle">KiCad schematic + verified harness control fabrication</text>']
     panel(out,1505,990,475,680,"H — MOORING & ANCHORAGE SYSTEM")
     project_iso(out,edges,1535,1040,180,520,named("ANCHOR_CHAIN_LINK","BALLAST_CHAIN_LINK","SHACKLE","SNUBBER"),5000)
     project_iso(out,edges,1740,1110,205,380,named("CONCRETE_MOORING_ANCHOR","ANCHOR_REINFORCED","ANCHOR_316SS_MOORING_EYE"),4500)
@@ -315,8 +316,8 @@ svg{shape-rendering:geometricPrecision;background:#f8fafb}path,line,polyline,pol
     out += ['<line x1="1065" y1="1770" x2="1980" y2="1770" class="strong"/><line x1="1510" y1="1690" x2="1510" y2="1975" class="strong"/>',
             '<text x="1090" y="1745" class="small">PROJECT</text><text x="1170" y="1745" class="title">FALCON-01</text>',
             '<text x="1535" y="1745" class="small">DRAWING TITLE</text><text x="1665" y="1745" class="head">ASSEMBLY &amp; SUBSYSTEMS</text>',
-            '<text x="1090" y="1820" class="small">DRAWING NO.</text><text x="1210" y="1820" class="head">FALCON-BP-000</text><text x="1535" y="1820" class="small">REVISION</text><text x="1640" y="1820" class="head">P2</text>',
-            '<text x="1090" y="1870" class="small">SCALE</text><text x="1210" y="1870" class="head">NTS</text><text x="1535" y="1870" class="small">DATE</text><text x="1640" y="1870" class="head">2026-09-02</text>',
+            '<text x="1090" y="1820" class="small">DRAWING NO.</text><text x="1210" y="1820" class="head">FALCON-BP-000</text><text x="1535" y="1820" class="small">REVISION</text><text x="1640" y="1820" class="head">P3</text>',
+            '<text x="1090" y="1870" class="small">SCALE</text><text x="1210" y="1870" class="head">NTS</text><text x="1535" y="1870" class="small">DATE</text><text x="1640" y="1870" class="head">2026-09-03</text>',
             '<text x="1090" y="1920" class="small">SOURCE</text><text x="1210" y="1920" class="text">V2 GLB + CONTROLLED DOCS</text><text x="1535" y="1920" class="small">STATUS</text><text x="1640" y="1920" class="warn">REFERENCE / NOT FOR FABRICATION</text>','</svg>']
     return '\n'.join(out)
 
