@@ -3,13 +3,20 @@
 ## Current authority
 
 - `BayStation.docx` — canonical adviser-aligned V3.7 thesis documentation.
+- `PROJECT FALCON-01 - V3 Documentation.docx` — filename-compatible copy of the
+  canonical Bay Station V3.7 thesis; it is retained for users who open the
+  earlier V3 filename.
 - `../docs/PROJECT_CONTEXT.md` — canonical repository context v7.0.
 - `../docs/BAY_STATION_ARCHITECTURE.md` — approved functional split.
 - `../docs/BAY_STATION_SELECTION_REGISTER.md` — unresolved decisions and release gates.
 
 ## Superseded records
 
-Other V2/V3 DOCX files in this directory are retained for historical traceability and must not override the Bay Station architecture. They may contain obsolete Orange Pi-on-buoy, USB-only deployment, five-page dashboard, BNO085, load-cell, optional-AI, power, or prototype assumptions.
+Other V2/V3 DOCX files in this directory, including
+`PROJECT FALCON-01 - V3 Documentation - LEGACY.docx`, are retained for
+historical traceability and must not override the Bay Station architecture.
+They may contain obsolete Orange Pi-on-buoy, USB-only deployment, five-page
+dashboard, BNO085, load-cell, optional-AI, power, or prototype assumptions.
 
 ## Current non-negotiable boundaries
 
