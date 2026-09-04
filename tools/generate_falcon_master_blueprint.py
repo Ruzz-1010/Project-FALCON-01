@@ -275,17 +275,27 @@ svg{shape-rendering:geometricPrecision;background:#f8fafb}path,line,polyline,pol
     for ref,name,note in bom:
         out += [f'<line x1="1525" y1="{yy-15}" x2="1960" y2="{yy-15}" class="thin"/>',f'<text x="1532" y="{yy}" class="code">{ref}</text>',f'<text x="1585" y="{yy}" class="small">{name}</text>',f'<text x="1745" y="{yy}" class="small">{note}</text>']; yy+=18
 
-    # Gemini-matched subsystem, power, wiring and mooring band.
-    panel(out,48,990,940,360,"SUBSYSTEM INTERCONNECTS")
-    project_iso(out,edges,75,1040,170,170,named("WIND_","GNSS_","NAVIGATION_LIGHT","WATER_PRESSURE_SENSOR"),3000)
-    out += ['<text x="160" y="1230" class="subhead" text-anchor="middle">FIELD SENSOR ASSEMBLIES</text>',
-            '<path d="M285 1060L325 1030H520L560 1060V1245L520 1275H325L285 1245Z" class="podface"/><path d="M520 1060H560V1245L520 1275Z" class="podside"/>',
-            '<path d="M315 1085H500V1235H315Z" class="hardware"/><path d="M335 1105h60v55h-60m80-55h60v55h-60m-80 80h140" class="strong"/>',
-            '<text x="422" y="1300" class="subhead" text-anchor="middle">SEALED ELECTRONICS POD</text>']
-    project_iso(out,edges,610,1040,145,170,named("ESP32_CONTROLLER","SENSOR_DISTRIBUTION"),2200)
-    project_iso(out,edges,800,1040,145,170,named("LTE_4G_MODEM","LTE_4G_ANTENNA"),2200)
-    out += ['<path d="M245 1130H285M560 1130H610M755 1130H800" class="data"/>','<text x="682" y="1230" class="subhead" text-anchor="middle">ESP32 CONTROL / I/O</text>','<text x="872" y="1230" class="subhead" text-anchor="middle">LTE TELEMETRY</text>',
-            '<text x="518" y="1330" class="small" text-anchor="middle">SENSORS → PROTECTED I/O → ESP32 ACQUISITION → LTE / INTERNET → SHORE BAY STATION</text>']
+    # Gemini-style subsystem band, rebuilt with the approved Bay Station flow.
+    # It deliberately uses controlled functional symbols rather than inheriting
+    # the inaccurate labels/connections in the Gemini reference images.
+    panel(out,48,990,940,360,"SUBSYSTEM INTERCONNECTS — BUOY TO BAY STATION")
+    out += ['<rect x="70" y="1050" width="175" height="175" rx="8" class="hardware"/>',
+            '<path d="M157 1070v92m-38-62h76m-38 0l-28-20m28 20l28-20m-28 20v-20" class="strong"/>',
+            '<path d="M101 1172h112m-82 0v26m52-26v26" class="thin"/>',
+            '<circle cx="105" cy="1100" r="11" class="strong"/><path d="M105 1083v34m-17-17h34" class="thin"/>',
+            '<text x="157" y="1245" class="subhead" text-anchor="middle">TOP / WATER SENSORS</text>',
+            '<rect x="285" y="1045" width="230" height="190" rx="8" class="podface"/><path d="M485 1045h30v190h-30z" class="podside"/>',
+            '<rect x="307" y="1070" width="170" height="122" class="hardware"/><rect x="325" y="1090" width="45" height="45" class="box"/><rect x="397" y="1090" width="55" height="45" class="box"/><path d="M325 1162h127" class="strong"/>',
+            '<text x="400" y="1245" class="subhead" text-anchor="middle">SEALED ELECTRONICS POD</text>',
+            '<rect x="565" y="1050" width="150" height="175" rx="8" class="hardware"/><rect x="592" y="1070" width="96" height="112" class="box"/>',
+            '<path d="M607 1092h66v28h-66m13 22h40v20h-40" class="strong"/><path d="M592 1082h-16m16 25h-16m16 25h-16m96-50h16m-16 25h16m-16 25h16" class="thin"/>',
+            '<text x="640" y="1245" class="subhead" text-anchor="middle">ESP32 ACQUISITION</text>',
+            '<rect x="765" y="1050" width="160" height="175" rx="8" class="hardware"/><rect x="790" y="1072" width="105" height="90" class="box"/><path d="M805 1090h75v42h-75m-4 58q14-26 28 0q14-26 28 0q14-26 28 0" class="strong"/>',
+            '<text x="845" y="1245" class="subhead" text-anchor="middle">LTE / CELLULAR MODEM</text>',
+            '<path d="M245 1135H285M515 1135H565M715 1135H765" class="data"/>',
+            '<path d="M845 1034q14-22 28 0q14-22 28 0q14-22 28 0" class="data"/>',
+            '<text x="518" y="1310" class="code" text-anchor="middle">SENSORS → POD I/O → ESP32 → LTE / INTERNET → SHORE BAY STATION</text>',
+            '<text x="518" y="1330" class="small" text-anchor="middle">Bay Station: authenticated ingestion · SQLite · pressure-wave processing · AI prediction · dashboard · alerts</text>']
     panel(out,48,1370,940,300,"COMPONENT / INTERFACE NOTES")
     text_rows(out,70,1410,["S01  Bar02 R2 — pressure time series for estimated wave height; service limitation must be resolved.","S02  Ultimate GPS PID 746 — position/geofence; UART GPIO16/17; field scatter test required.","S03  SEN-15901 — wind pulse GPIO25 and vane through ADS1115 A0; marine durability unqualified.","S04  Celsius R2 — deployment water-temperature candidate; exact harness/address must be verified.","H01/H02  MCP9808 + INA260 ×2 — enclosure temperature and battery/solar electrical health.","C01/C02  ESP32-DevKitC V4 + SIM7600G-H candidate — LTE interface and peak current not frozen.","EXCLUDED  BNO085, load-cell/HX711, onboard Orange Pi and salinity sensor."],34)
     panel(out,1005,990,482,330,"POWER MANAGEMENT")
@@ -316,8 +326,8 @@ svg{shape-rendering:geometricPrecision;background:#f8fafb}path,line,polyline,pol
     out += ['<line x1="1065" y1="1770" x2="1980" y2="1770" class="strong"/><line x1="1510" y1="1690" x2="1510" y2="1975" class="strong"/>',
             '<text x="1090" y="1745" class="small">PROJECT</text><text x="1170" y="1745" class="title">FALCON-01</text>',
             '<text x="1535" y="1745" class="small">DRAWING TITLE</text><text x="1665" y="1745" class="head">ASSEMBLY &amp; SUBSYSTEMS</text>',
-            '<text x="1090" y="1820" class="small">DRAWING NO.</text><text x="1210" y="1820" class="head">FALCON-BP-000</text><text x="1535" y="1820" class="small">REVISION</text><text x="1640" y="1820" class="head">P3</text>',
-            '<text x="1090" y="1870" class="small">SCALE</text><text x="1210" y="1870" class="head">NTS</text><text x="1535" y="1870" class="small">DATE</text><text x="1640" y="1870" class="head">2026-09-03</text>',
+            '<text x="1090" y="1820" class="small">DRAWING NO.</text><text x="1210" y="1820" class="head">FALCON-BP-000</text><text x="1535" y="1820" class="small">REVISION</text><text x="1640" y="1820" class="head">P4</text>',
+            '<text x="1090" y="1870" class="small">SCALE</text><text x="1210" y="1870" class="head">NTS</text><text x="1535" y="1870" class="small">DATE</text><text x="1640" y="1870" class="head">2026-09-04</text>',
             '<text x="1090" y="1920" class="small">SOURCE</text><text x="1210" y="1920" class="text">V2 GLB + CONTROLLED DOCS</text><text x="1535" y="1920" class="small">STATUS</text><text x="1640" y="1920" class="warn">REFERENCE / NOT FOR FABRICATION</text>','</svg>']
     return '\n'.join(out)
 
