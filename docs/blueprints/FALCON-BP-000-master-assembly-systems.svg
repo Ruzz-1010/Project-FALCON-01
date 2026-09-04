@@ -11,6 +11,8 @@ svg{shape-rendering:geometricPrecision;background:#f8fafb}path,line,polyline,pol
 <line x1="340.0" y1="160" x2="340.0" y2="770" class="ctr"/>
 <path d="M100 800H575M100 790v20M575 790v20" class="strong"/>
 <text x="337" y="824" class="subhead" text-anchor="middle">MAIN FLOAT Ø650 · V2 CAD REF</text>
+<path d="M575 170h30m-30 570h30M596 170V740" class="strong" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+<text x="614" y="475" class="code" transform="rotate(-90 614 475)">3391 O/A CAD ENVELOPE</text>
 <path d="M190 300H250M190 300l12-6v12M250 300l-12-6v12" class="thin"/><text x="75" y="292" class="code">TOP SENSOR ARRAY</text>
 <path d="M190 520H250M190 520l12-6v12M250 520l-12-6v12" class="thin"/><text x="75" y="512" class="code">TAPERED MAST</text>
 <path d="M190 650H250M190 650l12-6v12M250 650l-12-6v12" class="thin"/><text x="75" y="642" class="code">SEALED POD / FLOAT</text>
@@ -34,7 +36,7 @@ svg{shape-rendering:geometricPrecision;background:#f8fafb}path,line,polyline,pol
 <line x1="1258" y1="585" x2="1258" y2="900" class="ctr"/>
 <line x1="1080" y1="742" x2="1435" y2="742" class="ctr"/>
 <text x="1258" y="915" class="small" text-anchor="middle">SEALED POD TOP VIEW · V2 CAD REFERENCE</text>
-<text x="1258" y="933" class="small" text-anchor="middle">Internal layout: FALCON-BP-006</text>
+<text x="1258" y="933" class="small" text-anchor="middle">POD: 300 W × 280 D × 400 H mm · Internal layout: FALCON-BP-006</text>
 <rect x="1505" y="120" width="475" height="850" class="box"/>
 <text x="1519" y="146" class="head">EXPLODED ASSEMBLY VIEW</text>
 <line x1="1668" y1="148" x2="1668" y2="750" class="ctr"/>
@@ -97,24 +99,50 @@ svg{shape-rendering:geometricPrecision;background:#f8fafb}path,line,polyline,pol
 <text x="1585" y="946" class="small">Ballast / mooring</text>
 <text x="1745" y="946" class="small">site engineering TBD</text>
 <rect x="48" y="990" width="940" height="360" class="box"/>
-<text x="62" y="1016" class="head">SUBSYSTEM INTERCONNECTS — BUOY TO BAY STATION</text>
-<rect x="70" y="1050" width="175" height="175" rx="8" class="hardware"/>
-<path d="M157 1070v92m-38-62h76m-38 0l-28-20m28 20l28-20m-28 20v-20" class="strong"/>
-<path d="M101 1172h112m-82 0v26m52-26v26" class="thin"/>
-<circle cx="105" cy="1100" r="11" class="strong"/><path d="M105 1083v34m-17-17h34" class="thin"/>
-<text x="157" y="1245" class="subhead" text-anchor="middle">TOP / WATER SENSORS</text>
-<rect x="285" y="1045" width="230" height="190" rx="8" class="podface"/><path d="M485 1045h30v190h-30z" class="podside"/>
-<rect x="307" y="1070" width="170" height="122" class="hardware"/><rect x="325" y="1090" width="45" height="45" class="box"/><rect x="397" y="1090" width="55" height="45" class="box"/><path d="M325 1162h127" class="strong"/>
-<text x="400" y="1245" class="subhead" text-anchor="middle">SEALED ELECTRONICS POD</text>
-<rect x="565" y="1050" width="150" height="175" rx="8" class="hardware"/><rect x="592" y="1070" width="96" height="112" class="box"/>
-<path d="M607 1092h66v28h-66m13 22h40v20h-40" class="strong"/><path d="M592 1082h-16m16 25h-16m16 25h-16m96-50h16m-16 25h16m-16 25h16" class="thin"/>
-<text x="640" y="1245" class="subhead" text-anchor="middle">ESP32 ACQUISITION</text>
-<rect x="765" y="1050" width="160" height="175" rx="8" class="hardware"/><rect x="790" y="1072" width="105" height="90" class="box"/><path d="M805 1090h75v42h-75m-4 58q14-26 28 0q14-26 28 0q14-26 28 0" class="strong"/>
-<text x="845" y="1245" class="subhead" text-anchor="middle">LTE / CELLULAR MODEM</text>
-<path d="M245 1135H285M515 1135H565M715 1135H765" class="data"/>
-<path d="M845 1034q14-22 28 0q14-22 28 0q14-22 28 0" class="data"/>
-<text x="518" y="1310" class="code" text-anchor="middle">SENSORS → POD I/O → ESP32 → LTE / INTERNET → SHORE BAY STATION</text>
-<text x="518" y="1330" class="small" text-anchor="middle">Bay Station: authenticated ingestion · SQLite · pressure-wave processing · AI prediction · dashboard · alerts</text>
+<text x="62" y="1016" class="head">MASTER DIMENSIONS — FUSION V2 CAD REFERENCE</text>
+<text x="70" y="1040" class="subhead">ID</text><text x="135" y="1040" class="subhead">FEATURE</text><text x="420" y="1040" class="subhead">FUSION DIMENSION</text><text x="680" y="1040" class="subhead">ENGINEERING STATUS</text>
+<line x1="65" y1="1055" x2="970" y2="1055" class="strong"/>
+<text x="70" y="1085" class="code">D01</text>
+<text x="135" y="1085" class="text">Complete buoy envelope</text>
+<text x="420" y="1085" class="text">760 W × 760 D × 3391 H mm</text>
+<text x="680" y="1085" class="small">CAD-export envelope; excludes site mooring run</text>
+<line x1="65" y1="1098" x2="970" y2="1098" class="thin"/>
+<text x="70" y="1116" class="code">D02</text>
+<text x="135" y="1116" class="text">Main float / keel</text>
+<text x="420" y="1116" class="text">Ø650 × 620 H mm</text>
+<text x="680" y="1116" class="small">380 upper body + 240 tapered keel; 6 mm wall</text>
+<line x1="65" y1="1129" x2="970" y2="1129" class="thin"/>
+<text x="70" y="1147" class="code">D03</text>
+<text x="135" y="1147" class="text">Tapered mast frame</text>
+<text x="420" y="1147" class="text">805 H mm envelope</text>
+<text x="680" y="1147" class="small">800 mm design height; 4 × Ø32 legs</text>
+<line x1="65" y1="1160" x2="970" y2="1160" class="thin"/>
+<text x="70" y="1178" class="code">D04</text>
+<text x="135" y="1178" class="text">Sealed electronics pod</text>
+<text x="420" y="1178" class="text">300 W × 280 D × 400 H mm</text>
+<text x="680" y="1178" class="small">8 mm UV-HDPE wall; 18 mm service lid</text>
+<line x1="65" y1="1191" x2="970" y2="1191" class="thin"/>
+<text x="70" y="1209" class="code">D05</text>
+<text x="135" y="1209" class="text">Dual solar modules</text>
+<text x="420" y="1209" class="text">2 × 450 × 300 × 20 mm</text>
+<text x="680" y="1209" class="small">30 W each; 20° outward tilt</text>
+<line x1="65" y1="1222" x2="970" y2="1222" class="thin"/>
+<text x="70" y="1240" class="code">D06</text>
+<text x="135" y="1240" class="text">Pressure sensor / guard</text>
+<text x="420" y="1240" class="text">Ø24 × 42 / Ø64 × 72 mm</text>
+<text x="680" y="1240" class="small">Mounting depth and bracket remain approval items</text>
+<line x1="65" y1="1253" x2="970" y2="1253" class="thin"/>
+<text x="70" y="1271" class="code">D07</text>
+<text x="135" y="1271" class="text">Ballast rail / plates</text>
+<text x="420" y="1271" class="text">Ø40 × 500; 4 × Ø220 × 25 mm</text>
+<text x="680" y="1271" class="small">Final mass, CG and righting test required</text>
+<line x1="65" y1="1284" x2="970" y2="1284" class="thin"/>
+<text x="70" y="1302" class="code">D08</text>
+<text x="135" y="1302" class="text">Concrete anchor reference</text>
+<text x="420" y="1302" class="text">650/450 square × 500 H mm</text>
+<text x="680" y="1302" class="small">Nominal 367 kg; site engineering approval required</text>
+<line x1="65" y1="1315" x2="970" y2="1315" class="thin"/>
+<text x="70" y="1330" class="warn">DO NOT SCALE DRAWING — VERIFY FINAL FABRICATION DIMENSIONS IN THE NATIVE FUSION PARAMETRIC MODEL</text>
 <rect x="48" y="1370" width="940" height="300" class="box"/>
 <text x="62" y="1396" class="head">COMPONENT / INTERFACE NOTES</text>
 <text x="70" y="1410" class="text">S01  Bar02 R2 — pressure time series for estimated wave height; service limitation must be resolved.</text>
@@ -170,7 +198,7 @@ svg{shape-rendering:geometricPrecision;background:#f8fafb}path,line,polyline,pol
 <line x1="1065" y1="1770" x2="1980" y2="1770" class="strong"/><line x1="1510" y1="1690" x2="1510" y2="1975" class="strong"/>
 <text x="1090" y="1745" class="small">PROJECT</text><text x="1170" y="1745" class="title">FALCON-01</text>
 <text x="1535" y="1745" class="small">DRAWING TITLE</text><text x="1665" y="1745" class="head">ASSEMBLY &amp; SUBSYSTEMS</text>
-<text x="1090" y="1820" class="small">DRAWING NO.</text><text x="1210" y="1820" class="head">FALCON-BP-000</text><text x="1535" y="1820" class="small">REVISION</text><text x="1640" y="1820" class="head">P4</text>
+<text x="1090" y="1820" class="small">DRAWING NO.</text><text x="1210" y="1820" class="head">FALCON-BP-000</text><text x="1535" y="1820" class="small">REVISION</text><text x="1640" y="1820" class="head">P5</text>
 <text x="1090" y="1870" class="small">SCALE</text><text x="1210" y="1870" class="head">NTS</text><text x="1535" y="1870" class="small">DATE</text><text x="1640" y="1870" class="head">2026-09-04</text>
 <text x="1090" y="1920" class="small">SOURCE</text><text x="1210" y="1920" class="text">V2 GLB + CONTROLLED DOCS</text><text x="1535" y="1920" class="small">STATUS</text><text x="1640" y="1920" class="warn">REFERENCE / NOT FOR FABRICATION</text>
 </svg>

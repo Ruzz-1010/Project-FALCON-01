@@ -246,6 +246,8 @@ svg{shape-rendering:geometricPrecision;background:#f8fafb}path,line,polyline,pol
     panel(out,48,120,585,850,"FRONT ELEVATION — BUOY ASSEMBLY")
     project(out,edges,70,160,540,610,0,2,exterior,8000)
     out += ['<path d="M100 800H575M100 790v20M575 790v20" class="strong"/>','<text x="337" y="824" class="subhead" text-anchor="middle">MAIN FLOAT Ø650 · V2 CAD REF</text>',
+            '<path d="M575 170h30m-30 570h30M596 170V740" class="strong" marker-start="url(#arrow)" marker-end="url(#arrow)"/>',
+            '<text x="614" y="475" class="code" transform="rotate(-90 614 475)">3391 O/A CAD ENVELOPE</text>',
             '<path d="M190 300H250M190 300l12-6v12M250 300l-12-6v12" class="thin"/><text x="75" y="292" class="code">TOP SENSOR ARRAY</text>',
             '<path d="M190 520H250M190 520l12-6v12M250 520l-12-6v12" class="thin"/><text x="75" y="512" class="code">TAPERED MAST</text>',
             '<path d="M190 650H250M190 650l12-6v12M250 650l-12-6v12" class="thin"/><text x="75" y="642" class="code">SEALED POD / FLOAT</text>',
@@ -262,7 +264,7 @@ svg{shape-rendering:geometricPrecision;background:#f8fafb}path,line,polyline,pol
     out += ['<line x1="1258" y1="585" x2="1258" y2="900" class="ctr"/>',
             '<line x1="1080" y1="742" x2="1435" y2="742" class="ctr"/>',
             '<text x="1258" y="915" class="small" text-anchor="middle">SEALED POD TOP VIEW · V2 CAD REFERENCE</text>',
-            '<text x="1258" y="933" class="small" text-anchor="middle">Internal layout: FALCON-BP-006</text>']
+            '<text x="1258" y="933" class="small" text-anchor="middle">POD: 300 W × 280 D × 400 H mm · Internal layout: FALCON-BP-006</text>']
     panel(out,1505,120,475,850,"EXPLODED ASSEMBLY VIEW")
     groups=[("F-01","TOP SENSOR ARRAY",155,named("WIND_","GNSS_","NAVIGATION_LIGHT","LTE_4G_ANTENNA")),("F-02","SENSOR PLATFORM",245,named("TOP_SENSOR_PLATFORM","TOP_SENSOR_CROSS")),("F-03","DUAL SOLAR ARRAY",330,named("SOLAR_30W","DUAL_SOLAR")),("F-04","TAPERED MAST",415,named("REV5_MAST_","BAY_")),("F-05","SEALED POD",505,named("RECT_POD_","REV5_RECTANGULAR")),("F-06","MAIN FLOAT / KEEL",600,named("MAIN_FLOAT_TRADITIONAL","MAIN_FLOAT_EDGE","MAIN_FLOAT_UPPER","MAIN_FLOAT_LOWER")),("F-07","BALLAST CONNECTOR",695,named("ADJUSTABLE_LOW_BALLAST","BALLAST_V2_"))]
     out.append('<line x1="1668" y1="148" x2="1668" y2="750" class="ctr"/>')
@@ -275,27 +277,26 @@ svg{shape-rendering:geometricPrecision;background:#f8fafb}path,line,polyline,pol
     for ref,name,note in bom:
         out += [f'<line x1="1525" y1="{yy-15}" x2="1960" y2="{yy-15}" class="thin"/>',f'<text x="1532" y="{yy}" class="code">{ref}</text>',f'<text x="1585" y="{yy}" class="small">{name}</text>',f'<text x="1745" y="{yy}" class="small">{note}</text>']; yy+=18
 
-    # Gemini-style subsystem band, rebuilt with the approved Bay Station flow.
-    # It deliberately uses controlled functional symbols rather than inheriting
-    # the inaccurate labels/connections in the Gemini reference images.
-    panel(out,48,990,940,360,"SUBSYSTEM INTERCONNECTS — BUOY TO BAY STATION")
-    out += ['<rect x="70" y="1050" width="175" height="175" rx="8" class="hardware"/>',
-            '<path d="M157 1070v92m-38-62h76m-38 0l-28-20m28 20l28-20m-28 20v-20" class="strong"/>',
-            '<path d="M101 1172h112m-82 0v26m52-26v26" class="thin"/>',
-            '<circle cx="105" cy="1100" r="11" class="strong"/><path d="M105 1083v34m-17-17h34" class="thin"/>',
-            '<text x="157" y="1245" class="subhead" text-anchor="middle">TOP / WATER SENSORS</text>',
-            '<rect x="285" y="1045" width="230" height="190" rx="8" class="podface"/><path d="M485 1045h30v190h-30z" class="podside"/>',
-            '<rect x="307" y="1070" width="170" height="122" class="hardware"/><rect x="325" y="1090" width="45" height="45" class="box"/><rect x="397" y="1090" width="55" height="45" class="box"/><path d="M325 1162h127" class="strong"/>',
-            '<text x="400" y="1245" class="subhead" text-anchor="middle">SEALED ELECTRONICS POD</text>',
-            '<rect x="565" y="1050" width="150" height="175" rx="8" class="hardware"/><rect x="592" y="1070" width="96" height="112" class="box"/>',
-            '<path d="M607 1092h66v28h-66m13 22h40v20h-40" class="strong"/><path d="M592 1082h-16m16 25h-16m16 25h-16m96-50h16m-16 25h16m-16 25h16" class="thin"/>',
-            '<text x="640" y="1245" class="subhead" text-anchor="middle">ESP32 ACQUISITION</text>',
-            '<rect x="765" y="1050" width="160" height="175" rx="8" class="hardware"/><rect x="790" y="1072" width="105" height="90" class="box"/><path d="M805 1090h75v42h-75m-4 58q14-26 28 0q14-26 28 0q14-26 28 0" class="strong"/>',
-            '<text x="845" y="1245" class="subhead" text-anchor="middle">LTE / CELLULAR MODEM</text>',
-            '<path d="M245 1135H285M515 1135H565M715 1135H765" class="data"/>',
-            '<path d="M845 1034q14-22 28 0q14-22 28 0q14-22 28 0" class="data"/>',
-            '<text x="518" y="1310" class="code" text-anchor="middle">SENSORS → POD I/O → ESP32 → LTE / INTERNET → SHORE BAY STATION</text>',
-            '<text x="518" y="1330" class="small" text-anchor="middle">Bay Station: authenticated ingestion · SQLite · pressure-wave processing · AI prediction · dashboard · alerts</text>']
+    # Master dimension register: values come from the Fusion V2 component
+    # parameters and its exported CAD envelope, not illustrative subsystem art.
+    panel(out,48,990,940,360,"MASTER DIMENSIONS — FUSION V2 CAD REFERENCE")
+    out += ['<text x="70" y="1040" class="subhead">ID</text><text x="135" y="1040" class="subhead">FEATURE</text><text x="420" y="1040" class="subhead">FUSION DIMENSION</text><text x="680" y="1040" class="subhead">ENGINEERING STATUS</text>',
+            '<line x1="65" y1="1055" x2="970" y2="1055" class="strong"/>']
+    dims=[
+        ("D01","Complete buoy envelope","760 W × 760 D × 3391 H mm","CAD-export envelope; excludes site mooring run"),
+        ("D02","Main float / keel","Ø650 × 620 H mm","380 upper body + 240 tapered keel; 6 mm wall"),
+        ("D03","Tapered mast frame","805 H mm envelope","800 mm design height; 4 × Ø32 legs"),
+        ("D04","Sealed electronics pod","300 W × 280 D × 400 H mm","8 mm UV-HDPE wall; 18 mm service lid"),
+        ("D05","Dual solar modules","2 × 450 × 300 × 20 mm","30 W each; 20° outward tilt"),
+        ("D06","Pressure sensor / guard","Ø24 × 42 / Ø64 × 72 mm","Mounting depth and bracket remain approval items"),
+        ("D07","Ballast rail / plates","Ø40 × 500; 4 × Ø220 × 25 mm","Final mass, CG and righting test required"),
+        ("D08","Concrete anchor reference","650/450 square × 500 H mm","Nominal 367 kg; site engineering approval required"),
+    ]
+    yy=1085
+    for code,feature,dimension,status in dims:
+        out += [f'<text x="70" y="{yy}" class="code">{code}</text>',f'<text x="135" y="{yy}" class="text">{feature}</text>',f'<text x="420" y="{yy}" class="text">{dimension}</text>',f'<text x="680" y="{yy}" class="small">{status}</text>',f'<line x1="65" y1="{yy+13}" x2="970" y2="{yy+13}" class="thin"/>']
+        yy += 31
+    out += ['<text x="70" y="1330" class="warn">DO NOT SCALE DRAWING — VERIFY FINAL FABRICATION DIMENSIONS IN THE NATIVE FUSION PARAMETRIC MODEL</text>']
     panel(out,48,1370,940,300,"COMPONENT / INTERFACE NOTES")
     text_rows(out,70,1410,["S01  Bar02 R2 — pressure time series for estimated wave height; service limitation must be resolved.","S02  Ultimate GPS PID 746 — position/geofence; UART GPIO16/17; field scatter test required.","S03  SEN-15901 — wind pulse GPIO25 and vane through ADS1115 A0; marine durability unqualified.","S04  Celsius R2 — deployment water-temperature candidate; exact harness/address must be verified.","H01/H02  MCP9808 + INA260 ×2 — enclosure temperature and battery/solar electrical health.","C01/C02  ESP32-DevKitC V4 + SIM7600G-H candidate — LTE interface and peak current not frozen.","EXCLUDED  BNO085, load-cell/HX711, onboard Orange Pi and salinity sensor."],34)
     panel(out,1005,990,482,330,"POWER MANAGEMENT")
@@ -326,7 +327,7 @@ svg{shape-rendering:geometricPrecision;background:#f8fafb}path,line,polyline,pol
     out += ['<line x1="1065" y1="1770" x2="1980" y2="1770" class="strong"/><line x1="1510" y1="1690" x2="1510" y2="1975" class="strong"/>',
             '<text x="1090" y="1745" class="small">PROJECT</text><text x="1170" y="1745" class="title">FALCON-01</text>',
             '<text x="1535" y="1745" class="small">DRAWING TITLE</text><text x="1665" y="1745" class="head">ASSEMBLY &amp; SUBSYSTEMS</text>',
-            '<text x="1090" y="1820" class="small">DRAWING NO.</text><text x="1210" y="1820" class="head">FALCON-BP-000</text><text x="1535" y="1820" class="small">REVISION</text><text x="1640" y="1820" class="head">P4</text>',
+            '<text x="1090" y="1820" class="small">DRAWING NO.</text><text x="1210" y="1820" class="head">FALCON-BP-000</text><text x="1535" y="1820" class="small">REVISION</text><text x="1640" y="1820" class="head">P5</text>',
             '<text x="1090" y="1870" class="small">SCALE</text><text x="1210" y="1870" class="head">NTS</text><text x="1535" y="1870" class="small">DATE</text><text x="1640" y="1870" class="head">2026-09-04</text>',
             '<text x="1090" y="1920" class="small">SOURCE</text><text x="1210" y="1920" class="text">V2 GLB + CONTROLLED DOCS</text><text x="1535" y="1920" class="small">STATUS</text><text x="1640" y="1920" class="warn">REFERENCE / NOT FOR FABRICATION</text>','</svg>']
     return '\n'.join(out)
