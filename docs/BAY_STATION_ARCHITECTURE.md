@@ -43,5 +43,5 @@ The exact mini PC, LTE modem, LoRa module/gateway, antenna, SIM/provider, transp
 - LTE loss: ESP32 attempts the verified LoRa shore gateway; if LoRa is unavailable too, sensing and local security continue and telemetry is buffered.
 - Stale or uncalibrated inputs: wave estimate/AI output is withheld or explicitly qualified.
 - AI failure: acquisition, security, ingestion, storage, live display, and alerts continue.
-- Buoy solar/battery power covers only ESP32, sensors, LTE modem, security, and conversion losses.
+- Buoy solar/battery power covers only ESP32, sensors, LTE modem, optional LoRa radio, security, and conversion losses.
 - The shore Bay Station uses facility power or a separately engineered UPS and is excluded from buoy autonomy calculations.

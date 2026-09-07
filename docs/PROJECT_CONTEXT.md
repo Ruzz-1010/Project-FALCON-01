@@ -207,9 +207,9 @@ FALCON does not provide tsunami, typhoon, storm, or weather prediction; autonomo
 3. Freeze component placement, pinout, wiring, and PCB only after electrical and physical-fit review.
 4. Implement physical pressure acquisition and a documented calibration routine.
 5. Implement security persistence/debounce on real hardware.
-6. Select and integrate the LTE modem and shore Bay Station, then verify authentication, buffering, automatic startup, and recovery.
+6. Select and integrate the LTE modem, optional LoRa fallback/gateway, and shore Bay Station, then verify link priority, authentication, buffering, automatic startup, and recovery.
 7. Collect controlled reference data before performance or accuracy claims.
 
 ## Change control
 
-Any document that conflicts with this v7.0 Bay Station context is outdated unless explicitly labeled historical. New sensor, AI, cloud, cellular, or mechanical scope requires adviser approval and corresponding updates to requirements, BOM, firmware, API, tests, dashboard, thesis, and risk documentation.
+Any document that conflicts with this v8.0 Bay Station context is outdated unless explicitly labeled historical. New sensor, AI, cloud, cellular, LoRa, or mechanical scope requires adviser approval and corresponding updates to requirements, BOM, firmware, API, tests, dashboard, thesis, and risk documentation.
