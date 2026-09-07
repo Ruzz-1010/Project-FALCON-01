@@ -14,7 +14,7 @@
 ## 1. Core Presentation Message
 
 Project FALCON is a proposed affordable, solar-powered smart coastal observation
-buoy. It is designed to collect localized coastal measurements, process and
+buoy. It is designed to collect localized wave and wind measurements, process and
 store data near the source, display present conditions through a responsive
 dashboard, optionally evaluate short-horizon wave prediction after the monitoring baseline is validated,
 and detect abnormal buoy displacement or system-health conditions.
@@ -121,7 +121,7 @@ the information locally, and shows it on a simple dashboard.
 
 Project FALCON combines:
 
-- wave-related sensors and system-health monitors;
+- pressure-derived wave and wind sensors, with supporting system telemetry;
 - an ESP32 for reliable sensor acquisition and diagnostics;
 - an LTE/cellular telemetry link and shore Bay Station for storage, processing, API, and AI prediction;
 - solar power with battery storage;
@@ -139,8 +139,10 @@ purchased-board datasheets, and electrical protection plan.*
 
 **Taglish presentation script:**
 
-> Our proposed solution is Project FALCON. The buoy uses sensors for motion,
-> water pressure, wind, GPS position, power, and system health. The ESP32 handles
+> Our proposed solution is Project FALCON. The buoy uses pressure sensing for
+> wave estimation and wind speed/direction sensing. GPS position, power status,
+> and security states are supporting telemetry, not additional project sensors.
+> The ESP32 handles
 > regular sensor acquisition and initial validation. It then sends the data to
 > the selected cellular link. A protected shore Bay Station stores and processes
 > the records, serves the dashboard, and runs the required prediction model. Users can view the information through a
@@ -156,10 +158,12 @@ purchased-board datasheets, and electrical protection plan.*
 the Bay Station processes, and the dashboard explains.
 
 ```text
-Wave, motion, wind, GPS, power and health sensors
+Pressure-derived wave and wind sensors
                          |
                          v
               ESP32 acquisition layer
+             |
+   Supporting GPS, power, and security telemetry
                          |
                   LTE / CELLULAR
                          v
@@ -177,8 +181,9 @@ Wave, motion, wind, GPS, power and health sensors
 
 **Taglish presentation script:**
 
-> This diagram shows the system workflow. First, the sensors collect wave,
-> motion, wind, GPS, power, and health measurements. The ESP32 reads and checks
+> This diagram shows the system workflow. First, the primary sensors collect
+> pressure-derived wave and wind measurements. Supporting GPS, power, and
+> security telemetry describes position and system condition. The ESP32 reads and checks
 > those values, then packages them as telemetry. The data are sent to the Orange
 > Bay Station through the selected LTE/cellular link. The Bay Station manages the database, signal
 > processing, API, dashboard, and future model inference. Finally, the user can

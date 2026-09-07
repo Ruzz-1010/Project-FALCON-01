@@ -1,4 +1,4 @@
-# Project FALCON Sensor Selection and Architecture Baseline
+# Project FALCON Primary Sensor Selection and Architecture Baseline
 
 Revision: 1.0  
 Date: 2026-08-31  
@@ -6,7 +6,7 @@ Status: adviser-aligned Phase 1 engineering baseline; not yet a fabrication or d
 
 ## 1. Purpose
 
-This document freezes the intended function of every Project FALCON sensor and identifies the exact products that are acceptable for prototype work, the products recommended for field deployment, and the selections that still require physical validation. It prevents component substitution by name alone and keeps wave monitoring, station health, and security sensing as separate engineering functions.
+This document freezes the intended function of the Project FALCON primary sensors and identifies the exact products that are acceptable for prototype work, the products recommended for field deployment, and the selections that still require physical validation. The primary measurement scope is limited to pressure-derived wave estimation and wind speed/direction. GPS, power, and security devices are supporting telemetry only.
 
 Project FALCON estimates wave height from a submerged pressure time series. It does not claim that an IMU directly measures wave height. The shore Bay Station stores and processes the pressure data and may run the required wave-height prediction model. The buoy ESP32 performs acquisition, basic validation, buffering, and telemetry.
 
@@ -14,7 +14,7 @@ Project FALCON estimates wave height from a submerged pressure time series. It d
 
 ```text
 Marine environment
-  -> pressure, wind, GPS and temperature sensors
+  -> pressure and wind sensors
   -> protected sensor interfaces
   -> ESP32 acquisition and validation
   -> approved LTE/cellular modem
@@ -45,8 +45,6 @@ Enclosure switch and optional tamper accelerometer
 | Submerged pressure / wave-height input | **Blue Robotics Bar02 R2, BR-100891 — Confirmed prototype** | 2.5–5.5 V supply; 2.5–3.6 V I2C logic; verify purchased-unit address | Low-pressure depth/pressure sensor intended for shallow water | Protected submerged port at a documented fixed depth, with its sensing face exposed to water and no trapped air | Compare at known depths against a reference; record installation depth and baseline. Only the sensing face is waterproof. The gel element must dry for at least two hours per day according to the manufacturer, so continuous long-duration immersion requires a service plan or a different qualified pressure sensor. |
 | Position and geofence | **Adafruit Ultimate GPS, PID 746 — Confirmed prototype** | 3.0–5.5 V board input; UART NMEA, 9600 baud default; 1–10 Hz update | MTK3339 receiver; use a conservative nominal position accuracy of approximately 3 m until site testing | Upper electronics area with clear sky view; optional external antenna after RF review | Perform cold/warm-start and stationary-position tests at the deployment site. Geofence radius must exceed measured GPS scatter. It is a security aid, not precision theft tracking. |
 | Wind speed and direction | **SparkFun Weather Meter Kit, SEN-15901 — Confirmed prototype** | Reed-switch pulse for speed; passive resistor network through a 3.3 V ADC divider for direction | 1 switch closure/s corresponds to 1.492 mph; vane supports up to 16 positions, with eight cardinal directions reliably identified | Highest practical unobstructed mast location, mechanically aligned to true or corrected north | Compare with a reference anemometer and compass. Inspect bearings, contacts, RJ11 leads, and corrosion after salt exposure. Treat as a supervised prototype unless marine durability is demonstrated. The included rain gauge is outside Phase 1 scope. |
-| Water temperature | **Blue Robotics Celsius R2, BR-100317 — Recommended deployment candidate** | I2C; verify supply, logic level, address and harness before PCB freeze | Manufacturer-stated accuracy ±0.1 °C | Submerged through a correctly sealed bulkhead installation, away from heat sources | Three-point stirred-bath comparison and installation leak test. The front is sealed but the rear/electronics must remain dry inside the enclosure. |
-| Water temperature alternative | **Adafruit waterproof DS18B20, PID 381 — Bench only** | 3.0–5.5 V; 1-Wire; 4.7 kΩ pull-up; up to 750 ms conversion | −55 to 125 °C; ±0.5 °C from −10 to 85 °C | Short, supervised water tests only | The manufacturer explicitly states that it is not for salt water, corrosive environments, long-term use, high pressure, or guaranteed IP-rated service. It must not be the final marine-deployment probe. |
 | Battery electrical health | **Adafruit INA260, PID 4226 — Confirmed prototype, quantity 1** | I2C; battery monitor target address `0x40`; 3 V/5 V logic | Up to 36 V bus and 15 A continuous on the breakout; integrated 2 mΩ shunt; better than 1% stated accuracy | Protected battery branch, with high-current path and connector temperature reviewed | Compare voltage/current against a calibrated DMM and load at no-load, normal-load, and near-maximum expected load. Do not exceed breakout current or thermal limits. |
 | Solar electrical health | **Adafruit INA260, PID 4226 — Confirmed prototype, quantity 1** | I2C; solar monitor target address `0x41`; 3 V/5 V logic | Same as battery monitor | Protected solar/charger branch at a documented measurement point | Validate polarity, address strap, charging-current direction, and agreement with a reference meter over low, normal, and high sunlight/load conditions. |
 | Enclosure temperature | **Adafruit MCP9808, PID 1782 — Recommended selection** | 2.7–5.5 V; I2C; target address `0x18` | −40 to 125 °C; typical ±0.25 °C; maximum ±0.5 °C from −20 to 100 °C | In representative enclosure air, away from converters, modem, heatsinks, direct sun-heated walls, and fan exhaust | Compare against a reference thermometer after thermal stabilization; record any offset. The reading represents its mounting location, not every component junction temperature. |
@@ -76,7 +74,6 @@ Enclosure switch and optional tamper accelerometer
 | UART | GPS PID 746 | Dedicated ESP32 UART per approved pinout | Cross TX/RX and verify logic levels. |
 | UART or USB | LTE modem | Dedicated link after interface freeze | Must not share a UART in a way that blocks GPS acquisition. |
 | GPIO pulse | Wind speed | Dedicated interrupt-capable input | Include pull-up, protection, debounce and pulse-rate test. |
-| 1-Wire, bench only | DS18B20 PID 381 | Dedicated GPIO with 4.7 kΩ pull-up | Remove from deployment release if Celsius R2 is adopted. |
 | GPIO | Enclosure contact | Filtered/debounced input | Prefer fault-detecting/fail-safe behavior. |
 
 Exact ESP32 GPIO numbers remain governed by `PINOUT.md` and the verified schematic. A documentation table must not override a physically validated pin map.
@@ -121,18 +118,16 @@ Before ordering or PCB fabrication, record for every installed item:
 - calibration equipment and acceptance limits;
 - spare quantity and lead time.
 
-The final PCB release is blocked until the water-temperature deployment probe, buzzer, LTE interface, connector variants, footprints, cable glands, current budget and enclosure integration are physically verified. A rendered PCB or 3D model is not proof of electrical or mechanical validation.
+The final PCB release is blocked until the buzzer, LTE interface, connector variants, footprints, cable glands, current budget and enclosure integration are physically verified. A rendered PCB or 3D model is not proof of electrical or mechanical validation.
 
 ## 9. Primary manufacturer references
 
 1. Blue Robotics. [Bar high-resolution depth/pressure sensors](https://bluerobotics.com/store/sensors-cameras/sensors/bar-depth-pressure-sensor/).
 2. Blue Robotics. [Bar sensor technical guide](https://bluerobotics.com/learn/bar-sensors-guide/).
-3. Blue Robotics. [Celsius fast-response temperature sensor](https://bluerobotics.com/store/sensors-cameras/sensors/celsius-sensor-r1/).
 4. Adafruit. [Ultimate GPS breakout, PID 746](https://www.adafruit.com/product/746).
 5. GlobalTop Technology. [PA1616S GPS module datasheet](https://cdn-shop.adafruit.com/product-files/746/CD%20PA1616S%20Datasheet.v03.pdf).
 6. SparkFun. [Weather Meter Kit, SEN-15901](https://www.sparkfun.com/weather-meter-kit.html).
 7. SparkFun. [Weather Meter Kit datasheet](https://cdn.sparkfun.com/assets/d/1/e/0/6/DS-15901-Weather_Meter.pdf).
-8. Adafruit. [Waterproof DS18B20 digital temperature sensor, PID 381](https://www.adafruit.com/product/381).
 9. Adafruit. [INA260 current, voltage and power sensor, PID 4226](https://www.adafruit.com/product/4226).
 10. Adafruit. [MCP9808 precision temperature sensor, PID 1782](https://www.adafruit.com/product/1782).
 11. Adafruit. [LIS3DH triple-axis accelerometer, PID 2809](https://www.adafruit.com/category/682).
@@ -142,4 +137,4 @@ The final PCB release is blocked until the water-temperature deployment probe, b
 
 ## 10. Thesis-safe summary
 
-The Phase 1 monitoring claim is based on a Bar02 R2 pressure channel, GPS, wind speed/direction, electrical-health monitoring, enclosure temperature and a marine-capable water-temperature candidate. Pressure time series are processed at the shore Bay Station to estimate wave height and support AI prediction. GPS geofencing and an enclosure contact provide security inputs; an accelerometer may be added only if false-alarm testing justifies it. No hardware is described as deployment-ready until calibration, ingress, power, LTE, environmental and integration tests are complete.
+The Phase 1 monitoring claim is based on a Bar02 R2 pressure channel for estimated wave height and wind speed/direction. GPS, electrical-health, enclosure, and security values are supporting telemetry only. Pressure time series are processed at the shore Bay Station to estimate wave height and support AI prediction. No hardware is described as deployment-ready until calibration, ingress, power, LTE, environmental and integration tests are complete.

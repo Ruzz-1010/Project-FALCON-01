@@ -5,16 +5,16 @@ python3 -m falcon_edge.service
 
 **Fullbright College's AI-powered Live Coastal Observation Network**
 
-Project FALCON is a Phase 1 coastal monitoring buoy prototype focused on two outcomes:
+Project FALCON is a Phase 1 coastal monitoring buoy proposal focused on two primary measurements:
 
-1. real-time coastal monitoring; and
-2. AI-assisted wave-height prediction 5–15 minutes ahead.
+1. pressure-derived wave monitoring; and
+2. wind speed and direction monitoring, with optional short-term wave-height prediction research.
 
 The AI scope is limited to short-term wave-height prediction and sea-condition classification as **Calm**, **Moderate**, or **Rough**.
 
 ## Source of Truth
 
-[PROJECT_CONTEXT.md v5.0](docs/PROJECT_CONTEXT.md) is the official engineering source of truth.
+[PROJECT_CONTEXT.md v8.0](docs/PROJECT_CONTEXT.md) is the official engineering source of truth.
 
 Working source code remains authoritative for what is currently implemented. Documentation describes both the verified prototype and the approved Phase 1 target; it does not turn planned hardware into implemented hardware.
 
@@ -74,17 +74,13 @@ Marine Sensors -> ESP32 -> UART / Wi-Fi -> Orange Pi Zero 3 (4GB)
 
 Cloud connectivity is Future Expansion and is not required for Phase 1 operation.
 
-## Approved Sensor Set
+## Approved Primary Sensor Set
 
-- BNO085 IMU;
-- water-pressure sensor;
-- wind-speed sensor;
-- wind-direction sensor;
-- GPS module;
-- battery monitor;
-- solar monitor;
-- internal-temperature sensor;
-- and optional water-temperature sensor.
+- water-pressure sensor for pressure-derived wave estimation;
+- wind-speed sensor; and
+- wind-direction sensor.
+
+GPS, battery/solar status, timestamps, and security states are supporting system telemetry only. Water temperature, BNO085, salinity, conductivity, and other environmental sensors are excluded from Phase 1.
 
 pH, salinity, turbidity, dissolved oxygen, rain, UV, cameras, hydrophones, current meters, and Water Quality Index inputs are Future Expansion.
 

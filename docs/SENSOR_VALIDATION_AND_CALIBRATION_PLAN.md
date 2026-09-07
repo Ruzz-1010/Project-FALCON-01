@@ -116,26 +116,13 @@ The Bar02 rear electronics must stay dry, and its gel sensor must receive the ma
 
 Failure to close this gate blocks an unattended long-duration deployment claim.
 
-## 7. Temperature validation
+## 7. Supporting telemetry boundary
 
-### 7.1 Water-temperature probe
-
-The deployment candidate is Blue Robotics Celsius R2. The Adafruit DS18B20 PID 381 is bench-only.
-
-1. Place the candidate and reference thermometer together in a stirred bath without touching the container.
-2. Test at least three stable points spanning expected local water conditions; suggested points are approximately 15, 25 and 35 °C where safe and relevant.
-3. Wait for stability, then record at least 30 paired samples per point.
-4. Repeat one point after completing the sequence to check drift/repeatability.
-5. Calculate mean error, maximum absolute error and standard deviation.
-6. Separately leak-test the final probe/bulkhead arrangement before electronics are installed.
-
-**Proposed pass:** Celsius R2 maximum absolute verification error ≤0.3 °C and repeat-point difference ≤0.2 °C. A bench DS18B20 target is ≤0.7 °C, but passing does not make PID 381 suitable for salt-water or long-term immersion.
-
-### 7.2 MCP9808 enclosure temperature
-
-Test the MCP9808 beside the reference in stable room, warm-enclosure and cool-enclosure conditions. Then repeat with converters and the LTE modem operating normally to detect placement bias.
-
-**Proposed pass:** maximum absolute verification error ≤0.5 °C after stabilization; no local heat-source bias greater than 2 °C compared with representative enclosure air. If bias exceeds 2 °C, relocate the sensor rather than masking the issue with a large software offset.
+Water temperature and other environmental sensors are excluded from the Phase 1
+measurement claim. GPS, battery/solar readings, timestamps, and optional security
+inputs are supporting telemetry only. Validate them for availability, stale-state
+handling, power impact, and security behavior as needed for system operation; do
+not report them as additional environmental research outputs.
 
 ## 8. Wind validation
 
@@ -295,7 +282,7 @@ The required AI feature predicts future estimated wave height at the Bay Station
 ## 17. Final deployment release checklist
 
 - [ ] Every required sensor reached at least L4 and has an approved L5 field-trial plan.
-- [ ] Exact water-temperature probe and installation approved; DS18B20 not misrepresented.
+- [ ] No excluded environmental sensor is included in the Phase 1 procurement or validation release.
 - [ ] Bar02 drying/service limitation closed or sensor replaced.
 - [ ] Pressure-to-wave method independently validated and labeled as an estimate.
 - [ ] GPS geofence based on measured site scatter and persistence.

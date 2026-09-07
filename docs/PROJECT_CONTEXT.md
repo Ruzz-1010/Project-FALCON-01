@@ -1,4 +1,4 @@
-# Project FALCON Master Context v7.0 — Bay Station Baseline
+# Project FALCON Master Context v8.0 — Wave and Wind Bay Station Baseline
 
 ## Document control
 
@@ -16,20 +16,20 @@
 | Adviser revision | 2026-08-29 |
 | Physical prototype | UNDER REDESIGN; geometry and placement TBD |
 
-This file supersedes older Orange Pi-on-buoy, USB-only deployment, BNO085, and anchor-chain load-cell descriptions. The Bay Station AI predictor is required, but its trained model and accuracy remain unvalidated. Working code remains the authority for implemented behavior. Planned hardware must not be described as installed or field-validated.
+This file supersedes older Orange Pi-on-buoy, USB-only deployment, BNO085, anchor-chain load-cell, and multi-environmental-sensor descriptions. The Bay Station AI predictor is required, but its trained model and accuracy remain unvalidated. Working code remains the authority for implemented behavior. Planned hardware must not be described as installed or field-validated.
 
 The system-function baseline remains approved, but the physical and visual prototype is being replaced. `PROTOTYPE_REDESIGN_BASELINE.md` governs that work. Existing CAD, renderings, dashboard models, dimensions, enclosure layouts, solar arrangements, and component positions are reference material only until the replacement passes its acceptance checklist.
 
 ## Project definition
 
-Project FALCON is a low-cost, modular, solar-powered coastal observation buoy intended to collect near-real-time coastal, position, power, security, and system-health data. An ESP32 buoy node acquires and validates sensor readings, maintains local security logic, buffers short communication outages, and sends versioned telemetry through an approved LTE/cellular link. A shore-based Bay Station mini PC stores records, performs pressure-based wave processing and AI prediction, serves the REST API/dashboard, and manages alerts. No mini PC is installed on the buoy.
+Project FALCON is a low-cost, modular, solar-powered coastal observation buoy intended to measure two primary phenomena: pressure-derived wave conditions and wind. An ESP32 buoy node acquires and validates those measurements, adds required supporting telemetry such as timestamps, position, power state, and connection health, buffers short communication outages, and sends versioned telemetry through an approved LTE/cellular link. A shore-based Bay Station mini PC stores records, performs pressure-based wave processing and AI prediction, serves the REST API/dashboard, and manages alerts. No mini PC is installed on the buoy.
 
 The core undergraduate contribution is the integration and evaluation of an accessible local coastal-monitoring prototype. The system estimates wave height from calibrated underwater-pressure variations. It does not claim direct laboratory-grade wave measurement, official forecasting, navigation control, or disaster-warning capability.
 
 ## Objectives
 
 1. Design a serviceable solar-powered coastal buoy with passive single-anchor mooring.
-2. Acquire timestamped pressure, GPS, wind, environmental, power, security, and health readings.
+2. Acquire timestamped pressure and wind measurements with supporting position, power, security, and health telemetry.
 3. Filter and calibrate underwater pressure to produce an explicitly labeled estimated wave height.
 4. Detect persistent GPS geofence, vibration/tamper, and enclosure-access events without treating normal wave motion as theft.
 5. Transmit telemetry to a shore Bay Station for SQLite storage, processing, alerts, and a simple four-page dashboard.
@@ -38,14 +38,16 @@ The core undergraduate contribution is the integration and evaluation of an acce
 
 ## Research gap and novelty
 
-Many low-cost educational systems demonstrate individual marine sensors or generic IoT dashboards. Commercial observation buoys may be inaccessible to small schools because of acquisition cost, proprietary interfaces, and maintenance requirements. FALCON investigates an affordable local-first combination of pressure-based wave estimation, environmental sensing, solar power, local logging, geofence/tamper monitoring, and a transparent dashboard for controlled Philippine coastal trials. Novelty must be claimed as integration and evaluation, not invention of the sensors or official ocean forecasting.
+Many low-cost educational systems demonstrate individual marine sensors or generic IoT dashboards. Commercial observation buoys may be inaccessible to small schools because of acquisition cost, proprietary interfaces, and maintenance requirements. FALCON investigates an affordable local-first combination of pressure-based wave estimation and wind monitoring, supported by solar power, local logging, security telemetry, and a transparent dashboard for controlled Philippine coastal trials. Novelty must be claimed as integration and evaluation, not invention of the sensors or official ocean forecasting.
 
 ## Approved Phase 1 architecture
 
 ```text
-Pressure / GPS / wind / environment / power / security sensors
+Pressure / wind sensors
                               |
                             ESP32
+                              |
+              supporting GPS / power / security telemetry
                               |
                     LTE/cellular telemetry
                               |
@@ -61,17 +63,18 @@ The deployed path requires available cellular coverage between the buoy and Bay 
 
 ## Sensor baseline
 
-### Core sensors
+### Primary project sensors
 
 - Blue Robotics Bar02 or compatible waterproof pressure sensor: raw pressure and pressure-based wave estimation.
-- GPS receiver: coordinates, fix quality, time, and geofence displacement.
 - Wind-speed sensor: local wind-speed context.
 - Wind-direction sensor: local wind-direction context.
 
-### Supporting environmental sensor
+### Supporting system telemetry
 
-- Sealed DS18B20: water temperature with timestamp, validity, freshness, and reference-comparison status.
-- Conductivity/salinity sensing is excluded from the required Phase 1 scope. Legacy API fields may remain temporarily for backward compatibility but are not displayed or evaluated.
+- GPS receiver: position, time, and geofence state required for deployment and security; it is not a primary environmental measurement.
+- Battery and solar voltage/current/state: power-health telemetry required to evaluate autonomy; these are not additional environmental sensors.
+- Enclosure temperature, tamper input, and enclosure switch: optional system-health/security inputs, not project measurement objectives.
+- Water temperature, conductivity, salinity, and other environmental channels are excluded from the required Phase 1 scope. Legacy API fields may remain temporarily for software compatibility but are not displayed, procured, or evaluated.
 
 ### System-health sensors
 
@@ -176,7 +179,7 @@ Not yet physically validated:
 - pressure-to-wave calibration coefficients and reference accuracy;
 - real GPS geofence false-positive performance;
 - tamper component selection and debounce thresholds;
-- water-temperature reference comparison;
+- confirmation that excluded environmental channels are absent from the Phase 1 release;
 - full waterproofing, corrosion protection, power autonomy, and coastal endurance;
 - selected LTE/cellular modem integration and shore Bay Station installation;
 - field-trained or field-validated AI.
@@ -185,7 +188,7 @@ Not yet physically validated:
 
 1. Bench-test each sensor independently and record raw values, units, range, and failures.
 2. Calibrate pressure zero/baseline and compare estimated wave height with a documented physical reference.
-3. Compare the sealed DS18B20 with a traceable reference thermometer across the intended operating range.
+3. Compare wind speed and direction with suitable reference instruments across the intended operating range.
 4. Survey the GPS deployment reference and test inside/outside geofence persistence.
 5. Test vibration and enclosure inputs under ordinary wave-like motion and deliberate tampering; record false positives/negatives.
 6. Measure cellular packet loss, latency, coverage, reconnect/buffered retransmission, duplicate prevention, stale-data behavior, storage retention, and restart recovery.
@@ -200,7 +203,7 @@ FALCON does not provide tsunami, typhoon, storm, or weather prediction; autonomo
 ## Immediate priorities
 
 1. Define and review the proposed replacement prototype using `PROTOTYPE_REDESIGN_BASELINE.md`.
-2. Select exact pressure, GPS, wind, water-temperature, tamper, enclosure-switch, and power-interface parts.
+2. Select exact pressure and wind parts, then select only the supporting GPS, power, tamper, enclosure-switch, and telemetry interfaces required for operation.
 3. Freeze component placement, pinout, wiring, and PCB only after electrical and physical-fit review.
 4. Implement physical pressure acquisition and a documented calibration routine.
 5. Implement security persistence/debounce on real hardware.

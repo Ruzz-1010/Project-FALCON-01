@@ -1,4 +1,4 @@
-# Project FALCON Local API v6.1
+# Project FALCON Local API v8.0
 
 Authority: [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md). Host: shore-based Bay Station mini PC or development laptop substitute. Format: UTF-8 JSON with ISO 8601 timestamps. Deployed buoy ingestion requires an authenticated LTE/cellular transport that remains pending exact modem/protocol selection.
 
@@ -28,9 +28,7 @@ Authority: [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md). Host: shore-based Bay Stati
   },
   "environment": {
     "windSpeed": 11.2,
-    "windDirection": "NE",
-    "waterTemperature": 28.2,
-    "enclosureTemperature": 34.0
+    "windDirection": "NE"
   },
   "gps": {},
   "power": {"battery": {}, "solar": {}},
@@ -65,7 +63,7 @@ Authority: [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md). Host: shore-based Bay Stati
 - `OFFLINE`: source is unavailable.
 - `OPTIONAL`: failure cannot interrupt the monitoring baseline.
 
-Unavailable readings are `null`, never a fabricated zero. Units and source must remain explicit.
+Unavailable readings are `null`, never a fabricated zero. Units and source must remain explicit. The active measurement contract is pressure-derived wave output plus wind speed/direction; GPS, power, and security sections are supporting telemetry.
 
 ## Compatibility endpoints
 
@@ -84,7 +82,7 @@ Unavailable readings are `null`, never a fabricated zero. Units and source must 
 
 ## Calibration channels
 
-Accepted Phase 1 calibration targets are `water-pressure`, `water-temperature`, `wind`, `gps`, `battery`, `solar`, and `security`. The legacy `salinity` field/target may remain temporarily for backward compatibility but is excluded from the required dashboard, hardware baseline, and evaluation. BNO085 and mooring-tension channels are not part of the approved primary contract.
+Accepted Phase 1 calibration targets are `water-pressure` and `wind`; GPS, battery, solar, and security checks are supporting telemetry validation. Legacy environmental fields and targets may remain temporarily for backward compatibility but are excluded from the required dashboard, hardware baseline, and evaluation. BNO085 and mooring-tension channels are not part of the approved primary contract.
 
 ## Errors
 

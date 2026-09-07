@@ -1,4 +1,4 @@
-# Current Project Documentation v6.1
+# Current Project Documentation v8.0
 
 Project FALCON is now a pressure-based smart coastal observation buoy. The authoritative scope, architecture, sensor groups, truthful claims, validation requirements, and implementation status are in [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md).
 
@@ -10,21 +10,21 @@ Project FALCON is now a pressure-based smart coastal observation buoy. The autho
 - SQLite telemetry, alerts, prediction compatibility records, and operator events.
 - Grouped `/api/telemetry/current` contract plus legacy endpoints.
 - Pressure fields, simulated wave estimate, geofence/tamper scenarios, deterministic alerts, and rule-based assistant.
-- Water-temperature monitoring through a sealed DS18B20; physical reference comparison remains pending.
-- Responsive four-page dashboard: Overview, Buoy Motion, Sensors, Logs & Alerts; settings is an icon. GPS/security is grouped under Sensors and summarized on Overview.
+- Wave and wind monitoring data paths, with GPS/power/security retained only as supporting system telemetry.
+- Responsive four-page dashboard: Overview, Buoy Motion, Sensors, Logs & Alerts; settings is an icon. Supporting telemetry is grouped separately from the primary wave and wind channels.
 
 ## Current physical status
 
-Most final sensors, LTE modem, shore Bay Station mini PC, revised PCB, waterproof enclosure, solar system, and complete buoy have not been physically integrated or field-validated. The current simulator is for software demonstration. The pressure-to-wave method, water-temperature channel, geofence/tamper thresholds, cellular recovery, and AI accuracy require controlled testing.
+Most final sensors, LTE modem, shore Bay Station mini PC, revised PCB, waterproof enclosure, solar system, and complete buoy have not been physically integrated or field-validated. The current simulator is for software demonstration. The pressure-to-wave method, wind channels, geofence/tamper thresholds, cellular recovery, and AI accuracy require controlled testing.
 
-The physical and visual prototype is now **under redesign**. All existing mechanical CAD, dimensions, enclosure layouts, component placements, renders, dashboard models, and video reference images are retained only as references until replaced and approved under [PROTOTYPE_REDESIGN_BASELINE.md](PROTOTYPE_REDESIGN_BASELINE.md).
+The physical and visual prototype is now **under redesign**. All existing mechanical CAD, dimensions, enclosure layouts, component placements, renders, dashboard models, and video reference images are retained only as references until replaced and approved under [PROTOTYPE_REDESIGN_BASELINE.md](PROTOTYPE_REDESIGN_BASELINE.md). The reduced wave-and-wind sensor scope is the only current proposal baseline.
 
 ## Adviser changes applied
 
 - BNO085 removed from the required Phase 1 baseline; old motion files remain only as deprecated optional prototypes.
 - Load cell/HX711 and anchor-chain tension sensing removed.
 - Pressure sensor is the primary wave input; output is **estimated wave height**.
-- Sealed DS18B20 water-temperature channel retained; conductivity/salinity removed from the required Phase 1 scope.
+- Water-temperature, conductivity, and salinity channels removed from the required Phase 1 scope.
 - GPS geofence, tamper input, enclosure switch, and buzzer security concept added.
 - AI wave prediction made a required, always-visible Overview feature while remaining isolated from live monitoring failures.
 - Dashboard consolidated to four primary pages; GPS/security moved into Sensors while retaining motion as an optional visualization.

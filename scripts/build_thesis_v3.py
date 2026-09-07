@@ -96,9 +96,9 @@ def build() -> None:
     document.add_page_break()
 
     heading(document, "Executive Summary")
-    paragraph(document, "Project FALCON-01 is a low-cost, modular, solar-powered smart coastal observation buoy designed for near-real-time local monitoring. An ESP32 acquires pressure, position, wind, environmental, power, system-health, and security data. The ESP32 sends validated telemetry through USB serial/UART to an Orange Pi Zero 3, which stores records locally, exposes a REST API, and serves a responsive browser dashboard without requiring Internet connectivity.")
+    paragraph(document, "Project FALCON-01 is a low-cost, modular, solar-powered smart coastal observation buoy designed for near-real-time local monitoring. The primary measurements are underwater pressure for estimated wave height and wind speed/direction. GPS, power, timestamp, and security values are supporting system telemetry. The ESP32 sends validated telemetry through USB serial/UART to an Orange Pi Zero 3, which stores records locally, exposes a REST API, and serves a responsive browser dashboard without requiring Internet connectivity.")
     paragraph(document, "The adviser-revised Phase 1 study uses a Blue Robotics Bar02 or compatible waterproof pressure sensor as the primary wave input. The device directly measures underwater pressure variation. Software preserves raw pressure, filters noise, establishes a documented baseline, and converts the dynamic pressure component into an estimated wave-height value. The project therefore uses the wording pressure-based estimated wave height and does not claim that the pressure sensor directly measures laboratory-grade wave height.")
-    paragraph(document, "The required BNO085 IMU and anchor-chain load-cell/HX711 concepts have been removed from the primary design to keep the undergraduate scope achievable. The buoy uses passive mooring with adequate line scope for tides and normal wave motion. Security is provided by persistent GPS geofence monitoring, a generic vibration/tamper input, an enclosure reed or limit switch, and a buzzer. Artificial intelligence is optional and supporting; all core monitoring, logging, security, and visualization functions operate without it.")
+    paragraph(document, "The required BNO085 IMU, water-temperature, and anchor-chain load-cell/HX711 concepts have been removed from the primary design to keep the undergraduate scope achievable. The buoy uses passive mooring with adequate line scope for tides and normal wave motion. GPS, power, and security values remain supporting telemetry. Artificial intelligence is optional and supporting; all core wave and wind monitoring functions operate without it.")
 
     heading(document, "1. Project Background")
     paragraph(document, "The Philippines has extensive coastlines that support fisheries, transport, tourism, education, environmental research, and community livelihoods. Localized coastal conditions can differ from broader forecasts, yet continuous observation equipment may be difficult for small schools and communities to acquire and maintain. Commercial oceanographic buoys provide professional measurements but can involve high cost, proprietary systems, specialized servicing, and infrastructure beyond the resources of an undergraduate project.")
@@ -110,7 +110,7 @@ def build() -> None:
         "How can a low-cost solar-powered buoy acquire and retain near-real-time coastal measurements using an ESP32 and local Orange Pi edge computer?",
         "How accurately and repeatably can calibrated underwater-pressure variation be processed into an estimated wave-height signal under controlled conditions?",
         "How reliably can GPS geofence, vibration/tamper, and enclosure-access rules detect persistent security events without being triggered by normal wave movement?",
-        "How clearly can a simplified four-page local dashboard communicate wave, environment, GPS, power, security, health, and alert information with minimal navigation for non-technical users?",
+        "How clearly can a simplified four-page local dashboard communicate wave, wind, supporting telemetry, security, and alert information with minimal navigation for non-technical users?",
         "How does the prototype perform in sensor accuracy, communication reliability, dashboard usability, energy use, data retention, and system recovery?",
         "If optional AI is evaluated, does it improve a documented baseline without interrupting the core monitoring system?",
     ])
@@ -124,7 +124,7 @@ def build() -> None:
     paragraph(document, "To design, develop, and evaluate a low-cost solar-powered smart coastal observation buoy that provides local real-time coastal monitoring and pressure-based estimated wave height through an ESP32–Orange Pi architecture and responsive web dashboard.")
     heading(document, "4.2 Specific Objectives", 2)
     numbered(document, [
-        "Integrate pressure, GPS, wind, environmental, power, system-health, and security channels using documented interfaces and calibration states.",
+        "Integrate pressure and wind channels using documented interfaces and calibration states, with supporting GPS, power, timestamp, and security telemetry.",
         "Develop a traceable pipeline that retains raw and filtered pressure, baseline, optional depth, estimated wave height, validity, timestamp, and calibration metadata.",
         "Implement persistent/debounced geofence, tamper, and enclosure security rules with SECURE, WARNING, ALERT, and DISARMED states.",
         "Implement local serial ingestion, SQLite storage, REST API, logs, alerts, and automatic service recovery on the Orange Pi.",
@@ -133,12 +133,12 @@ def build() -> None:
     ])
 
     heading(document, "5. Scope and Delimitations")
-    paragraph(document, "Phase 1 covers a single near-shore prototype, passive single-anchor mooring, local ESP32 acquisition, USB/UART transfer, Orange Pi local processing, pressure-based estimated wave height, core/supporting environmental readings, power monitoring, basic security, local logging, and a browser dashboard. Physical models marked TBD require selection before final wiring or procurement.")
+    paragraph(document, "Phase 1 covers a single near-shore prototype, passive single-anchor mooring, local ESP32 acquisition, USB/UART transfer, Orange Pi local processing, pressure-based estimated wave height, wind speed/direction, supporting telemetry, local logging, and a browser dashboard. Physical models marked TBD require selection before final wiring or procurement.")
     paragraph(document, "The study does not provide official weather, storm, typhoon, tsunami, navigation, or emergency warnings. It does not claim laboratory-grade water-quality analysis, professional oceanographic accuracy, autonomous navigation, satellite communication, camera AI, or multi-buoy operation. Internet connectivity is optional. AI wave prediction is an optional extension and not a required study outcome.")
 
     heading(document, "6. System Architecture")
     table(document, ["Layer", "Primary responsibility", "Failure behavior"], [
-        ["Sensors and interfaces", "Produce raw pressure, GPS, wind, environment, power, and security signals", "Invalid/unavailable values are reported, not replaced by zero"],
+        ["Sensors and interfaces", "Produce primary pressure and wind signals plus supporting telemetry", "Invalid/unavailable values are reported, not replaced by zero"],
         ["ESP32", "Acquire, timestamp, validate, debounce, apply calibration, frame serial telemetry", "Continues acquisition if Orange Pi is unavailable"],
         ["Orange Pi Zero 3", "Ingest, filter, estimate waves, apply geofence rules, store, serve API/dashboard", "Restarts services and preserves local records where possible"],
         ["Dashboard", "Display current state, sensors, logs, alerts, and optional assistant", "Shows OFFLINE/STALE instead of fabricated data"],
@@ -148,11 +148,8 @@ def build() -> None:
     heading(document, "7. Hardware Components")
     table(document, ["Group", "Component", "Purpose and status"], [
         ["Core", "Bar02 or compatible pressure sensor", "Raw pressure and calibrated estimated wave height; selected family"],
-        ["Core", "GPS receiver", "Position, time, fix quality, geofence; exact model TBD"],
-        ["Core", "Wind speed/direction", "Local wind context; exact models TBD"],
-        ["Supporting", "Sealed DS18B20", "Water temperature; reference comparison required"],
-        ["Health", "Battery, solar, enclosure temperature", "Energy and electronics health; exact interfaces verified before fabrication"],
-        ["Security", "GPS geofence, tamper input, enclosure switch, buzzer", "Debounced/persistent anti-theft awareness; exact hardware TBD where stated"],
+        ["Primary", "Wind speed/direction", "Primary wind measurement; exact models TBD"],
+        ["Supporting", "GPS, battery, solar, timestamp, and security telemetry", "Position, power, and operational context; not additional project measurements"],
         ["Controller", "ESP32 DevKit", "Deterministic sensor acquisition and serial telemetry"],
         ["Edge", "Orange Pi Zero 3 (4 GB)", "Local database, API, dashboard, optional AI"],
     ])
@@ -223,7 +220,7 @@ def build() -> None:
     heading(document, "16. Development Roadmap")
     numbered(document, [
         "Approve exact component models and datasheets.", "Freeze the adviser-approved electrical interfaces and revised PCB.",
-        "Bench-integrate Bar02, GPS, wind, DS18B20, health, and security channels.",
+        "Bench-integrate Bar02 and wind channels, then verify the required supporting telemetry and security interfaces.",
         "Complete pressure/environment/security calibration and controlled reference tests.",
         "Install and harden Orange Pi automatic services.", "Complete enclosure, solar, mooring, and safe controlled water trials.",
         "Analyze results and revise claims based on evidence.", "Evaluate optional AI only if sufficient calibrated data and time remain.",

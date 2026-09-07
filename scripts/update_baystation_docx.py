@@ -24,6 +24,48 @@ DCTERMS = "{http://purl.org/dc/terms/}"
 
 
 REPLACEMENTS = {
+    "The buoy contains only the ESP32 controller, approved sensors, LTE/cellular telemetry hardware, battery/solar power subsystem, and security electronics.":
+        "The buoy contains only the ESP32 controller, pressure and wind sensors, supporting GPS/power/security telemetry, LTE/cellular hardware, and the battery/solar subsystem.",
+    "Many low-cost monitoring prototypes demonstrate sensors and dashboards but do not provide a complete serviceable platform that combines traceable pressure-based wave estimation, local environmental data, power autonomy, local data retention, and basic anti-theft/tamper awareness.":
+        "Many low-cost monitoring prototypes demonstrate sensors and dashboards but do not provide a complete serviceable platform that combines traceable pressure-based wave estimation, wind monitoring, power autonomy, local data retention, and basic anti-theft/tamper awareness.",
+    "1. Integrate pressure, GPS, wind, environmental, power, system-health, and security channels using documented interfaces and calibration states.":
+        "1. Integrate pressure and wind channels using documented interfaces and calibration states, with GPS, power, timestamp, and security values retained as supporting telemetry.",
+    "Phase 1 covers a single near-shore prototype, passive single-anchor mooring, ESP32-based onboard acquisition, LTE/cellular data telemetry, pressure-based estimated wave height, core/supporting environmental readings, onboard power monitoring, basic security, short-term outage buffering, and a shore-based Bay Station mini PC that hosts processing, storage, API services, the browser dashboard, alerts, and AI short-term wave-height prediction.":
+        "Phase 1 covers a single near-shore prototype, passive single-anchor mooring, ESP32-based acquisition, LTE/cellular data telemetry, pressure-based estimated wave height, wind speed/direction, supporting telemetry, basic security, short-term outage buffering, and a shore-based Bay Station mini PC that hosts processing, storage, API services, the browser dashboard, alerts, and AI short-term wave-height prediction.",
+    "Sealed DS18B20\nWater temperature; reference comparison required":
+        "Supporting GPS/power/security telemetry\nPosition, operational state, and power context; not a primary measurement",
+    "Sealed DS18B20":
+        "Supporting GPS/power/security telemetry",
+    "Water temperature; reference comparison required":
+        "Position, operational state, and power context; not a primary measurement",
+    "7.1 Water Temperature Monitoring":
+        "7.1 Primary Wave and Wind Measurement",
+    "FALCON includes a sealed DS18B20 supporting sensor that reports water temperature in degrees Celsius. This channel provides environmental context and does not constitute laboratory-grade water-quality analysis.":
+        "FALCON's required measurement scope is limited to pressure-derived wave estimation and wind speed/direction. Water temperature and other environmental channels are excluded from Phase 1.",
+    "Sealed DS18B20\nWater temperature (°C), timestamp, validity, and freshness":
+        "Wind speed/direction\nPrimary wind measurement with timestamp, validity, and freshness",
+    "Water temperature (°C), timestamp, validity, and freshness":
+        "Wind speed/direction timestamp, validity, and freshness",
+    "The dashboard displays this channel under Water. Exact model identification, sampling, freshness, validity, and reference-comparison status remain available in expanded technical details.":
+        "The dashboard displays wave/pressure and wind channels as the primary measurements. Supporting telemetry remains available in expanded technical details.",
+    "1. Overview: one large estimated-wave chart with a clearly labeled AI comparison line, a separate short-term prediction card, and one Station Status summary for wind, pressure, GPS security, battery, solar, and water/enclosure temperature.":
+        "1. Overview: one large estimated-wave chart with a clearly labeled AI comparison line, a separate short-term prediction card, and one Station Status summary for wind, pressure, supporting GPS/security, and power telemetry.",
+    "4. Complete pressure/environment/security calibration and controlled reference tests.":
+        "4. Complete pressure/wind calibration and controlled reference tests, with supporting security checks.",
+    "The expected output is a documented, serviceable research prototype consisting of a low-power solar buoy sensing node and a shore-based Bay Station. The buoy provides traceable coastal readings, pressure-based estimated wave height inputs, GPS/security awareness, and cellular telemetry; the Bay Station provides persistent records, processing, alerts, and a usable dashboard.":
+        "The expected output is a documented, serviceable research prototype consisting of a low-power solar buoy sensing node and a shore-based Bay Station. The buoy provides pressure-derived wave estimates, wind observations, supporting GPS/security telemetry, and cellular telemetry; the Bay Station provides persistent records, processing, alerts, and a usable dashboard.",
+    "3. Bench-integrate Bar02, GPS, wind, DS18B20, power/security channels, ESP32, and the selected cellular modem.":
+        "3. Bench-integrate Bar02 and wind channels, then verify the supporting GPS, power, security, ESP32, and cellular telemetry interfaces.",
+    "The Sensors page does not display one card per physical device. Individual devices are grouped into six user-facing categories: (1) Wave & Pressure, (2) GPS & Security, (3) Wind, (4) Water, (5) Power, and (6) System.":
+        "The Sensors page does not display one card per physical device. Individual devices are grouped into three user-facing categories: (1) Wave & Pressure, (2) Wind, and (3) Supporting Telemetry.",
+    "3. Sensors: six grouped user-facing cards—Wave & Pressure, GPS & Security, Wind, Water, Power, and System.":
+        "3. Sensors: three grouped user-facing cards—Wave & Pressure, Wind, and Supporting Telemetry.",
+    "Pressure, GPS, wind, water, power, and security sensors":
+        "Pressure and wind sensors, with supporting GPS, power, and security telemetry",
+    "Acquire sealed-probe water temperature with explicit validity and freshness states.":
+        "Acquire pressure and wind measurements with explicit validity, calibration, and freshness states.",
+    "DS18B20 reference comparison, stale/disconnect tests, and correct dashboard labels.":
+        "Pressure-reference and wind-instrument comparison, stale/disconnect tests, and correct dashboard labels.",
     "V3.6 — MINI PC BAY STATION + AI PREDICTION ARCHITECTURE":
         "V3.7 — SHORE BAY STATION + LTE/CELLULAR + AI PREDICTION ARCHITECTURE",
     "Design and Development of a Solar-Powered Smart Coastal Observation Buoy with Shore-Based AI for Real-Time Coastal Monitoring and Short-Term Wave-Height Prediction":
