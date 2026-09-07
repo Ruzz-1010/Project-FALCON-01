@@ -1,13 +1,14 @@
 # Software Architecture v6.1
 
 ```text
-Sensors -> ESP32 acquisition/validation -> LTE/cellular telemetry -> Internet
+Sensors -> ESP32 acquisition/validation -> LTE/cellular primary or LoRa fallback
+-> shore gateway/network -> Internet
 -> shore Bay Station ingestion -> pressure processing -> SQLite + AI -> REST API -> four-page dashboard
 ```
 
-The ESP32 performs deterministic acquisition, engineering-unit/range checks, security debounce, watchdog handling, versioned telemetry framing, and short-outage buffering. It must continue sensing and local security when cellular connectivity or the Bay Station is unavailable. USB serial remains a bench transport until the LTE path is selected and implemented.
+The ESP32 performs deterministic acquisition, engineering-unit/range checks, security debounce, watchdog handling, versioned telemetry framing, link selection, and short-outage buffering. It attempts LTE/cellular first, uses LoRa only when a verified shore gateway is reachable and LTE is unavailable, and continues sensing/local security while both links are unavailable. USB serial remains a bench transport until the deployed links are selected and implemented.
 
-The shore Bay Station performs authenticated ingestion, stale-data detection, pressure filtering/wave estimation, event aggregation, SQLite storage, API/dashboard hosting, alerts, and required isolated AI prediction. The final mini PC, LTE modem, transport protocol, authentication, and deployment network remain selection gates.
+The shore Bay Station performs authenticated ingestion, stale-data detection, pressure filtering/wave estimation, event aggregation, SQLite storage, API/dashboard hosting, alerts, and required isolated AI prediction. The final mini PC, LTE modem, LoRa module/gateway, transport protocol, authentication, and deployment network remain selection gates.
 
 Primary software sections follow the grouped schema: `system`, `wave`, `environment`, `gps`, `power`, `security`, `health`, `assistant`, and `alerts`. Missing values stay null. Every value carries or inherits timestamp, source, state, and units.
 

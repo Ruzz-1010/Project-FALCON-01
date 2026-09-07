@@ -17,8 +17,8 @@ Marine environment
   -> pressure and wind sensors
   -> protected sensor interfaces
   -> ESP32 acquisition and validation
-  -> approved LTE/cellular modem
-  -> mobile network
+  -> LTE/cellular primary or optional LoRa fallback
+  -> mobile network or shore LoRa gateway
   -> shore Bay Station
   -> database, pressure-derived wave estimate, AI prediction, dashboard and alerts
 
@@ -51,7 +51,8 @@ Enclosure switch and optional tamper accelerometer
 | Enclosure-open state | **Adafruit magnetic contact switch, PID 375 — Recommended prototype selection** | Dry contact to filtered/debounced GPIO; fail-safe wiring preferred | Normally open; closes when magnet is within approximately 13 mm; 100 mA maximum contact rating | Inside the dry enclosure or behind a properly sealed mechanical interface | Verify open/closed logic, magnet alignment, cable fault behavior, hardware/firmware debounce, and false alarms during vibration. The consumer ABS part has no claimed marine enclosure rating. |
 | Vibration/tamper aid | **Adafruit LIS3DH breakout, PID 2809 — Optional security candidate** | 3-axis accelerometer; I2C or SPI; use `0x19` or SPI to avoid the MCP9808 `0x18` address | ±2/4/8/16 g selectable range; motion, tap and free-fall functions | Rigidly mounted to the electronics tray if later approved | Not used for wave-height estimation and not required for the Motion page. Ordinary wave motion can cause false tamper events; thresholds and persistence must be learned in supervised tests. |
 | Security buzzer | **TBD** | ESP32 GPIO through a transistor/MOSFET driver; flyback protection if inductive | Voltage, current, sound pressure, duty cycle and environmental rating unresolved | Inside or through an approved acoustic/sealed interface | Select only after electrical load, audibility, nuisance-alarm and enclosure tests. Do not drive directly from an ESP32 GPIO. |
-| Cellular telemetry | **Waveshare SIM7600G-H 4G HAT — Proposed communication candidate, not a sensor and not frozen** | Separate regulated 5 V branch; USB or level-compatible UART | Global LTE bands; board provides CP2102 USB-UART and configurable UART level translation | Inside dry RF-aware enclosure with external antenna system | Confirm Philippine carrier bands and site coverage, antenna placement, SIM/APN, peak current, brownout recovery, reconnect, data buffering, temperature and power consumption before approval. |
+| Cellular telemetry | **Waveshare SIM7600G-H 4G HAT — Proposed primary communication candidate, not a sensor and not frozen** | Separate regulated 5 V branch; USB or level-compatible UART | Global LTE bands; board provides CP2102 USB-UART and configurable UART level translation | Inside dry RF-aware enclosure with external antenna system | Confirm Philippine carrier bands and site coverage, antenna placement, SIM/APN, peak current, brownout recovery, reconnect, data buffering, temperature and power consumption before approval. |
+| LoRa fallback telemetry | **Exact buoy radio and shore gateway TBD — Optional fallback** | SPI/UART on buoy; gateway network uplink at shore | Regional frequency, antenna, range, packet size, and data rate require approval | Buoy radio inside enclosure; shore gateway at elevated, clear-view location | Verify legal regional band, line of sight, obstruction margin, packet loss, latency, gateway power, and failover behavior. LoRa is not a general Internet link. |
 
 ## 5. Removed and excluded devices
 

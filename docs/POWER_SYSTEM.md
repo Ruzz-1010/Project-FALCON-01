@@ -7,7 +7,7 @@ The buoy and shore Bay Station are separate power domains. No mini PC is install
 ```text
 Solar panel -> LiFePO4-compatible MPPT -> 12.8 V LiFePO4 battery
              -> fused disconnect/distribution -> protected regulated rails
-             -> ESP32 + sensors + LTE modem + security electronics
+             -> ESP32 + sensors + LTE modem + optional LoRa radio + security electronics
 ```
 
 The provisional starting point is a 12.8 V 20 Ah LiFePO4 battery (256 Wh nominal), an 80% usable-energy planning limit (204.8 Wh), and either a 40 W or 60 W solar candidate. These are design assumptions—not validated endurance claims.
@@ -52,4 +52,4 @@ in [POWER_CALCULATIONS.md](POWER_CALCULATIONS.md).
 
 The shore mini PC uses facility power or a separately engineered UPS. Measure its startup, idle, storage, dashboard, and AI loads separately. Never include Bay Station energy in the buoy battery/solar calculation.
 
-Final panel, MPPT, battery, converter, fuse, and wire selections remain `TBD` until the LTE modem and all installed buoy loads are frozen and bench measured.
+Final panel, MPPT, battery, converter, fuse, and wire selections remain `TBD` until the LTE modem, optional LoRa radio, and all installed buoy loads are frozen and bench measured.

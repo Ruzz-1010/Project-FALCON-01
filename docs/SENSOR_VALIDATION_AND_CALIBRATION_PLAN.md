@@ -209,6 +209,21 @@ The LTE candidate must pass:
 
 **Proposed pass:** no ESP32 or modem brownout; ≥99% of generated test records eventually received after planned outages; no duplicate record accepted by the database; reconnect succeeds in at least 29 of 30 automated cycles, with the remaining cycle recoverable by the documented watchdog procedure.
 
+### 12.1 LoRa fallback link
+
+If the fallback is approved, install a shore LoRa receiver/gateway at the intended
+Bay Station site. Record regional frequency/band configuration, antenna height,
+line of sight, obstructions, spreading factor/data rate, transmit power, packet
+size, and gateway power state. Test the buoy-to-shore path at representative
+distances and with ordinary obstructions. LoRa is a compact telemetry fallback,
+not a general Internet link; it must not be credited with coverage beyond the
+tested gateway path.
+
+**Proposed pass:** link selection attempts LTE first, uses LoRa only after LTE is
+unavailable and the gateway is reachable, and buffers records if both links fail.
+The test must report packet loss, latency, duplicate handling, gateway restart
+recovery, and timestamp preservation.
+
 ## 13. Integrated system scenarios
 
 | ID | Scenario | Expected behavior |

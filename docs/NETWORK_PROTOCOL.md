@@ -44,7 +44,9 @@ alternate development transport.
 
 ## Future Expansion
 Add checksum/framing beyond newline JSON if field error testing demonstrates the
-need, plus authenticated LoRa/cellular transport and explicit time synchronization.
+need, plus authenticated LTE/LoRa transport, explicit link-priority/failover
+status, and time synchronization. LTE is attempted first; LoRa requires a
+reachable shore gateway; both-link failure is represented by local buffering.
 
 An optional camera requires a separate authenticated streaming path and must not
 delay or congest safety-relevant telemetry. See

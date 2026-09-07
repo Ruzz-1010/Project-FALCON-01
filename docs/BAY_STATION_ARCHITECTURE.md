@@ -6,7 +6,7 @@ Authority: `PROJECT_CONTEXT.md` and `THESIS DOCUMENTATION/BayStation.docx`.
 
 ```text
 Buoy sensors -> ESP32 acquisition/validation/security/buffer
-             -> approved LTE/cellular modem -> mobile network/Internet
+             -> LTE/cellular primary OR LoRa fallback -> shore gateway/network
              -> shore Bay Station mini PC
              -> ingestion + pressure processing + SQLite + alerts + AI
              -> REST API + four-page dashboard -> authorized user
@@ -21,6 +21,7 @@ No Orange Pi, Raspberry Pi, mini PC, database, or AI runtime is installed or pow
 - Run local geofence/tamper/enclosure debounce and buzzer rules.
 - Frame versioned telemetry with a unique packet identifier.
 - Buffer a defined number/duration of packets during link outages.
+- Select LTE first, then LoRa when a verified shore gateway is reachable and LTE is unavailable.
 - Reconnect and retransmit buffered packets without changing original timestamps.
 
 ## Bay Station responsibilities
@@ -35,11 +36,11 @@ No Orange Pi, Raspberry Pi, mini PC, database, or AI runtime is installed or pow
 
 ## Selection gates
 
-The exact mini PC, LTE modem, antenna, SIM/provider, transport protocol (for example HTTPS or MQTT over TLS), device authentication, retry policy, packet identifier, buffer capacity, cellular data budget, Bay Station network exposure, and UPS requirement remain `TBD`. USB serial is the current bench transport only and is not the approved deployed communications path.
+The exact mini PC, LTE modem, LoRa module/gateway, antenna, SIM/provider, transport protocol (for example HTTPS or MQTT over TLS), device authentication, retry policy, packet identifier, buffer capacity, cellular data budget, LoRa range, Bay Station network exposure, and UPS requirement remain `TBD`. USB serial is the current bench transport only and is not the approved deployed communications path.
 
 ## Failure and power boundaries
 
-- Cellular or Bay Station loss: ESP32 sensing and local security continue; telemetry is buffered.
+- LTE loss: ESP32 attempts the verified LoRa shore gateway; if LoRa is unavailable too, sensing and local security continue and telemetry is buffered.
 - Stale or uncalibrated inputs: wave estimate/AI output is withheld or explicitly qualified.
 - AI failure: acquisition, security, ingestion, storage, live display, and alerts continue.
 - Buoy solar/battery power covers only ESP32, sensors, LTE modem, security, and conversion losses.

@@ -196,7 +196,7 @@ Start here:
 
 ## Future Expansion
 
-Cloud synchronization, LTE, LoRa, satellite communication, multi-buoy networking, mobile applications, water-quality sensing, computer vision, additional AI models, and autonomous capabilities are outside Phase 1.
+Cloud synchronization, satellite communication, multi-buoy networking, mobile applications, water-quality sensing, computer vision, additional AI models, and autonomous capabilities are outside Phase 1. LTE is the primary telemetry path; optional LoRa fallback is included only if a shore gateway and tested radio path are approved.
 
 ## Revision History
 

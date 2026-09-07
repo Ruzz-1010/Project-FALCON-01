@@ -24,6 +24,24 @@ DCTERMS = "{http://purl.org/dc/terms/}"
 
 
 REPLACEMENTS = {
+    "LTE/cellular telemetry hardware":
+        "LTE/cellular telemetry hardware with an optional LoRa fallback radio",
+    "LTE/cellular data telemetry":
+        "LTE/cellular primary data telemetry with optional LoRa fallback",
+    "The exact final mini PC and cellular modem are subject to component approval.":
+           "The exact final mini PC, LTE modem and optional LoRa fallback, optional LoRa radio/gateway, and communication interfaces are subject to component approval.",
+    "The ESP32 continues sensing and security if cellular connectivity or the Bay Station is unavailable.":
+        "The ESP32 attempts LTE first, then a verified shore LoRa gateway; if both links are unavailable, it continues sensing/security and buffers telemetry for retransmission after reconnection.",
+    "If the cellular link is unavailable, the buoy continues sensing and security functions and retains a short-term telemetry buffer for retransmission after reconnection.":
+        "The ESP32 attempts LTE first, then a verified shore LoRa gateway; if both links are unavailable, it continues sensing/security and buffers telemetry for retransmission after reconnection.",
+    "The exact modem protocol and network provider remain subject to component and site-coverage selection.":
+        "The exact LTE modem, optional LoRa module/gateway, protocols, and network providers remain subject to component and site-coverage selection.",
+    "LTE/cellular modem integration":
+        "LTE/cellular modem and optional LoRa gateway integration",
+    "LTE modem":
+        "LTE modem and optional LoRa fallback",
+    "Cellular provider selection depends on deployment-site coverage.":
+        "Cellular provider selection and optional LoRa gateway placement depend on deployment-site coverage, radio range, and line-of-sight testing.",
     "The buoy contains only the ESP32 controller, approved sensors, LTE/cellular telemetry hardware, battery/solar power subsystem, and security electronics.":
         "The buoy contains only the ESP32 controller, pressure and wind sensors, supporting GPS/power/security telemetry, LTE/cellular hardware, and the battery/solar subsystem.",
     "Many low-cost monitoring prototypes demonstrate sensors and dashboards but do not provide a complete serviceable platform that combines traceable pressure-based wave estimation, local environmental data, power autonomy, local data retention, and basic anti-theft/tamper awareness.":
@@ -87,6 +105,10 @@ REPLACEMENTS = {
         "This V3.7 Shore Bay Station + LTE/Cellular + AI revision supersedes conflicting V2, earlier V3, and onboard-computer descriptions.",
     "The pressure sensor shall be rigidly mounted below the normal waterline at a known submerged depth on a protected fixed bracket or lower structural member. It shall not hang freely from the mooring chain or rope because uncontrolled sensor movement would add measurement noise and make installation depth uncertain.":
         "The pressure-sensor reference frame and mounting method remain an adviser approval gate. Controlled testing shall compare the approved buoy-mounted or stabilized mooring-referenced arrangement against an independent time-aligned wave reference. The sensor shall never hang freely; its depth, orientation, bracket, motion relative to the water surface, cable routing, and resulting measurement limitations must be documented.",
+    "The exact final mini PC, LTE modem and optional LoRa fallback and optional LoRa fallback, optional LoRa radio/gateway, and communication interfaces are subject to component approval.":
+        "The exact final mini PC, LTE modem, optional LoRa radio/gateway, and communication interfaces are subject to component approval.",
+    "The exact LTE modem and optional LoRa fallback and optional LoRa fallback, optional LoRa module/gateway, protocols, and network providers remain subject to component and site-coverage selection.":
+        "The exact LTE modem, optional LoRa module/gateway, protocols, and network providers remain subject to component and site-coverage selection.",
 }
 
 DUPLICATE = "Current Data uses the received estimate; Calm, Moderate, Rough, and Pressure Offline are clearly labeled local presentation presets that never modify stored or live telemetry."

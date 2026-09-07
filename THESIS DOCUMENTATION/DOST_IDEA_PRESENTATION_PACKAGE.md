@@ -123,7 +123,7 @@ Project FALCON combines:
 
 - pressure-derived wave and wind sensors, with supporting system telemetry;
 - an ESP32 for reliable sensor acquisition and diagnostics;
-- an LTE/cellular telemetry link and shore Bay Station for storage, processing, API, and AI prediction;
+- an LTE/cellular primary telemetry link, optional LoRa shore-gateway fallback, and a shore Bay Station for storage, processing, API, and AI prediction;
 - solar power with battery storage;
 - a responsive local dashboard;
 - offline buffering for intermittent connectivity; and
@@ -143,8 +143,9 @@ purchased-board datasheets, and electrical protection plan.*
 > wave estimation and wind speed/direction sensing. GPS position, power status,
 > and security states are supporting telemetry, not additional project sensors.
 > The ESP32 handles
-> regular sensor acquisition and initial validation. It then sends the data to
-> the selected cellular link. A protected shore Bay Station stores and processes
+> regular sensor acquisition and initial validation. It first attempts the
+> selected cellular link; if cellular service is unavailable and a shore LoRa
+> gateway is reachable, it uses LoRa as a compact fallback. A protected shore Bay Station stores and processes
 > the records, serves the dashboard, and runs the required prediction model. Users can view the information through a
 > responsive dashboard on a laptop, tablet, or phone. Solar-powered din ang
 > design, and local buffering protects the data during Internet interruptions.
@@ -165,7 +166,8 @@ Pressure-derived wave and wind sensors
              |
    Supporting GPS, power, and security telemetry
                          |
-                  LTE / CELLULAR
+               LTE / CELLULAR PRIMARY
+                   OR LORA FALLBACK
                          v
           Shore-based Bay Station mini PC
              |          |          |
@@ -184,11 +186,12 @@ Pressure-derived wave and wind sensors
 > This diagram shows the system workflow. First, the primary sensors collect
 > pressure-derived wave and wind measurements. Supporting GPS, power, and
 > security telemetry describes position and system condition. The ESP32 reads and checks
-> those values, then packages them as telemetry. The data are sent to the Orange
-> Bay Station through the selected LTE/cellular link. The Bay Station manages the database, signal
+> those values, then packages them as telemetry. The ESP32 first sends the data
+> through LTE/cellular. If LTE is unavailable, it attempts the shore LoRa gateway;
+> if both links fail, it stores the records locally for later retransmission. The Bay Station manages the database, signal
 > processing, API, dashboard, and future model inference. Finally, the user can
 > view current measurements, historical data, alerts, and model output on the
-> FALCON dashboard. Kapag pansamantalang nawala ang cellular link, tuloy ang sensing at local security, at ibabalik ang buffered records after reconnection.
+> FALCON dashboard. Kapag pansamantalang nawala ang LTE, susubukan ang LoRa shore gateway; kapag parehong unavailable, tuloy ang sensing at local security at ibabalik ang buffered records after reconnection.
 
 ### Slide 5 — Current Progress
 
@@ -337,7 +340,7 @@ and testing process, not only for electronic sensors.
 | Category | Preliminary amount |
 | --- | ---: |
 | Sensors and embedded electronics | PHP 15,000–22,000 |
-| Edge computer, storage, and networking | PHP 5,000–8,000 |
+| Edge computer, storage, LTE/LoRa networking, and shore gateway | PHP 5,000–12,000 |
 | Solar, battery, charging, and protected distribution | PHP 12,000–20,000 |
 | Buoy body, structure, enclosure, and marine connectors | PHP 15,000–28,000 |
 | Mooring, anchor, corrosion protection, and safety hardware | PHP 7,000–14,000 |
@@ -355,8 +358,8 @@ testing, fabrication, transport, spares, and contingency costs.
 **Taglish presentation script:**
 
 > Our preliminary development request ranges from seventy-two thousand to one
-> hundred twenty-seven thousand pesos. This is not only the cost of the sensors.
-> It includes the embedded electronics, LTE modem, separately budgeted shore Bay Station, solar and battery system,
+> hundred thirty-one thousand pesos. This is not only the cost of the sensors.
+> It includes the embedded electronics, LTE modem, optional LoRa radio and shore gateway, separately budgeted shore Bay Station, solar and battery system,
 > marine enclosure and structure, mooring and anchor, calibration or reference
 > tools, fabrication, field testing, transport, spare parts, and contingency.
 > Planning range pa lamang ito. Before formal procurement, we will replace the

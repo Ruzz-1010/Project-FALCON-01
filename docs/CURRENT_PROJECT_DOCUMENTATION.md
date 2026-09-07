@@ -5,7 +5,7 @@ Project FALCON is now a pressure-based smart coastal observation buoy. The autho
 ## Current implemented software
 
 - ESP32 PlatformIO firmware shell and local diagnostic portal.
-- Versioned telemetry framing and USB serial bench prototype; deployed LTE transport remains pending modem/protocol selection.
+- Versioned telemetry framing and USB serial bench prototype; deployed LTE-primary/LoRa-fallback transport remains pending module, gateway, and protocol selection.
 - Python shore Bay Station service prototype with simulator and bench serial source.
 - SQLite telemetry, alerts, prediction compatibility records, and operator events.
 - Grouped `/api/telemetry/current` contract plus legacy endpoints.
@@ -48,6 +48,6 @@ Open `http://127.0.0.1:8765/`. Use Node.js 20.19+ only when running the Vite dev
 4. Connect and bench-test the physical Bar02 pressure sensor.
 5. Define and execute pressure baseline and wave-reference calibration.
 6. Implement and test real geofence/tamper persistence.
-7. Select/integrate the LTE modem and install/harden the shore Bay Station service.
+7. Select/integrate the LTE modem and optional LoRa shore gateway, then install/harden the shore Bay Station service.
 8. Complete waterproofing, power-budget, endurance, and controlled coastal tests.
 9. Validate the implemented AI wave-prediction baseline using traceable calibrated data before reporting prediction accuracy.

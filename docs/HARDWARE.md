@@ -7,21 +7,19 @@ Status: adviser-approved design baseline; procurement and physical validation re
 ## Architecture
 
 ```text
-Sensors -> protected interfaces -> ESP32 -> approved LTE/cellular modem -> mobile network -> shore Bay Station
+Sensors -> protected interfaces -> ESP32 -> LTE/cellular primary OR LoRa fallback -> shore gateway/Bay Station
 Solar -> charge controller -> LiFePO4 battery -> protected DC rails
 ```
 
-No single-board computer or mini PC is installed on the buoy. The shore Bay Station is facility powered or uses a separately designed UPS and provides storage, pressure processing, required AI prediction, API, dashboard, and alerts. USB/UART is retained only for bench commissioning; the exact LTE modem/interface must be approved before PCB release.
+No single-board computer or mini PC is installed on the buoy. The shore Bay Station is facility powered or uses a separately designed UPS and provides storage, pressure processing, required AI prediction, API, dashboard, and alerts. LTE is the preferred link; an optional LoRa radio requires a powered shore gateway with a raised antenna and tested line of sight. USB/UART is retained only for bench commissioning; the exact LTE/LoRa interfaces must be approved before PCB release.
 
 ## Required Phase 1 groups
 
 | Group | Device/function | Status |
 | --- | --- | --- |
 | Core | Blue Robotics Bar02 R2, BR-100891 | Confirmed prototype; continuous-submersion/service limitation must be resolved |
-| Core | Adafruit Ultimate GPS, PID 746 | Confirmed prototype; field accuracy and geofence persistence testing required |
+| Supporting | Adafruit Ultimate GPS, PID 746 | Confirmed prototype; field accuracy and geofence persistence testing required |
 | Core | SparkFun Weather Meter, SEN-15901 | Confirmed prototype; marine durability remains unqualified |
-| Supporting | Blue Robotics Celsius R2, BR-100317 | Recommended deployment water-temperature candidate; procurement and seal test pending |
-| Supporting | Adafruit waterproof DS18B20, PID 381 | Bench only; not approved for salt-water or long-term deployment |
 | Health | Adafruit INA260, PID 4226, battery branch | Confirmed prototype; range, thermal and reference-meter tests pending |
 | Health | Adafruit INA260, PID 4226, solar branch | Confirmed prototype; address and charging-direction tests pending |
 | Health | Adafruit MCP9808, PID 1782 | Recommended enclosure-temperature selection at `0x18` |
@@ -36,6 +34,7 @@ No single-board computer or mini PC is installed on the buoy. The shore Bay Stat
 - Load cell and HX711 anchor-chain tension sensing are removed.
 - Passive single-anchor mooring uses adequate line scope for tides, waves, and ordinary buoy movement.
 - AI hardware acceleration is not required.
+- LoRa is an optional compact telemetry fallback, not a general Internet connection; it requires a shore gateway and site-specific range testing.
 
 The detailed selection evidence, interface allocation, calibration plan and manufacturer references are in [SENSOR_SELECTION_BASELINE.md](SENSOR_SELECTION_BASELINE.md). That document is the component-selection authority where this summary is abbreviated.
 

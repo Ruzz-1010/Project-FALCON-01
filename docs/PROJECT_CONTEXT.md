@@ -12,7 +12,7 @@
 | Controller | ESP32 |
 | Primary wave method | Pressure-based estimated wave height |
 | AI | Required Bay Station short-term wave-height prediction; validation pending |
-| Telemetry | LTE/cellular; exact modem, protocol, antenna, and provider TBD |
+| Telemetry | LTE/cellular primary with LoRa shore-gateway fallback; exact modules, protocol, antenna, and provider TBD |
 | Adviser revision | 2026-08-29 |
 | Physical prototype | UNDER REDESIGN; geometry and placement TBD |
 
@@ -22,7 +22,7 @@ The system-function baseline remains approved, but the physical and visual proto
 
 ## Project definition
 
-Project FALCON is a low-cost, modular, solar-powered coastal observation buoy intended to measure two primary phenomena: pressure-derived wave conditions and wind. An ESP32 buoy node acquires and validates those measurements, adds required supporting telemetry such as timestamps, position, power state, and connection health, buffers short communication outages, and sends versioned telemetry through an approved LTE/cellular link. A shore-based Bay Station mini PC stores records, performs pressure-based wave processing and AI prediction, serves the REST API/dashboard, and manages alerts. No mini PC is installed on the buoy.
+Project FALCON is a low-cost, modular, solar-powered coastal observation buoy intended to measure two primary phenomena: pressure-derived wave conditions and wind. An ESP32 buoy node acquires and validates those measurements, adds required supporting telemetry such as timestamps, position, power state, and connection health, attempts LTE/cellular first, uses a verified shore LoRa gateway as a fallback, and buffers records when both links are unavailable. A shore-based Bay Station mini PC stores records, performs pressure-based wave processing and AI prediction, serves the REST API/dashboard, and manages alerts. No mini PC is installed on the buoy.
 
 The core undergraduate contribution is the integration and evaluation of an accessible local coastal-monitoring prototype. The system estimates wave height from calibrated underwater-pressure variations. It does not claim direct laboratory-grade wave measurement, official forecasting, navigation control, or disaster-warning capability.
 
@@ -49,7 +49,7 @@ Pressure / wind sensors
                               |
               supporting GPS / power / security telemetry
                               |
-                    LTE/cellular telemetry
+                      LTE/cellular primary or LoRa fallback
                               |
                   shore-based Bay Station mini PC
                  +------------+-------------+
@@ -59,7 +59,7 @@ Pressure / wind sensors
                                    laptop / tablet / phone
 ```
 
-The deployed path requires available cellular coverage between the buoy and Bay Station. The ESP32 continues acquisition and local security during outages and buffers a defined amount of telemetry for later retransmission. The Bay Station performs ingestion, pressure processing, logging, API/dashboard hosting, alerts, and required AI inference. USB serial remains a bench-development transport only.
+The deployed path attempts LTE/cellular first when a supported network is available. If LTE is unavailable and a powered shore LoRa receiver/gateway is within verified radio range, the ESP32 sends compact telemetry through LoRa. If both links are unavailable, the ESP32 continues acquisition and local security and buffers a defined amount of telemetry for later retransmission. The Bay Station performs ingestion, pressure processing, logging, API/dashboard hosting, alerts, and required AI inference. USB serial remains a bench-development transport only. LoRa does not guarantee coverage without a shore gateway and site-specific range testing.
 
 ## Sensor baseline
 
@@ -181,7 +181,7 @@ Not yet physically validated:
 - tamper component selection and debounce thresholds;
 - confirmation that excluded environmental channels are absent from the Phase 1 release;
 - full waterproofing, corrosion protection, power autonomy, and coastal endurance;
-- selected LTE/cellular modem integration and shore Bay Station installation;
+- selected LTE/cellular modem, LoRa fallback/gateway integration, and shore Bay Station installation;
 - field-trained or field-validated AI.
 
 ## Validation plan
@@ -191,7 +191,7 @@ Not yet physically validated:
 3. Compare wind speed and direction with suitable reference instruments across the intended operating range.
 4. Survey the GPS deployment reference and test inside/outside geofence persistence.
 5. Test vibration and enclosure inputs under ordinary wave-like motion and deliberate tampering; record false positives/negatives.
-6. Measure cellular packet loss, latency, coverage, reconnect/buffered retransmission, duplicate prevention, stale-data behavior, storage retention, and restart recovery.
+6. Measure LTE packet loss, latency, coverage, reconnect/buffered retransmission, LoRa range and packet loss to the shore gateway, duplicate prevention, stale-data behavior, storage retention, and restart recovery.
 7. Validate battery/solar readings against a calibrated meter and complete an energy budget.
 8. Test dashboard readability and responsiveness on desktop, tablet, and phone.
 9. Validate and improve the required AI wave-prediction feature using traceable calibrated data, while keeping monitoring independent of prediction availability.

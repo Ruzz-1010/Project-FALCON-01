@@ -13,7 +13,7 @@ Wind speed/direction -> digital pulse + ADC interface -> ESP32
 DS18B20 -> protected OneWire -> ESP32
 Tamper + enclosure switch -> filtered/debounced GPIO -> ESP32
 ESP32 GPIO -> buzzer transistor/driver -> buzzer
-ESP32 -> approved LTE/cellular modem -> mobile network -> shore Bay Station
+ESP32 -> LTE/cellular primary OR LoRa fallback -> shore gateway/Bay Station
 
 USB serial to the development laptop remains a bench-only substitute. No Bay Station computer is wired into or powered by the buoy enclosure.
 ```
