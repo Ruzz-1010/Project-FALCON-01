@@ -7,11 +7,11 @@ Status: adviser-approved design baseline; procurement and physical validation re
 ## Architecture
 
 ```text
-Sensors -> protected interfaces -> ESP32 -> LTE/cellular primary OR LoRa fallback -> shore gateway/Bay Station
+Sensors -> protected interfaces -> ESP32 -> LoRa primary -> barangay-hall gateway/Bay Station -> SIM/4G/5G Internet
 Solar -> charge controller -> LiFePO4 battery -> protected DC rails
 ```
 
-No single-board computer or mini PC is installed on the buoy. The shore Bay Station is facility powered or uses a separately designed UPS and provides storage, pressure processing, required AI prediction, API, dashboard, and alerts. LTE is the preferred link; an optional LoRa radio requires a powered shore gateway with a raised antenna and tested line of sight. USB/UART is retained only for bench commissioning; the exact LTE/LoRa interfaces must be approved before PCB release.
+No single-board computer, mini PC, or SIM/4G/5G Internet modem is installed on the buoy. The barangay-hall Bay Station is facility powered or uses a separately designed UPS and provides storage, pressure processing, required AI prediction, API, dashboard, cloud upload, and remote access. LoRa is the primary buoy-to-Bay-Station link and requires a powered gateway with a raised antenna and tested line of sight. USB/UART is retained only for bench commissioning; the exact LoRa and Bay Station Internet interfaces must be approved before release.
 
 ## Required Phase 1 groups
 
@@ -34,7 +34,7 @@ No single-board computer or mini PC is installed on the buoy. The shore Bay Stat
 - Load cell and HX711 anchor-chain tension sensing are removed.
 - Passive single-anchor mooring uses adequate line scope for tides, waves, and ordinary buoy movement.
 - AI hardware acceleration is not required.
-- LoRa is an optional compact telemetry fallback, not a general Internet connection; it requires a shore gateway and site-specific range testing.
+- LoRa is the primary compact buoy telemetry link, not a general Internet connection; it requires a barangay-hall gateway and site-specific range testing. SIM/4G/5G is the Bay Station Internet backhaul for cloud upload and remote access.
 
 The detailed selection evidence, interface allocation, calibration plan and manufacturer references are in [SENSOR_SELECTION_BASELINE.md](SENSOR_SELECTION_BASELINE.md). That document is the component-selection authority where this summary is abbreviated.
 

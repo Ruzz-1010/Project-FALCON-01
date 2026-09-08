@@ -10,6 +10,7 @@ from __future__ import annotations
 import shutil
 import tempfile
 import zipfile
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 from xml.etree import ElementTree as ET
@@ -24,6 +25,30 @@ DCTERMS = "{http://purl.org/dc/terms/}"
 
 
 REPLACEMENTS = {
+    "LTE/cellular primary data telemetry with optional LoRa fallback":
+        "LoRa primary buoy telemetry to the barangay-hall Bay Station with SIM/4G/5G Internet backhaul",
+    "LTE/cellular primary or LoRa fallback":
+        "LoRa primary buoy telemetry with SIM/4G/5G Bay Station Internet backhaul",
+    "The deployed path attempts LTE/cellular first when a supported network is available.":
+        "The buoy transmits over LoRa to the barangay-hall Bay Station. The Bay Station uses SIM/4G/5G as its Internet backhaul for cloud upload and authorized remote access.",
+    "The ESP32 attempts LTE first, then a verified shore LoRa gateway; if both links are unavailable, it continues sensing/security and buffers telemetry for retransmission after reconnection.":
+        "The ESP32 transmits over LoRa to the verified barangay-hall gateway; if the LoRa path is unavailable, it continues sensing/security and buffers telemetry for retransmission after reconnection.",
+    "The exact LTE modem, optional LoRa module/gateway, protocols, and network providers remain subject to component and site-coverage selection.":
+        "The exact LoRa module/gateway, SIM/4G/5G Bay Station modem/provider, cloud endpoint, protocols, and site-coverage selection remain subject to approval.",
+    "LTE/cellular + AI PREDICTION ARCHITECTURE":
+        "LORA PRIMARY + BAY STATION INTERNET BACKHAUL + AI PREDICTION ARCHITECTURE",
+    "LTE/cellular telemetry hardware with an optional LoRa fallback radio":
+        "LoRa telemetry hardware; SIM/4G/5G Internet is provided at the shore Bay Station",
+    "cellular telemetry":
+        "LoRa telemetry with Bay Station Internet backhaul",
+    "cellular telemetry;":
+        "LoRa buoy telemetry with Bay Station Internet backhaul;",
+    "cellular telemetry; the Bay Station":
+        "LoRa buoy telemetry to the Bay Station; the Bay Station",
+    "LTE/cellular modem and optional LoRa gateway integration":
+        "LoRa buoy radio and Bay Station SIM/4G/5G backhaul integration",
+    "LTE modem, optional LoRa fallback, optional LoRa radio/gateway, and communication interfaces":
+        "LoRa radio/gateway, Bay Station SIM/4G/5G modem, cloud endpoint, and communication interfaces",
     "LTE/cellular telemetry hardware":
         "LTE/cellular telemetry hardware with an optional LoRa fallback radio",
     "LTE/cellular data telemetry":
@@ -155,6 +180,16 @@ def update_document(xml: bytes) -> bytes:
         for old, new in REPLACEMENTS.items():
             if old in updated:
                 updated = updated.replace(old, new)
+        updated = re.sub(
+            r"optional LoRa fallback(?: and optional LoRa fallback)+, optional LoRa module/gateway",
+            "optional LoRa fallback, optional LoRa module/gateway",
+            updated,
+        )
+        updated = re.sub(
+            r"LTE modem(?: and optional LoRa fallback)+, optional LoRa (radio/gateway|module/gateway)",
+            r"LTE modem, optional LoRa \1",
+            updated,
+        )
         if updated.count(DUPLICATE) > 1:
             updated = updated.replace(DUPLICATE + " " + DUPLICATE + " " + DUPLICATE, DUPLICATE)
             while updated.count(DUPLICATE) > 1:

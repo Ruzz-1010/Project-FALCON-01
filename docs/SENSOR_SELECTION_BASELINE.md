@@ -17,7 +17,7 @@ Marine environment
   -> pressure and wind sensors
   -> protected sensor interfaces
   -> ESP32 acquisition and validation
-  -> LTE/cellular primary or optional LoRa fallback
+  -> LoRa primary buoy link
   -> mobile network or shore LoRa gateway
   -> shore Bay Station
   -> database, pressure-derived wave estimate, AI prediction, dashboard and alerts
@@ -51,8 +51,8 @@ Enclosure switch and optional tamper accelerometer
 | Enclosure-open state | **Adafruit magnetic contact switch, PID 375 — Recommended prototype selection** | Dry contact to filtered/debounced GPIO; fail-safe wiring preferred | Normally open; closes when magnet is within approximately 13 mm; 100 mA maximum contact rating | Inside the dry enclosure or behind a properly sealed mechanical interface | Verify open/closed logic, magnet alignment, cable fault behavior, hardware/firmware debounce, and false alarms during vibration. The consumer ABS part has no claimed marine enclosure rating. |
 | Vibration/tamper aid | **Adafruit LIS3DH breakout, PID 2809 — Optional security candidate** | 3-axis accelerometer; I2C or SPI; use `0x19` or SPI to avoid the MCP9808 `0x18` address | ±2/4/8/16 g selectable range; motion, tap and free-fall functions | Rigidly mounted to the electronics tray if later approved | Not used for wave-height estimation and not required for the Motion page. Ordinary wave motion can cause false tamper events; thresholds and persistence must be learned in supervised tests. |
 | Security buzzer | **TBD** | ESP32 GPIO through a transistor/MOSFET driver; flyback protection if inductive | Voltage, current, sound pressure, duty cycle and environmental rating unresolved | Inside or through an approved acoustic/sealed interface | Select only after electrical load, audibility, nuisance-alarm and enclosure tests. Do not drive directly from an ESP32 GPIO. |
-| Cellular telemetry | **Waveshare SIM7600G-H 4G HAT — Proposed primary communication candidate, not a sensor and not frozen** | Separate regulated 5 V branch; USB or level-compatible UART | Global LTE bands; board provides CP2102 USB-UART and configurable UART level translation | Inside dry RF-aware enclosure with external antenna system | Confirm Philippine carrier bands and site coverage, antenna placement, SIM/APN, peak current, brownout recovery, reconnect, data buffering, temperature and power consumption before approval. |
-| LoRa fallback telemetry | **Exact buoy radio and shore gateway TBD — Optional fallback** | SPI/UART on buoy; gateway network uplink at shore | Regional frequency, antenna, range, packet size, and data rate require approval | Buoy radio inside enclosure; shore gateway at elevated, clear-view location | Verify legal regional band, line of sight, obstruction margin, packet loss, latency, gateway power, and failover behavior. LoRa is not a general Internet link. |
+| LoRa buoy telemetry | **Exact buoy radio and barangay-hall gateway TBD — Required primary path** | SPI/UART on buoy; gateway network uplink at shore | Regional frequency, antenna, range, packet size, and data rate require approval | Buoy radio inside enclosure; gateway at barangay hall with elevated, clear-view placement | Verify legal regional band, line of sight, obstruction margin, packet loss, latency, gateway power, and recovery behavior. LoRa is not a general Internet link. |
+| Bay Station Internet backhaul | **SIM/4G/5G modem/router TBD — Required shore function** | Approved modem/router interface at Bay Station | Provider coverage, data plan, cloud protocol, TLS, and remote-access controls require approval | Barangay-hall Bay Station, not buoy | Verify registration, data usage, cloud upload, remote access, firewall, reconnect, and modem power behavior. |
 
 ## 5. Removed and excluded devices
 
@@ -73,7 +73,7 @@ Enclosure switch and optional tamper accelerometer
 | I2C 3.3 V | ADS1115 wind direction | `0x48` | 3.3 V divider only; verify ADC range. |
 | I2C/SPI optional | LIS3DH security | Prefer `0x19` or SPI | Do not use `0x18`, which conflicts with MCP9808. |
 | UART | GPS PID 746 | Dedicated ESP32 UART per approved pinout | Cross TX/RX and verify logic levels. |
-| UART or USB | LTE modem | Dedicated link after interface freeze | Must not share a UART in a way that blocks GPS acquisition. |
+| UART or USB | Bay Station SIM/4G/5G modem/router | Shore-side Internet backhaul interface; exact connection TBD | Not installed on buoy and must not share the buoy GPS UART. |
 | GPIO pulse | Wind speed | Dedicated interrupt-capable input | Include pull-up, protection, debounce and pulse-rate test. |
 | GPIO | Enclosure contact | Filtered/debounced input | Prefer fault-detecting/fail-safe behavior. |
 
@@ -119,7 +119,7 @@ Before ordering or PCB fabrication, record for every installed item:
 - calibration equipment and acceptance limits;
 - spare quantity and lead time.
 
-The final PCB release is blocked until the buzzer, LTE interface, connector variants, footprints, cable glands, current budget and enclosure integration are physically verified. A rendered PCB or 3D model is not proof of electrical or mechanical validation.
+The final PCB release is blocked until the buzzer, LoRa interface, connector variants, footprints, cable glands, current budget and enclosure integration are physically verified. A rendered PCB or 3D model is not proof of electrical or mechanical validation.
 
 ## 9. Primary manufacturer references
 
@@ -138,4 +138,4 @@ The final PCB release is blocked until the buzzer, LTE interface, connector vari
 
 ## 10. Thesis-safe summary
 
-The Phase 1 monitoring claim is based on a Bar02 R2 pressure channel for estimated wave height and wind speed/direction. GPS, electrical-health, enclosure, and security values are supporting telemetry only. Pressure time series are processed at the shore Bay Station to estimate wave height and support AI prediction. No hardware is described as deployment-ready until calibration, ingress, power, LTE, environmental and integration tests are complete.
+The Phase 1 monitoring claim is based on a Bar02 R2 pressure channel for estimated wave height and wind speed/direction. GPS, electrical-health, enclosure, and security values are supporting telemetry only. Pressure time series are processed at the shore Bay Station to estimate wave height and support AI prediction. No hardware is described as deployment-ready until calibration, ingress, LoRa, Bay Station Internet backhaul, environmental and integration tests are complete.

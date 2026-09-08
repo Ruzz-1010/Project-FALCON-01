@@ -12,7 +12,7 @@
 | Controller | ESP32 |
 | Primary wave method | Pressure-based estimated wave height |
 | AI | Required Bay Station short-term wave-height prediction; validation pending |
-| Telemetry | LTE/cellular primary with LoRa shore-gateway fallback; exact modules, protocol, antenna, and provider TBD |
+| Telemetry | LoRa primary from buoy to barangay-hall Bay Station; SIM/4G/5G Internet backhaul from Bay Station to cloud/remote users; exact modules, protocol, antenna, provider, and cloud TBD |
 | Adviser revision | 2026-08-29 |
 | Physical prototype | UNDER REDESIGN; geometry and placement TBD |
 
@@ -22,7 +22,7 @@ The system-function baseline remains approved, but the physical and visual proto
 
 ## Project definition
 
-Project FALCON is a low-cost, modular, solar-powered coastal observation buoy intended to measure two primary phenomena: pressure-derived wave conditions and wind. An ESP32 buoy node acquires and validates those measurements, adds required supporting telemetry such as timestamps, position, power state, and connection health, attempts LTE/cellular first, uses a verified shore LoRa gateway as a fallback, and buffers records when both links are unavailable. A shore-based Bay Station mini PC stores records, performs pressure-based wave processing and AI prediction, serves the REST API/dashboard, and manages alerts. No mini PC is installed on the buoy.
+Project FALCON is a low-cost, modular, solar-powered coastal observation buoy intended to measure two primary phenomena: pressure-derived wave conditions and wind. An ESP32 buoy node acquires and validates those measurements, adds required supporting telemetry such as timestamps, position, power state, and connection health, transmits compact packets over LoRa to a barangay-hall Bay Station, and buffers records when the LoRa path is unavailable. The Bay Station mini PC stores records, performs pressure-based wave processing and AI prediction, serves the local REST API/dashboard, and uses its SIM/4G/5G Internet connection for cloud upload and authenticated remote access. No mini PC or cellular Internet modem is installed on the buoy.
 
 The core undergraduate contribution is the integration and evaluation of an accessible local coastal-monitoring prototype. The system estimates wave height from calibrated underwater-pressure variations. It does not claim direct laboratory-grade wave measurement, official forecasting, navigation control, or disaster-warning capability.
 
@@ -49,17 +49,21 @@ Pressure / wind sensors
                               |
               supporting GPS / power / security telemetry
                               |
-                      LTE/cellular primary or LoRa fallback
+                    LoRa primary buoy link
                               |
-                  shore-based Bay Station mini PC
+                   barangay-hall Bay Station mini PC
                  +------------+-------------+
                  |            |             |
-              SQLite       REST API    Web dashboard + AI
+                SQLite       REST API    Web dashboard + AI
+                  |            |             |
+               SIM/4G/5G Internet backhaul
+                     |
+                 cloud upload / remote access
                                               |
                                    laptop / tablet / phone
 ```
 
-The deployed path attempts LTE/cellular first when a supported network is available. If LTE is unavailable and a powered shore LoRa receiver/gateway is within verified radio range, the ESP32 sends compact telemetry through LoRa. If both links are unavailable, the ESP32 continues acquisition and local security and buffers a defined amount of telemetry for later retransmission. The Bay Station performs ingestion, pressure processing, logging, API/dashboard hosting, alerts, and required AI inference. USB serial remains a bench-development transport only. LoRa does not guarantee coverage without a shore gateway and site-specific range testing.
+The deployed buoy path sends compact telemetry over a verified LoRa link to a powered gateway at the barangay-hall Bay Station. The Bay Station's SIM/4G/5G connection is the Internet backhaul for cloud upload, remote dashboard access, software updates, and external notifications; it is not a buoy telemetry link. If the LoRa path is unavailable, the ESP32 continues acquisition and local security and buffers a defined amount of telemetry for later retransmission. The Bay Station performs ingestion, pressure processing, logging, API/dashboard hosting, alerts, and required AI inference. USB serial remains a bench-development transport only. LoRa range, regional band, gateway placement, Internet availability, cloud endpoint, and authentication require site-specific testing and approval.
 
 ## Sensor baseline
 
@@ -181,7 +185,7 @@ Not yet physically validated:
 - tamper component selection and debounce thresholds;
 - confirmation that excluded environmental channels are absent from the Phase 1 release;
 - full waterproofing, corrosion protection, power autonomy, and coastal endurance;
-- selected LTE/cellular modem, LoRa fallback/gateway integration, and shore Bay Station installation;
+- selected LoRa buoy radio, barangay-hall gateway, Bay Station SIM/4G/5G backhaul, and shore Bay Station installation;
 - field-trained or field-validated AI.
 
 ## Validation plan
@@ -207,7 +211,7 @@ FALCON does not provide tsunami, typhoon, storm, or weather prediction; autonomo
 3. Freeze component placement, pinout, wiring, and PCB only after electrical and physical-fit review.
 4. Implement physical pressure acquisition and a documented calibration routine.
 5. Implement security persistence/debounce on real hardware.
-6. Select and integrate the LTE modem, optional LoRa fallback/gateway, and shore Bay Station, then verify link priority, authentication, buffering, automatic startup, and recovery.
+6. Select and integrate the LoRa buoy radio and barangay-hall gateway, select the Bay Station SIM/4G/5G backhaul, then verify authentication, buffering, cloud synchronization, automatic startup, and recovery.
 7. Collect controlled reference data before performance or accuracy claims.
 
 ## Change control

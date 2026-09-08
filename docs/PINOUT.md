@@ -13,9 +13,9 @@ Status: provisional bench allocation. Exact purchased modules and PCB revision m
 | Enclosure switch | GPIO33 | Debounced digital input; active level TBD |
 | Buzzer driver | GPIO27 | GPIO drives transistor/MOSFET, never an unverified load directly |
 | Bench telemetry | ESP32 USB | Development laptop/Bay Station commissioning only |
-| Deployed telemetry | LTE/cellular modem interface | Exact UART/USB interface and pinout TBD after modem approval |
-| Optional fallback telemetry | LoRa radio interface | SPI/UART and interrupt pins TBD after regional module approval; requires shore gateway |
+| Deployed telemetry | LoRa buoy radio interface | SPI/UART and interrupt pins TBD after regional module approval; requires barangay-hall gateway |
+| Bay Station Internet | SIM/4G/5G modem/router | Installed at the barangay-hall Bay Station; not part of buoy pinout |
 
 Battery, solar, and enclosure-temperature interfaces remain subject to exact part selection and address/range review. Conductivity/salinity is excluded from the required Phase 1 pinout. The BNO085 SPI assignments in older revisions are released from the required Phase 1 design. Load cell/HX711 pins are not assigned.
 
-Use 3.3 V logic, protected regulated power, common documented ground, external-connector transient protection, and test points for VBAT/5V/3V3/GND/UART/SDA/SCL. Do not connect raw battery voltage to ESP32 or modem signal pins. Freeze the LTE/LoRa connectors only after their datasheets, regional frequency approvals, peak currents, logic levels, and antenna requirements are approved.
+Use 3.3 V logic, protected regulated power, common documented ground, external-connector transient protection, and test points for VBAT/5V/3V3/GND/UART/SDA/SCL. Do not connect raw battery voltage to ESP32 or radio signal pins. Freeze the LoRa connector only after its datasheet, regional frequency approval, peak current, logic levels, and antenna requirements are approved. The Bay Station SIM/4G/5G interface is documented separately because it is not installed on the buoy.

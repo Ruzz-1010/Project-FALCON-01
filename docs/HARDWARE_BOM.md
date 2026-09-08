@@ -27,8 +27,8 @@ These items support operation, power validation, and security. They are not addi
 | 0–1 | Adafruit MCP9808, PID 1782 | PHP 925 | Optional enclosure diagnostic only |
 | 0–1 | Adafruit magnetic contact switch, PID 375 | PHP 100–500 | Optional enclosure security input |
 | 0–1 | Buzzer and driver/protection | PHP 100–500 | Optional local alert output |
-| 1 | Waveshare SIM7600G-H 4G HAT candidate + antenna/SIM | TBD | Proposal only; freeze after Philippine coverage, peak-current, interface, antenna and reconnect tests |
-| 0–1 | LoRa buoy radio module + shore LoRa gateway/receiver and antennas | TBD | Optional LTE fallback; requires legal regional band selection, elevated shore placement, clear-path/range testing, and separate power/enclosure review |
+| 1 | Bay Station SIM/4G/5G modem/router + antenna/SIM | TBD; separate shore budget | Bay Station Internet backhaul for cloud upload and remote access; freeze after site coverage, data-plan, interface, antenna and reconnect tests |
+| 1 | LoRa buoy radio module + barangay-hall LoRa gateway/receiver and antennas | TBD | Required target telemetry path; requires legal regional band selection, elevated shore placement, clear-path/range testing, and separate power/enclosure review |
 | 1 | Shore Bay Station mini PC | TBD; separate shore budget | Facility powered; exact model selected from measured database/dashboard/AI workload; never installed on buoy |
 | 0–1 | Enclosure fan/auxiliary cooling | TBD after thermal test | Include only if the buoy electronics enclosure demonstrates a measured need |
 
@@ -42,8 +42,8 @@ power, connectors, enclosure, shipping, and optional antenna.
 | 1 | 12.8 V 20 Ah LiFePO4 with BMS | PHP 4,940–9,875 | Supplier datasheet and charge limits recorded |
 | 1 | 40 W or 60 W panel candidate | PHP 3,395–7,405 | Final rating follows measured buoy-only load; verify Voc/Isc with MPPT |
 | 1 | LiFePO4 MPPT controller | PHP 3,085–8,025 | Genuine MPPT; programmable LiFePO4 profile |
-| 1 | LTE modem regulated branch | TBD | Size from selected modem registration/transmit peaks and brownout test |
-| 0–1 | LoRa radio/gateway regulated branch | TBD | Include only if fallback is approved; size buoy radio and shore gateway separately |
+| 1 | LoRa buoy radio regulated branch | TBD | Size from selected radio transmit peaks and brownout test; shore gateway is budgeted separately |
+| 1 | Bay Station SIM/4G/5G backhaul branch | TBD | Separate shore power budget; size from selected modem/router registration and transmit peaks |
 | 1 | ESP32/sensor regulated branch | PHP 620–1,850 | Final voltage/current from complete measured carrier load |
 | lot | Fuses, disconnect, terminals, glands, marine wire | PHP 4,320–9,875 | Rated schedule and ingress review |
 
@@ -56,7 +56,7 @@ harness is pending physical connector inspection. Include matching housings, cor
 contacts, authorized crimp tooling, and spares; verify availability before
 locking the PCB footprints.
 
-The previous total is withdrawn because the LTE/LoRa links, Bay Station, security inputs, final power branches, and enclosure needs are unresolved. Recalculate the buoy and shore budgets separately after exact supplier quotations and measured power requirements exist.
+The previous total is withdrawn because the LoRa buoy link, Bay Station Internet backhaul, security inputs, final power branches, and enclosure needs are unresolved. Recalculate the buoy and shore budgets separately after exact supplier quotations and measured power requirements exist.
 
 ## Primary Sources
 
