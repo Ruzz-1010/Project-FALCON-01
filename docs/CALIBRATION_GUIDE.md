@@ -1,6 +1,6 @@
 # Calibration Guide v7.0
 
-> Use the exact procedures, proposed acceptance limits and recording sheets in [SENSOR_VALIDATION_AND_CALIBRATION_PLAN.md](SENSOR_VALIDATION_AND_CALIBRATION_PLAN.md). The Celsius R2 is the recommended marine water-temperature candidate; Adafruit DS18B20 PID 381 is bench-only. Conductivity/salinity and required IMU alignment are excluded from Phase 1.
+> Use the exact procedures, proposed acceptance limits and recording sheets in [SENSOR_VALIDATION_AND_CALIBRATION_PLAN.md](SENSOR_VALIDATION_AND_CALIBRATION_PLAN.md). Water temperature, conductivity/salinity, and required IMU alignment are excluded from the Phase 1 measurement scope; calibration focuses on pressure-derived wave estimation, wind, supporting telemetry, and security behavior.
 
 ## Purpose
 Define traceable calibration for future measurements.

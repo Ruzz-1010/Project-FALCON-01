@@ -129,9 +129,9 @@ Normal wave-driven motion must not generate an alert by itself. Geofence and tam
 
 Four primary navigation pages are approved:
 
-1. **Overview** — one large estimated-wave chart, one Station Status card containing wind, pressure, GPS security, battery, solar, and water/enclosure temperature, and one always-visible FALCON AI short-term wave-prediction card.
+1. **Overview** — one large estimated-wave chart, one Station Status card containing wind, pressure, GPS security, battery, solar, and enclosure-health telemetry, and one always-visible FALCON AI short-term wave-prediction card.
 2. **Buoy Motion** — optional 3D visual model whose water-surface amplitude, heave, and tilt are generated from pressure-based estimated wave height; GPS may provide heading context. It has no required IMU, roll, or pitch measurement channel. It includes Current Data plus clearly labeled Calm, Moderate, Rough, and Pressure Offline presentation scenarios. The scenarios are local visual presets and do not modify stored or live telemetry.
-3. **Sensors** — six readable operator groups: Wave & Pressure, GPS & Security, Wind, Water, Power, and System. Exact device models, sampling, quality, freshness, and calibration diagnostics remain available through expandable details.
+3. **Sensors** — three readable operator groups: Wave & Pressure, Wind, and Supporting Telemetry. Exact device models, sampling, quality, freshness, and calibration diagnostics remain available through expandable details.
 4. **Logs & Alerts** — active alerts, persisted telemetry, security events, calibration events, operator actions, search, and export. It remains the final sidebar item.
 
 Settings are available through a compact icon and are not a primary navigation item. The former separate Wave, GPS, Power, System, History, and Alerts pages remain consolidated. Motion is retained strictly as an optional visual model and does not restore BNO085 as a required sensor.
@@ -195,7 +195,7 @@ Not yet physically validated:
 3. Compare wind speed and direction with suitable reference instruments across the intended operating range.
 4. Survey the GPS deployment reference and test inside/outside geofence persistence.
 5. Test vibration and enclosure inputs under ordinary wave-like motion and deliberate tampering; record false positives/negatives.
-6. Measure LTE packet loss, latency, coverage, reconnect/buffered retransmission, LoRa range and packet loss to the shore gateway, duplicate prevention, stale-data behavior, storage retention, and restart recovery.
+6. Measure LoRa packet loss, latency, range, gateway recovery, buffered retransmission, Bay Station SIM/4G/5G backhaul coverage and reconnect, cloud synchronization, duplicate prevention, stale-data behavior, storage retention, and restart recovery.
 7. Validate battery/solar readings against a calibrated meter and complete an energy budget.
 8. Test dashboard readability and responsiveness on desktop, tablet, and phone.
 9. Validate and improve the required AI wave-prediction feature using traceable calibrated data, while keeping monitoring independent of prediction availability.

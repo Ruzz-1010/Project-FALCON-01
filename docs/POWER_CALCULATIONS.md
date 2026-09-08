@@ -8,7 +8,7 @@ Authority: [POWER_SYSTEM.md](POWER_SYSTEM.md). Values below are planning envelop
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
 | ESP32 controller | TBD | TBD | TBD | TBD | TBD | TBD | 24-hour bench log |
 | Bar02 + approved sensors | TBD | TBD | TBD | TBD | TBD | TBD | Datasheets + bench log |
-| LTE/cellular modem | TBD | TBD | TBD | TBD | TBD | TBD | Registration/reconnect/transmit test |
+| LoRa buoy radio | TBD | TBD | TBD | TBD | TBD | TBD | Gateway registration/reconnect/transmit test |
 | Security electronics | TBD | TBD | TBD | TBD | TBD | TBD | Armed/alarm test |
 | Conversion losses | — | — | — | — | — | TBD | Measured converter efficiency |
 
@@ -16,7 +16,7 @@ Do not total or finalize the design until exact parts and measured duty cycles e
 
 ## System-level planning scenarios
 
-Because the LTE modem and several auxiliary parts are not yet frozen, the
+Because the LoRa radio, Bay Station Internet backhaul, and several auxiliary parts are not yet frozen, the
 following are **whole-buoy planning scenarios**, not component consumption
 claims. They let the team size a safe prototype before the 24-hour bench log is
 available.
@@ -53,7 +53,7 @@ battery or if the verified autonomy requirement is shorter.
 - Preliminary harvest: `panel W × 4 peak-sun-hours × 0.70`.
 - 40 W candidate: `112 Wh/day`.
 - 60 W candidate: `168 Wh/day`.
-- Required margin must cover poor weather, temperature, fouling, orientation, conversion losses, charge limits, and LTE peaks.
+- Required margin must cover poor weather, temperature, fouling, orientation, conversion losses, charge limits, and LoRa radio peaks. Bay Station SIM/4G/5G energy is a separate shore budget.
 
 ### Nominal four-peak-sun-hour energy balance
 
@@ -99,7 +99,7 @@ deployment site's solar resource, shading, tilt, salt fouling, and seasonal data
 - Use 20 Ah only for early testing; use at least 30 Ah if the requirement is
   72 hours without solar at a verified 4 W average load.
 - Select MPPT, panel, battery, converters, wiring, connectors, and fuses only
-  after exact voltage/current limits and LTE peak behavior are documented.
+  after exact voltage/current limits and LoRa peak behavior are documented. Select the Bay Station SIM/4G/5G backhaul from a separate shore power budget.
 - Do not call this an endurance validation until the 72-hour supervised solar
   test passes.
 
@@ -124,7 +124,7 @@ The mini PC is shore based and facility powered or separately backed by a UPS. I
 
 ## Acceptance gates
 
-1. No brownout during repeated modem registration and transmit peaks.
+1. No brownout during repeated LoRa radio registration and transmit peaks.
 2. Every branch fuse and conductor is sized from measured peak/fault requirements.
 3. Battery/MPPT/panel compatibility is documented from exact datasheets.
 4. 24-hour load logging and at least 72-hour supervised solar endurance pass.

@@ -50,4 +50,4 @@ python3 scripts/build_thesis_v3.py
 
 ## Honest remaining work
 
-Exact TBD components, final schematic/PCB/wiring, physical Bar02 integration, pressure and water-temperature reference validation, real geofence/tamper thresholds, Orange Pi installation, waterproofing, energy validation, and controlled coastal trials remain incomplete. Legacy Wokwi/PCB/motion files are preserved but explicitly classified as historical/optional rather than silently deleted.
+Exact TBD components, final schematic/PCB/wiring, physical Bar02 integration, pressure reference validation, real geofence/tamper thresholds, LoRa gateway and Bay Station SIM/4G/5G backhaul integration, waterproofing, energy validation, and controlled coastal trials remain incomplete. Legacy Wokwi/PCB/motion files are preserved but explicitly classified as historical/optional rather than silently deleted.

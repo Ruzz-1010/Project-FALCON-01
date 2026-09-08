@@ -4,7 +4,7 @@
 
 - approve exact models/datasheets for the pressure and wind sensors plus only the supporting telemetry interfaces;
 - remove BNO085 and load-cell requirements from purchasing/fabrication;
-- approve pressure-based estimated-wave wording, passive mooring, shore Bay Station/LTE split, required wave-prediction scope, and four-page dashboard.
+- approve pressure-based estimated-wave wording, passive mooring, LoRa buoy-to-barangay-hall link, Bay Station SIM/4G/5G backhaul, required wave-prediction scope, and four-page dashboard.
 
 ## Gate 2 — Electrical and bench integration
 
@@ -17,6 +17,7 @@
 - record pressure baseline/depth/reference method and coefficients;
 - calibrate pressure-derived wave output and wind channels;
 - validate serial ingestion, grouped API, storage, stale state, security persistence, and automatic restart.
+- validate LoRa gateway ingestion, Bay Station Internet/cloud synchronization, remote-access controls, and outage recovery.
 
 ## Gate 4 — Controlled validation
 

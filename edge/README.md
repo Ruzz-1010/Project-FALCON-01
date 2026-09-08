@@ -65,7 +65,7 @@ python -m falcon_edge.service --source esp32 --esp32-url http://192.168.4.1
 
 ESP32 connection failures are reported explicitly. The service never silently replaces physical-source failures with simulated readings.
 
-For current ESP32 USB serial bench telemetry on Linux (development transport only; deployed LTE transport remains pending):
+For current ESP32 USB serial bench telemetry on Linux (development transport only; deployed LoRa transport and Bay Station Internet backhaul remain pending):
 
 ```bash
 python3 -m pip install -r edge/requirements-hardware.txt

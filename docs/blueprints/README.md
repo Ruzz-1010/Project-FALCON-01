@@ -43,7 +43,7 @@ Dimensions marked **CAD REF** were recovered from the existing Fusion generator 
 
 ## Architecture correction
 
-The old Fusion electronics layout contains an `ORANGE_PI_MINI_PC_ENVELOPE`. It is explicitly excluded from these drawings. The Orange Pi is located at the shore-based Bay Station and communicates with the buoy through LTE/cellular infrastructure. USB/UART is for bench servicing only.
+The old Fusion electronics layout contains an `ORANGE_PI_MINI_PC_ENVELOPE`. It is explicitly excluded from these drawings. The Orange Pi is not part of the current buoy design; the shore Bay Station receives buoy telemetry through the planned LoRa gateway and uses SIM/4G/5G for Internet backhaul. USB/UART is for bench servicing only.
 
 ## Release gates
 

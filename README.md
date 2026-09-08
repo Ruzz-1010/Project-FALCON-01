@@ -27,7 +27,7 @@ Implemented in the repository:
 - PlatformIO ESP32 Arduino firmware;
 - `FALCON-01` Wi-Fi access point and captive portal;
 - LittleFS fallback dashboard and basic ESP32 controls;
-- laptop-hosted Python edge-service prototype, ready to migrate to the selected Orange Pi Zero 3 (4GB);
+- laptop-hosted Python edge-service prototype (shore-based Bay Station mini PC for deployment);
 - simulated telemetry and deterministic alert scenarios;
 - local SQLite telemetry history;
 - presentation forecast and backtest pipeline;
@@ -55,8 +55,7 @@ Then open `http://127.0.0.1:5173`.
 Important limitations:
 
 - physical Phase 1 sensors are not yet fully integrated;
-- the selected Orange Pi Zero 3 (4GB) has not yet been installed;
-- the laptop currently represents the edge-computing role during demonstrations;
+- the laptop currently represents the shore Bay Station during demonstrations;
 - simulator results are not field-validation results;
 - the current presentation forecast is not the final trained AI model;
 - and the 3D dashboard assets exceed the configured ESP32 LittleFS capacity.
@@ -64,12 +63,12 @@ Important limitations:
 ## Approved Phase 1 Architecture
 
 ```text
-Marine Sensors -> ESP32 -> UART / Wi-Fi -> Orange Pi Zero 3 (4GB)
-                                             |
-                                             +-> AI prediction + XAI
-                                             +-> SQLite + historical data
-                                             +-> REST API + web server
-                                             +-> Local dashboard -> laptop / tablet / phone
+Marine Sensors -> ESP32 -> LoRa -> Barangay-Hall Bay Station -> SIM/4G/5G Internet -> Cloud/Remote Access
+                                              |
+                                              +-> AI prediction + XAI
+                                              +-> SQLite + historical data
+                                              +-> REST API + web server
+                                              +-> Local dashboard -> laptop / tablet / phone
 ```
 
 Cloud connectivity is Future Expansion and is not required for Phase 1 operation.
@@ -158,7 +157,7 @@ python -m unittest discover -s tests -v
 Project FALCON-01/
 ├── data/               # current dashboard assets and 3D model
 ├── docs/               # engineering documentation
-├── edge/               # laptop/Orange Pi edge-service prototype
+├── edge/               # laptop-hosted Bay Station edge-service prototype
 ├── exports/            # archived CAD exchange assets
 ├── fusion360/          # mechanical component documentation
 ├── include/            # ESP32 configuration headers
@@ -196,7 +195,7 @@ Start here:
 
 ## Future Expansion
 
-Cloud synchronization, satellite communication, multi-buoy networking, mobile applications, water-quality sensing, computer vision, additional AI models, and autonomous capabilities are outside Phase 1. LTE is the primary telemetry path; optional LoRa fallback is included only if a shore gateway and tested radio path are approved.
+Cloud synchronization, satellite communication, multi-buoy networking, mobile applications, water-quality sensing, computer vision, additional AI models, and autonomous capabilities are outside the validated Phase 1 implementation. LoRa is the planned primary buoy telemetry path to the barangay-hall Bay Station; SIM/4G/5G is the planned Bay Station Internet backhaul for cloud upload and authorized remote access. Both paths require hardware, security, and site validation.
 
 ## Revision History
 

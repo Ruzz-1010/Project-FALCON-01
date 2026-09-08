@@ -26,7 +26,8 @@ Static checks -> build -> bench -> client matrix -> endurance -> future field te
 - per-sensor identity, disconnect, recovery, reference-comparison and calibration records;
 - pressure-to-wave controlled scenarios and independent reference comparison;
 - GPS scatter/geofence persistence and security false-alarm trials;
-- LTE peak-power, outage, buffering, reconnect and endurance results;
+- LoRa range/peak-power, outage, buffering, reconnect and endurance results;
+- Bay Station SIM/4G/5G backhaul coverage, cloud synchronization, remote-access, and Internet-outage results;
 - required AI persistence baseline, chronological held-out evaluation and failure isolation;
 - ingress, thermal, power-autonomy, stability and supervised field evidence;
 - dashboard usability testing with representative older/non-technical operators.

@@ -1,6 +1,6 @@
 # Electronics Pod Layout — Revision Pending
 
-> The enclosure and component placement are under redesign. Orange Pi/mini-PC placement below is obsolete: the buoy contains ESP32, sensors/interfaces, LTE modem, power, and security only; the Bay Station is shore based. Do not use this layout for fabrication or harness-length decisions.
+> The enclosure and component placement are under redesign. Orange Pi/mini-PC placement below is obsolete: the buoy contains ESP32, sensors/interfaces, LoRa radio, power, and security only; the Bay Station and its SIM/4G/5G Internet backhaul are shore based. Do not use this layout for fabrication or harness-length decisions.
 
 > These notes preserve the earlier carrier. BNO085 is no longer required, and security/environment interfaces must be added after exact part selection.
 
@@ -14,7 +14,7 @@ are drilled or CAD envelopes are released.
 | --- | --- | --- |
 | Lower | 12.8 V battery and BMS | Centered low, restrained in every axis, isolated from leak path |
 | Power | MPPT, disconnect, fuse block, two buck converters, INA260 high-current paths | Short high-current loops on thermal plate |
-| Control | Orange Pi, ESP32, sensor distribution, ADS1115, MCP9808 | Removable service tray, separated from power switching |
+| Control | Historical Orange Pi, ESP32, sensor distribution, ADS1115, MCP9808 | Removable service tray, separated from power switching; do not treat Orange Pi as current buoy hardware |
 
 ## Control-Tray Zones
 
@@ -32,7 +32,7 @@ REAR / BULKHEAD SIDE
 
 - Keep the BNO085 on the rigid central structure, not beside fans, buck inductors,
   high-current conductors, magnets, or loose cable bundles.
-- Put MCP9808 in representative enclosure airflow, away from Orange Pi heatsink.
+- Put MCP9808 in representative enclosure airflow, away from converter and radio heat sources.
 - Route SPI and I2C separately from power wiring; cross at 90 degrees if needed.
 - Terminate external sensor cables at labeled locking connectors before the ESP32.
 - Provide drip loops, gland strain relief, service slack, and a lowest-point leak sensor.

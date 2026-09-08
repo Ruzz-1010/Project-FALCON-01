@@ -11,9 +11,9 @@ Start with [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md), the current source of truth
 - [ADVISER_REVISION_AUDIT.md](ADVISER_REVISION_AUDIT.md) explains current, legacy, and pending records.
 - [DOCUMENTATION_CLEANUP_AUDIT.md](DOCUMENTATION_CLEANUP_AUDIT.md) records the pre-redesign Markdown cleanup and document authority order.
 - [IMPLEMENTATION_REPORT_V6.md](IMPLEMENTATION_REPORT_V6.md) records delivered code, verification, commands, and remaining work.
-- [Adviser architecture diagram](diagrams/FALCON-01-adviser-architecture.svg) is the current high-level visual.
+- [Adviser architecture diagram](diagrams/FALCON-01-adviser-architecture.svg) is the current high-level visual; update it with the approved LoRa-primary/Bay-Station-backhaul flow before fabrication release.
 
-The current thesis file is `THESIS DOCUMENTATION/PROJECT FALCON-01 - V3 Documentation.docx`.
+The canonical thesis file is `THESIS DOCUMENTATION/BayStation.docx`; the V3 filename is a synchronized copy.
 
 ## Design records on hold
 

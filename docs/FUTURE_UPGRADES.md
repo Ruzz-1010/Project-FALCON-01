@@ -93,8 +93,8 @@ not automatically produce better predictions.
 
 ## Communications and Platform Upgrades
 
-- LTE/4G for sites with verified coverage and a funded data plan;
-- LoRa for low-rate telemetry to a nearby managed gateway;
+- SIM/4G/5G at the Bay Station for cloud upload and authorized remote access at sites with verified coverage and a funded data plan;
+- LoRa as the primary low-rate buoy telemetry link to a nearby managed barangay-hall gateway;
 - satellite messaging only for compact priority telemetry where cost is justified;
 - VPN-based remote maintenance rather than exposed device ports;
 - store-and-forward synchronization during outages;
