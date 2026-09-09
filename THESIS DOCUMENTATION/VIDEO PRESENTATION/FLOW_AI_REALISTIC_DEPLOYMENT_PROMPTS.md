@@ -12,9 +12,12 @@
 The presentation may describe this data path without inventing physical
 placement:
 
-`Pressure + GPS + wind speed + wind direction + supporting water temperature`
-`→ ESP32 acquisition, validation, and buffering → LTE/cellular → shore Bay Station mini PC`
+`Pressure + GPS + wind speed + wind direction + supporting system telemetry`
+`→ ESP32 acquisition, validation, and buffering → proposed LoRa link → barangay-hall Bay Station mini PC`
 `→ SQLite/local processing → REST API → local dashboard`
+
+The Bay Station's proposed SIM/4G/5G connection is Internet backhaul for cloud
+upload and authorized remote access. It is not installed or validated yet.
 
 Security monitoring includes persistent GPS geofence, a generic
 vibration/tamper input, an enclosure reed or limit switch, and a buzzer. Power
@@ -25,7 +28,8 @@ Simulated values must be labelled **SIMULATED**.
 ## Claims that must not appear
 
 - No required BNO085/IMU or IMU-derived wave measurement.
-- No required load cell, HX711, mooring-tension sensor, salinity sensor, or AI.
+- No required load cell, HX711, mooring-tension sensor, water-temperature,
+  salinity sensor, or field-validated AI claim.
 - No mandatory cloud dependency or official forecast claim.
 - No fixed solar-panel count, cooling arrangement, enclosure layout, sensor
   position, dimensions, waterline, or final CAD until the redesign is approved.
@@ -33,17 +37,18 @@ Simulated values must be labelled **SIMULATED**.
 
 ## Temporary non-mechanical Flow prompt
 
-> Create a clean engineering data-flow animation for Project FALCON-01 without
+> Create a clean proposal-stage engineering data-flow animation for Project FALCON-01 without
 > showing or inventing a final buoy body. Begin with labelled coastal inputs:
-> water pressure, GPS, wind speed, wind direction, and supporting sealed water
-> temperature. Animate signals entering an ESP32, being validated and
-> timestamped, then traveling through a visible USB serial/UART link to an
-> shore Bay Station mini PC. Show SQLite storage, pressure-derived
+> water pressure, GPS, wind speed, wind direction, and supporting system
+> telemetry. Animate signals entering an ESP32, being validated and timestamped,
+> then traveling through a proposed LoRa link to a barangay-hall Bay Station mini
+> PC. Show SQLite storage, pressure-derived
 > estimated-wave processing, security and health alerts, a REST API, and a
 > four-page local dashboard: Overview, Buoy Motion, Sensors, and Logs & Alerts.
 > Label wave height ESTIMATED and CALIBRATION REQUIRED. Label all demonstration
-> values SIMULATED. AI is an optional isolated future aid and must not block or
-> replace the deterministic core. Documentary engineering style, 16:9, clear
+> values SIMULATED. AI is a required proposed Bay Station research feature, not
+> yet field-trained or field-validated, and must not block or replace the
+> deterministic core. Documentary engineering style, 16:9, clear
 > arrows and readable labels, no fictional hardware placement, no cloud shown
 > as required, and no exterior prototype geometry.
 

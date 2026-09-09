@@ -1,4 +1,4 @@
-# Current Project Documentation v8.0
+# Current Project Documentation v8.1
 
 Project FALCON is now a pressure-based smart coastal observation buoy. The authoritative scope, architecture, sensor groups, truthful claims, validation requirements, and implementation status are in [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md).
 

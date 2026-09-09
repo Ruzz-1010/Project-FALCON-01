@@ -1,6 +1,6 @@
 # Project FALCON — DOST Idea Presentation Package
 
-> Presentation baseline updated for v6.1. The physical/visual prototype is under redesign; replace all prototype figures and placement explanations only after approval. Do not present an older CAD model or render as the current unit.
+> Proposal baseline updated for v8.1. The physical/visual prototype is under redesign; replace all prototype figures and placement explanations only after approval. Do not present an older CAD model or render as the current unit.
 
 | Field | Value |
 | --- | --- |
@@ -123,7 +123,7 @@ Project FALCON combines:
 
 - pressure-derived wave and wind sensors, with supporting system telemetry;
 - an ESP32 for reliable sensor acquisition and diagnostics;
-- an LTE/cellular primary telemetry link, optional LoRa shore-gateway fallback, and a shore Bay Station for storage, processing, API, and AI prediction;
+- a proposed LoRa primary telemetry link from the buoy to a barangay-hall Bay Station, with SIM/4G/5G Internet backhaul at the Bay Station for cloud upload and authorized remote access;
 - solar power with battery storage;
 - a responsive local dashboard;
 - offline buffering for intermittent connectivity; and
@@ -144,8 +144,7 @@ purchased-board datasheets, and electrical protection plan.*
 > and security states are supporting telemetry, not additional project sensors.
 > The ESP32 handles
 > regular sensor acquisition and initial validation. It first attempts the
-> selected cellular link; if cellular service is unavailable and a shore LoRa
-> gateway is reachable, it uses LoRa as a compact fallback. A protected shore Bay Station stores and processes
+> proposed LoRa link to the barangay-hall gateway. The Bay Station stores and processes
 > the records, serves the dashboard, and runs the required prediction model. Users can view the information through a
 > responsive dashboard on a laptop, tablet, or phone. Solar-powered din ang
 > design, and local buffering protects the data during Internet interruptions.
@@ -166,8 +165,7 @@ Pressure-derived wave and wind sensors
              |
    Supporting GPS, power, and security telemetry
                          |
-               LTE / CELLULAR PRIMARY
-                   OR LORA FALLBACK
+                         LORA PRIMARY LINK
                          v
           Shore-based Bay Station mini PC
              |          |          |
@@ -186,12 +184,14 @@ Pressure-derived wave and wind sensors
 > This diagram shows the system workflow. First, the primary sensors collect
 > pressure-derived wave and wind measurements. Supporting GPS, power, and
 > security telemetry describes position and system condition. The ESP32 reads and checks
-> those values, then packages them as telemetry. The ESP32 first sends the data
-> through LTE/cellular. If LTE is unavailable, it attempts the shore LoRa gateway;
-> if both links fail, it stores the records locally for later retransmission. The Bay Station manages the database, signal
+> those values, then packages them as telemetry. The proposed deployment sends
+> the data through LoRa to the barangay-hall gateway. If the LoRa path fails,
+> it stores the records locally for later retransmission. The Bay Station manages the database, signal
 > processing, API, dashboard, and future model inference. Finally, the user can
 > view current measurements, historical data, alerts, and model output on the
-> FALCON dashboard. Kapag pansamantalang nawala ang LTE, susubukan ang LoRa shore gateway; kapag parehong unavailable, tuloy ang sensing at local security at ibabalik ang buffered records after reconnection.
+> FALCON dashboard. Kapag pansamantalang nawala ang LoRa link, tuloy ang
+> sensing at local security at ibabalik ang buffered records pagkatapos ng
+> reconnection. Ang SIM/4G/5G ay para sa Internet backhaul ng Bay Station.
 
 ### Slide 5 — Current Progress
 
@@ -209,14 +209,15 @@ still required to build, calibrate, and test the physical buoy.
 - parametric mechanical concepts and Revision 5 buoy baseline;
 - hardware bill of materials, power calculations, test plan, and documentation.
 
-**Current verification:**
+**Current software verification:**
 
 - ESP32 firmware builds successfully;
-- 18 edge-service automated tests pass; and
+- 25 edge-service automated tests pass; and
 - Dashboard Next production build passes.
 
-**Not yet completed:** physical sensor integration, assembled marine power system,
-field-trained AI, calibration, and marine deployment validation.
+**Not yet completed:** LoRa hardware and gateway integration, Bay Station SIM/4G/5G
+backhaul, physical sensor integration, assembled marine power system, field-trained
+AI, calibration, and marine deployment validation.
 
 ![Current Project FALCON dashboard overview](visuals/dashboard-overview.png)
 
@@ -340,7 +341,7 @@ and testing process, not only for electronic sensors.
 | Category | Preliminary amount |
 | --- | ---: |
 | Sensors and embedded electronics | PHP 15,000–22,000 |
-| Edge computer, storage, LTE/LoRa networking, and shore gateway | PHP 5,000–12,000 |
+| Bay Station computer, storage, LoRa networking, SIM/4G/5G backhaul, and gateway | PHP 5,000–12,000 |
 | Solar, battery, charging, and protected distribution | PHP 12,000–20,000 |
 | Buoy body, structure, enclosure, and marine connectors | PHP 15,000–28,000 |
 | Mooring, anchor, corrosion protection, and safety hardware | PHP 7,000–14,000 |
@@ -359,7 +360,8 @@ testing, fabrication, transport, spares, and contingency costs.
 
 > Our preliminary development request ranges from seventy-two thousand to one
 > hundred thirty-one thousand pesos. This is not only the cost of the sensors.
-> It includes the embedded electronics, LTE modem, optional LoRa radio and shore gateway, separately budgeted shore Bay Station, solar and battery system,
+> It includes the embedded electronics, LoRa buoy radio and barangay-hall gateway,
+> separately budgeted Bay Station SIM/4G/5G backhaul, solar and battery system,
 > marine enclosure and structure, mooring and anchor, calibration or reference
 > tools, fabrication, field testing, transport, spare parts, and contingency.
 > Planning range pa lamang ito. Before formal procurement, we will replace the

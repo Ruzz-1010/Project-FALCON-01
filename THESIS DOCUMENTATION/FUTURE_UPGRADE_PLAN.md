@@ -31,10 +31,12 @@ instrument, uncertainty estimate, cleaning plan, power budget, and dashboard sta
 
 ### 4. Improve long-distance communication
 
-Phase 1 requires an approved LTE/4G link where cellular service is reliable. Future resilience may add LoRa for
-low-rate links to a nearby gateway, and satellite messaging for essential compact
-telemetry in remote sites. FALCON should continue storing data locally and
-synchronize queued records after a connection returns.
+The proposal baseline uses LoRa as the planned low-rate buoy link to a nearby
+barangay-hall gateway. SIM/4G/5G is planned at the Bay Station for Internet
+backhaul, cloud upload, and authorized remote access. Satellite messaging or
+additional gateways may be considered later for remote sites, subject to power,
+coverage, cost, cybersecurity, and validation evidence. FALCON should continue
+storing data locally and synchronize queued records after a connection returns.
 
 ### 5. Upgrade to Raspberry Pi 5 4GB when justified
 
