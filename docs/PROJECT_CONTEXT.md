@@ -1,4 +1,4 @@
-# Project FALCON Master Context v8.0 — Wave and Wind Bay Station Baseline
+# Project FALCON Master Context v8.1 — Wave and Wind Bay Station Baseline
 
 ## Document control
 
@@ -216,4 +216,4 @@ FALCON does not provide tsunami, typhoon, storm, or weather prediction; autonomo
 
 ## Change control
 
-Any document that conflicts with this v8.0 Bay Station context is outdated unless explicitly labeled historical. New sensor, AI, cloud, cellular, LoRa, or mechanical scope requires adviser approval and corresponding updates to requirements, BOM, firmware, API, tests, dashboard, thesis, and risk documentation.
+Any document that conflicts with this v8.1 Bay Station context is outdated unless explicitly labeled historical. New sensor, AI, cloud, cellular, LoRa, or mechanical scope requires adviser approval and corresponding updates to requirements, BOM, firmware, API, tests, dashboard, thesis, and risk documentation.
