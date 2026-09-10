@@ -103,3 +103,57 @@ main{padding:0 clamp(18px,2.5vw,40px) 52px}
 
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 @media(prefers-contrast:more){:root{--text:#0F1720;--muted:#34434D;--line:#A9B7C0}.panel,.nav-item,.sensor-row{box-shadow:none}.nav-item.is-active{border-width:2px}}
+
+/* Resilient text layout: labels may wrap, but values and controls never overlap. */
+.app,main,.content,.topbar,.title,.top-actions,.panel,.panel header,.panel-title,.page-head,.page-head>div,.dashboard-grid,.snapshot,.sensor-row-main,.sensor-identity,.sensor-group-values,.sensor-group-values>div,.ai-status-strip,.ai-status-strip dl,.ai-status-strip dl>div,.settings-card,.gps-layout,.gps-side{min-width:0}
+.brand>div,.nav-item span,.title>div,.panel-title>div,.ai-status-title>div{min-width:0}
+.brand strong,.brand span,.nav-item b,.nav-item small,.title h1,.panel h2,.panel p,.panel small,.panel footer,.snapshot dt,.snapshot dd,.sensor-identity h2,.sensor-identity p,.sensor-group-values span,.sensor-group-values strong,.sensor-group-values small,.sensor-technical dt,.sensor-technical dd,.ai-status-strip dt,.ai-status-strip dd,.ai-status-note small,.setting-field span,.setting-field small,.notification-setting span,.notification-setting small,.coordinates strong,.coordinates dt,.coordinates dd,.drift-card dt,.drift-card dd{overflow-wrap:anywhere;word-break:normal}
+.topbar,.page-head,.panel header{flex-wrap:wrap}
+.top-actions{min-width:max-content;flex-wrap:wrap;justify-content:flex-end}
+.snapshot dl div{align-items:center}.snapshot dt{flex:1 1 48%}.snapshot dd{flex:0 1 52%;max-width:58%}
+.sensor-group-values>div{min-width:0}.sensor-group-values strong,.sensor-group-values small{white-space:normal}
+.operator-overview .ai-status-strip{grid-template-columns:minmax(170px,.7fr) minmax(0,2fr) minmax(170px,.75fr)}
+.ai-status-strip dl>div{padding-inline:clamp(9px,1vw,14px)}
+.log-table,.history-table,.event-table{display:block;max-width:100%;overflow-x:auto}
+.log-table table,.history-table table,.event-table table{min-width:720px}
+.leaflet-container{max-width:100%}
+
+/* Quiet motion communicates state without turning the dashboard into a showpiece. */
+.content{animation:falcon-page-in .32s cubic-bezier(.2,.7,.2,1) both}
+.content>.panel,.content>.dashboard-grid>.panel,.content>.always-visible-trends>.panel,.sensor-row,.settings-grid>.panel,.gps-layout>.panel,.gps-side>.panel{animation:falcon-card-in .38s cubic-bezier(.2,.7,.2,1) both}
+.content>.dashboard-grid>.panel:nth-child(2),.content>.always-visible-trends>.panel:nth-child(2),.sensor-row:nth-child(2),.settings-grid>.panel:nth-child(2),.gps-side>.panel:nth-child(2){animation-delay:.04s}
+.content>.always-visible-trends>.panel:nth-child(3),.sensor-row:nth-child(3),.settings-grid>.panel:nth-child(3),.gps-side>.panel:nth-child(3){animation-delay:.08s}
+.sensor-row:nth-child(n+4),.settings-grid>.panel:nth-child(n+4){animation-delay:.12s}
+.overview-current-line,.overview-ai-line{stroke-dasharray:900;stroke-dashoffset:900;animation:falcon-line-in .8s ease-out .12s forwards}
+.live.is-online i,.side-foot>i.online{animation:falcon-status-breathe 2.8s ease-in-out infinite}
+.nav-item svg,.panel-title>svg,.sensor-group-icon svg{transition:transform .18s ease}
+.nav-item:hover svg,.sensor-details-toggle:hover svg{transform:translateX(2px)}
+@keyframes falcon-page-in{from{opacity:.55;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes falcon-card-in{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+@keyframes falcon-line-in{to{stroke-dashoffset:0}}
+@keyframes falcon-status-breathe{0%,100%{opacity:.72}50%{opacity:1}}
+
+/* The sidebar reduces usable width, so switch complex rows before they collide. */
+@media(max-width:1450px){
+  .sensor-row-main{grid-template-columns:48px minmax(170px,1fr) auto 150px}
+  .sensor-group-values{grid-column:2/5;grid-row:2;margin-top:4px}
+  .sensor-group-values>div:first-child{padding-left:0;border-left:0}
+  .sensor-details-toggle{grid-column:4;grid-row:1}
+  .sensor-technical{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:1240px){
+  .operator-overview .ai-status-strip{grid-template-columns:1fr}
+  .ai-status-note{justify-items:start;text-align:left}
+  .top-actions>div{display:none}
+}
+@media(max-width:820px){
+  .topbar{align-items:center}.top-actions{margin-left:auto}.live{max-width:116px;white-space:normal;text-align:center}
+  .overview-wave-legend{align-items:flex-start;flex-direction:column;gap:8px}.overview-wave-legend small{margin-left:0}
+}
+@media(max-width:720px){
+  .sensor-row-main{grid-template-columns:44px minmax(0,1fr) auto}
+  .sensor-group-values{grid-column:1/4;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}
+  .sensor-details-toggle{grid-column:1/4;grid-row:auto;width:100%}
+  .sensor-technical{grid-template-columns:1fr}
+  .snapshot dt,.snapshot dd{max-width:none}
+}
