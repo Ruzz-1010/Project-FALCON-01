@@ -23,6 +23,8 @@ The prototype emits one UTF-8 JSON object per line at 115200 baud. Diagnostic
 frames never fabricate measurements; absent driver values leave `measurements`
 empty and report sensor state explicitly.
 
+The `bar02` key in the example below is a legacy prototype identifier. The next protocol revision must use a model-neutral `pressure` sensor identity plus explicit `sensorModel`, loop-current, pressure, calibration, and quality fields for the HPT604 candidate. Do not silently change deployed schema version 1.
+
 ```json
 {"protocol":"falcon.telemetry","version":1,"sequence":7,"uptimeMs":4200,"source":"hardware-diagnostic","monitoring":true,"sensors":{"bar02":"DETECTED","gps":"DETECTED","tamper":"UNTESTED"},"measurements":{}}
 ```

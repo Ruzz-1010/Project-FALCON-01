@@ -7,7 +7,7 @@
 1. Build the firmware with PlatformIO.
 2. Open the clean page you need in VS Code:
    - `diagram.all.json` — all selected parts in one overview;
-   - `diagram.json` — BNO085, Bar02, and GPS core sensors;
+   - `diagram.json` — historical BNO085, Bar02, and GPS simulation hardware;
    - `diagram.environment.json` — pressure, temperature, wind, and ADC; or
    - `diagram.power.json` — battery/solar monitors and Orange Pi.
 3. If it opens as text, right-click the tab, choose **Reopen Editor With...**,
@@ -21,7 +21,7 @@
 
 Wokwi does not provide native models for every selected FALCON sensor. The
 complete view therefore includes visual-only custom breakouts for BNO085,
-Bar02, two INA260 monitors, MCP9808, ADS1115, UART GPS, and Orange Pi. Their
+Bar02, two INA260 monitors, MCP9808, ADS1115, UART GPS, and Orange Pi. These are historical simulation stand-ins. The HPT604 4–20 mA deployment candidate and its protected current-loop receiver are not simulated by this Wokwi diagram. Their
 named pins and wires document the physical plan, but their protocol behavior is
 not simulated yet. The view also uses:
 

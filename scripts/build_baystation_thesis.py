@@ -379,7 +379,7 @@ def build():
     run.bold = True
     run.font.size = Pt(15)
     run.font.color.rgb = RGBColor.from_string(TEAL)
-    p(document, "Expanded Canonical Thesis Documentation — Version 4.0", center=True, indent=False)
+    p(document, "Expanded Canonical Thesis Documentation — Version 4.1", center=True, indent=False)
     p(document, "Project FALCON Research Group\nBachelor of Science in Information Technology\nFullbright College", center=True, indent=False)
     p(document, date.today().strftime("%d %B %Y"), center=True, indent=False)
     note = document.add_paragraph()
@@ -396,6 +396,7 @@ def build():
         ["Canonical file", "THESIS DOCUMENTATION/BayStation.docx"],
         ["Architecture", "ESP32 buoy → LoRa → shore Bay Station → SIM/4G/5G Internet backhaul"],
         ["Primary measurements", "Pressure-derived estimated wave height; wind speed and direction"],
+        ["Pressure candidate", "Holykell HPT604 Type A, provisional 0–2 mH2O vented gauge, 4–20 mA; procurement and validation pending"],
         ["Supporting telemetry", "GPS/time, battery/solar, security, enclosure/system health"],
         ["AI status", "Required shore-based prediction feature; current model is an unvalidated research baseline"],
         ["Physical status", "Prototype geometry under redesign; no fabrication or deployment release"],
@@ -458,7 +459,7 @@ def build():
         ["Future developers", "Open architecture, interfaces, calibration records, and limitations that can support later improvements."],
     ])
     heading(document, "1.6 Scope and Delimitations", 2)
-    p(document, "Phase 1 covers one controlled near-shore prototype, passive single-anchor mooring, an ESP32 buoy node, pressure-derived wave estimation, wind speed/direction, supporting GPS/power/security telemetry, LoRa transport to one shore Bay Station, local storage, one dashboard, alerts, and one short-term prediction target. The exact site, LoRa radio/gateway, final pressure sensor for continuous deployment, Bay Station computer, cellular provider, antenna, and cloud endpoint remain approval gates.")
+    p(document, "Phase 1 covers one controlled near-shore prototype, passive single-anchor mooring, an ESP32 buoy node, pressure-derived wave estimation, wind speed/direction, supporting GPS/power/security telemetry, LoRa transport to one shore Bay Station, local storage, one dashboard, alerts, and one short-term prediction target. The recommended pressure candidate is a Holykell HPT604 Type A with provisional 0–2 mH2O vented-gauge range and 4–20 mA output. Its exact order code and continuous-seawater suitability remain approval gates together with the site, LoRa radio/gateway, Bay Station computer, cellular provider, antenna, and cloud endpoint.")
     p(document, "The study excludes official storm, typhoon, tsunami, navigation, or emergency-warning claims; laboratory-grade water quality; salinity; required water temperature; BNO085-based wave measurement; anchor-chain load sensing; autonomous navigation; camera AI; satellite communication; and multi-buoy networking. Simulator and software-test results do not prove physical accuracy or coastal readiness.")
     heading(document, "1.7 Definition of Operational Terms", 2)
     table(document, ["Term", "Operational meaning in this study"], [
@@ -504,7 +505,7 @@ def build():
     ])
     heading(document, "3.3 Hardware Baseline", 2)
     table(document, ["Function", "Current selection/status", "Required evidence"], [
-        ["Pressure", "Bar02 R2 for supervised prototype; continuous-deployment replacement decision pending", "Depth comparison, baseline, sampling, waterproof installation, immersion/service limitation"],
+        ["Pressure", "HPT604 Type A 0–2 mH2O, 4–20 mA deployment candidate; Bar02 bench-only", "Supplier seawater confirmation, exact order code, loop interface, depth comparison, baseline, dynamic response, vent, drift, fouling and endurance"],
         ["Wind", "SparkFun SEN-15901 prototype", "Speed reference, vane alignment, startup threshold, corrosion and cable tests"],
         ["GPS", "Adafruit Ultimate GPS PID 746 prototype", "Stationary scatter, cold/warm start, geofence false-alert tests"],
         ["Power monitoring", "Two INA260 channels", "DMM comparison, polarity, range, connector heating"],
@@ -512,7 +513,7 @@ def build():
         ["LoRa", "Exact radio, gateway, antenna, band, and protocol TBD", "Legal-band review, coverage survey, packet loss and recovery"],
         ["Bay Station", "Development laptop substitute; final mini PC TBD", "OS, startup, storage, cooling, UPS, measured load"],
     ])
-    p(document, "Important pressure-sensor gate. The Bar sensor guide requires the sensing face to contact water while electronics remain dry, warns against long I²C wiring, and requires care appropriate to its gel sensing element. The final thesis must distinguish supervised short trials from unattended continuous deployment and must not represent Bar02 as a proven permanent installation before the service method or a continuously submersible alternative is approved.")
+    p(document, "Important pressure-sensor gate. The HPT604 candidate uses a protected 12 V 4–20 mA loop, a 150 ohm precision shunt, input protection/filtering, and a 3.3 V ADS1115 receiver. The theoretical loop load is 0.048–0.240 W at 12 V before conversion loss. Its vent tube must terminate in a dry breathable supplier-approved desiccant/breather arrangement. Written confirmation of continuous saltwater compatibility, exact wetted materials, seals, cable and order code is required before purchase. The current Bar02 I2C PCB/connector is incompatible and remains bench-only because the manufacturer requires daily drying and limits continuous immersion.")
     heading(document, "3.4 Data Acquisition and Telemetry", 2)
     bullets(document, [
         "Assign every record a station ID, packet ID/sequence, original sample timestamp, firmware/schema version, source, and quality flags.",
@@ -587,7 +588,7 @@ def build():
     ])
     heading(document, "4.2 Not Yet Validated", 2)
     bullets(document, [
-        "Final continuously deployable pressure sensor and physical calibration coefficients.",
+        "Procurement, revised 4–20 mA interface, continuous-saltwater confirmation, and physical calibration coefficients for the HPT604 candidate.",
         "Exact LoRa module, legal band, gateway, antennas, packet protocol, and site coverage.",
         "Final Bay Station mini PC, OS image, modem/provider, UPS, cloud endpoint, and cybersecurity controls.",
         "Final mechanical geometry, waterproofing, corrosion protection, mooring, autonomy, and coastal endurance.",
@@ -595,7 +596,8 @@ def build():
     ])
     heading(document, "4.3 Risk Register", 2)
     table(document, ["Risk", "Impact", "Required mitigation"], [
-        ["Bar02 continuous-immersion limitation", "High", "Restrict to supervised trials or approve a continuously submersible replacement."],
+        ["HPT604 exact seawater configuration unconfirmed", "High", "Obtain written supplier confirmation; validate vent, materials, cable, drift, fouling and staged endurance before unattended use."],
+        ["Existing PCB targets Bar02 I2C", "High", "Do not fabricate; redesign and bench-test the protected 4–20 mA receiver and keyed connector."],
         ["Undefined LoRa path", "High", "Freeze legal band/hardware and complete a site coverage survey before PCB/deployment release."],
         ["Insufficient calibrated AI data", "High", "Use transparent baseline; collect data; avoid accuracy claims until held-out evaluation."],
         ["Power assumptions differ from measured load", "High", "Log all operating modes and redesign capacity from measured Wh/day."],
@@ -627,6 +629,7 @@ def build():
         "Albaladejo, C., Soto, F., Torres, R., Sánchez, P., & López, J. A. (2012). A low-cost sensor buoy system for monitoring shallow marine environments. Sensors, 12(7), 9613–9634. https://doi.org/10.3390/s120709613",
         "Ardhuin, F., et al. (2019). Observing sea states. Frontiers in Marine Science, 6, Article 124. https://doi.org/10.3389/fmars.2019.00124",
         "Bishop, C. T., & Donelan, M. A. (1987). Measuring waves with pressure transducers. Coastal Engineering, 11(4), 309–328. https://doi.org/10.1016/0378-3839(87)90031-7",
+        "Holykell. (n.d.). HPT604 Type A level sensor datasheet. https://www.holykell.com/wp-content/uploads/2023/08/HPT604A-Level-sensor-Datasheet-Holykell-V26-CS-1.pdf",
         "Blue Robotics. (n.d.). Bar high-resolution depth/pressure sensors guide. https://bluerobotics.com/learn/bar-sensors-guide/",
         "Bonneton, P., Lannes, D., Martins, K., & Michallet, H. (2018). A nonlinear weakly dispersive method for recovering the elevation of irrotational surface waves from pressure measurements. Coastal Engineering, 138, 1–8. https://doi.org/10.1016/j.coastaleng.2018.04.005",
         "Cho, J., et al. (2021). Seawater battery-based wireless marine buoy system with battery degradation prediction and multiple power optimization capabilities. IEEE Access, 9, 104104–104114. https://doi.org/10.1109/ACCESS.2021.3098846",
@@ -662,7 +665,7 @@ def build():
     bullets(document, [
         "Named deployment partner, site, user need, permits, and reference access",
         "Defined significant-wave-height method, sampling rate, window, filters, and acceptance limits",
-        "Continuously deployable pressure-sensor decision",
+        "Exact HPT604 order code, continuous-seawater confirmation, revised loop interface, and pressure-sensor validation",
         "Exact LoRa hardware, legal band, coverage, security, buffering, and antenna plan",
         "Final mechanical design and engineering review",
         "Measured energy budget and autonomous operating target",
@@ -673,7 +676,7 @@ def build():
     document.core_properties.subject = "Canonical shore Bay Station, LoRa, pressure-wave, and AI-assisted architecture"
     document.core_properties.author = "Project FALCON Research Group"
     document.core_properties.keywords = "FALCON, coastal buoy, Bay Station, LoRa, pressure-derived wave height, AI"
-    document.core_properties.comments = "Generated from the adviser-aligned Project FALCON v8.1 repository baseline. Planned hardware and AI claims require validation."
+    document.core_properties.comments = "Generated from the adviser-aligned Project FALCON v8.2 repository baseline. Planned hardware and AI claims require validation."
     document.save(OUTPUT)
     SYNC_OUTPUT.write_bytes(OUTPUT.read_bytes())
     print(OUTPUT)

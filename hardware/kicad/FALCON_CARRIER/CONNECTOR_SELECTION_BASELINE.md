@@ -23,7 +23,7 @@ a printed 1:1 overlay and physical receiving inspection before fabrication.
 | Service | PCB header baseline | Mating housing | Rating basis | Pin decision |
 | --- | --- | --- | --- | --- |
 | J1 protected 5 V | JST `B2P-VH-FB-B`, 2-pos., 3.96 mm, THT | `VHR-2N` | VH shrouded header: 7 A with AWG18 | 1 `+5V_PROTECTED`, 2 GND |
-| J2 Bar02 R2 | JST `BM04B-GHS-TBT`, 4-pos., 1.25 mm, SMT | `GHR-04V-S` | GH: 1 A with AWG26 | 1 Vin, 2 SCL, 3 SDA, 4 GND |
+| J2 historical Bar02 R2 | JST `BM04B-GHS-TBT`, 4-pos., 1.25 mm, SMT | `GHR-04V-S` | OBSOLETE FOR DEPLOYMENT | Replace with keyed HPT604 two-wire loop termination after marine connector, cable vent, current-loop and enclosure review |
 | J6 MCP9808 / J12 service I2C | JST `BM04B-GHS-TBT` | `GHR-04V-S` | GH: 1 A with AWG26 | 1 3V3, 2 SCL, 3 SDA, 4 GND |
 | J7–J10 sensor inputs | JST `BM03B-GHS-TBT`, 3-pos. | `GHR-03V-S` | GH: 1 A with AWG26 | 1 3V3, 2 signal, 3 GND |
 | J11/J13 fans | Molex `470531000`, 4-pos., 2.54 mm, THT | `470541000` baseline | 4-wire fan interface | 1 GND, 2 5 V, 3 independent tach, 4 independent open-drain PWM |
@@ -38,7 +38,7 @@ An M8 A-coded sealed pigtail is a candidate for three- or four-wire field
 sensors. TE Connectivity offers keyed panel-mount M8 IP67 variants. IP67 is only
 a splash-exposure starting point, not approval for continuous submersion. Final
 selection must match cable diameter, panel thickness, salt/UV exposure, mating
-cycles, and required IP rating. Bar02 retains its M10×1.5 manufacturer seal.
+cycles, and required IP rating. The former Bar02 M10×1.5 arrangement is historical; the exact HPT604 probe/cable and dry vent termination control the revised mechanical interface.
 
 ## Official references
 

@@ -10,6 +10,10 @@ Project FALCON is a proposed affordable solar-powered coastal observation buoy. 
 
 It directly measures underwater pressure. The software uses pressure changes over time, baseline removal, filtering, depth information, and calibration to estimate wave height.
 
+**Which pressure sensor is proposed for long-term deployment?**
+
+The current candidate is a Holykell HPT604 Type A with a provisional 0–2 mH2O vented-gauge range and 4–20 mA output. We chose an industrial current-loop candidate because it is better suited to a longer noisy cable run than direct I2C. It is not yet approved hardware: the exact order code, continuous-saltwater compatibility, cable, seals, vent arrangement, interface, and calibration must still be confirmed and tested. Bar02 is only for supervised short-duration bench comparison.
+
 **Is the wave height directly measured?**
 
 No. Pressure is directly measured; wave height is derived and must be labeled `ESTIMATED` until reference validation is complete.

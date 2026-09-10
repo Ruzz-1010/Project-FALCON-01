@@ -28,6 +28,10 @@ The first intended user should be one verified coastal stakeholder and one ident
 
 The pressure sensor is placed below the water surface and measures underwater pressure. Static pressure depends mainly on the sensor depth. When the water surface moves, the pressure at the sensor changes over time. The system filters the pressure signal, removes the baseline, and uses calibration data to estimate wave height. The sensor directly measures pressure; wave height is a derived estimate.
 
+### 5A. Which exact pressure sensor will you use for long-term deployment?
+
+The recommended candidate is a Holykell HPT604 Type A ordered provisionally as 0–2 mH2O vented gauge with 4–20 mA output. It will use a protected 12 V loop, 150 ohm precision shunt and ADS1115 receiver. This is still a candidate: we will not purchase or deploy it until the supplier confirms the exact order code, continuous-saltwater compatibility, wetted materials, seal, cable, and calibration. Bar02 is limited to short supervised comparison because its daily drying and immersion limits do not fit unattended deployment.
+
 ### 6. What is the basic pressure relationship?
 
 The hydrostatic relationship is:

@@ -2,7 +2,7 @@
 
 > This is a planning BOM, not a fabrication release. Reconfirm quantities, dimensions, connector variants, cable lengths, brackets, enclosure parts, ballast, and solar mounting hardware after the replacement prototype is approved.
 
-Status: budgetary Bay Station baseline, revised 2026-08-30. Prices are shown in
+Status: budgetary Bay Station baseline, revised 2026-09-10. Prices are shown in
 Philippine pesos using an indicative rate of **PHP 61.71 per USD**. They are raw
 list-price conversions before shipping, import fees, tax, and Philippine reseller
 markup. Confirm the live exchange rate, stock, revision, and ratings before ordering.
@@ -12,8 +12,9 @@ markup. Confirm the live exchange rate, stock, revision, and ratings before orde
 | Qty | Selected item | Budget | Procurement note |
 | ---: | --- | ---: | --- |
 | 1 | Espressif ESP32-DevKitC V4 with ESP32-WROOM-32E, 38-pin | PHP 620–1,235 | Exact carrier reference; do not substitute WROVER because GPIO16/17 are required |
-| 1 | Blue Robotics Bar02 R2 | PHP 4,940–5,555 | Select Bar02, JST-GH lead, bulkhead seal |
+| 1 | Holykell HPT604 Type A, 0–2 mH2O vented gauge, 4–20 mA candidate | PHP 3,500–9,500 planning allowance | Obtain exact supplier quote below PHP 10,000 and written continuous-seawater/material/cable confirmation; not yet procured |
 | 1 | Adafruit ADS1115, PID 1085 | PHP 925 | Wind vane direction input; 3.3 V divider |
+| 1 lot | HPT604 loop interface: 150 ohm 0.1% low-tempco shunt, RC filter, TVS/clamps, fuse, waterproof termination | PHP 500–1,500 planning allowance | Exact protection and connector values follow schematic review and bench test |
 | 1 | SparkFun Weather Meter SEN-15901 | PHP 4,935 | Prototype only; salt-exposure maintenance required |
 
 ## Supporting Telemetry and Control
@@ -47,7 +48,7 @@ power, connectors, enclosure, shipping, and optional antenna.
 | 1 | ESP32/sensor regulated branch | PHP 620–1,850 | Final voltage/current from complete measured carrier load |
 | lot | Fuses, disconnect, terminals, glands, marine wire | PHP 4,320–9,875 | Rated schedule and ingress review |
 
-Internal connector baseline: JST GH 4-position (`BM04B-GHS-TBT`) for Bar02/I2C,
+The former Bar02 JST-GH pressure connector is obsolete for deployment. The revised HPT604 input requires a keyed two-wire loop termination plus a protected vented-cable/gland arrangement; the exact marine connector remains a procurement and physical-fit gate. Existing JST GH connectors may remain for short internal I2C links,
 JST GH 3-position (`BM03B-GHS-TBT`) for low-current sensor signals and JST VH
 2-position (`B2P-VH-FB-B`) for protected 5 V input. The earlier three-position
 fan connector is superseded by the four-wire fan architecture in
@@ -60,7 +61,8 @@ The previous total is withdrawn because the LoRa buoy link, Bay Station Internet
 
 ## Primary Sources
 
-- [Blue Robotics Bar02/Bar30 product](https://bluerobotics.com/store/sensors-cameras/sensors/bar-depth-pressure-sensor/)
+- [Holykell HPT604 Type A datasheet](https://www.holykell.com/wp-content/uploads/2023/08/HPT604A-Level-sensor-Datasheet-Holykell-V26-CS-1.pdf)
+- [Blue Robotics Bar sensor guide — bench-only limitation reference](https://bluerobotics.com/learn/bar-sensors-guide/)
 - [Adafruit INA260 product](https://www.adafruit.com/product/4226)
 - [Adafruit ADS1115 product](https://www.adafruit.com/product/1085)
 - [Adafruit Ultimate GPS product](https://www.adafruit.com/product/746)

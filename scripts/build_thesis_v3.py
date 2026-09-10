@@ -97,7 +97,7 @@ def build() -> None:
 
     heading(document, "Executive Summary")
     paragraph(document, "Project FALCON-01 is a low-cost, modular, solar-powered smart coastal observation buoy designed for near-real-time local monitoring. The primary measurements are underwater pressure for estimated wave height and wind speed/direction. GPS, power, timestamp, and security values are supporting system telemetry. The ESP32 sends validated telemetry through USB serial/UART to an Orange Pi Zero 3, which stores records locally, exposes a REST API, and serves a responsive browser dashboard without requiring Internet connectivity.")
-    paragraph(document, "The adviser-revised Phase 1 study uses a Blue Robotics Bar02 or compatible waterproof pressure sensor as the primary wave input. The device directly measures underwater pressure variation. Software preserves raw pressure, filters noise, establishes a documented baseline, and converts the dynamic pressure component into an estimated wave-height value. The project therefore uses the wording pressure-based estimated wave height and does not claim that the pressure sensor directly measures laboratory-grade wave height.")
+    paragraph(document, "The adviser-revised Phase 1 study uses a Holykell HPT604 Type A, provisionally 0–2 mH2O vented gauge with 4–20 mA output, as the recommended deployment candidate. The exact order code and continuous-saltwater suitability remain pending written supplier confirmation. Bar02 is bench-only. The device directly measures underwater pressure variation. Software preserves raw pressure, filters noise, establishes a documented baseline, and converts the dynamic pressure component into an estimated wave-height value. The project therefore uses the wording pressure-based estimated wave height and does not claim that the pressure sensor directly measures laboratory-grade wave height.")
     paragraph(document, "The required BNO085 IMU, water-temperature, and anchor-chain load-cell/HX711 concepts have been removed from the primary design to keep the undergraduate scope achievable. The buoy uses passive mooring with adequate line scope for tides and normal wave motion. GPS, power, and security values remain supporting telemetry. Artificial intelligence is optional and supporting; all core wave and wind monitoring functions operate without it.")
 
     heading(document, "1. Project Background")
@@ -147,7 +147,7 @@ def build() -> None:
 
     heading(document, "7. Hardware Components")
     table(document, ["Group", "Component", "Purpose and status"], [
-        ["Core", "Bar02 or compatible pressure sensor", "Raw pressure and calibrated estimated wave height; selected family"],
+        ["Core", "HPT604 Type A 0–2 mH2O 4–20 mA candidate", "Raw pressure and calibrated estimated wave height; exact configuration pending"],
         ["Primary", "Wind speed/direction", "Primary wind measurement; exact models TBD"],
         ["Supporting", "GPS, battery, solar, timestamp, and security telemetry", "Position, power, and operational context; not additional project measurements"],
         ["Controller", "ESP32 DevKit", "Deterministic sensor acquisition and serial telemetry"],
@@ -220,7 +220,7 @@ def build() -> None:
     heading(document, "16. Development Roadmap")
     numbered(document, [
         "Approve exact component models and datasheets.", "Freeze the adviser-approved electrical interfaces and revised PCB.",
-        "Bench-integrate Bar02 and wind channels, then verify the required supporting telemetry and security interfaces.",
+        "Confirm and bench-integrate the HPT604 4–20 mA loop and wind channels, then verify the required supporting telemetry and security interfaces.",
         "Complete pressure/environment/security calibration and controlled reference tests.",
         "Install and harden Orange Pi automatic services.", "Complete enclosure, solar, mooring, and safe controlled water trials.",
         "Analyze results and revise claims based on evidence.", "Evaluate optional AI only if sufficient calibrated data and time remain.",

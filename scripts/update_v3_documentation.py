@@ -43,7 +43,7 @@ REPLACEMENTS = {
     "optional motion visualization": "optional pressure-driven motion visualization",
     "It does not claim laboratory-grade salinity": "It does not claim laboratory-grade water-quality analysis",
     "3. Bench-integrate Bar02, GPS, wind, DS18B20, conductivity, health, and security channels.":
-        "3. Bench-integrate Bar02, GPS, wind, DS18B20, health, and security channels.",
+        "3. Confirm and bench-integrate the HPT604 4–20 mA pressure loop, GPS, wind, health, and security channels; retain Bar02 only for short supervised comparison.",
     "conductivity/salinity hardware; ": "",
 }
 

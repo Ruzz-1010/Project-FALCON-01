@@ -24,7 +24,7 @@ logic power and I2C reach the carrier.
 
 - Socketed ESP32 DevKit / ESP-WROOM-32 class controller.
 - Socketed Adafruit BNO085 SPI breakout.
-- Bar02 I2C connector.
+- historical Bar02 I2C connector, which must be replaced by the HPT604 4–20 mA receiver before fabrication.
 - GPS UART connector.
 - Separate battery and solar INA260 logic connectors.
 - MCP9808 and ADS1115 module connectors.
@@ -111,7 +111,7 @@ Reference map:
 | U6 | TPS25947-family external-input eFuse candidate |
 | JP1 | External-power enable shunt; USB must be unplugged when fitted |
 | J1 | Protected 5 V input |
-| J2–J6 | Bar02, GPS, two INA260 logic links, MCP9808 |
+| J2–J6 | Historical Bar02, GPS, two INA260 logic links, MCP9808; J2 requires HPT604 loop redesign |
 | J7–J10 | Anemometer, wind vane, DS18B20, leak sensor |
 | J11/J13 | Independent four-wire PWM fan outputs |
 | J12 | Service I2C |

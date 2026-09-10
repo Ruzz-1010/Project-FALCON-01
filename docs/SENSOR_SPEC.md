@@ -2,7 +2,7 @@
 
 | Group | Channel | Output | Required truth label |
 | --- | --- | --- | --- |
-| Core | Bar02/compatible pressure | raw/filtered kPa, baseline, optional depth, estimated wave height | ESTIMATED; CALIBRATION REQUIRED until validated |
+| Core | HPT604 Type A 0–2 mH2O 4–20 mA candidate | raw loop current, raw/filtered kPa, baseline, optional depth, estimated wave height | CANDIDATE; EXACT CONFIGURATION AND CALIBRATION REQUIRED |
 | Core | Wind speed | speed and units | LIVE or SIMULATED |
 | Core | Wind direction | direction/heading | LIVE or SIMULATED |
 | Supporting telemetry | GPS position/time | latitude, longitude, fix, satellites, geofence distance/state | LIVE or SIMULATED; not a primary measurement |

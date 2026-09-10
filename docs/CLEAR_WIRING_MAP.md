@@ -63,3 +63,5 @@ The carrier receives protected regulated 5 V only. Raw panel, battery, MPPT,
 and branch load current do not enter ordinary carrier headers. The selected LTE modem
 uses a separate regulated 5 V / at least 3 A branch. INA260 high-current
 terminals remain in their separately fused external paths.
+
+The Bar02 entry above is retained only to interpret the historical drawing. The deployment candidate is an HPT604 4–20 mA probe and requires a protected 12 V loop, 150 ohm precision shunt, ADS1115 receiver, and dry vent termination as specified in [PRESSURE_SENSOR_BASELINE.md](PRESSURE_SENSOR_BASELINE.md). Do not fabricate the old J2 pressure connection.

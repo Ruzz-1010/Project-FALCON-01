@@ -1,4 +1,4 @@
-# Current Project Documentation v8.1
+# Current Project Documentation v8.2
 
 Project FALCON is now a pressure-based smart coastal observation buoy. The authoritative scope, architecture, sensor groups, truthful claims, validation requirements, and implementation status are in [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md).
 
@@ -24,6 +24,7 @@ The physical and visual prototype is now **under redesign**. All existing mechan
 - BNO085 removed from the required Phase 1 baseline; old motion files remain only as deprecated optional prototypes.
 - Load cell/HX711 and anchor-chain tension sensing removed.
 - Pressure sensor is the primary wave input; output is **estimated wave height**.
+- Holykell HPT604 0–2 mH2O, 4–20 mA is the recommended deployment candidate pending supplier and seawater confirmation; Bar02 is bench-only.
 - Water-temperature, conductivity, and salinity channels removed from the required Phase 1 scope.
 - GPS geofence, tamper input, enclosure switch, and buzzer security concept added.
 - AI wave prediction made a required, always-visible Overview feature while remaining isolated from live monitoring failures.
@@ -45,7 +46,7 @@ Open `http://127.0.0.1:8765/`. Use Node.js 20.19+ only when running the Vite dev
 1. Define and approve the replacement prototype geometry and component placement.
 2. Finalize exact TBD part models and datasheets.
 3. Freeze new wiring/pinout/PCB revision after physical-fit review.
-4. Connect and bench-test the physical Bar02 pressure sensor.
+4. Obtain the exact HPT604 quotation/configuration, redesign its 4–20 mA interface, and bench-test the complete loop; use Bar02 only for short comparison trials.
 5. Define and execute pressure baseline and wave-reference calibration.
 6. Implement and test real geofence/tamper persistence.
 7. Select/integrate the LoRa buoy radio and barangay-hall gateway, select the Bay Station SIM/4G/5G backhaul, then install/harden the shore Bay Station service.
