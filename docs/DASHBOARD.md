@@ -1,4 +1,16 @@
-# Dashboard Specification v8.3
+# Dashboard Specification v8.4
+
+## Current implemented layout — September 11, 2026
+
+The approved coastal design is applied across Overview, Sensors, Buoy Motion, GPS, Logs & Alerts, and Settings. Navigation retains five main entries; Settings remains a header action. The older four-page proposal below is historical and does not describe the current navigation.
+
+Overview now has one full-width wave chart, a current-condition badge beside the wave-height reading, and a clearly separate numeric AI research estimate in the same card. Earlier AI predictions are labeled separately in the chart legend. The former right-hand status card and mini-trend widgets are removed. A four-column readings strip shows wind, pressure, battery, and solar, followed by GPS security, enclosure temperature, and last-update information.
+
+White cards, an off-white background, dark blue-gray text, muted blue navigation, larger controls, and responsive spacing are shared across all pages. Motion retains its existing 3D structure and controls. Sensor details remain expandable; logs retain search and export. Gentle transitions respect reduced-motion preferences. Data acquisition, estimation, and forecasting logic are unchanged.
+
+Validation: TypeScript and production build passed. The 3D Motion bundle still triggers the existing large-chunk warning. Browser visual verification remains pending.
+
+## Previous specification and implementation history
 
 Source cleanup 2026-09-11: disconnected legacy pages and the saved FalconAssistant component/style are preserved in `archive/dashboard-next/src/`. Active imports, current page components, shared CSS, API contracts, and model assets remain in `dashboard-next/`. See `archive/README.md` for recovery instructions.
 
