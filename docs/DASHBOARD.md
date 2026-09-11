@@ -1,4 +1,10 @@
-# Dashboard Specification v8.0
+# Dashboard Specification v8.3
+
+UI revision 2026-09-11: the existing implementation keeps five navigation entries (Overview, Sensors, Buoy Motion, GPS, Logs & Alerts) and a Settings header button. This differs from the earlier four-page thesis proposal below; the current redesign preserves the working navigation pending a separate scope decision.
+
+The refreshed shared theme uses white cards, a light gray background, dark blue-gray text, muted blue navigation and teal details. Sensor values and explanatory text are larger, cards reflow on smaller screens, and the current sea condition appears in one clearly labeled block. A wave-chart inspector supports pointer selection and a keyboard/touch range control for reading earlier values. Narrow displays scroll the chart locally to preserve axis readability.
+
+Entrance transitions, expandable sensor details and a floating loading logo provide gentle animation. Reduced-motion preferences disable animation. Chart lines remain fully drawn during polling. Connection failures show the last received values with a reconnect message and a Try again button.
 
 > Prototype visual status: the current 3D buoy asset is a reference model under redesign. Live data behavior and the four-page Bay Station information architecture remain valid; replace the model only from the approved new mechanical revision.
 

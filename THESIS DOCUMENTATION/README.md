@@ -15,6 +15,8 @@
 
 ## Superseded records
 
+Ten documents previously marked LEGACY / SUPERSEDED were moved unchanged to [archive/](archive/README.md) on 2026-09-11. Start with `BayStation.docx` for the current full thesis. The similarly named V3 compatibility copy remains in this folder because the canonical generator maintains it.
+
 Other DOCX files in this directory are supporting or legacy records. Every copy carries a dated document-control notice; any body text that conflicts with `BayStation.docx`, `PROJECT_CONTEXT.md`, or `PRESSURE_SENSOR_BASELINE.md` is superseded. Older V2/V3 files, including `PROJECT FALCON-01 - V3 Documentation - LEGACY.docx`, are retained for historical traceability and must not override the Bay Station architecture.
 They may contain obsolete Orange Pi-on-buoy, USB-only deployment, five-page
 dashboard, BNO085, load-cell, optional-AI, power, or prototype assumptions.

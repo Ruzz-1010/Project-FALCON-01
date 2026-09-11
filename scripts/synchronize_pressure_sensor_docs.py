@@ -98,7 +98,7 @@ def update(path: Path) -> None:
 
 
 def main() -> None:
-    paths = sorted(THESIS.glob("*.docx"))
+    paths = sorted(THESIS.rglob("*.docx"))
     if not paths:
         raise SystemExit("No DOCX files found")
     for path in paths:

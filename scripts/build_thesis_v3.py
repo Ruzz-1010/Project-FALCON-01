@@ -13,7 +13,7 @@ from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.shared import Inches, Mm, Pt
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE = ROOT / "THESIS DOCUMENTATION" / "PROJECT FALCON-01 -  V2 REVISED.docx"
+SOURCE = ROOT / "THESIS DOCUMENTATION" / "archive" / "PROJECT FALCON-01 -  V2 REVISED.docx"
 OUTPUT = ROOT / "THESIS DOCUMENTATION" / "PROJECT FALCON-01 - V3 ADVISER REVISED.docx"
 
 

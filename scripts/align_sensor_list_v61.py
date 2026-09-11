@@ -5,7 +5,7 @@ from pathlib import Path
 from docx import Document
 
 
-DOCUMENT = Path(__file__).resolve().parents[1] / "THESIS DOCUMENTATION" / "Project_FALCON_Sensor_List.docx"
+DOCUMENT = Path(__file__).resolve().parents[1] / "THESIS DOCUMENTATION" / "archive" / "Project_FALCON_Sensor_List.docx"
 
 
 def set_row(row, values):
