@@ -22,7 +22,7 @@ All Fusion 360 component READMEs, exported models, prototype images, dashboard 3
 
 ## Legacy software retained for compatibility
 
-`MotionPage.tsx`, `MotionScene.tsx`, `WavePage.tsx`, forecast persistence, and `/ai` remain in source as deprecated/optional or backward-compatible modules. They are not primary dashboard navigation and do not define required Phase 1 sensors. Removing them immediately would discard user-authored work and could break stored-data/API compatibility.
+The current dashboard retains `MotionPage.tsx` and `MotionScene.tsx` for its Buoy Motion page, plus forecast persistence and `/ai` compatibility. The unused standalone `WavePage.tsx` is preserved in `archive/dashboard-next/src/` following the 2026-09-11 cleanup. Archiving that disconnected page does not remove the active Overview prediction or change stored-data/API compatibility.
 
 ## Remaining release gates
 

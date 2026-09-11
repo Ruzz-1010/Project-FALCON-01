@@ -1,5 +1,7 @@
 # Dashboard Specification v8.3
 
+Source cleanup 2026-09-11: disconnected legacy pages and the saved FalconAssistant component/style are preserved in `archive/dashboard-next/src/`. Active imports, current page components, shared CSS, API contracts, and model assets remain in `dashboard-next/`. See `archive/README.md` for recovery instructions.
+
 UI revision 2026-09-11: the existing implementation keeps five navigation entries (Overview, Sensors, Buoy Motion, GPS, Logs & Alerts) and a Settings header button. This differs from the earlier four-page thesis proposal below; the current redesign preserves the working navigation pending a separate scope decision.
 
 The refreshed shared theme uses white cards, a light gray background, dark blue-gray text, muted blue navigation and teal details. Sensor values and explanatory text are larger, cards reflow on smaller screens, and the current sea condition appears in one clearly labeled block. A wave-chart inspector supports pointer selection and a keyboard/touch range control for reading earlier values. Narrow displays scroll the chart locally to preserve axis readability.

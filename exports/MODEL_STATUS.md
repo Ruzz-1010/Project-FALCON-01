@@ -6,6 +6,8 @@ The physical/visual prototype is under redesign. No export is the approved repla
 
 ## Existing exports
 
+Older FBX/GLB exports now live in `archive/exports/` at the repository root. Their contents are unchanged. The duplicate root-level tilt FBX was moved to Trash; the retained tilt model is `archive/exports/FALCON-01-tilt.fbx`. Editable Fusion sources and the current V2 working exports remain in this directory.
+
 The existing `FALCON-01.f3d`, FBX files, and dashboard GLB were exported on 2026-08-09 before the Revision 5 body decision. They remain archived for comparison but must not be presented as final Revision 5 geometry.
 
 ## Current dashboard working preview
