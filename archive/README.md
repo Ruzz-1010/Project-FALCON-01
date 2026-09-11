@@ -4,9 +4,11 @@ Files here were removed from active folders during the 2026-09-11 cleanup. They 
 
 ## Dashboard source
 
-`dashboard-next/src/` contains eight components that are not reachable from the current application's `main.tsx` import graph: ArchitecturePage, CalibrationPage, FalconAssistant, HistoryPage, PowerPage, SecurityPage, TelemetryChart and WavePage. The unused assistant stylesheet is stored alongside them. The running app still includes Overview, Sensors, Buoy Motion, GPS, Logs & Alerts, and Settings.
+`dashboard-next/src/` retains the saved FalconAssistant component and its stylesheet for a future user-requested return. Seven disconnected legacy components (ArchitecturePage, CalibrationPage, HistoryPage, PowerPage, SecurityPage, TelemetryChart and WavePage) were moved to desktop Trash during the follow-up cleanup. They had no active source references or uncommitted edits. The running app still includes Overview, Sensors, Buoy Motion, GPS, Logs & Alerts, and Settings.
 
-These source files are historical, not independently runnable. To restore one, copy it to the active `dashboard-next/src/` folder and review its imports, API calls, styles, and navigation integration. Required shared dependencies remain in the active source tree. TypeScript checks and the dashboard build are required before enabling it.
+These source files are historical, not independently runnable. Removed files remain recoverable from desktop Trash or Git commit `7fb489a` at their `archive/dashboard-next/src/` paths. Before restoring any component to the active source folder, review its imports, API calls, styles, and navigation integration. Required shared dependencies remain in the active source tree. TypeScript checks and the dashboard build are required before enabling it.
+
+Regenerable Python caches under tools, scripts, edge tests, edge services and the KiCad carrier folder were also moved to Trash. No source scripts, telemetry database, thesis version, CAD model, or generated active dashboard bundle was removed by this cleanup.
 
 ## Model exports
 

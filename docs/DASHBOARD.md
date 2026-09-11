@@ -12,7 +12,7 @@ Validation: TypeScript and production build passed. The 3D Motion bundle still t
 
 ## Previous specification and implementation history
 
-Source cleanup 2026-09-11: disconnected legacy pages and the saved FalconAssistant component/style are preserved in `archive/dashboard-next/src/`. Active imports, current page components, shared CSS, API contracts, and model assets remain in `dashboard-next/`. See `archive/README.md` for recovery instructions.
+Source cleanup 2026-09-11: the saved FalconAssistant component/style remain in `archive/dashboard-next/src/`. Seven disconnected legacy pages were subsequently moved to Trash and remain recoverable from Git history. Active imports, current page components, shared CSS, API contracts, and model assets remain in `dashboard-next/`. See `archive/README.md` for recovery instructions.
 
 UI revision 2026-09-11: the existing implementation keeps five navigation entries (Overview, Sensors, Buoy Motion, GPS, Logs & Alerts) and a Settings header button. This differs from the earlier four-page thesis proposal below; the current redesign preserves the working navigation pending a separate scope decision.
 
