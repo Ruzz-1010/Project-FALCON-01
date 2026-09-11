@@ -41,6 +41,8 @@ The detailed decision and interface are in [PRESSURE_SENSOR_BASELINE.md](PRESSUR
 
 ## Pressure installation
 
+Dashboard migration: the Sensors page identifies HPT604 Type A as the provisional replacement, not as detected hardware. Its 4–20 mA interface and continuous-seawater suitability remain unverified. Existing `src/sensor_diagnostics.cpp` Bar02 address probes are legacy bench diagnostics only; they do not implement HPT604 acquisition. Do not connect the replacement to the old Bar02 I2C socket or treat a successful dashboard build as hardware validation.
+
 The pressure sensor must be waterproof, mechanically protected, located at a documented submerged depth, exposed to water without trapped air, and serviceable. Record its model, serial number, pressure range, units, installation depth, baseline, temperature conditions, calibration reference, date, and coefficients. Estimated wave height must not be called measured wave height.
 
 The HPT604 candidate uses a protected 12 V, 4–20 mA loop, a 150 ohm 0.1% shunt, input protection/filtering, and a 3.3 V ADS1115 interface to the ESP32. Its vented reference tube terminates in a dry breathable location with an approved desiccant/breather arrangement. The old Bar02 I2C connector and existing carrier revision are not compatible and block fabrication until redesigned and bench-tested.
