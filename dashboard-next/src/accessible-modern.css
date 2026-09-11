@@ -259,13 +259,16 @@ main{padding:0 clamp(20px,2.5vw,44px) 38px}.topbar{min-height:142px;border-botto
 .app.is-collapsed .brand{height:110px;padding:12px}.app.is-collapsed .brand img{width:48px;height:48px}.app.is-collapsed .nav-item{padding:12px}
 
 /* Compact chart: fixed drawing height, responsive horizontal coordinates. */
-.operator-overview .coastal-wave{padding:18px 24px}
-.coastal-wave h2{font-size:22px}
-.coastal-wave .coastal-wave-reading>strong{font-size:46px}
+.operator-overview article.coastal-wave{padding:14px 20px}
+.operator-overview .coastal-wave h2{font-size:18px}
+.coastal-wave .coastal-wave-reading>strong{font-size:32px}
 .coastal-wave-reading{margin-top:6px;gap:20px}
-.coastal-prediction>strong{font-size:32px;margin:4px 0}
-.coastal-wave .overview-wave-legend{margin-top:12px}
-.coastal-wave .overview-wave-chart{height:180px;margin:6px 0 0}
+.coastal-wave .coastal-prediction>strong{font-size:26px;margin:2px 0}
+.coastal-wave .coastal-prediction>span,.coastal-wave .coastal-prediction p{font-size:14px}
+.coastal-wave .condition-card strong{font-size:16px;padding:4px 14px}
+.coastal-wave .condition-card p{font-size:12px;margin:4px 0 0;line-height:1.4}
+.coastal-wave .overview-wave-legend{margin-top:8px;font-size:13px}
+.coastal-wave .overview-wave-chart{height:130px;margin:4px 0 0}
 .coastal-wave .wave-inspector{margin:0;padding:0;border:0;background:none;min-height:44px}
 .coastal-wave .wave-inspector>div{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
 .coastal-wave .wave-inspector strong{font-size:17px}
