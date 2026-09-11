@@ -270,6 +270,14 @@ main{padding:0 clamp(20px,2.5vw,44px) 38px}.topbar{min-height:142px;border-botto
 .coastal-wave .overview-wave-legend{margin-top:8px;font-size:13px}
 .coastal-wave .overview-wave-chart{height:320px;margin:4px 0 0}
 .coastal-wave .overview-current-line,.coastal-wave .overview-ai-line{stroke-linejoin:miter;stroke-miterlimit:2;stroke-linecap:butt}
+.coastal-wave .overview-wave-chart{background:#FFF}
+.coastal-wave .overview-current-line{stroke:#218F96!important;stroke-width:1.5!important}
+.coastal-wave .overview-ai-line{stroke:#AE5962;stroke-width:1.5;stroke-dasharray:5 4}
+.coastal-wave .wave-sample-dot{fill:#718080;stroke:none}
+.coastal-wave .wave-plot-frame{fill:none;stroke:#A6AAAD;stroke-width:1}
+.coastal-wave .wave-axis-tick{stroke:#8D969C!important;stroke-width:1}
+.coastal-wave .overview-wave-chart text{fill:#374151!important}
+.coastal-wave .overview-wave-legend span:first-child i{background:#218F96}
 .coastal-wave .wave-inspector{margin:0;padding:0;border:0;background:none;min-height:44px}
 .coastal-wave .wave-inspector>div{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
 .coastal-wave .wave-inspector strong{font-size:17px}
