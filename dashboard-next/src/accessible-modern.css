@@ -272,7 +272,8 @@ main{padding:0 clamp(20px,2.5vw,44px) 38px}.topbar{min-height:142px;border-botto
 .coastal-wave .overview-current-line,.coastal-wave .overview-ai-line{stroke-linejoin:miter;stroke-miterlimit:2;stroke-linecap:butt}
 .coastal-wave .overview-wave-chart{background:#FFF}
 .coastal-wave .overview-current-line{stroke:#218F96!important;stroke-width:1.5!important}
-.coastal-wave .overview-ai-line{stroke:#AE5962;stroke-width:1.5;stroke-dasharray:5 4}
+.coastal-wave .overview-ai-line{stroke:#B54752;stroke-width:2;stroke-dasharray:none}
+.coastal-wave .wave-ai-sample-dot{fill:#B54752;stroke:#FFF;stroke-width:.6}
 .coastal-wave .wave-sample-dot{fill:#718080;stroke:none}
 .coastal-wave .wave-plot-frame{fill:none;stroke:#A6AAAD;stroke-width:1}
 .coastal-wave .wave-axis-tick{stroke:#8D969C!important;stroke-width:1}
