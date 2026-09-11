@@ -15,6 +15,12 @@ Project FALCON is now a pressure-based smart coastal observation buoy. The autho
 
 ## Current physical status
 
+The user-confirmed deployment arrangement is illustrated below: offshore ESP32 buoy → LoRa → barangay-hall receiver and Bay Station computer → SIM/4G/5G Internet → cloud and authorized remote dashboard. Local storage, wave processing and AI run at the shore Bay Station, before cloud upload.
+
+![FALCON buoy to barangay hall deployment concept](../THESIS%20DOCUMENTATION/visuals/bayyy.png)
+
+The supplied image is a setup reference, not a finalized sensor inventory or field-validation record. Its Bar02 and BNO085 labels are superseded by the current pressure-sensor replacement and non-IMU scope. Its 1–5 km link and 8–12 m tower labels are unverified concept values. See [Bay Station setup and image corrections](BAY_STATION_ARCHITECTURE.md#buoy-to-barangay-hall-setup-reference) for the complete data flow, equipment boundaries and validation gates.
+
 Most final sensors, LoRa radio/gateway, Bay Station SIM/4G/5G backhaul, shore Bay Station mini PC, revised PCB, waterproof enclosure, solar system, and complete buoy have not been physically integrated or field-validated. The current simulator is for software demonstration. The pressure-to-wave method, wind channels, geofence/tamper thresholds, LoRa recovery, Bay Station Internet recovery, and AI accuracy require controlled testing.
 
 The physical and visual prototype is now **under redesign**. All existing mechanical CAD, dimensions, enclosure layouts, component placements, renders, dashboard models, and video reference images are retained only as references until replaced and approved under [PROTOTYPE_REDESIGN_BASELINE.md](PROTOTYPE_REDESIGN_BASELINE.md). The reduced wave-and-wind sensor scope is the only current proposal baseline.
