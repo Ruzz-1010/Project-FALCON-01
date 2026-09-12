@@ -277,6 +277,10 @@ main{padding:0 clamp(20px,2.5vw,44px) 38px}.topbar{min-height:142px;border-botto
 .coastal-wave .wave-sample-dot{fill:#718080;stroke:none}
 .coastal-wave .wave-plot-frame{fill:none;stroke:#A6AAAD;stroke-width:1}
 .coastal-wave .wave-axis-tick{stroke:#8D969C!important;stroke-width:1}
+.coastal-wave .wave-grid-line{stroke:#E2E7EB!important;stroke-width:1;stroke-dasharray:3 5}
+.coastal-wave .wave-scale-note{margin-left:auto;color:#526477;font-size:13px}
+.coastal-wave .overview-wave-legend{flex-wrap:wrap;row-gap:8px}
+.coastal-wave .overview-wave-chart text{font-size:14px!important}
 .coastal-wave .overview-wave-chart text{fill:#374151!important}
 .coastal-wave .overview-wave-legend span:first-child i{background:#218F96}
 .coastal-wave .wave-inspector{margin:0;padding:0;border:0;background:none;min-height:44px}
