@@ -1,7 +1,7 @@
 # Project FALCON Sensor Validation and Calibration Test Plan
 
-Revision: 1.1  
-Date: 2026-09-10  
+Revision: 1.0  
+Date: 2026-08-31  
 Status: pre-hardware validation protocol; acceptance limits are Phase 1 engineering targets pending adviser approval and physical test evidence
 
 ## 1. Purpose
@@ -65,16 +65,15 @@ No component may be described as deployment-validated below L5.
 
 ## 6. Pressure sensor and wave-height validation
 
-### 6.1 HPT604 receiving and 4–20 mA interface test
+### 6.1 Bar02 R2 identification and interface test
 
-1. Record the exact order code, range, output, cable material/length, wetted materials, seal, serial number, calibration record, and supplier confirmation for continuous saltwater use.
-2. Inspect the probe, cable, vent tube, strain relief, connector/gland, and dry-end breather/desiccant arrangement.
-3. Before connecting the probe, simulate 4, 12, and 20 mA through the approved 150 ohm shunt and verify approximately 0.60, 1.80, and 3.00 V at the ADC without exceeding any input rating.
-4. Verify the protected 12 V loop supply, polarity, fuse, transient protection, grounding, ADS1115 gain/channel/address, raw counts, and engineering-unit conversion.
-5. Log at least 10 minutes in stable air and report loop current, voltage, converted pressure, mean, standard deviation, range, invalid samples and resets.
-6. Disconnect and reconnect the sensor while logging. The system must report a fault/stale state rather than continue displaying an apparently live value.
+1. Photograph both sides, cable, connector, sensing gel and package label.
+2. Verify supply and I2C logic levels before connecting.
+3. Run an I2C scan and record the detected address; do not assume `0x76` without evidence.
+4. Log at least 10 minutes in stable air and report mean, standard deviation, range, invalid samples and resets.
+5. Disconnect and reconnect the sensor while logging. The system must report a fault/stale state rather than continue displaying an apparently live value.
 
-**Proposed pass:** exact configuration confirmed; 4/12/20 mA points within the approved combined interface tolerance; no overvoltage or unsafe heating; at least 99% valid samples during the stable bench run; disconnection detected within two normal reporting intervals; automatic or documented manual recovery succeeds.
+**Proposed pass:** correct identification; no overvoltage; at least 99% valid samples during the stable bench run; disconnection detected within two normal reporting intervals; automatic or documented manual recovery succeeds.
 
 ### 6.2 Static water-column comparison
 
@@ -108,11 +107,14 @@ Use a predeclared processing window and algorithm version. Compare estimated wav
 
 **Proposed controlled-test pass:** median absolute wave-height error ≤0.10 m or ≤15% of reference, whichever is larger; period error ≤10% for regular tests; ≥95% of valid windows produce a result; disturbed/blocked scenarios are flagged rather than silently accepted. Final field acceptance must be based on adviser-approved comparison with a suitable reference instrument.
 
-### 6.4 Long-duration deployment gate
+### 6.4 Bar02 deployment limitation gate
 
-The selected HPT604 configuration remains a candidate until the manufacturer or authorized supplier confirms continuous saltwater compatibility for the exact wetted materials, seal, and cable. The team must document a dry, breathable vent/desiccant termination and inspection schedule; cable/gland strain relief; saltwater corrosion, fouling, temperature and drift evidence; staged supervised wet trials; an adviser-approved retrieval/maintenance interval; and acceptance of the pressure range after installation-depth, tide, wave and overload analysis.
+The Bar02 rear electronics must stay dry, and its gel sensor must receive the manufacturer-required daily drying interval. Before a long-duration deployment, the team must document either:
 
-Failure to close this gate blocks an unattended long-duration deployment claim. Bar02 may be used only for supervised short-duration comparison and may not be substituted as the long-term sensor.
+- a retrieval/service schedule that gives at least two hours of drying every day; or
+- a different continuously submersible pressure sensor approved through the same validation process.
+
+Failure to close this gate blocks an unattended long-duration deployment claim.
 
 ## 7. Supporting telemetry boundary
 
@@ -298,7 +300,7 @@ The required AI feature predicts future estimated wave height at the Bay Station
 
 - [ ] Every required sensor reached at least L4 and has an approved L5 field-trial plan.
 - [ ] No excluded environmental sensor is included in the Phase 1 procurement or validation release.
-- [ ] Exact HPT604 configuration and continuous-saltwater suitability confirmed in writing; vent, drift, fouling, corrosion and maintenance gates closed.
+- [ ] Bar02 drying/service limitation closed or sensor replaced.
 - [ ] Pressure-to-wave method independently validated and labeled as an estimate.
 - [ ] GPS geofence based on measured site scatter and persistence.
 - [ ] Wind calibration and marine maintenance interval recorded.
@@ -329,3 +331,4 @@ The required AI feature predicts future estimated wave height at the Bay Station
 - [TEST_PLAN.md](TEST_PLAN.md)
 - [CALIBRATION_GUIDE.md](CALIBRATION_GUIDE.md)
 - [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md)
+

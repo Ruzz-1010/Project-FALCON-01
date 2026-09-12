@@ -41,7 +41,8 @@ export default function OverviewWaveChart({data}:{data:DashboardData}){
     {ticks.map(value=><g key={value}><line className="wave-grid-line" x1={left} y1={toY(value)} x2={right} y2={toY(value)}/><text x={left-11} y={toY(value)+4} textAnchor="end">{value.toFixed(decimals)}</text></g>)}
     <path d={linePath(measuredPoints)} className="overview-current-line"/>
     {measuredPoints.map(([x,y],i)=><circle key={`${history[i].recordedAt}-${i}`} cx={x} cy={y} r="2.2" className="wave-sample-dot"/>)}
-    {aiPoints.length>1&&<path d={linePath(aiPoints)} className="overview-ai-line"/>}
+    {aiPoints.length>0&&<path d={linePath(aiPoints)} className="overview-ai-line"/>
+    {aiPoints.length===1&&<path d={linePath([aiPoints[0]])} className="overview-ai-line-single"/>}
     {aiPoints.map(([x,y],i)=><circle key={`${timedAi[i].time}-${i}`} cx={x} cy={y} r="2.5" className="wave-ai-sample-dot"/>)}
     {selected!==null&&<g className="wave-selection"><line x1={measuredPoints[index][0]} x2={measuredPoints[index][0]} y1={top} y2={bottom}/><circle cx={measuredPoints[index][0]} cy={measuredPoints[index][1]} r="5"/></g>}
     {[0,1,2,3,4].map(i=>{const time=start+(end-start)*i/4,x=toX(time);return <g key={i}><line className="wave-axis-tick" x1={x} y1={bottom} x2={x} y2={bottom+5}/><text x={x} y="289" textAnchor={i===0?"start":i===4?"end":"middle"}>{new Date(time).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:false})}</text></g>})}

@@ -1,4 +1,4 @@
-# Project FALCON Hardware Baseline v6.3
+# Project FALCON Hardware Baseline v6.2
 
 > Hardware functions remain the Phase 1 baseline. Physical placement, enclosure integration, brackets, harness lengths, and mechanical interfaces are under redesign and remain TBD until the replacement prototype is approved.
 
@@ -17,8 +17,7 @@ No single-board computer, mini PC, or SIM/4G/5G Internet modem is installed on t
 
 | Group | Device/function | Status |
 | --- | --- | --- |
-| Core | Holykell HPT604 Type A, provisional 0–2 mH2O vented gauge, 4–20 mA | Recommended long-duration candidate; exact order code, continuous-seawater suitability, interface and validation pending |
-| Bench only | Blue Robotics Bar02 R2, BR-100891 | Short-duration comparison only; not the unattended deployment sensor |
+| Core | Blue Robotics Bar02 R2, BR-100891 | Confirmed prototype; continuous-submersion/service limitation must be resolved |
 | Supporting | Adafruit Ultimate GPS, PID 746 | Confirmed prototype; field accuracy and geofence persistence testing required |
 | Core | SparkFun Weather Meter, SEN-15901 | Confirmed prototype; marine durability remains unqualified |
 | Health | Adafruit INA260, PID 4226, battery branch | Confirmed prototype; range, thermal and reference-meter tests pending |
@@ -37,15 +36,11 @@ No single-board computer, mini PC, or SIM/4G/5G Internet modem is installed on t
 - AI hardware acceleration is not required.
 - LoRa is the primary compact buoy telemetry link, not a general Internet connection; it requires a barangay-hall gateway and site-specific range testing. SIM/4G/5G is the Bay Station Internet backhaul for cloud upload and remote access.
 
-The detailed decision and interface are in [PRESSURE_SENSOR_BASELINE.md](PRESSURE_SENSOR_BASELINE.md). Selection evidence, interface allocation, calibration, and other sensors are in [SENSOR_SELECTION_BASELINE.md](SENSOR_SELECTION_BASELINE.md).
+The detailed selection evidence, interface allocation, calibration plan and manufacturer references are in [SENSOR_SELECTION_BASELINE.md](SENSOR_SELECTION_BASELINE.md). That document is the component-selection authority where this summary is abbreviated.
 
 ## Pressure installation
 
-Dashboard migration: the Sensors page identifies HPT604 Type A as the provisional replacement, not as detected hardware. Its 4–20 mA interface and continuous-seawater suitability remain unverified. Existing `src/sensor_diagnostics.cpp` Bar02 address probes are legacy bench diagnostics only; they do not implement HPT604 acquisition. Do not connect the replacement to the old Bar02 I2C socket or treat a successful dashboard build as hardware validation.
-
 The pressure sensor must be waterproof, mechanically protected, located at a documented submerged depth, exposed to water without trapped air, and serviceable. Record its model, serial number, pressure range, units, installation depth, baseline, temperature conditions, calibration reference, date, and coefficients. Estimated wave height must not be called measured wave height.
-
-The HPT604 candidate uses a protected 12 V, 4–20 mA loop, a 150 ohm 0.1% shunt, input protection/filtering, and a 3.3 V ADS1115 interface to the ESP32. Its vented reference tube terminates in a dry breathable location with an approved desiccant/breather arrangement. The old Bar02 I2C connector and existing carrier revision are not compatible and block fabrication until redesigned and bench-tested.
 
 ## Electrical requirements
 

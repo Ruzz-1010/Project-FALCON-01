@@ -1,7 +1,7 @@
 # Project FALCON Primary Sensor Selection and Architecture Baseline
 
-Revision: 1.1  
-Date: 2026-09-10  
+Revision: 1.0  
+Date: 2026-08-31  
 Status: adviser-aligned Phase 1 engineering baseline; not yet a fabrication or deployment release
 
 ## 1. Purpose
@@ -42,8 +42,7 @@ Enclosure switch and optional tamper accelerometer
 
 | Function | Exact part and status | Electrical interface | Key specification | Intended placement | Required validation and limitation |
 | --- | --- | --- | --- | --- | --- |
-| Submerged pressure / wave-height input | **Holykell HPT604 Type A, provisional 0–2 mH2O vented gauge, 4–20 mA — Recommended deployment candidate** | Protected 12 V loop; 150 ohm 0.1% shunt; protected ADS1115 at 3.3 V | Typical accuracy ≤±0.5% FS and response ≤20 ms in the manufacturer sheet; exact order code pending | Submerged at a documented fixed depth; cable vent ends in a protected dry breathable location | Obtain written continuous-saltwater compatibility and exact wetted-material/cable confirmation before purchase. Validate static depth, dynamic response, temperature, drift, fouling, vent/desiccant maintenance, corrosion, ingress and staged field endurance. See `PRESSURE_SENSOR_BASELINE.md`. |
-| Short-duration pressure comparison | **Blue Robotics Bar02 R2, BR-100891 — Bench only** | Short protected 3.3 V I2C setup | Low-pressure prototype sensor | Supervised tank/bench fixture only | Manufacturer drying and maximum-immersion limitations prevent use as the unattended long-term deployment baseline. |
+| Submerged pressure / wave-height input | **Blue Robotics Bar02 R2, BR-100891 — Confirmed prototype** | 2.5–5.5 V supply; 2.5–3.6 V I2C logic; verify purchased-unit address | Low-pressure depth/pressure sensor intended for shallow water | Protected submerged port at a documented fixed depth, with its sensing face exposed to water and no trapped air | Compare at known depths against a reference; record installation depth and baseline. Only the sensing face is waterproof. The gel element must dry for at least two hours per day according to the manufacturer, so continuous long-duration immersion requires a service plan or a different qualified pressure sensor. |
 | Position and geofence | **Adafruit Ultimate GPS, PID 746 — Confirmed prototype** | 3.0–5.5 V board input; UART NMEA, 9600 baud default; 1–10 Hz update | MTK3339 receiver; use a conservative nominal position accuracy of approximately 3 m until site testing | Upper electronics area with clear sky view; optional external antenna after RF review | Perform cold/warm-start and stationary-position tests at the deployment site. Geofence radius must exceed measured GPS scatter. It is a security aid, not precision theft tracking. |
 | Wind speed and direction | **SparkFun Weather Meter Kit, SEN-15901 — Confirmed prototype** | Reed-switch pulse for speed; passive resistor network through a 3.3 V ADC divider for direction | 1 switch closure/s corresponds to 1.492 mph; vane supports up to 16 positions, with eight cardinal directions reliably identified | Highest practical unobstructed mast location, mechanically aligned to true or corrected north | Compare with a reference anemometer and compass. Inspect bearings, contacts, RJ11 leads, and corrosion after salt exposure. Treat as a supervised prototype unless marine durability is demonstrated. The included rain gauge is outside Phase 1 scope. |
 | Battery electrical health | **Adafruit INA260, PID 4226 — Confirmed prototype, quantity 1** | I2C; battery monitor target address `0x40`; 3 V/5 V logic | Up to 36 V bus and 15 A continuous on the breakout; integrated 2 mΩ shunt; better than 1% stated accuracy | Protected battery branch, with high-current path and connector temperature reviewed | Compare voltage/current against a calibrated DMM and load at no-load, normal-load, and near-maximum expected load. Do not exceed breakout current or thermal limits. |
@@ -67,8 +66,7 @@ Enclosure switch and optional tamper accelerometer
 
 | Interface | Device/channel | Planned allocation | Design note |
 | --- | --- | --- | --- |
-| Analog loop / I2C ADC | HPT604 via 150 ohm shunt and ADS1115 | Approx. 0.60–3.00 V at 4–20 mA; ADS1115 address `0x48` subject to final bus review | The revised loop interface requires schematic and bench validation; it is not compatible with the old Bar02 connector. |
-| I2C 3.3 V, bench only | Bar02 R2 | Verify purchased unit; expected MS5837 family address `0x76` | Short-duration comparison only; confirm with an I2C scan. |
+| I2C 3.3 V | Bar02 R2 | Verify purchased unit; expected MS5837 family address `0x76` | Confirm with an I2C scan before integration. |
 | I2C 3.3 V | INA260 battery | `0x40` | Record physical address strap. |
 | I2C 3.3 V | INA260 solar | `0x41` | Record physical address strap. |
 | I2C 3.3 V | MCP9808 enclosure | `0x18` | Keep thermal placement representative. |
@@ -125,9 +123,8 @@ The final PCB release is blocked until the buzzer, LoRa interface, connector var
 
 ## 9. Primary manufacturer references
 
-1. Holykell. [HPT604 Type A level-sensor datasheet](https://www.holykell.com/wp-content/uploads/2023/08/HPT604A-Level-sensor-Datasheet-Holykell-V26-CS-1.pdf).
-2. Holykell. [HPT604 product family](https://www.holykell.com/products/HPT604-H_Water_Level_Sensor_with_Economical_Model.html).
-3. Blue Robotics. [Bar sensor technical guide](https://bluerobotics.com/learn/bar-sensors-guide/).
+1. Blue Robotics. [Bar high-resolution depth/pressure sensors](https://bluerobotics.com/store/sensors-cameras/sensors/bar-depth-pressure-sensor/).
+2. Blue Robotics. [Bar sensor technical guide](https://bluerobotics.com/learn/bar-sensors-guide/).
 4. Adafruit. [Ultimate GPS breakout, PID 746](https://www.adafruit.com/product/746).
 5. GlobalTop Technology. [PA1616S GPS module datasheet](https://cdn-shop.adafruit.com/product-files/746/CD%20PA1616S%20Datasheet.v03.pdf).
 6. SparkFun. [Weather Meter Kit, SEN-15901](https://www.sparkfun.com/weather-meter-kit.html).
@@ -141,4 +138,4 @@ The final PCB release is blocked until the buzzer, LoRa interface, connector var
 
 ## 10. Thesis-safe summary
 
-The Phase 1 deployment candidate is an exact-configuration HPT604 4–20 mA pressure channel for estimated wave height plus wind speed/direction. Bar02 is limited to short-duration bench comparison. GPS, electrical-health, enclosure, and security values are supporting telemetry only. Pressure time series are processed at the shore Bay Station to estimate wave height and support AI prediction. No hardware is described as deployment-ready until procurement confirmation, revised-interface review, calibration, ingress, LoRa, Bay Station Internet backhaul, environmental and integration tests are complete.
+The Phase 1 monitoring claim is based on a Bar02 R2 pressure channel for estimated wave height and wind speed/direction. GPS, electrical-health, enclosure, and security values are supporting telemetry only. Pressure time series are processed at the shore Bay Station to estimate wave height and support AI prediction. No hardware is described as deployment-ready until calibration, ingress, LoRa, Bay Station Internet backhaul, environmental and integration tests are complete.

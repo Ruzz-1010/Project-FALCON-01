@@ -37,15 +37,13 @@ Dimensions marked **CAD REF** were recovered from the existing Fusion generator 
 | Mast | 800 mm structural height; 420 mm base; 380 mm shoulder; 260 mm top; Ø32 mm legs; Ø20 mm braces |
 | Electronics pod | 300 × 280 × 400 mm; 8 mm UV-HDPE wall; 18 mm lid |
 | Solar array | 2 × 30 W; each panel 450 × 300 × 20 mm; 20° outward tilt |
-| Pressure sensor | Historical Bar02-derived Ø24 × 42 mm envelope and Ø64 × 72 mm guard; replace with received HPT604 dimensions, cable bend radius, vent and guard |
+| Pressure sensor | Ø24 × 42 mm envelope; Ø64 × 72 mm guard; 125 mm radial offset |
 | Adjustable ballast reference | Ø40 × 500 mm rail; 4 × Ø220 × 25 mm plates |
 | Mooring anchor reference | 650 mm bottom / 450 mm top × 500 mm high; nominal 367 kg |
 
 ## Architecture correction
 
 The old Fusion electronics layout contains an `ORANGE_PI_MINI_PC_ENVELOPE`. It is explicitly excluded from these drawings. The Orange Pi is not part of the current buoy design; the shore Bay Station receives buoy telemetry through the planned LoRa gateway and uses SIM/4G/5G for Internet backhaul. USB/UART is for bench servicing only.
-
-The existing pressure-sensor geometry and wiring sheets predate the HPT604 4–20 mA decision. They are reference drawings only. Update the physical guard, cable/gland/vent details and the PCB loop receiver from the exact purchased configuration before any fabrication release.
 
 ## Release gates
 

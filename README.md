@@ -8,13 +8,13 @@ python3 -m falcon_edge.service
 Project FALCON is a Phase 1 coastal monitoring buoy proposal focused on two primary measurements:
 
 1. pressure-derived wave monitoring; and
-2. wind speed and direction monitoring, with required short-term wave-height prediction research at the Bay Station.
+2. wind speed and direction monitoring, with optional short-term wave-height prediction research.
 
 The AI scope is limited to short-term wave-height prediction and sea-condition classification as **Calm**, **Moderate**, or **Rough**.
 
 ## Source of Truth
 
-[PROJECT_CONTEXT.md v8.2](docs/PROJECT_CONTEXT.md) is the official engineering source of truth. The detailed long-duration pressure-sensor decision is in [PRESSURE_SENSOR_BASELINE.md](docs/PRESSURE_SENSOR_BASELINE.md).
+[PROJECT_CONTEXT.md v8.0](docs/PROJECT_CONTEXT.md) is the official engineering source of truth.
 
 Working source code remains authoritative for what is currently implemented. Documentation describes both the verified prototype and the approved Phase 1 target; it does not turn planned hardware into implemented hardware.
 
@@ -75,13 +75,11 @@ Cloud connectivity is Future Expansion and is not required for Phase 1 operation
 
 ## Approved Primary Sensor Set
 
-- Holykell HPT604 Type A 0–2 mH2O vented-gauge 4–20 mA candidate for pressure-derived wave estimation, pending exact supplier and seawater confirmation;
+- water-pressure sensor for pressure-derived wave estimation;
 - wind-speed sensor; and
 - wind-direction sensor.
 
 GPS, battery/solar status, timestamps, and security states are supporting system telemetry only. Water temperature, BNO085, salinity, conductivity, and other environmental sensors are excluded from Phase 1.
-
-Blue Robotics Bar02 is retained only for supervised short-duration bench comparison because its manufacturer drying/immersion limits do not match unattended long-term deployment. The current PCB and pressure wiring still target Bar02 and must be redesigned before fabrication.
 
 pH, salinity, turbidity, dissolved oxygen, rain, UV, cameras, hydrophones, current meters, and Water Quality Index inputs are Future Expansion.
 

@@ -19,7 +19,7 @@ power path. Exact purchased revisions and measurements remain release gates.
 | GPS UART2 | GPS TX to GPIO16; GPS RX from GPIO17; 9600 baud baseline | Firmware and documents agree |
 | Wind speed | GPIO25, reed switch to ground, external 10 kOhm pull-up | Valid prototype input arrangement; debounce/calibration still required |
 | Water temperature | GPIO26 with external 4.7 kOhm OneWire pull-up | Valid optional interface; exact probe still required |
-| I2C addresses | Historical Bar02 `0x76`; battery INA260 `0x40`, solar INA260 `0x41`, MCP9808 `0x18`, ADS1115 `0x48` | HPT604 is 4–20 mA, not I2C; its ADS1115 channel/address and other bus addresses require final review |
+| I2C addresses | Bar02 `0x76`, battery INA260 `0x40`, solar INA260 `0x41`, MCP9808 `0x18`, ADS1115 `0x48` | No address collision in the selected baseline |
 | Avoided pins | GPIO0, 2, 5, 12, 15; UART0 GPIO1/3 | Prevents baseline boot-strap and programming conflicts |
 | Fan control | GPIO33 through a MOSFET driver only | GPIO must never directly power a fan |
 | Edge link | ESP32 USB serial to Orange Pi | Preferred prototype connection; avoids an unvalidated direct SBC header link |
@@ -85,7 +85,7 @@ mean.
 | Critical | Leak/tamper sensor electrical output | GPIO32 interface and protection cannot be designed from a placeholder |
 | High | Photos/revisions and dimensions for every breakout | Required to create or verify module footprints |
 | High | BNO085 physical mounting location and axis convention | Orientation is invalid if the board can flex or its axes are undocumented |
-| Critical | Replace Bar02 J2 with HPT604 4–20 mA receiver and cable/vent implementation | Existing PCB is electrically incompatible; exact loop protection, ADC, grounding, vent, sealing and strain relief are unresolved |
+| High | Bar02 cable/connector and bulkhead implementation | Sensor rear and electronics require correct sealing and strain relief |
 | High | Enclosure tray dimensions, mounting holes, lid clearance, and cable-gland positions | Defines board outline and connector placement |
 | High | Total 3.3 V sensor current and ESP32 radio peak measurements | Determines whether an independent 3.3 V regulator is required |
 | Medium | Test-point and status-LED policy | Needed for serviceability without creating unnecessary power draw |

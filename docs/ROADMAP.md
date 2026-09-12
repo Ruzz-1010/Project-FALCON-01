@@ -10,7 +10,7 @@
 
 - revise schematic/PCB/wiring against purchased modules;
 - verify rails, protection, addresses, logic levels, connectors, and test points;
-- obtain and verify the exact HPT604 configuration, redesign and test its 4–20 mA receiver, then integrate wind speed/direction and only the supporting GPS, power, and security telemetry required for operation; retain Bar02 only for short bench comparisons.
+- integrate Bar02 and wind speed/direction one at a time, then add only the supporting GPS, power, and security telemetry required for operation.
 
 ## Gate 3 — Calibration and software integration
 

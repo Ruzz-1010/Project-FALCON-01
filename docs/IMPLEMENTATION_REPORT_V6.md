@@ -50,4 +50,4 @@ python3 scripts/build_thesis_v3.py
 
 ## Honest remaining work
 
-Exact TBD components, final schematic/PCB/wiring, procurement and physical integration of the HPT604 4–20 mA candidate, pressure reference validation, real geofence/tamper thresholds, LoRa gateway and Bay Station SIM/4G/5G backhaul integration, waterproofing, energy validation, and controlled coastal trials remain incomplete. Bar02 and legacy Wokwi/PCB/motion files are preserved but explicitly classified as bench-only, historical, or optional rather than silently deleted.
+Exact TBD components, final schematic/PCB/wiring, physical Bar02 integration, pressure reference validation, real geofence/tamper thresholds, LoRa gateway and Bay Station SIM/4G/5G backhaul integration, waterproofing, energy validation, and controlled coastal trials remain incomplete. Legacy Wokwi/PCB/motion files are preserved but explicitly classified as historical/optional rather than silently deleted.

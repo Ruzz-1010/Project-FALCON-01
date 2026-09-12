@@ -7,8 +7,7 @@ Authority: [POWER_SYSTEM.md](POWER_SYSTEM.md). Values below are planning envelop
 | Load | Voltage | Idle | Active | Peak | Duty cycle | Daily Wh | Evidence |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
 | ESP32 controller | TBD | TBD | TBD | TBD | TBD | TBD | 24-hour bench log |
-| HPT604 4–20 mA loop | 12 V provisional | 4 mA / 0.048 W | signal-dependent | 20 mA / 0.240 W | Continuous | 1.15–5.76 Wh/day before conversion loss | Theoretical current-loop envelope; replace with exact order-code datasheet and 24-hour input-energy log |
-| ADS1115 pressure receiver + approved sensors | 3.3 V logic | TBD | TBD | TBD | TBD | TBD | Final schematic, datasheets and 24-hour bench log |
+| Bar02 + approved sensors | TBD | TBD | TBD | TBD | TBD | TBD | Datasheets + bench log |
 | LoRa buoy radio | TBD | TBD | TBD | TBD | TBD | TBD | Gateway registration/reconnect/transmit test |
 | Security electronics | TBD | TBD | TBD | TBD | TBD | TBD | Armed/alarm test |
 | Conversion losses | — | — | — | — | — | TBD | Measured converter efficiency |

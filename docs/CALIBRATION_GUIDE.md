@@ -19,7 +19,7 @@ Future records must include sensor identity, firmware commit, reference instrume
 
 ## Required Calibration Set
 
-- HPT604 loop simulation at 4/12/20 mA, static air/depth points, independent verification, controlled dynamic wave scenarios, and vent/desiccant inspection;
+- Bar02 static air/depth points, independent verification and controlled dynamic wave scenarios;
 - Celsius R2 three-point temperature comparison and installation leak test;
 - MCP9808 enclosure reference comparison and placement-bias test;
 - wind-speed reference comparison and wind-direction code/alignment map;

@@ -1,4 +1,4 @@
-# Project FALCON Master Context v8.2 — Wave and Wind Bay Station Baseline
+# Project FALCON Master Context v8.1 — Wave and Wind Bay Station Baseline
 
 ## Document control
 
@@ -13,7 +13,6 @@
 | Primary wave method | Pressure-based estimated wave height |
 | AI | Required Bay Station short-term wave-height prediction; validation pending |
 | Telemetry | LoRa primary from buoy to barangay-hall Bay Station; SIM/4G/5G Internet backhaul from Bay Station to cloud/remote users; exact modules, protocol, antenna, provider, and cloud TBD |
-| Pressure-sensor revision | 2026-09-10: HPT604 deployment candidate; Bar02 bench-only |
 | Adviser revision | 2026-08-29 |
 | Physical prototype | UNDER REDESIGN; geometry and placement TBD |
 
@@ -70,7 +69,7 @@ The deployed buoy path sends compact telemetry over a verified LoRa link to a po
 
 ### Primary project sensors
 
-- Holykell HPT604 Type A, provisionally 0–2 mH2O vented gauge and 4–20 mA: recommended deployment candidate for raw pressure and pressure-based wave estimation; exact configuration and continuous-saltwater suitability pending written confirmation. Bar02 is bench-only.
+- Blue Robotics Bar02 or compatible waterproof pressure sensor: raw pressure and pressure-based wave estimation.
 - Wind-speed sensor: local wind-speed context.
 - Wind-direction sensor: local wind-direction context.
 
