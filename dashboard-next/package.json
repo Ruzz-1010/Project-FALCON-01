@@ -7,6 +7,9 @@
     "node": ">=20.19"
   },
   "scripts": {
+    "thesis:dev": "vite --config thesis.config.ts",
+    "thesis:build": "tsc --noEmit -p thesis/tsconfig.json && vite build --config thesis.config.ts",
+    "thesis:preview": "vite preview --config thesis.config.ts",
     "dev": "vite --host 0.0.0.0",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host 0.0.0.0"
