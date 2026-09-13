@@ -98,9 +98,13 @@ def _forecast_series(points: list[tuple[float, float]], horizon_minutes: int, en
 
 
 def _historical_prediction_series(points: list[tuple[float, float]]) -> list[dict[str, Any]]:
-    """Rolling one-step estimates aligned with past measured timestamps."""
+    """Rolling one-step estimates covering the dashboard's 60-sample window.
+
+    Each estimate uses only earlier samples. The initial eight samples remain
+    a warm-up period, not fabricated prediction history.
+    """
     rows: list[dict[str, Any]] = []
-    start = max(8, len(points) - 32)
+    start = max(8, len(points) - 60)
     for index in range(start, len(points)):
         training = points[max(0, index - 20):index]
         origin = training[0][0]
