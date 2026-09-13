@@ -29,6 +29,12 @@ Motion can be paused. System reduced-motion preference disables automatic moveme
 
 ## Preserved design / research boundaries
 
+### Component inspection
+
+Click any of the five component buttons or CAD hotspots to run a 1.65-second eased inspection camera move. The panel appears after arrival; Escape or “Back to buoy” returns to the saved view without navigation. Hover/focus provides a light preview without moving the camera. Source materials are temporarily cloned for cyan emphasis and dimming, then restored; the CAD file is unchanged. The ESP32 target is the existing control enclosure, not an invented exposed board. Mobile framing leaves the component above the bottom sheet. Reduced-motion/pause uses immediate positioning instead of animated travel. Scrolling out of buoy scenes cancels inspection.
+
+Inspection tests load the actual GLB and check all five target positions at desktop, tablet and mobile aspect ratios, plus easing endpoints and content. These are mathematical/automated checks, not a substitute for browser-based interaction and visual QA.
+
 - Model: `dashboard-next/public/models/PROJECT-FALCON-V2.glb` — 622 nodes, 251 meshes; SHA-256 `d8674ce9415ce4b85b69ddddfd0a33609923146c191cabd915d5a6e8845d30ce`.
 - No replacement buoy, removed meshes, remeshing or invented component placement. Original geometry and materials are retained. Whole-model orientation/position and mild illustrative motion are view transforms only. Ocean/waterline are illustrative, not a buoyancy solution.
 - CAD retains legacy antenna names and an Orange Pi envelope. The on-screen reference note distinguishes those from V4.1: the buoy contains ESP32 sensing/LoRa, while computing, storage and AI remain on shore. Final mechanical revision is pending.

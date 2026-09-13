@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
 import modelUrl from '../dashboard-next/public/models/PROJECT-FALCON-V2.glb?url';
 import {components} from './story.js';
+import {easeInspection,inspectionFrame} from './inspection.js';
 
 // Camera choreography only. The supplied CAD mesh and its materials are untouched.
 const poses = [
@@ -17,7 +18,7 @@ const poses = [
   {eye:[5,3,9], aim:[0,.15,0]}
 ];
 
-export async function createWorld(host, {onPick, onStatus}) {
+export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=>{}}) {
   let renderer;
   try { renderer = new THREE.WebGLRenderer({antialias: true, alpha: false, powerPreference:'low-power'}); }
   catch { document.body.classList.add('webgl-unavailable'); onStatus('3D unavailable · diagrams and story remain accessible'); return {update(){},dispose(){}}; }
@@ -62,8 +63,35 @@ export async function createWorld(host, {onPick, onStatus}) {
   const buoy = new THREE.Group();scene.add(buoy);
   const markers = new Map(), hotspotLayer = document.querySelector('#hotspots');
   let model, disposed=false, contextLost=false, yaw=0, drag=null, needsDraw=true;
+  let inspection=null, overview=null, hovered=null, tintKey='';
+  const materialCopies=[];
+  const connection=document.querySelector('#inspection-wire path');
+  function restoreMaterials(){for(const {mesh,original,copies} of materialCopies){mesh.material=original;copies.forEach(m=>m.dispose());}materialCopies.length=0;}
+  function tint(target,focused){
+    restoreMaterials();if(!model||!target)return;
+    const selectedMeshes=new Set();target.traverse(o=>{if(o.isMesh)selectedMeshes.add(o);});
+    model.traverse(mesh=>{if(!mesh.isMesh)return;const original=mesh.material;
+      const copies=[].concat(original).map(m=>{const copy=m.clone();if(selectedMeshes.has(mesh)){if(copy.emissive){copy.emissive.set('#48aebc');copy.emissiveIntensity=focused?.3:.12;}}else if(focused&&copy.color)copy.color.multiplyScalar(.62);return copy;});
+      mesh.material=Array.isArray(original)?copies:copies[0];materialCopies.push({mesh,original,copies,selected:selectedMeshes.has(mesh)});
+    });needsDraw=true;
+  }
+  function beginInspection(id){
+    if(contextLost||!markers.has(id))return false;
+    if(!overview)overview={eye:camera.position.clone(),aim:aim.clone()};
+    const target=markers.get(id).target;
+    const bounds=new THREE.Box3().setFromObject(target),center=bounds.getCenter(new THREE.Vector3()),size=bounds.getSize(new THREE.Vector3());
+    const frame=inspectionFrame(center.toArray(),Math.max(size.x,size.y,size.z),camera.aspect,innerWidth<650);
+    const eye=new THREE.Vector3().fromArray(frame.eye),targetAim=new THREE.Vector3().fromArray(frame.aim);
+    inspection={id,from:camera.position.clone(),fromAim:aim.clone(),eye,aim:targetAim,elapsed:0,returning:false,ready:false};
+    drag=null;needsDraw=true;return true;
+  }
+  function returnToBuoy(){
+    if(!overview)return;
+    inspection={id:inspection?.id,from:camera.position.clone(),fromAim:aim.clone(),eye:overview.eye,aim:overview.aim,elapsed:0,returning:true,ready:false};
+    overview=null;hovered=null;needsDraw=true;
+  }
   const projection=new THREE.Vector3(), box=new THREE.Box3();
-  const halo=new THREE.Mesh(new THREE.TorusGeometry(.035,.002,6,24),new THREE.MeshBasicMaterial({color:'#e4c999',depthTest:false}));halo.visible=false;halo.renderOrder=10;scene.add(halo);
+  const halo=new THREE.Mesh(new THREE.TorusGeometry(.035,.002,6,24),new THREE.MeshBasicMaterial({color:'#e4c999',depthTest:false,transparent:true}));halo.visible=false;halo.renderOrder=10;scene.add(halo);
   function disposeModel(root){root.traverse(o=>{if(o.isMesh){o.geometry.dispose();for(const m of [].concat(o.material)){for(const value of Object.values(m))if(value?.isTexture)value.dispose();m.dispose();}}});}
   new GLTFLoader().load(modelUrl,gltf=>{
     if(disposed){disposeModel(gltf.scene);return;}
@@ -71,7 +99,8 @@ export async function createWorld(host, {onPick, onStatus}) {
     // View origin aligned to the existing float. Waterline is illustrative, not a draft result.
     model.position.y=-2.05;buoy.add(model);buoy.updateMatrixWorld(true);
     for(const [id,c] of Object.entries(components)) {
-      let target;model.traverse(o=>{if(!target&&o.name.toUpperCase().startsWith(c.prefix))target=o;});
+      const prefix=id==='esp32'?'REV5_RECTANGULAR_MARINE_ELECTRONICS_POD':c.prefix;
+      let target;model.traverse(o=>{if(!target&&o.name.toUpperCase().startsWith(prefix))target=o;});
       if(!target)continue;
       const button=document.createElement('button');button.className='hotspot';button.textContent=c.label;button.dataset.component=id;button.setAttribute('aria-pressed','false');
       button.addEventListener('click',()=>onPick(id));hotspotLayer.append(button);markers.set(id,{target,button});
@@ -80,7 +109,7 @@ export async function createWorld(host, {onPick, onStatus}) {
   },undefined,()=>{onStatus('Original CAD failed to load · no substitute model used');document.body.classList.add('webgl-unavailable');});
   const raycaster=new THREE.Raycaster();
   let currentChapter=0;
-  const down=e=>{if(currentChapter===1||currentChapter===2)drag={x:e.clientX,y:e.clientY,last:e.clientX,distance:0};};
+  const down=e=>{if(!inspection&&(currentChapter===1||currentChapter===2))drag={x:e.clientX,y:e.clientY,last:e.clientX,distance:0};};
   const move=e=>{if(!drag||e.pointerType==='touch')return;const delta=e.clientX-drag.last;drag.distance+=Math.abs(delta);yaw+=delta*.005;drag.last=e.clientX;};
   const up=e=>{
     if(!drag)return;
@@ -92,11 +121,14 @@ export async function createWorld(host, {onPick, onStatus}) {
   renderer.domElement.addEventListener('pointerdown',down);window.addEventListener('pointermove',move);window.addEventListener('pointerup',up);
   const cancel=()=>{drag=null;};window.addEventListener('pointercancel',cancel);
   const reset=()=>{yaw=0;};document.querySelector('#reset-camera').addEventListener('click',reset);
-  const resize=()=>{renderer.setSize(innerWidth,innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();needsDraw=true;};resize();window.addEventListener('resize',resize);
+  const resize=()=>{renderer.setSize(innerWidth,innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();if(inspection?.id&&!inspection.returning)beginInspection(inspection.id);needsDraw=true;};resize();window.addEventListener('resize',resize);
   const lost=e=>{e.preventDefault();contextLost=true;onStatus('3D paused by device · reload to restore');document.body.classList.add('webgl-unavailable');};renderer.domElement.addEventListener('webglcontextlost',lost);
   const desiredEye=new THREE.Vector3(),desiredAim=new THREE.Vector3(),nextEye=new THREE.Vector3(),nextAim=new THREE.Vector3();
   let lastProgress=-1,lastPick='',lastYaw=-1;
   return {
+    inspect:beginInspection,
+    returnToBuoy,
+    hover(id){hovered=id;needsDraw=true;},
     update({progress,chapter,time,dt,moving,pointer,selected}) {
       if(disposed||contextLost)return;
       currentChapter=chapter;
@@ -106,10 +138,20 @@ export async function createWorld(host, {onPick, onStatus}) {
       if(innerWidth<650){desiredEye.multiplyScalar(1.25);desiredAim.x+=.45;desiredAim.y+=.35;}
       if(moving){desiredEye.x+=pointer.x*.1;desiredEye.y+=pointer.y*.06;}
       const blend=moving?1-Math.exp(-dt*5):1;
-      camera.position.lerp(desiredEye,blend);aim.lerp(desiredAim,blend);camera.lookAt(aim);
+      if(inspection){
+        if(chapter!==1&&chapter!==2){inspection=null;overview=null;}
+        else {
+          inspection.elapsed+=dt;
+          const t=moving?Math.min(1,inspection.elapsed/1.65):1,eased=easeInspection(t);
+          camera.position.lerpVectors(inspection.from,inspection.eye,eased);aim.lerpVectors(inspection.fromAim,inspection.aim,eased);
+          if(t===1&&!inspection.ready){inspection.ready=true;if(inspection.returning)inspection=null;else onInspectionReady();}
+          needsDraw=true;
+        }
+      }else{camera.position.lerp(desiredEye,blend);aim.lerp(desiredAim,blend);}
+      camera.lookAt(aim);
       buoy.rotation.y=yaw;
-      if(moving){buoy.position.y=Math.sin(time*.65)*.014;buoy.rotation.z=Math.sin(time*.44)*.006;ocean.material.uniforms.time.value=time;}
-      ocean.material.uniforms.opacity.value=chapter===2?.62:1;
+      if(moving){if(!inspection){buoy.position.y=Math.sin(time*.65)*.014;buoy.rotation.z=Math.sin(time*.44)*.006;}ocean.material.uniforms.time.value=time;}
+      ocean.material.uniforms.opacity.value=inspection?.id==='pressure'?.12:chapter===2?.62:1;
       buoy.updateMatrixWorld(true);camera.updateMatrixWorld(true);
       const visible=chapter===1||chapter===2;
       hotspotLayer.hidden=!visible;
@@ -118,15 +160,35 @@ export async function createWorld(host, {onPick, onStatus}) {
         box.setFromObject(target).getCenter(projection);projection.project(camera);
         const x=(projection.x*.5+.5)*innerWidth,y=(-projection.y*.5+.5)*innerHeight;
         const overlaps=occupied.some(p=>Math.abs(p.y-y)<42&&Math.abs(p.x-x)<175);
-        const show=visible&&projection.z<1&&projection.z>-1&&x>innerWidth*(innerWidth<650?.56:.42)&&x<innerWidth-165&&y>125&&y<innerHeight-95&&(!overlaps||id===selected);
+        const leftLimit=inspection?20:innerWidth*(innerWidth<650?.56:.42);
+        const bottomLimit=inspection&&innerWidth<650?innerHeight*.46:innerHeight-95;
+        const show=visible&&projection.z<1&&projection.z>-1&&x>leftLimit&&x<innerWidth-165&&y>125&&y<bottomLimit&&(!overlaps||id===selected);
         button.hidden=!show;button.style.left=`${x}px`;button.style.top=`${y}px`;button.setAttribute('aria-pressed',String(id===selected));if(show)occupied.push({x,y});
       }
-      const chosen=markers.get(selected);halo.visible=visible&&!!chosen;
+      const focused=inspection?.id;
+      const chosen=markers.get(focused||hovered||selected);halo.visible=visible&&!!chosen;
+      const nextTint=visible?(focused||hovered||'')+(focused?':focus':''):'';
+      if(nextTint!==tintKey){tintKey=nextTint;tint(markers.get(focused||hovered)?.target,!!focused);}
+      halo.material.opacity=1;
+      if(focused){
+        const ramp=moving?easeInspection(inspection.elapsed/1.65):1,strength=inspection.returning?1-ramp:ramp;
+        halo.material.opacity=strength;
+        for(const entry of materialCopies)entry.copies.forEach((m,i)=>{const original=[].concat(entry.original)[i];if(!entry.selected&&m.color)m.color.copy(original.color).multiplyScalar(1-.38*strength);if(entry.selected&&m.emissive)m.emissiveIntensity=.3*strength;});
+      }
+      halo.material.color.set(focused||hovered?'#70c7d2':'#e4c999');
+      halo.scale.setScalar(focused?(1.15+(moving?Math.sin(time*2.2)*.12:0)):1);
       if(chosen){box.setFromObject(chosen.target).getCenter(halo.position);halo.quaternion.copy(camera.quaternion);}
+      if(focused&&!inspection.returning&&inspection.ready&&chosen){
+        projection.copy(halo.position).project(camera);
+        const x=(projection.x*.5+.5)*innerWidth,y=(-projection.y*.5+.5)*innerHeight;
+        const rect=document.querySelector('#inspection-panel').getBoundingClientRect();
+        const endX=innerWidth<650?rect.left+rect.width*.5:rect.left,endY=innerWidth<650?rect.top:rect.top+110;
+        connection.setAttribute('d',`M${x},${y} L${(x+endX)*.5},${y} L${endX},${endY}`);
+      }else connection.setAttribute('d','');
       needsDraw=moving||lastProgress!==progress||lastPick!==selected||lastYaw!==yaw||camera.position.distanceTo(desiredEye)>.001||needsDraw;
       if(needsDraw)renderer.render(scene,camera);
       needsDraw=false;lastProgress=progress;lastPick=selected;lastYaw=yaw;
     },
-    dispose(){disposed=true;window.removeEventListener('resize',resize);window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up);window.removeEventListener('pointercancel',cancel);document.querySelector('#reset-camera').removeEventListener('click',reset);if(model)disposeModel(model);for(const mesh of [ocean,sky,halo]){mesh.geometry.dispose();mesh.material.dispose();}renderer.dispose();renderer.domElement.remove();hotspotLayer.replaceChildren();}
+    dispose(){disposed=true;restoreMaterials();window.removeEventListener('resize',resize);window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up);window.removeEventListener('pointercancel',cancel);document.querySelector('#reset-camera').removeEventListener('click',reset);if(model)disposeModel(model);for(const mesh of [ocean,sky,halo]){mesh.geometry.dispose();mesh.material.dispose();}renderer.dispose();renderer.domElement.remove();hotspotLayer.replaceChildren();}
   };
 }

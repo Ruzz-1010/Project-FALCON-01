@@ -14,4 +14,30 @@ main{position:relative;z-index:2;pointer-events:none}.scene{min-height:115svh;pa
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
 
 #raw-trace,#processed-trace{transition:opacity .6s ease}#forecast text{font-size:16px}
+
+/* Inspection is an overlay on the existing cinematic scene, not a new page. */
+#inspection-panel{position:fixed;z-index:18;right:6vw;top:16vh;width:min(360px,35vw);max-height:70vh;overflow:auto;padding:1.35rem 1.5rem;background:#071d27ed;border-left:1px solid #72bcbf90;box-shadow:0 18px 50px #0004;border-radius:2px;scrollbar-width:thin}
+#inspection-back{background:transparent;border:0;border-bottom:1px solid var(--line);padding-left:0;margin-bottom:1.2rem;color:var(--sea);font-size:.84rem}
+#inspection-panel h2{font-size:2rem;margin-bottom:1.3rem;letter-spacing:-.035em}
+#inspection-panel h3{font-size:.61rem;letter-spacing:.16em;color:var(--sea);margin:1.05rem 0 .45rem}
+#inspection-panel .kicker{font-size:.58rem;margin-bottom:.65rem}
+#inspection-panel p{font-size:.84rem;color:var(--muted);margin-bottom:.8rem}
+#inspection-data{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:.45rem .8rem;font-size:.77rem}
+#inspection-data li::before{content:'·';color:var(--sea);margin-right:.4rem}
+#inspection-flow{display:flex;align-items:center;flex-wrap:wrap;gap:.4rem;font-size:.61rem;line-height:1.9;color:var(--sea)}
+#inspection-flow span:not(:last-child)::after{content:' →';display:inline-block;margin-left:.35rem;animation:shore-pulse 2s ease infinite}
+#inspection-status{display:block;font-size:.6rem;letter-spacing:.08em;color:var(--gold);margin-top:1.2rem}
+#inspection-panel #inspection-note{font-size:.7rem;margin-top:.5rem;margin-bottom:0}
+#inspection-content{animation:inspection-enter .4s ease both}
+@keyframes inspection-enter{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:translateX(0)}}
+#inspection-wire{position:fixed;inset:0;width:100%;height:100%;z-index:6;pointer-events:none;opacity:0;transition:opacity .4s}
+#inspection-wire path{fill:none;stroke:#72bcbfb0;stroke-width:1;stroke-dasharray:5 3;animation:inspection-wire 12s linear infinite}
+@keyframes inspection-wire{to{stroke-dashoffset:-80}}
+.inspection-ready #inspection-wire{opacity:1}
+.inspecting #buoy .copy,.inspecting #sensors .copy,.inspecting .cad-caption,.inspecting .signal-riser{visibility:hidden;pointer-events:none}
+.inspecting .hotspot[aria-pressed=false]{opacity:.45}
+.hotspot:hover,.hotspot:focus-visible{box-shadow:0 0 14px #72bcbf33;border-color:#8ccdd1}
+.hotspot[aria-pressed=true]{box-shadow:0 0 12px #72bcbf22}
+@media(max-width:650px){#inspection-panel{top:auto;bottom:72px;right:4vw;left:4vw;width:auto;max-height:43svh;padding:1rem 1.1rem}#inspection-back{margin-bottom:.6rem;min-height:44px}#inspection-panel h2{font-size:1.5rem;margin-bottom:.7rem}#inspection-panel h3{margin-top:.7rem}#inspection-panel p{font-size:.78rem}#inspection-data{font-size:.72rem}}
+@media(prefers-reduced-motion:reduce){#inspection-content,#inspection-wire path,#inspection-flow span::after{animation:none}#inspection-wire{transition:none}}
 @media(max-width:650px){.opening h1{font-size:clamp(2.85rem,11vw,4.5rem)}#forecast text{font-size:28px;letter-spacing:0}#forecast text:first-of-type,#forecast text:nth-of-type(2){font-size:25px}}

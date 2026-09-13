@@ -1,4 +1,5 @@
 import logoUrl from '../dashboard-next/public/falcon-logo.jpg?url';
+import {inspections} from './inspection.js';
 import {chapters,components,createLink,setLink,tickLink,waveSamples,forecastSamples,linePath} from './story.js';
 
 const $=selector=>document.querySelector(selector);
@@ -11,17 +12,44 @@ const pointer={x:0,y:0};
 const history=waveSamples(),future=forecastSamples(history.at(-1));
 const nav=$('#chapter-nav');
 chapters.forEach((name,i)=>{const a=document.createElement('a');a.href=`#${sections[i].id}`;a.title=name;a.setAttribute('aria-label',`${i+1}. ${name}`);nav.append(a);});
-function pick(id){
+let inspecting=false,inspectionTrigger;
+function inspectionReady(){
+  if(!inspecting)return;
+  $('#inspection-content').hidden=false;$('#inspection-travel').hidden=true;
+  document.body.classList.add('inspection-ready');$('#inspection-title').focus({preventScroll:true});
+}
+function endInspection(restoreFocus=true){
+  if(!inspecting)return;inspecting=false;
+  document.body.classList.remove('inspecting','inspection-ready');$('#inspection-panel').hidden=true;
+  world?.returnToBuoy?.();
+  if(restoreFocus&&inspectionTrigger?.isConnected)inspectionTrigger.focus({preventScroll:true});
+}
+$('#inspection-back').addEventListener('click',()=>endInspection());
+document.addEventListener('keydown',e=>{if(e.key==='Escape')endInspection();});
+function pick(id,inspect=true){
   selected=id;$('#component-title').textContent=components[id].label;$('#component-detail').textContent=components[id].detail;
   document.querySelectorAll('[data-component]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.component===id)));
-  if(active===1){$('#model-state').textContent=components[id].detail;}
+  if(inspect){
+    if(!world?.inspect?.(id)){ $('#model-state').textContent='Component guide available; wait for the original 3D model to load before inspection.';return; }
+    inspectionTrigger=document.activeElement;inspecting=true;
+    const info=inspections[id];$('#inspection-title').textContent=info.name;$('#inspection-function').textContent=info.function;
+    $('#inspection-data').replaceChildren(...info.data.map(text=>{const li=document.createElement('li');li.textContent=text;return li;}));
+    $('#inspection-flow').replaceChildren(...info.flow.map(text=>{const span=document.createElement('span');span.textContent=text;return span;}));
+    $('#inspection-status').textContent=info.status;$('#inspection-note').textContent=info.note;
+    $('#inspection-panel').hidden=false;$('#inspection-content').hidden=true;$('#inspection-travel').hidden=false;
+    document.body.classList.add('inspecting');document.body.classList.remove('inspection-ready');
+  }
 }
 for(const [id,c] of Object.entries(components)){
   for(const container of [$('#reveal-picks'),$('#sensor-menu')]){
     const b=document.createElement('button');b.textContent=c.label;b.dataset.component=id;b.setAttribute('aria-pressed',String(id===selected));b.addEventListener('click',()=>pick(id));container.append(b);
   }
 }
-pick(selected);
+pick(selected,false);
+document.addEventListener('pointerover',e=>{const node=e.target.closest('[data-component]');if(node)world?.hover?.(node.dataset.component);});
+document.addEventListener('pointerout',e=>{if(e.target.closest('[data-component]'))world?.hover?.(null);});
+document.addEventListener('focusin',e=>{const node=e.target.closest('[data-component]');if(node)world?.hover?.(node.dataset.component);});
+document.addEventListener('focusout',e=>{if(e.target.closest('[data-component]'))world?.hover?.(null);});
 $('#cad-note').addEventListener('click',()=>{const expanded=$('#cad-note').getAttribute('aria-expanded')==='true';$('#cad-note').setAttribute('aria-expanded',String(!expanded));$('#cad-detail').hidden=expanded;});
 function applyMotion(){document.body.classList.toggle('motion-paused',paused);$('#motion').textContent=paused?'Play motion':'Pause motion';$('#motion').setAttribute('aria-pressed',String(paused));}
 $('#motion').addEventListener('click',()=>{paused=!paused;applyMotion();});
@@ -89,7 +117,7 @@ function frame(now){
   raf=requestAnimationFrame(frame);if(now-last<33)return;
   const dt=Math.min(.06,(now-last)/1000);last=now;if(document.hidden)return;
   const moving=!paused;if(moving)elapsed+=dt;
-  const state=scrollState();if(state.chapter!==active)setChapter(state.chapter);
+  const state=scrollState();if(inspecting&&state.chapter!==1&&state.chapter!==2)endInspection(false);if(state.chapter!==active)setChapter(state.chapter);
   $('#journey-progress').style.width=`${Math.min(100,scrollY/Math.max(1,document.documentElement.scrollHeight-innerHeight)*100)}%`;
   world?.update({...state,time:elapsed,dt,moving,pointer,selected});
   if(moving&&active===6)drawPressure(elapsed);
@@ -98,5 +126,5 @@ function frame(now){
 }
 raf=requestAnimationFrame(frame);
 // 3D is a separate local chunk. All HTML diagrams and controls work if WebGL fails.
-import('./world.js').then(async({createWorld})=>{world=await createWorld($('#world'),{onPick:pick,onStatus:text=>{$('#model-state').textContent=text;}});}).catch(()=>{$('#model-state').textContent='3D unavailable · reload or continue the accessible diagrams';document.body.classList.add('webgl-unavailable');});
+import('./world.js').then(async({createWorld})=>{world=await createWorld($('#world'),{onPick:pick,onInspectionReady:inspectionReady,onStatus:text=>{$('#model-state').textContent=text;}});}).catch(()=>{$('#model-state').textContent='3D unavailable · reload or continue the accessible diagrams';document.body.classList.add('webgl-unavailable');});
 window.addEventListener('pagehide',e=>{if(!e.persisted){cancelAnimationFrame(raf);world?.dispose();layoutObserver.disconnect();}});
