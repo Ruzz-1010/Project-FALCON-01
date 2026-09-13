@@ -11,6 +11,8 @@ edge/data/
 node_modules/
 dashboard-next/dist/
 thesis-dist/
+static website presentation/dist/
+static website presentation/node_modules/
 fusion360/**/.vscode/
 wokwi.vcd
 *.original-backup-*
