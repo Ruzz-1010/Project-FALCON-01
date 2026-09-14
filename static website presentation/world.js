@@ -3,7 +3,7 @@ import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
 import modelUrl from '../dashboard-next/public/models/PROJECT-FALCON-V2.glb?url';
 import {components} from './story.js';
 import {easeInspection,inspectionFrame} from './inspection.js';
-import {createCoast,coastCamera,RECEIVER} from './coast.js';
+import {createCoast,coastCamera,crossingCamera,RECEIVER} from './coast.js';
 import {homeShots,homeCamera,homeWeight,oceanFieldGLSL} from './home.js';
 import {instrumentTargets} from './instrument.js';
 import {placeCallout} from './composition.js';
@@ -175,6 +175,12 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
         desiredAim.fromArray(coastCamera[i].aim).lerp(nextAim.fromArray(coastCamera[j].aim),u);
         if(progress>5.75){const blend=THREE.MathUtils.smoothstep(progress,5.75,6);desiredEye.lerp(nextEye.fromArray(poses[6].eye),blend);desiredAim.lerp(nextAim.fromArray(poses[6].aim),blend);}
       }
+      if(chapter===4){
+        const p=Math.min(2,(progress-4)*2),i=Math.min(1,Math.floor(p)),u=THREE.MathUtils.smoothstep(p-i,0,1);
+        desiredEye.fromArray(crossingCamera[i].eye).lerp(nextEye.fromArray(crossingCamera[i+1].eye),u);
+        desiredAim.fromArray(crossingCamera[i].aim).lerp(nextAim.fromArray(crossingCamera[i+1].aim),u);
+        if(innerWidth<650){const wide=1+.9*(1-THREE.MathUtils.smoothstep(progress,4.65,5));desiredEye.sub(desiredAim).multiplyScalar(wide).add(desiredAim);}
+      }
       if(innerWidth<650){desiredEye.multiplyScalar(1.25);desiredAim.x+=.45;desiredAim.y+=.35;}
       if(innerWidth<650&&progress<1)desiredAim.y+=(1-homeProgress)*desiredEye.distanceTo(desiredAim)*.16;
       // Reserve a middle-water stage between the mobile title and source index.
@@ -208,7 +214,7 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
       buoy.updateMatrixWorld(true);camera.updateMatrixWorld(true);
       compositionBounds.makeEmpty();if(chapter<3)for(const target of pageOneTargets.values())compositionBounds.union(box.setFromObject(target));
       const coastVisible=progress>=3.65&&progress<6.15;
-      coast.update(time,linkOnline,camera,coastVisible);
+      coast.update(time,linkOnline,camera,coastVisible,chapter===4);
       if(receiverLabel){
         projection.set(...RECEIVER).project(camera);
         const x=(projection.x*.5+.5)*innerWidth,y=(-projection.y*.5+.5)*innerHeight;

@@ -49,6 +49,14 @@ main{position:relative;z-index:2;pointer-events:none}.scene{min-height:115svh;pa
 .coast-ready #shore .shore-chain i{padding-left:.5rem}
 .coast-ready #shore .internet-branch{text-align:left;line-height:1.6}
 .coastal-reference{margin:0;font-size:.62rem!important}
+/* Page 04: reserve the middle water for the physical packet route. */
+.coast-ready #radio{padding-top:14svh;min-height:145svh}
+.coast-ready #radio .copy{width:52%;max-width:590px}
+.coast-ready #radio .copy h2{line-height:1.1;margin-bottom:1.3rem}
+.coast-ready #radio .copy>p:not(.kicker){font-size:1rem;line-height:1.8;max-width:34em}
+.coast-ready #radio .radio-experience{margin-top:46svh;padding-top:1.5rem}
+.coast-ready #radio .radio-experience::before{content:'OBSERVE  →  PACKAGE  →  LoRa TX  →  LoRa RX  →  SHORE PROCESSING';display:block;color:var(--muted);font-size:.65rem;letter-spacing:.08em;line-height:1.9;margin-bottom:1.2rem;max-width:55em}
+@media(max-width:650px){.coast-ready #radio .copy{width:100%;max-width:none}.coast-ready #radio .radio-experience{margin-top:50svh}.coast-ready #radio .radio-experience::before{font-size:.6rem;letter-spacing:.025em}.coast-ready #radio .copy>p:not(.kicker){font-size:.9rem}}
 .webgl-unavailable.coast-ready #radio .radio-route{display:grid}
 @media(max-width:650px){.coast-ready #radio .copy{width:100%}.coast-ready #radio .copy h2{font-size:2.4rem}.coast-ready #radio .radio-experience{margin-top:44svh}.coast-ready #radio .link-controls{align-items:flex-start}.coast-ready #shore .copy{width:100%}.coast-ready #shore .shore-system{width:100%;margin-top:38svh;display:grid;grid-template-columns:1fr 1fr;padding:.8rem}.coast-ready #shore .shore-chain{font-size:.72rem}.coast-ready #shore .internet-branch{grid-column:1/-1}.coastal-reference{font-size:.56rem!important}#coast-receiver-label{font-size:.53rem}}
 

@@ -12,6 +12,13 @@ export const coastCamera = [
   {eye:[8,5.9,10],aim:[15,2.8,-1]},
   {eye:[10,5.3,6.2],aim:[15.1,3,-1.5]}
 ];
+// Page 04-only framing: broadside ocean gap, then follow the route to shore.
+// End at the original Page 05 pose. No world-space endpoint is relocated.
+export const crossingCamera=[
+  {eye:[1,5.2,23],aim:[6.2,1.7,0]},
+  {eye:[3,5.5,19],aim:[8.5,2,-.5]},
+  coastCamera[2]
+];
 
 export function createCoast(){
   const group=new THREE.Group();group.name='Fictional coastal community';
@@ -135,11 +142,26 @@ export function createCoast(){
   const ringGeometry=new THREE.TorusGeometry(.25,.007,6,48),ringMaterial=new THREE.MeshBasicMaterial({color:'#68d1de',transparent:true,opacity:.65});geometries.push(ringGeometry);materials.push(ringMaterial);
   for(let i=0;i<3;i++){const ring=new THREE.Mesh(ringGeometry,ringMaterial.clone());materials.push(ring.material);ring.position.fromArray(RECEIVER);linkGroup.add(ring);rings.push(ring);}
   const dummy=new THREE.Object3D();
+  // Page 04 packet frames: discrete observations, not a beam or network icon.
+  const crossingPackets=new THREE.Group();crossingPackets.name='Crossing telemetry frames';linkGroup.add(crossingPackets);
+  const frameGeometry=new THREE.BoxGeometry(.19,.12,.035),frameMaterial=new THREE.MeshBasicMaterial({color:'#9edce0',wireframe:true});geometries.push(frameGeometry);materials.push(frameMaterial);
+  const frames=new THREE.InstancedMesh(frameGeometry,frameMaterial,12);crossingPackets.add(frames);
+  const endpointRings=[];
+  for(const endpoint of [points[0],points[3]])for(let i=0;i<2;i++){
+    const cue=new THREE.Mesh(ringGeometry,ringMaterial.clone());cue.position.copy(endpoint);materials.push(cue.material);crossingPackets.add(cue);endpointRings.push(cue);
+  }
   return {
     group,route,
-    update(time,online,camera,visible){
+    update(time,online,camera,visible,crossing=false){
       group.visible=visible;linkGroup.visible=visible&&online;
+      crossingPackets.visible=crossing;packets.visible=!crossing;routeMaterial.opacity=crossing?.18:.43;
+      rings.forEach(r=>r.visible=!crossing);
       if(!visible)return;
+      if(crossing){
+        for(let i=0;i<12;i++){const phase=(time*.09+i/12)%1;dummy.position.copy(route.getPoint(phase));dummy.quaternion.copy(camera.quaternion);dummy.updateMatrix();frames.setMatrixAt(i,dummy.matrix);}
+        frames.instanceMatrix.needsUpdate=true;
+        endpointRings.forEach((ring,i)=>{const phase=(time*.5+(i%2)*.5)%1;ring.scale.setScalar(.7+phase*2.3);ring.material.opacity=(1-phase)*.32;ring.quaternion.copy(camera.quaternion);});
+      }
       for(let i=0;i<9;i++){const phase=(time*.12+i/9)%1;dummy.position.copy(route.getPoint(phase));dummy.rotation.set(0,time+i,Math.PI/4);dummy.updateMatrix();packets.setMatrixAt(i,dummy.matrix);}
       packets.instanceMatrix.needsUpdate=true;
       for(let i=0;i<rings.length;i++){const phase=(time*.7+i/3)%1;rings[i].scale.setScalar(1+phase*2);rings[i].material.opacity=(1-phase)*.55;rings[i].quaternion.copy(camera.quaternion);}
