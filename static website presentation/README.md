@@ -21,6 +21,12 @@ Preview: http://127.0.0.1:4175. Copy **this folder’s `dist/`** to any static h
 
 ## Experience
 
+### Home opening
+
+Home alone now uses a held four-shot ocean opening: wide offshore → discovery → approach → listening. Normal scrolling controls the camera; “Begin the journey” runs a cancellable 5.2-second approach into the original Instrument section. Wheel, touch or navigation keys interrupt the scripted scroll. Pause Motion/reduced-motion bypasses automatic travel.
+
+Six directional wave components deform the Home water mesh itself, with corresponding analytical surface normals, restrained crest highlights and no moving texture shortcut. Home buoy heave/pitch/roll samples the same wave field. A center-dense mesh keeps geometry lightweight. Home ocean changes fade to the existing water before Instrument, and the final Home camera target matches the existing Instrument pose. Pages 01–09 markup is protected by a regression hash test. These are illustrative motions, not a validated ocean or buoyancy model.
+
 ### 04 / Crossing the Water — coastal environment
 
 Chapter 04 replaces the flat radio illustration with a locally generated Three.js community: a modest Bay Station, 12 residences, 22 coconut trees, vegetation, roads, rocky beach and terrain. A single cylindrical receiver mast with a compact top-mounted receiver and coaxial antenna tip is positioned beside the station. Cyan packets cross the actual 3D space from the original offshore buoy to the receiver endpoint. Interrupt/restore controls also pause/resume that physical link visualization. The camera approaches the shoreline and receiver into chapter 05; the other story chapters and original buoy CAD remain intact.

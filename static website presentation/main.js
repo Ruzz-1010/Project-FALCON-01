@@ -1,5 +1,6 @@
 import logoUrl from '../dashboard-next/public/falcon-logo.jpg?url';
 import {inspections} from './inspection.js';
+import {smooth} from './home.js';
 import {chapters,components,createLink,setLink,tickLink,waveSamples,forecastSamples,linePath} from './story.js';
 
 const $=selector=>document.querySelector(selector);
@@ -100,6 +101,16 @@ function renderDashboard(){
 document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{currentTab=b.dataset.tab;document.querySelectorAll('[data-tab]').forEach(el=>el.setAttribute('aria-pressed',String(el===b)));renderDashboard();}));renderDashboard();
 
 let offsets=[];
+let homeJourney=null;
+const home=$('#ocean');
+const cancelHomeJourney=()=>{homeJourney=null;};
+for(const event of ['wheel','touchstart','pointerdown'])window.addEventListener(event,cancelHomeJourney,{passive:true});
+window.addEventListener('keydown',e=>{if(['Escape','ArrowDown','ArrowUp','PageDown','PageUp','Home','End',' '].includes(e.key))cancelHomeJourney();});
+$('#begin-journey').addEventListener('click',e=>{
+  e.preventDefault();const to=$('#buoy').offsetTop-Math.min(80,innerHeight*.15);
+  if(paused){window.scrollTo({top:to,behavior:'instant'});return;}
+  homeJourney={from:scrollY,to,elapsed:0};
+});
 function measure(){offsets=sections.map(s=>s.offsetTop);}
 measure();window.addEventListener('resize',measure);document.fonts.ready.then(measure);
 const layoutObserver=new ResizeObserver(measure);sections.forEach(s=>layoutObserver.observe(s));
@@ -116,10 +127,17 @@ let raf;
 function frame(now){
   raf=requestAnimationFrame(frame);if(now-last<33)return;
   const dt=Math.min(.06,(now-last)/1000);last=now;if(document.hidden)return;
+  if(homeJourney){
+    if(paused)homeJourney=null;
+    else{homeJourney.elapsed+=dt;const t=Math.min(1,homeJourney.elapsed/5.2);window.scrollTo({top:homeJourney.from+(homeJourney.to-homeJourney.from)*smooth(t),behavior:'instant'});if(t===1){homeJourney=null;window.history.replaceState(null,'','#buoy');}}
+  }
   const moving=!paused;if(moving)elapsed+=dt;
   const state=scrollState();if(inspecting&&state.chapter!==1&&state.chapter!==2)endInspection(false);if(state.chapter!==active)setChapter(state.chapter);
+  const homeProgress=Math.max(0,Math.min(1,scrollY/Math.max(1,offsets[1]-innerHeight*.18)));
+  home.style.setProperty('--home-progress',String(homeProgress));home.classList.toggle('home-departed',homeProgress>.52);
+  $('#home-shot-label').textContent=homeProgress<.25?'01 / THE OCEAN':homeProgress<.55?'02 / DISCOVERY':homeProgress<.82?'03 / APPROACH':'04 / LISTEN';
   $('#journey-progress').style.width=`${Math.min(100,scrollY/Math.max(1,document.documentElement.scrollHeight-innerHeight)*100)}%`;
-  world?.update({...state,time:elapsed,dt,moving,pointer,selected,linkOnline:link.online});
+  world?.update({...state,time:elapsed,dt,moving,pointer,selected,linkOnline:link.online,homeProgress});
   if(moving&&active===6)drawPressure(elapsed);
   if(active===7&&moving)drawPrediction(dt);
   if(moving&&active>=3&&active<=5&&elapsed-lastPacket>1.5){lastPacket=elapsed;link=tickLink(link,new Date().toISOString());updateLink();}

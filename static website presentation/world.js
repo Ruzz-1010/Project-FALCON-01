@@ -4,10 +4,11 @@ import modelUrl from '../dashboard-next/public/models/PROJECT-FALCON-V2.glb?url'
 import {components} from './story.js';
 import {easeInspection,inspectionFrame} from './inspection.js';
 import {createCoast,coastCamera,RECEIVER} from './coast.js';
+import {homeShots,homeCamera,homeWeight,oceanSample,oceanFieldGLSL} from './home.js';
 
 // Camera choreography only. The supplied CAD mesh and its materials are untouched.
 const poses = [
-  {eye:[5,2.1,8], aim:[-1,.5,0]},
+  homeShots[0],
   {eye:[2.6,1.45,3.8], aim:[-.65,.55,0]},
   {eye:[2.1,.65,3.3], aim:[-.65,.36,0]},
   {eye:[1.4,1,2.6], aim:[1.8,.7,0]},
@@ -48,20 +49,31 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
   })); scene.add(sky);
   const ocean = new THREE.Mesh(new THREE.PlaneGeometry(130,130,150,150),new THREE.ShaderMaterial({
     transparent:true, side:THREE.DoubleSide,
-    uniforms:{time:{value:0},opacity:{value:1}},
-    vertexShader:`uniform float time;varying vec3 vWorld;varying float vHeight;
+    uniforms:{time:{value:0},opacity:{value:1},homeWeight:{value:0},homeProgress:{value:0}},
+    vertexShader:`uniform float time;uniform float homeWeight;uniform float homeProgress;varying vec3 vWorld;varying float vHeight;
+      ${oceanFieldGLSL}
       void main(){vec3 p=position;float t=time*.55;
       p.z=sin(p.x*.85+t)*.043+sin(p.y*1.3+t*.7)*.026+sin(p.x*2.6+p.y*1.7+t*1.3)*.013;
+      if(homeWeight>0.)p.z=mix(p.z,homeField(vec2(p.x,-p.y),time,homeProgress).x,homeWeight);
       vec4 w=modelMatrix*vec4(p,1.);vWorld=w.xyz;vHeight=p.z;gl_Position=projectionMatrix*viewMatrix*w;}`,
-    fragmentShader:`uniform float time;uniform float opacity;varying vec3 vWorld;varying float vHeight;
+    fragmentShader:`uniform float time;uniform float opacity;uniform float homeWeight;uniform float homeProgress;varying vec3 vWorld;varying float vHeight;
+      ${oceanFieldGLSL}
       void main(){vec3 n=normalize(cross(dFdx(vWorld),dFdy(vWorld)));if(n.y<0.)n=-n;
+      vec3 field=vec3(0.);
+      if(homeWeight>0.){field=homeField(vWorld.xz,time,homeProgress);n=normalize(mix(n,normalize(vec3(-field.y,1.,-field.z)),homeWeight));}
       vec3 v=normalize(cameraPosition-vWorld);float fresnel=pow(1.-max(dot(v,n),0.),3.);
       vec3 light=normalize(vec3(-.6,.7,.4));float shine=pow(max(dot(reflect(-light,n),v),0.),85.);
       vec3 c=mix(vec3(.015,.082,.115),vec3(.12,.24,.28),fresnel);
       c+=max(vHeight,0.)*vec3(.4,.7,.7)+shine*vec3(.65,.65,.49)*.65;
+      float crest=smoothstep(.08,.125,field.x)*.085*homeWeight;
+      c+=vec3(.54,.68,.69)*crest;
       float fog=1.-exp(-length(cameraPosition-vWorld)*.022);c=mix(c,vec3(.063,.17,.22),fog);
       gl_FragColor=vec4(c,opacity);}`
   })); ocean.rotation.x=-Math.PI/2;scene.add(ocean);
+  const legacyOceanGeometry=ocean.geometry,homeOceanGeometry=legacyOceanGeometry.clone();
+  // More vertices near the camera/buoy; broad, cheaper cells toward the horizon.
+  const homePositions=homeOceanGeometry.attributes.position;
+  for(let i=0;i<homePositions.count;i++){for(const axis of ['X','Y']){const v=homePositions[`get${axis}`](i)/65;homePositions[`set${axis}`](i,Math.sign(v)*Math.pow(Math.abs(v),1.45)*65);}}
   const buoy = new THREE.Group();scene.add(buoy);
   const coast=createCoast();coast.group.visible=false;scene.add(coast.group);
   document.body.classList.add('coast-ready');
@@ -134,12 +146,13 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
     inspect:beginInspection,
     returnToBuoy,
     hover(id){hovered=id;needsDraw=true;},
-    update({progress,chapter,time,dt,moving,pointer,selected,linkOnline=true}) {
+    update({progress,chapter,time,dt,moving,pointer,selected,linkOnline=true,homeProgress=0}) {
       if(disposed||contextLost)return;
       currentChapter=chapter;
       const a=Math.max(0,Math.min(9,Math.floor(progress))),b=Math.min(9,a+1),t=THREE.MathUtils.smoothstep(progress-a,0,1);
       desiredEye.fromArray(poses[a].eye).lerp(nextEye.fromArray(poses[b].eye),t);
       desiredAim.fromArray(poses[a].aim).lerp(nextAim.fromArray(poses[b].aim),t);
+      if(progress<1){const shot=homeCamera(homeProgress);desiredEye.fromArray(shot.eye);desiredAim.fromArray(shot.aim);}
       if(progress>=4&&progress<6){
         const p=Math.min(3,(progress-4)*2),i=Math.floor(p),j=Math.min(3,i+1),u=THREE.MathUtils.smoothstep(p-i,0,1);
         desiredEye.fromArray(coastCamera[i].eye).lerp(nextEye.fromArray(coastCamera[j].eye),u);
@@ -147,6 +160,7 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
         if(progress>5.75){const blend=THREE.MathUtils.smoothstep(progress,5.75,6);desiredEye.lerp(nextEye.fromArray(poses[6].eye),blend);desiredAim.lerp(nextAim.fromArray(poses[6].aim),blend);}
       }
       if(innerWidth<650){desiredEye.multiplyScalar(1.25);desiredAim.x+=.45;desiredAim.y+=.35;}
+      if(innerWidth<650&&progress<1)desiredAim.y+=(1-homeProgress)*desiredEye.distanceTo(desiredAim)*.16;
       if(moving){desiredEye.x+=pointer.x*.1;desiredEye.y+=pointer.y*.06;}
       const blend=moving?1-Math.exp(-dt*5):1;
       if(inspection){
@@ -161,7 +175,16 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
       }else{camera.position.lerp(desiredEye,blend);aim.lerp(desiredAim,blend);}
       camera.lookAt(aim);
       buoy.rotation.y=yaw;
-      if(moving){if(!inspection){buoy.position.y=Math.sin(time*.65)*.014;buoy.rotation.z=Math.sin(time*.44)*.006;}ocean.material.uniforms.time.value=time;}
+      const homeMix=progress<1?homeWeight(homeProgress):0;
+      ocean.geometry=homeMix>0?homeOceanGeometry:legacyOceanGeometry;
+      ocean.material.uniforms.homeWeight.value=homeMix;ocean.material.uniforms.homeProgress.value=homeProgress;
+      if(moving){if(!inspection){
+        const wave=oceanSample(0,0,time,homeProgress);
+        buoy.position.y=THREE.MathUtils.lerp(Math.sin(time*.65)*.014,wave.height,homeMix);
+        buoy.rotation.z=THREE.MathUtils.lerp(Math.sin(time*.44)*.006,THREE.MathUtils.clamp(wave.dx*.45,-.025,.025),homeMix);
+        buoy.rotation.x=THREE.MathUtils.clamp(-wave.dz*.45,-.025,.025)*homeMix;
+      }ocean.material.uniforms.time.value=time;}
+      else if(progress>=1&&!inspection){buoy.rotation.x=0;}
       ocean.material.uniforms.opacity.value=inspection?.id==='pressure'?.12:chapter===2?.62:1;
       buoy.updateMatrixWorld(true);camera.updateMatrixWorld(true);
       const coastVisible=progress>=3.65&&progress<6.15;
@@ -209,6 +232,6 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
       if(needsDraw)renderer.render(scene,camera);
       needsDraw=false;lastProgress=progress;lastPick=selected;lastYaw=yaw;lastLink=linkOnline;
     },
-    dispose(){disposed=true;restoreMaterials();coast.dispose();window.removeEventListener('resize',resize);window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up);window.removeEventListener('pointercancel',cancel);document.querySelector('#reset-camera').removeEventListener('click',reset);if(model)disposeModel(model);for(const mesh of [ocean,sky,halo]){mesh.geometry.dispose();mesh.material.dispose();}renderer.dispose();renderer.domElement.remove();hotspotLayer.replaceChildren();}
+    dispose(){disposed=true;restoreMaterials();coast.dispose();window.removeEventListener('resize',resize);window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up);window.removeEventListener('pointercancel',cancel);document.querySelector('#reset-camera').removeEventListener('click',reset);if(model)disposeModel(model);legacyOceanGeometry.dispose();homeOceanGeometry.dispose();for(const mesh of [ocean,sky,halo]){if(mesh!==ocean)mesh.geometry.dispose();mesh.material.dispose();}renderer.dispose();renderer.domElement.remove();hotspotLayer.replaceChildren();}
   };
 }
