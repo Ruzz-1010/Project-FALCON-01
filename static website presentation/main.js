@@ -3,10 +3,13 @@ import {inspections} from './inspection.js';
 import {smooth} from './home.js';
 import {instrumentInfo} from './instrument.js';
 import {createAcquisition} from './acquisition.js';
+import {createController} from './controller.js';
 import {chapters,components,createLink,setLink,tickLink,waveSamples,forecastSamples,linePath} from './story.js';
 
 const $=selector=>document.querySelector(selector);
 const acquisition=createAcquisition($('#acquisition-dock'));
+const controllerOutput=document.createElement('p');controllerOutput.className='controller-output';$('#controller .packet-console').append(controllerOutput);
+const controller=createController($('#controller .chip-stage'));
 $('#logo').src=logoUrl;
 const sections=[...document.querySelectorAll('.scene')];
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
@@ -76,7 +79,7 @@ function updateLink(){
   $('#queued').textContent=String(link.buffer.length).padStart(2,'0');$('#received').textContent=String(link.received.length).padStart(2,'0');
   $('#buffer-packets').replaceChildren(...link.buffer.slice(-10).map(p=>{const i=document.createElement('i');i.textContent=String(p.id).padStart(3,'0');i.title=`Original sample: ${p.timestamp}`;return i;}));
   $('#recovery-note').textContent=link.phase==='buffering'?'Sample times stay with queued packets. This is a simulated buffer—not proof of field recovery.':link.phase==='retransmitting'?'Backlog replay → duplicate prevention → chronological storage. Original sample times preserved.':'Hardware, legal band and site coverage pending. No range guarantee.';
-  $('#packet-frame').textContent=`FALCON-01 · seq ${String(link.sequence).padStart(4,'0')}\n${link.received.at(-1)?.timestamp||'sample timestamp'} · schema v1 · SIMULATED`;
+  // Page 03 owns its illustrative frame; link simulation on 04–05 remains separate.
 }
 $('#interrupt').addEventListener('click',()=>{
   link=setLink(link,!link.online);
@@ -148,6 +151,7 @@ function frame(now){
   $('#journey-progress').style.width=`${Math.min(100,scrollY/Math.max(1,document.documentElement.scrollHeight-innerHeight)*100)}%`;
   world?.update({...state,time:elapsed,dt,moving,pointer,selected,linkOnline:link.online,homeProgress});
   if(active===2&&moving)acquisition.draw(elapsed);
+  if(active===3)controller.draw(elapsed);
   if(moving&&active===6)drawPressure(elapsed);
   if(active===7&&moving)drawPrediction(dt);
   if(moving&&active>=3&&active<=5&&elapsed-lastPacket>1.5){lastPacket=elapsed;link=tickLink(link,new Date().toISOString());updateLink();}

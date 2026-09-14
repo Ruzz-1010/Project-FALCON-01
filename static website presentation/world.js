@@ -6,6 +6,7 @@ import {easeInspection,inspectionFrame} from './inspection.js';
 import {createCoast,coastCamera,RECEIVER} from './coast.js';
 import {homeShots,homeCamera,homeWeight,oceanSample,oceanFieldGLSL} from './home.js';
 import {instrumentTargets} from './instrument.js';
+import {placeCallout} from './composition.js';
 
 // Camera choreography only. The supplied CAD mesh and its materials are untouched.
 const poses = [
@@ -80,6 +81,7 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
   document.body.classList.add('coast-ready');
   const receiverLabel=document.querySelector('#coast-receiver-label');
   const markers = new Map(), hotspotLayer = document.querySelector('#hotspots');
+  const leaderSvg=document.createElementNS('http://www.w3.org/2000/svg','svg');leaderSvg.setAttribute('aria-hidden','true');hotspotLayer.append(leaderSvg);
   let pageOneTargets=new Map();
   const targetFor=id=>currentChapter===1||currentChapter===2?pageOneTargets.get(id):markers.get(id)?.target;
   let model, disposed=false, contextLost=false, yaw=0, drag=null, orbitReset=null, needsDraw=true;
@@ -102,7 +104,8 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
     const bounds=new THREE.Box3().setFromObject(target),center=bounds.getCenter(new THREE.Vector3()),size=bounds.getSize(new THREE.Vector3());
     const frame=inspectionFrame(center.toArray(),Math.max(size.x,size.y,size.z),camera.aspect,innerWidth<650);
     const eye=new THREE.Vector3().fromArray(frame.eye),targetAim=new THREE.Vector3().fromArray(frame.aim);
-    inspection={id,page:currentChapter,from:camera.position.clone(),fromAim:aim.clone(),eye,aim:targetAim,elapsed:0,returning:false,ready:false};
+    const viewOffset=camera.view?.enabled?{x:camera.view.offsetX,y:camera.view.offsetY}:{x:0,y:0};
+    inspection={id,page:currentChapter,from:camera.position.clone(),fromAim:aim.clone(),eye,aim:targetAim,viewOffset,elapsed:0,returning:false,ready:false};
     drag=null;needsDraw=true;return true;
   }
   function returnToBuoy(){
@@ -111,6 +114,14 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
     overview=null;hovered=null;needsDraw=true;
   }
   const projection=new THREE.Vector3(), box=new THREE.Box3();
+  const compositionBounds=new THREE.Box3();
+  function projectedBounds(bounds){
+    const result={left:Infinity,right:-Infinity,top:Infinity,bottom:-Infinity};
+    for(const x of [bounds.min.x,bounds.max.x])for(const y of [bounds.min.y,bounds.max.y])for(const z of [bounds.min.z,bounds.max.z]){
+      projection.set(x,y,z).project(camera);const px=(projection.x+1)*innerWidth/2,py=(1-projection.y)*innerHeight/2;
+      result.left=Math.min(result.left,px);result.right=Math.max(result.right,px);result.top=Math.min(result.top,py);result.bottom=Math.max(result.bottom,py);
+    }return result;
+  }
   const halo=new THREE.Mesh(new THREE.TorusGeometry(.035,.002,6,24),new THREE.MeshBasicMaterial({color:'#e4c999',depthTest:false,transparent:true}));halo.visible=false;halo.renderOrder=10;scene.add(halo);
   function disposeModel(root){root.traverse(o=>{if(o.isMesh){o.geometry.dispose();for(const m of [].concat(o.material)){for(const value of Object.values(m))if(value?.isTexture)value.dispose();m.dispose();}}});}
   new GLTFLoader().load(modelUrl,gltf=>{
@@ -145,13 +156,15 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
   const resize=()=>{renderer.setSize(innerWidth,innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();if(inspection?.id&&!inspection.returning)beginInspection(inspection.id);needsDraw=true;};resize();window.addEventListener('resize',resize);
   const lost=e=>{e.preventDefault();contextLost=true;onStatus('3D paused by device · reload to restore');document.body.classList.add('webgl-unavailable');};renderer.domElement.addEventListener('webglcontextlost',lost);
   const desiredEye=new THREE.Vector3(),desiredAim=new THREE.Vector3(),nextEye=new THREE.Vector3(),nextAim=new THREE.Vector3();
-  let lastProgress=-1,lastPick='',lastYaw=-1,lastLink=true;
+  let lastProgress=-1,lastPick='',lastYaw=-1,lastLink=true,uncomposedEye=null;
   return {
     inspect:beginInspection,
     returnToBuoy,
     hover(id){hovered=id;needsDraw=true;},
     update({progress,chapter,time,dt,moving,pointer,selected,linkOnline=true,homeProgress=0}) {
       if(disposed||contextLost)return;
+      if(uncomposedEye&&!inspection)camera.position.copy(uncomposedEye);
+      uncomposedEye=null;
       currentChapter=chapter;
       if(orbitReset){orbitReset.elapsed+=dt;const t=moving?Math.min(1,orbitReset.elapsed/1.2):1;yaw=orbitReset.from*(1-easeInspection(t));if(t===1)orbitReset=null;needsDraw=true;}
       const a=Math.max(0,Math.min(9,Math.floor(progress))),b=Math.min(9,a+1),t=THREE.MathUtils.smoothstep(progress-a,0,1);
@@ -184,6 +197,8 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
         }
       }else{camera.position.lerp(desiredEye,blend);aim.lerp(desiredAim,blend);}
       camera.lookAt(aim);
+      camera.clearViewOffset();
+      if(inspection?.viewOffset){const remaining=moving?1-easeInspection(inspection.elapsed/1.65):0;camera.setViewOffset(innerWidth,innerHeight,inspection.viewOffset.x*remaining,inspection.viewOffset.y*remaining,innerWidth,innerHeight);}
       buoy.rotation.y=yaw;
       const homeMix=progress<1?homeWeight(homeProgress):0;
       ocean.geometry=homeMix>0?homeOceanGeometry:legacyOceanGeometry;
@@ -197,6 +212,29 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
       else if(progress>=1&&!inspection){buoy.rotation.x=0;}
       ocean.material.uniforms.opacity.value=inspection?.id==='pressure'?.12:chapter===2?.62:1;
       buoy.updateMatrixWorld(true);camera.updateMatrixWorld(true);
+      compositionBounds.makeEmpty();if(chapter<3)for(const target of pageOneTargets.values())compositionBounds.union(box.setFromObject(target));
+      // Shift the view, not the labels or text, into the available negative space.
+      if(chapter<3&&!inspection&&!compositionBounds.isEmpty()){
+        uncomposedEye=camera.position.clone();
+        const copy=document.querySelector(chapter===0?'#ocean .home-copy':chapter===1?'#buoy .copy':'#sensors .copy');
+        const rect=copy.getBoundingClientRect(),mobile=innerWidth<650;
+        const region={left:innerWidth*.06,right:innerWidth*.94,top:115,bottom:innerHeight-115};
+        if(chapter!==0||homeProgress<.5){
+          if(!mobile){if(chapter===2)region.right=Math.min(region.right,rect.left-40);else region.left=Math.max(region.left,rect.right+40);}
+          else{
+            const headingBottom=chapter===0?Math.max(rect.bottom,document.querySelector('.home-shot').getBoundingClientRect().bottom):Math.max(...[...copy.querySelectorAll(':scope > h2,:scope > .kicker,:scope > .acquisition-intro')].map(e=>e.getBoundingClientRect().bottom),chapter===1?copy.querySelector(':scope > p:not(.kicker)').getBoundingClientRect().bottom:0);
+            region.top=Math.max(region.top,headingBottom+24);
+            if(chapter>0){const controls=document.querySelector(chapter===1?'#buoy .index-caption':'#sensor-menu').getBoundingClientRect();region.bottom=Math.min(region.bottom,controls.top-24);}
+          }
+        }
+        if(region.right-region.left>140&&region.bottom-region.top>110){
+          let silhouette=projectedBounds(compositionBounds);
+          const scale=Math.max(1,(silhouette.right-silhouette.left)/(region.right-region.left),(silhouette.bottom-silhouette.top)/(region.bottom-region.top));
+          if(scale>1){camera.position.sub(aim).multiplyScalar(Math.min(scale,5)).add(aim);camera.lookAt(aim);camera.updateMatrixWorld(true);silhouette=projectedBounds(compositionBounds);}
+          const dx=(silhouette.left+silhouette.right-region.left-region.right)/2,dy=(silhouette.top+silhouette.bottom-region.top-region.bottom)/2;
+          camera.setViewOffset(innerWidth,innerHeight,dx,dy,innerWidth,innerHeight);camera.updateMatrixWorld(true);
+        }
+      }
       const coastVisible=progress>=3.65&&progress<6.15;
       coast.update(time,linkOnline,camera,coastVisible);
       if(receiverLabel){
@@ -209,16 +247,16 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
       const visible=chapter===1||chapter===2;
       hotspotLayer.hidden=!visible;
       const occupied=[];
+      const obstacles=[...document.querySelectorAll('header,.journey-nav,.model-state,#buoy.is-active .copy,#sensors.is-active .copy,.cad-caption,.source-caption,#inspection-panel:not([hidden])')].filter(e=>e.getClientRects().length&&getComputedStyle(e).visibility!=='hidden').map(e=>e.getBoundingClientRect());
+      const silhouette=compositionBounds.isEmpty()?{left:0,right:innerWidth}:projectedBounds(compositionBounds);
+      leaderSvg.replaceChildren();
       for(const [id,{button}] of markers){
         const target=targetFor(id);
         box.setFromObject(target).getCenter(projection);projection.project(camera);
         const x=(projection.x*.5+.5)*innerWidth,y=(-projection.y*.5+.5)*innerHeight;
-        const overlaps=occupied.some(p=>Math.abs(p.y-y)<42&&Math.abs(p.x-x)<175);
-        const leftLimit=inspection?20:innerWidth*(chapter===2?.05:innerWidth<650?.1:.34);
-        const bottomLimit=inspection&&innerWidth<650?innerHeight*.46:innerHeight-95;
-        const rightLimit=chapter===2&&!inspection?innerWidth*.52:innerWidth-65;
-        const show=visible&&(!inspection||id===inspection.id)&&projection.z<1&&projection.z>-1&&x>leftLimit&&x<rightLimit&&y>125&&y<bottomLimit&&(!overlaps||id===selected);
-        button.hidden=!show;button.style.left=`${x}px`;button.style.top=`${y}px`;button.setAttribute('aria-pressed',String(id===selected));if(show)occupied.push({x,y});
+        const placement=visible&&!inspection&&projection.z<1&&projection.z>-1?placeCallout({x,y},silhouette,[...obstacles,...occupied],{left:24,right:innerWidth-24,top:115,bottom:innerHeight-105}):null;
+        button.hidden=!placement;button.setAttribute('aria-pressed',String(id===selected));
+        if(placement){button.style.left=`${placement.x}px`;button.style.top=`${placement.y}px`;occupied.push(placement.rect);const line=document.createElementNS('http://www.w3.org/2000/svg','path');line.setAttribute('d',placement.path);leaderSvg.append(line);}
       }
       const focused=inspection?.id;
       const chosenTarget=targetFor(focused||hovered||selected),chosen=chosenTarget?{target:chosenTarget}:null;halo.visible=visible&&!!chosen;
