@@ -14,6 +14,7 @@
   <div class="model-state" id="model-state" role="status">Loading original CAD…</div>
   <div class="coordinates" aria-hidden="true"><span id="coordinate-top">OFFSHORE / OBSERVATION NODE</span><i></i><span>FALCON ENGINEERING / V4.1</span></div>
   <div id="hotspots" aria-label="Original CAD component hotspots" hidden></div>
+  <div id="coast-receiver-label" hidden>LoRa RX · BAY STATION</div>
   <svg id="inspection-wire" aria-hidden="true"><path/></svg>
   <aside id="inspection-panel" hidden aria-labelledby="inspection-title">
     <button id="inspection-back">← Back to buoy</button>
@@ -48,7 +49,7 @@
     </section>
     <section class="scene" id="shore" data-chapter="5">
       <div class="copy"><p class="kicker">05 / THE BAY STATION</p><h2>The thinking<br>happens <em>here.</em></h2><p>At a participating shore facility.<br>Receive. Retain. Process.</p><p class="micro">Shore mini PC — model TBD.<br>Internet backhaul is separate from LoRa.</p></div>
-      <div class="shore-system engineering"><div class="facility"><span class="antenna-mark">⌁</span><div class="roof"></div><div class="facility-face"><span>BAY STATION</span><div class="windows"><i></i><i></i><i></i></div></div><span class="micro">CONCEPTUAL SHORE FACILITY</span></div><div class="shore-chain"><span>LoRa receiver</span><i>↓</i><span>Authenticate / validate</span><i>↓</i><span class="database">SQLite <small>raw + processed records</small></span><i>↓</i><span>Processing service</span></div><div class="internet-branch">SHORE ONLY → Internet / authorized remote access</div></div>
+      <div class="shore-system engineering"><p class="coastal-reference micro">FICTIONAL COASTAL COMMUNITY<br>Single-pole receiver · shore-powered facility</p><div class="shore-chain"><span>LoRa receiver</span><i>↓</i><span>Authenticate / validate</span><i>↓</i><span class="database">SQLite <small>raw + processed records</small></span><i>↓</i><span>Processing service</span></div><div class="internet-branch">SHORE ONLY → Internet / authorized remote access</div></div>
     </section>
     <section class="scene wide-scene" id="waves" data-chapter="6">
       <div class="copy"><p class="kicker">06 / THE TRANSFORMATION</p><h2>Pressure is the signal.<br><em>Wave height is the estimate.</em></h2></div>

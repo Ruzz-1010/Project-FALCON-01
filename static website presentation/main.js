@@ -119,7 +119,7 @@ function frame(now){
   const moving=!paused;if(moving)elapsed+=dt;
   const state=scrollState();if(inspecting&&state.chapter!==1&&state.chapter!==2)endInspection(false);if(state.chapter!==active)setChapter(state.chapter);
   $('#journey-progress').style.width=`${Math.min(100,scrollY/Math.max(1,document.documentElement.scrollHeight-innerHeight)*100)}%`;
-  world?.update({...state,time:elapsed,dt,moving,pointer,selected});
+  world?.update({...state,time:elapsed,dt,moving,pointer,selected,linkOnline:link.online});
   if(moving&&active===6)drawPressure(elapsed);
   if(active===7&&moving)drawPrediction(dt);
   if(moving&&active>=3&&active<=5&&elapsed-lastPacket>1.5){lastPacket=elapsed;link=tickLink(link,new Date().toISOString());updateLink();}

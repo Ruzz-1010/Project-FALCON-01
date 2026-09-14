@@ -21,6 +21,12 @@ Preview: http://127.0.0.1:4175. Copy **this folder’s `dist/`** to any static h
 
 ## Experience
 
+### 04 / Crossing the Water — coastal environment
+
+Chapter 04 replaces the flat radio illustration with a locally generated Three.js community: a modest Bay Station, 12 residences, 22 coconut trees, vegetation, roads, rocky beach and terrain. A single cylindrical receiver mast with a compact top-mounted receiver and coaxial antenna tip is positioned beside the station. Cyan packets cross the actual 3D space from the original offshore buoy to the receiver endpoint. Interrupt/restore controls also pause/resume that physical link visualization. The camera approaches the shoreline and receiver into chapter 05; the other story chapters and original buoy CAD remain intact.
+
+This is a fictional illustrative environment, not a photograph, surveyed location, measured radio range or approved mast specification. Static meshes are batched by material; packet instances share geometry. The scene adds no remote assets or APIs. Tests check finite geometry, community inventory, endpoint alignment, camera framing and outage visibility. Browser visual verification is still pending because no browser is connected to the authoring session.
+
 Scroll through ten scenes: Ocean → buoy reveal → sensors → ESP32 → LoRa → Bay Station → wave estimation → AI → dashboard reveal → system pullback. Bottom chapter markers are keyboard-accessible jump links. Drag the uncovered ocean area in the reveal/sensor scenes to orbit; component buttons provide the same selection access as projected hotspots.
 
 Use the LoRa interruption/restore control to observe an in-memory queue replaying original timestamps and rejecting duplicate IDs. Processing steps switch the illustrative pressure signal. Run prediction reveals a simulated future trace against persistence. Four dashboard tabs are a static presentation of the FALCON operator interface, not an embedded connection to the live app.

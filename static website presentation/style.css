@@ -15,6 +15,27 @@ main{position:relative;z-index:2;pointer-events:none}.scene{min-height:115svh;pa
 
 #raw-trace,#processed-trace{transition:opacity .6s ease}#forecast text{font-size:16px}
 
+/* Chapter 04 now uses the real-time 3D coast; retain the existing simulation controls. */
+#coast-receiver-label{position:fixed;z-index:5;pointer-events:none;padding:.4rem .6rem;border-left:1px solid #77c9d2;background:#061b26c9;font-size:.62rem;letter-spacing:.06em;color:#a2e0e5;max-width:180px}
+.coast-ready #radio{min-height:135svh;justify-content:flex-start;padding-top:17svh}
+.coast-ready #radio .copy{width:55%;max-width:640px}
+.coast-ready #radio .copy h2{font-size:clamp(2.3rem,3.8vw,4.3rem)}
+.coast-ready #radio .radio-experience{margin-top:36svh;background:linear-gradient(transparent,#051721d9 25%);padding:1rem 0 0}
+.coast-ready #radio .radio-route{display:none}
+.coast-ready #radio .link-controls{justify-content:flex-start;margin:0 0 1rem}
+.coast-ready #radio .buffer-strip{background:#071b2699}
+.coast-ready #radio .radio-experience>.micro{text-align:left}
+.coast-ready #shore{align-items:flex-start;justify-content:space-between;min-height:130svh}
+.coast-ready #shore .copy{width:35%}
+.coast-ready #shore .shore-system{width:25%;display:flex;flex-direction:column;align-items:stretch;background:#061b26d9;border-left:1px solid var(--line);padding:1rem;margin-top:27svh;gap:1rem}
+.coast-ready #shore .shore-chain{align-items:stretch}
+.coast-ready #shore .shore-chain>span{text-align:left}
+.coast-ready #shore .shore-chain i{padding-left:.5rem}
+.coast-ready #shore .internet-branch{text-align:left;line-height:1.6}
+.coastal-reference{margin:0;font-size:.62rem!important}
+.webgl-unavailable.coast-ready #radio .radio-route{display:grid}
+@media(max-width:650px){.coast-ready #radio .copy{width:100%}.coast-ready #radio .copy h2{font-size:2.4rem}.coast-ready #radio .radio-experience{margin-top:44svh}.coast-ready #radio .link-controls{align-items:flex-start}.coast-ready #shore .copy{width:100%}.coast-ready #shore .shore-system{width:100%;margin-top:38svh;display:grid;grid-template-columns:1fr 1fr;padding:.8rem}.coast-ready #shore .shore-chain{font-size:.72rem}.coast-ready #shore .internet-branch{grid-column:1/-1}.coastal-reference{font-size:.56rem!important}#coast-receiver-label{font-size:.53rem}}
+
 /* Inspection is an overlay on the existing cinematic scene, not a new page. */
 #inspection-panel{position:fixed;z-index:18;right:6vw;top:16vh;width:min(360px,35vw);max-height:70vh;overflow:auto;padding:1.35rem 1.5rem;background:#071d27ed;border-left:1px solid #72bcbf90;box-shadow:0 18px 50px #0004;border-radius:2px;scrollbar-width:thin}
 #inspection-back{background:transparent;border:0;border-bottom:1px solid var(--line);padding-left:0;margin-bottom:1.2rem;color:var(--sea);font-size:.84rem}

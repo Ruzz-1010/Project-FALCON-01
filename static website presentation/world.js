@@ -3,6 +3,7 @@ import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
 import modelUrl from '../dashboard-next/public/models/PROJECT-FALCON-V2.glb?url';
 import {components} from './story.js';
 import {easeInspection,inspectionFrame} from './inspection.js';
+import {createCoast,coastCamera,RECEIVER} from './coast.js';
 
 // Camera choreography only. The supplied CAD mesh and its materials are untouched.
 const poses = [
@@ -10,8 +11,8 @@ const poses = [
   {eye:[2.6,1.45,3.8], aim:[-.65,.55,0]},
   {eye:[2.1,.65,3.3], aim:[-.65,.36,0]},
   {eye:[1.4,1,2.6], aim:[1.8,.7,0]},
-  {eye:[6,2.3,8], aim:[1,.3,0]},
-  {eye:[11,2,7], aim:[8,.6,-1]},
+  coastCamera[0],
+  coastCamera[2],
   {eye:[12,1.1,7], aim:[10,.2,-2]},
   {eye:[10,2.1,7], aim:[9,.3,-2]},
   {eye:[9,2.3,8], aim:[7,.4,-2]},
@@ -26,6 +27,7 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.15;
+  renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
   host.append(renderer.domElement);
   const scene = new THREE.Scene();
   scene.fog = new THREE.FogExp2('#102b38', .022);
@@ -61,6 +63,9 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
       gl_FragColor=vec4(c,opacity);}`
   })); ocean.rotation.x=-Math.PI/2;scene.add(ocean);
   const buoy = new THREE.Group();scene.add(buoy);
+  const coast=createCoast();coast.group.visible=false;scene.add(coast.group);
+  document.body.classList.add('coast-ready');
+  const receiverLabel=document.querySelector('#coast-receiver-label');
   const markers = new Map(), hotspotLayer = document.querySelector('#hotspots');
   let model, disposed=false, contextLost=false, yaw=0, drag=null, needsDraw=true;
   let inspection=null, overview=null, hovered=null, tintKey='';
@@ -124,17 +129,23 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
   const resize=()=>{renderer.setSize(innerWidth,innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();if(inspection?.id&&!inspection.returning)beginInspection(inspection.id);needsDraw=true;};resize();window.addEventListener('resize',resize);
   const lost=e=>{e.preventDefault();contextLost=true;onStatus('3D paused by device · reload to restore');document.body.classList.add('webgl-unavailable');};renderer.domElement.addEventListener('webglcontextlost',lost);
   const desiredEye=new THREE.Vector3(),desiredAim=new THREE.Vector3(),nextEye=new THREE.Vector3(),nextAim=new THREE.Vector3();
-  let lastProgress=-1,lastPick='',lastYaw=-1;
+  let lastProgress=-1,lastPick='',lastYaw=-1,lastLink=true;
   return {
     inspect:beginInspection,
     returnToBuoy,
     hover(id){hovered=id;needsDraw=true;},
-    update({progress,chapter,time,dt,moving,pointer,selected}) {
+    update({progress,chapter,time,dt,moving,pointer,selected,linkOnline=true}) {
       if(disposed||contextLost)return;
       currentChapter=chapter;
       const a=Math.max(0,Math.min(9,Math.floor(progress))),b=Math.min(9,a+1),t=THREE.MathUtils.smoothstep(progress-a,0,1);
       desiredEye.fromArray(poses[a].eye).lerp(nextEye.fromArray(poses[b].eye),t);
       desiredAim.fromArray(poses[a].aim).lerp(nextAim.fromArray(poses[b].aim),t);
+      if(progress>=4&&progress<6){
+        const p=Math.min(3,(progress-4)*2),i=Math.floor(p),j=Math.min(3,i+1),u=THREE.MathUtils.smoothstep(p-i,0,1);
+        desiredEye.fromArray(coastCamera[i].eye).lerp(nextEye.fromArray(coastCamera[j].eye),u);
+        desiredAim.fromArray(coastCamera[i].aim).lerp(nextAim.fromArray(coastCamera[j].aim),u);
+        if(progress>5.75){const blend=THREE.MathUtils.smoothstep(progress,5.75,6);desiredEye.lerp(nextEye.fromArray(poses[6].eye),blend);desiredAim.lerp(nextAim.fromArray(poses[6].aim),blend);}
+      }
       if(innerWidth<650){desiredEye.multiplyScalar(1.25);desiredAim.x+=.45;desiredAim.y+=.35;}
       if(moving){desiredEye.x+=pointer.x*.1;desiredEye.y+=pointer.y*.06;}
       const blend=moving?1-Math.exp(-dt*5):1;
@@ -153,6 +164,15 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
       if(moving){if(!inspection){buoy.position.y=Math.sin(time*.65)*.014;buoy.rotation.z=Math.sin(time*.44)*.006;}ocean.material.uniforms.time.value=time;}
       ocean.material.uniforms.opacity.value=inspection?.id==='pressure'?.12:chapter===2?.62:1;
       buoy.updateMatrixWorld(true);camera.updateMatrixWorld(true);
+      const coastVisible=progress>=3.65&&progress<6.15;
+      coast.update(time,linkOnline,camera,coastVisible);
+      if(receiverLabel){
+        projection.set(...RECEIVER).project(camera);
+        const x=(projection.x*.5+.5)*innerWidth,y=(-projection.y*.5+.5)*innerHeight;
+        receiverLabel.hidden=!coastVisible||projection.z>1||x<0||x>innerWidth-110||y<110||y>innerHeight-100;
+        receiverLabel.style.left=`${x}px`;receiverLabel.style.top=`${y-25}px`;
+        receiverLabel.textContent=linkOnline?'LoRa RX · BAY STATION':'LoRa RX · LINK INTERRUPTED';
+      }
       const visible=chapter===1||chapter===2;
       hotspotLayer.hidden=!visible;
       const occupied=[];
@@ -185,10 +205,10 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
         const endX=innerWidth<650?rect.left+rect.width*.5:rect.left,endY=innerWidth<650?rect.top:rect.top+110;
         connection.setAttribute('d',`M${x},${y} L${(x+endX)*.5},${y} L${endX},${endY}`);
       }else connection.setAttribute('d','');
-      needsDraw=moving||lastProgress!==progress||lastPick!==selected||lastYaw!==yaw||camera.position.distanceTo(desiredEye)>.001||needsDraw;
+      needsDraw=moving||lastLink!==linkOnline||lastProgress!==progress||lastPick!==selected||lastYaw!==yaw||camera.position.distanceTo(desiredEye)>.001||needsDraw;
       if(needsDraw)renderer.render(scene,camera);
-      needsDraw=false;lastProgress=progress;lastPick=selected;lastYaw=yaw;
+      needsDraw=false;lastProgress=progress;lastPick=selected;lastYaw=yaw;lastLink=linkOnline;
     },
-    dispose(){disposed=true;restoreMaterials();window.removeEventListener('resize',resize);window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up);window.removeEventListener('pointercancel',cancel);document.querySelector('#reset-camera').removeEventListener('click',reset);if(model)disposeModel(model);for(const mesh of [ocean,sky,halo]){mesh.geometry.dispose();mesh.material.dispose();}renderer.dispose();renderer.domElement.remove();hotspotLayer.replaceChildren();}
+    dispose(){disposed=true;restoreMaterials();coast.dispose();window.removeEventListener('resize',resize);window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up);window.removeEventListener('pointercancel',cancel);document.querySelector('#reset-camera').removeEventListener('click',reset);if(model)disposeModel(model);for(const mesh of [ocean,sky,halo]){mesh.geometry.dispose();mesh.material.dispose();}renderer.dispose();renderer.domElement.remove();hotspotLayer.replaceChildren();}
   };
 }
