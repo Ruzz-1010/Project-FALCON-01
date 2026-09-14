@@ -1,6 +1,7 @@
 import logoUrl from '../dashboard-next/public/falcon-logo.jpg?url';
 import {inspections} from './inspection.js';
 import {smooth} from './home.js';
+import {instrumentInfo} from './instrument.js';
 import {chapters,components,createLink,setLink,tickLink,waveSamples,forecastSamples,linePath} from './story.js';
 
 const $=selector=>document.querySelector(selector);
@@ -21,7 +22,7 @@ function inspectionReady(){
 }
 function endInspection(restoreFocus=true){
   if(!inspecting)return;inspecting=false;
-  document.body.classList.remove('inspecting','inspection-ready');$('#inspection-panel').hidden=true;
+  document.body.classList.remove('inspecting','inspection-ready','instrument-inspection');$('#inspection-panel').hidden=true;
   world?.returnToBuoy?.();
   if(restoreFocus&&inspectionTrigger?.isConnected)inspectionTrigger.focus({preventScroll:true});
 }
@@ -33,7 +34,10 @@ function pick(id,inspect=true){
   if(inspect){
     if(!world?.inspect?.(id)){ $('#model-state').textContent='Component guide available; wait for the original 3D model to load before inspection.';return; }
     inspectionTrigger=document.activeElement;inspecting=true;
-    const info=inspections[id];$('#inspection-title').textContent=info.name;$('#inspection-function').textContent=info.function;
+    const info=active===1?instrumentInfo[id]:inspections[id];
+    document.body.classList.toggle('instrument-inspection',active===1);
+    $('#inspection-back').textContent=active===1?'← Return to buoy':'← Back to buoy';
+    $('#inspection-title').textContent=info.name;$('#inspection-function').textContent=info.function;
     $('#inspection-data').replaceChildren(...info.data.map(text=>{const li=document.createElement('li');li.textContent=text;return li;}));
     $('#inspection-flow').replaceChildren(...info.flow.map(text=>{const span=document.createElement('span');span.textContent=text;return span;}));
     $('#inspection-status').textContent=info.status;$('#inspection-note').textContent=info.note;
@@ -132,7 +136,7 @@ function frame(now){
     else{homeJourney.elapsed+=dt;const t=Math.min(1,homeJourney.elapsed/5.2);window.scrollTo({top:homeJourney.from+(homeJourney.to-homeJourney.from)*smooth(t),behavior:'instant'});if(t===1){homeJourney=null;window.history.replaceState(null,'','#buoy');}}
   }
   const moving=!paused;if(moving)elapsed+=dt;
-  const state=scrollState();if(inspecting&&state.chapter!==1&&state.chapter!==2)endInspection(false);if(state.chapter!==active)setChapter(state.chapter);
+  const state=scrollState();if(inspecting&&((state.chapter!==1&&state.chapter!==2)||(document.body.classList.contains('instrument-inspection')&&state.chapter!==1)))endInspection(false);if(state.chapter!==active)setChapter(state.chapter);
   const homeProgress=Math.max(0,Math.min(1,scrollY/Math.max(1,offsets[1]-innerHeight*.18)));
   home.style.setProperty('--home-progress',String(homeProgress));home.classList.toggle('home-departed',homeProgress>.52);
   $('#home-shot-label').textContent=homeProgress<.25?'01 / THE OCEAN':homeProgress<.55?'02 / DISCOVERY':homeProgress<.82?'03 / APPROACH':'04 / LISTEN';

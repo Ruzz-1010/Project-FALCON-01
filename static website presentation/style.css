@@ -65,6 +65,10 @@ main{position:relative;z-index:2;pointer-events:none}.scene{min-height:115svh;pa
 #inspection-flow span:not(:last-child)::after{content:' →';display:inline-block;margin-left:.35rem;animation:shore-pulse 2s ease infinite}
 #inspection-status{display:block;font-size:.6rem;letter-spacing:.08em;color:var(--gold);margin-top:1.2rem}
 #inspection-panel #inspection-note{font-size:.7rem;margin-top:.5rem;margin-bottom:0}
+.instrument-inspection #inspection-panel h2{font-size:1.7rem}
+.instrument-inspection #inspection-panel #inspection-function{font-size:.86rem;line-height:1.55}
+.instrument-inspection #inspection-data{gap:.4rem .65rem}
+.instrument-inspection #inspection-status{margin-top:.85rem}
 #inspection-content{animation:inspection-enter .4s ease both}
 @keyframes inspection-enter{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:translateX(0)}}
 #inspection-wire{position:fixed;inset:0;width:100%;height:100%;z-index:6;pointer-events:none;opacity:0;transition:opacity .4s}

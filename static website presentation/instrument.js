@@ -1,0 +1,17 @@
+// Page 01 targets come from the supplied CAD hierarchy, never from hand-placed offsets.
+export const instrumentPrefixes={
+  pressure:'WATER_PRESSURE_SENSOR_ASSEMBLY',wind:'WIND_SPEED_DIRECTION_SENSOR',
+  gps:'GNSS_GPS_ANTENNA',solar:'SOLAR_30W_01_EAST_+X',esp32:'REV5_RECTANGULAR_MARINE_ELECTRONICS_POD'
+};
+export function instrumentTargets(root){
+  const result=new Map();
+  for(const [id,prefix] of Object.entries(instrumentPrefixes))root.traverse(object=>{if(!result.has(id)&&object.name.toUpperCase().startsWith(prefix))result.set(id,object);});
+  return result;
+}
+export const instrumentInfo={
+  pressure:{name:'Underwater pressure',function:'Measures pressure variation for pressure-derived estimated wave height.',data:['Pressure','Time / quality','Calibration state'],flow:['PRESSURE','SHORE PROCESSING','ESTIMATED WAVE HEIGHT'],status:'CALIBRATION REQUIRED',note:'HPT604 deployment candidate. Pressure is the input—not a direct wave-height reading.'},
+  wind:{name:'Wind observation',function:'Measures wind speed and direction around the buoy.',data:['Wind speed','Wind direction','Time / quality'],flow:['WIND','ESP32'],status:'ENVIRONMENTAL OBSERVATION',note:'Observes local conditions; validation remains pending.'},
+  gps:{name:'GPS / position',function:'Provides position and timing for location-aware monitoring.',data:['Position','Time','Fix quality'],flow:['GPS','ESP32'],status:'POSITION / TIME',note:'GPS scatter alone is not a security incident.'},
+  solar:{name:'Solar / power',function:'Supplies solar energy and supports power-system monitoring.',data:['Voltage / current','Battery / solar status','System health'],flow:['SOLAR','BATTERY','ELECTRONICS'],status:'ENERGY SUPPLY / MONITORING',note:'Inspecting one actual panel of the two-panel array. No measured output is claimed.'},
+  esp32:{name:'ESP32 controller',function:'Acquires sensor records, checks timestamps and quality, and prepares LoRa telemetry.',data:['Sensor records','Telemetry packets','Outage buffer'],flow:['SENSORS','ESP32','LoRa'],status:'SENSING / CONTROL / TELEMETRY',note:'Controller is inside this actual enclosure. The exterior stays intact; no invented exposed board.'}
+};

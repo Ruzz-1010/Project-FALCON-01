@@ -5,6 +5,7 @@ import {components} from './story.js';
 import {easeInspection,inspectionFrame} from './inspection.js';
 import {createCoast,coastCamera,RECEIVER} from './coast.js';
 import {homeShots,homeCamera,homeWeight,oceanSample,oceanFieldGLSL} from './home.js';
+import {instrumentTargets} from './instrument.js';
 
 // Camera choreography only. The supplied CAD mesh and its materials are untouched.
 const poses = [
@@ -79,6 +80,8 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
   document.body.classList.add('coast-ready');
   const receiverLabel=document.querySelector('#coast-receiver-label');
   const markers = new Map(), hotspotLayer = document.querySelector('#hotspots');
+  let pageOneTargets=new Map();
+  const targetFor=id=>currentChapter===1?pageOneTargets.get(id):markers.get(id)?.target;
   let model, disposed=false, contextLost=false, yaw=0, drag=null, needsDraw=true;
   let inspection=null, overview=null, hovered=null, tintKey='';
   const materialCopies=[];
@@ -95,16 +98,16 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
   function beginInspection(id){
     if(contextLost||!markers.has(id))return false;
     if(!overview)overview={eye:camera.position.clone(),aim:aim.clone()};
-    const target=markers.get(id).target;
+    const target=targetFor(id);if(!target)return false;
     const bounds=new THREE.Box3().setFromObject(target),center=bounds.getCenter(new THREE.Vector3()),size=bounds.getSize(new THREE.Vector3());
     const frame=inspectionFrame(center.toArray(),Math.max(size.x,size.y,size.z),camera.aspect,innerWidth<650);
     const eye=new THREE.Vector3().fromArray(frame.eye),targetAim=new THREE.Vector3().fromArray(frame.aim);
-    inspection={id,from:camera.position.clone(),fromAim:aim.clone(),eye,aim:targetAim,elapsed:0,returning:false,ready:false};
+    inspection={id,page:currentChapter,from:camera.position.clone(),fromAim:aim.clone(),eye,aim:targetAim,elapsed:0,returning:false,ready:false};
     drag=null;needsDraw=true;return true;
   }
   function returnToBuoy(){
     if(!overview)return;
-    inspection={id:inspection?.id,from:camera.position.clone(),fromAim:aim.clone(),eye:overview.eye,aim:overview.aim,elapsed:0,returning:true,ready:false};
+    inspection={id:inspection?.id,page:inspection?.page,from:camera.position.clone(),fromAim:aim.clone(),eye:overview.eye,aim:overview.aim,elapsed:0,returning:true,ready:false};
     overview=null;hovered=null;needsDraw=true;
   }
   const projection=new THREE.Vector3(), box=new THREE.Box3();
@@ -115,6 +118,7 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
     model=gltf.scene;model.rotation.x=-Math.PI/2;needsDraw=true;
     // View origin aligned to the existing float. Waterline is illustrative, not a draft result.
     model.position.y=-2.05;buoy.add(model);buoy.updateMatrixWorld(true);
+    pageOneTargets=instrumentTargets(model);
     for(const [id,c] of Object.entries(components)) {
       const prefix=id==='esp32'?'REV5_RECTANGULAR_MARINE_ELECTRONICS_POD':c.prefix;
       let target;model.traverse(o=>{if(!target&&o.name.toUpperCase().startsWith(prefix))target=o;});
@@ -133,7 +137,7 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
     const distance=Math.hypot(e.clientX-drag.x,e.clientY-drag.y)+drag.distance;drag=null;
     if(!model||distance>8)return;
     raycaster.setFromCamera(new THREE.Vector2(e.clientX/innerWidth*2-1,1-e.clientY/innerHeight*2),camera);
-    for(const hit of raycaster.intersectObject(model,true)){let object=hit.object;while(object){const id=Object.keys(components).find(key=>object.name.toUpperCase().startsWith(components[key].prefix));if(id){onPick(id);return;}object=object.parent;}}
+    for(const hit of raycaster.intersectObject(model,true)){let object=hit.object;while(object){const id=Object.keys(components).find(key=>currentChapter===1?object===targetFor(key):object.name.toUpperCase().startsWith(components[key].prefix));if(id){onPick(id);return;}object=object.parent;}}
   };
   renderer.domElement.addEventListener('pointerdown',down);window.addEventListener('pointermove',move);window.addEventListener('pointerup',up);
   const cancel=()=>{drag=null;};window.addEventListener('pointercancel',cancel);
@@ -164,7 +168,7 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
       if(moving){desiredEye.x+=pointer.x*.1;desiredEye.y+=pointer.y*.06;}
       const blend=moving?1-Math.exp(-dt*5):1;
       if(inspection){
-        if(chapter!==1&&chapter!==2){inspection=null;overview=null;}
+        if((chapter!==1&&chapter!==2)||(inspection.page===1&&chapter!==1)){inspection=null;overview=null;}
         else {
           inspection.elapsed+=dt;
           const t=moving?Math.min(1,inspection.elapsed/1.65):1,eased=easeInspection(t);
@@ -199,7 +203,8 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
       const visible=chapter===1||chapter===2;
       hotspotLayer.hidden=!visible;
       const occupied=[];
-      for(const [id,{target,button}] of markers){
+      for(const [id,{button}] of markers){
+        const target=targetFor(id);
         box.setFromObject(target).getCenter(projection);projection.project(camera);
         const x=(projection.x*.5+.5)*innerWidth,y=(-projection.y*.5+.5)*innerHeight;
         const overlaps=occupied.some(p=>Math.abs(p.y-y)<42&&Math.abs(p.x-x)<175);
@@ -209,9 +214,9 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
         button.hidden=!show;button.style.left=`${x}px`;button.style.top=`${y}px`;button.setAttribute('aria-pressed',String(id===selected));if(show)occupied.push({x,y});
       }
       const focused=inspection?.id;
-      const chosen=markers.get(focused||hovered||selected);halo.visible=visible&&!!chosen;
-      const nextTint=visible?(focused||hovered||'')+(focused?':focus':''):'';
-      if(nextTint!==tintKey){tintKey=nextTint;tint(markers.get(focused||hovered)?.target,!!focused);}
+      const chosenTarget=targetFor(focused||hovered||selected),chosen=chosenTarget?{target:chosenTarget}:null;halo.visible=visible&&!!chosen;
+      const nextTint=visible?(focused||hovered||'')+(focused?':focus':'')+chapter:'';
+      if(nextTint!==tintKey){tintKey=nextTint;tint(targetFor(focused||hovered),!!focused);}
       halo.material.opacity=1;
       if(focused){
         const ramp=moving?easeInspection(inspection.elapsed/1.65):1,strength=inspection.returning?1-ramp:ramp;
