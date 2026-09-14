@@ -11,7 +11,7 @@ import {instrumentTargets} from './instrument.js';
 const poses = [
   homeShots[0],
   {eye:[2.6,1.45,3.8], aim:[-.65,.55,0]},
-  {eye:[2.1,.65,3.3], aim:[-.65,.36,0]},
+  {eye:[2.9,1.25,4.5], aim:[.7,.5,0]},
   {eye:[1.4,1,2.6], aim:[1.8,.7,0]},
   coastCamera[0],
   coastCamera[2],
@@ -81,8 +81,8 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
   const receiverLabel=document.querySelector('#coast-receiver-label');
   const markers = new Map(), hotspotLayer = document.querySelector('#hotspots');
   let pageOneTargets=new Map();
-  const targetFor=id=>currentChapter===1?pageOneTargets.get(id):markers.get(id)?.target;
-  let model, disposed=false, contextLost=false, yaw=0, drag=null, needsDraw=true;
+  const targetFor=id=>currentChapter===1||currentChapter===2?pageOneTargets.get(id):markers.get(id)?.target;
+  let model, disposed=false, contextLost=false, yaw=0, drag=null, orbitReset=null, needsDraw=true;
   let inspection=null, overview=null, hovered=null, tintKey='';
   const materialCopies=[];
   const connection=document.querySelector('#inspection-wire path');
@@ -123,25 +123,25 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
       const prefix=id==='esp32'?'REV5_RECTANGULAR_MARINE_ELECTRONICS_POD':c.prefix;
       let target;model.traverse(o=>{if(!target&&o.name.toUpperCase().startsWith(prefix))target=o;});
       if(!target)continue;
-      const button=document.createElement('button');button.className='hotspot';button.textContent=c.label;button.dataset.component=id;button.setAttribute('aria-pressed','false');
+      const button=document.createElement('button');button.className='hotspot';button.textContent=c.label;button.dataset.component=id;button.dataset.index=String(Object.keys(components).indexOf(id)+1).padStart(2,'0');button.setAttribute('aria-label',c.label);button.setAttribute('aria-pressed','false');
       button.addEventListener('click',()=>onPick(id));hotspotLayer.append(button);markers.set(id,{target,button});
     }
     onStatus('Original V2 CAD · motion / waterline illustrative');
   },undefined,()=>{onStatus('Original CAD failed to load · no substitute model used');document.body.classList.add('webgl-unavailable');});
   const raycaster=new THREE.Raycaster();
   let currentChapter=0;
-  const down=e=>{if(!inspection&&(currentChapter===1||currentChapter===2))drag={x:e.clientX,y:e.clientY,last:e.clientX,distance:0};};
+  const down=e=>{if(!inspection&&(currentChapter===1||currentChapter===2)){orbitReset=null;drag={x:e.clientX,y:e.clientY,last:e.clientX,distance:0};}};
   const move=e=>{if(!drag||e.pointerType==='touch')return;const delta=e.clientX-drag.last;drag.distance+=Math.abs(delta);yaw+=delta*.005;drag.last=e.clientX;};
   const up=e=>{
     if(!drag)return;
     const distance=Math.hypot(e.clientX-drag.x,e.clientY-drag.y)+drag.distance;drag=null;
     if(!model||distance>8)return;
     raycaster.setFromCamera(new THREE.Vector2(e.clientX/innerWidth*2-1,1-e.clientY/innerHeight*2),camera);
-    for(const hit of raycaster.intersectObject(model,true)){let object=hit.object;while(object){const id=Object.keys(components).find(key=>currentChapter===1?object===targetFor(key):object.name.toUpperCase().startsWith(components[key].prefix));if(id){onPick(id);return;}object=object.parent;}}
+    for(const hit of raycaster.intersectObject(model,true)){let object=hit.object;while(object){const id=Object.keys(components).find(key=>object===targetFor(key));if(id){onPick(id);return;}object=object.parent;}}
   };
   renderer.domElement.addEventListener('pointerdown',down);window.addEventListener('pointermove',move);window.addEventListener('pointerup',up);
   const cancel=()=>{drag=null;};window.addEventListener('pointercancel',cancel);
-  const reset=()=>{yaw=0;};document.querySelector('#reset-camera').addEventListener('click',reset);
+  const reset=()=>{orbitReset={from:yaw,elapsed:0};};document.querySelector('#reset-camera').addEventListener('click',reset);
   const resize=()=>{renderer.setSize(innerWidth,innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();if(inspection?.id&&!inspection.returning)beginInspection(inspection.id);needsDraw=true;};resize();window.addEventListener('resize',resize);
   const lost=e=>{e.preventDefault();contextLost=true;onStatus('3D paused by device · reload to restore');document.body.classList.add('webgl-unavailable');};renderer.domElement.addEventListener('webglcontextlost',lost);
   const desiredEye=new THREE.Vector3(),desiredAim=new THREE.Vector3(),nextEye=new THREE.Vector3(),nextAim=new THREE.Vector3();
@@ -153,6 +153,7 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
     update({progress,chapter,time,dt,moving,pointer,selected,linkOnline=true,homeProgress=0}) {
       if(disposed||contextLost)return;
       currentChapter=chapter;
+      if(orbitReset){orbitReset.elapsed+=dt;const t=moving?Math.min(1,orbitReset.elapsed/1.2):1;yaw=orbitReset.from*(1-easeInspection(t));if(t===1)orbitReset=null;needsDraw=true;}
       const a=Math.max(0,Math.min(9,Math.floor(progress))),b=Math.min(9,a+1),t=THREE.MathUtils.smoothstep(progress-a,0,1);
       desiredEye.fromArray(poses[a].eye).lerp(nextEye.fromArray(poses[b].eye),t);
       desiredAim.fromArray(poses[a].aim).lerp(nextAim.fromArray(poses[b].aim),t);
@@ -165,10 +166,15 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
       }
       if(innerWidth<650){desiredEye.multiplyScalar(1.25);desiredAim.x+=.45;desiredAim.y+=.35;}
       if(innerWidth<650&&progress<1)desiredAim.y+=(1-homeProgress)*desiredEye.distanceTo(desiredAim)*.16;
+      // Reserve a middle-water stage between the mobile title and source index.
+      if(innerWidth<650&&progress>=1&&progress<3){
+        const weight=THREE.MathUtils.smoothstep(progress,1,1.25)*(1-THREE.MathUtils.smoothstep(progress,2.65,3));
+        desiredEye.lerp(nextEye.set(3.8,1.8,6),weight);desiredAim.lerp(nextAim.set(0,1.15,0),weight);
+      }
       if(moving){desiredEye.x+=pointer.x*.1;desiredEye.y+=pointer.y*.06;}
       const blend=moving?1-Math.exp(-dt*5):1;
       if(inspection){
-        if((chapter!==1&&chapter!==2)||(inspection.page===1&&chapter!==1)){inspection=null;overview=null;}
+        if(inspection.page!==chapter){inspection=null;overview=null;}
         else {
           inspection.elapsed+=dt;
           const t=moving?Math.min(1,inspection.elapsed/1.65):1,eased=easeInspection(t);
@@ -208,9 +214,10 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
         box.setFromObject(target).getCenter(projection);projection.project(camera);
         const x=(projection.x*.5+.5)*innerWidth,y=(-projection.y*.5+.5)*innerHeight;
         const overlaps=occupied.some(p=>Math.abs(p.y-y)<42&&Math.abs(p.x-x)<175);
-        const leftLimit=inspection?20:innerWidth*(innerWidth<650?.56:.42);
+        const leftLimit=inspection?20:innerWidth*(chapter===2?.05:innerWidth<650?.1:.34);
         const bottomLimit=inspection&&innerWidth<650?innerHeight*.46:innerHeight-95;
-        const show=visible&&projection.z<1&&projection.z>-1&&x>leftLimit&&x<innerWidth-165&&y>125&&y<bottomLimit&&(!overlaps||id===selected);
+        const rightLimit=chapter===2&&!inspection?innerWidth*.52:innerWidth-65;
+        const show=visible&&(!inspection||id===inspection.id)&&projection.z<1&&projection.z>-1&&x>leftLimit&&x<rightLimit&&y>125&&y<bottomLimit&&(!overlaps||id===selected);
         button.hidden=!show;button.style.left=`${x}px`;button.style.top=`${y}px`;button.setAttribute('aria-pressed',String(id===selected));if(show)occupied.push({x,y});
       }
       const focused=inspection?.id;
@@ -232,6 +239,11 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
         const rect=document.querySelector('#inspection-panel').getBoundingClientRect();
         const endX=innerWidth<650?rect.left+rect.width*.5:rect.left,endY=innerWidth<650?rect.top:rect.top+110;
         connection.setAttribute('d',`M${x},${y} L${(x+endX)*.5},${y} L${endX},${endY}`);
+      }else if(chapter===2&&chosen&&!inspection){
+        projection.copy(halo.position).project(camera);
+        const rect=document.querySelector('#acquisition-signal').getBoundingClientRect();
+        const x=(projection.x*.5+.5)*innerWidth,y=(-projection.y*.5+.5)*innerHeight;
+        connection.setAttribute('d',projection.z<1&&x>0&&x<innerWidth&&rect.top>90&&rect.top<innerHeight-80?`M${x},${y} L${rect.left-22},${y} L${rect.left},${rect.top+35}`:'');
       }else connection.setAttribute('d','');
       needsDraw=moving||lastLink!==linkOnline||lastProgress!==progress||lastPick!==selected||lastYaw!==yaw||camera.position.distanceTo(desiredEye)>.001||needsDraw;
       if(needsDraw)renderer.render(scene,camera);

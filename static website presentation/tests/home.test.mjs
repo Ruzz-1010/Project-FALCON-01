@@ -23,9 +23,9 @@ test('Home effects fade completely before the Instrument; scroll interpolation i
   assert.equal(homeWeight(0),1);assert.equal(homeWeight(1),0);assert.equal(homeWeight(2),0);
   assert.equal(smooth(0),0);assert.equal(smooth(1),1);assert.equal(smooth(-3),0);
 });
-test('Pages 01–09 and their markup remain byte-for-byte unchanged',()=>{
+test('Pages 03–09 and their markup remain byte-for-byte unchanged during opening polish',()=>{
   const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
-  const rest=html.slice(html.indexOf('    <section class="scene" id="buoy"'));
-  assert.equal(createHash('sha256').update(rest).digest('hex'),'3bc9ab04432789c2651043b6251f16d05529112cfa6937d3c6afad684af7b4dc');
+  const rest=html.slice(html.indexOf('    <section class="scene diagram-scene" id="controller"'));
+  assert.equal(createHash('sha256').update(rest).digest('hex'),'3006da1984b85554db093ad6d574ef60ec4d4e53a118e140e4bffeb58ee3addb');
   assert.match(html,/THE OCEAN NEVER STOPS SPEAKING/);assert.match(html,/id="begin-journey"/);
 });

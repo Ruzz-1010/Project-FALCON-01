@@ -23,6 +23,8 @@ test('All Page 01 buttons resolve to physical CAD targets, focus and return prec
       assert.ok(eye.distanceTo(destination)<1e-9);
       const camera=new PerspectiveCamera(42,aspect,.03,180);camera.position.copy(eye);camera.lookAt(new Vector3(...focus.aim));camera.updateMatrixWorld(true);
       const projected=center.clone().project(camera);assert.ok(Math.abs(projected.x)<1&&Math.abs(projected.y)<1&&projected.z<1,`${id} visible at focus`);
+      const screenX=(projected.x+1)/2,screenY=(1-projected.y)/2;
+      assert.ok(aspect<1?screenY<.5:screenX<.58,`${id} focus stays outside information panel region`);
       for(let frame=0;frame<=50;frame++)eye.lerpVectors(destination,original,easeInspection(frame/50));
       assert.ok(eye.distanceTo(original)<1e-9,`${id} exact reset`);
     }
