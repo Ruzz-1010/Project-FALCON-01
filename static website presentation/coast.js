@@ -120,11 +120,13 @@ export function createCoast(){
   for(let i=0;i<8;i++)mesh(rockGeometry,foliage,55+(i%2)*8,1,-48+i*13,15,8+(i%3)*3,12);
 
   // Merge static scene meshes by material to avoid hundreds of individual draw calls.
-  group.updateMatrixWorld(true);const batches=new Map();
-  group.traverse(o=>{if(!o.isMesh)return;let geo=o.geometry.clone().applyMatrix4(o.matrixWorld);if(geo.index){const unindexed=geo.toNonIndexed();geo.dispose();geo=unindexed;}geo.deleteAttribute('uv');if(!batches.has(o.material))batches.set(o.material,[]);batches.get(o.material).push(geo);});
+  group.updateMatrixWorld(true);const batches=new Map(),stationBatches=new Map();
+  group.traverse(o=>{if(!o.isMesh)return;let parent=o,isStation=false;while(parent){if(parent===station)isStation=true;parent=parent.parent;}const target=isStation?stationBatches:batches;let geo=o.geometry.clone().applyMatrix4(o.matrixWorld);if(geo.index){const unindexed=geo.toNonIndexed();geo.dispose();geo=unindexed;}geo.deleteAttribute('uv');if(!target.has(o.material))target.set(o.material,[]);target.get(o.material).push(geo);});
   const visual=new THREE.Group();visual.name='Batched coastal community';
   for(const [material,list] of batches){const geometry=mergeGeometries(list,false);if(geometry){const batch=new THREE.Mesh(geometry,material);batch.castShadow=material!==terrainMaterial;batch.receiveShadow=true;visual.add(batch);geometries.push(geometry);}list.forEach(g=>g.dispose());}
-  group.clear();group.add(visual);
+  const stationVisual=new THREE.Group();stationVisual.name='Bay Station exterior';
+  for(const [material,list] of stationBatches){const geometry=mergeGeometries(list,false);if(geometry){const batch=new THREE.Mesh(geometry,material);batch.castShadow=true;batch.receiveShadow=true;stationVisual.add(batch);geometries.push(geometry);}list.forEach(g=>g.dispose());}
+  group.clear();group.add(visual,stationVisual);
   const eveningLight=new THREE.DirectionalLight('#ffe4b8',.85);eveningLight.position.set(9,24,12);eveningLight.target.position.set(...STATION);eveningLight.castShadow=true;
   eveningLight.shadow.mapSize.set(1024,1024);Object.assign(eveningLight.shadow.camera,{left:-28,right:28,top:28,bottom:-28,near:.5,far:75});eveningLight.shadow.bias=-.0005;
   group.add(eveningLight,eveningLight.target);
@@ -151,8 +153,8 @@ export function createCoast(){
     const cue=new THREE.Mesh(ringGeometry,ringMaterial.clone());cue.position.copy(endpoint);materials.push(cue.material);crossingPackets.add(cue);endpointRings.push(cue);
   }
   return {
-    group,route,
-    update(time,online,camera,visible,crossing=false){
+    group,route,stationVisual,
+    update(time,online,camera,visible,crossing=false,shore=false){
       group.visible=visible;linkGroup.visible=visible&&online;
       crossingPackets.visible=crossing;packets.visible=!crossing;routeMaterial.opacity=crossing?.18:.43;
       rings.forEach(r=>r.visible=!crossing);
@@ -162,7 +164,7 @@ export function createCoast(){
         frames.instanceMatrix.needsUpdate=true;
         endpointRings.forEach((ring,i)=>{const phase=(time*.5+(i%2)*.5)%1;ring.scale.setScalar(.7+phase*2.3);ring.material.opacity=(1-phase)*.32;ring.quaternion.copy(camera.quaternion);});
       }
-      for(let i=0;i<9;i++){const phase=(time*.12+i/9)%1;dummy.position.copy(route.getPoint(phase));dummy.rotation.set(0,time+i,Math.PI/4);dummy.updateMatrix();packets.setMatrixAt(i,dummy.matrix);}
+      for(let i=0;i<9;i++){const phase=(time*(shore?.045:.12)+i/9)%1;dummy.position.copy(route.getPoint(phase));dummy.rotation.set(0,time+i,Math.PI/4);dummy.updateMatrix();packets.setMatrixAt(i,dummy.matrix);}
       packets.instanceMatrix.needsUpdate=true;
       for(let i=0;i<rings.length;i++){const phase=(time*.7+i/3)%1;rings[i].scale.setScalar(1+phase*2);rings[i].material.opacity=(1-phase)*.55;rings[i].quaternion.copy(camera.quaternion);}
     },

@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="./style.css">
   <link rel="stylesheet" href="./opening-polish.css">
   <link rel="stylesheet" href="./controller-polish.css">
+  <link rel="stylesheet" href="./bay-station.css">
 </head>
 <body>
   <a class="skip" href="#ocean">Skip to story</a>
@@ -50,7 +51,8 @@
     </section>
     <section class="scene" id="shore" data-chapter="5">
       <div class="copy"><p class="kicker">05 / THE BAY STATION</p><h2>The thinking<br>happens <em>here.</em></h2><p>At a participating shore facility.<br>Receive. Retain. Process.</p><p class="micro">Shore mini PC — model TBD.<br>Internet backhaul is separate from LoRa.</p></div>
-      <div class="shore-system engineering"><p class="coastal-reference micro">FICTIONAL COASTAL COMMUNITY<br>Single-pole receiver · shore-powered facility</p><div class="shore-chain"><span>LoRa receiver</span><i>↓</i><span>Authenticate / validate</span><i>↓</i><span class="database">SQLite <small>raw + processed records</small></span><i>↓</i><span>Processing service</span></div><div class="internet-branch">SHORE ONLY → Internet / authorized remote access</div></div>
+      <div class="shore-system engineering"><button id="open-bay">Inspect Bay Station ↗</button><p class="micro">Select the building to look inside.</p><div id="bay-menu-home"><nav id="bay-menu" aria-label="Bay Station functional stages"></nav></div><p class="coastal-reference micro">Illustrative internal layout · shared shore computer<br>Internet backhaul belongs on shore.</p></div>
+      <aside id="bay-panel" hidden aria-labelledby="bay-title"><button id="close-bay">← Return to Bay Station</button><div id="bay-explanation"><p class="kicker">SHORE-SIDE FUNCTION</p><h3 id="bay-title" tabindex="-1"></h3><p id="bay-detail"></p><p id="bay-note" class="micro"></p></div><div id="bay-panel-menu"></div></aside>
     </section>
     <section class="scene wide-scene" id="waves" data-chapter="6">
       <div class="copy"><p class="kicker">06 / THE TRANSFORMATION</p><h2>Pressure is the signal.<br><em>Wave height is the estimate.</em></h2></div>

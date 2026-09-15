@@ -8,6 +8,7 @@ import {homeShots,homeCamera,homeWeight,oceanFieldGLSL} from './home.js';
 import {instrumentTargets} from './instrument.js';
 import {placeCallout} from './composition.js';
 import {buoyMotion,cameraBlend} from './motion.js';
+import {createBayStation} from './bay-station.js';
 
 // Camera choreography only. The supplied CAD mesh and its materials are untouched.
 const poses = [
@@ -23,7 +24,7 @@ const poses = [
   {eye:[5,3,9], aim:[0,.15,0]}
 ];
 
-export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=>{}}) {
+export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=>{},onBayPick=()=>{},onBayReady=()=>{}}) {
   let renderer;
   try { renderer = new THREE.WebGLRenderer({antialias: true, alpha: false, powerPreference:'low-power'}); }
   catch { document.body.classList.add('webgl-unavailable'); onStatus('3D unavailable · diagrams and story remain accessible'); return {update(){},dispose(){}}; }
@@ -79,6 +80,13 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
   for(let i=0;i<homePositions.count;i++){for(const axis of ['X','Y']){const v=homePositions[`get${axis}`](i)/65;homePositions[`set${axis}`](i,Math.sign(v)*Math.pow(Math.abs(v),1.45)*65);}}
   const buoy = new THREE.Group();scene.add(buoy);
   const coast=createCoast();coast.group.visible=false;scene.add(coast.group);
+  const bay=createBayStation(coast);let bayMove=null,bayOverview=null;
+  function inspectBay(id){
+    if(currentChapter!==5||contextLost)return false;const pose=bay.focus(id,camera.aspect);if(!pose)return false;
+    if(!bayOverview){bayOverview={eye:camera.position.clone(),aim:aim.clone()};bay.reveal(false);}bay.select(id);
+    bayMove={id,from:camera.position.clone(),fromAim:aim.clone(),eye:new THREE.Vector3(...pose.eye),aim:new THREE.Vector3(...pose.aim),elapsed:0,ready:false};return true;
+  }
+  function returnToBay(){if(!bayOverview)return;bay.select(null);bayMove={from:camera.position.clone(),fromAim:aim.clone(),...bayOverview,elapsed:0,ready:false,returning:true};bayOverview=null;}
   document.body.classList.add('coast-ready');
   const receiverLabel=document.querySelector('#coast-receiver-label');
   const markers = new Map(), hotspotLayer = document.querySelector('#hotspots');
@@ -141,29 +149,33 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
   },undefined,()=>{onStatus('Original CAD failed to load · no substitute model used');document.body.classList.add('webgl-unavailable');});
   const raycaster=new THREE.Raycaster();
   let currentChapter=0;
-  const down=e=>{if(!inspection&&(currentChapter===1||currentChapter===2)){orbitReset=null;drag={x:e.clientX,y:e.clientY,last:e.clientX,distance:0};}};
-  const move=e=>{if(!drag||e.pointerType==='touch')return;const delta=e.clientX-drag.last;drag.distance+=Math.abs(delta);yaw+=delta*.005;drag.last=e.clientX;};
+  const down=e=>{if(currentChapter===5||(!inspection&&(currentChapter===1||currentChapter===2))){orbitReset=null;drag={x:e.clientX,y:e.clientY,last:e.clientX,distance:0};}};
+  const move=e=>{if(!drag||e.pointerType==='touch')return;const delta=e.clientX-drag.last;drag.distance+=Math.abs(delta);if(currentChapter!==5)yaw+=delta*.005;drag.last=e.clientX;};
   const up=e=>{
     if(!drag)return;
     const distance=Math.hypot(e.clientX-drag.x,e.clientY-drag.y)+drag.distance;drag=null;
-    if(!model||distance>8)return;
+    if(distance>8)return;
     raycaster.setFromCamera(new THREE.Vector2(e.clientX/innerWidth*2-1,1-e.clientY/innerHeight*2),camera);
+    if(currentChapter===5){const id=bay.pick(raycaster);if(id)onBayPick(id);return;}
+    if(!model)return;
     for(const hit of raycaster.intersectObject(model,true)){let object=hit.object;while(object){const id=Object.keys(components).find(key=>object===targetFor(key));if(id){onPick(id);return;}object=object.parent;}}
   };
   renderer.domElement.addEventListener('pointerdown',down);window.addEventListener('pointermove',move);window.addEventListener('pointerup',up);
   const cancel=()=>{drag=null;};window.addEventListener('pointercancel',cancel);
   const reset=()=>{orbitReset={from:yaw,elapsed:0};};document.querySelector('#reset-camera').addEventListener('click',reset);
-  const resize=()=>{renderer.setSize(innerWidth,innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();if(inspection?.id&&!inspection.returning)beginInspection(inspection.id);needsDraw=true;};resize();window.addEventListener('resize',resize);
+  const resize=()=>{renderer.setSize(innerWidth,innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();if(inspection?.id&&!inspection.returning)beginInspection(inspection.id);if(bayMove?.id&&!bayMove.returning)inspectBay(bayMove.id);needsDraw=true;};resize();window.addEventListener('resize',resize);
   const lost=e=>{e.preventDefault();contextLost=true;onStatus('3D paused by device · reload to restore');document.body.classList.add('webgl-unavailable');};renderer.domElement.addEventListener('webglcontextlost',lost);
   const desiredEye=new THREE.Vector3(),desiredAim=new THREE.Vector3(),nextEye=new THREE.Vector3(),nextAim=new THREE.Vector3();
   let lastProgress=-1,lastPick='',lastYaw=-1,lastLink=true;
   return {
+    inspectBay,returnToBay,
     inspect:beginInspection,
     returnToBuoy,
     hover(id){hovered=id;needsDraw=true;},
     update({progress,chapter,time,dt,moving,pointer,selected,linkOnline=true,homeProgress=0}) {
       if(disposed||contextLost)return;
       currentChapter=chapter;
+      if(chapter!==5&&(bayMove||bayOverview)){bayMove=null;bayOverview=null;bay.select(null);}
       if(orbitReset){orbitReset.elapsed+=dt;const t=moving?Math.min(1,orbitReset.elapsed/1.2):1;yaw=orbitReset.from*(1-easeInspection(t));if(t===1)orbitReset=null;needsDraw=true;}
       const a=Math.max(0,Math.min(9,Math.floor(progress))),b=Math.min(9,a+1),t=THREE.MathUtils.smoothstep(progress-a,0,1);
       desiredEye.fromArray(poses[a].eye).lerp(nextEye.fromArray(poses[b].eye),t);
@@ -190,7 +202,12 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
       }
       if(moving){desiredEye.x+=pointer.x*.1;desiredEye.y+=pointer.y*.06;}
       const blend=moving?cameraBlend(dt):1;
-      if(inspection){
+      if(chapter===5&&bayMove){
+        bayMove.elapsed+=dt;const t=moving?Math.min(1,bayMove.elapsed/1.65):1,u=easeInspection(t);
+        camera.position.lerpVectors(bayMove.from,bayMove.eye,u);aim.lerpVectors(bayMove.fromAim,bayMove.aim,u);
+        if(t===1&&!bayMove.ready){bayMove.ready=true;if(bayMove.returning)bayMove=null;else{bay.reveal(true);onBayReady();}}
+        needsDraw=true;
+      }else if(inspection){
         if(inspection.page!==chapter){inspection=null;overview=null;}
         else {
           inspection.elapsed+=dt;
@@ -214,7 +231,8 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
       buoy.updateMatrixWorld(true);camera.updateMatrixWorld(true);
       compositionBounds.makeEmpty();if(chapter<3)for(const target of pageOneTargets.values())compositionBounds.union(box.setFromObject(target));
       const coastVisible=progress>=3.65&&progress<6.15;
-      coast.update(time,linkOnline,camera,coastVisible,chapter===4);
+      coast.update(time,linkOnline,camera,coastVisible,chapter===4,chapter===5);
+      bay.update(time,linkOnline,chapter===5);
       if(receiverLabel){
         projection.set(...RECEIVER).project(camera);
         const x=(projection.x*.5+.5)*innerWidth,y=(-projection.y*.5+.5)*innerHeight;
@@ -265,6 +283,6 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
       if(needsDraw)renderer.render(scene,camera);
       needsDraw=false;lastProgress=progress;lastPick=selected;lastYaw=yaw;lastLink=linkOnline;
     },
-    dispose(){disposed=true;restoreMaterials();coast.dispose();window.removeEventListener('resize',resize);window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up);window.removeEventListener('pointercancel',cancel);document.querySelector('#reset-camera').removeEventListener('click',reset);if(model)disposeModel(model);legacyOceanGeometry.dispose();homeOceanGeometry.dispose();for(const mesh of [ocean,sky,halo]){if(mesh!==ocean)mesh.geometry.dispose();mesh.material.dispose();}renderer.dispose();renderer.domElement.remove();hotspotLayer.replaceChildren();}
+    dispose(){disposed=true;restoreMaterials();bay.dispose();coast.dispose();window.removeEventListener('resize',resize);window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up);window.removeEventListener('pointercancel',cancel);document.querySelector('#reset-camera').removeEventListener('click',reset);if(model)disposeModel(model);legacyOceanGeometry.dispose();homeOceanGeometry.dispose();for(const mesh of [ocean,sky,halo]){if(mesh!==ocean)mesh.geometry.dispose();mesh.material.dispose();}renderer.dispose();renderer.domElement.remove();hotspotLayer.replaceChildren();}
   };
 }

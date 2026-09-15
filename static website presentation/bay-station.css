@@ -1,0 +1,29 @@
+/* Page 05 only. The building/cutaway retains the main central viewport. */
+.coast-ready #shore{display:block;min-height:145svh;padding-top:16svh}
+.coast-ready #shore .copy{width:32%;max-width:400px;padding:1rem 1.1rem 1rem 0;background:linear-gradient(90deg,#061722f5 75%,transparent)}
+.coast-ready #shore .copy h2{font-size:clamp(2.5rem,4vw,4.5rem);line-height:1.1}
+.coast-ready #shore .shore-system{width:auto;max-width:780px;margin-top:48svh;padding:1rem 0;border:0;background:linear-gradient(transparent,#061b26df);display:block}
+#shore #open-bay{background:transparent;border-color:#8baead70}
+#shore .shore-system>.micro{margin:.8rem 0 1rem}
+#bay-menu{display:flex;flex-wrap:wrap;gap:.5rem 1rem}
+#bay-menu button{background:transparent;border:0;border-bottom:1px solid #829d9d55;min-height:44px;font-size:.76rem;padding:.6rem 0;color:#b8cdcf}
+#bay-menu button::after{content:' →';color:var(--sea);margin-left:.5rem}
+#bay-menu button:last-child::after{content:''}
+#bay-menu button.receiving-stage{border-color:var(--gold);color:#f1ddbc}
+#bay-menu button[aria-pressed=true]{color:#eef5ee;border-color:var(--sea)}
+#shore #bay-panel{position:fixed;z-index:18;right:5vw;top:17svh;width:min(320px,29vw);max-height:70svh;overflow:auto;padding:1.2rem 1.4rem;background:#071b25f2;border-left:1px solid #95bdbc66;scrollbar-width:thin}
+#bay-panel #close-bay{background:transparent;border:0;border-bottom:1px solid var(--line);padding:.5rem 0;margin-bottom:1.2rem;font-size:.82rem;color:var(--sea)}
+#bay-panel h3{font-size:1.5rem;line-height:1.25;margin-bottom:1rem}
+#bay-panel p{font-size:.85rem;line-height:1.75;color:var(--muted)}
+#bay-panel .kicker{font-size:.58rem;margin-bottom:.8rem;color:var(--gold)}
+#bay-panel #bay-menu{display:flex;gap:0;flex-direction:column}
+#bay-panel #bay-menu button{text-align:left}
+.bay-inspecting #shore>.copy,.bay-inspecting #shore>.shore-system{visibility:hidden;pointer-events:none}
+.bay-inspecting #coast-receiver-label{visibility:hidden}
+@media(max-width:900px){.coast-ready #shore .copy{width:39%}#shore #bay-panel{right:4vw;width:33vw;padding:1rem}}
+@media(max-width:650px){
+  .coast-ready #shore{padding-top:16svh;min-height:165svh}.coast-ready #shore .copy{width:100%;max-width:none;background:linear-gradient(#061722e8,transparent);padding:0 0 1rem}
+  .coast-ready #shore .copy h2{font-size:2.7rem}.coast-ready #shore .shore-system{margin-top:48svh;width:100%;display:block}
+  #shore #bay-panel{top:auto;bottom:72px;left:5vw;right:5vw;width:auto;max-height:43svh;padding:1rem}
+  #bay-panel #bay-menu{display:grid;grid-template-columns:1fr 1fr;column-gap:.8rem}#bay-panel h3{font-size:1.3rem}#bay-panel #close-bay{margin-bottom:.7rem}
+}

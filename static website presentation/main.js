@@ -4,6 +4,7 @@ import {smooth} from './home.js';
 import {instrumentInfo} from './instrument.js';
 import {createAcquisition} from './acquisition.js';
 import {createController} from './controller.js';
+import {baySteps,bayPipeline,arrivalPhase} from './bay-story.js';
 import {chapters,components,createLink,setLink,tickLink,waveSamples,forecastSamples,linePath} from './story.js';
 
 const $=selector=>document.querySelector(selector);
@@ -15,6 +16,21 @@ const sections=[...document.querySelectorAll('.scene')];
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 let paused=reduced.matches,active=0,selected='pressure',world,elapsed=0,last=0,lastPacket=0,process=0,predicting=false,predictionProgress=0,currentTab='overview';
 let link=createLink();
+let bayInspecting=false,bayTrigger;
+function openBay(id='station'){
+  if(!world?.inspectBay?.(id)){ $('#open-bay').textContent='3D unavailable — reload to inspect';return; }
+  bayTrigger=document.activeElement;bayInspecting=true;document.body.classList.add('bay-inspecting');
+  $('#bay-panel').hidden=false;const info=baySteps[id];$('#bay-title').textContent=info.title;$('#bay-detail').textContent=info.detail;$('#bay-note').textContent=info.note;
+  $('#bay-panel-menu').append($('#bay-menu'));$('#bay-explanation').hidden=true;
+  document.querySelectorAll('[data-bay]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.bay===id)));
+}
+function closeBay(restore=true){
+  if(!bayInspecting)return;bayInspecting=false;document.body.classList.remove('bay-inspecting');$('#bay-panel').hidden=true;$('#bay-menu-home').append($('#bay-menu'));world?.returnToBay?.();
+  if(restore&&bayTrigger?.isConnected)bayTrigger.focus({preventScroll:true});
+}
+for(const id of bayPipeline){const b=document.createElement('button');b.dataset.bay=id;b.textContent=baySteps[id].title;b.setAttribute('aria-pressed','false');b.addEventListener('click',()=>openBay(id));$('#bay-menu').append(b);}
+$('#open-bay').addEventListener('click',()=>openBay());$('#close-bay').addEventListener('click',()=>closeBay());
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeBay();});
 const pointer={x:0,y:0};
 const history=waveSamples(),future=forecastSamples(history.at(-1));
 const nav=$('#chapter-nav');
@@ -145,6 +161,7 @@ function frame(now){
   }
   const moving=!paused;if(moving)elapsed+=dt;
   const state=scrollState();if(inspecting&&state.chapter!==active)endInspection(false);if(state.chapter!==active)setChapter(state.chapter);
+  if(bayInspecting&&state.chapter!==5)closeBay(false);
   const homeProgress=Math.max(0,Math.min(1,scrollY/Math.max(1,offsets[1]-innerHeight*.18)));
   home.style.setProperty('--home-progress',String(homeProgress));home.classList.toggle('home-departed',homeProgress>.52);
   $('#home-shot-label').textContent=homeProgress<.25?'01 / THE OCEAN':homeProgress<.55?'02 / DISCOVERY':homeProgress<.82?'03 / APPROACH':'04 / LISTEN';
@@ -152,11 +169,12 @@ function frame(now){
   world?.update({...state,time:elapsed,dt,moving,pointer,selected,linkOnline:link.online,homeProgress});
   if(active===2&&moving)acquisition.draw(elapsed);
   if(active===3)controller.draw(elapsed);
+  if(active===5){const s=arrivalPhase(elapsed,link.online);document.querySelectorAll('[data-bay]').forEach((b,i)=>b.classList.toggle('receiving-stage',i===s.stage));}
   if(moving&&active===6)drawPressure(elapsed);
   if(active===7&&moving)drawPrediction(dt);
   if(moving&&active>=3&&active<=5&&elapsed-lastPacket>1.5){lastPacket=elapsed;link=tickLink(link,new Date().toISOString());updateLink();}
 }
 raf=requestAnimationFrame(frame);
 // 3D is a separate local chunk. All HTML diagrams and controls work if WebGL fails.
-import('./world.js').then(async({createWorld})=>{world=await createWorld($('#world'),{onPick:pick,onInspectionReady:inspectionReady,onStatus:text=>{$('#model-state').textContent=text;}});}).catch(()=>{$('#model-state').textContent='3D unavailable · reload or continue the accessible diagrams';document.body.classList.add('webgl-unavailable');});
+import('./world.js').then(async({createWorld})=>{world=await createWorld($('#world'),{onPick:pick,onInspectionReady:inspectionReady,onBayPick:openBay,onBayReady:()=>{if(bayInspecting){$('#bay-explanation').hidden=false;$('#bay-title').focus({preventScroll:true});}},onStatus:text=>{$('#model-state').textContent=text;}});}).catch(()=>{$('#model-state').textContent='3D unavailable · reload or continue the accessible diagrams';document.body.classList.add('webgl-unavailable');});
 window.addEventListener('pagehide',e=>{if(!e.persisted){cancelAnimationFrame(raf);world?.dispose();layoutObserver.disconnect();}});
