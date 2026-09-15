@@ -17,6 +17,12 @@ test('Station cutaway, real cable, selectable functions, focus framing and reset
     const {createBayStation}=await server.ssrLoadModule('/bay-station.js');
     const {PerspectiveCamera,Vector3,Vector2,Raycaster}=await server.ssrLoadModule('/../dashboard-next/node_modules/three/build/three.module.js');
     const coast=createCoast(),bay=createBayStation(coast);
+    for(const id of ['computer','validate','sqlite','processing','ai'])assert.equal(bay.targets.get(id),bay.targets.get('computer'),'Software functions share one physical PC');
+    assert.notEqual(bay.targets.get('dashboard'),bay.targets.get('computer'));
+    assert.equal(bay.targets.get('rx').name,'Indoor LoRa radio');
+    assert.ok(bay.group.getObjectByName('Small UPS power unit'));
+    assert.ok(bay.group.getObjectByName('Shore Internet router'));
+    assert.ok(bay.group.getObjectByName('Physical dashboard monitor'));
     assert.equal(coast.group.userData.poleCount,1);
     assert.ok(bay.cableCurve.getPoint(0).distanceTo(new Vector3(...RECEIVER))<.6);
     bay.select('station');bay.update(0,true,true);assert.equal(coast.stationVisual.visible,true,'Exterior stays until camera arrives');

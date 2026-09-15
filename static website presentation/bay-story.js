@@ -1,10 +1,11 @@
 export const baySteps={
+  computer:{title:'Bay Station computer',detail:'Local ingestion, validation, SQLite storage, processing and prediction run on this shore computer.',note:'Illustrative mini PC. Software functions share this computer; final equipment selection is pending.'},
   station:{title:'FALCON-01 Bay Station',detail:'Receives buoy observations and runs local storage, processing and the shore-based interface.',note:'Illustrative cutaway. Equipment model and final installation layout are not yet specified.'},
-  rx:{title:'LoRa receiver',detail:'Receives telemetry transmitted from the offshore buoy. A cable carries the received records into the station.',note:'One shore-mounted pole and compact receiver. Internet backhaul is separate.'},
+  rx:{title:'LoRa receiver',detail:'Receives telemetry from the offshore buoy through the outdoor antenna connection and passes records to the Bay Station computer.',note:'The indoor radio and cabling are illustrative. Internet backhaul is separate.'},
   validate:{title:'Authenticate / validate',detail:'Checks station identity, message format, timestamps and quality before accepting telemetry.',note:'A software stage on the shore computer; security validation remains to be demonstrated.'},
-  sqlite:{title:'SQLite / local storage',detail:'Stores raw and processed records locally, preserving their timestamps and quality flags.',note:'Local storage supports retention when shore Internet is unavailable.'},
+  sqlite:{title:'SQLite / local storage',detail:'Stores raw and processed records locally, preserving their timestamps and quality flags.',note:'Software on the same Bay Station computer—not a separate SQLite appliance.'},
   processing:{title:'Processing',detail:'Quality-checks observations and derives the pressure-based estimated wave-height statistic.',note:'Calibration and deployment validation remain required.'},
-  ai:{title:'AI prediction',detail:'Produces a short-term prediction from versioned, calibrated wave-height data.',note:'Shore-side software. This animation is illustrative, not a validated model result.'},
+  ai:{title:'AI prediction',detail:'Produces a short-term prediction from versioned, calibrated wave-height data.',note:'Runs on this same computer. Predicted future wave height is distinct from the current pressure-derived estimate. Results shown are illustrative.'},
   dashboard:{title:'Dashboard / alerts',detail:'Presents current observations, system state and authorized alerts.',note:'Local display first; authorized remote access uses shore Internet backhaul.'}
 };
 export const bayPipeline=['rx','validate','sqlite','processing','ai','dashboard'];

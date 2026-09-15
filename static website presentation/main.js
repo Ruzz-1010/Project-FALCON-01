@@ -20,12 +20,14 @@ let bayInspecting=false,bayTrigger;
 function openBay(id='station'){
   if(!world?.inspectBay?.(id)){ $('#open-bay').textContent='3D unavailable — reload to inspect';return; }
   bayTrigger=document.activeElement;bayInspecting=true;document.body.classList.add('bay-inspecting');
-  $('#bay-panel').hidden=false;const info=baySteps[id];$('#bay-title').textContent=info.title;$('#bay-detail').textContent=info.detail;$('#bay-note').textContent=info.note;
+  $('#bay-panel').hidden=false;const info=baySteps[id==='validate'?'computer':id];$('#bay-title').textContent=info.title;$('#bay-detail').textContent=info.detail;$('#bay-note').textContent=info.note;
+  $('#bay-menu [data-bay="validate"]').textContent='Bay Station computer';
   $('#bay-panel-menu').append($('#bay-menu'));$('#bay-explanation').hidden=true;
   document.querySelectorAll('[data-bay]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.bay===id)));
 }
 function closeBay(restore=true){
   if(!bayInspecting)return;bayInspecting=false;document.body.classList.remove('bay-inspecting');$('#bay-panel').hidden=true;$('#bay-menu-home').append($('#bay-menu'));world?.returnToBay?.();
+  $('#bay-menu [data-bay="validate"]').textContent=baySteps.validate.title;
   if(restore&&bayTrigger?.isConnected)bayTrigger.focus({preventScroll:true});
 }
 for(const id of bayPipeline){const b=document.createElement('button');b.dataset.bay=id;b.textContent=baySteps[id].title;b.setAttribute('aria-pressed','false');b.addEventListener('click',()=>openBay(id));$('#bay-menu').append(b);}
