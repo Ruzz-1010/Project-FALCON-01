@@ -1,8 +1,8 @@
 // Home-only choreography. At t=1 this exactly meets the existing Instrument pose.
 export const homeShots=[
-  {at:0,eye:[4.8,1.9,8.2],aim:[-.9,.55,0]},
-  {at:.32,eye:[4.2,1.8,6.9],aim:[-.85,.53,0]},
-  {at:.72,eye:[3.4,1.65,5.2],aim:[-.75,.5,0]},
+  {at:0,eye:[3.9,1.75,6.7],aim:[-.7,.52,0]},
+  {at:.32,eye:[3.7,1.72,6.1],aim:[-.68,.52,0]},
+  {at:.72,eye:[3.15,1.58,4.85],aim:[-.66,.53,0]},
   {at:1,eye:[2.6,1.45,3.8],aim:[-.65,.55,0]}
 ];
 export const smooth=t=>{t=Math.max(0,Math.min(1,t));return Math.max(0,Math.min(1,t*t*t*(t*(t*6-15)+10)));};
@@ -15,9 +15,9 @@ export function homeCamera(progress){
 export const homeWeight=p=>1-smooth((p-.78)/.22);
 // amplitude, kx, kz, angular speed, phase. Incommensurate periods avoid a short loop.
 export const waveLayers=[
-  [.048,.34,.19,.49,.3], [.031,-.43,.57,.713,1.2],
-  [.019,.91,-.42,1.037,2.1], [.012,-1.47,.88,1.319,.7],
-  [.006,2.41,1.73,1.871,2.8], [.004,-3.13,2.27,2.173,1.6]
+  [.055,.34,.19,.49,.3], [.035,-.43,.57,.713,1.2],
+  [.022,.91,-.42,1.037,2.1], [.014,-1.47,.88,1.319,.7],
+  [.006,2.41,1.73,1.871,2.8], [.003,-3.13,2.27,2.173,1.6]
 ];
 export function oceanSample(x,z,time,progress){
   const gain=1+Math.min(.16,Math.max(0,progress)*.16);let height=0,dx=0,dz=0;
