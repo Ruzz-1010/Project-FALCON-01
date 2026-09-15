@@ -9,6 +9,7 @@ import {instrumentTargets} from './instrument.js';
 import {placeCallout} from './composition.js';
 import {buoyMotion,cameraBlend} from './motion.js';
 import {createBayStation} from './bay-station.js';
+import {createHomeOrbit} from './home-orbit.js';
 
 // Camera choreography only. The supplied CAD mesh and its materials are untouched.
 const poses = [
@@ -149,10 +150,12 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
   },undefined,()=>{onStatus('Original CAD failed to load · no substitute model used');document.body.classList.add('webgl-unavailable');});
   const raycaster=new THREE.Raycaster();
   let currentChapter=0;
-  const down=e=>{if(currentChapter===5||(!inspection&&(currentChapter===1||currentChapter===2))){orbitReset=null;drag={x:e.clientX,y:e.clientY,last:e.clientX,distance:0};}};
-  const move=e=>{if(!drag||e.pointerType==='touch')return;const delta=e.clientX-drag.last;drag.distance+=Math.abs(delta);if(currentChapter!==5)yaw+=delta*.005;drag.last=e.clientX;};
+  const homeOrbit=createHomeOrbit();
+  const down=e=>{if(homeOrbit.active&&currentChapter===0){drag={last:e.clientX,lastY:e.clientY};return;}if(currentChapter===5||(!inspection&&(currentChapter===1||currentChapter===2))){orbitReset=null;drag={x:e.clientX,y:e.clientY,last:e.clientX,distance:0};}};
+  const move=e=>{if(!drag)return;if(homeOrbit.active&&currentChapter===0){homeOrbit.drag(e.clientX-drag.last,e.clientY-drag.lastY);drag.last=e.clientX;drag.lastY=e.clientY;needsDraw=true;return;}if(e.pointerType==='touch')return;const delta=e.clientX-drag.last;drag.distance+=Math.abs(delta);if(currentChapter!==5)yaw+=delta*.005;drag.last=e.clientX;};
   const up=e=>{
     if(!drag)return;
+    if(homeOrbit.active&&currentChapter===0){drag=null;return;}
     const distance=Math.hypot(e.clientX-drag.x,e.clientY-drag.y)+drag.distance;drag=null;
     if(distance>8)return;
     raycaster.setFromCamera(new THREE.Vector2(e.clientX/innerWidth*2-1,1-e.clientY/innerHeight*2),camera);
@@ -161,6 +164,8 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
     for(const hit of raycaster.intersectObject(model,true)){let object=hit.object;while(object){const id=Object.keys(components).find(key=>object===targetFor(key));if(id){onPick(id);return;}object=object.parent;}}
   };
   renderer.domElement.addEventListener('pointerdown',down);window.addEventListener('pointermove',move);window.addEventListener('pointerup',up);
+  const wheel=e=>{if(currentChapter===0&&homeOrbit.active){e.preventDefault();homeOrbit.zoom(e.deltaY*(e.deltaMode===1?16:e.deltaMode===2?innerHeight:1));needsDraw=true;}};
+  renderer.domElement.addEventListener('wheel',wheel,{passive:false});
   const cancel=()=>{drag=null;};window.addEventListener('pointercancel',cancel);
   const reset=()=>{orbitReset={from:yaw,elapsed:0};};document.querySelector('#reset-camera').addEventListener('click',reset);
   const resize=()=>{renderer.setSize(innerWidth,innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();if(inspection?.id&&!inspection.returning)beginInspection(inspection.id);if(bayMove?.id&&!bayMove.returning)inspectBay(bayMove.id);needsDraw=true;};resize();window.addEventListener('resize',resize);
@@ -168,6 +173,8 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
   const desiredEye=new THREE.Vector3(),desiredAim=new THREE.Vector3(),nextEye=new THREE.Vector3(),nextAim=new THREE.Vector3();
   let lastProgress=-1,lastPick='',lastYaw=-1,lastLink=true;
   return {
+    setHomeOrbit(enabled){if(enabled){if(currentChapter!==0||!model||contextLost)return false;homeOrbit.enter(camera.position.toArray());}else homeOrbit.exit();drag=null;needsDraw=true;return true;},
+    moveHomeOrbit(dx,dy,zoom=0){if(currentChapter===0&&homeOrbit.active){homeOrbit.drag(dx,dy);homeOrbit.zoom(zoom);needsDraw=true;}},
     inspectBay,returnToBay,
     inspect:beginInspection,
     returnToBuoy,
@@ -175,6 +182,7 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
     update({progress,chapter,time,dt,moving,pointer,selected,linkOnline=true,homeProgress=0}) {
       if(disposed||contextLost)return;
       currentChapter=chapter;
+      if(chapter!==0)homeOrbit.exit();
       if(chapter!==5&&(bayMove||bayOverview)){bayMove=null;bayOverview=null;bay.select(null);}
       if(orbitReset){orbitReset.elapsed+=dt;const t=moving?Math.min(1,orbitReset.elapsed/1.2):1;yaw=orbitReset.from*(1-easeInspection(t));if(t===1)orbitReset=null;needsDraw=true;}
       const a=Math.max(0,Math.min(9,Math.floor(progress))),b=Math.min(9,a+1),t=THREE.MathUtils.smoothstep(progress-a,0,1);
@@ -201,6 +209,7 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
         desiredEye.lerp(nextEye.set(3.8,1.8,6),weight);desiredAim.lerp(nextAim.set(0,1.15,0),weight);
       }
       if(moving){desiredEye.x+=pointer.x*.1;desiredEye.y+=pointer.y*.06;}
+      if(chapter===0&&homeOrbit.active){const pose=homeOrbit.update(dt);desiredEye.fromArray(pose.eye);desiredAim.fromArray(pose.aim);needsDraw=true;}
       const blend=moving?cameraBlend(dt):1;
       if(chapter===5&&bayMove){
         bayMove.elapsed+=dt;const t=moving?Math.min(1,bayMove.elapsed/1.65):1,u=easeInspection(t);

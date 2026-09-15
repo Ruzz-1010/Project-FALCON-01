@@ -1,0 +1,37 @@
+/* Home only: the numbered presentation scenes retain their existing layout. */
+#ocean .home-copy{max-width:570px;width:45%;}
+#ocean .home-copy h1{font-size:clamp(3rem,5.6vw,6rem);line-height:1.02;margin-bottom:1.4rem;}
+#ocean .home-copy .intro{margin-bottom:.85rem;}
+#ocean .home-explanation{max-width:37em;font-size:clamp(.875rem,1vw,1rem);line-height:1.65;color:#b6cbd1;margin:0 0 1.25rem;}
+#ocean .home-shot{display:none;}
+#ocean .home-explore{position:absolute;right:12vw;bottom:17svh;max-width:300px;pointer-events:auto;text-align:center;}
+#ocean .home-explore button{font:inherit;font-size:.78rem;letter-spacing:.12em;color:#d5e9ee;border:1px solid #6c959c;background:#0a2534dc;padding:1rem 1.2rem;border-radius:2px;cursor:pointer;}
+#ocean .home-explore button:hover{background:#204652;}
+#ocean .home-explore button:focus-visible,#ocean summary:focus-visible{outline:2px solid #c3e6eb;outline-offset:5px;}
+#ocean .home-explore p{font-size:.8rem;line-height:1.6;color:#c4d8dd;}
+#ocean .home-explore p:empty{display:none;}
+#ocean .home-college{position:absolute;right:12vw;bottom:9svh;pointer-events:auto;color:#b6cbd1;font-size:.66rem;letter-spacing:.15em;}
+#ocean .home-college summary{cursor:pointer;list-style:none;}
+#ocean .home-college summary span{margin-left:1rem;}
+#ocean .home-college p{margin:.7rem 0 0;font-size:.65rem;}
+body.home-orbit{overflow:hidden;}
+body.home-orbit #world canvas{touch-action:none;cursor:grab;}
+body.home-orbit #world canvas:active{cursor:grabbing;}
+body.home-orbit #ocean .home-copy,body.home-orbit #ocean .home-college{visibility:hidden;opacity:0;pointer-events:none;}
+body.home-orbit #ocean .home-explore{right:50%;transform:translateX(50%);bottom:12svh;width:max-content;max-width:90vw;}
+#ocean.home-departed .home-explore,#ocean.home-departed .home-college{visibility:hidden;pointer-events:none;}
+body.home-orbit #ocean.home-departed .home-explore{visibility:visible;pointer-events:auto;}
+@media(min-width:651px) and (max-height:760px){
+  #ocean .home-stage{min-height:600px;padding-top:4svh;}
+  #ocean .home-copy h1{font-size:clamp(3rem,4.6vw,4.5rem);margin-bottom:1rem;}
+  #ocean .home-copy .intro{margin-top:0;}
+  #ocean .home-college{bottom:9svh;}
+}
+@media(max-width:650px){
+  #ocean .home-stage{padding:14svh 6vw 0;min-height:800px;}
+  #ocean .home-copy{width:100%;max-width:390px;}
+  #ocean .home-copy h1{font-size:clamp(2.5rem,10vw,3.4rem);margin-bottom:1rem;}
+  #ocean .home-explanation{font-size:.875rem;max-width:35em;}
+  #ocean .home-explore{right:6vw;bottom:15%;}
+  #ocean .home-college{left:6vw;right:auto;bottom:8%;font-size:.6rem;}
+}

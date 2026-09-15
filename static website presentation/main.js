@@ -126,10 +126,28 @@ document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()
 let offsets=[];
 let homeJourney=null;
 const home=$('#ocean');
+let homeOrbitActive=false;
+function setHomeOrbit(enabled){
+  if(enabled&&!world?.setHomeOrbit?.(true)){$('#home-orbit-status').textContent='The original CAD is still loading or 3D is unavailable.';return;}
+  if(!enabled)world?.setHomeOrbit?.(false);
+  homeOrbitActive=enabled;homeJourney=null;document.body.classList.toggle('home-orbit',enabled);
+  $('#explore-home').hidden=enabled;$('#explore-home').setAttribute('aria-pressed',String(enabled));
+  $('#reset-home').hidden=!enabled;$('#home-orbit-help').hidden=!enabled;$('#home-orbit-status').textContent='';
+  if(enabled)$('#reset-home').focus({preventScroll:true});
+}
+$('#explore-home').addEventListener('click',()=>setHomeOrbit(true));
+$('#reset-home').addEventListener('click',()=>{setHomeOrbit(false);$('#explore-home').focus({preventScroll:true});});
+window.addEventListener('keydown',e=>{
+  if(!homeOrbitActive)return;
+  if(e.key==='Escape'){setHomeOrbit(false);$('#explore-home').focus({preventScroll:true});return;}
+  const steps={ArrowLeft:[-20,0],ArrowRight:[20,0],ArrowUp:[0,-20],ArrowDown:[0,20],'+':[0,0,-80],'-':[0,0,80]};
+  if(steps[e.key]){e.preventDefault();world?.moveHomeOrbit?.(...steps[e.key]);}
+});
 const cancelHomeJourney=()=>{homeJourney=null;};
 for(const event of ['wheel','touchstart','pointerdown'])window.addEventListener(event,cancelHomeJourney,{passive:true});
 window.addEventListener('keydown',e=>{if(['Escape','ArrowDown','ArrowUp','PageDown','PageUp','Home','End',' '].includes(e.key))cancelHomeJourney();});
 $('#begin-journey').addEventListener('click',e=>{
+  if(homeOrbitActive)setHomeOrbit(false);
   e.preventDefault();const to=$('#buoy').offsetTop-Math.min(80,innerHeight*.15);
   if(paused){window.scrollTo({top:to,behavior:'instant'});return;}
   homeJourney={from:scrollY,to,elapsed:0};
@@ -156,6 +174,7 @@ function frame(now){
   }
   const moving=!paused;if(moving)elapsed+=dt;
   const state=scrollState();if(inspecting&&state.chapter!==active)endInspection(false);if(state.chapter!==active)setChapter(state.chapter);
+  if(homeOrbitActive&&state.chapter!==0)setHomeOrbit(false);
   if(bayInspecting&&state.chapter!==5)closeBay(false);
   const homeProgress=Math.max(0,Math.min(1,scrollY/Math.max(1,offsets[1]-innerHeight*.18)));
   home.style.setProperty('--home-progress',String(homeProgress));home.classList.toggle('home-departed',homeProgress>.52);

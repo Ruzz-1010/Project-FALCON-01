@@ -1,8 +1,8 @@
 // Home-only choreography. At t=1 this exactly meets the existing Instrument pose.
 export const homeShots=[
-  {at:0,eye:[8,2.65,15],aim:[-1.3,.35,0]},
-  {at:.32,eye:[6,2.2,10.8],aim:[-1,.42,0]},
-  {at:.72,eye:[3.6,1.7,5.7],aim:[-.75,.5,0]},
+  {at:0,eye:[4.8,1.9,8.2],aim:[-.9,.55,0]},
+  {at:.32,eye:[4.2,1.8,6.9],aim:[-.85,.53,0]},
+  {at:.72,eye:[3.4,1.65,5.2],aim:[-.75,.5,0]},
   {at:1,eye:[2.6,1.45,3.8],aim:[-.65,.55,0]}
 ];
 export const smooth=t=>{t=Math.max(0,Math.min(1,t));return Math.max(0,Math.min(1,t*t*t*(t*(t*6-15)+10)));};

@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="./controller-polish.css">
   <link rel="stylesheet" href="./bay-station.css">
   <link rel="stylesheet" href="./wave-estimation.css">
+  <link rel="stylesheet" href="./home-presentation.css">
 </head>
 <body>
   <a class="skip" href="#ocean">Skip to story</a>
@@ -32,7 +33,12 @@
   </aside>
   <main>
     <section class="scene opening" id="ocean" data-chapter="0">
-      <div class="home-stage"><div class="copy home-copy"><p class="kicker">THE OCEAN NEVER STOPS SPEAKING.</p><h1>FALCON-01.<br><em>Listen to<br>the ocean.</em></h1><p class="intro">PROJECT FALCON-01<br>From ocean signals to shore-based insight.</p><a id="begin-journey" class="enter" href="#buoy">Begin the journey <span>↓</span></a></div><div class="home-shot"><span id="home-shot-label">01 / THE OCEAN</span><i></i><span>SCROLL TO DISCOVER</span></div><p class="home-observation">FALCON-01 / OBSERVATION NODE<br><small>Illustrative ocean motion</small></p></div>
+      <div class="home-stage">
+        <div class="copy home-copy"><p class="kicker">THE OCEAN NEVER STOPS SPEAKING.</p><h1>FALCON-01.<br><em>Listen to<br>the ocean.</em></h1><p class="intro">PROJECT FALCON-01<br>From ocean signals to shore-based insight.</p><p class="home-explanation">An affordable solar-powered coastal observation system that collects ocean and environmental observations offshore and carries them to a shore-based Bay Station for processing and AI-assisted short-term prediction.</p><a id="begin-journey" class="enter" href="#buoy">Begin the journey <span>↓</span></a></div>
+        <div class="home-explore"><button id="explore-home" type="button" aria-pressed="false">EXPLORE THE BUOY ↗</button><button id="reset-home" type="button" hidden>RESET VIEW ↙</button><p id="home-orbit-help" hidden>Drag to orbit · Scroll to zoom · Esc to return</p><p id="home-orbit-status" role="status"></p></div>
+        <details class="home-college"><summary>FULLBRIGHT COLLEGE <span>+</span></summary><p>AI-POWERED COASTAL OBSERVATION</p></details>
+        <div class="home-shot" hidden><span id="home-shot-label">01 / THE OCEAN</span></div>
+      </div>
     </section>
     <section class="scene" id="buoy" data-chapter="1">
       <div class="copy"><p class="kicker">01 / THE INSTRUMENT</p><h2>Built to listen.</h2><p>Your original FALCON buoy.<br>One sensing node. A connected shore.</p><p class="index-caption">EXPLORE THE INSTRUMENT</p><div class="component-picks" id="reveal-picks"></div><button class="text-button" id="reset-camera">Return to overview ↗</button><p class="micro">Drag to orbit · Select a numbered source</p></div>
