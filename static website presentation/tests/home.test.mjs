@@ -23,9 +23,9 @@ test('Home effects fade completely before the Instrument; scroll interpolation i
   assert.equal(homeWeight(0),1);assert.equal(homeWeight(1),0);assert.equal(homeWeight(2),0);
   assert.equal(smooth(0),0);assert.equal(smooth(1),1);assert.equal(smooth(-3),0);
 });
-test('Pages 03–04 and 06–09 markup remains unchanged during the Page 05 update',()=>{
+test('Pages 03–04 and 07–09 markup remains unchanged during the scoped 05–06 updates',()=>{
   const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
-  const rest=html.slice(html.indexOf('    <section class="scene diagram-scene" id="controller"')).replace(/    <section class="scene" id="shore"[\s\S]*?(?=    <section class="scene wide-scene" id="waves")/,'');
-  assert.equal(createHash('sha256').update(rest).digest('hex'),'523c58b97449c4ca5dc81a63b4ef3638b19b4333d889f6e5c2060c9ad9e40359');
+  const rest=html.slice(html.indexOf('    <section class="scene diagram-scene" id="controller"')).replace(/    <section class="scene" id="shore"[\s\S]*?(?=    <section class="scene wide-scene" id="waves")/,'').replace(/    <section class="scene wide-scene" id="waves"[\s\S]*?(?=    <section class="scene wide-scene" id="prediction")/,'');
+  assert.equal(createHash('sha256').update(rest).digest('hex'),'e5809389da08fe0269e670ceca47f58afc0f7c7c588f7cec53601c04a79e6414');
   assert.match(html,/THE OCEAN NEVER STOPS SPEAKING/);assert.match(html,/id="begin-journey"/);
 });

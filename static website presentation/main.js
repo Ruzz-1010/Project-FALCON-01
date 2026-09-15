@@ -5,12 +5,14 @@ import {instrumentInfo} from './instrument.js';
 import {createAcquisition} from './acquisition.js';
 import {createController} from './controller.js';
 import {baySteps,bayPipeline,arrivalPhase} from './bay-story.js';
+import {createWaveEstimation} from './wave-estimation.js';
 import {chapters,components,createLink,setLink,tickLink,waveSamples,forecastSamples,linePath} from './story.js';
 
 const $=selector=>document.querySelector(selector);
 const acquisition=createAcquisition($('#acquisition-dock'));
 const controllerOutput=document.createElement('p');controllerOutput.className='controller-output';$('#controller .packet-console').append(controllerOutput);
 const controller=createController($('#controller .chip-stage'));
+const waveEstimation=createWaveEstimation($('#waves'));
 $('#logo').src=logoUrl;
 const sections=[...document.querySelectorAll('.scene')];
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
@@ -107,15 +109,6 @@ $('#interrupt').addEventListener('click',()=>{
 });
 updateLink();
 
-const processDescriptions=[
-  ['MEASURED QUANTITY / SIMULATED PRESSURE','Relative signal · arbitrary units','The pressure sensor records underwater variations. These samples are illustrative, not hardware measurements.','—'],
-  ['PROCESSED SIGNAL / SIMULATED','Relative signal · arbitrary units','Remove slow variation, filter, correct for depth response and calibrate. Processing parameters and reference method remain to be finalized.','—'],
-  ['ESTIMATED Hs / SIMULATED','Estimated significant wave height','Compute a wave statistic over a defined observation window. Pressure itself is not wave height.',history.at(-1).toFixed(2)+' m']
-];
-function selectProcess(value){process=value;document.querySelectorAll('[data-process]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.process)===process)));const [label,unit,detail,result]=processDescriptions[value];$('#wave-label').textContent=label;$('#wave-unit').textContent=unit;$('#process-detail').textContent=detail;$('#hs-result').textContent=result;drawPressure(elapsed);}
-document.querySelectorAll('[data-process]').forEach(b=>b.addEventListener('click',()=>selectProcess(Number(b.dataset.process))));
-function drawPressure(time){const phase=time*.9;const clean=Array.from({length:160},(_,i)=>Math.sin(i*.15+phase)*.62+Math.sin(i*.37+phase)*.18);const raw=clean.map((v,i)=>v+Math.sin(i*.025)*.45+Math.sin(i*2.5)*.13);$('#raw-trace').setAttribute('d',linePath(raw,0,1000,112,65));$('#raw-trace').style.opacity=process===0?'.8':'.16';$('#processed-trace').setAttribute('d',linePath(clean,0,1000,112,65));$('#processed-trace').style.opacity=process===0?'0':'1';}
-drawPressure(0);
 $('#history-trace').setAttribute('d',linePath(history,45,585,190,140));$('#future-trace').setAttribute('d',linePath(future,630,340,190,140));$('#baseline-trace').setAttribute('d',linePath([history.at(-1),history.at(-1)],630,340,190,140));
 $('#predict').addEventListener('click',()=>{if(!link.online){$('#prediction-status').textContent='UNAVAILABLE: restore LoRa before running a new prediction.';return;}predicting=true;predictionProgress=paused?1:0;$('#prediction-status').textContent='SIMULATED: extending a candidate trace against persistence.';if(paused)drawPrediction(0);});
 function drawPrediction(dt){if(!predicting)return;predictionProgress=Math.min(1,predictionProgress+dt*.32);$('#future-reveal').setAttribute('width',String(predictionProgress*350));if(predictionProgress===1){predicting=false;$('#prediction-status').textContent='Illustrative AI trace vs. persistence. No accuracy claim.';}}
@@ -172,7 +165,7 @@ function frame(now){
   if(active===2&&moving)acquisition.draw(elapsed);
   if(active===3)controller.draw(elapsed);
   if(active===5){const s=arrivalPhase(elapsed,link.online);document.querySelectorAll('[data-bay]').forEach((b,i)=>b.classList.toggle('receiving-stage',i===s.stage));}
-  if(moving&&active===6)drawPressure(elapsed);
+  if(active===6)waveEstimation.update(elapsed,dt,state.progress-6,moving);
   if(active===7&&moving)drawPrediction(dt);
   if(moving&&active>=3&&active<=5&&elapsed-lastPacket>1.5){lastPacket=elapsed;link=tickLink(link,new Date().toISOString());updateLink();}
 }

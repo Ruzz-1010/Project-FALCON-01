@@ -40,7 +40,7 @@ test('Forecast meets history at NOW without a fabricated jump; data remain expli
   const h=waveSamples(),f=forecastSamples(h.at(-1));assert.equal(f[0],h.at(-1));
   assert.ok(h.every(Number.isFinite));assert.ok(f.every(Number.isFinite));assert.ok(new Set(f).size>1);
   assert.match(linePath(h),/^M/);assert.doesNotMatch(linePath(h),/NaN|Infinity/);
-  const html=read('../index.html');assert.match(html,/SIMULATED \/ NOT A TRAINED MODEL RESULT/);assert.match(html,/Persistence baseline/);assert.match(html,/MEASURED QUANTITY \/ SIMULATED PRESSURE/);
+  const html=read('../index.html');assert.match(html,/SIMULATED \/ NOT A TRAINED MODEL RESULT/);assert.match(html,/Persistence baseline/);assert.match(html,/MEASURED QUANTITY/);assert.match(html,/Relative pressure · simulated/);
 });
 test('Only local static resources; no React, operational API, database or live telemetry',()=>{
   for(const file of ['../main.js','../world.js','../story.js']){
