@@ -3,6 +3,7 @@ export const components = {
   pressure: {label: 'Underwater pressure', prefix: 'WATER_PRESSURE_SENSOR_ASSEMBLY', detail: 'HPT604 Type A candidate. Pressure variation travels to shore for calibration and wave processing. Continuous-seawater suitability and exact configuration pending.'},
   wind: {label: 'Wind observation', prefix: 'WIND_SPEED_DIRECTION_SENSOR', detail: 'Wind speed and direction provide environmental context. Marine durability and reference testing pending.'},
   gps: {label: 'GPS / position', prefix: 'GNSS_GPS_ANTENNA', detail: 'Position and time support. Geofence decisions require quality checks and persistence—not a single drifting coordinate.'},
+  battery: {label: 'Battery / energy storage', prefix: 'LIFEPO4_BATTERY_12V_ENVELOPE', detail: 'Stores solar energy for the buoy electronics and supports operation when solar input is unavailable or insufficient.'},
   solar: {label: 'Solar / power', prefix: 'DUAL_30W_SOLAR_ARRAY', detail: 'Two-panel CAD reference. Solar charging, battery and two power-monitoring channels support the ESP32 sensing node. Energy performance is not yet measured.'},
   esp32: {label: 'ESP32 controller', prefix: 'ESP32_CONTROLLER_ENVELOPE', detail: 'Controller envelope in the original CAD. Acquire → timestamp → check → package. Main processing, storage and AI stay on shore.'}
 };

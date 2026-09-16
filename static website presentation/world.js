@@ -112,7 +112,7 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
     if(!overview)overview={eye:camera.position.clone(),aim:aim.clone()};
     const target=targetFor(id);if(!target)return false;
     const bounds=new THREE.Box3().setFromObject(target),center=bounds.getCenter(new THREE.Vector3()),size=bounds.getSize(new THREE.Vector3());
-    const frame=inspectionFrame(center.toArray(),Math.max(size.x,size.y,size.z),camera.aspect,innerWidth<650);
+    const frame=inspectionFrame(center.toArray(),Math.max(size.x,size.y,size.z),camera.aspect,innerWidth<650,camera.position.toArray());
     const eye=new THREE.Vector3().fromArray(frame.eye),targetAim=new THREE.Vector3().fromArray(frame.aim);
     inspection={id,page:currentChapter,from:camera.position.clone(),fromAim:aim.clone(),eye,aim:targetAim,elapsed:0,returning:false,ready:false};
     drag=null;needsDraw=true;return true;

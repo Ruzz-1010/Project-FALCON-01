@@ -90,3 +90,27 @@ main{position:relative;z-index:2;pointer-events:none}.scene{min-height:115svh;pa
 @media(max-width:650px){#inspection-panel{top:auto;bottom:72px;right:4vw;left:4vw;width:auto;max-height:43svh;padding:1rem 1.1rem}#inspection-back{margin-bottom:.6rem;min-height:44px}#inspection-panel h2{font-size:1.5rem;margin-bottom:.7rem}#inspection-panel h3{margin-top:.7rem}#inspection-panel p{font-size:.78rem}#inspection-data{font-size:.72rem}}
 @media(prefers-reduced-motion:reduce){#inspection-content,#inspection-wire path,#inspection-flow span::after{animation:none}#inspection-wire{transition:none}}
 @media(max-width:650px){.opening h1{font-size:clamp(2.85rem,11vw,4.5rem)}#forecast text{font-size:28px;letter-spacing:0}#forecast text:first-of-type,#forecast text:nth-of-type(2){font-size:25px}}
+
+
+/* Page 01 presentation polish: keep the CAD inspection cinematic and readable. */
+#buoy .copy{position:relative;z-index:7}
+#buoy .copy h2{max-width:8ch;margin-bottom:1rem}
+#buoy .copy>p:not(.kicker){max-width:28rem;line-height:1.75}
+#buoy .component-picks{position:relative;z-index:8;display:flex;flex-wrap:wrap;gap:.55rem;max-width:31rem;margin-top:1.35rem}
+#buoy .component-picks button{min-height:38px;padding:.5rem .75rem;border:1px solid var(--line);background:#061b25b8;color:var(--text);border-radius:2px;font-size:.66rem;letter-spacing:.04em;transition:transform .25s ease,border-color .25s ease,background .25s ease}
+#buoy .component-picks button:hover,#buoy .component-picks button:focus-visible{transform:translateY(-2px);border-color:#8ccdd1;background:#0b2934}
+#buoy .component-picks button[aria-pressed=true]{border-color:var(--gold);background:#173641}
+#buoy .micro{max-width:31rem;line-height:1.65}
+#inspection-panel{top:14vh;right:5vw;width:min(390px,36vw);max-height:72vh;padding:1.4rem 1.5rem;background:#061a24f2;backdrop-filter:blur(14px);border:1px solid #79c7cf3d;border-left:2px solid var(--sea);border-radius:4px;box-shadow:0 24px 70px #0007}
+#inspection-back{display:inline-flex;align-items:center;min-height:34px;margin-bottom:1.4rem;padding:.35rem 0;color:var(--sea);border-bottom:1px solid #79c7cf44}
+#inspection-panel h2{font-size:clamp(1.7rem,2.6vw,2.25rem);line-height:1.05;margin-bottom:1rem}
+#inspection-panel h3{font-size:.58rem;letter-spacing:.18em;margin-top:1.2rem}
+#inspection-panel p{line-height:1.65}
+#inspection-flow{padding-top:.15rem}
+#inspection-flow span{display:inline-flex;align-items:center;gap:.2rem}
+#inspection-status{padding-top:.15rem}
+.inspecting #hotspots{pointer-events:none}
+.inspecting .hotspot{opacity:0!important;visibility:hidden}
+.inspection-ready #buoy .cad-caption{opacity:.35}
+@media(max-width:1000px){#inspection-panel{width:min(380px,42vw);right:4vw}}
+@media(max-width:650px){#buoy .copy h2{max-width:100%}#buoy .component-picks{max-width:100%;gap:.4rem}#buoy .component-picks button{font-size:.62rem;min-height:40px}#inspection-panel{top:auto;bottom:66px;right:4vw;left:4vw;width:auto;max-height:52svh;padding:1rem 1.1rem}#inspection-panel h2{font-size:1.6rem}#inspection-panel h3{margin-top:.8rem}}

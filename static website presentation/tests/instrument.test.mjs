@@ -11,7 +11,7 @@ test('All Page 01 buttons resolve to physical CAD targets, focus and return prec
   const {scene}=await new GLTFLoader().parseAsync(bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength),'');
   scene.rotation.x=-Math.PI/2;scene.position.y=-2.05;scene.updateMatrixWorld(true);
   const targets=instrumentTargets(scene),full=new Box3().setFromObject(scene).getSize(new Vector3()).length();
-  assert.equal(targets.size,5);assert.match(targets.get('solar').name,/SOLAR_30W_01_EAST/);
+  assert.equal(targets.size,6);assert.match(targets.get('solar').name,/SOLAR_30W_01_EAST/);
   for(const [id,target] of targets){
     const box=new Box3().setFromObject(target),center=box.getCenter(new Vector3()),size=box.getSize(new Vector3());
     assert.ok(size.length()<full*.5,`${id} target is a component, not entire buoy`);
