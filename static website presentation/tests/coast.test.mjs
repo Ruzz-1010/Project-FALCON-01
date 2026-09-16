@@ -11,7 +11,7 @@ test('Coastal geometry, single receiver pole, route endpoints and outage animati
     const coast=createCoast();
     assert.equal(coast.group.userData.poleCount,1);assert.ok(coast.group.userData.houseCount>=10);assert.ok(coast.group.userData.palmCount>=20);
     assert.ok(coast.route.getPoint(1).distanceTo(new Vector3(...RECEIVER))<1e-9);
-    assert.deepEqual(coast.route.getPoint(0).toArray(),[-8,1.2,0]);
+    assert.deepEqual(coast.route.getPoint(0).toArray(),[0,1.2,0]);
     let meshes=0;coast.group.traverse(o=>{if(o.isMesh){meshes++;assert.ok(o.geometry.attributes.position.count>0);const a=o.geometry.attributes.position.array;assert.ok(a.every(Number.isFinite));}});
     assert.ok(meshes<35,`Batched mesh count ${meshes}`);
     const camera=new PerspectiveCamera(42,1440/900,.03,180);

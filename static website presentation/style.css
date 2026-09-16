@@ -115,105 +115,12 @@ main{position:relative;z-index:2;pointer-events:none}.scene{min-height:115svh;pa
 @media(max-width:1000px){#inspection-panel{width:min(380px,42vw);right:4vw}}
 @media(max-width:650px){#buoy .copy h2{max-width:100%}#buoy .component-picks{max-width:100%;gap:.4rem}#buoy .component-picks button{font-size:.62rem;min-height:40px}#inspection-panel{top:auto;bottom:66px;right:4vw;left:4vw;width:auto;max-height:52svh;padding:1rem 1.1rem}#inspection-panel h2{font-size:1.6rem}#inspection-panel h3{margin-top:.8rem}}
 
-/* Page 04: readable telemetry HUD over the cinematic coast scene. */
-.coast-ready #radio .radio-experience{
-  position:relative;
-  margin-top:42svh;
-  padding:1.15rem 1.25rem 1rem;
-  background:linear-gradient(180deg,rgba(4,18,27,.88),rgba(4,15,23,.76));
-  border:1px solid rgba(110,190,201,.34);
-  border-left:2px solid var(--sea);
-  backdrop-filter:blur(10px);
-  box-shadow:0 18px 55px rgba(0,0,0,.24);
-}
-.coast-ready #radio .radio-experience::after{
-  content:'';
-  position:absolute;left:0;right:0;top:0;height:1px;
-  background:linear-gradient(90deg,var(--sea),transparent 70%);
-  opacity:.75;
-}
-.coast-ready #radio .radio-flow{
-  display:flex;align-items:center;gap:.8rem;margin:0 0 .9rem;
-  color:#9bb6bc;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;
-  white-space:nowrap;
-}
-.coast-ready #radio .radio-flow i{font-style:normal;color:#62bdc7;font-size:1rem}
-.coast-ready #radio .radio-flow strong{font-weight:500;color:#e1ecee}
-.coast-ready #radio .radio-flow .active{color:#e3bd76}
-.coast-ready #radio .transmission-head{
-  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:1.2rem;
-  padding:.85rem 0;border-top:1px solid rgba(110,154,163,.28);border-bottom:1px solid rgba(110,154,163,.28);
-}
-.coast-ready #radio .transmission-head>div{display:flex;flex-direction:column;gap:.28rem}
-.coast-ready #radio .transmission-head small{font-size:.58rem;letter-spacing:.14em;color:#83a1a8}
-.coast-ready #radio .transmission-head b{font-size:.86rem;letter-spacing:.06em;font-weight:400;color:#e1ecee}
-.coast-ready #radio .align-right{text-align:right}
-.coast-ready #radio .transmission-state{flex-direction:row!important;align-items:center;justify-content:center;gap:.7rem!important}
-.coast-ready #radio .transmission-state>span{width:7px;height:7px;border-radius:50%;background:#e3bd76;box-shadow:0 0 12px rgba(227,189,118,.7)}
-.coast-ready #radio .transmission-state button{
-  margin:0;padding:.55rem .8rem;background:rgba(7,26,35,.6);
-  border:1px solid rgba(117,156,164,.35);color:#c3d4d7;font-size:.58rem;
-  letter-spacing:.08em;text-transform:uppercase;
-}
-.coast-ready #radio .transmission-state button:hover,.coast-ready #radio .transmission-state button:focus-visible{border-color:#78c5cc;color:#e5f1f2}
-.coast-ready #radio .radio-route{
-  display:grid;grid-template-columns:145px minmax(180px,1fr) 175px;align-items:center;gap:1.4rem;
-  margin-top:2rem;
-}
-.coast-ready #radio .radio-route>div.route-node{display:flex;flex-direction:column;align-items:center;gap:.4rem}
-.coast-ready #radio .route-node .station-glyph{font-size:2.25rem;color:#72c3cc;text-shadow:0 0 16px rgba(114,195,204,.28)}
-.coast-ready #radio .route-node .shore-glyph{font-size:2.55rem}
-.coast-ready #radio .route-node b{font-size:.72rem;letter-spacing:.12em;font-weight:500;color:#e0ebed}
-.coast-ready #radio .route-node small{font-size:.54rem;letter-spacing:.1em;color:#829da3}
-.coast-ready #radio .radio-beam{height:3px;border-top:1px solid rgba(119,185,192,.75);background:linear-gradient(90deg,transparent,#5aaab4 12%,#5aaab4 88%,transparent);position:relative}
-.coast-ready #radio .radio-beam span{top:1rem;font-size:.58rem;letter-spacing:.13em;color:#a8c6cb}
-.coast-ready #radio .radio-beam i{width:20px;height:5px;top:-4px;background:#e3bd76;box-shadow:0 0 15px rgba(227,189,118,.75)}
-.coast-ready #radio .packet-ribbon{
-  display:grid;grid-template-columns:150px 1fr 36px 115px;align-items:center;gap:1rem;
-  margin-top:2.15rem;padding:.95rem 1rem;border:1px solid rgba(109,155,165,.3);
-  background:rgba(4,20,29,.64);position:relative;
-}
-.coast-ready #radio .packet-ribbon::before{content:'TELEMETRY PACKET';position:absolute;left:.8rem;top:-.58rem;padding:0 .5rem;background:#061720;color:#78c1c8;font-size:.52rem;letter-spacing:.15em}
-.coast-ready #radio .packet-id{display:grid;grid-template-columns:auto 1fr;column-gap:.55rem;align-items:baseline}
-.coast-ready #radio .packet-id small{grid-column:1/-1;font-size:.5rem;letter-spacing:.13em;color:#82a0a7}
-.coast-ready #radio .packet-id b{font-size:.86rem;font-weight:500;color:#e3ecee;letter-spacing:.07em}
-.coast-ready #radio .packet-id span{font-size:.52rem;letter-spacing:.08em;color:#91aeb4}
-.coast-ready #radio .packet-id em{font-style:normal;color:#e3bd76}
-.coast-ready #radio .packet-fields{display:flex;justify-content:center;gap:1.25rem;flex-wrap:wrap}
-.coast-ready #radio .packet-fields span{font-size:.55rem;letter-spacing:.1em;color:#aec4c8}
-.coast-ready #radio .packet-arrow{color:#72c3cc;text-align:center;font-size:1.15rem}
-.coast-ready #radio .packet-result{text-align:right;border-left:1px solid rgba(109,155,165,.3);padding-left:1rem}
-.coast-ready #radio .packet-result small{display:block;font-size:.5rem;letter-spacing:.12em;color:#82a0a7}
-.coast-ready #radio .packet-result b{font-size:1.55rem;font-weight:400;color:#e3bd76}
-.coast-ready #radio .radio-metrics{display:grid;grid-template-columns:repeat(3,1fr);margin-top:.8rem;border-bottom:1px solid rgba(109,155,165,.25)}
-.coast-ready #radio .radio-metrics>div{display:grid;grid-template-columns:1fr auto;column-gap:.8rem;padding:.72rem .9rem;border-right:1px solid rgba(109,155,165,.25)}
-.coast-ready #radio .radio-metrics>div:last-child{border-right:0}
-.coast-ready #radio .radio-metrics small{font-size:.5rem;letter-spacing:.12em;color:#83a0a6;align-self:end}
-.coast-ready #radio .radio-metrics b{font-size:1.05rem;font-weight:400;color:#e3bd76;text-align:right}
-.coast-ready #radio .radio-metrics span{grid-column:1/-1;font-size:.5rem;color:#78939a;margin-top:.22rem}
-.coast-ready #radio .buffer-packets{min-height:0;display:flex;gap:.35rem;flex-wrap:wrap;margin-top:.55rem}
-.coast-ready #radio .buffer-packets i{font-style:normal;border:1px solid rgba(182,148,90,.55);color:#d0b67f;padding:.22rem .38rem;font-size:.48rem;letter-spacing:.08em}
-.coast-ready #radio .radio-footer{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-top:.7rem;padding-top:.65rem;border-top:1px solid rgba(109,155,165,.18)}
-.coast-ready #radio .radio-footer .micro{margin:0;text-align:right;font-size:.52rem!important;color:#789299}
-.coast-ready #radio .link-scale-label{font-size:.5rem;letter-spacing:.12em;color:#65939a}
-@media(max-width:1000px){
-  .coast-ready #radio .radio-route{grid-template-columns:120px minmax(130px,1fr) 145px;gap:1rem}
-  .coast-ready #radio .packet-ribbon{grid-template-columns:125px 1fr 24px 85px}
-}
-@media(max-width:650px){
-  .coast-ready #radio .radio-experience{margin-top:40svh;padding:.9rem .8rem .8rem}
-  .coast-ready #radio .radio-flow{gap:.35rem;font-size:.46rem;letter-spacing:.06em;flex-wrap:wrap;white-space:normal}
-  .coast-ready #radio .transmission-head{grid-template-columns:1fr;gap:.65rem}
-  .coast-ready #radio .align-right{text-align:left}
-  .coast-ready #radio .transmission-state{justify-content:flex-start}
-  .coast-ready #radio .radio-route{grid-template-columns:70px 1fr 88px;gap:.5rem;margin-top:1.5rem}
-  .coast-ready #radio .route-node .station-glyph{font-size:1.6rem}.coast-ready #radio .route-node .shore-glyph{font-size:1.9rem}
-  .coast-ready #radio .route-node b{font-size:.5rem}.coast-ready #radio .route-node small{font-size:.4rem}
-  .coast-ready #radio .packet-ribbon{grid-template-columns:1fr auto;gap:.65rem;margin-top:1.8rem}
-  .coast-ready #radio .packet-fields{grid-column:1/-1;justify-content:flex-start;gap:.55rem}
-  .coast-ready #radio .packet-arrow{display:none}
-  .coast-ready #radio .packet-result{position:absolute;right:.7rem;top:.7rem}
-  .coast-ready #radio .radio-metrics{grid-template-columns:1fr}
-  .coast-ready #radio .radio-metrics>div{border-right:0;border-bottom:1px solid rgba(109,155,165,.22)}
-  .coast-ready #radio .radio-footer{align-items:flex-start;flex-direction:column}.coast-ready #radio .radio-footer .micro{text-align:left}
-}
+/* Page 04: make the physical water crossing read as a real spatial gap. */
+.coast-ready #radio .radio-experience{position:relative}
+.coast-ready #radio .link-scale{position:absolute;left:4%;right:4%;top:18%;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:1rem;color:var(--muted);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;pointer-events:none}
+.coast-ready #radio .link-scale i{height:1px;background:linear-gradient(90deg,transparent,var(--sea),transparent);position:relative}
+.coast-ready #radio .link-scale i::after{content:' ';position:absolute;left:50%;top:-3px;width:7px;height:7px;border-right:1px solid var(--sea);border-top:1px solid var(--sea);transform:rotate(45deg)}
+.coast-ready #radio .link-scale b{grid-column:1/-1;text-align:center;font-size:.5rem;font-weight:400;letter-spacing:.16em;color:#6f9299}
+.coast-ready #radio .radio-route{margin-top:12rem}
+.coast-ready #radio .radio-beam{min-width:0}
+@media(max-width:650px){.coast-ready #radio .link-scale{top:16%;font-size:.48rem;gap:.5rem}.coast-ready #radio .link-scale b{font-size:.43rem;letter-spacing:.09em}.coast-ready #radio .radio-route{margin-top:9rem}}

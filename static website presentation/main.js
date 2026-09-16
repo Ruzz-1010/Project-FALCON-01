@@ -95,10 +95,8 @@ function updateLink(){
   $('#radio-route').classList.toggle('offline',!link.online);
   $('#interrupt').textContent=link.online?'Interrupt LoRa':'Restore LoRa';
   $('#link-label').textContent=link.online?(link.buffer.length?'LoRa / retransmitting':'LoRa / transmitting'):'LoRa / interrupted';
-  $('#link-status').textContent=link.online?(link.buffer.length?'REPLAYING ORIGINAL TIMESTAMPS':'SIMULATED LINK AVAILABLE'):'BUOY STILL SENSING · SHORE DATA STALE';
-  $('#link-state').textContent=link.online?'ONLINE':'INTERRUPTED';
-  $('#queued').textContent=String(link.buffer.length).padStart(2,'0');$('#received').textContent=String(link.received.length).padStart(2,'0');$('#received-copy').textContent=String(link.received.length).padStart(2,'0');
-  $('#packet-seq').textContent=String(link.sequence||42).padStart(4,'0');
+  $('#link-status').textContent=link.online?(link.buffer.length?'Replaying original timestamps':'Simulated link available'):'Buoy still sensing · shore data stale';
+  $('#queued').textContent=String(link.buffer.length).padStart(2,'0');$('#received').textContent=String(link.received.length).padStart(2,'0');
   $('#buffer-packets').replaceChildren(...link.buffer.slice(-10).map(p=>{const i=document.createElement('i');i.textContent=String(p.id).padStart(3,'0');i.title=`Original sample: ${p.timestamp}`;return i;}));
   $('#recovery-note').textContent=link.phase==='buffering'?'Sample times stay with queued packets. This is a simulated buffer—not proof of field recovery.':link.phase==='retransmitting'?'Backlog replay → duplicate prevention → chronological storage. Original sample times preserved.':'Hardware, legal band and site coverage pending. No range guarantee.';
   // Page 03 owns its illustrative frame; link simulation on 04–05 remains separate.
