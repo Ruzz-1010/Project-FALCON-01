@@ -5,7 +5,7 @@ export const instrumentPrefixes={
 };
 export function instrumentTargets(root){
   const result=new Map();
-  for(const [id,prefix] of Object.entries(instrumentPrefixes))root.traverse(object=>{if(!result.has(id)&&object.name.toUpperCase().startsWith(prefix))result.set(id,object);});
+  for(const [id,prefix] of Object.entries(instrumentPrefixes)){const aliases=id==='battery'?[prefix,'LIFEPO4_BATTERY','BATTERY_12V','BATTERY']: [prefix];root.traverse(object=>{if(!result.has(id)){const name=object.name.toUpperCase();if(aliases.some(alias=>name.startsWith(alias)))result.set(id,object);}});}
   return result;
 }
 export const instrumentInfo={

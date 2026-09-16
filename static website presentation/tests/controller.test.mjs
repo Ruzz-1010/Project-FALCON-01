@@ -2,13 +2,12 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {controllerInputs,controllerStep} from '../controller.js';
 import {intersects,placeCallout} from '../composition.js';
-test('Each controller input travels, timestamps, validates, packages and then exits to LoRa',()=>{
-  for(let i=0;i<4;i++){
-    const stages=[0,.45,.65,.8,.95].map(p=>controllerStep(i*4.8+p*4.8));
-    assert.deepEqual(stages.map(s=>s.stage),['ACQUIRE','TIMESTAMP','VALIDATE','PACKAGE','TO LoRa']);
-    stages.forEach(s=>{assert.equal(s.input,i);assert.equal(s.sequence,i+1);});
-  }
-  assert.equal(controllerInputs.length,4);assert.equal(controllerStep(19.2).input,0);
+test('All controller inputs travel together, then form one telemetry frame',()=>{
+  const stages=[0,.45,.65,.8,.95].map(p=>controllerStep(p*4.8));
+  assert.deepEqual(stages.map(s=>s.stage),['ACQUIRE','TIMESTAMP','VALIDATE','PACKAGE','TO LoRa']);
+  stages.forEach(s=>{assert.equal(s.input,-1);assert.deepEqual(s.inputs,controllerInputs);assert.equal(s.sequence,1);});
+  assert.equal(controllerInputs.length,4);
+  assert.equal(controllerStep(4.8).sequence,2);
 });
 test('Callouts avoid geometry, text, adjacent labels and viewport edges',()=>{
   for(const width of [390,768,1440]){

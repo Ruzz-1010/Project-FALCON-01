@@ -141,7 +141,8 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
     pageOneTargets=instrumentTargets(model);
     for(const [id,c] of Object.entries(components)) {
       const prefix=id==='esp32'?'REV5_RECTANGULAR_MARINE_ELECTRONICS_POD':c.prefix;
-      let target;model.traverse(o=>{if(!target&&o.name.toUpperCase().startsWith(prefix))target=o;});
+      const aliases=id==='battery'?[prefix,'LIFEPO4_BATTERY','BATTERY_12V','BATTERY']:[prefix];
+      let target;model.traverse(o=>{if(!target){const name=o.name.toUpperCase();if(aliases.some(alias=>name.startsWith(alias)))target=o;}});
       if(!target)continue;
       const button=document.createElement('button');button.className='hotspot';button.textContent=c.label;button.dataset.component=id;button.dataset.index=String(Object.keys(components).indexOf(id)+1).padStart(2,'0');button.setAttribute('aria-label',c.label);button.setAttribute('aria-pressed','false');
       button.addEventListener('click',()=>onPick(id));hotspotLayer.append(button);markers.set(id,{target,button});
