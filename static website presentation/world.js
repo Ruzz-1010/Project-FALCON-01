@@ -233,6 +233,7 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
       ocean.geometry=homeMix>0?homeOceanGeometry:legacyOceanGeometry;
       ocean.material.uniforms.homeWeight.value=homeMix;ocean.material.uniforms.homeProgress.value=homeProgress;
       const motion=buoyMotion(time);
+      buoy.position.x=progress>=3.65&&progress<6.15?-8:0;
       buoy.position.y=motion.heave;
       buoy.rotation.z=motion.roll;
       buoy.rotation.x=motion.pitch;

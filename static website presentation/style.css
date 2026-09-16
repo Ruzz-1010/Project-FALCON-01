@@ -114,3 +114,13 @@ main{position:relative;z-index:2;pointer-events:none}.scene{min-height:115svh;pa
 .inspection-ready #buoy .cad-caption{opacity:.35}
 @media(max-width:1000px){#inspection-panel{width:min(380px,42vw);right:4vw}}
 @media(max-width:650px){#buoy .copy h2{max-width:100%}#buoy .component-picks{max-width:100%;gap:.4rem}#buoy .component-picks button{font-size:.62rem;min-height:40px}#inspection-panel{top:auto;bottom:66px;right:4vw;left:4vw;width:auto;max-height:52svh;padding:1rem 1.1rem}#inspection-panel h2{font-size:1.6rem}#inspection-panel h3{margin-top:.8rem}}
+
+/* Page 04: make the physical water crossing read as a real spatial gap. */
+.coast-ready #radio .radio-experience{position:relative}
+.coast-ready #radio .link-scale{position:absolute;left:4%;right:4%;top:18%;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:1rem;color:var(--muted);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;pointer-events:none}
+.coast-ready #radio .link-scale i{height:1px;background:linear-gradient(90deg,transparent,var(--sea),transparent);position:relative}
+.coast-ready #radio .link-scale i::after{content:' ';position:absolute;left:50%;top:-3px;width:7px;height:7px;border-right:1px solid var(--sea);border-top:1px solid var(--sea);transform:rotate(45deg)}
+.coast-ready #radio .link-scale b{grid-column:1/-1;text-align:center;font-size:.5rem;font-weight:400;letter-spacing:.16em;color:#6f9299}
+.coast-ready #radio .radio-route{margin-top:12rem}
+.coast-ready #radio .radio-beam{min-width:0}
+@media(max-width:650px){.coast-ready #radio .link-scale{top:16%;font-size:.48rem;gap:.5rem}.coast-ready #radio .link-scale b{font-size:.43rem;letter-spacing:.09em}.coast-ready #radio .radio-route{margin-top:9rem}}

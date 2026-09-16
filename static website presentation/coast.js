@@ -4,19 +4,19 @@ import {mergeGeometries} from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 // A fictional, metre-scale coastal setting for the presentation, not a surveyed site.
 export const shoreline = z => 8.1 + Math.sin(z*.13)*1.35 + Math.cos(z*.31)*.35;
 export const groundHeight = (x,z) => Math.max(-.28, Math.min(2.6,(x-shoreline(z))*.085)) + Math.sin(z*.17)*.07;
-export const STATION = [16, groundHeight(16,0), 0];
-export const RECEIVER = [13.15, groundHeight(13.15,-1.7)+4.9, -1.7];
+export const STATION = [18, groundHeight(18,0), 0];
+export const RECEIVER = [15.2, groundHeight(15.2,-1.7)+4.9, -1.7];
 export const coastCamera = [
-  {eye:[-7,6.8,18],aim:[6,1.6,0]},
-  {eye:[3,6.2,14],aim:[11,2,-1]},
-  {eye:[8,5.9,10],aim:[15,2.8,-1]},
-  {eye:[10,5.3,6.2],aim:[15.1,3,-1.5]}
+  {eye:[-9,7.2,25],aim:[4,1.7,0]},
+  {eye:[-2,6.4,21],aim:[8,2,-.5]},
+  {eye:[7,6.0,14],aim:[15,2.8,-1]},
+  {eye:[12,5.5,8],aim:[17,3,-1.5]}
 ];
 // Page 04-only framing: broadside ocean gap, then follow the route to shore.
 // End at the original Page 05 pose. No world-space endpoint is relocated.
 export const crossingCamera=[
-  {eye:[1,5.2,23],aim:[6.2,1.7,0]},
-  {eye:[3,5.5,19],aim:[8.5,2,-.5]},
+  {eye:[-8,5.8,29],aim:[3.5,1.7,0]},
+  {eye:[-1,5.8,24],aim:[9.5,2,-.5]},
   coastCamera[2]
 ];
 
@@ -134,7 +134,7 @@ export function createCoast(){
   group.userData={poleCount:1,houseCount:homeSites.length,palmCount:treeSites.length,receiver:RECEIVER,station:STATION};
 
   const linkGroup=new THREE.Group();linkGroup.name='Physical buoy-to-shore LoRa path';group.add(linkGroup);
-  const points=[new THREE.Vector3(0,1.2,0),new THREE.Vector3(4,2,-.4),new THREE.Vector3(9,3.4,-1.1),new THREE.Vector3(...RECEIVER)];
+  const points=[new THREE.Vector3(-8,1.2,0),new THREE.Vector3(-2,1.8,-.4),new THREE.Vector3(7,3.2,-1.1),new THREE.Vector3(...RECEIVER)];
   const route=new THREE.CatmullRomCurve3(points);
   const routeGeometry=new THREE.BufferGeometry().setFromPoints(route.getPoints(100));geometries.push(routeGeometry);
   const routeMaterial=new THREE.LineBasicMaterial({color:'#70d1dc',transparent:true,opacity:.43});materials.push(routeMaterial);linkGroup.add(new THREE.Line(routeGeometry,routeMaterial));
