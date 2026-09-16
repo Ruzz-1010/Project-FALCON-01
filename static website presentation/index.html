@@ -60,14 +60,14 @@
       <div class="copy"><p class="kicker">05 / THE BAY STATION</p><h2>The thinking<br>happens <em>here.</em></h2><p>At a participating shore facility.<br>Receive. Retain. Process.</p><p class="micro">Shore mini PC — model TBD.<br>Internet backhaul is separate from LoRa.</p></div>
       <div class="shore-system engineering">
   <div class="bay-inspect-head">
-    <button id="open-bay">Inspect inside ↗</button>
-    <p>See the shore computer and LoRa receiver.</p>
+    <button id="open-bay">Inspect Bay Station ↗</button>
+    <p>Click to see the shore computer and LoRa receiver.</p>
   </div>
   <div class="bay-flow" aria-label="What the Bay Station does">
-    <span class="bay-flow-label">WHAT HAPPENS TO THE DATA</span>
+    <span class="bay-flow-label">HOW THE BAY STATION HANDLES DATA</span>
     <div id="bay-menu-home"><nav id="bay-menu" aria-label="Bay Station functional stages"></nav></div>
   </div>
-  <p class="bay-explain-line">LoRa data arrives from the buoy → the station checks and stores it → processing and AI prediction turn it into information → the dashboard presents the result.</p>
+  <p class="bay-explain-line">LoRa receives the buoy packet → the station validates and stores it → processing derives the observations → AI predicts the next state → the dashboard presents the result.</p>
   <p class="coastal-reference micro">Illustrative internal layout · shared shore computer. Internet backhaul belongs on shore.</p>
 </div>
       <aside id="bay-panel" hidden aria-labelledby="bay-title"><button id="close-bay">← Return to Bay Station</button><div id="bay-explanation"><p class="kicker">SHORE-SIDE FUNCTION</p><h3 id="bay-title" tabindex="-1"></h3><p id="bay-detail"></p><p id="bay-note" class="micro"></p></div><div id="bay-panel-menu"></div></aside>
