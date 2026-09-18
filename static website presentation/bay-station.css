@@ -27,3 +27,63 @@
   #shore #bay-panel{top:auto;bottom:72px;left:5vw;right:5vw;width:auto;max-height:43svh;padding:1rem}
   #bay-panel #bay-menu{display:grid;grid-template-columns:1fr 1fr;column-gap:.8rem}#bay-panel h3{font-size:1.3rem}#bay-panel #close-bay{margin-bottom:.7rem}
 }
+
+/* Page 05 presentation refresh: readable story layer + clear inspection mode. */
+.coast-ready #shore{min-height:145svh;padding-top:15svh}
+.coast-ready #shore .bay-intro{width:min(510px,42vw);max-width:510px;padding:0;background:linear-gradient(90deg,#061722f5 78%,transparent);}
+.coast-ready #shore .bay-intro-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1.15rem}
+.coast-ready #shore .bay-intro-head .kicker{margin:0}
+.coast-ready #shore .bay-status,.coast-ready #shore .system-state{font-size:.56rem;letter-spacing:.13em;color:#b8cdcf;white-space:nowrap}
+.coast-ready #shore .bay-status i,.coast-ready #shore .system-state i{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--sea);box-shadow:0 0 9px var(--sea);margin-right:.4rem}
+.coast-ready #shore .bay-intro h2{font-size:clamp(3rem,5vw,5.2rem);line-height:1.02;margin:0 0 1.1rem;letter-spacing:-.045em}
+.coast-ready #shore .bay-lead{max-width:420px;font-size:1rem;line-height:1.7;color:#c1d0d0;margin-bottom:1.4rem}
+.coast-ready #shore .bay-sequence{display:grid;grid-template-columns:repeat(3,1fr);max-width:460px;border-top:1px solid #78959545;border-bottom:1px solid #78959545;margin:1.1rem 0 1rem}
+.coast-ready #shore .bay-sequence>div{padding:.85rem .75rem .9rem 0;border-right:1px solid #78959535}
+.coast-ready #shore .bay-sequence>div:last-child{border-right:0;padding-left:.75rem}
+.coast-ready #shore .bay-sequence b{display:block;color:var(--gold);font-size:.62rem;letter-spacing:.14em;margin-bottom:.4rem}
+.coast-ready #shore .bay-sequence span{display:block;color:#e8f1ef;font-size:.68rem;letter-spacing:.12em}
+.coast-ready #shore .bay-sequence small{display:block;color:var(--muted);font-size:.62rem;margin-top:.3rem}
+.coast-ready #shore .shore-system{width:min(760px,62vw);max-width:760px;margin-top:45svh;padding:1rem 0 0;background:linear-gradient(transparent,#061b26d9);border-top:1px solid #78959555}
+.coast-ready #shore .shore-system-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:.8rem}
+.coast-ready #shore .system-label{display:block;font-size:.53rem;letter-spacing:.16em;color:var(--sea);margin-bottom:.28rem}
+.coast-ready #shore .shore-system-head strong{display:block;font-size:.72rem;font-weight:500;color:#d9e5e3}
+.coast-ready #shore #open-bay{margin-top:.4rem;border-color:#89b1b060;padding:.72rem 1rem;font-size:.8rem;color:#edf4f1;background:#061a24a8}
+.coast-ready #shore #open-bay span{color:var(--sea);margin-left:.35rem}
+.coast-ready #shore .shore-system>.micro{margin:.55rem 0 .85rem}
+.coast-ready #shore .shore-system-foot{display:flex;justify-content:space-between;gap:1rem;border-top:1px solid #78959532;margin-top:.85rem;padding-top:.65rem;font-size:.5rem;letter-spacing:.13em;color:#719094}
+#shore #bay-panel{position:fixed;z-index:18;right:4vw;top:14svh;width:min(430px,35vw);max-height:76svh;overflow:auto;padding:1.25rem 1.35rem 1.1rem;background:linear-gradient(145deg,#061b26f5,#07141cf7);border:1px solid #8eb8b95a;border-radius:2px;box-shadow:0 16px 45px #0008;scrollbar-width:thin}
+#shore .bay-panel-top{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #78959538;padding-bottom:.75rem;margin-bottom:1.1rem}
+#shore .panel-kicker{font-size:.53rem;letter-spacing:.15em;color:var(--sea)}
+#bay-panel #close-bay{background:transparent;border:0;padding:.25rem 0;font-size:.72rem;color:#b9cccb}
+#bay-panel #bay-explanation .kicker{font-size:.55rem;margin-bottom:.65rem;color:var(--gold)}
+#bay-panel h3{font-size:1.8rem;line-height:1.15;margin:0 0 .7rem;color:#edf4f1}
+#bay-panel p{font-size:.86rem;line-height:1.65;color:#c1d0d0;margin:.45rem 0}
+#bay-panel #bay-note{font-size:.65rem;line-height:1.5;color:#7f9b9f;margin-top:.8rem}
+#bay-panel .bay-hardware{display:grid;grid-template-columns:repeat(4,1fr);gap:.4rem;margin:1.1rem 0;padding:0;border-top:1px solid #78959538;border-bottom:1px solid #78959538}
+#bay-panel .bay-hardware span{padding:.7rem .3rem;text-align:center;font-size:.49rem;letter-spacing:.1em;color:#aac2c2;border-right:1px solid #7895952c}
+#bay-panel .bay-hardware span:last-child{border-right:0}
+#bay-panel .bay-panel-flow{display:flex;align-items:center;justify-content:center;gap:.45rem;flex-wrap:wrap;padding:.65rem .3rem;background:#0a202a99;border:1px solid #7895952b;margin-bottom:.8rem;font-size:.52rem;letter-spacing:.09em;color:#b8cccc}
+#bay-panel .bay-panel-flow i{font-style:normal;color:var(--sea)}
+#bay-panel-menu #bay-menu{display:grid;grid-template-columns:1fr 1fr;gap:.35rem .7rem}
+#bay-panel-menu #bay-menu button{background:transparent;border:1px solid #7895952f;border-radius:2px;min-height:42px;padding:.55rem .65rem;text-align:left;font-size:.63rem;color:#b8cdcf}
+#bay-panel-menu #bay-menu button::after{content:' →';color:var(--sea);margin-left:.3rem}
+#bay-panel-menu #bay-menu button[aria-pressed=true]{border-color:#7eb8b766;color:#f0f5f2;background:#0b263199}
+#bay-panel-menu #bay-menu button.receiving-stage{border-color:#b9945b80;color:#f0ddbb}
+.bay-inspecting #shore>.bay-intro,.bay-inspecting #shore>.shore-system{visibility:hidden;pointer-events:none}
+.bay-inspecting #coast-receiver-label{visibility:hidden}
+@media(max-width:900px){
+  .coast-ready #shore .bay-intro{width:46vw}
+  .coast-ready #shore .shore-system{width:67vw}
+  #shore #bay-panel{right:3vw;width:40vw}
+}
+@media(max-width:650px){
+  .coast-ready #shore{padding-top:14svh;min-height:165svh}
+  .coast-ready #shore .bay-intro{width:100%;max-width:none;background:linear-gradient(#061722ee,transparent);padding:0 0 1rem}
+  .coast-ready #shore .bay-intro h2{font-size:2.8rem}
+  .coast-ready #shore .bay-sequence{max-width:none}
+  .coast-ready #shore .shore-system{width:100%;margin-top:43svh}
+  .coast-ready #shore .shore-system-foot{font-size:.44rem}
+  #shore #bay-panel{top:auto;bottom:70px;left:4vw;right:4vw;width:auto;max-height:57svh;padding:1rem}
+  #bay-panel h3{font-size:1.45rem}
+  #bay-panel .bay-hardware span{font-size:.44rem}
+}
