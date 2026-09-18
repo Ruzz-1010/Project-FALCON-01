@@ -54,22 +54,38 @@
     </section>
     <section class="scene wide-scene" id="radio" data-chapter="4">
       <div class="copy"><p class="kicker">04 / CROSSING THE WATER</p><h2>A small packet.<br><em>A vital connection.</em></h2><p>LoRa carries observations from buoy to shore.<br>No direct buoy-to-Internet connection.</p></div>
-      <div class="radio-experience"><div class="link-scale" aria-label="Presentation scale indicator"><span>OFFSHORE BUOY</span><i></i><span>SHORE RECEIVER</span><b>WIDE WATER GAP · NOT TO GEOGRAPHIC SCALE</b></div><div class="radio-route" id="radio-route"><div><span class="station-glyph">◉</span><b>BUOY</b><small>ESP32 / LoRa TX</small></div><div class="radio-beam"><i></i><i></i><i></i><span id="link-label">LoRa / transmitting</span></div><div><span class="station-glyph shore-glyph">⌁</span><b>BAY STATION</b><small>Shore / LoRa RX</small></div></div><div class="link-controls"><button id="interrupt">Interrupt LoRa</button><span id="link-status" role="status">Simulated link available</span></div><div class="buffer-strip"><span>BUOY BUFFER <b id="queued">00</b></span><div id="buffer-packets" aria-label="Queued packet IDs"></div><span>SHORE RECEIVED <b id="received">00</b></span></div><p class="micro" id="recovery-note">Hardware, legal band and site coverage pending. No range guarantee.</p></div>
+      <div class="radio-experience">
+        <div class="radio-flow" aria-label="Telemetry path">
+          <span class="active">OBSERVE</span><i>→</i><span>PACKAGE</span><i>→</i><strong>LoRa TX</strong><i>→</i><strong>LoRa RX</strong><i>→</i><span>SHORE PROCESSING</span>
+        </div>
+        <div class="transmission-head">
+          <div><small>OFFSHORE NODE</small><b>ESP32 + LoRa TX</b></div>
+          <div class="transmission-state"><span></span><small id="link-status" role="status">SIMULATED LINK AVAILABLE</small><button id="interrupt">Interrupt LoRa</button></div>
+          <div class="align-right"><small>SHORE NODE</small><b>LoRa RX · BAY STATION</b></div>
+        </div>
+        <div class="radio-route" id="radio-route">
+          <div class="route-node"><span class="station-glyph">◉</span><b>BUOY</b><small>TELEMETRY ORIGIN</small></div>
+          <div class="radio-beam"><i></i><i></i><i></i><span id="link-label">LoRa / transmitting</span></div>
+          <div class="route-node"><span class="station-glyph shore-glyph">⌁</span><b>SHORE RECEIVER</b><small>PACKET ARRIVAL</small></div>
+        </div>
+        <div class="packet-ribbon" aria-label="Telemetry packet contents">
+          <div class="packet-id"><small>FRAME</small><b>FALCON-01</b><span>SEQ <em id="packet-seq">0042</em></span></div>
+          <div class="packet-fields"><span>PRESSURE</span><span>WIND</span><span>GPS</span><span>POWER / HEALTH</span></div>
+          <div class="packet-arrow">→</div>
+          <div class="packet-result"><small>RECEIVED</small><b id="received">00</b></div>
+        </div>
+        <div class="radio-metrics">
+          <div><small>BUOY BUFFER</small><b id="queued">00</b><span>packets waiting</span></div>
+          <div><small>LINK STATE</small><b id="link-state">ONLINE</b><span>LoRa primary path</span></div>
+          <div><small>SHORE RECEIVED</small><b id="received-copy">00</b><span>accepted frames</span></div>
+        </div>
+        <div id="buffer-packets" class="buffer-packets" aria-label="Queued packet IDs"></div>
+        <div class="radio-footer"><span class="link-scale-label">WIDE WATER GAP · NOT TO GEOGRAPHIC SCALE</span><p class="micro" id="recovery-note">Hardware, legal band and site coverage pending. No range guarantee.</p></div>
+      </div>
     </section>
     <section class="scene" id="shore" data-chapter="5">
       <div class="copy"><p class="kicker">05 / THE BAY STATION</p><h2>The thinking<br>happens <em>here.</em></h2><p>At a participating shore facility.<br>Receive. Retain. Process.</p><p class="micro">Shore mini PC — model TBD.<br>Internet backhaul is separate from LoRa.</p></div>
-      <div class="shore-system engineering">
-  <div class="bay-inspect-head">
-    <button id="open-bay">Inspect Bay Station ↗</button>
-    <p>Click to see the shore computer and LoRa receiver.</p>
-  </div>
-  <div class="bay-flow" aria-label="What the Bay Station does">
-    <span class="bay-flow-label">HOW THE BAY STATION HANDLES DATA</span>
-    <div id="bay-menu-home"><nav id="bay-menu" aria-label="Bay Station functional stages"></nav></div>
-  </div>
-  <p class="bay-explain-line">LoRa receives the buoy packet → the station validates and stores it → processing derives the observations → AI predicts the next state → the dashboard presents the result.</p>
-  <p class="coastal-reference micro">Illustrative internal layout · shared shore computer. Internet backhaul belongs on shore.</p>
-</div>
+      <div class="shore-system engineering"><button id="open-bay">Inspect Bay Station ↗</button><p class="micro">Select the building to look inside.</p><div id="bay-menu-home"><nav id="bay-menu" aria-label="Bay Station functional stages"></nav></div><p class="coastal-reference micro">Illustrative internal layout · shared shore computer<br>Internet backhaul belongs on shore.</p></div>
       <aside id="bay-panel" hidden aria-labelledby="bay-title"><button id="close-bay">← Return to Bay Station</button><div id="bay-explanation"><p class="kicker">SHORE-SIDE FUNCTION</p><h3 id="bay-title" tabindex="-1"></h3><p id="bay-detail"></p><p id="bay-note" class="micro"></p></div><div id="bay-panel-menu"></div></aside>
     </section>
     <section class="scene wide-scene" id="waves" data-chapter="6">
