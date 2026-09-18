@@ -5,12 +5,8 @@
   <meta name="theme-color" content="#06151e">
   <meta name="description" content="Travel through Project FALCON-01. An interactive, simulated engineering journey from ocean pressure to shore-based intelligence.">
   <title>FALCON-01 — From ocean to insight</title>
-  <link rel="stylesheet" href="./style.css">
-  <link rel="stylesheet" href="./opening-polish.css">
-  <link rel="stylesheet" href="./controller-polish.css">
-  <link rel="stylesheet" href="./bay-station.css">
-  <link rel="stylesheet" href="./wave-estimation.css">
-  <link rel="stylesheet" href="./home-presentation.css">
+  <script type="module" crossorigin src="./assets/index-DdXvflCB.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-Cx-u7FYD.css">
 </head>
 <body>
   <a class="skip" href="#ocean">Skip to story</a>
@@ -34,9 +30,9 @@
   <main>
     <section class="scene opening" id="ocean" data-chapter="0">
       <div class="home-stage">
-        <div class="copy home-copy"><p class="kicker">THE OCEAN NEVER STOPS SPEAKING.</p><h1>FALCON-01.<br><em>Listen to<br>the ocean.</em></h1><p class="intro">PROJECT FALCON-01<br>From ocean signals to shore-based insight.</p><p class="home-explanation">An affordable solar-powered coastal observation system that collects ocean and environmental observations offshore and carries them to a shore-based Bay Station for processing and AI-assisted short-term prediction.</p><div class="home-system-strip" aria-label="FALCON system summary"><span>OFFSHORE</span><i>•</i><span>ESP32</span><i>•</i><span>LoRa</span><i>•</i><span>SHORE-BASED</span></div><a id="begin-journey" class="enter" href="#buoy">Begin the journey <span>↓</span></a></div>
-        <div class="home-explore"><span class="home-explore-label">3D BUOY INSPECTION</span><button id="explore-home" type="button" aria-pressed="false"><span>Explore the buoy</span><b>↗</b></button><button id="reset-home" type="button" hidden>Reset view <b>↙</b></button><p id="home-orbit-help" hidden>Drag to orbit · Scroll to zoom · Esc to return</p><p id="home-orbit-status" role="status"></p></div>
-        <div class="home-observation"><span>OBSERVATION NODE</span><small>Pressure · Wind · GPS</small></div><details class="home-college"><summary>FULLBRIGHT COLLEGE <span>+</span></summary><p>AI-POWERED COASTAL OBSERVATION</p></details>
+        <div class="copy home-copy"><p class="kicker">THE OCEAN NEVER STOPS SPEAKING.</p><h1>FALCON-01.<br><em>Listen to<br>the ocean.</em></h1><p class="intro">PROJECT FALCON-01<br>From ocean signals to shore-based insight.</p><p class="home-explanation">An affordable solar-powered coastal observation system that collects ocean and environmental observations offshore and carries them to a shore-based Bay Station for processing and AI-assisted short-term prediction.</p><a id="begin-journey" class="enter" href="#buoy">Begin the journey <span>↓</span></a></div>
+        <div class="home-explore"><button id="explore-home" type="button" aria-pressed="false">EXPLORE THE BUOY ↗</button><button id="reset-home" type="button" hidden>RESET VIEW ↙</button><p id="home-orbit-help" hidden>Drag to orbit · Scroll to zoom · Esc to return</p><p id="home-orbit-status" role="status"></p></div>
+        <details class="home-college"><summary>FULLBRIGHT COLLEGE <span>+</span></summary><p>AI-POWERED COASTAL OBSERVATION</p></details>
         <div class="home-shot" hidden><span id="home-shot-label">01 / THE OCEAN</span></div>
       </div>
     </section>
@@ -49,8 +45,8 @@
       <p class="source-caption">PHYSICAL SOURCE <span>→</span> RAW SIGNAL <span>→</span> ACQUIRED DATA</p>
     </section>
     <section class="scene diagram-scene" id="controller" data-chapter="3">
-      <div class="copy"><p class="kicker">03 / THE CONTROLLER</p><h2>Signals become<br><em>information.</em></h2><p>Acquire all. Timestamp together. Validate. Package one frame.</p><p class="micro">ESP32 handles sensing and telemetry.<br>No main AI computer on the buoy.</p></div>
-      <div class="chip-stage engineering"><svg viewBox="0 0 720 470" aria-label="Sensor signals entering the ESP32 and leaving as a timestamped packet" role="img"><defs><pattern id="pins" width="22" height="20" patternUnits="userSpaceOnUse"><rect width="7" height="18" fill="#99bac1"/></pattern></defs><g class="traces"><path d="M30 85H145V175H255"/><path d="M30 190H115V215H255"/><path d="M30 295H145V255H255"/><path d="M30 400H185V295H255"/><path d="M465 235H570V340H690"/></g><g class="trace-packets"><path d="M30 85H145V175H255"/><path d="M30 190H115V215H255"/><path d="M30 295H145V255H255"/><path d="M30 400H185V295H255"/><path d="M465 235H570V340H690"/></g><rect x="274" y="107" width="178" height="23" fill="url(#pins)"/><rect x="274" y="342" width="178" height="23" fill="url(#pins)"/><rect class="chip-body" x="255" y="130" width="210" height="210" rx="8"/><rect class="chip-inner" x="275" y="150" width="170" height="170" rx="2"/><text class="chip-title" x="360" y="225" text-anchor="middle">ESP32</text><text x="360" y="255" text-anchor="middle">SENSOR CONTROLLER</text><text x="30" y="65">PRESSURE</text><text x="30" y="170">WIND</text><text x="30" y="275">GPS</text><text x="30" y="380">POWER / HEALTH</text><text x="566" y="373">TO LoRa →</text></svg><div class="packet-console"><span class="console-head">TELEMETRY FRAME / 4 INPUTS IN PARALLEL</span><code id="packet-frame">FALCON-01 · seq 0001<br>sample time · schema · quality flags</code></div></div>
+      <div class="copy"><p class="kicker">03 / THE CONTROLLER</p><h2>Signals become<br><em>information.</em></h2><p>Acquire. Timestamp. Validate. Package.</p><p class="micro">ESP32 handles sensing and telemetry.<br>No main AI computer on the buoy.</p></div>
+      <div class="chip-stage engineering"><svg viewBox="0 0 720 470" aria-label="Sensor signals entering the ESP32 and leaving as a timestamped packet" role="img"><defs><pattern id="pins" width="22" height="20" patternUnits="userSpaceOnUse"><rect width="7" height="18" fill="#99bac1"/></pattern></defs><g class="traces"><path d="M30 85H145V175H255"/><path d="M30 190H115V215H255"/><path d="M30 295H145V255H255"/><path d="M30 400H185V295H255"/><path d="M465 235H570V340H690"/></g><g class="trace-packets"><path d="M30 85H145V175H255"/><path d="M30 190H115V215H255"/><path d="M30 295H145V255H255"/><path d="M30 400H185V295H255"/><path d="M465 235H570V340H690"/></g><rect x="274" y="107" width="178" height="23" fill="url(#pins)"/><rect x="274" y="342" width="178" height="23" fill="url(#pins)"/><rect class="chip-body" x="255" y="130" width="210" height="210" rx="8"/><rect class="chip-inner" x="275" y="150" width="170" height="170" rx="2"/><text class="chip-title" x="360" y="225" text-anchor="middle">ESP32</text><text x="360" y="255" text-anchor="middle">SENSOR CONTROLLER</text><text x="30" y="65">PRESSURE</text><text x="30" y="170">WIND</text><text x="30" y="275">GPS</text><text x="30" y="380">POWER / HEALTH</text><text x="566" y="373">TO LoRa →</text></svg><div class="packet-console"><span class="console-head">TELEMETRY FRAME / ILLUSTRATIVE</span><code id="packet-frame">FALCON-01 · seq 0001<br>sample time · schema · quality flags</code></div></div>
     </section>
     <section class="scene wide-scene" id="radio" data-chapter="4">
       <div class="copy"><p class="kicker">04 / CROSSING THE WATER</p><h2>A small packet.<br><em>A vital connection.</em></h2><p>LoRa carries observations from buoy to shore.<br>No direct buoy-to-Internet connection.</p></div>
@@ -84,46 +80,9 @@
       </div>
     </section>
     <section class="scene" id="shore" data-chapter="5">
-      <div class="copy bay-intro">
-        <div class="bay-intro-head"><p class="kicker">05 / THE BAY STATION</p><span class="bay-status"><i></i> SHORE PROCESSING</span></div>
-        <p class="bay-overline">DATA RECEIVED → INSIGHT DELIVERED</p>
-        <h2>Where the ocean<br>becomes <em>information.</em></h2>
-        <p class="bay-lead">LoRa telemetry arrives here, where the shore computer validates, stores, processes and prepares it for analysis.</p>
-        <div class="bay-sequence" aria-label="Bay Station processing summary">
-          <div><b>01</b><span>RECEIVE</span><small>LoRa telemetry</small></div>
-          <div><b>02</b><span>PROCESS</span><small>Quality + storage</small></div>
-          <div><b>03</b><span>INSIGHT</span><small>AI + dashboard</small></div>
-        </div>
-        <div class="bay-architecture-note"><i></i><span>One shared shore computer</span><small>Software stages run locally; Internet backhaul stays on shore.</small></div>
-      </div>
-      <div class="shore-system engineering">
-        <div class="shore-system-head"><div><span class="system-label">BAY STATION / DATA PATH</span><strong>LoRa received → local processing → operator view</strong></div><span class="system-state"><i></i> SIMULATED</span></div>
-        <div class="shore-system-rail" aria-hidden="true"><span>LoRa RX</span><i>→</i><span>VALIDATE</span><i>→</i><span>STORE</span><i>→</i><span>PROCESS</span><i>→</i><span>AI</span><i>→</i><span>DISPLAY</span></div>
-        <button id="open-bay" class="bay-inspect-cta"><span class="bay-inspect-icon">⌕</span><strong>Inspect the Bay Station</strong><span class="bay-inspect-arrow">↗</span></button>
-        <p class="micro">Open the cutaway view and follow each physical element to its shore-side role.</p>
-        <div id="bay-menu-home"><nav id="bay-menu" aria-label="Bay Station functional stages"></nav></div>
-        <div class="shore-system-foot"><span>ILLUSTRATIVE INTERNAL LAYOUT</span><span>PHYSICAL EQUIPMENT + SOFTWARE FLOW</span></div>
-      </div>
-      <aside id="bay-panel" hidden aria-labelledby="bay-title">
-        <div class="bay-panel-top">
-          <div><span class="panel-kicker">05 / BAY STATION</span><strong class="panel-mode">INTERNAL CUTAWAY · LIVE GUIDE</strong></div>
-          <button id="close-bay">← Exit inspection</button>
-        </div>
-        <div class="bay-inspect-headline">
-          <span class="bay-inspect-chip">SYSTEM INSPECTION</span>
-          <span class="bay-inspect-hint">Select a highlighted element</span>
-        </div>
-        <div class="bay-selection-head">
-          <div class="bay-step-mark"><span id="bay-step-index">01</span><small id="bay-step-kind">PHYSICAL</small></div>
-          <div><p class="kicker">SELECTED ELEMENT</p><h3 id="bay-title" tabindex="-1"></h3></div>
-        </div>
-        <div id="bay-explanation"><p id="bay-detail"></p><p id="bay-note" class="micro"></p></div>
-        <div class="bay-live-path"><span>INPUT</span><i>→</i><strong id="bay-path-current">RECEIVE</strong><i>→</i><span>SHORE PROCESSING</span></div>
-        <div class="bay-divider-label"><span>INSPECT</span><i></i></div>
-        <div id="bay-panel-menu"></div>
-        <div class="bay-hardware-line" aria-label="Physical Bay Station equipment"><span>01 LoRa RX</span><span>02 Shore computer</span><span>03 UPS</span><span>04 Display</span></div>
-        <div class="bay-inspect-note"><b>ARCHITECTURE NOTE</b><span>LoRa reception, SQLite storage, processing and AI prediction are functions of the shared shore computer. The room layout is illustrative.</span></div>
-      </aside>
+      <div class="copy"><p class="kicker">05 / THE BAY STATION</p><h2>The thinking<br>happens <em>here.</em></h2><p>At a participating shore facility.<br>Receive. Retain. Process.</p><p class="micro">Shore mini PC — model TBD.<br>Internet backhaul is separate from LoRa.</p></div>
+      <div class="shore-system engineering"><button id="open-bay">Inspect Bay Station ↗</button><p class="micro">Select the building to look inside.</p><div id="bay-menu-home"><nav id="bay-menu" aria-label="Bay Station functional stages"></nav></div><p class="coastal-reference micro">Illustrative internal layout · shared shore computer<br>Internet backhaul belongs on shore.</p></div>
+      <aside id="bay-panel" hidden aria-labelledby="bay-title"><button id="close-bay">← Return to Bay Station</button><div id="bay-explanation"><p class="kicker">SHORE-SIDE FUNCTION</p><h3 id="bay-title" tabindex="-1"></h3><p id="bay-detail"></p><p id="bay-note" class="micro"></p></div><div id="bay-panel-menu"></div></aside>
     </section>
     <section class="scene wide-scene" id="waves" data-chapter="6">
       <div class="copy"><p class="kicker">06 / THE TRANSFORMATION</p><h2>Pressure is the signal.<br><em>Wave height is the estimate.</em></h2></div>
@@ -147,6 +106,5 @@
   </main>
   <footer class="journey-nav"><span id="chapter-number">01 / 10</span><nav id="chapter-nav" aria-label="Story chapters"></nav><span id="chapter-name">Ocean</span><div id="journey-progress"></div></footer>
   <noscript><div class="no-script">Enable JavaScript for the animated experience. The story text remains available below.</div></noscript>
-  <script type="module" src="./main.js"></script>
 </body>
 </html>
