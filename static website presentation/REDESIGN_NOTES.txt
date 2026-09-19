@@ -1,0 +1,6 @@
+FALCON-01 Modern Cinematic Presentation pass.
+This pass introduces a presentation-first visual layer while preserving:
+- original CAD assets
+- thesis-safe terminology
+- existing interaction architecture
+Further 3D scene choreography can be iterated separately.

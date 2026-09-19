@@ -209,3 +209,77 @@ main{position:relative;z-index:2;pointer-events:none}.scene{min-height:115svh;pa
   .coast-ready #radio .radio-metrics>div{border-right:0;border-bottom:1px solid #6d9ba52b}
   .coast-ready #radio .radio-footer{align-items:flex-start;flex-direction:column}.coast-ready #radio .radio-footer .micro{text-align:left}
 }
+
+/* FALCON-01 PRESENTATION REDESIGN v2
+   CAD-first engineering presentation layer.
+   Keeps original 3D assets visible and avoids obscuring geometry.
+*/
+:root {
+  --falcon-cyan: #69e7ff;
+  --falcon-orange: #ff9b45;
+}
+
+body {
+  background: radial-gradient(circle at 50% 35%, rgba(0,90,120,.22), transparent 42%), #020b12;
+}
+
+#world {
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+.atmosphere {
+  background: radial-gradient(circle at center, transparent 45%, rgba(0,10,18,.28));
+  pointer-events:none;
+}
+
+.scene .copy {
+  max-width: 420px;
+  background: transparent;
+  backdrop-filter: none;
+}
+
+.scene .copy h1,
+.scene .copy h2 {
+  letter-spacing: -.035em;
+  text-shadow: 0 8px 30px rgba(0,0,0,.55);
+}
+
+.cad-caption,
+#inspection-panel {
+  background: rgba(2,14,22,.78);
+  border: 1px solid rgba(105,231,255,.22);
+}
+
+#inspection-panel {
+  box-shadow: 0 0 60px rgba(0,0,0,.4);
+}
+
+.cad-caption::before,
+#inspection-panel::before {
+  content: 'ENGINEERING INSPECTION';
+  display:block;
+  color: var(--falcon-cyan);
+  font-size:.65rem;
+  letter-spacing:.18em;
+  margin-bottom:.5rem;
+}
+
+.component-picks button,
+.text-button,
+.enter {
+  border-color: rgba(105,231,255,.35);
+  transition: transform .25s ease, border-color .25s ease;
+}
+
+.component-picks button:hover,
+.text-button:hover,
+.enter:hover {
+  transform: translateY(-2px);
+  border-color: var(--falcon-cyan);
+}
+
+/* keep CAD as hero: no presentation overlays above the model */
+#world canvas {
+  image-rendering: auto;
+}
