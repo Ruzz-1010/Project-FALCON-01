@@ -23,21 +23,16 @@ function openBay(id='station'){
   if(!world?.inspectBay?.(id)){ $('#open-bay').textContent='3D unavailable — reload to inspect';return; }
   bayTrigger=document.activeElement;bayInspecting=true;document.body.classList.add('bay-inspecting');
   $('#bay-panel').hidden=false;const info=baySteps[id==='validate'?'computer':id];$('#bay-title').textContent=info.title;$('#bay-detail').textContent=info.detail;$('#bay-note').textContent=info.note;
-  const displayId=id==='station'?'01':String(bayPipeline.indexOf(id)+2).padStart(2,'0');
-  const isPhysical=id==='station'||id==='rx'||id==='dashboard';
-  $('#bay-step-index').textContent=displayId;$('#bay-step-kind').textContent=isPhysical?'PHYSICAL':'SOFTWARE';
   $('#bay-menu [data-bay="validate"]').textContent='Bay Station computer';
-  $('#bay-panel-menu').append($('#bay-menu'));$('#bay-explanation').hidden=false;
-  $('#bay-path-current').textContent=({station:'RECEIVE → PROCESS → INSIGHT',rx:'RECEIVE',validate:'AUTHENTICATE / VALIDATE',sqlite:'STORE',processing:'PROCESS',ai:'PREDICT',dashboard:'DISPLAY'})[id]||'RECEIVE';
+  $('#bay-panel-menu').append($('#bay-menu'));$('#bay-explanation').hidden=true;
   document.querySelectorAll('[data-bay]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.bay===id)));
 }
 function closeBay(restore=true){
   if(!bayInspecting)return;bayInspecting=false;document.body.classList.remove('bay-inspecting');$('#bay-panel').hidden=true;$('#bay-menu-home').append($('#bay-menu'));world?.returnToBay?.();
   $('#bay-menu [data-bay="validate"]').textContent=baySteps.validate.title;
-  $('#bay-path-current').textContent='RECEIVE';
   if(restore&&bayTrigger?.isConnected)bayTrigger.focus({preventScroll:true});
 }
-for(const id of bayPipeline){const b=document.createElement('button');b.dataset.bay=id;b.textContent=({rx:'LoRa receiver',validate:'Bay Station computer',sqlite:'Local storage',processing:'Processing',ai:'AI prediction',dashboard:'Dashboard / alerts'})[id]||baySteps[id].title;b.setAttribute('aria-pressed','false');b.addEventListener('click',()=>openBay(id));$('#bay-menu').append(b);}
+for(const id of bayPipeline){const b=document.createElement('button');b.dataset.bay=id;b.textContent=baySteps[id].title;b.setAttribute('aria-pressed','false');b.addEventListener('click',()=>openBay(id));$('#bay-menu').append(b);}
 $('#open-bay').addEventListener('click',()=>openBay());$('#close-bay').addEventListener('click',()=>closeBay());
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeBay();});
 const pointer={x:0,y:0};
@@ -100,10 +95,8 @@ function updateLink(){
   $('#radio-route').classList.toggle('offline',!link.online);
   $('#interrupt').textContent=link.online?'Interrupt LoRa':'Restore LoRa';
   $('#link-label').textContent=link.online?(link.buffer.length?'LoRa / retransmitting':'LoRa / transmitting'):'LoRa / interrupted';
-  $('#link-status').textContent=link.online?(link.buffer.length?'REPLAYING ORIGINAL TIMESTAMPS':'SIMULATED LINK AVAILABLE'):'BUOY STILL SENSING · SHORE DATA STALE';
-  $('#link-state').textContent=link.online?'ONLINE':'INTERRUPTED';
-  $('#queued').textContent=String(link.buffer.length).padStart(2,'0');$('#received').textContent=String(link.received.length).padStart(2,'0');$('#received-copy').textContent=String(link.received.length).padStart(2,'0');
-  $('#packet-seq').textContent=String(link.sequence||42).padStart(4,'0');
+  $('#link-status').textContent=link.online?(link.buffer.length?'Replaying original timestamps':'Simulated link available'):'Buoy still sensing · shore data stale';
+  $('#queued').textContent=String(link.buffer.length).padStart(2,'0');$('#received').textContent=String(link.received.length).padStart(2,'0');
   $('#buffer-packets').replaceChildren(...link.buffer.slice(-10).map(p=>{const i=document.createElement('i');i.textContent=String(p.id).padStart(3,'0');i.title=`Original sample: ${p.timestamp}`;return i;}));
   $('#recovery-note').textContent=link.phase==='buffering'?'Sample times stay with queued packets. This is a simulated buffer—not proof of field recovery.':link.phase==='retransmitting'?'Backlog replay → duplicate prevention → chronological storage. Original sample times preserved.':'Hardware, legal band and site coverage pending. No range guarantee.';
   // Page 03 owns its illustrative frame; link simulation on 04–05 remains separate.
@@ -190,7 +183,7 @@ function frame(now){
   world?.update({...state,time:elapsed,dt,moving,pointer,selected,linkOnline:link.online,homeProgress});
   if(active===2&&moving)acquisition.draw(elapsed);
   if(active===3)controller.draw(elapsed);
-  if(active===5){const s=arrivalPhase(elapsed,link.online);document.querySelectorAll('[data-bay]').forEach((b,i)=>b.classList.toggle('receiving-stage',i===s.stage));}
+  if(active===5){const s=arrivalPhase(elapsed,link.online);document.querySelectorAll('[data-bay]').forEach((b,i)=>b.classList.toggle('receiving-stage',i===s.stage));const rail=$('#shore .shore-system-rail');if(rail){const spans=rail.querySelectorAll('span');spans.forEach((span,i)=>span.classList.toggle('active',i===s.stage));}}
   if(active===6)waveEstimation.update(elapsed,dt,state.progress-6,moving);
   if(active===7&&moving)drawPrediction(dt);
   if(moving&&active>=3&&active<=5&&elapsed-lastPacket>1.5){lastPacket=elapsed;link=tickLink(link,new Date().toISOString());updateLink();}

@@ -1,0 +1,265 @@
+/* FALCON-01 TRUE PRESENTATION REDESIGN
+   Visual composition reset: sharp CAD hero, cinematic scenes, minimal presentation copy. */
+:root{
+  --v2-bg:#04131c;
+  --v2-panel:rgba(5,24,32,.64);
+  --v2-panel-strong:rgba(5,24,32,.82);
+  --v2-line:rgba(142,205,210,.24);
+  --v2-cyan:#8ee2e3;
+  --v2-blue:#5db4c6;
+  --v2-gold:#e2c68c;
+  --v2-white:#edf7f7;
+}
+
+/* Global composition */
+body{background:var(--v2-bg)}
+#world{background:#061923}
+#world canvas{filter:none!important;opacity:1!important}
+.atmosphere{background:linear-gradient(90deg,rgba(2,12,19,.22),transparent 30%,transparent 78%,rgba(2,12,19,.28)),linear-gradient(0deg,rgba(2,12,19,.64),transparent 30%,transparent 78%,rgba(2,12,19,.22))}
+.atmosphere::after{opacity:.018}
+header{padding:1.15rem 3.6vw;background:linear-gradient(rgba(3,15,23,.78),transparent)}
+.edition{letter-spacing:.18em;color:#b9ced2}
+.model-state{top:5.3rem;right:3.7vw;font-size:.58rem;color:#b4c8cb}
+.coordinates{right:1.35rem;color:rgba(177,210,214,.55)}
+
+/* Reframe each chapter: the copy is now a caption, not a panel. */
+.scene{min-height:120svh;padding:0 6vw;display:block;position:relative;overflow:clip}
+.scene .copy{position:absolute;width:auto;z-index:8}
+.scene .copy>p:not(.kicker){max-width:36rem}
+.copy .kicker{font-size:.56rem;letter-spacing:.2em;color:var(--v2-cyan);margin-bottom:1rem}
+.copy h2{font-size:clamp(2.9rem,5.4vw,6.2rem);line-height:.94;letter-spacing:-.065em;margin-bottom:1rem;text-wrap:balance}
+.copy h2 em{color:#9bd3d4}
+.copy>p:not(.kicker){font-size:1rem;line-height:1.55;color:#bed0d3;max-width:31rem}
+.copy .micro{font-size:.68rem!important;letter-spacing:.04em;color:#91adb2}
+
+/* HOME — poster-like hero, CAD/model is allowed to dominate the frame. */
+#ocean.opening{height:215svh;min-height:215svh}
+#ocean .home-stage{padding:0 6vw;align-items:flex-end;justify-content:flex-start}
+#ocean .home-copy{left:6vw;bottom:11vh;width:min(600px,42vw);max-width:none;padding:0;opacity:clamp(0,calc(1 - var(--home-progress)*1.5),1);transform:none}
+#ocean .home-copy::before{content:'01';display:block;font-size:.55rem;letter-spacing:.18em;color:#b5c8ca;margin-bottom:1.15rem}
+#ocean .kicker{font-size:.56rem;letter-spacing:.2em}
+#ocean h1{font-size:clamp(4.2rem,7.8vw,8rem);line-height:.86;letter-spacing:-.08em;margin-bottom:1.6rem}
+#ocean h1 em{display:inline-block;color:#a9d0d2}
+#ocean .intro{font-size:.72rem!important;letter-spacing:.16em!important;color:#d7e5e6!important;margin-bottom:.9rem}
+#ocean .home-explanation{font-size:.85rem!important;line-height:1.55!important;color:#b4c8cd!important;max-width:30rem}
+#ocean .enter{border:1px solid var(--v2-line);background:rgba(6,26,34,.48);padding:.9rem 1.2rem;margin-top:.8rem;min-width:210px;justify-content:space-between;letter-spacing:.1em;font-size:.68rem}
+#ocean .home-explore{position:absolute;right:6vw;bottom:12vh;width:240px;z-index:5}
+#ocean .home-explore button{width:100%;background:transparent;border:1px solid rgba(142,205,210,.34);letter-spacing:.11em;font-size:.65rem}
+#ocean .home-college{position:absolute;right:6vw;top:26vh;font-size:.57rem;letter-spacing:.16em;color:#bdced0;border-top:1px solid var(--v2-line);padding-top:.55rem}
+#ocean .home-shot{left:6vw;bottom:4.5vh}
+
+/* INSTRUMENT — the CAD is the hero; controls become a compact floating rail. */
+#buoy{min-height:120svh;padding:0 6vw}
+#buoy .copy{left:6vw;top:14vh;max-width:520px}
+#buoy .component-picks{position:fixed;left:6vw;right:6vw;bottom:7vh;z-index:9;display:flex;gap:.4rem;flex-wrap:nowrap;max-width:none;margin:0}
+#buoy .component-picks button{flex:1;min-width:0;border-color:rgba(142,205,210,.24);background:rgba(5,24,32,.52);font-size:.62rem;letter-spacing:.04em;white-space:nowrap}
+#buoy .component-picks button::first-letter{color:var(--v2-gold)}
+#buoy #reset-camera{position:absolute;left:0;bottom:-4.5rem;border:0;padding-left:0;background:transparent;font-size:.66rem;letter-spacing:.1em}
+#buoy .micro{display:none}
+#buoy .cad-caption{left:6vw;right:auto;bottom:3.2vh;max-width:none;font-size:.52rem;letter-spacing:.14em;text-align:left;color:#8fa9ad}
+#buoy .cad-caption button{font-size:.55rem;color:var(--v2-cyan)}
+
+/* SENSORS — split-stage composition: left caption, right signal field. */
+#sensors{min-height:125svh;padding:0 6vw}
+#sensors .copy{left:6vw;top:14vh;width:330px}
+#sensors .sensor-menu{position:absolute;top:34vh;left:0;width:290px;margin:0;border-top:1px solid var(--v2-line)}
+#sensors .sensor-menu button{font-size:.7rem;text-transform:uppercase;letter-spacing:.09em;padding:.78rem .2rem}
+#sensors .callout{margin-top:12rem;padding-left:1.1rem}
+#sensors .callout h3{font-size:1.7rem;letter-spacing:-.04em}
+#sensors .callout p{font-size:.72rem;line-height:1.55}
+#sensors .source-caption{position:absolute;right:6vw;bottom:10vh;font-size:.55rem;letter-spacing:.16em;color:#94afb3}
+#sensors .source-caption span{color:var(--v2-gold);padding:0 .7rem}
+
+/* CONTROLLER — full diagram, minimal title strip. */
+#controller{min-height:125svh;padding:0 5vw}
+#controller .copy{left:6vw;top:13vh;max-width:500px}
+#controller .copy>p:not(.kicker){font-size:.82rem}
+#controller .chip-stage{position:absolute;inset:22vh 7vw 15vh;display:flex;align-items:center;justify-content:center}
+#controller .chip-stage svg{width:min(860px,70vw);height:auto;max-height:62vh}
+#controller .packet-console{position:absolute;right:0;bottom:4vh;width:280px;background:rgba(4,20,28,.6);border-left:1px solid var(--v2-line);padding:.8rem 1rem}
+#controller .packet-console .console-head{font-size:.51rem;letter-spacing:.15em;color:var(--v2-cyan)}
+#controller .packet-console code{font-size:.64rem;line-height:1.6;color:#c8d9dc}
+
+/* RADIO — one huge spatial communication story. */
+#radio{min-height:135svh;padding:0 6vw}
+#radio .copy{left:6vw;top:12vh}
+#radio .radio-experience{position:absolute;left:6vw;right:6vw;bottom:11vh;margin:0!important;padding:0!important;background:none!important}
+#radio .radio-experience::before{content:'BUOY  →  LoRa TX  →  PACKET IN TRANSIT  →  LoRa RX  →  BAY STATION';font-size:.56rem;letter-spacing:.16em;color:#a8c4c8;display:block;margin-bottom:1.4rem}
+#radio .radio-route{display:grid!important;grid-template-columns:130px 1fr 170px;align-items:center;gap:2rem}
+#radio .radio-beam{height:42px;border-top:1px solid rgba(142,205,210,.44);border-bottom:1px solid rgba(142,205,210,.14);position:relative}
+#radio .radio-beam span{position:absolute;left:50%;transform:translateX(-50%);top:7px;font-size:.58rem;letter-spacing:.08em;color:#b7cbcf}
+#radio .station-glyph{font-size:2rem;color:var(--v2-gold)}
+#radio .radio-route b{display:block;font-size:.64rem;letter-spacing:.08em;margin-top:.4rem}
+#radio .radio-route small{font-size:.52rem;color:#95aeb2}
+#radio .link-controls{margin-top:1.4rem;display:flex;align-items:center;justify-content:space-between}
+#radio .link-controls button{border:1px solid var(--v2-line);background:rgba(4,20,28,.56);font-size:.61rem;letter-spacing:.08em}
+#radio .buffer-strip{margin-top:1rem;background:rgba(5,24,32,.48);border-top:1px solid var(--v2-line);border-bottom:1px solid var(--v2-line);padding:.8rem 0}
+#radio .micro{font-size:.57rem!important;margin-top:.8rem}
+
+/* BAY STATION — cinematic process rail, not dashboard. */
+#shore{min-height:130svh;padding:0 6vw}
+#shore .copy{left:6vw;top:13vh;max-width:480px}
+#shore .shore-system{position:absolute;left:6vw;right:6vw;bottom:8vh;width:auto!important;margin:0!important;background:none!important;border:0!important;padding:0!important;display:block!important}
+#shore #open-bay{background:rgba(5,24,32,.56);border:1px solid var(--v2-line);font-size:.62rem;letter-spacing:.11em;padding:.85rem 1.1rem}
+#shore .shore-system>.micro{display:none}
+#shore #bay-menu-home{margin-top:1.2rem;border-top:1px solid var(--v2-line);padding-top:.8rem}
+#shore #bay-menu{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:.5rem}
+#shore #bay-menu button{border:0;border-bottom:1px solid rgba(142,205,210,.18);background:transparent;padding:.65rem .2rem;text-align:left;font-size:.58rem;letter-spacing:.06em;color:#aec4c7}
+#shore #bay-menu button[aria-pressed=true]{color:#fff;border-color:var(--v2-gold)}
+#shore .coastal-reference{display:none}
+
+/* WAVE ESTIMATION — full-width laboratory frame. */
+#waves{min-height:135svh;padding:0 6vw}
+#waves .copy{left:6vw;top:11vh;z-index:9}
+#waves .wave-lab{position:absolute;left:6vw;right:6vw;top:31vh;bottom:10vh}
+#waves .process-controls{position:absolute;top:0;left:0;right:0;display:flex;justify-content:flex-start;gap:.45rem;z-index:3}
+#waves .process-controls button{background:rgba(5,24,32,.46);border-color:var(--v2-line);font-size:.57rem;letter-spacing:.07em}
+#waves .process-controls button[aria-pressed=true]{border-color:var(--v2-cyan);background:rgba(10,46,56,.64)}
+#waves .wave-transform{position:absolute;inset:4rem 0 0}
+#waves .wave-result{background:rgba(5,24,32,.44);border-left:1px solid var(--v2-line);padding:1rem 1.3rem}
+
+/* AI — turn forecast into a visual instrument, less chart-dashboard. */
+#prediction{min-height:130svh;padding:0 6vw}
+#prediction .copy{left:6vw;top:12vh;max-width:480px}
+#prediction .forecast-stage{position:absolute;left:6vw;right:6vw;top:33vh;bottom:12vh}
+#prediction .forecast-legend{position:absolute;top:-2rem;left:0}
+#prediction #forecast{position:absolute;left:0;right:0;top:2rem;bottom:3rem;min-height:0;background:linear-gradient(180deg,rgba(4,21,29,.1),rgba(4,21,29,.34));border-top:1px solid var(--v2-line);border-bottom:1px solid var(--v2-line)}
+#prediction .prediction-bottom{position:absolute;bottom:0;left:0;right:0;padding:.7rem 0;border-top:1px solid var(--v2-line);font-size:.62rem;color:#99b0b4}
+
+/* Dashboard — final output, not the visual language of every page. */
+#dashboard{min-height:130svh;padding:0 6vw}
+#dashboard .copy{left:6vw;top:12vh;max-width:440px}
+#dashboard .dashboard-wrap{position:absolute;left:6vw;right:6vw;top:30vh;bottom:8vh;transform:scale(.92);transform-origin:center top}
+
+/* Final system — architecture as a cinematic route. */
+#connected{min-height:120svh;padding:0 6vw;align-items:initial}
+#connected .copy{left:6vw;top:12vh;max-width:520px}
+#connected .complete-route{position:absolute;left:6vw;right:6vw;top:38vh;display:flex;align-items:center;justify-content:space-between;gap:1vw}
+#connected .complete-route span{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:#c0d2d4;position:relative;padding:1rem .35rem}
+#connected .complete-route span::after{content:'→';position:absolute;right:-1.3vw;color:var(--v2-gold)}
+#connected .complete-route span:last-child::after{display:none}
+#connected .closing{position:absolute;left:6vw;bottom:9vh;font-size:.86rem;max-width:560px;color:#afc3c7}
+
+/* Shared stage decorations: subtle technical rules instead of panels. */
+.scene::before{content:attr(data-chapter);position:absolute;right:6vw;top:13vh;font-size:.55rem;letter-spacing:.18em;color:rgba(171,202,205,.48)}
+.scene::after{content:'';position:absolute;left:6vw;right:6vw;bottom:5vh;height:1px;background:linear-gradient(90deg,var(--v2-line),transparent 72%)}
+
+/* Inspection overlay: lightweight engineering annotation instead of opaque dashboard. */
+#inspection-panel{right:5vw;top:auto;bottom:9vh;width:min(390px,31vw);max-height:56vh;background:rgba(4,20,28,.78);border:1px solid rgba(142,205,210,.26);border-radius:0;box-shadow:0 20px 60px rgba(0,0,0,.25);backdrop-filter:blur(4px);padding:1.1rem 1.25rem}
+#inspection-panel h2{font-size:2.35rem;margin-bottom:.7rem}
+#inspection-panel h3{margin:.85rem 0 .35rem;color:var(--v2-cyan)}
+#inspection-panel p{font-size:.76rem}
+#inspection-data{font-size:.68rem}
+#inspection-flow{font-size:.6rem}
+#inspection-back{font-size:.62rem;letter-spacing:.07em}
+
+@media(max-width:900px){
+  #ocean .home-copy{width:52vw}
+  #buoy .component-picks{left:4vw;right:4vw;overflow:auto}
+  #radio .radio-route{grid-template-columns:90px 1fr 110px;gap:1rem}
+  #shore #bay-menu{grid-template-columns:repeat(3,minmax(0,1fr))}
+  #connected .complete-route{flex-wrap:wrap;justify-content:flex-start;gap:1rem}
+}
+@media(max-width:650px){
+  .scene{min-height:115svh;padding:0 6vw}
+  .scene::before{right:6vw;top:11vh}
+  .copy h2{font-size:clamp(2.6rem,11vw,4.2rem)}
+  #ocean .home-copy{left:6vw;bottom:19vh;width:88vw}
+  #ocean h1{font-size:clamp(3.3rem,13vw,5rem)}
+  #ocean .home-explore{right:6vw;bottom:8vh;width:52vw}
+  #ocean .home-college{display:none}
+  #buoy .copy{left:6vw;top:12vh;max-width:84vw}
+  #buoy .component-picks{bottom:8vh;flex-wrap:nowrap;overflow-x:auto;padding-bottom:.2rem}
+  #buoy .component-picks button{flex:0 0 auto;width:max-content}
+  #sensors .copy{left:6vw;top:11vh;width:84vw}
+  #sensors .sensor-menu{top:32vh;width:84vw}
+  #sensors .callout{margin-top:11rem}
+  #sensors .source-caption{left:6vw;right:auto;bottom:7vh}
+  #controller .chip-stage{inset:28vh 3vw 16vh}
+  #controller .chip-stage svg{width:96vw}
+  #controller .packet-console{right:3vw;bottom:0;width:52vw}
+  #radio .copy{left:6vw;top:11vh}
+  #radio .radio-experience{left:6vw;right:6vw;bottom:8vh}
+  #radio .radio-route{grid-template-columns:70px 1fr 85px;gap:.5rem}
+  #radio .radio-route b{font-size:.52rem}
+  #radio .radio-route small{font-size:.45rem}
+  #radio .radio-beam span{font-size:.45rem}
+  #shore .copy{left:6vw;top:11vh;max-width:84vw}
+  #shore .shore-system{left:6vw;right:6vw;bottom:8vh}
+  #shore #bay-menu{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #waves .wave-lab{left:6vw;right:6vw;top:29vh}
+  #waves .process-controls{overflow:auto;white-space:nowrap}
+  #prediction .forecast-stage{left:6vw;right:6vw;top:31vh}
+  #dashboard .dashboard-wrap{left:4vw;right:4vw;top:29vh;transform:scale(.78)}
+  #connected .complete-route{top:34vh;display:grid;grid-template-columns:1fr 1fr}
+  #connected .complete-route span::after{right:auto;left:50%;top:100%;transform:translate(-50%,.2rem)}
+  #connected .closing{left:6vw;right:6vw;bottom:8vh}
+  #inspection-panel{left:6vw;right:6vw;bottom:8vh;width:auto;max-height:43vh}
+}
+
+/* FALCON-01 cinematic layout pass */
+:root {
+  --falcon-ocean: #08263a;
+  --falcon-cyan: #38d9ff;
+  --falcon-orange: #ff9b45;
+}
+
+body {
+  background: radial-gradient(circle at 50% 20%, #164f6b 0%, #071725 55%, #020812 100%);
+}
+
+/* CAD-first presentation composition */
+.hero,
+.scene,
+section {
+  isolation: isolate;
+}
+
+.model-container,
+.canvas-container,
+#canvas-container,
+#scene-container {
+  z-index: 5;
+  position: relative;
+}
+
+/* engineering callout style */
+.component-list,
+.sensor-list,
+.callout-panel {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+  border: 0 !important;
+}
+
+.component-list li,
+.sensor-list li {
+  border-left: 1px solid var(--falcon-cyan);
+  padding-left: 14px;
+  margin: 12px 0;
+}
+
+/* prevent hero collisions */
+.hero-title,
+.scene-title {
+  max-width: 520px;
+  z-index: 20;
+}
+
+/* floating technical rail */
+.engineering-rail {
+  position: absolute;
+  right: 5vw;
+  top: 35%;
+  z-index: 30;
+}
+
+@media (max-width: 900px) {
+  .engineering-rail {
+    position: relative;
+    right: auto;
+    top: auto;
+    margin-top: 20px;
+  }
+}

@@ -50,8 +50,3 @@
   #controller .packet-console{margin-left:0;padding-top:1rem}#controller #packet-frame{font-size:.82rem}
 }
 @media(max-height:650px){#ocean .home-stage{min-height:610px}#ocean.opening{min-height:1500px}#controller{padding-top:130px;padding-bottom:120px}}
-/* Page 03: controller animation is driven by one synchronized telemetry cycle. */
-#controller .trace-packets path{animation:none;stroke-dasharray:none;opacity:.2}
-#controller .controller-pulse{filter:drop-shadow(0 0 6px currentColor)}
-#controller .controller-output-pulse{r:5}
-#controller .sending .controller-output-pulse{opacity:1}
