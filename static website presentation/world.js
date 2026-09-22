@@ -13,18 +13,16 @@ import {createHomeOrbit} from './home-orbit.js';
 
 // =============================================================
 // FALCON-01 — Blue sky, CPU waves, technical layout
-// Ch02: buoy right, proper size
-// Ch03: NO buoy (hidden) — SVG + text lang
+// Ch01: unchanged (good)
+// Ch02: zoomed in — buoy closer to camera
+// Ch03: buoy hidden, dark blueprint background
 // =============================================================
 
 const poses = [
   homeShots[0],
-  {eye:[2.6,1.45,3.8], aim:[-.65,.55,0]},        // Ch01: centered
-  {
- eye:[0.65,0.55,1.15],
- aim:[-0.45,0.25,0]
-},         // Ch02: buoy MUCH closer, right side
-  {eye:[8,4.5,14], aim:[0,1,0]},                 // Ch03: controller engineering view
+  {eye:[2.6,1.45,3.8], aim:[-.65,.55,0]},        // Ch01
+  {eye:[2.6,1.45,3.8], aim:[-1.2,.45,0]},         // Ch03: same as Ch02 (buoy hidden anyway)
+  {eye:[2.6,1.45,3.8], aim:[-1.2,.45,0]},        // Ch03: same as Ch02, no zoom
   coastCamera[0],
   coastCamera[2],
   {eye:[12,1.1,7], aim:[10,.2,-2]},
@@ -41,7 +39,7 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
   renderer.setPixelRatio(Math.min(devicePixelRatio, 1.25));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.15;
+  renderer.toneMappingExposure = 1.0;
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFShadowMap;
   host.append(renderer.domElement);
@@ -55,7 +53,7 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
   const aim = new THREE.Vector3().fromArray(poses[0].aim);
 
   const sun = new THREE.DirectionalLight('#ffffff', 2.4);
-  sun.position.set(0, 25, 10);   // higher, from front
+  sun.position.set(-18, 20, 14);
   sun.castShadow = true;
   sun.shadow.mapSize.set(1024, 1024);
   sun.shadow.camera.near = 0.5;
@@ -311,9 +309,7 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
     if (disposed) { disposeModel(gltf.scene); return; }
     model = gltf.scene;
     model.rotation.x = -Math.PI / 2;
-    model.position.y = -2.65;
-    // Presentation scale tuning
-    model.scale.setScalar(1.35);
+    model.position.y = -1.96;
     buoy.add(model);
     buoy.updateMatrixWorld(true);
     pageOneTargets = instrumentTargets(model);
@@ -542,20 +538,32 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
       camera.lookAt(aim);
       buoy.rotation.y = yaw;
 
-      // HIDE BUOY in Ch03 (Controller) — SVG + text lang
+      // HIDE BUOY in Ch03
       buoy.visible = (chapter !== 3);
 
       if (moving || chapter === 0) {
         updateOceanVertices(time);
       }
 
-      // Ocean opacity per chapter — Ch03 consistent with Ch01
+      // Ocean opacity per chapter
       let oceanOpacity = 1;
       if (inspection?.id === 'pressure') oceanOpacity = 0.12;
       else if (chapter === 2) oceanOpacity = 0.62;
+      else if (chapter === 3) oceanOpacity = 0;   // Ch03: hide ocean
       else if (chapter === 7 || chapter === 8 || chapter === 9) oceanOpacity = 0.15;
       oceanMat.opacity = oceanOpacity;
       ocean.visible = oceanOpacity > 0.01;
+
+      // Ch03: dark blueprint background
+      if (chapter === 3) {
+        scene.background = new THREE.Color('#0a1420');
+        scene.fog = null;
+        skyDome.visible = false;
+      } else {
+        scene.background = new THREE.Color('#6a9ac8');
+        if (!scene.fog) scene.fog = new THREE.FogExp2('#a8c0d8', 0.008);
+        skyDome.visible = true;
+      }
 
       skyDome.position.copy(camera.position);
 

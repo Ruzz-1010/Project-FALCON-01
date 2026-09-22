@@ -1,7 +1,7 @@
 /* =========================================================
    FALCON-01 — Technical Engineering Blueprint
-   Text-shadow sa lahat ng text · walang box-box · readable
-   Ch03: SVG maliit, walang buoy, no overlap
+   System mono · grid + scanlines · cyan + amber
+   Ch03: diagram pataas, SVG readable, walang overlap
    ========================================================= */
 
 @import url('./tokens.css');
@@ -86,7 +86,7 @@ body::after {
 }
 
 /* =========================================================
-   3. TEXT READABILITY (universal)
+   3. TEXT READABILITY
    ========================================================= */
 h1, h2, h3, .copy p, .callout p, .copy h2, .copy h1,
 .kicker, .micro, .signal-heading, .signal-record p,
@@ -691,7 +691,7 @@ body.home-orbit #ocean.home-departed .home-explore {
 }
 
 /* =========================================================
-   13. CHAPTER 03 — CONTROLLER (SVG only, no buoy)
+   13. CHAPTER 03 — CONTROLLER
    ========================================================= */
 #controller { min-height: 125svh; }
 #controller .copy {
@@ -712,22 +712,24 @@ body.home-orbit #ocean.home-departed .home-explore {
 
 #controller .chip-stage {
   position: absolute;
-  inset: 18svh 0 12svh 0;
-  display: flex; align-items: center; justify-content: flex-end;
-  padding: 0 clamp(1.5rem, 4vw, 3rem) 0 40vw;
+  inset: 8svh 0 12svh 0;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 clamp(1.5rem, 4vw, 3rem) 0 26vw;
   z-index: 1;
 }
 #controller .chip-stage svg {
-  width: min(500px, 42vw);
+  width: min(640px, 52vw);
   height: auto;
-  max-height: 55svh;
+  max-height: 62svh;
   overflow: visible;
 }
 #controller svg text {
-  fill: #c8dde5;
+  fill: #ffffff;
   font-family: inherit;
   font-size: 13px;
   letter-spacing: 0.12em;
+  font-weight: 500;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
 }
 #controller svg .chip-title {
   font-size: 28px;
@@ -735,7 +737,7 @@ body.home-orbit #ocean.home-departed .home-explore {
   letter-spacing: 0.2em;
   font-weight: 500;
 }
-.traces { stroke: rgba(77, 208, 225, 0.25); fill: none; stroke-dasharray: 2 4; }
+.traces { stroke: rgba(77, 208, 225, 0.55); fill: none; stroke-dasharray: 2 4; stroke-width: 1.5; }
 .trace-packets {
   fill: none;
   stroke: #4dd0e1;
@@ -745,7 +747,11 @@ body.home-orbit #ocean.home-departed .home-explore {
 }
 .trace-packets path:nth-child(2) { stroke: #ffb74d; }
 @keyframes transmit { to { stroke-dashoffset: -656; } }
-.chip-body { fill: rgba(6, 10, 15, 0.9); stroke: #4dd0e1; stroke-width: 1; }
+.chip-body {
+  fill: rgba(6, 10, 15, 0.95);
+  stroke: #4dd0e1;
+  stroke-width: 1.5;
+}
 .chip-inner {
   fill: rgba(77, 208, 225, 0.05);
   stroke: rgba(77, 208, 225, 0.3);
