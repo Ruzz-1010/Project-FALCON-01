@@ -12,23 +12,25 @@ import {createBayStation} from './bay-station.js';
 import {createHomeOrbit} from './home-orbit.js';
 
 // =============================================================
-// FALCON-01 — Blue sky, CPU waves, technical layout
-// Ch01: unchanged (good)
-// Ch02: zoomed in — buoy closer to camera
-// Ch03: buoy hidden, dark blueprint background
+// FALCON-01 — 12-SECTION STRUCTURE
+// 00 Opening · 01 Challenge · 02 Solution · 03 Architecture
+// 04 Buoy · 05 How-it-works · 06 Bay Station · 07 Dashboard
+// 08 AI · 09 Validation · 10 Future · 11 Final
 // =============================================================
 
 const poses = [
-  homeShots[0],
-  {eye:[2.6,1.45,3.8], aim:[-.65,.55,0]},        // Ch01
-  {eye:[2.6,1.45,3.8], aim:[-1.2,.45,0]},         // Ch03: same as Ch02 (buoy hidden anyway)
-  {eye:[2.6,1.45,3.8], aim:[-1.2,.45,0]},        // Ch03: same as Ch02, no zoom
-  coastCamera[0],
-  coastCamera[2],
-  {eye:[12,1.1,7], aim:[10,.2,-2]},
-  {eye:[10,2.1,7], aim:[9,.3,-2]},
-  {eye:[9,2.3,8], aim:[7,.4,-2]},
-  {eye:[5,3,9], aim:[0,.15,0]}
+  homeShots[0],                                    // 00 Opening (home animation)
+  {eye:[2.6,1.45,3.8], aim:[-.65,.55,0]},          // 01 Challenge (no 3D — placeholder)
+  {eye:[2.6,1.45,3.8], aim:[-.65,.55,0]},          // 02 Solution (no 3D — placeholder)
+  {eye:[2.6,1.45,3.8], aim:[-.65,.55,0]},          // 03 Architecture (no 3D — placeholder)
+  {eye:[2.6,1.45,3.8], aim:[-.65,.55,0]},          // 04 Buoy (CAD visible)
+  {eye:[2.6,1.45,3.8], aim:[-1.2,.45,0]},          // 05 How-it-works (sensors)
+  coastCamera[0],                                  // 06 Bay Station (coast reveal)
+  {eye:[9,2.3,8], aim:[7,.4,-2]},                  // 07 Dashboard (coast)
+  {eye:[10,2.1,7], aim:[9,.3,-2]},                 // 08 AI (coast)
+  {eye:[5,3,9], aim:[0,.15,0]},                    // 09 Validation
+  {eye:[5,3,9], aim:[0,.15,0]},                    // 10 Future
+  {eye:[5,3,9], aim:[0,.15,0]}                     // 11 Final
 ];
 
 export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=>{},onBayPick=()=>{},onBayReady=()=>{}}) {
@@ -71,6 +73,7 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
   const hemi = new THREE.HemisphereLight('#a8c8e8', '#5a6a70', 1.8);
   scene.add(hemi);
 
+  // ---------- OCEAN ----------
   const OCEAN_W = 74;
   const OCEAN_D = 130;
   const OCEAN_CX = -65 + OCEAN_W / 2;
@@ -118,6 +121,7 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
     oceanGeo.computeVertexNormals();
   }
 
+  // ---------- SKY DOME ----------
   const skyDome = new THREE.Mesh(
     new THREE.SphereGeometry(200, 16, 12),
     new THREE.ShaderMaterial({
@@ -160,6 +164,7 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
   skyDome.name = 'Blue sky dome';
   scene.add(skyDome);
 
+  // ---------- BUOY + COAST + BAY ----------
   const buoy = new THREE.Group();
   scene.add(buoy);
 
@@ -167,11 +172,26 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
   coast.group.visible = false;
   scene.add(coast.group);
 
+  const coastMaterials = [];
+  function collectMaterials(group, list) {
+    group.traverse(node => {
+      if (node.isMesh && node.material) {
+        const mats = Array.isArray(node.material) ? node.material : [node.material];
+        mats.forEach(m => {
+          if (!list.find(e => e.m === m)) {
+            list.push({ m, origOpacity: m.opacity });
+          }
+        });
+      }
+    });
+  }
+  collectMaterials(coast.group, coastMaterials);
+
   const bay = createBayStation(coast);
   let bayMove = null, bayOverview = null;
 
   function inspectBay(id) {
-    if (currentChapter !== 5 || contextLost) return false;
+    if (currentChapter !== 6 || contextLost) return false;   // Ch06 = Bay Station na ngayon
     const pose = bay.focus(id, camera.aspect);
     if (!pose) return false;
     if (!bayOverview) {
@@ -202,7 +222,7 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
   hotspotLayer.append(leaderSvg);
 
   let pageOneTargets = new Map();
-  const targetFor = id => (currentChapter === 1 || currentChapter === 2) ? pageOneTargets.get(id) : markers.get(id)?.target;
+  const targetFor = id => (currentChapter === 4 || currentChapter === 5) ? pageOneTargets.get(id) : markers.get(id)?.target;
 
   let model, disposed = false, contextLost = false, yaw = 0, drag = null, orbitReset = null, needsDraw = true;
   let inspection = null, overview = null, hovered = null, tintKey = '';
@@ -309,7 +329,7 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
     if (disposed) { disposeModel(gltf.scene); return; }
     model = gltf.scene;
     model.rotation.x = -Math.PI / 2;
-    model.position.y = -1.96;
+    model.position.y = -1.65;
     buoy.add(model);
     buoy.updateMatrixWorld(true);
     pageOneTargets = instrumentTargets(model);
@@ -349,7 +369,7 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
 
   const down = e => {
     if (homeOrbit.active && currentChapter === 0) { drag = { last: e.clientX, lastY: e.clientY }; return; }
-    if (currentChapter === 5 || (!inspection && (currentChapter === 1 || currentChapter === 2))) {
+    if (currentChapter === 6 || (!inspection && (currentChapter === 4 || currentChapter === 5))) {
       orbitReset = null;
       drag = { x: e.clientX, y: e.clientY, last: e.clientX, distance: 0 };
     }
@@ -364,7 +384,7 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
     if (e.pointerType === 'touch') return;
     const delta = e.clientX - drag.last;
     drag.distance += Math.abs(delta);
-    if (currentChapter !== 5) yaw += delta * .005;
+    if (currentChapter !== 6) yaw += delta * .005;
     drag.last = e.clientX;
   };
   const up = e => {
@@ -374,7 +394,7 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
     drag = null;
     if (distance > 8) return;
     raycaster.setFromCamera(new THREE.Vector2(e.clientX / innerWidth * 2 - 1, 1 - e.clientY / innerHeight * 2), camera);
-    if (currentChapter === 5) { const id = bay.pick(raycaster); if (id) onBayPick(id); return; }
+    if (currentChapter === 6) { const id = bay.pick(raycaster); if (id) onBayPick(id); return; }
     if (!model) return;
     for (const hit of raycaster.intersectObject(model, true)) {
       let object = hit.object;
@@ -440,7 +460,7 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
       if (disposed || contextLost) return;
       currentChapter = chapter;
       if (chapter !== 0) homeOrbit.exit();
-      if (chapter !== 5 && (bayMove || bayOverview)) { bayMove = null; bayOverview = null; bay.select(null); }
+      if (chapter !== 6 && (bayMove || bayOverview)) { bayMove = null; bayOverview = null; bay.select(null); }
 
       if (orbitReset) {
         orbitReset.elapsed += dt;
@@ -450,47 +470,23 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
         needsDraw = true;
       }
 
-      const a = Math.max(0, Math.min(9, Math.floor(progress)));
-      const b = Math.min(9, a + 1);
+      const a = Math.max(0, Math.min(11, Math.floor(progress)));
+      const b = Math.min(11, a + 1);
       const t = THREE.MathUtils.smoothstep(progress - a, 0, 1);
       desiredEye.fromArray(poses[a].eye).lerp(nextEye.fromArray(poses[b].eye), t);
       desiredAim.fromArray(poses[a].aim).lerp(nextAim.fromArray(poses[b].aim), t);
 
       if (progress < 1) { const shot = homeCamera(homeProgress); desiredEye.fromArray(shot.eye); desiredAim.fromArray(shot.aim); }
 
-      if (progress >= 4 && progress < 6) {
-        const p = Math.min(3, (progress - 4) * 2);
+      if (progress >= 6 && progress < 8) {
+        const p = Math.min(3, (progress - 6) * 2);
         const i = Math.floor(p), j = Math.min(3, i + 1);
         const u = THREE.MathUtils.smoothstep(p - i, 0, 1);
         desiredEye.fromArray(coastCamera[i].eye).lerp(nextEye.fromArray(coastCamera[j].eye), u);
         desiredAim.fromArray(coastCamera[i].aim).lerp(nextAim.fromArray(coastCamera[j].aim), u);
-        if (progress > 5.75) {
-          const blend = THREE.MathUtils.smoothstep(progress, 5.75, 6);
-          desiredEye.lerp(nextEye.fromArray(poses[6].eye), blend);
-          desiredAim.lerp(nextAim.fromArray(poses[6].aim), blend);
-        }
-      }
-
-      if (chapter === 4) {
-        const p = Math.min(2, (progress - 4) * 2);
-        const i = Math.min(1, Math.floor(p));
-        const u = THREE.MathUtils.smoothstep(p - i, 0, 1);
-        desiredEye.fromArray(crossingCamera[i].eye).lerp(nextEye.fromArray(crossingCamera[i + 1].eye), u);
-        desiredAim.fromArray(crossingCamera[i].aim).lerp(nextAim.fromArray(crossingCamera[i + 1].aim), u);
-        if (innerWidth < 650) {
-          const wide = 1 + .9 * (1 - THREE.MathUtils.smoothstep(progress, 4.65, 5));
-          desiredEye.sub(desiredAim).multiplyScalar(wide).add(desiredAim);
-        }
       }
 
       if (innerWidth < 650) { desiredEye.multiplyScalar(1.25); desiredAim.x += .45; desiredAim.y += .35; }
-      if (innerWidth < 650 && progress < 1) desiredAim.y += (1 - homeProgress) * desiredEye.distanceTo(desiredAim) * .16;
-
-      if (innerWidth < 650 && progress >= 1 && progress < 3) {
-        const weight = THREE.MathUtils.smoothstep(progress, 1, 1.25) * (1 - THREE.MathUtils.smoothstep(progress, 2.65, 3));
-        desiredEye.lerp(nextEye.set(3.8, 1.8, 6), weight);
-        desiredAim.lerp(nextAim.set(0, 1.15, 0), weight);
-      }
 
       if (moving) { desiredEye.x += pointer.x * .1; desiredEye.y += pointer.y * .06; }
 
@@ -503,7 +499,7 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
 
       const blend = moving ? cameraBlend(dt) : 1;
 
-      if (chapter === 5 && bayMove) {
+      if (chapter === 6 && bayMove) {
         bayMove.elapsed += dt;
         const t2 = moving ? Math.min(1, bayMove.elapsed / 1.65) : 1;
         const u = easeInspection(t2);
@@ -538,8 +534,13 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
       camera.lookAt(aim);
       buoy.rotation.y = yaw;
 
-      // HIDE BUOY in Ch03
-      buoy.visible = (chapter !== 3);
+      // Sections: 0=Opening, 1=Challenge, 2=Solution, 3=Architecture, 4=Buoy, 5=How-it-works
+      // 6=Bay Station, 7=Dashboard, 8=AI, 9=Validation, 10=Future, 11=Final
+      const isTextOnly = (chapter === 1 || chapter === 2 || chapter === 3 || chapter === 9 || chapter === 10);
+      const isBuoyChapter = (chapter === 4 || chapter === 5);
+
+      // Hide buoy in text-only sections and in Ch06 (Bay Station) not relevant
+      buoy.visible = (chapter === 0 || isBuoyChapter);
 
       if (moving || chapter === 0) {
         updateOceanVertices(time);
@@ -548,22 +549,16 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
       // Ocean opacity per chapter
       let oceanOpacity = 1;
       if (inspection?.id === 'pressure') oceanOpacity = 0.12;
-      else if (chapter === 2) oceanOpacity = 0.62;
-      else if (chapter === 3) oceanOpacity = 0;   // Ch03: hide ocean
-      else if (chapter === 7 || chapter === 8 || chapter === 9) oceanOpacity = 0.15;
+      else if (chapter === 5) oceanOpacity = 0.62;   // sensors chapter
+      else if (isTextOnly) oceanOpacity = 0.35;      // text-only: subtle ocean
+      else if (chapter === 7 || chapter === 8) oceanOpacity = 0.15;
       oceanMat.opacity = oceanOpacity;
       ocean.visible = oceanOpacity > 0.01;
 
-      // Ch03: dark blueprint background
-      if (chapter === 3) {
-        scene.background = new THREE.Color('#0a1420');
-        scene.fog = null;
-        skyDome.visible = false;
-      } else {
-        scene.background = new THREE.Color('#6a9ac8');
-        if (!scene.fog) scene.fog = new THREE.FogExp2('#a8c0d8', 0.008);
-        skyDome.visible = true;
-      }
+      // Sky: keep blue everywhere (no dark blueprint for now)
+      scene.background = new THREE.Color('#6a9ac8');
+      if (!scene.fog) scene.fog = new THREE.FogExp2('#a8c0d8', 0.008);
+      skyDome.visible = true;
 
       skyDome.position.copy(camera.position);
 
@@ -580,11 +575,26 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
       camera.updateMatrixWorld(true);
 
       compositionBounds.makeEmpty();
-      if (chapter < 3) for (const target of pageOneTargets.values()) compositionBounds.union(box.setFromObject(target));
+      if (isBuoyChapter) for (const target of pageOneTargets.values()) compositionBounds.union(box.setFromObject(target));
 
-      const coastVisible = progress >= 3.65 && progress < 6.15;
-      coast.update(time, linkOnline, camera, coastVisible, chapter === 4, chapter === 5);
-      bay.update(time, linkOnline, chapter === 5);
+      // Coast visible only around Ch06-08
+      const coastFadeIn  = THREE.MathUtils.smoothstep(progress, 5.6, 6.3);
+      const coastFadeOut = 1 - THREE.MathUtils.smoothstep(progress, 8.2, 8.8);
+      const coastOpacity = coastFadeIn * coastFadeOut;
+      const coastVisible = coastOpacity > 0.01;
+
+      if (coastVisible) {
+        coast.group.visible = true;
+        coast.update(time, linkOnline, camera, true, false, chapter === 6);
+        coastMaterials.forEach(({ m, origOpacity }) => {
+          m.transparent = true;
+          m.opacity = (origOpacity ?? 1) * coastOpacity;
+        });
+      } else {
+        coast.group.visible = false;
+      }
+
+      bay.update(time, linkOnline, chapter === 6);
 
       if (receiverLabel) {
         projection.set(...RECEIVER).project(camera);
@@ -596,16 +606,17 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
         receiverLabel.textContent = linkOnline ? 'LoRa RX · BAY STATION' : 'LoRa RX · LINK INTERRUPTED';
       }
 
-      const visible = chapter === 1 || chapter === 2;
+      const visible = isBuoyChapter;
       hotspotLayer.hidden = !visible;
 
       const occupied = [];
-      const obstacles = [...document.querySelectorAll('header,.journey-nav,.model-state,#buoy.is-active .copy,#sensors.is-active .copy,.cad-caption,.source-caption,#inspection-panel:not([hidden])')].filter(e => e.getClientRects().length && getComputedStyle(e).visibility !== 'hidden').map(e => e.getBoundingClientRect());
+      const obstacles = [...document.querySelectorAll('header,.journey-nav,.model-state,.copy,.cad-caption,.source-caption,#inspection-panel:not([hidden])')].filter(e => e.getClientRects().length && getComputedStyle(e).visibility !== 'hidden').map(e => e.getBoundingClientRect());
       const silhouette = compositionBounds.isEmpty() ? { left: 0, right: innerWidth } : projectedBounds(compositionBounds);
 
       leaderSvg.replaceChildren();
       for (const [id, { button }] of markers) {
         const target = targetFor(id);
+        if (!target) { button.hidden = true; continue; }
         box.setFromObject(target).getCenter(projection);
         projection.project(camera);
         const x = (projection.x * .5 + .5) * innerWidth;
@@ -655,13 +666,16 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
         const endX = innerWidth < 650 ? rect.left + rect.width * .5 : rect.left;
         const endY = innerWidth < 650 ? rect.top : rect.top + 110;
         connection.setAttribute('d', `M${x},${y} L${(x + endX) * .5},${y} L${endX},${endY}`);
-      } else if (chapter === 2 && chosen && !inspection) {
+      } else if (chapter === 5 && chosen && !inspection) {
         projection.copy(halo.position).project(camera);
-        const rect = document.querySelector('#acquisition-signal').getBoundingClientRect();
-        const x = (projection.x * .5 + .5) * innerWidth;
-        const y = (-projection.y * .5 + .5) * innerHeight;
-        connection.setAttribute('d', projection.z < 1 && x > 0 && x < innerWidth && rect.top > 90 && rect.top < innerHeight - 80
-          ? `M${x},${y} L${rect.left - 22},${y} L${rect.left},${rect.top + 35}` : '');
+        const rect = document.querySelector('#acquisition-signal');
+        if (rect) {
+          const r = rect.getBoundingClientRect();
+          const x = (projection.x * .5 + .5) * innerWidth;
+          const y = (-projection.y * .5 + .5) * innerHeight;
+          connection.setAttribute('d', projection.z < 1 && x > 0 && x < innerWidth && r.top > 90 && r.top < innerHeight - 80
+            ? `M${x},${y} L${r.left - 22},${y} L${r.left},${r.top + 35}` : '');
+        } else connection.setAttribute('d', '');
       } else connection.setAttribute('d', '');
 
       needsDraw = moving || lastLink !== linkOnline || lastProgress !== progress || lastPick !== selected || lastYaw !== yaw || camera.position.distanceTo(desiredEye) > .001 || needsDraw;

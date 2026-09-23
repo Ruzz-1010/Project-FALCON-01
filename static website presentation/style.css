@@ -1,7 +1,8 @@
 /* =========================================================
-   FALCON-01 — Technical Engineering Blueprint
-   System mono · grid + scanlines · cyan + amber
-   Ch03: diagram pataas, SVG readable, walang overlap
+   FALCON-01 — 12-Section Technical Engineering Blueprint
+   Sections: 01 Opening · 02 Challenge · 03 Solution · 04 Architecture
+             05 Buoy · 06 How-it-works · 07 Bay Station · 08 Dashboard
+             09 AI · 10 Validation · 11 Future · 12 Final
    ========================================================= */
 
 @import url('./tokens.css');
@@ -48,7 +49,7 @@ button:disabled { cursor: default; opacity: 0.4; }
 }
 
 /* =========================================================
-   2. BLUEPRINT BACKGROUND GRID + SCANLINES
+   2. BLUEPRINT GRID + SCANLINES
    ========================================================= */
 body::before {
   content: '';
@@ -61,12 +62,7 @@ body::before {
     linear-gradient(90deg, rgba(77, 208, 225, 0.05) 1px, transparent 1px),
     linear-gradient(rgba(77, 208, 225, 0.12) 1px, transparent 1px),
     linear-gradient(90deg, rgba(77, 208, 225, 0.12) 1px, transparent 1px);
-  background-size:
-    20px 20px,
-    20px 20px,
-    100px 100px,
-    100px 100px;
-  background-position: 0 0;
+  background-size: 20px 20px, 20px 20px, 100px 100px, 100px 100px;
 }
 body::after {
   content: '';
@@ -121,9 +117,7 @@ h1, h2, h3, .copy p, .callout p, .copy h2, .copy h1,
   background: #060a0f;
 }
 #world canvas {
-  display: block;
-  width: 100%;
-  height: 100%;
+  display: block; width: 100%; height: 100%;
   touch-action: pan-y;
   filter: none !important;
   opacity: 1 !important;
@@ -167,9 +161,7 @@ header {
 }
 .header-controls { display: flex; gap: 0.5rem; }
 .header-controls button {
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
+  font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
   background: transparent;
   border: 1px solid rgba(77, 208, 225, 0.25);
   color: #a8c4d0;
@@ -189,18 +181,14 @@ header {
 
 .model-state {
   position: fixed; top: 3.5rem; right: clamp(1.5rem, 4vw, 3rem); z-index: 4;
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  color: #8aa8b4;
-  text-align: right;
-  max-width: 42%;
+  font-size: 10px; letter-spacing: 0.1em; color: #8aa8b4;
+  text-align: right; max-width: 42%;
   pointer-events: none;
   text-transform: uppercase;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
 }
 .model-state::before {
-  content: '◉ ';
-  color: #4dd0e1;
+  content: '◉ '; color: #4dd0e1;
   animation: pulse-dot 2s ease-in-out infinite;
 }
 @keyframes pulse-dot {
@@ -212,8 +200,7 @@ header {
   position: fixed; right: 0.75rem; top: 38%; z-index: 3;
   writing-mode: vertical-rl;
   display: flex; align-items: center; gap: 1rem;
-  font-size: 9px;
-  letter-spacing: 0.2em;
+  font-size: 9px; letter-spacing: 0.2em;
   text-transform: uppercase;
   color: #5a7a8a;
   pointer-events: none;
@@ -234,7 +221,7 @@ main {
 .scene {
   position: relative;
   display: block;
-  min-height: 120svh;
+  min-height: 110svh;
   padding: 16svh clamp(1.5rem, 4vw, 3rem) 12svh;
   pointer-events: none;
 }
@@ -244,8 +231,7 @@ main {
   content: '/ ' attr(data-chapter);
   position: absolute;
   right: clamp(1.5rem, 4vw, 3rem); top: 10svh;
-  font-size: 11px;
-  letter-spacing: 0.2em;
+  font-size: 11px; letter-spacing: 0.2em;
   color: #5a7a8a;
   pointer-events: none;
   font-weight: 500;
@@ -253,7 +239,7 @@ main {
 }
 
 /* =========================================================
-   8. THE COPY BLOCK
+   8. COPY BLOCK
    ========================================================= */
 .scene .copy {
   position: relative;
@@ -283,37 +269,30 @@ main {
   opacity: 0.6;
 }
 .scene .copy > p:not(.kicker):not(.micro) {
-  font-size: 13px;
-  color: #e8f4f8;
-  max-width: 34em;
-  line-height: 1.7;
+  font-size: 13px; color: #e8f4f8;
+  max-width: 34em; line-height: 1.7;
 }
 .scene h2 {
   font-size: clamp(1.75rem, 3.2vw, 2.75rem);
-  line-height: 1.1;
-  letter-spacing: -0.01em;
+  line-height: 1.1; letter-spacing: -0.01em;
   margin-bottom: 1.25rem;
   color: #ffffff;
   font-weight: 500;
 }
 .scene h1 {
   font-size: clamp(2.25rem, 5vw, 4rem);
-  line-height: 1.05;
-  letter-spacing: -0.02em;
-  font-weight: 500;
-  margin-bottom: 1.5rem;
+  line-height: 1.05; letter-spacing: -0.02em;
+  font-weight: 500; margin-bottom: 1.5rem;
   color: #ffffff;
 }
 .scene h3 { font-size: 1rem; font-weight: 500; color: #ffffff; }
 
 /* =========================================================
-   9. CHAPTER 00 — HOME
+   9. SECTION 01 — OPENING
    ========================================================= */
 #ocean.opening {
-  display: block;
-  padding: 0;
-  height: 240svh;
-  min-height: 240svh;
+  display: block; padding: 0;
+  height: 240svh; min-height: 240svh;
   --home-progress: 0;
 }
 #ocean .home-stage {
@@ -325,7 +304,7 @@ main {
   overflow: clip;
 }
 #ocean .home-copy {
-  width: min(560px, 55%);
+  width: min(600px, 56%);
   pointer-events: auto;
   opacity: clamp(0, calc(1 - var(--home-progress) * 2.2), 1);
   transform: translateY(calc(var(--home-progress) * -24px));
@@ -342,44 +321,34 @@ main {
 }
 #ocean h1 {
   font-size: clamp(2.5rem, 5.5vw, 5rem);
-  line-height: 1;
-  letter-spacing: -0.025em;
+  line-height: 1; letter-spacing: -0.025em;
 }
-#ocean h1 em {
-  display: inline-block;
-  color: #7ad4e8;
-}
+#ocean h1 em { display: inline-block; color: #7ad4e8; }
 #ocean .intro {
-  font-size: 11px;
-  letter-spacing: 0.2em;
+  font-size: 11px; letter-spacing: 0.2em;
   text-transform: uppercase;
   color: #7ad4e8;
   margin-bottom: 0.75rem;
 }
 #ocean .intro::before { content: '> '; color: #4dd0e1; }
 #ocean .home-explanation {
-  font-size: 13px;
-  line-height: 1.75;
+  font-size: 13px; line-height: 1.75;
   color: #e8f4f8;
   max-width: 32rem;
   margin-bottom: 1.5rem;
 }
 #ocean .enter {
   display: inline-flex; align-items: center; gap: 1rem;
-  min-height: 42px;
-  padding: 0 1.25rem;
+  min-height: 42px; padding: 0 1.25rem;
   border: 1px solid rgba(77, 208, 225, 0.4);
   background: rgba(6, 10, 15, 0.6);
-  font-size: 11px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: #4dd0e1;
+  font-size: 11px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: #4dd0e1;
   transition: all 180ms;
 }
 #ocean .enter:hover {
   background: rgba(77, 208, 225, 0.12);
-  border-color: #4dd0e1;
-  color: #ffffff;
+  border-color: #4dd0e1; color: #ffffff;
 }
 #ocean .enter span { color: #4dd0e1; font-size: 14px; }
 
@@ -387,44 +356,34 @@ main {
   position: absolute;
   left: clamp(1.5rem, 4vw, 3rem); bottom: 10svh;
   display: flex; align-items: center; gap: 0.75rem;
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #8aa8b4;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+  font-size: 10px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: #8aa8b4;
 }
 #ocean .home-shot i {
   display: block; width: 48px; height: 1px;
   background: linear-gradient(90deg, #4dd0e1, transparent);
 }
-
 #ocean .home-explore {
   position: absolute;
   right: clamp(1.5rem, 4vw, 3rem); bottom: 10svh;
-  width: 14rem;
-  text-align: left;
+  width: 14rem; text-align: left;
 }
 #ocean .home-explore button {
   width: 100%;
   background: rgba(6, 10, 15, 0.7);
   border: 1px solid rgba(77, 208, 225, 0.3);
-  min-height: 40px;
-  padding: 0 1rem;
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: #a8c4d0;
+  min-height: 40px; padding: 0 1rem;
+  font-size: 10px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: #a8c4d0;
   transition: all 180ms;
 }
 #ocean .home-explore button:hover {
-  border-color: #4dd0e1;
-  color: #4dd0e1;
+  border-color: #4dd0e1; color: #4dd0e1;
   background: rgba(77, 208, 225, 0.08);
 }
 #ocean .home-explore p {
   margin: 0.75rem 0 0;
-  font-size: 10px;
-  line-height: 1.6;
+  font-size: 10px; line-height: 1.6;
   color: #8aa8b4;
 }
 #ocean .home-explore p:empty { display: none; }
@@ -432,25 +391,19 @@ main {
 #ocean .home-college {
   position: absolute;
   right: clamp(1.5rem, 4vw, 3rem); top: 14svh;
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #8aa8b4;
+  font-size: 10px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: #8aa8b4;
   border-top: 1px solid rgba(77, 208, 225, 0.25);
   padding-top: 0.5rem;
 }
 #ocean .home-college summary {
-  cursor: pointer;
-  list-style: none;
+  cursor: pointer; list-style: none;
   min-height: 32px;
   display: flex; align-items: center; gap: 0.75rem;
 }
 #ocean .home-college summary::-webkit-details-marker { display: none; }
 #ocean .home-college summary::before { content: '+ '; color: #4dd0e1; }
-#ocean .home-college p {
-  margin: 0.5rem 0 0;
-  font-size: 10px;
-}
+#ocean .home-college p { margin: 0.5rem 0 0; font-size: 10px; }
 
 body.home-orbit { overflow: hidden; }
 body.home-orbit #world canvas { touch-action: none; cursor: grab; }
@@ -471,26 +424,258 @@ body.home-orbit #ocean.home-departed .home-explore {
 }
 
 /* =========================================================
-   10. COMPONENT PICKER
+   10. SECTION 02 — COASTAL CHALLENGE
    ========================================================= */
+#challenge {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(2rem, 6vw, 6rem);
+  padding-top: 18svh;
+  padding-bottom: 14svh;
+}
+#challenge .copy { max-width: 34rem; flex: 1; }
+#challenge h2 {
+  font-size: clamp(1.75rem, 3.2vw, 2.75rem);
+  line-height: 1.15; letter-spacing: -0.01em;
+  margin-bottom: 1.5rem;
+  color: #ffffff;
+}
+#challenge .copy > p {
+  font-size: 13px; color: #e8f4f8;
+  line-height: 1.7; max-width: 34em;
+  margin-bottom: 1rem;
+}
+
+.challenge-flow {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 0.5rem;
+  max-width: 22rem; flex-shrink: 0;
+  margin-right: clamp(1rem, 5vw, 4rem);
+}
+.flow-step {
+  display: flex; align-items: center; gap: 1rem;
+  width: 100%; padding: 1rem 1.25rem;
+  border: 1px solid rgba(77, 208, 225, 0.3);
+  background: rgba(6, 10, 15, 0.75);
+  backdrop-filter: blur(4px);
+  transition: all 320ms;
+}
+.flow-step:hover {
+  border-color: #4dd0e1;
+  background: rgba(77, 208, 225, 0.08);
+}
+.flow-num {
+  font-family: ui-monospace, monospace;
+  font-size: 11px; letter-spacing: 0.15em;
+  color: #4dd0e1; flex-shrink: 0;
+}
+.flow-label {
+  font-family: ui-monospace, monospace;
+  font-size: 12px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: #ffffff;
+}
+.flow-arrow {
+  font-style: normal; color: #4dd0e1;
+  font-size: 1rem; opacity: 0.6;
+  animation: flow-pulse 2.4s ease-in-out infinite;
+}
+@keyframes flow-pulse {
+  0%, 100% { opacity: 0.3; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(3px); }
+}
+
+/* =========================================================
+   11. SECTION 03 — OUR SOLUTION
+   ========================================================= */
+#solution {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(2rem, 6vw, 6rem);
+  padding-top: 18svh;
+  padding-bottom: 14svh;
+}
+#solution .copy { max-width: 32rem; flex: 1; }
+#solution h2 {
+  font-size: clamp(1.75rem, 3.2vw, 2.75rem);
+  line-height: 1.15; letter-spacing: -0.01em;
+  margin-bottom: 1.5rem;
+  color: #ffffff;
+}
+#solution .copy > p {
+  font-size: 13px; color: #e8f4f8;
+  line-height: 1.7; max-width: 34em;
+  margin-bottom: 1rem;
+}
+.solution-intro {
+  font-family: ui-monospace, monospace;
+  font-size: 11px; letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #4dd0e1;
+  margin-top: 1.5rem;
+}
+
+.solution-features {
+  list-style: none; padding: 0; margin: 0;
+  display: flex; flex-direction: column; gap: 0.5rem;
+  max-width: 26rem; flex-shrink: 0;
+  margin-right: clamp(1rem, 5vw, 4rem);
+}
+.solution-features li {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 0.85rem 1.1rem;
+  border: 1px solid rgba(77, 208, 225, 0.3);
+  background: rgba(6, 10, 15, 0.75);
+  backdrop-filter: blur(4px);
+  transition: all 320ms;
+}
+.solution-features li:hover {
+  border-color: #4dd0e1;
+  background: rgba(77, 208, 225, 0.08);
+  transform: translateX(4px);
+}
+.feature-num {
+  font-family: ui-monospace, monospace;
+  font-size: 11px; letter-spacing: 0.15em;
+  color: #4dd0e1; flex-shrink: 0;
+}
+.feature-text {
+  font-family: ui-monospace, monospace;
+  font-size: 12px; letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+/* =========================================================
+   12. SECTION 04 — SYSTEM ARCHITECTURE
+   ========================================================= */
+#architecture {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(2rem, 6vw, 6rem);
+  padding-top: 18svh;
+  padding-bottom: 14svh;
+}
+#architecture .copy { max-width: 30rem; flex: 1; }
+#architecture h2 {
+  font-size: clamp(1.75rem, 3.2vw, 2.75rem);
+  line-height: 1.15; letter-spacing: -0.01em;
+  margin-bottom: 1.5rem;
+  color: #ffffff;
+}
+#architecture .copy > p {
+  font-size: 13px; color: #e8f4f8;
+  line-height: 1.7; max-width: 34em;
+  margin-bottom: 1rem;
+}
+
+.architecture-flow {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 0.4rem;
+  max-width: 22rem; flex-shrink: 0;
+  margin-right: clamp(1rem, 5vw, 4rem);
+}
+.arch-node {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 0.25rem;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid rgba(77, 208, 225, 0.35);
+  background: rgba(6, 10, 15, 0.8);
+  backdrop-filter: blur(4px);
+  width: 100%;
+  transition: all 320ms;
+}
+.arch-node:hover { border-color: #4dd0e1; }
+.arch-node-primary {
+  border-color: #4dd0e1;
+  background: rgba(77, 208, 225, 0.1);
+}
+.arch-icon {
+  font-size: 1.4rem;
+  color: #4dd0e1;
+  line-height: 1;
+}
+.arch-name {
+  font-family: ui-monospace, monospace;
+  font-size: 11px; letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #ffffff;
+  font-weight: 600;
+}
+.arch-sub {
+  font-family: ui-monospace, monospace;
+  font-size: 9px; letter-spacing: 0.1em;
+  color: #8aa8b4;
+}
+.arch-link {
+  font-family: ui-monospace, monospace;
+  font-size: 10px; letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #7ad4e8;
+  padding: 0.25rem 1rem;
+  border-left: 1px solid #4dd0e1;
+  border-right: 1px solid #4dd0e1;
+}
+.arch-arrow {
+  font-style: normal;
+  color: #4dd0e1;
+  font-size: 1rem;
+  opacity: 0.7;
+}
+
+/* =========================================================
+   13. SECTIONS — SHARED WIDE-SCENE / DIAGRAM-SCENE
+   ========================================================= */
+.wide-scene {
+  display: block;
+  padding-top: 16svh;
+  padding-bottom: 14svh;
+}
+.diagram-scene { min-height: 110svh; }
+
+/* =========================================================
+   14. SECTION 05 — SMART BUOY (CAD inspection)
+   ========================================================= */
+#buoy { min-height: 125svh; }
+#buoy .copy { max-width: 26rem; }
+#buoy .cad-caption {
+  position: absolute;
+  left: clamp(1.5rem, 4vw, 3rem); right: auto; bottom: 10svh;
+  max-width: 34rem;
+  font-size: 10px; letter-spacing: 0.05em;
+  color: #8aa8b4; text-align: left; line-height: 1.7;
+}
+#buoy .cad-caption::before { content: '§ '; color: #ffb74d; }
+#buoy .cad-caption button {
+  background: transparent; border: 0; padding: 0 0.5rem;
+  color: #4dd0e1; font-size: 10px;
+  letter-spacing: inherit;
+  border-bottom: 1px dashed rgba(77, 208, 225, 0.5);
+}
+#buoy .cad-caption p {
+  margin-top: 0.75rem;
+  border-left: 2px solid #ffb74d;
+  padding: 0.75rem 1rem;
+  font-size: 11px; letter-spacing: 0;
+  color: #e8f4f8; line-height: 1.7;
+  background: rgba(255, 183, 77, 0.06);
+}
+
 .component-picks {
   display: flex; flex-wrap: wrap; gap: 0.25rem;
-  margin: 1rem 0;
-  max-width: 32rem;
+  margin: 1rem 0; max-width: 32rem;
 }
 .component-picks button {
   background: rgba(6, 10, 15, 0.7);
   border: 1px solid rgba(77, 208, 225, 0.25);
-  min-height: 36px;
-  padding: 0 0.75rem;
-  font-size: 11px;
-  letter-spacing: 0.05em;
-  color: #a8c4d0;
-  transition: all 180ms;
+  min-height: 36px; padding: 0 0.75rem;
+  font-size: 11px; letter-spacing: 0.05em;
+  color: #a8c4d0; transition: all 180ms;
 }
 .component-picks button:hover {
-  border-color: #4dd0e1;
-  color: #4dd0e1;
+  border-color: #4dd0e1; color: #4dd0e1;
   background: rgba(77, 208, 225, 0.08);
 }
 .component-picks button[aria-pressed="true"] {
@@ -504,51 +689,15 @@ body.home-orbit #ocean.home-departed .home-explore {
 .component-picks button[aria-pressed="true"]::after { opacity: 1; }
 
 .text-button {
-  background: transparent;
-  border: 0;
+  background: transparent; border: 0;
   border-bottom: 1px dashed rgba(77, 208, 225, 0.4);
   color: #7ad4e8;
   padding: 0.5rem 0;
-  font-size: 11px;
-  letter-spacing: 0.05em;
+  font-size: 11px; letter-spacing: 0.05em;
   transition: all 180ms;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
 }
 .text-button:hover { color: #ffffff; border-bottom-style: solid; }
-
-/* =========================================================
-   11. CHAPTER 01 — INSTRUMENT
-   ========================================================= */
-#buoy { min-height: 125svh; }
-#buoy .copy { max-width: 26rem; }
-#buoy .cad-caption {
-  position: absolute;
-  left: clamp(1.5rem, 4vw, 3rem); right: auto; bottom: 10svh;
-  max-width: 34rem;
-  font-size: 10px;
-  letter-spacing: 0.05em;
-  color: #8aa8b4;
-  text-align: left;
-  line-height: 1.7;
-}
-#buoy .cad-caption::before { content: '§ '; color: #ffb74d; }
-#buoy .cad-caption button {
-  background: transparent; border: 0; padding: 0 0.5rem;
-  color: #4dd0e1;
-  font-size: 10px;
-  letter-spacing: inherit;
-  border-bottom: 1px dashed rgba(77, 208, 225, 0.5);
-}
-#buoy .cad-caption p {
-  margin-top: 0.75rem;
-  border-left: 2px solid #ffb74d;
-  padding: 0.75rem 1rem;
-  font-size: 11px;
-  letter-spacing: 0;
-  color: #e8f4f8;
-  line-height: 1.7;
-  background: rgba(255, 183, 77, 0.06);
-}
 
 .hotspot {
   position: absolute;
@@ -557,14 +706,10 @@ body.home-orbit #ocean.home-departed .home-explore {
   background: rgba(6, 10, 15, 0.92);
   border: 1px solid rgba(77, 208, 225, 0.4);
   padding: 4px 8px 4px 4px;
-  min-height: 30px;
-  max-width: 180px;
-  font-size: 10px;
-  letter-spacing: 0.05em;
-  color: #e8f4f8;
-  white-space: nowrap;
-  pointer-events: auto;
-  transition: all 180ms;
+  min-height: 30px; max-width: 180px;
+  font-size: 10px; letter-spacing: 0.05em;
+  color: #e8f4f8; white-space: nowrap;
+  pointer-events: auto; transition: all 180ms;
 }
 .hotspot::before {
   content: attr(data-index);
@@ -573,29 +718,25 @@ body.home-orbit #ocean.home-departed .home-explore {
   border-radius: 50%;
   background: rgba(77, 208, 225, 0.1);
   border: 1px solid #4dd0e1;
-  color: #4dd0e1;
-  font-size: 10px;
+  color: #4dd0e1; font-size: 10px;
 }
 .hotspot:hover,
 .hotspot:focus-visible {
-  border-color: #4dd0e1;
-  color: #ffffff;
+  border-color: #4dd0e1; color: #ffffff;
   background: rgba(77, 208, 225, 0.15);
 }
 .hotspot[aria-pressed="true"] {
-  border-color: #4dd0e1;
-  color: #ffffff;
+  border-color: #4dd0e1; color: #ffffff;
   background: rgba(77, 208, 225, 0.2);
 }
 
 /* =========================================================
-   12. CHAPTER 02 — SENSORS
+   15. SECTION 06 — HOW THE SYSTEM WORKS
    ========================================================= */
 #sensors { min-height: 125svh; }
 #sensors .copy { max-width: 30rem; }
 #sensors .acquisition-intro {
-  font-size: 13px;
-  color: #e8f4f8;
+  font-size: 13px; color: #e8f4f8;
   margin-bottom: 1rem;
 }
 .sensor-menu {
@@ -605,17 +746,13 @@ body.home-orbit #ocean.home-departed .home-explore {
 .sensor-menu button {
   border: 1px solid rgba(77, 208, 225, 0.25);
   background: rgba(6, 10, 15, 0.7);
-  min-height: 34px;
-  padding: 0 0.75rem;
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #a8c4d0;
+  min-height: 34px; padding: 0 0.75rem;
+  font-size: 10px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: #a8c4d0;
   transition: all 180ms;
 }
 .sensor-menu button:hover {
-  border-color: #4dd0e1;
-  color: #4dd0e1;
+  border-color: #4dd0e1; color: #4dd0e1;
   background: rgba(77, 208, 225, 0.08);
 }
 .sensor-menu button[aria-pressed="true"] {
@@ -627,48 +764,35 @@ body.home-orbit #ocean.home-departed .home-explore {
   padding: 0.75rem 0 0.75rem 1rem;
   border-left: 2px solid #4dd0e1;
 }
-.callout h3 {
-  font-size: 1rem;
-  margin-bottom: 0.5rem;
-  color: #ffffff;
-}
+.callout h3 { font-size: 1rem; margin-bottom: 0.5rem; color: #ffffff; }
 .callout p {
-  font-size: 12px;
-  line-height: 1.7;
-  color: #e8f4f8;
-  margin: 0;
-  max-width: 42em;
+  font-size: 12px; line-height: 1.7;
+  color: #e8f4f8; margin: 0; max-width: 42em;
 }
 .source-caption {
   position: absolute;
   left: clamp(1.5rem, 4vw, 3rem); bottom: 10svh;
-  font-size: 9px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #8aa8b4;
+  font-size: 9px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: #8aa8b4;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
 }
 .source-caption span { color: #4dd0e1; padding: 0 0.5rem; }
 
 #acquisition-signal {
-  margin-top: 1.25rem;
-  padding-top: 1rem;
+  margin-top: 1.25rem; padding-top: 1rem;
   border-top: 1px dashed rgba(77, 208, 225, 0.25);
   max-width: 30rem;
 }
 .signal-heading {
   display: flex; justify-content: space-between;
   gap: 1rem;
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: #e8f4f8;
+  font-size: 10px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: #e8f4f8;
 }
 .signal-heading small { color: #8aa8b4; letter-spacing: 0.05em; }
 #acquisition-signal svg {
   width: 100%; height: 80px;
-  display: block;
-  margin: 0.5rem 0;
+  display: block; margin: 0.5rem 0;
   overflow: hidden;
 }
 .signal-axis { fill: none; stroke: rgba(77, 208, 225, 0.15); stroke-width: 1; }
@@ -677,251 +801,24 @@ body.home-orbit #ocean.home-departed .home-explore {
 #acquisition-signal .signal-unit { font-size: 10px; color: #8aa8b4; margin: 0 0 1rem; }
 .signal-record { border-left: 2px solid #ffb74d; padding-left: 0.75rem; }
 .signal-record > span {
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: #ffb74d;
+  font-size: 10px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: #ffb74d;
 }
 .signal-record p { font-size: 12px; margin: 0.5rem 0; color: #e8f4f8; }
 #acquisition-signal .signal-result {
-  font-size: 11px;
-  color: #8aa8b4;
-  margin: 0.75rem 0 0;
-  line-height: 1.7;
+  font-size: 11px; color: #8aa8b4;
+  margin: 0.75rem 0 0; line-height: 1.7;
 }
 
 /* =========================================================
-   13. CHAPTER 03 — CONTROLLER
-   ========================================================= */
-#controller { min-height: 125svh; }
-#controller .copy {
-  position: absolute;
-  left: clamp(1.5rem, 4vw, 3rem);
-  top: 12svh;
-  max-width: 22rem;
-  z-index: 5;
-}
-#controller .copy > p:not(.kicker) { font-size: 12px; color: #e8f4f8; }
-#controller .copy .micro {
-  color: #7ad4e8;
-  font-size: 11px;
-  letter-spacing: 0.05em;
-  margin-top: 0.75rem;
-}
-#controller .copy .micro::before { content: '▸ '; color: #4dd0e1; }
-
-#controller .chip-stage {
-  position: absolute;
-  inset: 8svh 0 12svh 0;
-  display: flex; align-items: center; justify-content: center;
-  padding: 0 clamp(1.5rem, 4vw, 3rem) 0 26vw;
-  z-index: 1;
-}
-#controller .chip-stage svg {
-  width: min(640px, 52vw);
-  height: auto;
-  max-height: 62svh;
-  overflow: visible;
-}
-#controller svg text {
-  fill: #ffffff;
-  font-family: inherit;
-  font-size: 13px;
-  letter-spacing: 0.12em;
-  font-weight: 500;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
-}
-#controller svg .chip-title {
-  font-size: 28px;
-  fill: #ffffff;
-  letter-spacing: 0.2em;
-  font-weight: 500;
-}
-.traces { stroke: rgba(77, 208, 225, 0.55); fill: none; stroke-dasharray: 2 4; stroke-width: 1.5; }
-.trace-packets {
-  fill: none;
-  stroke: #4dd0e1;
-  stroke-width: 2;
-  stroke-dasharray: 8 320;
-  animation: transmit 5s linear infinite;
-}
-.trace-packets path:nth-child(2) { stroke: #ffb74d; }
-@keyframes transmit { to { stroke-dashoffset: -656; } }
-.chip-body {
-  fill: rgba(6, 10, 15, 0.95);
-  stroke: #4dd0e1;
-  stroke-width: 1.5;
-}
-.chip-inner {
-  fill: rgba(77, 208, 225, 0.05);
-  stroke: rgba(77, 208, 225, 0.3);
-  transition: all 320ms;
-}
-#controller .processing .chip-inner {
-  fill: rgba(77, 208, 225, 0.15);
-  stroke: #4dd0e1;
-}
-.controller-pulse { fill: #4dd0e1; }
-#controller .input-arrived { fill: #ffb74d; }
-
-#controller .packet-console {
-  position: absolute;
-  right: clamp(1.5rem, 4vw, 3rem);
-  bottom: 6svh;
-  width: 300px;
-  padding: 1rem 1.25rem;
-  border: 1px solid rgba(77, 208, 225, 0.3);
-  background: rgba(6, 10, 15, 0.9);
-  backdrop-filter: blur(4px);
-  z-index: 4;
-}
-.console-head {
-  display: block;
-  font-size: 9px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #4dd0e1;
-  margin-bottom: 0.75rem;
-}
-#controller .packet-console code {
-  display: block;
-  font-size: 11px;
-  line-height: 1.7;
-  color: #e8f4f8;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-  min-height: 3.6em;
-}
-.controller-output {
-  display: block;
-  margin: 0.75rem 0 0;
-  padding-top: 0.75rem;
-  border-top: 1px dashed rgba(77, 208, 225, 0.2);
-  font-size: 9px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: #ffb74d;
-}
-
-/* =========================================================
-   14. CHAPTER 04 — RADIO
-   ========================================================= */
-#radio { min-height: 140svh; }
-#radio .copy { max-width: 30rem; }
-#radio .radio-experience {
-  position: absolute;
-  left: clamp(1.5rem, 4vw, 3rem); right: clamp(1.5rem, 4vw, 3rem);
-  bottom: 10svh;
-  padding: 1rem 1.25rem;
-  border: 1px solid rgba(77, 208, 225, 0.25);
-  background: rgba(6, 10, 15, 0.85);
-  backdrop-filter: blur(4px);
-}
-#radio .radio-experience::before {
-  content: '// TELEMETRY PATH';
-  display: block;
-  font-size: 9px;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: #4dd0e1;
-  margin-bottom: 1rem;
-}
-.radio-route {
-  display: grid;
-  grid-template-columns: 120px 1fr 140px;
-  align-items: center;
-  gap: 1.5rem;
-}
-.radio-route > div:not(.radio-beam) {
-  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
-}
-.radio-route b { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: #ffffff; }
-.radio-route small { font-size: 10px; color: #8aa8b4; }
-.station-glyph { font-size: 1.75rem; color: #4dd0e1; line-height: 1; }
-.shore-glyph { font-size: 2.25rem; color: #4dd0e1; }
-.radio-beam {
-  position: relative;
-  height: 32px;
-  border-top: 1px dashed rgba(77, 208, 225, 0.4);
-  border-bottom: 1px solid rgba(77, 208, 225, 0.1);
-}
-.radio-beam span {
-  position: absolute;
-  left: 50%; transform: translateX(-50%);
-  top: 4px;
-  font-size: 9px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: #8aa8b4;
-}
-.radio-beam i {
-  position: absolute;
-  top: -2px;
-  width: 20px; height: 3px;
-  background: #4dd0e1;
-  box-shadow: 0 0 8px #4dd0e1;
-  animation: crossing 3.2s linear infinite;
-}
-.radio-beam i:nth-child(2) { animation-delay: -1.06s; }
-.radio-beam i:nth-child(3) { animation-delay: -2.12s; }
-@keyframes crossing {
-  0% { left: 0; opacity: 0; }
-  10%, 85% { opacity: 1; }
-  100% { left: calc(100% - 20px); opacity: 0; }
-}
-.radio-route.offline .radio-beam { border-top-style: dotted; border-color: #ffb74d; }
-.radio-route.offline .radio-beam i { display: none; }
-.link-controls {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-.link-controls button {
-  background: rgba(6, 10, 15, 0.85);
-  border: 1px solid rgba(77, 208, 225, 0.4);
-  min-height: 34px;
-  padding: 0 1rem;
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: #4dd0e1;
-  transition: all 180ms;
-}
-.link-controls button:hover { background: rgba(77, 208, 225, 0.15); color: #ffffff; }
-.link-controls span { font-size: 10px; letter-spacing: 0.08em; color: #8aa8b4; }
-.buffer-strip {
-  display: flex; align-items: center; gap: 1rem;
-  border-top: 1px dashed rgba(77, 208, 225, 0.2);
-  border-bottom: 1px dashed rgba(77, 208, 225, 0.2);
-  padding: 0.75rem 0;
-  margin-top: 1rem;
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-.buffer-strip > span { white-space: nowrap; color: #8aa8b4; }
-.buffer-strip b { display: inline-block; font-size: 14px; font-weight: 500; color: #4dd0e1; margin-left: 0.5rem; }
-#buffer-packets { flex: 1; display: flex; gap: 4px; min-width: 0; overflow: hidden; }
-#buffer-packets i {
-  font-style: normal;
-  display: grid; place-items: center;
-  min-width: 28px; height: 24px;
-  border: 1px solid rgba(77, 208, 225, 0.4);
-  color: #4dd0e1;
-  font-size: 9px;
-}
-#radio .radio-experience > .micro { margin-top: 0.75rem; text-align: left; color: #8aa8b4; }
-
-/* =========================================================
-   15. CHAPTER 05 — BAY STATION
+   16. SECTION 07 — BAY STATION
    ========================================================= */
 #shore { min-height: 130svh; }
 #shore .copy { max-width: 30rem; }
 #shore .shore-system {
   position: absolute;
   left: clamp(1.5rem, 4vw, 3rem); right: clamp(1.5rem, 4vw, 3rem);
-  bottom: 10svh;
-  padding: 1rem 1.25rem;
+  bottom: 10svh; padding: 1rem 1.25rem;
   border: 1px solid rgba(77, 208, 225, 0.25);
   background: rgba(6, 10, 15, 0.85);
   backdrop-filter: blur(4px);
@@ -929,12 +826,9 @@ body.home-orbit #ocean.home-departed .home-explore {
 #shore #open-bay {
   background: rgba(6, 10, 15, 0.85);
   border: 1px solid rgba(77, 208, 225, 0.4);
-  min-height: 36px;
-  padding: 0 1rem;
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: #4dd0e1;
+  min-height: 36px; padding: 0 1rem;
+  font-size: 10px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: #4dd0e1;
   transition: all 180ms;
 }
 #shore #open-bay:hover { background: rgba(77, 208, 225, 0.15); color: #ffffff; }
@@ -948,14 +842,10 @@ body.home-orbit #ocean.home-departed .home-explore {
   padding-top: 0.75rem;
 }
 #shore #bay-menu button {
-  background: transparent;
-  border: 1px solid transparent;
-  padding: 0.5rem 0.5rem;
-  text-align: left;
-  font-size: 9px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #8aa8b4;
+  background: transparent; border: 1px solid transparent;
+  padding: 0.5rem 0.5rem; text-align: left;
+  font-size: 9px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: #8aa8b4;
   transition: all 180ms;
 }
 #shore #bay-menu button:hover { color: #ffffff; }
@@ -971,33 +861,25 @@ body.home-orbit #ocean.home-departed .home-explore {
   padding: 0.25rem 0.5rem;
   background: rgba(6, 10, 15, 0.9);
   border-left: 1px solid #4dd0e1;
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  color: #4dd0e1;
-  max-width: 180px;
+  font-size: 10px; letter-spacing: 0.1em;
+  color: #4dd0e1; max-width: 180px;
 }
 #bay-panel {
-  position: fixed;
-  z-index: 18;
+  position: fixed; z-index: 18;
   right: clamp(1.5rem, 4vw, 3rem); top: 15svh;
   width: min(340px, 30vw);
-  max-height: 70svh;
-  overflow: auto;
+  max-height: 70svh; overflow: auto;
   padding: 1.25rem;
   background: rgba(6, 10, 15, 0.97);
   border: 1px solid #4dd0e1;
   scrollbar-width: thin;
 }
 #close-bay {
-  background: transparent;
-  border: 0;
+  background: transparent; border: 0;
   border-bottom: 1px dashed rgba(77, 208, 225, 0.4);
-  padding: 0 0 0.5rem;
-  margin-bottom: 1rem;
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: #4dd0e1;
+  padding: 0 0 0.5rem; margin-bottom: 1rem;
+  font-size: 10px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: #4dd0e1;
 }
 #bay-panel h3 { font-size: 1.25rem; line-height: 1.3; margin-bottom: 0.75rem; color: #ffffff; }
 #bay-panel p { font-size: 12px; line-height: 1.7; color: #e8f4f8; }
@@ -1009,143 +891,109 @@ body.home-orbit #ocean.home-departed .home-explore {
 .bay-inspecting #coast-receiver-label { visibility: hidden; }
 
 /* =========================================================
-   16. CHAPTER 06 — WAVE ESTIMATION
+   17. SECTION 08 — DASHBOARD
    ========================================================= */
-#waves {
-  display: block;
-  min-height: 240svh;
-  padding-top: 15svh;
-  padding-bottom: 15svh;
+#dashboard { min-height: 130svh; }
+#dashboard .copy { max-width: 22rem; }
+#dashboard .monitor {
+  position: absolute;
+  left: clamp(1.5rem, 4vw, 3rem); right: clamp(1.5rem, 4vw, 3rem);
+  top: 42svh; bottom: 8svh;
+  background: rgba(6, 10, 15, 0.97);
+  border: 1px solid #4dd0e1;
+  color: #e8f4f8; overflow: hidden;
+  display: flex; flex-direction: column;
 }
-#waves .copy { max-width: 42rem; margin-bottom: 2rem; }
-#waves .copy h2 { max-width: 22em; }
-#waves .wave-lab {
-  max-width: 64rem;
-  margin: 0 auto;
-  position: sticky;
-  top: 12svh;
-  padding: 1.25rem;
-  border: 1px solid rgba(77, 208, 225, 0.25);
-  background: rgba(6, 10, 15, 0.9);
-  backdrop-filter: blur(4px);
-}
-#waves .wave-lab::before {
-  content: '// PROCESSING PIPELINE';
-  display: block;
-  font-size: 9px;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: #4dd0e1;
-  margin-bottom: 1rem;
-}
-#waves .process-controls {
+.monitor-top {
   display: flex; align-items: center; justify-content: space-between;
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
-  border-bottom: 1px dashed rgba(77, 208, 225, 0.2);
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(77, 208, 225, 0.3);
+  font-size: 12px; font-weight: 500; letter-spacing: 0.1em;
 }
-#waves .process-controls button {
-  background: transparent;
-  border: 0;
-  border-bottom: 2px solid transparent;
-  padding: 0.75rem 0;
-  min-height: 48px;
-  font-size: 10px;
-  text-align: left;
-  letter-spacing: 0.1em;
+.monitor-top small {
+  font-size: 9px; margin-left: 0.75rem;
+  color: #8aa8b4; font-weight: 400;
+  letter-spacing: 0.15em; text-transform: uppercase;
+}
+.demo-indicator {
+  font-size: 9px; letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: #8aa8b4;
+  color: #ffb74d; padding: 2px 0.5rem;
+  background: rgba(255, 183, 77, 0.1);
+}
+.monitor-nav {
+  display: flex; gap: 0;
+  padding: 0 1rem;
+  border-bottom: 1px solid rgba(77, 208, 225, 0.2);
+}
+.monitor-nav button {
+  background: transparent; border: 0;
+  border-bottom: 2px solid transparent;
+  padding: 0.75rem 1rem;
+  font-size: 10px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: #8aa8b4;
   transition: all 180ms;
 }
-#waves .process-controls button span { display: block; font-size: 10px; color: #5a7a8a; margin-bottom: 0.25rem; }
-#waves .process-controls button[aria-pressed="true"] { color: #ffffff; border-color: #4dd0e1; }
-#waves .process-controls button[aria-pressed="true"] span { color: #4dd0e1; }
-#waves .process-controls i { font-style: normal; color: #5a7a8a; }
-#waves .wave-transform { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 2rem; align-items: center; }
-#waves .pressure-section { margin: 0; padding-right: 1.25rem; border-right: 1px dashed rgba(77, 208, 225, 0.2); }
-#waves .pressure-section svg { width: 100%; display: block; }
-#waves .pressure-section svg text { font-size: 9px; fill: #8aa8b4; letter-spacing: 0.1em; }
-#waves #pressure-surface { stroke: #4dd0e1; stroke-width: 1.5; fill: none; }
-#waves .depth-rule,
-#waves .sensor-lead { stroke: #5a7a8a; stroke-width: 1; fill: none; stroke-dasharray: 2 4; }
-#waves .pressure-front { stroke: #4dd0e1; stroke-width: 1; fill: none; opacity: 0.6; }
-#waves .pressure-body { fill: #8aa8b4; stroke: #c8dde5; stroke-width: 1; }
-#waves .pressure-tip { fill: #4dd0e1; }
-#waves figcaption { font-size: 10px; line-height: 1.7; color: #e8f4f8; margin-top: 1rem; }
-#waves figcaption small { display: block; font-size: 9px; color: #8aa8b4; margin-top: 0.5rem; line-height: 1.7; }
-#waves .wave-heading {
-  display: flex; justify-content: space-between;
-  gap: 1rem;
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: #c8dde5;
-}
-#waves #wave-unit { text-align: right; color: #8aa8b4; }
-#waves #wave-name {
-  font-size: 1.1rem;
-  letter-spacing: 0.05em;
-  margin: 0.5rem 0 0;
-  min-height: 3em;
-  color: #ffffff;
-}
-#waves #pressure-plot { width: 100%; height: clamp(140px, 22vh, 220px); margin: 0.5rem 0 0; overflow: hidden; }
-#waves .wave-reference { stroke: rgba(77, 208, 225, 0.15); stroke-width: 1; fill: none; }
-#waves #raw-trace { stroke: #4dd0e1; stroke-width: 1.8; fill: none; vector-effect: non-scaling-stroke; }
-#waves #processed-trace { stroke: #8aa8b4; stroke-width: 1; fill: none; vector-effect: non-scaling-stroke; }
-#waves .wave-result {
-  display: flex; justify-content: space-between; align-items: flex-start;
-  gap: 1.5rem;
-  margin-top: 1.25rem;
-  padding-top: 1rem;
-  border-top: 1px dashed rgba(77, 208, 225, 0.2);
-  min-height: 90px;
-}
-#waves #process-detail { font-size: 11px; line-height: 1.8; color: #e8f4f8; max-width: 42em; margin: 0; flex: 1; }
-#waves .hs-statistic { text-align: right; min-width: 130px; }
-#waves #hs-result { display: block; font-size: 2rem; font-weight: 400; color: #4dd0e1; line-height: 1.1; }
-#waves #hs-caption { display: block; font-size: 9px; letter-spacing: 0.1em; line-height: 1.7; margin-top: 0.5rem; color: #8aa8b4; }
-#waves .wave-method {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 0.5rem;
-  margin-top: 1.5rem;
-  padding-top: 1rem;
+.monitor-nav button:hover { color: #c8dde5; }
+.monitor-nav button[aria-pressed="true"] { color: #4dd0e1; border-color: #4dd0e1; }
+#dashboard-content { flex: 1; min-height: 0; padding: 1.25rem; overflow: auto; }
+.monitor-foot {
+  padding: 0.5rem 1rem;
+  font-size: 9px; letter-spacing: 0.15em;
+  color: #8aa8b4;
   border-top: 1px dashed rgba(77, 208, 225, 0.2);
 }
-#waves .wave-method span { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #5a7a8a; transition: color 320ms; }
-#waves .wave-method span.is-lit { color: #4dd0e1; }
-#waves .wave-method i { font-style: normal; color: #5a7a8a; }
-#waves .wave-calibration {
-  margin: 1rem 0 0;
-  padding: 0.75rem 1rem;
-  background: rgba(255, 183, 77, 0.08);
-  border-left: 2px solid #ffb74d;
-  font-size: 9px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #ffb74d;
-  line-height: 1.8;
+.demo-overview { display: grid; grid-template-columns: 1fr 220px; gap: 1.5rem; }
+.demo-readings { display: flex; align-items: baseline; gap: 1.5rem; }
+.demo-readings span {
+  font-size: 9px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: #8aa8b4;
 }
-#waves .wave-calibration span {
-  display: block;
+.demo-readings strong {
+  display: block; font-size: 1.75rem;
+  font-weight: 400; color: #4dd0e1;
   margin-top: 0.25rem;
-  font-size: 10px;
-  letter-spacing: 0.02em;
-  text-transform: none;
-  color: #c8dde5;
 }
+.demo-readings small { font-size: 0.55em; color: #8aa8b4; }
+.demo-chart { width: 100%; height: 120px; margin-top: 1rem; }
+.demo-summary { margin: 0; font-size: 11px; }
+.demo-summary div {
+  display: flex; justify-content: space-between;
+  gap: 1rem; padding: 0.5rem 0;
+  border-bottom: 1px dashed rgba(77, 208, 225, 0.15);
+}
+.demo-summary dt {
+  color: #8aa8b4; letter-spacing: 0.1em;
+  text-transform: uppercase; font-size: 9px;
+}
+.demo-summary dd { margin: 0; font-weight: 500; color: #ffffff; }
+.demo-motion { display: flex; align-items: flex-start; gap: 1.25rem; }
+.demo-motion svg { width: 120px; flex-shrink: 0; }
+.demo-motion p { font-size: 11px; line-height: 1.7; max-width: 42em; color: #c8dde5; }
+.demo-motion strong { display: block; margin-bottom: 0.5rem; color: #ffffff; }
+.sensor-table { width: 100%; border-collapse: collapse; font-size: 11px; text-align: left; }
+.sensor-table th, .sensor-table td { padding: 0.5rem 0.75rem; border-bottom: 1px dashed rgba(77, 208, 225, 0.15); }
+.sensor-table th {
+  font-size: 9px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: #8aa8b4; font-weight: 500;
+}
+.sensor-table td { color: #e8f4f8; }
+.demo-log {
+  display: flex; gap: 1.25rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px dashed rgba(77, 208, 225, 0.15);
+  font-size: 11px; color: #e8f4f8;
+}
+.demo-log time { color: #8aa8b4; min-width: 4em; }
+.monitor .demo-note { margin-top: 1rem; font-size: 10px; color: #8aa8b4; }
+.motion-outline { animation: gentle-heave 5s ease-in-out infinite; transform-origin: center; }
+@keyframes gentle-heave { 50% { transform: translateY(-4px); } }
 
 /* =========================================================
-   17. CHAPTER 07 — PREDICTION
+   18. SECTION 09 — AI-ASSISTED PREDICTION
    ========================================================= */
 #prediction { min-height: 130svh; }
-#prediction .copy {
-  position: absolute;
-  left: clamp(1.5rem, 4vw, 3rem);
-  top: 12svh;
-  max-width: 22rem;
-  z-index: 5;
-}
+#prediction .copy { max-width: 22rem; }
 #prediction .prediction-lab {
   position: absolute;
   left: clamp(1.5rem, 4vw, 3rem); right: clamp(1.5rem, 4vw, 3rem);
@@ -1154,13 +1002,11 @@ body.home-orbit #ocean.home-departed .home-explore {
   border: 1px solid rgba(77, 208, 225, 0.25);
   background: rgba(6, 10, 15, 0.9);
   backdrop-filter: blur(4px);
-  z-index: 4;
 }
 #prediction .prediction-lab::before {
   content: '// FORECAST MODEL';
   display: block;
-  font-size: 9px;
-  letter-spacing: 0.25em;
+  font-size: 9px; letter-spacing: 0.25em;
   text-transform: uppercase;
   color: #4dd0e1;
   margin-bottom: 1rem;
@@ -1168,21 +1014,16 @@ body.home-orbit #ocean.home-departed .home-explore {
 .forecast-legend {
   display: flex; align-items: center; flex-wrap: wrap;
   gap: 1rem;
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #c8dde5;
+  font-size: 10px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: #c8dde5;
 }
 .forecast-legend button {
   margin-left: auto;
   background: rgba(6, 10, 15, 0.85);
   border: 1px solid rgba(77, 208, 225, 0.4);
-  min-height: 34px;
-  padding: 0 1rem;
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: #4dd0e1;
+  min-height: 34px; padding: 0 1rem;
+  font-size: 10px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: #4dd0e1;
   transition: all 180ms;
 }
 .forecast-legend button:hover { background: rgba(77, 208, 225, 0.15); color: #ffffff; }
@@ -1194,161 +1035,134 @@ body.home-orbit #ocean.home-departed .home-explore {
 .future-trace { fill: none; stroke: #ffb74d; stroke-width: 2; stroke-dasharray: 7 5; }
 .baseline-trace { fill: none; stroke: #8aa8b4; stroke-width: 1.5; stroke-dasharray: 2 6; }
 .now-line { stroke: #5a7a8a; stroke-dasharray: 3 6; fill: none; }
-#forecast text { font-size: 11px; fill: #8aa8b4; letter-spacing: 0.1em; text-transform: uppercase; }
+#forecast text {
+  font-size: 11px; fill: #8aa8b4;
+  letter-spacing: 0.1em; text-transform: uppercase;
+}
 .prediction-bottom {
   display: flex; justify-content: space-between; align-items: center;
   gap: 1rem;
   padding-top: 0.75rem;
   border-top: 1px dashed rgba(77, 208, 225, 0.2);
-  font-size: 11px;
-  color: #e8f4f8;
+  font-size: 11px; color: #e8f4f8;
 }
 .prediction-bottom > span {
-  font-size: 9px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: #ffb74d;
+  font-size: 9px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: #ffb74d;
 }
 .prediction-bottom p { margin: 0; }
 .prediction-lab > .micro { margin-top: 0.75rem; color: #8aa8b4; }
 
 /* =========================================================
-   18. CHAPTER 08 — DASHBOARD
+   19. SECTION 10 — VALIDATION FRAMEWORK
    ========================================================= */
-#dashboard { min-height: 130svh; }
-#dashboard .copy {
-  position: absolute;
-  left: clamp(1.5rem, 4vw, 3rem);
-  top: 12svh;
-  max-width: 22rem;
-  z-index: 5;
-}
-#dashboard .monitor {
-  position: absolute;
-  left: clamp(1.5rem, 4vw, 3rem); right: clamp(1.5rem, 4vw, 3rem);
-  top: 42svh; bottom: 8svh;
-  background: rgba(6, 10, 15, 0.97);
-  border: 1px solid #4dd0e1;
-  color: #e8f4f8;
-  overflow: hidden;
+#validation {
   display: flex;
-  flex-direction: column;
-  z-index: 4;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(2rem, 6vw, 6rem);
+  padding-top: 18svh; padding-bottom: 14svh;
 }
-.monitor-top {
-  display: flex; align-items: center; justify-content: space-between;
+#validation .copy { max-width: 30rem; flex: 1; }
+#validation h2 {
+  font-size: clamp(1.75rem, 3.2vw, 2.75rem);
+  line-height: 1.15; letter-spacing: -0.01em;
+  margin-bottom: 1.5rem; color: #ffffff;
+}
+#validation .copy > p {
+  font-size: 13px; color: #e8f4f8;
+  line-height: 1.7; max-width: 34em; margin-bottom: 1rem;
+}
+.validation-grid {
+  list-style: none; padding: 0; margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+  max-width: 26rem; flex-shrink: 0;
+  margin-right: clamp(1rem, 5vw, 4rem);
+}
+.validation-grid li {
+  display: flex; align-items: center; gap: 0.75rem;
   padding: 0.75rem 1rem;
-  border-bottom: 1px solid rgba(77, 208, 225, 0.3);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.1em;
+  border: 1px solid rgba(77, 208, 225, 0.3);
+  background: rgba(6, 10, 15, 0.75);
+  backdrop-filter: blur(4px);
+  transition: all 320ms;
 }
-.monitor-top small {
-  font-size: 9px;
-  margin-left: 0.75rem;
-  color: #8aa8b4;
-  font-weight: 400;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
+.validation-grid li:hover {
+  border-color: #4dd0e1;
+  background: rgba(77, 208, 225, 0.08);
 }
-.demo-indicator {
-  font-size: 9px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: #ffb74d;
-  padding: 2px 0.5rem;
-  background: rgba(255, 183, 77, 0.1);
+.val-num {
+  font-family: ui-monospace, monospace;
+  font-size: 10px; letter-spacing: 0.15em;
+  color: #4dd0e1; flex-shrink: 0;
 }
-.monitor-nav {
-  display: flex;
-  gap: 0;
-  padding: 0 1rem;
-  border-bottom: 1px solid rgba(77, 208, 225, 0.2);
+.val-name {
+  font-family: ui-monospace, monospace;
+  font-size: 11px; letter-spacing: 0.05em;
+  color: #ffffff;
 }
-.monitor-nav button {
-  background: transparent;
-  border: 0;
-  border-bottom: 2px solid transparent;
-  padding: 0.75rem 1rem;
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #8aa8b4;
-  transition: all 180ms;
-}
-.monitor-nav button:hover { color: #c8dde5; }
-.monitor-nav button[aria-pressed="true"] { color: #4dd0e1; border-color: #4dd0e1; }
-#dashboard-content { flex: 1; min-height: 0; padding: 1.25rem; overflow: auto; }
-.monitor-foot {
-  padding: 0.5rem 1rem;
-  font-size: 9px;
-  letter-spacing: 0.15em;
-  color: #8aa8b4;
-  border-top: 1px dashed rgba(77, 208, 225, 0.2);
-}
-.demo-overview { display: grid; grid-template-columns: 1fr 220px; gap: 1.5rem; }
-.demo-readings { display: flex; align-items: baseline; gap: 1.5rem; }
-.demo-readings span { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: #8aa8b4; }
-.demo-readings strong {
-  display: block;
-  font-size: 1.75rem;
-  font-weight: 400;
-  color: #4dd0e1;
-  margin-top: 0.25rem;
-}
-.demo-readings small { font-size: 0.55em; color: #8aa8b4; }
-.demo-chart { width: 100%; height: 120px; margin-top: 1rem; }
-.demo-summary { margin: 0; font-size: 11px; }
-.demo-summary div {
-  display: flex; justify-content: space-between;
-  gap: 1rem;
-  padding: 0.5rem 0;
-  border-bottom: 1px dashed rgba(77, 208, 225, 0.15);
-}
-.demo-summary dt {
-  color: #8aa8b4;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  font-size: 9px;
-}
-.demo-summary dd { margin: 0; font-weight: 500; color: #ffffff; }
-.demo-motion { display: flex; align-items: flex-start; gap: 1.25rem; }
-.demo-motion svg { width: 120px; flex-shrink: 0; }
-.demo-motion p { font-size: 11px; line-height: 1.7; max-width: 42em; color: #c8dde5; }
-.demo-motion strong { display: block; margin-bottom: 0.5rem; color: #ffffff; }
-.sensor-table { width: 100%; border-collapse: collapse; font-size: 11px; text-align: left; }
-.sensor-table th, .sensor-table td { padding: 0.5rem 0.75rem; border-bottom: 1px dashed rgba(77, 208, 225, 0.15); }
-.sensor-table th {
-  font-size: 9px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: #8aa8b4;
-  font-weight: 500;
-}
-.sensor-table td { color: #e8f4f8; }
-.demo-log {
-  display: flex; gap: 1.25rem;
-  padding: 0.5rem 0;
-  border-bottom: 1px dashed rgba(77, 208, 225, 0.15);
-  font-size: 11px;
-  color: #e8f4f8;
-}
-.demo-log time { color: #8aa8b4; min-width: 4em; }
-.monitor .demo-note { margin-top: 1rem; font-size: 10px; color: #8aa8b4; }
-.motion-outline { animation: gentle-heave 5s ease-in-out infinite; transform-origin: center; }
-@keyframes gentle-heave { 50% { transform: translateY(-4px); } }
 
 /* =========================================================
-   19. CHAPTER 09 — CONNECTED
+   20. SECTION 11 — FUTURE DEVELOPMENT
+   ========================================================= */
+#future {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(2rem, 6vw, 6rem);
+  padding-top: 18svh; padding-bottom: 14svh;
+}
+#future .copy { max-width: 30rem; flex: 1; }
+#future h2 {
+  font-size: clamp(1.75rem, 3.2vw, 2.75rem);
+  line-height: 1.15; letter-spacing: -0.01em;
+  margin-bottom: 1.5rem; color: #ffffff;
+}
+#future .copy > p {
+  font-size: 13px; color: #e8f4f8;
+  line-height: 1.7; max-width: 34em; margin-bottom: 1rem;
+}
+.roadmap-flow {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 0.5rem;
+  max-width: 22rem; flex-shrink: 0;
+  margin-right: clamp(1rem, 5vw, 4rem);
+}
+.roadmap-step {
+  display: flex; align-items: center; gap: 1rem;
+  width: 100%; padding: 1rem 1.25rem;
+  border: 1px solid rgba(77, 208, 225, 0.3);
+  background: rgba(6, 10, 15, 0.75);
+  backdrop-filter: blur(4px);
+  transition: all 320ms;
+}
+.roadmap-step:hover {
+  border-color: #4dd0e1;
+  background: rgba(77, 208, 225, 0.08);
+}
+.roadmap-num {
+  font-family: ui-monospace, monospace;
+  font-size: 11px; letter-spacing: 0.15em;
+  color: #4dd0e1; flex-shrink: 0;
+}
+.roadmap-name {
+  font-family: ui-monospace, monospace;
+  font-size: 12px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: #ffffff;
+}
+.roadmap-arrow {
+  font-style: normal; color: #4dd0e1;
+  font-size: 1rem; opacity: 0.6;
+  animation: flow-pulse 2.4s ease-in-out infinite;
+}
+
+/* =========================================================
+   21. SECTION 12 — FINAL MESSAGE
    ========================================================= */
 #connected { min-height: 120svh; }
-#connected .copy {
-  position: absolute;
-  left: clamp(1.5rem, 4vw, 3rem);
-  top: 12svh;
-  max-width: 26rem;
-  z-index: 5;
-}
+#connected .copy { max-width: 34rem; }
 #connected .complete-route {
   position: absolute;
   left: clamp(1.5rem, 4vw, 3rem); right: clamp(1.5rem, 4vw, 3rem);
@@ -1359,15 +1173,11 @@ body.home-orbit #ocean.home-departed .home-explore {
   border-top: 1px solid rgba(77, 208, 225, 0.3);
   border-bottom: 1px solid rgba(77, 208, 225, 0.3);
   background: rgba(6, 10, 15, 0.85);
-  z-index: 4;
 }
 #connected .complete-route span {
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: #ffffff;
-  text-align: center;
-  flex: 1;
+  font-size: 10px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: #ffffff;
+  text-align: center; flex: 1;
 }
 #connected .complete-route i { font-style: normal; color: #4dd0e1; opacity: 0.8; }
 #connected .closing {
@@ -1375,37 +1185,28 @@ body.home-orbit #ocean.home-departed .home-explore {
   left: clamp(1.5rem, 4vw, 3rem); right: clamp(1.5rem, 4vw, 3rem);
   bottom: 8svh;
   display: flex; align-items: flex-start; justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1.25rem;
-  z-index: 4;
+  flex-wrap: wrap; gap: 1.25rem;
 }
 #connected .closing > p {
-  font-size: 13px;
-  color: #e8f4f8;
+  font-size: 13px; color: #e8f4f8;
   max-width: 30rem;
 }
 #connected .closing .enter {
   border: 1px solid rgba(77, 208, 225, 0.4);
   padding: 0.6rem 1rem;
   min-height: 38px;
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: #4dd0e1;
+  font-size: 10px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: #4dd0e1;
   background: rgba(6, 10, 15, 0.7);
   transition: all 180ms;
 }
 #connected .closing .enter:hover { background: rgba(77, 208, 225, 0.15); color: #ffffff; }
 #connected .closing details { width: 100%; max-width: 44rem; font-size: 11px; color: #8aa8b4; }
 #connected summary {
-  cursor: pointer;
-  padding: 0.5rem 0;
-  min-height: 34px;
-  color: #4dd0e1;
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  list-style: none;
+  cursor: pointer; padding: 0.5rem 0;
+  min-height: 34px; color: #4dd0e1;
+  font-size: 10px; letter-spacing: 0.15em;
+  text-transform: uppercase; list-style: none;
 }
 #connected summary::-webkit-details-marker { display: none; }
 #connected summary::before { content: '[+] '; }
@@ -1413,87 +1214,69 @@ body.home-orbit #ocean.home-departed .home-explore {
 #connected details p { margin-top: 0.5rem; line-height: 1.7; color: #c8dde5; }
 
 /* =========================================================
-   20. INSPECTION OVERLAY
+   22. INSPECTION OVERLAY
    ========================================================= */
 #inspection-panel {
-  position: fixed;
-  z-index: 20;
+  position: fixed; z-index: 20;
   right: clamp(1.5rem, 4vw, 3rem); bottom: 8svh;
   width: min(360px, 30vw);
-  max-height: 60svh;
-  overflow: auto;
+  max-height: 60svh; overflow: auto;
   padding: 1.25rem;
   background: rgba(6, 10, 15, 0.97);
   border: 1px solid #4dd0e1;
   scrollbar-width: thin;
 }
 #inspection-back {
-  background: transparent;
-  border: 0;
+  background: transparent; border: 0;
   border-bottom: 1px dashed rgba(77, 208, 225, 0.4);
-  padding: 0 0 0.5rem;
-  margin-bottom: 1rem;
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: #4dd0e1;
+  padding: 0 0 0.5rem; margin-bottom: 1rem;
+  font-size: 10px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: #4dd0e1;
 }
 #inspection-panel h2 { font-size: 1.25rem; line-height: 1.3; margin-bottom: 1rem; color: #ffffff; }
 #inspection-panel h3 {
-  font-size: 9px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #4dd0e1;
-  margin: 1rem 0 0.5rem;
-  font-weight: 500;
+  font-size: 9px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: #4dd0e1;
+  margin: 1rem 0 0.5rem; font-weight: 500;
 }
 #inspection-panel p { font-size: 11px; line-height: 1.7; color: #e8f4f8; margin-bottom: 0.75rem; }
 #inspection-panel .kicker { margin-bottom: 0.75rem; }
 #inspection-data {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  list-style: none; padding: 0; margin: 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.25rem 1rem;
-  font-size: 11px;
-  color: #e8f4f8;
+  font-size: 11px; color: #e8f4f8;
 }
 #inspection-data li::before { content: '·'; color: #4dd0e1; margin-right: 0.5rem; }
 #inspection-flow {
   display: flex; flex-wrap: wrap;
-  gap: 0.5rem;
-  font-size: 10px;
+  gap: 0.5rem; font-size: 10px;
   letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #4dd0e1;
+  text-transform: uppercase; color: #4dd0e1;
 }
 #inspection-flow span:not(:last-child)::after { content: ' →'; margin-left: 0.5rem; color: #5a7a8a; }
 #inspection-status {
-  display: block;
-  margin-top: 1rem;
+  display: block; margin-top: 1rem;
   padding: 0.4rem 0.75rem;
   background: rgba(255, 183, 77, 0.1);
-  font-size: 9px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: #ffb74d;
+  font-size: 9px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: #ffb74d;
 }
-#inspection-panel #inspection-note { margin-top: 0.75rem; margin-bottom: 0; font-size: 10px; color: #8aa8b4; }
+#inspection-panel #inspection-note {
+  margin-top: 0.75rem; margin-bottom: 0;
+  font-size: 10px; color: #8aa8b4;
+}
 #inspection-wire {
   position: fixed; inset: 0;
   width: 100%; height: 100%;
-  z-index: 6;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 320ms;
+  z-index: 6; pointer-events: none;
+  opacity: 0; transition: opacity 320ms;
 }
 #inspection-wire path {
-  fill: none;
-  stroke: #4dd0e1;
+  fill: none; stroke: #4dd0e1;
   stroke-width: 1;
-  stroke-dasharray: 5 3;
-  opacity: 0.7;
+  stroke-dasharray: 5 3; opacity: 0.7;
   animation: inspection-wire 12s linear infinite;
 }
 @keyframes inspection-wire { to { stroke-dashoffset: -80; } }
@@ -1505,50 +1288,41 @@ body.home-orbit #ocean.home-departed .home-explore {
 .inspecting .hotspot[aria-pressed="false"] { opacity: 0.4; }
 
 /* =========================================================
-   21. JOURNEY NAV
+   23. JOURNEY NAV
    ========================================================= */
 .journey-nav {
-  position: fixed;
-  inset: auto 0 0;
-  z-index: 25;
+  position: fixed; inset: auto 0 0; z-index: 25;
   display: flex; align-items: center; justify-content: space-between;
   gap: 1.25rem;
   padding: 0.6rem clamp(1.5rem, 4vw, 3rem);
   background: linear-gradient(0deg, rgba(6, 10, 15, 0.95), rgba(6, 10, 15, 0.5));
   border-top: 1px solid rgba(77, 208, 225, 0.2);
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: #8aa8b4;
+  font-size: 10px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: #8aa8b4;
 }
 .journey-nav > span { min-width: 80px; }
 .journey-nav > span:last-of-type { text-align: right; color: #4dd0e1; }
 #chapter-nav { display: flex; align-items: center; justify-content: center; gap: 0.25rem; }
-#chapter-nav a { display: block; width: 26px; height: 30px; position: relative; }
+#chapter-nav a { display: block; width: 22px; height: 30px; position: relative; }
 #chapter-nav a::before {
-  content: '';
-  position: absolute;
-  top: 14px; left: 6px; right: 6px;
-  height: 1px;
-  background: rgba(77, 208, 225, 0.2);
+  content: ''; position: absolute;
+  top: 14px; left: 5px; right: 5px;
+  height: 1px; background: rgba(77, 208, 225, 0.2);
   transition: background 320ms, transform 320ms;
 }
 #chapter-nav a[aria-current="step"]::before {
-  background: #4dd0e1;
-  transform: scaleX(1.5);
+  background: #4dd0e1; transform: scaleX(1.5);
   box-shadow: 0 0 6px #4dd0e1;
 }
 #journey-progress {
-  position: absolute;
-  bottom: 0; left: 0;
-  height: 1px;
-  width: 0;
+  position: absolute; bottom: 0; left: 0;
+  height: 1px; width: 0;
   background: #4dd0e1;
   box-shadow: 0 0 8px #4dd0e1;
 }
 
 /* =========================================================
-   22. NO-SCRIPT + WEBGL FALLBACK
+   24. NO-SCRIPT + WEBGL FALLBACK
    ========================================================= */
 .no-script {
   position: fixed; top: 80px; left: clamp(1.5rem, 4vw, 3rem);
@@ -1556,23 +1330,22 @@ body.home-orbit #ocean.home-departed .home-explore {
   background: rgba(6, 10, 15, 0.95);
   border-left: 2px solid #ffb74d;
   padding: 1rem;
-  font-size: 12px;
-  color: #e8f4f8;
+  font-size: 12px; color: #e8f4f8;
 }
 body.webgl-unavailable #world::after {
-  content: '';
-  position: absolute; inset: 30% 0 0;
+  content: ''; position: absolute; inset: 30% 0 0;
   background: repeating-linear-gradient(
-    135deg,
-    transparent 0 22px,
+    135deg, transparent 0 22px,
     rgba(77, 208, 225, 0.03) 22px 23px
   );
 }
 body.webgl-unavailable.coast-ready #radio .radio-route { display: grid; }
 
 /* =========================================================
-   23. MOTION CONTROL
+   25. MOTION CONTROL
    ========================================================= */
+.scene:not(.is-active) .flow-arrow,
+.scene:not(.is-active) .roadmap-arrow,
 .scene:not(.is-active) .trace-packets,
 .scene:not(.is-active) .signal-riser i,
 .scene:not(.is-active) .radio-beam i,
@@ -1595,34 +1368,54 @@ body.motion-paused *::after {
 }
 
 /* =========================================================
-   24. RESPONSIVE
+   26. RESPONSIVE
    ========================================================= */
 @media (max-width: 1000px) {
   .edition { display: none; }
   .coordinates { display: none; }
   .scene .copy { max-width: none; width: 100%; position: relative; }
-  #controller .copy { position: relative; left: auto; top: auto; }
-  #controller .chip-stage { position: relative; padding: 0; justify-content: center; }
-  #controller .chip-stage svg { width: 100%; max-height: none; }
-  #controller .packet-console { position: relative; right: auto; bottom: auto; margin-top: 1rem; width: 100%; }
-  #prediction .copy, #dashboard .copy, #connected .copy { position: relative; left: auto; top: auto; }
-  #prediction .prediction-lab, #dashboard .monitor, #connected .complete-route {
+  #challenge,
+  #solution,
+  #architecture,
+  #validation,
+  #future {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 2rem;
+  }
+  .challenge-flow,
+  .solution-features,
+  .architecture-flow,
+  .validation-grid,
+  .roadmap-flow {
+    max-width: 100%; width: 100%; margin-right: 0;
+  }
+  #dashboard .copy,
+  #prediction .copy { max-width: none; }
+  #dashboard .monitor,
+  #prediction .prediction-lab {
     position: relative;
     top: auto; left: auto; right: auto; bottom: auto;
     margin-top: 2rem;
   }
-  #connected .closing { position: relative; bottom: auto; left: auto; right: auto; }
-  #waves .wave-transform { grid-template-columns: 140px minmax(0, 1fr); gap: 1.25rem; }
-  #connected .complete-route { flex-wrap: wrap; justify-content: flex-start; gap: 0.75rem; }
+  #connected .copy,
+  #connected .complete-route,
+  #connected .closing {
+    position: relative;
+    top: auto; left: auto; right: auto; bottom: auto;
+  }
+  #connected .complete-route { flex-wrap: wrap; justify-content: flex-start; gap: 0.75rem; margin-top: 2rem; }
+  #connected .closing { margin-top: 2rem; }
 }
 
 @media (max-width: 700px) {
   body { font-size: 13px; }
-  .scene { min-height: 115svh; padding: 14svh 1.5rem 12svh; }
+  .scene { min-height: 110svh; padding: 14svh 1.5rem 12svh; }
   .scene::before { top: 10svh; }
 
   #ocean .home-copy { width: 100%; }
-  #ocean h1 { font-size: clamp(2.25rem, 10vw, 3.5rem); }
+  #ocean h1 { font-size: clamp(2rem, 10vw, 3.25rem); }
   #ocean .home-explore { right: 1.5rem; bottom: 8svh; width: 55vw; }
   #ocean .home-college { display: none; }
   #ocean .home-shot { bottom: 8svh; }
@@ -1630,44 +1423,10 @@ body.motion-paused *::after {
   #buoy .copy, #sensors .copy { max-width: 100%; }
   #buoy .cad-caption { bottom: 8svh; }
 
-  #controller .copy { position: relative; left: auto; top: auto; }
-  #controller .chip-stage { position: relative; }
-  #controller .chip-stage svg { width: 100%; }
-
-  #radio .radio-route { grid-template-columns: 60px 1fr 80px; gap: 0.5rem; }
-  #radio .radio-route b { font-size: 10px; }
-  #radio .radio-route small { font-size: 9px; }
-  #radio .radio-beam span { font-size: 8px; }
-  #radio .link-controls { flex-direction: column; align-items: stretch; }
-  #radio .link-controls span { text-align: center; }
-  .buffer-strip { flex-wrap: wrap; gap: 0.5rem; }
-  #buffer-packets { order: 3; flex-basis: 100%; }
-
   #shore #bay-menu { grid-template-columns: repeat(2, 1fr); }
   #bay-panel { left: 1.5rem; right: 1.5rem; bottom: 8svh; top: auto; width: auto; max-height: 43svh; }
 
-  #waves .wave-lab { position: relative; top: auto; }
-  #waves { min-height: 190svh; }
-  #waves .process-controls { overflow: auto; white-space: nowrap; }
-  #waves .wave-transform { grid-template-columns: 1fr; gap: 1rem; }
-  #waves .pressure-section {
-    border-right: 0;
-    border-bottom: 1px dashed rgba(77, 208, 225, 0.2);
-    padding: 0 0 1rem;
-    display: flex; align-items: center; gap: 1rem;
-  }
-  #waves .pressure-section svg { width: 80px; flex-shrink: 0; }
-  #waves figcaption { margin-top: 0; font-size: 10px; }
-  #waves .wave-result { flex-direction: column; gap: 1rem; min-height: 160px; }
-  #waves .hs-statistic { text-align: left; }
-  #waves .wave-method { flex-wrap: wrap; justify-content: flex-start; gap: 0.5rem 1rem; }
-
-  #prediction .prediction-lab { top: auto; bottom: auto; }
-  .forecast-legend { gap: 0.75rem; font-size: 9px; }
-  .forecast-legend button { margin-left: 0; }
-  #forecast { height: 220px; }
-  .prediction-bottom { display: block; font-size: 10px; }
-  .prediction-bottom > span { display: block; margin-top: 0.5rem; }
+  .validation-grid { grid-template-columns: 1fr; }
 
   #dashboard .monitor { top: auto; bottom: auto; }
   .demo-overview { grid-template-columns: 1fr; gap: 1rem; }
@@ -1680,25 +1439,18 @@ body.motion-paused *::after {
 
   #inspection-panel {
     left: 1.5rem; right: 1.5rem; bottom: 8svh;
-    top: auto;
-    width: auto;
+    top: auto; width: auto;
     max-height: 44svh;
   }
 
   .journey-nav { padding: 0.4rem 1.5rem; gap: 0.5rem; }
   .journey-nav > span { min-width: 0; }
   .journey-nav > span:last-of-type { display: none; }
-  #chapter-nav a { width: 18px; }
-}
-
-@media (max-height: 700px) and (min-width: 701px) {
-  #ocean .home-stage { min-height: 480px; }
-  #waves .wave-lab { position: relative; top: auto; }
-  #waves { min-height: 200svh; }
+  #chapter-nav a { width: 16px; }
 }
 
 /* =========================================================
-   25. WIDE SCREENS
+   27. WIDE SCREENS
    ========================================================= */
 @media (min-width: 1600px) {
   .scene { max-width: 1600px; margin: 0 auto; }
