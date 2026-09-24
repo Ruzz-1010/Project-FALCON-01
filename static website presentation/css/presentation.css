@@ -1,0 +1,10 @@
+
+*{box-sizing:border-box}
+body{margin:0;background:#061522;color:white;font-family:Arial,sans-serif;overflow:hidden}
+nav{position:fixed;top:0;width:100%;padding:20px 40px;display:flex;justify-content:space-between;z-index:10}
+button{padding:10px 20px;border-radius:20px;border:0;cursor:pointer}
+section{height:100vh;padding:10vw;display:none;justify-content:center;flex-direction:column}
+section.active{display:flex}
+h1{font-size:clamp(2.5rem,6vw,6rem)}
+p{font-size:1.3rem;max-width:800px}
+.card,.flow{padding:30px;border-radius:20px;background:rgba(255,255,255,.08);font-size:1.4rem}
