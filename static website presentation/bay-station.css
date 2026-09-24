@@ -1,0 +1,215 @@
+/* Page 05 only. The building/cutaway retains the main central viewport. */
+.coast-ready #shore{display:block;min-height:145svh;padding-top:16svh}
+.coast-ready #shore .copy{width:32%;max-width:400px;padding:1rem 1.1rem 1rem 0;background:linear-gradient(90deg,#061722f5 75%,transparent)}
+.coast-ready #shore .copy h2{font-size:clamp(2.5rem,4vw,4.5rem);line-height:1.1}
+.coast-ready #shore .shore-system{width:auto;max-width:780px;margin-top:48svh;padding:1rem 0;border:0;background:linear-gradient(transparent,#061b26df);display:block}
+#shore #open-bay{background:transparent;border-color:#8baead70}
+#shore .shore-system>.micro{margin:.8rem 0 1rem}
+#bay-menu{display:flex;flex-wrap:wrap;gap:.5rem 1rem}
+#bay-menu button{background:transparent;border:0;border-bottom:1px solid #829d9d55;min-height:44px;font-size:.76rem;padding:.6rem 0;color:#b8cdcf}
+#bay-menu button::after{content:' →';color:var(--sea);margin-left:.5rem}
+#bay-menu button:last-child::after{content:''}
+#bay-menu button.receiving-stage{border-color:var(--gold);color:#f1ddbc}
+#bay-menu button[aria-pressed=true]{color:#eef5ee;border-color:var(--sea)}
+#shore #bay-panel{position:fixed;z-index:18;right:5vw;top:17svh;width:min(320px,29vw);max-height:70svh;overflow:auto;padding:1.2rem 1.4rem;background:#071b25f2;border-left:1px solid #95bdbc66;scrollbar-width:thin}
+#bay-panel #close-bay{background:transparent;border:0;border-bottom:1px solid var(--line);padding:.5rem 0;margin-bottom:1.2rem;font-size:.82rem;color:var(--sea)}
+#bay-panel h3{font-size:1.5rem;line-height:1.25;margin-bottom:1rem}
+#bay-panel p{font-size:.85rem;line-height:1.75;color:var(--muted)}
+#bay-panel .kicker{font-size:.58rem;margin-bottom:.8rem;color:var(--gold)}
+#bay-panel #bay-menu{display:flex;gap:0;flex-direction:column}
+#bay-panel #bay-menu button{text-align:left}
+.bay-inspecting #shore>.copy,.bay-inspecting #shore>.shore-system{visibility:hidden;pointer-events:none}
+.bay-inspecting #coast-receiver-label{visibility:hidden}
+@media(max-width:900px){.coast-ready #shore .copy{width:39%}#shore #bay-panel{right:4vw;width:33vw;padding:1rem}}
+@media(max-width:650px){
+  .coast-ready #shore{padding-top:16svh;min-height:165svh}.coast-ready #shore .copy{width:100%;max-width:none;background:linear-gradient(#061722e8,transparent);padding:0 0 1rem}
+  .coast-ready #shore .copy h2{font-size:2.7rem}.coast-ready #shore .shore-system{margin-top:48svh;width:100%;display:block}
+  #shore #bay-panel{top:auto;bottom:72px;left:5vw;right:5vw;width:auto;max-height:43svh;padding:1rem}
+  #bay-panel #bay-menu{display:grid;grid-template-columns:1fr 1fr;column-gap:.8rem}#bay-panel h3{font-size:1.3rem}#bay-panel #close-bay{margin-bottom:.7rem}
+}
+
+/* Page 05 presentation refresh: readable story layer + clear inspection mode. */
+.coast-ready #shore{min-height:145svh;padding-top:15svh}
+.coast-ready #shore .bay-intro{width:min(510px,42vw);max-width:510px;padding:0;background:linear-gradient(90deg,#061722f5 78%,transparent);}
+.coast-ready #shore .bay-intro-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1.15rem}
+.coast-ready #shore .bay-intro-head .kicker{margin:0}
+.coast-ready #shore .bay-status,.coast-ready #shore .system-state{font-size:.56rem;letter-spacing:.13em;color:#b8cdcf;white-space:nowrap}
+.coast-ready #shore .bay-status i,.coast-ready #shore .system-state i{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--sea);box-shadow:0 0 9px var(--sea);margin-right:.4rem}
+.coast-ready #shore .bay-intro h2{font-size:clamp(3rem,5vw,5.2rem);line-height:1.02;margin:0 0 1.1rem;letter-spacing:-.045em}
+.coast-ready #shore .bay-lead{max-width:420px;font-size:1rem;line-height:1.7;color:#c1d0d0;margin-bottom:1.4rem}
+.coast-ready #shore .bay-sequence{display:grid;grid-template-columns:repeat(3,1fr);max-width:460px;border-top:1px solid #78959545;border-bottom:1px solid #78959545;margin:1.1rem 0 1rem}
+.coast-ready #shore .bay-sequence>div{padding:.85rem .75rem .9rem 0;border-right:1px solid #78959535}
+.coast-ready #shore .bay-sequence>div:last-child{border-right:0;padding-left:.75rem}
+.coast-ready #shore .bay-sequence b{display:block;color:var(--gold);font-size:.62rem;letter-spacing:.14em;margin-bottom:.4rem}
+.coast-ready #shore .bay-sequence span{display:block;color:#e8f1ef;font-size:.68rem;letter-spacing:.12em}
+.coast-ready #shore .bay-sequence small{display:block;color:var(--muted);font-size:.62rem;margin-top:.3rem}
+.coast-ready #shore .shore-system{width:min(760px,62vw);max-width:760px;margin-top:45svh;padding:1rem 0 0;background:linear-gradient(transparent,#061b26d9);border-top:1px solid #78959555}
+.coast-ready #shore .shore-system-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:.8rem}
+.coast-ready #shore .system-label{display:block;font-size:.53rem;letter-spacing:.16em;color:var(--sea);margin-bottom:.28rem}
+.coast-ready #shore .shore-system-head strong{display:block;font-size:.72rem;font-weight:500;color:#d9e5e3}
+.coast-ready #shore #open-bay{margin-top:.4rem;border-color:#89b1b060;padding:.72rem 1rem;font-size:.8rem;color:#edf4f1;background:#061a24a8}
+.coast-ready #shore #open-bay span{color:var(--sea);margin-left:.35rem}
+.coast-ready #shore .shore-system>.micro{margin:.55rem 0 .85rem}
+.coast-ready #shore .shore-system-foot{display:flex;justify-content:space-between;gap:1rem;border-top:1px solid #78959532;margin-top:.85rem;padding-top:.65rem;font-size:.5rem;letter-spacing:.13em;color:#719094}
+#shore #bay-panel{position:fixed;z-index:18;right:4vw;top:14svh;width:min(430px,35vw);max-height:76svh;overflow:auto;padding:1.25rem 1.35rem 1.1rem;background:linear-gradient(145deg,#061b26f5,#07141cf7);border:1px solid #8eb8b95a;border-radius:2px;box-shadow:0 16px 45px #0008;scrollbar-width:thin}
+#shore .bay-panel-top{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #78959538;padding-bottom:.75rem;margin-bottom:1.1rem}
+#shore .panel-kicker{font-size:.53rem;letter-spacing:.15em;color:var(--sea)}
+#bay-panel #close-bay{background:transparent;border:0;padding:.25rem 0;font-size:.72rem;color:#b9cccb}
+#bay-panel #bay-explanation .kicker{font-size:.55rem;margin-bottom:.65rem;color:var(--gold)}
+#bay-panel h3{font-size:1.8rem;line-height:1.15;margin:0 0 .7rem;color:#edf4f1}
+#bay-panel p{font-size:.86rem;line-height:1.65;color:#c1d0d0;margin:.45rem 0}
+#bay-panel #bay-note{font-size:.65rem;line-height:1.5;color:#7f9b9f;margin-top:.8rem}
+#bay-panel .bay-hardware{display:grid;grid-template-columns:repeat(4,1fr);gap:.4rem;margin:1.1rem 0;padding:0;border-top:1px solid #78959538;border-bottom:1px solid #78959538}
+#bay-panel .bay-hardware span{padding:.7rem .3rem;text-align:center;font-size:.49rem;letter-spacing:.1em;color:#aac2c2;border-right:1px solid #7895952c}
+#bay-panel .bay-hardware span:last-child{border-right:0}
+#bay-panel .bay-panel-flow{display:flex;align-items:center;justify-content:center;gap:.45rem;flex-wrap:wrap;padding:.65rem .3rem;background:#0a202a99;border:1px solid #7895952b;margin-bottom:.8rem;font-size:.52rem;letter-spacing:.09em;color:#b8cccc}
+#bay-panel .bay-panel-flow i{font-style:normal;color:var(--sea)}
+#bay-panel-menu #bay-menu{display:grid;grid-template-columns:1fr 1fr;gap:.35rem .7rem}
+#bay-panel-menu #bay-menu button{background:transparent;border:1px solid #7895952f;border-radius:2px;min-height:42px;padding:.55rem .65rem;text-align:left;font-size:.63rem;color:#b8cdcf}
+#bay-panel-menu #bay-menu button::after{content:' →';color:var(--sea);margin-left:.3rem}
+#bay-panel-menu #bay-menu button[aria-pressed=true]{border-color:#7eb8b766;color:#f0f5f2;background:#0b263199}
+#bay-panel-menu #bay-menu button.receiving-stage{border-color:#b9945b80;color:#f0ddbb}
+.bay-inspecting #shore>.bay-intro,.bay-inspecting #shore>.shore-system{visibility:hidden;pointer-events:none}
+.bay-inspecting #coast-receiver-label{visibility:hidden}
+@media(max-width:900px){
+  .coast-ready #shore .bay-intro{width:46vw}
+  .coast-ready #shore .shore-system{width:67vw}
+  #shore #bay-panel{right:3vw;width:40vw}
+}
+@media(max-width:650px){
+  .coast-ready #shore{padding-top:14svh;min-height:165svh}
+  .coast-ready #shore .bay-intro{width:100%;max-width:none;background:linear-gradient(#061722ee,transparent);padding:0 0 1rem}
+  .coast-ready #shore .bay-intro h2{font-size:2.8rem}
+  .coast-ready #shore .bay-sequence{max-width:none}
+  .coast-ready #shore .shore-system{width:100%;margin-top:43svh}
+  .coast-ready #shore .shore-system-foot{font-size:.44rem}
+  #shore #bay-panel{top:auto;bottom:70px;left:4vw;right:4vw;width:auto;max-height:57svh;padding:1rem}
+  #bay-panel h3{font-size:1.45rem}
+  #bay-panel .bay-hardware span{font-size:.44rem}
+}
+
+/* Page 05 v2: presentation-focused Bay Station + clearer cutaway inspection. */
+.coast-ready #shore .bay-overline{margin:0 0 .75rem;color:var(--sea);font-size:.58rem;letter-spacing:.18em}
+.coast-ready #shore .bay-lead{max-width:460px;font-size:1.02rem;line-height:1.72}
+.coast-ready #shore .bay-architecture-note{display:grid;grid-template-columns:auto 1fr;column-gap:.55rem;align-items:start;margin-top:1rem;max-width:410px;padding-top:.8rem;border-top:1px solid #78959535}
+.coast-ready #shore .bay-architecture-note i{width:7px;height:7px;margin-top:.38rem;border-radius:50%;background:var(--sea);box-shadow:0 0 12px var(--sea)}
+.coast-ready #shore .bay-architecture-note span{font-size:.63rem;letter-spacing:.09em;color:#d9e6e3}
+.coast-ready #shore .bay-architecture-note small{grid-column:2;margin-top:.2rem;font-size:.58rem;line-height:1.5;color:#7f9b9f}
+.coast-ready #shore .shore-system{width:min(800px,65vw);max-width:800px;margin-top:42svh;padding-top:.95rem}
+.coast-ready #shore .shore-system-rail{display:flex;align-items:center;gap:.45rem;flex-wrap:wrap;margin:.65rem 0 .85rem;padding:.55rem .7rem;border:1px solid #78959535;background:#061a24a5;color:#aac2c2;font-size:.55rem;letter-spacing:.12em}
+.coast-ready #shore .shore-system-rail i{font-style:normal;color:var(--sea)}
+#shore .bay-inspect-cta{display:flex;align-items:center;gap:.7rem;width:min(420px,100%);padding:.78rem .9rem;border:1px solid #7eb8b77a;background:linear-gradient(90deg,#0a2630e8,#071820b0);color:#eff5f1;text-align:left}
+#shore .bay-inspect-cta:hover{border-color:#8cc7c6b5;background:#0b2a35d9}
+#shore .bay-inspect-icon{display:inline-flex;align-items:center;justify-content:center;width:31px;height:31px;border:1px solid #78bfc063;border-radius:50%;color:var(--sea);font-size:1rem}
+#shore .bay-inspect-cta strong{font-size:.79rem;font-weight:500;letter-spacing:.05em}
+#shore .bay-inspect-arrow{margin-left:auto;color:var(--sea);font-size:1rem}
+#shore .shore-system-foot{padding-top:.7rem}
+
+#shore #bay-panel{left:4vw;right:auto;top:13svh;width:min(410px,34vw);max-height:79svh;padding:1.1rem 1.2rem;background:linear-gradient(145deg,#051923f7,#07151cf5);border:1px solid #80b8b56e;border-radius:3px;box-shadow:0 18px 50px #0009;backdrop-filter:blur(10px)}
+#shore .bay-panel-top{padding-bottom:.7rem;margin-bottom:.8rem}
+#shore .panel-mode{display:block;margin-top:.18rem;font-size:.53rem;letter-spacing:.12em;color:#7ea2a4;font-weight:500}
+#shore .bay-selection-head{display:grid;grid-template-columns:52px 1fr;gap:.8rem;align-items:center;margin-bottom:.85rem}
+#shore .bay-step-mark{display:flex;flex-direction:column;align-items:center;justify-content:center;width:52px;height:58px;border:1px solid #7eb8b76e;background:#0b2530a8}
+#shore .bay-step-mark span{font-size:1.3rem;line-height:1;color:#efd6a7}
+#shore .bay-step-mark small{margin-top:.3rem;font-size:.43rem;letter-spacing:.12em;color:#7fa1a2}
+#shore .bay-selection-head .kicker{margin-bottom:.25rem}
+#shore #bay-panel h3{font-size:1.62rem;line-height:1.15;margin:0}
+#shore #bay-explanation{padding:.85rem 0 .45rem;border-top:1px solid #78959535}
+#shore #bay-explanation p{font-size:.82rem;line-height:1.62}
+#shore #bay-explanation #bay-detail{color:#c8d6d4}
+#shore #bay-panel #bay-note{font-size:.59rem;color:#7f9b9f}
+#shore .bay-divider-label{display:flex;align-items:center;gap:.6rem;margin:.65rem 0 .35rem;font-size:.49rem;letter-spacing:.15em;color:var(--sea)}
+#shore .bay-divider-label i{height:1px;flex:1;background:#7895952f}
+#shore #bay-panel .bay-hardware{grid-template-columns:repeat(4,1fr);margin:.2rem 0 .55rem}
+#shore #bay-panel .bay-hardware span{min-height:39px;display:flex;align-items:center;justify-content:center;font-size:.48rem;letter-spacing:.09em;background:#0a20299a}
+#shore #bay-panel .bay-panel-flow{margin:0 0 .55rem;padding:.55rem .35rem;background:#0a202a9e;font-size:.5rem}
+#shore #bay-panel-menu #bay-menu{display:grid;grid-template-columns:1fr 1fr;gap:.35rem .45rem}
+#shore #bay-panel-menu #bay-menu button{min-height:40px;padding:.55rem .55rem;border:1px solid #7895953d;border-radius:2px;background:#071b24ba;color:#b8ccca;font-size:.59rem;line-height:1.25}
+#shore #bay-panel-menu #bay-menu button[aria-pressed=true]{border-color:#86c2bf88;background:#0d2a34dd;color:#eff5f0;box-shadow:inset 0 0 0 1px #7ab9b46e}
+#shore #bay-panel-menu #bay-menu button.receiving-stage{border-color:#b9945b7e;color:#efdabb}
+#shore .bay-inspect-note{margin-top:.75rem;padding:.65rem .7rem;border-left:2px solid var(--gold);background:#0a1f28b0}
+#shore .bay-inspect-note b{display:block;font-size:.48rem;letter-spacing:.13em;color:var(--gold);margin-bottom:.25rem}
+#shore .bay-inspect-note span{display:block;font-size:.56rem;line-height:1.5;color:#8da7a7}
+.bay-inspecting #shore>.bay-intro,.bay-inspecting #shore>.shore-system{visibility:hidden;pointer-events:none}
+.bay-inspecting #coast-receiver-label{visibility:hidden}
+@media(max-width:900px){
+  .coast-ready #shore .bay-intro{width:45vw}
+  .coast-ready #shore .shore-system{width:70vw}
+  #shore #bay-panel{left:3vw;width:41vw}
+}
+@media(max-width:650px){
+  .coast-ready #shore .bay-intro{width:100%}
+  .coast-ready #shore .bay-overline{font-size:.52rem}
+  .coast-ready #shore .shore-system{width:100%;margin-top:40svh}
+  .coast-ready #shore .shore-system-rail{font-size:.48rem;gap:.3rem}
+  #shore #bay-panel{left:4vw;right:4vw;top:auto;bottom:68px;width:auto;max-height:60svh;padding:.95rem}
+  #shore #bay-panel-menu #bay-menu{grid-template-columns:1fr 1fr}
+  #shore #bay-panel h3{font-size:1.35rem}
+}
+
+/* Page 05 v3 — immersive inspection mode. Keep the 3D cutaway dominant. */
+#shore #bay-panel{
+  left:3vw;
+  right:auto;
+  top:11svh;
+  width:min(360px,29vw);
+  max-height:78svh;
+  overflow:auto;
+  padding:1rem 1rem .9rem;
+  background:linear-gradient(145deg,#041722f7,#06151cf0 72%,#08232bd8);
+  border:1px solid #69b9be66;
+  border-radius:4px;
+  box-shadow:0 20px 60px #0009;
+  backdrop-filter:blur(14px);
+}
+#shore #bay-panel::before{
+  content:'';
+  position:absolute;
+  left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(var(--sea),transparent 75%);
+}
+#shore .bay-panel-top{border-bottom:1px solid #70a6aa32;padding:.25rem .1rem .72rem;margin-bottom:.7rem}
+#shore .panel-kicker{font-size:.56rem;letter-spacing:.15em;color:var(--sea)}
+#shore .panel-mode{font-size:.5rem;letter-spacing:.12em;color:#78999d}
+#bay-panel #close-bay{background:transparent;border:0;padding:.2rem 0;color:#bfd1cf;font-size:.67rem}
+#shore .bay-inspect-headline{display:flex;justify-content:space-between;align-items:center;gap:.6rem;margin-bottom:.7rem}
+#shore .bay-inspect-chip{padding:.34rem .48rem;border:1px solid #73b9bd55;color:#bde4e0;background:#0b2a3328;font-size:.47rem;letter-spacing:.13em}
+#shore .bay-inspect-hint{font-size:.49rem;color:#78969a}
+#shore .bay-selection-head{display:grid;grid-template-columns:58px 1fr;gap:.8rem;align-items:center;padding:.55rem .55rem .7rem;background:#081f29a8;border:1px solid #7aa5a733}
+#shore .bay-step-mark{width:58px;height:58px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid #83c2c06c;background:#0d2d37c8}
+#shore .bay-step-mark span{font-size:1.55rem;line-height:1;color:#f0cf91}
+#shore .bay-step-mark small{margin-top:.3rem;font-size:.45rem;letter-spacing:.12em;color:#8db0b0}
+#shore .bay-selection-head .kicker{margin:0 0 .2rem;font-size:.49rem;color:#9cc6c4}
+#shore #bay-panel h3{font-size:1.42rem;line-height:1.12;margin:0;color:#f1f6f4}
+#shore #bay-explanation{padding:.75rem .15rem .35rem}
+#shore #bay-explanation p{font-size:.78rem;line-height:1.55;color:#d0ddda;margin:.25rem 0}
+#shore #bay-explanation #bay-note{font-size:.58rem;line-height:1.45;color:#78979b}
+#shore .bay-live-path{display:flex;align-items:center;justify-content:center;gap:.4rem;flex-wrap:wrap;padding:.55rem .45rem;margin:.2rem 0 .8rem;border-top:1px solid #75a4a92a;border-bottom:1px solid #75a4a92a;color:#92afb1;font-size:.48rem;letter-spacing:.1em}
+#shore .bay-live-path strong{color:#e6f1ee;font-size:.51rem}
+#shore .bay-live-path i{font-style:normal;color:var(--sea)}
+#shore .bay-divider-label{display:flex;align-items:center;gap:.5rem;margin:.7rem .15rem .4rem;color:var(--sea);font-size:.47rem;letter-spacing:.15em}
+#shore .bay-divider-label i{height:1px;flex:1;background:#6e989d2a}
+#shore #bay-panel-menu #bay-menu{display:grid;grid-template-columns:1fr 1fr;gap:.36rem}
+#shore #bay-panel-menu #bay-menu button{min-height:48px;padding:.55rem .6rem;text-align:left;border:1px solid #70929631;border-radius:2px;background:#081d2699;color:#bcd0ce;font-size:.6rem;line-height:1.25}
+#shore #bay-panel-menu #bay-menu button::after{content:' ↗';float:right;color:var(--sea)}
+#shore #bay-panel-menu #bay-menu button[aria-pressed=true]{border-color:#79c8c48c;background:#0d303ad8;color:#f2f6f3;box-shadow:inset 0 0 0 1px #79c8c444}
+#shore #bay-panel-menu #bay-menu button.receiving-stage{border-color:#bc9a6480;color:#ecd5ae}
+#shore .bay-hardware-line{display:flex;gap:.45rem;flex-wrap:wrap;margin-top:.72rem;padding-top:.65rem;border-top:1px solid #6e989d25}
+#shore .bay-hardware-line span{font-size:.47rem;color:#7f9da0;letter-spacing:.08em}
+#shore .bay-inspect-note{margin-top:.72rem;padding:.62rem .65rem;border-left:2px solid var(--gold);background:#091d25b8}
+#shore .bay-inspect-note b{display:block;font-size:.47rem;letter-spacing:.13em;color:var(--gold);margin-bottom:.25rem}
+#shore .bay-inspect-note span{display:block;font-size:.55rem;line-height:1.45;color:#8ca5a6}
+.bay-inspecting #shore::after{content:'';position:fixed;inset:0;z-index:8;pointer-events:none;background:radial-gradient(circle at 58% 46%,transparent 0 34%,#01101714 58%,#01101755 100%)}
+.bay-inspecting #shore #bay-panel{z-index:25}
+.bay-inspecting header,.bay-inspecting .journey-nav{opacity:.72}
+@media(max-width:1000px){
+  #shore #bay-panel{width:min(340px,32vw)}
+}
+@media(max-width:650px){
+  #shore #bay-panel{left:4vw;right:4vw;top:auto;bottom:68px;width:auto;max-height:58svh;padding:.8rem}
+  #shore .bay-selection-head{grid-template-columns:50px 1fr}
+  #shore .bay-step-mark{width:50px;height:52px}
+  #shore #bay-panel h3{font-size:1.28rem}
+  #shore #bay-panel-menu #bay-menu{grid-template-columns:1fr 1fr}
+  #shore .bay-inspect-hint{display:none}
+}

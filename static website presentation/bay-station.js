@@ -37,11 +37,11 @@ export function createBayStation(coast){
   for(let i=0;i<4;i++)box(interior,shell,[x+.32,y+1.018,z+.36+i*.037],[.54,.002,.012]);
   for(let i=0;i<7;i++)box(interior,metal,[x-.58+i*.047,y+1.153,z+.24],[.012,.006,.23]);
   for(let i=0;i<3;i++){box(interior,metal,[x-.55+i*.085,y+1.07,z+.432],[.05,.025,.009]);box(interior,shell,[x+1+i*.06,y+1.095,z+.456],[.013,.009,.004]);}
-  label(interior,'LoRa RX',[x-.98,y+.92,z+.658],.35,.08);
-  label(interior,'BAY STATION COMPUTER',[x-.42,y+.925,z+.658],.66,.085);
-  label(interior,'SQLite / LOCAL STORAGE',[x-.42,y+.845,z+.658],.66,.06);
-  label(interior,'PROCESSING + AI',[x-.42,y+.78,z+.658],.66,.06);
-  label(interior,'BACKHAUL',[x+1.12,y+1.08,z+.456],.39,.09);
+  label(interior,'LoRa RX',[x-.98,y+.92,z+.658],.48,.105);
+  label(interior,'SHORE COMPUTER',[x-.42,y+.925,z+.658],.76,.095);
+  label(interior,'LOCAL STORAGE',[x-.42,y+.845,z+.658],.76,.068);
+  label(interior,'PROCESSING + AI',[x-.42,y+.78,z+.658],.76,.068);
+  label(interior,'INTERNET BACKHAUL',[x+1.12,y+1.08,z+.456],.62,.095);
   // One display attached to a real monitor bezel, not a wall of functional cards.
   const screen=label(interior,'FALCON-01 / SIMULATED',[x+.35,y+1.48,z-.09],.82,.49);screen.userData.bayId='dashboard';
   if(typeof document!=='undefined'){
@@ -78,10 +78,10 @@ export function createBayStation(coast){
     if(dataPulse.visible){const phase=((time*.405)%1+1)%1,local=((phase-.42)/.58*6)%1;dataPulse.position.copy((state.stage===0?radioToPC:pcToScreen).getPoint(Math.max(0,Math.min(1,local))));}
   }
   function focus(id,aspect){
-    if(id==='station'){const scale=aspect<1?2.2:1;return {eye:[x-4*scale,y+3.8*scale,z+7*scale],aim:[x+(aspect<1?0:.5),y+(aspect<1?-.2:1.3),z]};}
+    if(id==='station'){const scale=aspect<1?1.25:1;return {eye:[x-3.15*scale,y+2.75*scale,z+4.75*scale],aim:[x+(aspect<1?0:.35),y+(aspect<1?.25:.95),z+.02]};}
     const target=targets.get(id);if(!target)return null;
-    const p=target.position;const distance=id==='rx'?2.2:3.1;
-    return {eye:[p.x-.35,p.y+.35,p.z+distance/Math.min(1,aspect)],aim:[p.x+(aspect<1?0:.5),p.y-(aspect<1?.55:0),p.z]};
+    const p=target.position;const distance=id==='rx'?1.9:id==='dashboard'?2.25:2.45;
+    return {eye:[p.x-.55,p.y+.42,p.z+distance/Math.min(1,aspect)],aim:[p.x+(aspect<1?0:.22),p.y-(aspect<1?.25:0),p.z]};
   }
   function pick(raycaster){
     if(!active)return null;

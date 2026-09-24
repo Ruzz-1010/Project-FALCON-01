@@ -1,120 +1,88 @@
 export const controllerInputs=['PRESSURE','WIND','GPS','POWER / HEALTH'];
 
+// One telemetry cycle: all sensing channels arrive together, are timestamped,
+// validated, assembled into one frame, then handed to LoRa.
 export function controllerStep(time){
-  const normalized=Math.max(0,time)/4.8;
-  const cycle=Math.floor(normalized+1e-10);
-  const phase=Math.max(0,normalized-cycle);
+  const normalized=Math.max(0,time)/4.8,sequence=Math.floor(normalized+1e-10)+1,phase=Math.max(0,normalized-Math.floor(normalized+1e-10));
   return {
-    input: -1,   // -1 = all inputs fire simultaneously
-    sequence: cycle + 1,
+    input:-1,
+    inputs:[...controllerInputs],
+    sequence,
     phase,
-    stage: phase < .4  ? 'ACQUIRE'
-         : phase < .58 ? 'TIMESTAMP'
-         : phase < .74 ? 'VALIDATE'
-         : phase < .86 ? 'PACKAGE'
-         : 'TO LoRa'
+    stage:phase<.36?'ACQUIRE':phase<.56?'TIMESTAMP':phase<.74?'VALIDATE':phase<.86?'PACKAGE':'TO LoRa'
   };
 }
 
 export function createController(root){
-  const svg = root.querySelector('svg');
-  const paths = [...svg.querySelectorAll('.traces path')];
+  const svg=root.querySelector('svg');
+  const paths=[...svg.querySelectorAll('.traces path')];
+  const packetPaths=[...svg.querySelectorAll('.trace-packets path')];
+  const outputPath=paths[4];
+  const outputPacket=packetPaths[4];
+  const pulses=[];
+  const ns='http://www.w3.org/2000/svg';
 
-  // Remove old animated trace-packets group (we drive pulses manually)
-  const oldPackets = svg.querySelector('.trace-packets');
-  if (oldPackets) oldPackets.remove();
-
-  // Redirect the output path to FRAME label position
-  if (paths[4]) paths[4].setAttribute('d', 'M465 235H560V420H360V452');
-
-  // Move the output label
-  const output = svg.querySelector('text:last-child');
-  if (output) {
-    output.textContent = 'FRAME ↓';
-    output.setAttribute('x', '580');
-    output.setAttribute('y', '405');
-  }
-
-  // --- Create 4 input pulses (one per input path) ---
-  const ns = 'http://www.w3.org/2000/svg';
-  const inputPulses = paths.slice(0, 4).map(() => {
-    const c = document.createElementNS(ns, 'circle');
-    c.setAttribute('r', '4');
-    c.classList.add('controller-pulse');
-    c.style.opacity = '0';
-    svg.append(c);
-    return c;
+  // Four independent pulses move at the same time so the diagram reads as
+  // parallel acquisition rather than a round-robin sensor sequence.
+  packetPaths.slice(0,4).forEach((path)=>{
+    const pulse=document.createElementNS(ns,'circle');
+    pulse.setAttribute('r','4');
+    pulse.classList.add('controller-pulse');
+    svg.append(pulse);
+    pulses.push(pulse);
   });
 
-  // --- Create 1 output pulse (LoRa path) ---
-  const outputPulse = document.createElementNS(ns, 'circle');
-  outputPulse.setAttribute('r', '4');
-  outputPulse.classList.add('controller-pulse');
-  outputPulse.style.opacity = '0';
+  const outputPulse=document.createElementNS(ns,'circle');
+  outputPulse.setAttribute('r','4');
+  outputPulse.classList.add('controller-pulse','controller-output-pulse');
   svg.append(outputPulse);
 
-  const status = svg.querySelectorAll('text')[1];
-  const labels = [...svg.querySelectorAll('text')].slice(2, 6);
-  const code = root.querySelector('#packet-frame');
-  let previous = '';
+  const status=svg.querySelectorAll('text')[1];
+  const labels=[...svg.querySelectorAll('text')].slice(2,6);
+  const code=root.querySelector('#packet-frame');
+  let previous='';
+
+  function placePulse(pulse,path,fraction,visible){
+    const point=path.getPointAtLength(path.getTotalLength()*Math.max(0,Math.min(1,fraction)));
+    pulse.setAttribute('cx',point.x);
+    pulse.setAttribute('cy',point.y);
+    pulse.style.opacity=visible?'1':'0';
+  }
 
   function draw(time){
-    const s = controllerStep(time);
-    const incoming  = s.phase < .4;
-    const outgoing  = s.phase >= .86;
-    const processing = !incoming && !outgoing;
+    const s=controllerStep(time);
+    const acquiring=s.phase<.36;
+    const sending=s.phase>=.86;
+    const inputFraction=acquiring?s.phase/.36:1;
 
-    // --- Input pulses (all 4 fire together) ---
-    if (incoming) {
-      const fraction = Math.min(1, s.phase / .4);
-      inputPulses.forEach((pulse, i) => {
-        const path = paths[i];
-        const point = path.getPointAtLength(path.getTotalLength() * fraction);
-        pulse.setAttribute('cx', point.x);
-        pulse.setAttribute('cy', point.y);
-        pulse.style.opacity = '1';
-      });
-      labels.forEach(l => l.classList.add('input-arrived'));
-    } else {
-      inputPulses.forEach(p => { p.style.opacity = '0'; });
-      labels.forEach(l => l.classList.toggle('input-arrived', processing));
-    }
+    packetPaths.slice(0,4).forEach((path,i)=>placePulse(pulses[i],path,inputFraction,acquiring));
+    const outputFraction=sending?(s.phase-.86)/.14:0;
+    placePulse(outputPulse,outputPacket,outputFraction,sending);
 
-    // --- Output pulse (single, on LoRa path) ---
-    if (outgoing) {
-      const fraction = Math.min(1, (s.phase - .86) / .14);
-      const path = paths[4];
-      const point = path.getPointAtLength(path.getTotalLength() * fraction);
-      outputPulse.setAttribute('cx', point.x);
-      outputPulse.setAttribute('cy', point.y);
-      outputPulse.style.opacity = '1';
-    } else {
-      outputPulse.style.opacity = '0';
-    }
+    labels.forEach(label=>label.classList.toggle('input-arrived',!acquiring));
+    root.classList.toggle('processing',!acquiring&&!sending);
+    root.classList.toggle('sending',sending);
+    status.textContent=s.stage;
 
-    // --- Chip state ---
-    root.classList.toggle('processing', processing);
-    if (status) status.textContent = s.stage;
-
-    // --- Console text ---
-    const key = s.sequence + ':' + s.stage;
-    if (key !== previous) {
-      previous = key;
-      const stamp = new Date(s.sequence * 4800).toISOString().slice(11, 23);
-      if (s.phase < .86) {
-        code.textContent =
-          `ALL INPUTS → ${s.stage.toLowerCase()}\nFrame ${String(s.sequence).padStart(4, '0')} · preparing…`;
-      } else {
-        code.textContent =
-          `FALCON-01 · seq ${String(s.sequence).padStart(4, '0')}\n${stamp} demo time · schema v1`;
+    const key=s.sequence+':'+s.stage;
+    if(key!==previous){
+      previous=key;
+      const stamp=new Date((s.sequence-1)*4800).toISOString().slice(11,23);
+      if(s.stage==='ACQUIRE'){
+        code.textContent=`PRESSURE + WIND + GPS + POWER / HEALTH\nFrame ${String(s.sequence).padStart(4,'0')} · parallel acquisition`;
+      }else if(s.stage==='TIMESTAMP'){
+        code.textContent=`FALCON-01 · frame ${String(s.sequence).padStart(4,'0')}\n${stamp} demo time · timestamping all inputs`;
+      }else if(s.stage==='VALIDATE'){
+        code.textContent=`FALCON-01 · frame ${String(s.sequence).padStart(4,'0')}\n4 inputs · quality checks · no silent zeroing`;
+      }else if(s.stage==='PACKAGE'){
+        code.textContent=`FALCON-01 · FRAME ${String(s.sequence).padStart(4,'0')}\npressure | wind | GPS | power/health → one telemetry packet`;
+      }else{
+        code.textContent=`FALCON-01 · seq ${String(s.sequence).padStart(4,'0')}\nschema v1 · timestamp · quality flags → LoRa`;
       }
-      const outEl = root.querySelector('.controller-output');
-      if (outEl) outEl.textContent = outgoing
-        ? 'SIMULATED · FRAME → TO LoRa'
-        : 'SIMULATED · assembling telemetry';
+      root.querySelector('.controller-output').textContent=sending?'SIMULATED · FRAME → TO LoRa':'SIMULATED · processing all inputs together';
     }
   }
 
   draw(0);
-  return { draw };
+  return {draw};
 }
