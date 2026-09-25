@@ -8,7 +8,6 @@ import {baySteps,bayPipeline,arrivalPhase} from './bay-story.js';
 import {createWaveEstimation} from './wave-estimation.js';
 import {chapters,components,createLink,setLink,tickLink,waveSamples,forecastSamples,linePath} from './story.js';
 import {createDeckEngine} from './dost-presentation.js';
-import './dost-presentation.css';
 
 const $=selector=>document.querySelector(selector);
 const acquisition=createAcquisition($('#acquisition-dock'));
