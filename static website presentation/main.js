@@ -7,6 +7,8 @@ import {createController} from './controller.js';
 import {baySteps,bayPipeline,arrivalPhase} from './bay-story.js';
 import {createWaveEstimation} from './wave-estimation.js';
 import {chapters,components,createLink,setLink,tickLink,waveSamples,forecastSamples,linePath} from './story.js';
+import {createDeckEngine} from './dost-presentation.js';
+import './dost-presentation.css';
 
 const $=selector=>document.querySelector(selector);
 const acquisition=createAcquisition($('#acquisition-dock'));
@@ -171,6 +173,37 @@ function scrollState(){
 }
 function setChapter(chapter){active=chapter;document.body.dataset.experience=chapter<3?String(chapter):'later';sections.forEach((s,i)=>s.classList.toggle('is-active',i===chapter));[...nav.children].forEach((a,i)=>{if(i===chapter)a.setAttribute('aria-current','step');else a.removeAttribute('aria-current');});$('#chapter-number').textContent=`${String(chapter+1).padStart(2,'0')} / 10`;$('#chapter-name').textContent=chapters[chapter];$('#coordinate-top').textContent=chapter<4?'OFFSHORE / OBSERVATION NODE':chapter<9?'ON SHORE / BAY STATION':'BUOY TO SHORE / CONNECTED';}
 setChapter(0);
+const deckContainer = $('#dost-deck');
+let deck;
+if (deckContainer) {
+  deck = createDeckEngine(deckContainer, {
+    onSlideChange: (index) => {
+      if (index === 4) {
+        setChapter(1);
+        world?.returnToBuoy?.();
+      } else if (index === 6) {
+        setChapter(4);
+      } else if (index === 7) {
+        setChapter(6);
+      } else if (index === 8) {
+        setChapter(7);
+      } else if (index === 9) {
+        setChapter(8);
+      }
+    },
+    onModeChange: (newMode) => {
+      if (newMode === 'scroll') {
+        measure();
+      }
+    },
+    onCadSelect: (targetId) => {
+      pick(targetId, true);
+    }
+  });
+  $('#btn-switch-to-deck')?.addEventListener('click', () => {
+    deck?.setMode('deck');
+  });
+}
 let raf;
 function frame(now){
   raf=requestAnimationFrame(frame);if(now-last<33)return;
