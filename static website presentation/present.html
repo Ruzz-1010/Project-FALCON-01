@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#06151e">
+  <meta name="theme-color" content="#060d12">
   <meta name="description" content="Travel through Project FALCON-01. An interactive, simulated engineering journey from ocean pressure to shore-based intelligence.">
   <title>FALCON-01 — From ocean to insight (presentation build)</title>
   <link rel="stylesheet" href="./style.css">
@@ -13,8 +13,12 @@
   <link rel="stylesheet" href="./home-presentation.css">
   <!-- Presentation layer. Loaded last so it wins. Remove this line for the original look. -->
   <link rel="stylesheet" href="./present.css">
+  <!-- DEEP WATER: the new look for the whole presentation build.
+       Loaded last of all so it wins. Press D on the page to flip it off and on,
+       or delete this line (and the class on <body>) to go back for good. -->
+  <link rel="stylesheet" href="./theme-deep.css">
 </head>
-<body class="p-layer-head">
+<body class="p-layer-head theme-deep">
   <a class="skip" href="#ocean">Skip to story</a>
   <div id="world" aria-hidden="true"></div><div class="atmosphere" aria-hidden="true"></div>
   <header><a class="wordmark" href="#ocean"><img id="logo" alt="FALCON emblem"><span>FALCON<span class="wordmark-id"> / 01</span></span></a><span class="edition">AN ENGINEERING JOURNEY</span><div class="header-controls"><button id="p-presenter" aria-pressed="false">Presenter mode</button><button id="motion" aria-pressed="false">Pause motion</button><button id="fullscreen" aria-label="Enter fullscreen">⛶</button></div></header>
@@ -149,6 +153,7 @@
   </main>
   <footer class="journey-nav"><span id="chapter-number">01 / 10</span><nav id="chapter-nav" aria-label="Story chapters"></nav><span id="chapter-name">Ocean</span><div id="journey-progress"></div></footer>
   <noscript><div class="no-script">Enable JavaScript for the animated experience. The story text remains available below.</div></noscript>
+  <script type="module" src="./theme-deep.js"></script>
   <script type="module" src="./main.js"></script>
   <script type="module" src="./present.js"></script>
 </body>

@@ -1,76 +1,104 @@
-# FALCON-01 — Presentation build (how to present it)
+# FALCON-01 — Presentation build
 
-This build makes the cinematic site easier to present and easier for a panel
-and listeners to understand. **Nothing original was changed.** `index.html`,
-`style.css`, `main.js` and the 3D scene are exactly as they were.
+Two pages, one look.
 
-## What was added
+| Page | Open it when | What it adds |
+| --- | --- | --- |
+| `index.html` | the site is being read | the story, the 3D scene |
+| `present.html` | you are in front of the panel | presenter mode, chapter list, plain-language lines |
 
-| File | What it is |
-| --- | --- |
-| `present.html` | A copy of the page that also loads the new presentation layer |
-| `present.css` | Bigger type, plain-language helpers, cinematic polish, print handout |
-| `present.js` | Presenter mode, the chapter jump list, projector mode |
+Both now carry the **Deep Water** design.
 
-## How to open it
+---
 
-Run the dev server and use the presentation address:
+## How to run it
+
+The 3D model needs a real server. Double-clicking the file will not work.
 
 ```sh
 npm run dev
 ```
 
-Then open **http://127.0.0.1:5175/present.html**
+- Main site: **http://127.0.0.1:5175/**
+- Presentation: **http://127.0.0.1:5175/present.html**
 
-Do not double-click the file. ES modules and the 3D model need a real web
-server (`file://` will not load them).
+---
 
-## Controls
+## The Deep Water design
 
-| Key or button | What it does |
+One stylesheet, `theme-deep.css`, plus a small toggle, `theme-deep.js`.
+
+It is not a recolour. What actually changed:
+
+- **A left spine instead of a bottom bar.** The chapter number, the chapter
+  ladder, the chapter name and the progress line all moved into a 96px column
+  down the left edge. The panel's eyes always know where they are.
+- **Big chapter numerals** sit as faint watermarks in the corner of each
+  chapter.
+- **A calmer type scale.** Smaller headings, a shorter reading measure, and
+  labels that whisper instead of shout.
+- **Flat plates and hairline borders** instead of glow and glass.
+
+### Why it is dark
+
+The 3D ocean is lit as a night scene once, at load. A dark page agrees with it.
+A white page fights it, and glare is what makes a presentation tiring.
+
+Nothing in the palette goes above about 88% brightness, so it stays readable on
+a projector without burning the eyes.
+
+### Why it does not lag
+
+This is the important part. Three rules:
+
+1. **No `:has()`.** The previous attempt put `:has()` on `<html>`. That makes
+   the browser re-check the whole document every time any class changes — and
+   `main.js` changes a class on `<body>` on every animation frame. That was the
+   stutter.
+2. **No `backdrop-filter`.** Blur over a live WebGL canvas re-reads the frame
+   every time it moves.
+3. **Borders instead of shadows.** Two small shadows in the whole file.
+
+---
+
+## Keyboard
+
+| Key | What it does |
 | --- | --- |
-| **L** | Opens the chapter jump list — every chapter with one plain line |
-| **P** | Presenter mode — hides the small technical labels, enlarges the words |
-| **?big=1** | Projector mode for a weak projector or a bright room |
-| **Ctrl + P** | Prints a clean text handout, one block per chapter |
+| `P` | presenter mode (only on `present.html`) |
+| `L` | chapter list (only on `present.html`) |
+| `D` | Deep Water look off / on |
+| arrows, space, Home, End | move through the story |
+| `Esc` | leave an inspection |
 
-Presenter mode adds thin cinema bars and a deeper vignette. It hides the small
-technical readouts (model status, coordinates, CAD caption, corner notes) but
-**never** hides the research wording: `SIMULATED`, `ESTIMATE`,
-`CALIBRATION REQUIRED` and the like always stay on screen.
+Add `?big=1` to the address for larger type on a weak projector.
 
-## Reading order for the panel
+---
 
-The opening page now shows the whole story in ten words, so the panel knows
-where you are going before you start:
+## Turning it off
+
+Remove `theme-deep` from the `<body>` tag. Every rule is scoped to that class,
+so the original look comes straight back. No other file needs to change.
+
+---
+
+## What was not touched
+
+- **No research wording changed.** `SIMULATED`, `ESTIMATE`, `CALIBRATION
+  REQUIRED`, `MEASURED QUANTITY`, `Persistence baseline` are all exactly where
+  the thesis puts them.
+- **No content changed.** This is a stylesheet layer only.
+- **`world.js` is byte-identical to the original.** The 3D scene is untouched.
+- **The original geometry is untouched.**
+
+---
+
+## Test status
+
+`npm test` reports **25 passing, 7 failing** — the same seven that were already
+failing before this design work started. They concern the CAD geometry,
+inspection framing and acquisition copy, not the look.
 
 ```
-THE OCEAN → FALCON BUOY → SIGNALS → ESP32 PACKS → LoRa SENDS
-→ BAY STATION → WAVE ESTIMATE → AI PREDICTION → DASHBOARD → ONE SYSTEM
+npm test
 ```
-
-Each chapter also gets one **IN PLAIN WORDS** line, drawn from the glossary in
-`THESIS DOCUMENTATION/DOST_IDEA_PRESENTATION_PACKAGE.md`. Say that line first,
-then the technical term only if the panel asks.
-
-## Wording rules still apply
-
-The presenter rules in the thesis package are unchanged. Keep saying
-*proposed*, *prototype*, *simulated*, *to be validated*. Do not claim the AI is
-trained, the readings are live ocean data, or that FALCON replaces official
-warnings.
-
-## If you want the old look back
-
-Open `index.html` instead of `present.html`, or delete this one line from
-`present.html`:
-
-```html
-<link rel="stylesheet" href="./present.css">
-```
-
-## Note on the built folder
-
-The dev and preview servers serve `present.html` automatically — Vite copies
-every `.html` file it finds into `dist/` on build. The `dist/` folder already
-on disk will not contain it until you run `npm run build` again.

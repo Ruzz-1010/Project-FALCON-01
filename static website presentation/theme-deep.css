@@ -1,0 +1,1174 @@
+/* ============================================================================
+   PROJECT FALCON-01 — "DEEP WATER"
+   A new look for the whole presentation build. Not a recolour: the page
+   geometry, the navigation, the type scale and every component shape change.
+
+   Written from THESIS DOCUMENTATION/BayStation.docx (V4.1):
+   an offshore solar buoy -> ESP32 -> LoRa -> shore Bay Station -> SQLite ->
+   pressure-derived ESTIMATED wave height -> AI-assisted short-term prediction.
+
+   WHY IT IS DARK
+   The 3D ocean in world.js is a night scene lit once at load. A dark page
+   agrees with it, instead of fighting it the way a white page does. Nothing
+   here is brighter than 88% luminance, so there is no glare on a projector
+   and no burn after ten minutes of reading.
+
+   WHY IT IS FAST
+   Three rules, learned the hard way:
+     1. No :has() anywhere. A :has() on <html> makes the browser re-check the
+        whole document whenever any class changes, and main.js changes a class
+        on <body> every single frame. That alone caused the stutter.
+     2. No backdrop-filter. Blur over a live WebGL canvas re-reads the frame.
+     3. Borders instead of shadows. Two small shadows in the whole file.
+
+   HOW IT IS SWITCHED ON
+   Every rule is prefixed with body.theme-deep, so nothing leaks. Remove the
+   class from <body> to return to the original look. Press D to flip.
+
+   RESEARCH WORDING IS UNTOUCHED
+   SIMULATED, ESTIMATE, CALIBRATION REQUIRED, MEASURED QUANTITY and every
+   other honesty label stays exactly where the thesis puts it. This file only
+   changes how the project looks, never what it claims.
+   ========================================================================== */
+
+
+/* ---------------------------------------------------------------------------
+   1. TOKENS
+   -------------------------------------------------------------------------- */
+
+body.theme-deep{
+  /* Deep water base. Never pure black: pure black on a projector reads as a
+     hole, and small type on it vibrates. */
+  --w-bg:        #060d12;
+  --w-bg-2:      #0a141a;
+  --w-plate:     #0d1a21;
+  --w-plate-2:   #111f27;
+  --w-inset:     #071119;
+
+  /* Ink. The brightest value in the file is --w-ink at 91% - bright enough to
+     read across a room, dim enough to sit in front of for two hours. */
+  --w-ink:       #dce7eb;
+  --w-ink-soft:  #b0c2c9;
+  --w-ink-muted: #8298a2;
+  --w-ink-faint: #5b707a;
+
+  /* Hairlines. The design draws with lines, not with light. */
+  --w-line:      rgba(160,196,205,.14);
+  --w-line-soft: rgba(160,196,205,.08);
+  --w-line-firm: rgba(160,196,205,.26);
+
+  /* Sea-glass and brass. Desaturated on purpose: the earlier neon cyan was
+     the second thing that hurt to look at. */
+  --w-sea:       #63a9b2;
+  --w-sea-deep:  #448d97;
+  --w-sea-soft:  rgba(99,169,178,.12);
+  --w-sea-line:  rgba(99,169,178,.34);
+  --w-brass:     #c39b5f;
+  --w-brass-soft:rgba(195,155,95,.12);
+  --w-warn:      #c98d4a;
+  --w-fault:     #b5635c;
+  --w-ok:        #6f9d7c;
+
+  --w-rail: 96px;
+
+  /* Rewire the five variables the older stylesheets already read, so every
+     component that was never restyled still lands in this palette. */
+  --ink:   var(--w-ink);
+  --muted: var(--w-ink-muted);
+  --sea:   var(--w-sea);
+  --gold:  var(--w-brass);
+  --line:  var(--w-line);
+
+  background:var(--w-bg);
+  color:var(--w-ink);
+  color-scheme:dark;
+}
+
+
+/* ---------------------------------------------------------------------------
+   2. BASE AND TYPE
+   The original shouted: 7.3rem headings at weight 500, kickers tracked .22em.
+   Here the scale is calmer, the reading measure is shorter, and the labels
+   whisper instead of shout.
+   -------------------------------------------------------------------------- */
+
+body.theme-deep h1,
+body.theme-deep h2,
+body.theme-deep h3{color:var(--w-ink);font-weight:450}
+body.theme-deep h1{
+  font-size:clamp(3rem,6vw,6.2rem);
+  line-height:1.0;
+  letter-spacing:-.035em;
+}
+body.theme-deep h2{
+  font-size:clamp(2.1rem,3.7vw,4.3rem);
+  line-height:1.06;
+  letter-spacing:-.032em;
+}
+body.theme-deep h3{font-size:1.15rem;letter-spacing:-.01em}
+body.theme-deep em{color:var(--w-sea);font-style:normal}
+body.theme-deep p{line-height:1.72}
+
+/* A calm reading measure. Long lines are the quietest reading problem there
+   is, and the old 35em carried past 90 characters at projector width. */
+body.theme-deep .copy>p:not(.kicker){color:var(--w-ink-soft);max-width:32em}
+body.theme-deep .copy .intro{color:var(--w-sea);letter-spacing:.02em;line-height:1.85}
+
+/* Small caps labels: still readable, no longer competing with the heading. */
+body.theme-deep .kicker{
+  color:var(--w-brass);
+  font-size:.68rem;
+  font-weight:600;
+  letter-spacing:.15em;
+  margin-bottom:1.25rem;
+}
+body.theme-deep .kicker::before{
+  content:'';
+  display:inline-block;
+  width:22px;
+  height:1px;
+  margin-right:.7rem;
+  vertical-align:middle;
+  background:var(--w-brass);
+  opacity:.7;
+}
+body.theme-deep .micro{color:var(--w-ink-muted);line-height:1.7}
+body.theme-deep .index-caption,
+body.theme-deep .source-caption,
+body.theme-deep .cad-caption,
+body.theme-deep .home-explore-label,
+body.theme-deep .edition{
+  color:var(--w-ink-faint);
+  letter-spacing:.09em;
+}
+
+body.theme-deep :focus-visible{outline:2px solid var(--w-sea);outline-offset:4px}
+body.theme-deep .skip{background:var(--w-sea);color:#041014}
+body.theme-deep .skip:focus{background:var(--w-sea-deep)}
+body.theme-deep a:hover{color:var(--w-brass)}
+body.theme-deep ::selection{background:rgba(99,169,178,.32)}
+
+
+/* ---------------------------------------------------------------------------
+   3. SURFACES — flat plates and hairline buttons
+   The old theme stacked 31 shadows and two blur layers. Here every panel is a
+   flat plate with a 1px border and a 2px corner. Depth comes from the line,
+   not from the light.
+   -------------------------------------------------------------------------- */
+
+body.theme-deep button{
+  background:var(--w-plate);
+  border:1px solid var(--w-line);
+  border-radius:2px;
+  color:var(--w-ink-soft);
+  box-shadow:none;
+  transition:color .18s,border-color .18s,background .18s;
+}
+body.theme-deep button:hover{
+  background:var(--w-plate-2);
+  border-color:var(--w-sea-line);
+  color:var(--w-ink);
+}
+body.theme-deep button[aria-pressed=true]{
+  background:var(--w-sea-soft);
+  border-color:var(--w-sea);
+  color:var(--w-ink);
+}
+body.theme-deep .text-button{
+  background:transparent;
+  border:0;
+  border-bottom:1px solid var(--w-sea-line);
+  border-radius:0;
+  color:var(--w-sea);
+  padding-left:0;
+}
+body.theme-deep .text-button:hover{color:var(--w-brass);border-bottom-color:var(--w-brass)}
+
+/* The one shared card shape. */
+body.theme-deep .callout,
+body.theme-deep .plain-why,
+body.theme-deep .plain-strip,
+body.theme-deep .cad-caption p,
+body.theme-deep #inspection-panel,
+body.theme-deep #shore #bay-panel,
+body.theme-deep .packet-console,
+body.theme-deep .radio-experience,
+body.theme-deep .shore-system,
+body.theme-deep .wave-lab,
+body.theme-deep .prediction-lab,
+body.theme-deep .monitor,
+body.theme-deep .closing details,
+body.theme-deep #p-jump,
+body.theme-deep .signal-record,
+body.theme-deep .bay-architecture-note,
+body.theme-deep .bay-inspect-note{
+  background:var(--w-plate);
+  border:1px solid var(--w-line);
+  border-radius:2px;
+  box-shadow:none;
+}
+
+/* The single soft shadow, used only where a plate floats over the 3D scene. */
+body.theme-deep #inspection-panel,
+body.theme-deep #p-jump{
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+
+
+/* ---------------------------------------------------------------------------
+   4. PAGE AND ATMOSPHERE
+   A deep-water gradient replaces the hard vignette. Both are static, so they
+   cost nothing to draw.
+   -------------------------------------------------------------------------- */
+
+body.theme-deep{background:var(--w-bg)}
+body.theme-deep #world{
+  background:radial-gradient(ellipse at 68% 34%,#12313d 0%,#0a1c26 46%,#050f16 100%);
+}
+body.theme-deep .atmosphere{
+  background:
+    linear-gradient(90deg,rgba(6,13,18,.82) 0%,rgba(6,13,18,.28) 34%,transparent 66%),
+    linear-gradient(0deg,rgba(6,13,18,.86),transparent 22%,transparent 74%,rgba(6,13,18,.62));
+}
+/* The film grain drops to a whisper: at the old opacity it read as noise on
+   a projector, and noise is tiring over a long presentation. */
+body.theme-deep .atmosphere::after{opacity:.012}
+body.theme-deep.webgl-unavailable #world::after{
+  background:linear-gradient(0deg,rgba(6,13,18,.94),rgba(18,49,61,.8));
+}
+
+
+/* ---------------------------------------------------------------------------
+   5. HEADER
+   A flat bar with a hairline, not a gradient that fades into nothing.
+   -------------------------------------------------------------------------- */
+
+body.theme-deep header{
+  padding:1rem calc(4.2vw) 1rem calc(4.2vw + var(--w-rail));
+  gap:1.75rem;
+  background:linear-gradient(rgba(6,13,18,.96),rgba(6,13,18,.66) 70%,transparent);
+  border-bottom:1px solid var(--w-line-soft);
+}
+body.theme-deep .wordmark{color:var(--w-ink);letter-spacing:.09em;font-weight:600}
+body.theme-deep .wordmark-id{color:var(--w-ink-faint);font-weight:400}
+body.theme-deep .wordmark img{
+  width:36px;height:36px;
+  box-shadow:none;
+  filter:none;
+}
+body.theme-deep .edition{letter-spacing:.2em;font-size:.6rem}
+body.theme-deep .header-controls{gap:.4rem}
+body.theme-deep .header-controls button{
+  background:transparent;
+  border-color:var(--w-line-soft);
+  color:var(--w-ink-muted);
+  font-size:.75rem;
+  letter-spacing:.06em;
+}
+body.theme-deep .header-controls button:hover{color:var(--w-ink);border-color:var(--w-line-firm)}
+body.theme-deep .header-controls button[aria-pressed=true]{
+  background:var(--w-sea-soft);border-color:var(--w-sea-line);color:var(--w-ink);
+}
+body.theme-deep .model-state{color:var(--w-ink-faint);letter-spacing:.05em}
+body.theme-deep .coordinates{color:rgba(130,152,162,.6);letter-spacing:.12em}
+body.theme-deep .coordinates i{background:var(--w-line-firm)}
+
+
+/* ---------------------------------------------------------------------------
+   6. THE SPINE — a whole new navigation
+   The old design put a strip of chapter ticks across the bottom of the screen,
+   where the panel's own notes and the chapter title fought for the same band.
+   This moves the whole journey into a fixed vertical spine on the left: the
+   chapter number at the top, the ladder of chapters down the middle, the name
+   read sideways at the foot, and the progress line running down the outer edge.
+
+   It needs no markup change: .journey-nav is simply re-laid out from a row
+   into a column. The CSS is the design.
+   -------------------------------------------------------------------------- */
+
+body.theme-deep .journey-nav{
+  top:0;
+  bottom:0;
+  left:0;
+  right:auto;
+  width:var(--w-rail);
+  flex-direction:column;
+  align-items:center;
+  justify-content:space-between;
+  gap:1.25rem;
+  padding:5.5rem .5rem 2rem;
+  background:linear-gradient(90deg,rgba(6,13,18,.97),rgba(6,13,18,.86) 72%,rgba(6,13,18,0));
+  border-top:0;
+  border-right:1px solid var(--w-line-soft);
+  font-size:.6rem;
+  letter-spacing:.1em;
+  text-align:center;
+}
+body.theme-deep .journey-nav>span{min-width:0}
+body.theme-deep #chapter-number{
+  color:var(--w-ink);
+  font-size:.86rem;
+  font-weight:600;
+  letter-spacing:.12em;
+  font-variant-numeric:tabular-nums;
+}
+body.theme-deep #chapter-nav{
+  flex-direction:column;
+  gap:.15rem;
+  flex:1;
+  justify-content:center;
+}
+body.theme-deep #chapter-nav a{width:44px;height:19px}
+body.theme-deep #chapter-nav a::before{
+  top:9px;
+  left:8px;
+  right:8px;
+  height:1px;
+  background:rgba(160,196,205,.22);
+  transition:background .25s,transform .25s;
+}
+body.theme-deep #chapter-nav a:hover::before{background:var(--w-ink-faint)}
+body.theme-deep #chapter-nav a[aria-current=step]::before{
+  background:var(--w-sea);
+  transform:scaleX(1.6);
+}
+body.theme-deep #chapter-name{
+  color:var(--w-brass);
+  writing-mode:vertical-rl;
+  transform:rotate(180deg);
+  font-size:.62rem;
+  letter-spacing:.16em;
+  max-height:22svh;
+  overflow:hidden;
+}
+/* main.js writes an inline WIDTH on this bar as a percentage of the page
+   scrolled. It stays a full-width line along the very bottom of the screen,
+   where that percentage means exactly what it says, and it reads as the
+   timeline under the left-hand spine. */
+body.theme-deep #journey-progress{
+  position:fixed;
+  top:auto;
+  bottom:0;
+  left:0;
+  right:0;
+  width:0;
+  height:2px;
+  background:var(--w-sea);
+  transform:none;
+}
+
+/* The spine takes 96px, so every band that reached the left edge steps over. */
+body.theme-deep .scene{padding-left:calc(7vw + var(--w-rail))}
+body.theme-deep .scene-foot{left:calc(7vw + var(--w-rail))}
+body.theme-deep .cad-caption{right:7vw}
+/* The opening scene already insets its own sticky stage by 7vw, so the rail is
+   absorbed there. Without this the title would sit too far to the right. */
+body.theme-deep .scene.opening{padding-left:7vw}
+
+
+/* ---------------------------------------------------------------------------
+   7. SCENE GEOMETRY AND THE CHAPTER NUMERALS
+   Each chapter now carries its number as a large watermark. It is the quietest
+   way to tell a listener where they are without adding a single word.
+   Absolutely positioned, so it never joins the flex row inside .scene.
+   -------------------------------------------------------------------------- */
+
+body.theme-deep .scene::before{
+  content:'0' attr(data-chapter);
+  position:absolute;
+  right:3vw;
+  bottom:5svh;
+  font-size:clamp(6rem,15vw,15rem);
+  line-height:.8;
+  font-weight:500;
+  letter-spacing:-.06em;
+  color:var(--w-sea);
+  opacity:.055;
+  pointer-events:none;
+  z-index:0;
+}
+body.theme-deep .scene.opening::before{content:none}
+body.theme-deep .scene-foot{color:var(--w-ink-faint);letter-spacing:.16em;font-size:.56rem}
+
+/* A soft reveal per chapter. Opacity and transform only, so the browser can
+   hand it to the compositor and never re-layout the page mid-scroll. */
+@keyframes w-rise{
+  from{opacity:0;transform:translate3d(0,16px,0)}
+  to{opacity:1;transform:none}
+}
+body.theme-deep .scene.is-active .copy>*{
+  animation:w-rise .8s cubic-bezier(.16,1,.3,1) both;
+}
+body.theme-deep .scene.is-active .copy>*:nth-child(1){animation-delay:.02s}
+body.theme-deep .scene.is-active .copy>*:nth-child(2){animation-delay:.09s}
+body.theme-deep .scene.is-active .copy>*:nth-child(3){animation-delay:.16s}
+body.theme-deep .scene.is-active .copy>*:nth-child(4){animation-delay:.22s}
+body.theme-deep .scene.is-active .copy>*:nth-child(n+5){animation-delay:.28s}
+
+
+/* ---------------------------------------------------------------------------
+   8. CHAPTER 00 — THE OPENING
+   -------------------------------------------------------------------------- */
+
+body.theme-deep #ocean .home-copy h1{color:var(--w-ink)}
+body.theme-deep #ocean .home-copy h1 em{color:var(--w-sea)}
+body.theme-deep #ocean .home-explanation{color:var(--w-ink-soft)}
+body.theme-deep #ocean .home-system-strip{color:var(--w-ink-muted);letter-spacing:.14em}
+body.theme-deep #ocean .home-system-strip i{color:var(--w-brass)}
+body.theme-deep #ocean .home-observation{
+  border-left:1px solid var(--w-brass);
+  background:none;
+  color:var(--w-ink-muted);
+  padding-left:.9rem;
+  border-radius:0;
+}
+body.theme-deep #ocean .home-observation::before{background:var(--w-brass)}
+body.theme-deep #ocean .home-observation small{color:var(--w-ink-faint)}
+body.theme-deep #ocean .home-college{color:var(--w-ink-faint)}
+body.theme-deep #ocean .home-college summary{color:var(--w-ink-muted)}
+body.theme-deep #ocean .home-college summary span{color:var(--w-brass)}
+body.theme-deep #ocean .home-explore button{
+  background:rgba(13,26,33,.86);
+  border:1px solid var(--w-line);
+  border-radius:2px;
+  color:var(--w-ink-soft);
+  box-shadow:none;
+}
+body.theme-deep #ocean .home-explore button:hover{
+  background:var(--w-plate-2);
+  border-color:var(--w-sea);
+  color:var(--w-ink);
+}
+body.theme-deep #ocean .home-explore button b{color:var(--w-sea)}
+body.theme-deep #ocean .home-explore p{color:var(--w-ink-faint)}
+body.theme-deep #ocean .home-shot{color:var(--w-ink-faint);letter-spacing:.18em}
+body.theme-deep #ocean .home-shot i{background:linear-gradient(90deg,var(--w-brass),transparent)}
+body.theme-deep #ocean .enter{
+  border-bottom:1px solid var(--w-line-firm);
+  color:var(--w-ink);
+  letter-spacing:.06em;
+}
+body.theme-deep #ocean .enter span{color:var(--w-brass)}
+body.theme-deep #ocean .enter:hover{border-bottom-color:var(--w-sea);color:var(--w-sea)}
+body.theme-deep .opening .home-copy{
+  background:radial-gradient(ellipse at 28% 48%,rgba(6,13,18,.9),rgba(6,13,18,0) 72%);
+}
+
+
+/* ---------------------------------------------------------------------------
+   9. CHAPTER 01 — THE INSTRUMENT  (CAD, hotspots, inspection panel)
+   -------------------------------------------------------------------------- */
+
+body.theme-deep #buoy .index-caption{color:var(--w-ink-faint)}
+body.theme-deep #reveal-picks button,
+body.theme-deep #buoy .component-picks button{
+  background:transparent;
+  border:1px solid var(--w-line);
+  border-radius:2px;
+  color:var(--w-ink-muted);
+  box-shadow:none;
+  font-size:.78rem;
+}
+body.theme-deep #reveal-picks button::before,
+body.theme-deep #buoy .component-picks button::before{color:var(--w-brass)}
+body.theme-deep #reveal-picks button:hover,
+body.theme-deep #buoy .component-picks button:hover{
+  border-color:var(--w-sea-line);color:var(--w-ink);
+}
+body.theme-deep #reveal-picks button[aria-pressed=true],
+body.theme-deep #buoy .component-picks button[aria-pressed=true]{
+  background:var(--w-sea-soft);border-color:var(--w-sea);color:var(--w-ink);
+}
+body.theme-deep #reveal-picks button[aria-pressed=true]::before{color:var(--w-ink)}
+
+body.theme-deep .hotspot{
+  background:rgba(10,20,26,.92);
+  border:1px solid var(--w-line-firm);
+  border-radius:2px;
+  color:var(--w-ink-soft);
+  letter-spacing:.01em;
+}
+body.theme-deep .hotspot::before{
+  border:1px solid var(--w-sea);
+  color:var(--w-brass);
+  background:transparent;
+}
+body.theme-deep .hotspot:hover,
+body.theme-deep .hotspot:focus-visible{border-color:var(--w-sea)}
+body.theme-deep .hotspot[aria-pressed=true]{
+  background:var(--w-sea-soft);
+  border-color:var(--w-sea);
+  color:var(--w-ink);
+}
+body.theme-deep .hotspot[aria-pressed=true]::before{background:var(--w-sea);color:#041014}
+body.theme-deep #hotspots>svg path{stroke:var(--w-sea)}
+
+body.theme-deep .cad-caption{color:var(--w-ink-faint)}
+body.theme-deep .cad-caption button{border:0;background:transparent;color:var(--w-brass)}
+body.theme-deep .cad-caption p{
+  border-left:2px solid var(--w-brass);
+  color:var(--w-ink-soft);
+  letter-spacing:0;
+  font-size:.78rem;
+  line-height:1.7;
+}
+
+/* the inspection plate (opened from a hotspot) */
+body.theme-deep #inspection-panel{
+  border-left:2px solid var(--w-sea);
+  color:var(--w-ink-soft);
+}
+body.theme-deep #inspection-panel h2{color:var(--w-ink)}
+body.theme-deep #inspection-panel h3{
+  color:var(--w-sea);
+  font-size:.72rem;
+  letter-spacing:.14em;
+  font-weight:600;
+}
+body.theme-deep #inspection-panel p{color:var(--w-ink-soft)}
+body.theme-deep #inspection-data li{color:var(--w-ink-soft)}
+body.theme-deep #inspection-data li::before{color:var(--w-brass)}
+body.theme-deep #inspection-flow{color:var(--w-ink-muted)}
+body.theme-deep #inspection-status{color:var(--w-brass)}
+body.theme-deep #inspection-note{color:var(--w-ink-muted)}
+body.theme-deep #inspection-back{
+  background:transparent;
+  border:0;
+  border-bottom:1px solid var(--w-sea-line);
+  border-radius:0;
+  color:var(--w-sea);
+  padding-left:0;
+}
+body.theme-deep #inspection-wire path{stroke:var(--w-sea)}
+body.theme-deep #coast-receiver-label{
+  background:rgba(10,20,26,.94);
+  border-left:2px solid var(--w-brass);
+  border-radius:0;
+  color:var(--w-brass);
+}
+
+
+/* ---------------------------------------------------------------------------
+   10. CHAPTER 02 — ACQUISITION
+   -------------------------------------------------------------------------- */
+
+body.theme-deep #sensors .acquisition-intro{color:var(--w-ink-soft)}
+body.theme-deep #sensor-menu button{
+  background:transparent;
+  border:0;
+  border-bottom:1px solid var(--w-line-soft);
+  border-radius:0;
+  color:var(--w-ink-muted);
+  box-shadow:none;
+}
+body.theme-deep #sensor-menu button::after{color:var(--w-brass)}
+body.theme-deep #sensor-menu button:hover{color:var(--w-ink)}
+body.theme-deep #sensor-menu button[aria-pressed=true]{
+  background:transparent;
+  color:var(--w-ink);
+  border-bottom-color:var(--w-sea);
+}
+body.theme-deep #sensor-menu button[aria-pressed=true]::after{color:var(--w-sea)}
+
+body.theme-deep #sensors .callout{
+  border-left:2px solid var(--w-sea);
+  border-radius:0;
+  padding:1rem 1.15rem;
+}
+body.theme-deep .callout h3{color:var(--w-ink)}
+body.theme-deep .callout p{color:var(--w-ink-soft)}
+body.theme-deep .callout .kicker{color:var(--w-sea);margin-bottom:.45rem}
+body.theme-deep .callout .kicker::before{display:none}
+
+body.theme-deep #sensors .source-caption{color:var(--w-ink-faint)}
+body.theme-deep #sensors .source-caption span{color:var(--w-brass)}
+
+body.theme-deep #acquisition-signal{border-top:1px solid var(--w-line-soft)}
+body.theme-deep .signal-heading{color:var(--w-ink-soft)}
+body.theme-deep .signal-heading small{color:var(--w-ink-muted)}
+body.theme-deep .signal-axis{stroke:var(--w-line-firm);fill:var(--w-ink-faint)}
+body.theme-deep .signal-trace{stroke:var(--w-sea)}
+body.theme-deep .signal-trace.secondary{stroke:var(--w-brass)}
+body.theme-deep #acquisition-signal .signal-unit{color:var(--w-ink-muted)}
+body.theme-deep .signal-record{
+  border-left:2px solid var(--w-sea-line);
+  background:var(--w-inset);
+  border-radius:0;
+}
+body.theme-deep .signal-record>span{color:var(--w-ink-faint)}
+body.theme-deep #acquisition-signal .signal-record p{color:var(--w-ink-soft)}
+body.theme-deep #acquisition-signal .signal-result{color:var(--w-sea)}
+
+body.theme-deep .signal-riser{border-left:1px solid var(--w-sea-line)}
+body.theme-deep .signal-riser i{background:var(--w-sea)}
+body.theme-deep .signal-riser span{color:var(--w-sea)}
+
+
+/* ---------------------------------------------------------------------------
+   11. CHAPTER 03 — THE CONTROLLER  (the ESP32 diagram)
+   -------------------------------------------------------------------------- */
+
+body.theme-deep #controller{background:transparent}
+body.theme-deep #controller svg text{fill:var(--w-ink-muted)}
+body.theme-deep #controller .chip-title{fill:var(--w-ink)}
+body.theme-deep #controller .traces{stroke:rgba(160,196,205,.28)}
+body.theme-deep #controller .trace-packets{stroke:var(--w-sea)}
+body.theme-deep #controller .trace-packets path:nth-child(2){stroke:var(--w-brass)}
+body.theme-deep #controller .chip-body{fill:var(--w-plate);stroke:var(--w-line-firm)}
+body.theme-deep #controller .chip-inner{fill:var(--w-inset);stroke:var(--w-line)}
+body.theme-deep #controller .processing .chip-inner{fill:var(--w-sea-soft);stroke:var(--w-sea)}
+body.theme-deep #controller .controller-pulse{fill:var(--w-sea)}
+body.theme-deep #controller .input-arrived{fill:var(--w-brass)}
+body.theme-deep #controller .controller-output-pulse{fill:var(--w-brass)}
+body.theme-deep #controller pattern rect{fill:#4d6b74}
+body.theme-deep #controller .packet-console{
+  border:0;
+  border-top:1px solid var(--w-line-soft);
+  border-radius:0;
+  background:transparent;
+}
+body.theme-deep #controller .console-head{color:var(--w-sea);letter-spacing:.15em}
+body.theme-deep #controller #packet-frame{color:var(--w-ink-soft)}
+body.theme-deep #controller .controller-output{
+  border-top:1px solid var(--w-line-soft);
+  color:var(--w-ink-muted);
+}
+
+
+/* ---------------------------------------------------------------------------
+   12. CHAPTER 04 — CROSSING THE WATER
+   -------------------------------------------------------------------------- */
+
+body.theme-deep .coast-ready #radio .radio-experience{
+  background:linear-gradient(transparent,rgba(6,13,18,.9) 22%);
+  border:0;
+  border-radius:0;
+}
+body.theme-deep .coast-ready #radio .radio-flow{color:var(--w-ink-faint);letter-spacing:.16em}
+body.theme-deep .coast-ready #radio .radio-flow i{color:var(--w-line-firm)}
+body.theme-deep .coast-ready #radio .radio-flow strong{color:var(--w-ink-soft)}
+body.theme-deep .coast-ready #radio .radio-flow .active{color:var(--w-brass)}
+
+body.theme-deep .coast-ready #radio .transmission-head{
+  border-top:1px solid var(--w-line-soft);
+  border-bottom:1px solid var(--w-line-soft);
+}
+body.theme-deep .coast-ready #radio .transmission-head small{color:var(--w-ink-faint)}
+body.theme-deep .coast-ready #radio .transmission-head b{color:var(--w-ink)}
+body.theme-deep .coast-ready #radio .transmission-state>span{
+  background:var(--w-ok);
+  box-shadow:none;
+}
+body.theme-deep .coast-ready #radio .transmission-state button{
+  background:transparent;border-color:var(--w-line);color:var(--w-ink-muted);
+}
+body.theme-deep .coast-ready #radio .transmission-state button:hover{
+  border-color:var(--w-sea);color:var(--w-ink);
+}
+
+body.theme-deep .coast-ready #radio .route-node b{color:var(--w-ink)}
+body.theme-deep .coast-ready #radio .route-node small{color:var(--w-ink-faint)}
+body.theme-deep .coast-ready #radio .station-glyph{color:var(--w-sea)}
+body.theme-deep .coast-ready #radio .radio-beam{
+  border-top:1px solid var(--w-line-firm);
+  background:transparent;
+}
+body.theme-deep .coast-ready #radio .radio-beam span{color:var(--w-ink-faint)}
+body.theme-deep .coast-ready #radio .radio-beam i{background:var(--w-sea);box-shadow:none}
+body.theme-deep .coast-ready #radio .radio-route.offline .radio-beam{border-color:rgba(201,141,74,.6)}
+body.theme-deep .coast-ready #radio .link-scale{color:var(--w-ink-faint)}
+
+body.theme-deep .coast-ready #radio .packet-ribbon{
+  background:var(--w-plate);
+  border:1px solid var(--w-line);
+  border-radius:2px;
+  box-shadow:none;
+}
+body.theme-deep .coast-ready #radio .packet-ribbon::before{
+  background:var(--w-sea-soft);color:var(--w-sea);
+}
+body.theme-deep .coast-ready #radio .packet-id small{color:var(--w-ink-faint)}
+body.theme-deep .coast-ready #radio .packet-id b{color:var(--w-ink)}
+body.theme-deep .coast-ready #radio .packet-id span{color:var(--w-ink-muted)}
+body.theme-deep .coast-ready #radio .packet-id em{color:var(--w-brass)}
+body.theme-deep .coast-ready #radio .packet-fields span{color:var(--w-ink-soft)}
+body.theme-deep .coast-ready #radio .packet-arrow{color:var(--w-sea)}
+body.theme-deep .coast-ready #radio .packet-result{
+  border-left:1px solid var(--w-line);
+  background:var(--w-inset);
+}
+body.theme-deep .coast-ready #radio .packet-result small{color:var(--w-ink-faint)}
+body.theme-deep .coast-ready #radio .packet-result b{color:var(--w-sea)}
+
+body.theme-deep .coast-ready #radio .radio-metrics{border-bottom:1px solid var(--w-line-soft)}
+body.theme-deep .coast-ready #radio .radio-metrics>div{
+  border-right:1px solid var(--w-line-soft);
+  border-bottom:1px solid var(--w-line-soft);
+}
+body.theme-deep .coast-ready #radio .radio-metrics small{color:var(--w-ink-faint)}
+body.theme-deep .coast-ready #radio .radio-metrics b{color:var(--w-ink)}
+body.theme-deep .coast-ready #radio .radio-metrics span{color:var(--w-ink-muted)}
+body.theme-deep .coast-ready #radio .buffer-strip{background:var(--w-inset)}
+body.theme-deep .coast-ready #radio .buffer-packets i{
+  background:var(--w-plate-2);border:1px solid var(--w-line);color:var(--w-ink-muted);
+}
+body.theme-deep .coast-ready #radio .radio-footer{color:var(--w-ink-faint)}
+
+body.theme-deep .coast-ready #radio .link-controls span{color:var(--w-ink-muted)}
+body.theme-deep .coast-ready #radio .link-controls button{
+  background:transparent;border-color:var(--w-line);color:var(--w-ink-soft);
+}
+
+
+/* ---------------------------------------------------------------------------
+   13. CHAPTER 05 — THE BAY STATION
+   -------------------------------------------------------------------------- */
+
+body.theme-deep .coast-ready #shore .bay-status,
+body.theme-deep .coast-ready #shore .system-state,
+body.theme-deep .coast-ready #shore .system-label{
+  color:var(--w-ink-faint);
+  letter-spacing:.14em;
+}
+body.theme-deep .coast-ready #shore .bay-status i,
+body.theme-deep .coast-ready #shore .system-state i{background:var(--w-sea);box-shadow:none}
+body.theme-deep .coast-ready #shore .bay-overline{
+  color:var(--w-brass);letter-spacing:.16em;
+}
+body.theme-deep .coast-ready #shore .bay-lead{color:var(--w-ink-soft)}
+
+body.theme-deep .coast-ready #shore .bay-sequence{
+  border-top:1px solid var(--w-line-soft);
+  border-bottom:1px solid var(--w-line-soft);
+}
+body.theme-deep .coast-ready #shore .bay-sequence>div{
+  border-color:var(--w-line-soft);
+  background:transparent;
+}
+body.theme-deep .coast-ready #shore .bay-sequence b{color:var(--w-sea)}
+body.theme-deep .coast-ready #shore .bay-sequence span{color:var(--w-ink)}
+body.theme-deep .coast-ready #shore .bay-sequence small{color:var(--w-ink-faint)}
+
+body.theme-deep .coast-ready #shore .bay-architecture-note{
+  border-left:2px solid var(--w-brass);
+  border-radius:0;
+}
+body.theme-deep .coast-ready #shore .bay-architecture-note i{background:var(--w-brass)}
+body.theme-deep .coast-ready #shore .bay-architecture-note span{color:var(--w-ink-soft)}
+body.theme-deep .coast-ready #shore .bay-architecture-note small{color:var(--w-ink-muted)}
+
+body.theme-deep .coast-ready #shore .shore-system{
+  background:transparent;
+  border:0;
+  border-top:1px solid var(--w-line-soft);
+  border-radius:0;
+}
+body.theme-deep .coast-ready #shore .shore-system-head strong{color:var(--w-ink)}
+body.theme-deep .coast-ready #shore .shore-system-rail{
+  color:var(--w-ink-faint);
+  border-color:var(--w-line-soft);
+}
+body.theme-deep .coast-ready #shore .shore-system-rail i{color:var(--w-line-firm)}
+body.theme-deep .coast-ready #shore .shore-system-foot{color:var(--w-ink-faint)}
+
+body.theme-deep #shore #open-bay{
+  background:var(--w-plate);
+  border:1px solid var(--w-line);
+  border-radius:2px;
+  color:var(--w-ink-soft);
+}
+body.theme-deep #shore #open-bay:hover{
+  background:var(--w-plate-2);border-color:var(--w-sea);color:var(--w-ink);
+}
+body.theme-deep #shore #open-bay span{color:var(--w-sea)}
+body.theme-deep #shore .bay-inspect-cta strong{color:var(--w-ink)}
+
+body.theme-deep #bay-menu button{
+  background:transparent;
+  border:0;
+  border-bottom:1px solid var(--w-line-soft);
+  border-radius:0;
+  color:var(--w-ink-muted);
+}
+body.theme-deep #bay-menu button::after{color:var(--w-brass)}
+body.theme-deep #bay-menu button:hover{color:var(--w-ink)}
+body.theme-deep #bay-menu button[aria-pressed=true]{
+  background:transparent;border-bottom-color:var(--w-sea);color:var(--w-ink);
+}
+body.theme-deep #bay-menu button.receiving-stage{color:var(--w-brass)}
+
+body.theme-deep #shore #bay-panel{
+  background:rgba(9,18,24,.97);
+  border:1px solid var(--w-line);
+  border-left:2px solid var(--w-sea);
+  border-radius:2px;
+}
+body.theme-deep #shore #bay-panel h3{color:var(--w-ink)}
+body.theme-deep #shore #bay-panel p{color:var(--w-ink-soft)}
+body.theme-deep #shore .panel-kicker,
+body.theme-deep #shore .panel-mode,
+body.theme-deep #shore #bay-panel .kicker{color:var(--w-ink-faint)}
+body.theme-deep #shore #bay-panel .kicker::before{display:none}
+body.theme-deep #shore .bay-step-mark span{color:var(--w-sea)}
+body.theme-deep #shore .bay-step-mark small{color:var(--w-ink-faint)}
+body.theme-deep #shore .bay-inspect-chip{
+  background:var(--w-sea-soft);border:1px solid var(--w-sea-line);color:var(--w-sea);
+}
+body.theme-deep #shore .bay-inspect-hint{color:var(--w-ink-faint)}
+body.theme-deep #shore .bay-live-path{
+  border-color:var(--w-line-soft);color:var(--w-ink-faint);
+}
+body.theme-deep #shore .bay-live-path strong{color:var(--w-brass)}
+body.theme-deep #shore .bay-live-path i{color:var(--w-line-firm)}
+body.theme-deep #shore .bay-divider-label{color:var(--w-ink-faint)}
+body.theme-deep #shore .bay-divider-label i{background:var(--w-line)}
+body.theme-deep #shore .bay-hardware-line span{
+  border-color:var(--w-line-soft);color:var(--w-ink-muted);
+}
+body.theme-deep #shore .bay-inspect-note{
+  border-left:2px solid var(--w-brass);
+  border-radius:0;
+}
+body.theme-deep #shore .bay-inspect-note b{color:var(--w-brass)}
+body.theme-deep #shore .bay-inspect-note span{color:var(--w-ink-muted)}
+body.theme-deep #shore #close-bay{
+  background:transparent;border-color:var(--w-line);color:var(--w-ink-soft);
+}
+
+
+/* ---------------------------------------------------------------------------
+   14. CHAPTER 06 — THE TRANSFORMATION  (pressure -> estimated Hs)
+   -------------------------------------------------------------------------- */
+
+body.theme-deep #waves .wave-lab{
+  background:transparent;
+  border:0;
+  border-top:1px solid var(--w-line-soft);
+  border-radius:0;
+}
+body.theme-deep #waves .process-controls button{
+  background:transparent;
+  border:1px solid var(--w-line-soft);
+  border-radius:2px;
+  color:var(--w-ink-muted);
+}
+body.theme-deep #waves .process-controls button span{color:var(--w-brass)}
+body.theme-deep #waves .process-controls button[aria-pressed=true]{
+  background:var(--w-sea-soft);border-color:var(--w-sea);color:var(--w-ink);
+}
+body.theme-deep #waves .process-controls i{color:var(--w-line-firm)}
+
+body.theme-deep #waves .pressure-section svg text{fill:var(--w-ink-faint)}
+body.theme-deep #waves #pressure-surface{stroke:var(--w-sea)}
+body.theme-deep #waves .depth-rule,
+body.theme-deep #waves .sensor-lead{stroke:var(--w-line-firm)}
+body.theme-deep #waves .pressure-front{stroke:var(--w-sea);fill:none}
+body.theme-deep #waves .pressure-body{fill:var(--w-plate);stroke:var(--w-ink-muted)}
+body.theme-deep #waves .pressure-tip{fill:var(--w-brass)}
+body.theme-deep #waves figcaption{color:var(--w-ink-muted)}
+body.theme-deep #waves figcaption small{color:var(--w-ink-faint)}
+
+body.theme-deep #waves .wave-heading{color:var(--w-ink-faint)}
+body.theme-deep #waves #wave-name{color:var(--w-ink)}
+body.theme-deep #waves #wave-unit{color:var(--w-ink-muted)}
+body.theme-deep #waves .wave-reference{stroke:var(--w-line)}
+body.theme-deep #waves #raw-trace{stroke:rgba(160,196,205,.4)}
+body.theme-deep #waves #processed-trace{stroke:var(--w-sea)}
+body.theme-deep #waves #process-detail{color:var(--w-ink-soft)}
+body.theme-deep #waves .hs-statistic{border-left:1px solid var(--w-line);background:none}
+body.theme-deep #waves #hs-result{color:var(--w-sea)}
+body.theme-deep #waves #hs-caption{color:var(--w-ink-faint)}
+
+body.theme-deep #waves .wave-method span{
+  border:1px solid var(--w-line-soft);border-radius:2px;color:var(--w-ink-faint);
+}
+body.theme-deep #waves .wave-method span.is-lit{
+  border-color:var(--w-sea);color:var(--w-ink);background:var(--w-sea-soft);
+}
+body.theme-deep #waves .wave-method i{color:var(--w-line-firm)}
+/* The honesty label keeps its full contrast. It is the one line on this page
+   that must never be dimmed. */
+body.theme-deep #waves .wave-calibration{
+  border-left:2px solid var(--w-warn);
+  background:rgba(201,141,74,.09);
+  color:#e2bd8b;
+  padding:.7rem .9rem;
+  border-radius:0;
+}
+body.theme-deep #waves .wave-calibration span{color:#c9a877}
+
+
+/* ---------------------------------------------------------------------------
+   15. CHAPTER 07 — LOOKING AHEAD  (AI prediction vs baseline)
+   -------------------------------------------------------------------------- */
+
+body.theme-deep #prediction .prediction-lab{
+  background:transparent;
+  border:0;
+  border-top:1px solid var(--w-line-soft);
+  border-radius:0;
+}
+body.theme-deep #prediction .forecast-legend{color:var(--w-ink-muted)}
+body.theme-deep #prediction .forecast-legend .ai-color{color:var(--w-brass)}
+body.theme-deep #prediction .forecast-legend .baseline-color{color:var(--w-ink-faint)}
+body.theme-deep #prediction #predict{
+  background:var(--w-plate);border:1px solid var(--w-line);color:var(--w-ink-soft);
+}
+body.theme-deep #prediction #predict:hover{
+  background:var(--w-plate-2);border-color:var(--w-sea);color:var(--w-ink);
+}
+body.theme-deep #prediction .chart-grid{stroke:var(--w-line)}
+body.theme-deep #prediction #forecast text{fill:var(--w-ink-faint)}
+body.theme-deep #prediction .estimated-trace{stroke:var(--w-sea)}
+body.theme-deep #prediction .baseline-trace{stroke:var(--w-ink-faint);stroke-dasharray:2 6}
+body.theme-deep #prediction .future-trace{stroke:var(--w-brass)}
+body.theme-deep #prediction .now-line{stroke:var(--w-line-firm)}
+body.theme-deep #prediction .prediction-bottom{color:var(--w-ink-muted)}
+body.theme-deep #prediction .prediction-bottom span{color:var(--w-brass);letter-spacing:.1em}
+
+
+/* ---------------------------------------------------------------------------
+   16. CHAPTER 08 — THE DASHBOARD
+   dashboard.css paints this screen light-on-glass, which is right for an
+   interface mock-up and wrong inside a dark room. Here the monitor becomes a
+   dark instrument panel: same information, no white slab in the middle of the
+   presentation.
+   -------------------------------------------------------------------------- */
+
+body.theme-deep .monitor{
+  background:var(--w-plate);
+  color:var(--w-ink-soft);
+  border:1px solid var(--w-line);
+  border-radius:3px;
+  box-shadow:0 24px 64px rgba(0,0,0,.45);
+  transform:none;
+}
+body.theme-deep .monitor-top{
+  border-bottom:1px solid var(--w-line-soft);
+  color:var(--w-ink);
+}
+body.theme-deep .monitor-top small{color:var(--w-ink-faint)}
+body.theme-deep .demo-indicator{
+  border:1px solid var(--w-sea-line);
+  border-radius:2px;
+  color:var(--w-sea);
+  padding:.15rem .45rem;
+}
+body.theme-deep .monitor-nav{border-bottom:1px solid var(--w-line-soft)}
+body.theme-deep .monitor-nav button{
+  background:transparent;
+  border:0;
+  border-bottom:1px solid transparent;
+  border-radius:0;
+  color:var(--w-ink-muted);
+}
+body.theme-deep .monitor-nav button:hover{background:transparent;color:var(--w-ink)}
+body.theme-deep .monitor-nav button[aria-pressed=true]{
+  background:transparent;border-bottom-color:var(--w-sea);color:var(--w-ink);
+}
+body.theme-deep .monitor-foot{
+  border-top:1px solid var(--w-line-soft);color:var(--w-ink-faint);
+}
+body.theme-deep #dashboard-content{background:transparent}
+body.theme-deep .demo-readings span{color:var(--w-ink-muted)}
+body.theme-deep .demo-readings strong{color:var(--w-ink)}
+body.theme-deep .demo-chart .estimated-trace{stroke:var(--w-sea)}
+body.theme-deep .demo-chart .future-trace{stroke:var(--w-brass)}
+body.theme-deep .demo-chart text{fill:var(--w-ink-faint)}
+body.theme-deep .demo-chart .chart-grid{stroke:var(--w-line)}
+body.theme-deep .demo-summary div{border-bottom:1px solid var(--w-line-soft)}
+body.theme-deep .demo-summary dt{color:var(--w-ink-muted)}
+body.theme-deep .demo-summary dd{color:var(--w-ink)}
+body.theme-deep .demo-motion p{color:var(--w-ink-soft)}
+body.theme-deep .demo-motion strong{color:var(--w-ink)}
+body.theme-deep .sensor-table th,
+body.theme-deep .sensor-table td{border-bottom:1px solid var(--w-line-soft)}
+body.theme-deep .sensor-table th{color:var(--w-ink-muted)}
+body.theme-deep .sensor-table td{color:var(--w-ink-soft)}
+body.theme-deep .demo-log{
+  border-bottom:1px solid var(--w-line-soft);color:var(--w-ink-soft);
+}
+body.theme-deep .demo-log time{color:var(--w-ink-faint)}
+body.theme-deep .monitor .demo-note{color:var(--w-ink-muted)}
+body.theme-deep .monitor svg text{fill:var(--w-ink-faint)}
+body.theme-deep .monitor .motion-outline{stroke:var(--w-sea)}
+
+
+/* ---------------------------------------------------------------------------
+   17. CHAPTER 09 — THE COMPLETE SYSTEM
+   -------------------------------------------------------------------------- */
+
+body.theme-deep #connected .complete-route{
+  color:var(--w-ink-soft);
+  border-top:1px solid var(--w-line-soft);
+  border-bottom:1px solid var(--w-line-soft);
+  padding:1.1rem 0;
+}
+body.theme-deep #connected .complete-route i{color:var(--w-line-firm)}
+body.theme-deep #connected .complete-route span{letter-spacing:.14em;font-size:.78rem}
+body.theme-deep #connected .closing p{color:var(--w-ink-soft)}
+body.theme-deep #connected .closing details{border-radius:2px}
+body.theme-deep #connected .closing summary{color:var(--w-ink-muted)}
+body.theme-deep #connected .closing summary:hover{color:var(--w-ink)}
+body.theme-deep #connected .closing details p{color:var(--w-ink-muted);font-size:.8rem}
+body.theme-deep #connected .enter{
+  border-bottom:1px solid var(--w-line-firm);color:var(--w-ink);
+}
+body.theme-deep #connected .enter span{color:var(--w-brass)}
+
+
+/* ---------------------------------------------------------------------------
+   18. THE PRESENTATION LAYER (present.html only)
+   present.css was written against the old neon palette. These rules bring its
+   presenter tools, chapter list and plain-language strips into the new design,
+   and strip the two blurs that cost the most on a weak laptop.
+   -------------------------------------------------------------------------- */
+
+body.theme-deep.p-layer-head .plain-why{
+  border-left:2px solid var(--w-sea);
+  border-radius:0;
+  color:var(--w-ink-soft);
+}
+body.theme-deep.p-layer-head .plain-tag{
+  color:var(--w-sea);letter-spacing:.16em;
+}
+body.theme-deep.p-layer-head .plain-lead{color:var(--w-ink-muted)}
+body.theme-deep.p-layer-head .plain-strip{border-radius:2px}
+body.theme-deep.p-layer-head .plain-step{
+  background:var(--w-inset);
+  border:1px solid var(--w-line-soft);
+  border-radius:2px;
+  color:var(--w-ink-soft);
+}
+body.theme-deep.p-layer-head .plain-step b{color:var(--w-sea)}
+
+/* The neon cyan the presenter layer used for keyboard hints and oversized
+   type is replaced with the brass and sea-glass of this design. */
+body.theme-deep.p-big .kicker{color:var(--w-brass)}
+body.theme-deep.p-big .copy>p:not(.kicker){color:var(--w-ink-soft)}
+body.theme-deep.p-big .micro{color:var(--w-ink-muted)}
+body.theme-deep.p-big .plain-step{color:var(--w-ink-soft)}
+
+body.theme-deep #p-jump{
+  background:rgba(7,15,21,.98);
+  border:1px solid var(--w-line);
+  border-radius:3px;
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+}
+body.theme-deep #p-jump h2{color:var(--w-ink)}
+body.theme-deep #p-jump button{
+  background:transparent;
+  border:1px solid var(--w-line-soft);
+  border-radius:2px;
+  color:var(--w-ink-soft);
+}
+body.theme-deep #p-jump button:hover,
+body.theme-deep #p-jump button:focus-visible{
+  background:var(--w-sea-soft);
+  border-color:var(--w-sea);
+  color:var(--w-ink);
+}
+body.theme-deep #p-jump button b{color:var(--w-brass)}
+body.theme-deep #p-jump button[aria-current=true]{
+  border-color:var(--w-sea);color:var(--w-ink);
+}
+body.theme-deep #p-jump .p-jump-plain{color:var(--w-ink-muted)}
+body.theme-deep #p-jump .p-jump-foot{color:var(--w-ink-faint)}
+body.theme-deep #p-hint{
+  background:rgba(7,15,21,.9);
+  border:1px solid var(--w-line-soft);
+  border-radius:2px;
+  color:var(--w-ink-muted);
+}
+body.theme-deep #p-hint b{color:var(--w-brass)}
+
+/* Presenter mode: thin colour bars and the clutter cleared away. */
+body.theme-deep.p-presenter::before,
+body.theme-deep.p-presenter::after{background:var(--w-bg)}
+body.theme-deep.p-presenter .journey-nav{background:linear-gradient(90deg,rgba(6,13,18,.99),rgba(6,13,18,0))}
+
+
+/* ---------------------------------------------------------------------------
+   19. MOTION AND PRINT
+   -------------------------------------------------------------------------- */
+
+@media(prefers-reduced-motion:reduce){
+  body.theme-deep .scene.is-active .copy>*{animation:none!important}
+  body.theme-deep #chapter-nav a::before{transition:none}
+}
+
+@media print{
+  body.theme-deep{background:#fff;color:#101a1f}
+  body.theme-deep::before,
+  body.theme-deep::after,
+  body.theme-deep #world,
+  body.theme-deep .atmosphere,
+  body.theme-deep #hotspots,
+  body.theme-deep #inspection-panel,
+  body.theme-deep #shore #bay-panel,
+  body.theme-deep #p-jump,
+  body.theme-deep #p-hint,
+  body.theme-deep .header-controls,
+  body.theme-deep .model-state,
+  body.theme-deep .coordinates{display:none!important}
+  body.theme-deep .scene::before{display:none!important}
+  body.theme-deep .journey-nav{
+    position:static;width:auto;flex-direction:row;
+    background:none;border:0;padding:0;color:#33474f;
+  }
+  body.theme-deep #journey-progress{display:none}
+  body.theme-deep #chapter-name{writing-mode:horizontal-tb;transform:none;color:#33474f}
+  body.theme-deep .scene,
+  body.theme-deep .scene.opening{min-height:0;padding:1.4rem 0;page-break-after:always;display:block}
+  body.theme-deep header{padding:0 0 1rem;background:none;border-bottom:1px solid #ccd8dc;position:static}
+  body.theme-deep .wordmark,
+  body.theme-deep .wordmark-id,
+  body.theme-deep h1,
+  body.theme-deep h2,
+  body.theme-deep h3,
+  body.theme-deep .copy>p:not(.kicker),
+  body.theme-deep .micro{color:#101a1f!important}
+  body.theme-deep .kicker{color:#7a5a25!important}
+  body.theme-deep .kicker::before{background:#7a5a25}
+  body.theme-deep em{color:#1a6b74!important}
+  body.theme-deep .scene.is-active .copy>*{animation:none!important}
+}
+
+
+/* ---------------------------------------------------------------------------
+   20. RESPONSIVE
+   Below 900px the spine would eat a third of the screen, so the navigation
+   returns to a calm strip along the bottom.
+   -------------------------------------------------------------------------- */
+
+@media(max-width:900px){
+  body.theme-deep .scene{padding-left:7vw}
+  body.theme-deep .scene-foot{left:7vw}
+  body.theme-deep header{padding-left:4.2vw}
+  body.theme-deep .scene::before{font-size:8rem;opacity:.045}
+}
+
+@media(max-width:650px){
+  body.theme-deep{--w-rail:0px}
+  body.theme-deep .scene{padding-left:6vw}
+  body.theme-deep .journey-nav{
+    top:auto;bottom:0;left:0;right:0;width:auto;
+    flex-direction:row;
+    align-items:center;
+    justify-content:space-between;
+    gap:.7rem;
+    padding:.85rem 4vw;
+    background:linear-gradient(transparent,rgba(6,13,18,.97) 34%);
+    border-right:0;
+    border-top:1px solid var(--w-line-soft);
+  }
+  body.theme-deep #chapter-nav{flex-direction:row;flex:1;gap:.2rem}
+  body.theme-deep #chapter-nav a{width:26px;height:34px}
+  body.theme-deep #chapter-nav a::before{top:16px;left:4px;right:4px}
+  body.theme-deep #chapter-name{
+    writing-mode:horizontal-tb;transform:none;font-size:.58rem;max-height:none;
+  }
+  body.theme-deep .scene::before{display:none}
+  body.theme-deep .monitor{transform:none}
+}
