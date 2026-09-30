@@ -59,7 +59,7 @@ class EdgeRuntime:
             self.last_error = None
         now = time.monotonic()
         if now - self._last_prediction_save >= 30.0:
-            history = self.store.recent(120)
+            history = self.forecast_records(120)
             # Persist every supported horizon for forecast-versus-actual history.
             for horizon in (5, 10, 15):
                 self.store.save_prediction(telemetry_id, build_wave_prediction(history, horizon))
@@ -105,6 +105,8 @@ class EdgeRuntime:
                           for item in recent]
         return {"system": "ONLINE" if online else "DEGRADED", "monitoring": bool(data.get("monitoring", online)),
                 "uptimeSeconds": int(data.get("uptime", 0)), "esp32": "SIMULATED" if source == "simulator" else ("ONLINE" if online else "OFFLINE"),
+                "bayStation": "ONLINE", "telemetryLink": "SIMULATED" if source == "simulator" else ("BENCH_SERIAL" if online else "DISCONNECTED"),
+                # Backward-compatible aliases retained until stored clients migrate.
                 "miniPc": "ONLINE", "uart": "SIMULATED" if source == "simulator" else ("CONNECTED" if online else "DISCONNECTED"),
                 "api": "ONLINE", "sensorsOnline": expected - (1 if sensor_fault else 0), "sensorsExpected": expected,
                 "lastUpdate": latest.get("recordedAt"), "dataSource": source, "activeAlertCount": len(alerts),
@@ -240,6 +242,17 @@ class EdgeRuntime:
 
     def forecast_records(self, limit: int = 120) -> list[dict[str, Any]]:
         records = self.store.recent(limit)
+        # Never fit or display a continuous trace across a stopped service or
+        # radio outage. Older sessions remain available in the stored logs.
+        current_session: list[dict[str, Any]] = []
+        previous_time: datetime | None = None
+        for record in records:
+            recorded_at = datetime.fromisoformat(record["recordedAt"])
+            if previous_time is not None and (previous_time-recorded_at).total_seconds() > max(30.0, self.interval*5):
+                break
+            current_session.append(record)
+            previous_time = recorded_at
+        records = current_session
         if not isinstance(self.source, SimulatorSource):
             return records
         segment: list[dict[str, Any]] = []

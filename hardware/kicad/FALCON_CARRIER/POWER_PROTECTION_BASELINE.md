@@ -1,6 +1,6 @@
 # Five-Volt Protection and Source-Interlock Baseline
 
-Status: **reviewed architecture; component values and footprints not released
+Status: **superseded Orange Pi/USB architecture; LTE revision required; component values and footprints not released
 for fabrication**. Updated 2026-08-21.
 
 ## Safety decision

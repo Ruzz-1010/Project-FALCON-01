@@ -4,13 +4,12 @@ Canonical React + TypeScript operator dashboard for Project FALCON. The producti
 
 ## Current interface
 
-The primary navigation contains five pages:
+The primary Bay Station navigation contains four pages:
 
 1. **Overview** — pressure-based estimated-wave chart, station summary, and always-visible FALCON AI short-term wave prediction.
-2. **Sensors** — Wave & Pressure, GPS & Security, Wind, Water, Power, and System groups with expandable diagnostics.
-3. **Buoy Motion** — optional pressure-driven 3D visualization. It uses no required IMU, roll, or pitch channel. Current Data uses telemetry; Calm, Moderate, Rough, and Pressure Offline are local labeled demo presets that never alter telemetry.
-4. **GPS** — position, fix, geofence/security state, and distance from the anchor reference.
-5. **Logs & Alerts** — active warnings, stored records, search, acknowledgement, and export. This is the final sidebar item.
+2. **Buoy Motion** — optional pressure-driven 3D visualization. It uses no required IMU, roll, or pitch channel. Current Data uses telemetry; Calm, Moderate, Rough, and Pressure Offline are local labeled demo presets that never alter telemetry.
+3. **Sensors** — Wave & Pressure, GPS & Security, Wind, Water, Power, and System groups with expandable diagnostics.
+4. **Logs & Alerts** — active warnings, stored records, search, acknowledgement, and export. This is the final sidebar item.
 
 Settings is a compact header action. AI wave prediction is required and visible on Overview, with clear model, source, sample, confidence, and collecting states. Prediction failure cannot block acquisition, logging, alerts, or live readings. The saved FALCON Assistant assets are not currently mounted.
 

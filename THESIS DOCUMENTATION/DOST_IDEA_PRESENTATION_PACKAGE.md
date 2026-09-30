@@ -1,6 +1,6 @@
 # Project FALCON — DOST Idea Presentation Package
 
-> Presentation baseline updated for v6.1. The physical/visual prototype is under redesign; replace all prototype figures and placement explanations only after approval. Do not present an older CAD model or render as the current unit.
+> Proposal baseline updated for v8.1. The physical/visual prototype is under redesign; replace all prototype figures and placement explanations only after approval. Do not present an older CAD model or render as the current unit.
 
 | Field | Value |
 | --- | --- |
@@ -14,7 +14,7 @@
 ## 1. Core Presentation Message
 
 Project FALCON is a proposed affordable, solar-powered smart coastal observation
-buoy. It is designed to collect localized coastal measurements, process and
+buoy. It is designed to collect localized wave and wind measurements, process and
 store data near the source, display present conditions through a responsive
 dashboard, optionally evaluate short-horizon wave prediction after the monitoring baseline is validated,
 and detect abnormal buoy displacement or system-health conditions.
@@ -44,8 +44,8 @@ prediction model, and conduct a supervised pilot deployment.
 | Buoy | A floating device placed on the water to collect information |
 | Sensor | A small electronic instrument that measures one condition |
 | ESP32 | The small controller that reads the sensors repeatedly |
-| Orange Pi | The small onboard computer that saves and processes the data |
-| Edge processing | Processing done inside or near the buoy instead of relying on the Internet |
+| Bay Station | The shore computer that saves, processes, predicts, and displays the data |
+| Shore-based processing | Processing performed at the protected Bay Station instead of inside the buoy |
 | Telemetry | The measurements sent from the sensors to the computer |
 | Simulator | Software-generated test data used before actual hardware is ready |
 | AI model | A program trained using past data to estimate a future value |
@@ -121,9 +121,9 @@ the information locally, and shows it on a simple dashboard.
 
 Project FALCON combines:
 
-- wave-related sensors and system-health monitors;
+- pressure-derived wave and wind sensors, with supporting system telemetry;
 - an ESP32 for reliable sensor acquisition and diagnostics;
-- an Orange Pi Zero 3 for local storage, processing, API, and model inference;
+- a proposed LoRa primary telemetry link from the buoy to a barangay-hall Bay Station, with SIM/4G/5G Internet backhaul at the Bay Station for cloud upload and authorized remote access;
 - solar power with battery storage;
 - a responsive local dashboard;
 - offline buffering for intermittent connectivity; and
@@ -139,31 +139,35 @@ purchased-board datasheets, and electrical protection plan.*
 
 **Taglish presentation script:**
 
-> Our proposed solution is Project FALCON. The buoy uses sensors for motion,
-> water pressure, wind, GPS position, power, and system health. The ESP32 handles
-> regular sensor acquisition and initial validation. It then sends the data to
-> an Orange Pi Zero 3 for local storage, processing, API services, and eventually
-> a validated prediction model. Users can view the information through a
+> Our proposed solution is Project FALCON. The buoy uses pressure sensing for
+> wave estimation and wind speed/direction sensing. GPS position, power status,
+> and security states are supporting telemetry, not additional project sensors.
+> The ESP32 handles
+> regular sensor acquisition and initial validation. It first attempts the
+> proposed LoRa link to the barangay-hall gateway. The Bay Station stores and processes
+> the records, serves the dashboard, and runs the required prediction model. Users can view the information through a
 > responsive dashboard on a laptop, tablet, or phone. Solar-powered din ang
 > design, and local buffering protects the data during Internet interruptions.
-> In simple terms, the ESP32 is the sensor reader, while the Orange Pi is the
-> small onboard computer. We also propose GPS and motion-based checks for
+> In simple terms, the ESP32 is the buoy sensor controller, while the Bay Station is the
+> protected shore computer. We also propose GPS and tamper checks for
 > detecting when the buoy moves beyond its expected area.
 
 ### Slide 4 — How It Works
 
 **What listeners should remember:** Sensors measure, the ESP32 collects, the
-Orange Pi processes, and the dashboard explains.
+the Bay Station processes, and the dashboard explains.
 
 ```text
-Wave, motion, wind, GPS, power and health sensors
+Pressure-derived wave and wind sensors
                          |
                          v
               ESP32 acquisition layer
+             |
+   Supporting GPS, power, and security telemetry
                          |
-                    USB / UART
+                         LORA PRIMARY LINK
                          v
-          Orange Pi Zero 3 edge computer
+          Shore-based Bay Station mini PC
              |          |          |
           Storage    Processing    Local API
              \          |          /
@@ -171,22 +175,23 @@ Wave, motion, wind, GPS, power and health sensors
                  FALCON dashboard
 ```
 
-**Speaker note:** The ESP32 handles deterministic sensing. The Orange Pi handles
-heavier software. Essential data remain local, so continuous cloud access is not
-required for the core prototype.
+**Speaker note:** The ESP32 handles deterministic sensing and short-outage buffering. The shore Bay Station handles heavier software. Deployed remote delivery depends on cellular coverage, while sensing and local security continue during outages.
 
 ![Project FALCON local-first system architecture](visuals/system-architecture.png)
 
 **Taglish presentation script:**
 
-> This diagram shows the system workflow. First, the sensors collect wave,
-> motion, wind, GPS, power, and health measurements. The ESP32 reads and checks
-> those values, then packages them as telemetry. The data are sent to the Orange
-> Pi through USB or UART. The Orange Pi manages the local database, signal
+> This diagram shows the system workflow. First, the primary sensors collect
+> pressure-derived wave and wind measurements. Supporting GPS, power, and
+> security telemetry describes position and system condition. The ESP32 reads and checks
+> those values, then packages them as telemetry. The proposed deployment sends
+> the data through LoRa to the barangay-hall gateway. If the LoRa path fails,
+> it stores the records locally for later retransmission. The Bay Station manages the database, signal
 > processing, API, dashboard, and future model inference. Finally, the user can
 > view current measurements, historical data, alerts, and model output on the
-> FALCON dashboard. Local-first ang architecture, so the main monitoring workflow
-> does not require a continuous cloud connection.
+> FALCON dashboard. Kapag pansamantalang nawala ang LoRa link, tuloy ang
+> sensing at local security at ibabalik ang buffered records pagkatapos ng
+> reconnection. Ang SIM/4G/5G ay para sa Internet backhaul ng Bay Station.
 
 ### Slide 5 — Current Progress
 
@@ -204,14 +209,15 @@ still required to build, calibrate, and test the physical buoy.
 - parametric mechanical concepts and Revision 5 buoy baseline;
 - hardware bill of materials, power calculations, test plan, and documentation.
 
-**Current verification:**
+**Current software verification:**
 
 - ESP32 firmware builds successfully;
-- 18 edge-service automated tests pass; and
+- 25 edge-service automated tests pass; and
 - Dashboard Next production build passes.
 
-**Not yet completed:** physical sensor integration, assembled marine power system,
-field-trained AI, calibration, and marine deployment validation.
+**Not yet completed:** LoRa hardware and gateway integration, Bay Station SIM/4G/5G
+backhaul, physical sensor integration, assembled marine power system, field-trained
+AI, calibration, and marine deployment validation.
 
 ![Current Project FALCON dashboard overview](visuals/dashboard-overview.png)
 
@@ -335,7 +341,7 @@ and testing process, not only for electronic sensors.
 | Category | Preliminary amount |
 | --- | ---: |
 | Sensors and embedded electronics | PHP 15,000–22,000 |
-| Edge computer, storage, and networking | PHP 5,000–8,000 |
+| Bay Station computer, storage, LoRa networking, SIM/4G/5G backhaul, and gateway | PHP 5,000–12,000 |
 | Solar, battery, charging, and protected distribution | PHP 12,000–20,000 |
 | Buoy body, structure, enclosure, and marine connectors | PHP 15,000–28,000 |
 | Mooring, anchor, corrosion protection, and safety hardware | PHP 7,000–14,000 |
@@ -353,8 +359,9 @@ testing, fabrication, transport, spares, and contingency costs.
 **Taglish presentation script:**
 
 > Our preliminary development request ranges from seventy-two thousand to one
-> hundred twenty-seven thousand pesos. This is not only the cost of the sensors.
-> It includes the embedded electronics, Orange Pi, solar and battery system,
+> hundred thirty-one thousand pesos. This is not only the cost of the sensors.
+> It includes the embedded electronics, LoRa buoy radio and barangay-hall gateway,
+> separately budgeted Bay Station SIM/4G/5G backhaul, solar and battery system,
 > marine enclosure and structure, mooring and anchor, calibration or reference
 > tools, fabrication, field testing, transport, spare parts, and contingency.
 > Planning range pa lamang ito. Before formal procurement, we will replace the
@@ -467,17 +474,14 @@ Raw acceleration or pressure will not be called wave height directly. Orientatio
 gravity, filtering, drift, water depth, hull response, and mooring effects must be
 considered and compared with a reference method during controlled testing.
 
-### Why ESP32 and Orange Pi?
+### Why ESP32 and a shore Bay Station?
 
 The ESP32 is appropriate for predictable sensor acquisition and basic safety logic.
-The Orange Pi provides Linux-based storage, API, dashboard, and lightweight model
-processing. Separating the roles improves maintainability and allows core acquisition
-to continue independently of higher-level services.
+The shore Bay Station provides Linux-based storage, API, dashboard, and AI model processing. Separating the roles reduces buoy power/heat/waterproofing risk and allows sensing/security to continue independently of higher-level services.
 
 ### Will it work without Internet?
 
-Core sensing, local storage, processing, and local dashboard access are designed to
-work without cloud service. Long-distance remote access still depends on the final
+Core sensing, local security, and temporary buffering continue without the Internet. Bay Station delivery and remote dashboard access depend on the final
 communication method and site coverage. Data will be buffered locally during outages.
 
 ### How is it different from existing buoys?

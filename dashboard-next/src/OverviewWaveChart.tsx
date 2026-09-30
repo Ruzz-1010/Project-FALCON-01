@@ -1,25 +1,50 @@
+import { useEffect, useRef, useState } from "react";
 import type { DashboardData } from "./types";
+import { recentWaveSession, timedLinePath } from "./waveHistory";
 
-const curve=(points:number[][])=>{if(points.length<2)return"";let path=`M ${points[0][0]} ${points[0][1]}`;for(let index=0;index<points.length-1;index++){const current=points[index],next=points[index+1],midX=(current[0]+next[0])/2,midY=(current[1]+next[1])/2;path+=` Q ${current[0]} ${current[1]} ${midX} ${midY}`}const last=points.at(-1)!;return`${path} T ${last[0]} ${last[1]}`};
+const linePath=(points:number[][])=>points.length<2?"":points.map(([x,y],index)=>`${index===0?"M":"L"} ${x} ${y}`).join(" ");
 
 export default function OverviewWaveChart({data}:{data:DashboardData}){
-  const history=data.wave.history.filter((item):item is typeof item&{waveHeight:number}=>item.waveHeight!=null).slice(-42);
+  const [selected,setSelected]=useState<number|null>(null);
+  const history=recentWaveSession(data.wave.history);
+  const chartHost=useRef<HTMLDivElement>(null);
+  const [chartWidth,setChartWidth]=useState(760);
+  useEffect(()=>{
+    const host=chartHost.current;
+    if(!host)return;
+    const observer=new ResizeObserver(([entry])=>setChartWidth(Math.max(480,Math.round(entry.contentRect.width))));
+    observer.observe(host);
+    return ()=>observer.disconnect();
+  },[history.length>=2]);
   const ready=data.ai.status==="READY"&&data.ai.predictedWaveHeight!=null;
-  if(history.length<2)return <div className="pro-chart-empty">Collecting estimated wave height history...</div>;
-  const measured=history.map(item=>item.waveHeight),current=measured.at(-1)!;
-  const historic=ready?(data.ai.historicalPredictionSeries||[]):[];
-  const all=[...measured,...historic.map(item=>item.predictedWaveHeight)],min=Math.max(0,Math.min(...all)-.08),max=Math.max(...all)+.08,range=Math.max(.01,max-min);
-  const left=58,right=714,top=26,bottom=214,toY=(value:number)=>bottom-(value-min)/range*(bottom-top);
-  const measuredPoints=measured.map((value,index)=>[left+index/Math.max(1,measured.length-1)*(right-left),toY(value)]);
+  if(history.length<2)return <div className="pro-chart-empty">Collecting recent wave readings. Older sessions remain in Logs & Alerts.</div>;
+  const measured=history.map(item=>item.waveHeight);
+  const historic=data.ai.historicalPredictionSeries||[];
   const start=Date.parse(history[0].recordedAt),end=Date.parse(history.at(-1)!.recordedAt);
-  const timedAi=historic.map(item=>({time:Date.parse(item.at),value:item.predictedWaveHeight})).filter(item=>Number.isFinite(item.time)&&item.time>=start&&item.time<=end).sort((a,b)=>a.time-b.time);
-  const rawAi=history.map((row,index)=>{const time=Date.parse(row.recordedAt),afterIndex=timedAi.findIndex(item=>item.time>=time);if(afterIndex<0)return timedAi.at(-1)?.value??measured[index];if(afterIndex===0)return timedAi[0].time===time?timedAi[0].value:measured[index];const before=timedAi[afterIndex-1],after=timedAi[afterIndex],progress=(time-before.time)/Math.max(1,after.time-before.time);return before.value+(after.value-before.value)*progress});
-  const smoothAi:number[]=[];rawAi.forEach((value,index)=>{if(index===0){smoothAi.push(value);return}const previous=smoothAi[index-1],blended=previous*.62+value*.38,maxStep=Math.max(.02,range*.09);smoothAi.push(Math.max(previous-maxStep,Math.min(previous+maxStep,blended)))});
-  const aiPoints=ready&&timedAi.length>1?smoothAi.map((value,index)=>[left+index/Math.max(1,smoothAi.length-1)*(right-left),toY(value)]):[];
-  return <div className="overview-wave-shell"><div className="overview-wave-legend"><span><i/>Current estimate</span><span className="is-ai"><i/>AI prediction</span>{!ready&&<small>AI is collecting data</small>}</div><svg className="overview-wave-chart" viewBox="0 0 760 260" role="img" aria-label="Current estimated wave height and AI prediction">
-    {[0,1,2,3,4].map(row=>{const y=top+(bottom-top)*row/4,value=max-(max-min)*row/4;return <g key={row}><line x1={left} y1={y} x2={right} y2={y}/><text x={left-11} y={y+4} textAnchor="end">{value.toFixed(2)} m</text></g>})}
-    {aiPoints.length>1&&<path d={curve(aiPoints)} className="overview-ai-line"/>}
-    <path d={`${curve(measuredPoints)} L ${right} ${bottom} L ${left} ${bottom} Z`} className="overview-wave-area"/><path d={curve(measuredPoints)} className="overview-current-line"/><circle cx={right} cy={toY(current)} r="4" className="overview-current-dot"/>
-    <text x={left} y="245">{new Date(history[0].recordedAt).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})}</text><text x={(left+right)/2} y="245" textAnchor="middle">{new Date(history[Math.floor(history.length/2)].recordedAt).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})}</text><text x={right} y="245" textAnchor="end">{new Date(history.at(-1)!.recordedAt).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})}</text>
-  </svg></div>;
+  const timedAi=historic.map(item=>({time:Date.parse(item.at),value:item.predictedWaveHeight})).filter(item=>Number.isFinite(item.time)&&Number.isFinite(item.value)&&item.time>=start&&item.time<=end).sort((a,b)=>a.time-b.time);
+  const all=[...measured,...timedAi.map(item=>item.value)];
+  const low=Math.min(...all),high=Math.max(...all),span=Math.max(.2,high-low);
+  const rawStep=span*1.3/5,magnitude=10**Math.floor(Math.log10(rawStep));
+  const step=([1,2,5,10].find(value=>value*magnitude>=rawStep)??10)*magnitude;
+  const min=Math.max(0,Math.floor((low-span*.15)/step)*step);
+  const max=Math.max(min+step,Math.ceil((high+span*.15)/step)*step),range=max-min;
+  const ticks=Array.from({length:Math.round(range/step)+1},(_,i)=>min+i*step);
+  const decimals=Math.max(0,-Math.floor(Math.log10(step)));
+  const left=72,right=chartWidth-24,top=18,bottom=266,toY=(value:number)=>bottom-(value-min)/range*(bottom-top);
+  const toX=(time:number)=>left+(time-start)/Math.max(1,end-start)*(right-left);
+  const measuredPoints=history.map(item=>[toX(Date.parse(item.recordedAt)),toY(item.waveHeight)]);
+  const aiPoints=timedAi.map(item=>[left+(item.time-start)/Math.max(1,end-start)*(right-left),toY(item.value)]);
+  const index=Math.min(selected??history.length-1,history.length-1),reading=history[index];
+  return <div className="overview-wave-shell"><div className="overview-wave-legend"><span><i/>Current estimate</span><span className="is-ai" title="Rolling one-step model estimates calculated using earlier samples; the 10-minute forecast is shown separately above."><i/>AI estimate history</span><span className="wave-scale-note">Latest session · Auto scale · {min.toFixed(decimals)}–{max.toFixed(decimals)} m</span>{aiPoints.length===0&&<small>{ready?"AI history is collecting":"AI prediction unavailable"}</small>}{aiPoints.length===1&&<small>First AI prediction received</small>}{aiPoints.length>1&&timedAi[0].time>start&&<small>AI starts after its history warm-up</small>}</div><div className="wave-chart-scroll" ref={chartHost}><svg className="overview-wave-chart" viewBox={`0 0 ${chartWidth} 320`} role="group" tabIndex={0} aria-label="Wave height history. Use left and right arrow keys to explore readings; Escape returns to latest." onKeyDown={event=>{if(event.key==="Escape"){setSelected(null);return}if(event.key==="ArrowLeft"||event.key==="ArrowRight"){event.preventDefault();setSelected(Math.max(0,Math.min(history.length-1,index+(event.key==="ArrowLeft"?-1:1))))}}} onPointerMove={event=>{const bounds=event.currentTarget.getBoundingClientRect();const position=((event.clientX-bounds.left)/bounds.width*chartWidth-left)/(right-left),time=start+position*(end-start);setSelected(history.reduce((nearest,row,i)=>Math.abs(Date.parse(row.recordedAt)-time)<Math.abs(Date.parse(history[nearest].recordedAt)-time)?i:nearest,0));}}>
+    <rect className="wave-plot-frame" x={left} y={top} width={right-left} height={bottom-top}/>
+    <text className="wave-axis-title" transform={`translate(16 ${(top+bottom)/2}) rotate(-90)`} textAnchor="middle">Wave height (m)</text>
+    <text className="wave-axis-title" x={(left+right)/2} y="313" textAnchor="middle">Time</text>
+    {ticks.map(value=><g key={value}><line className="wave-grid-line" x1={left} y1={toY(value)} x2={right} y2={toY(value)}/><text x={left-11} y={toY(value)+4} textAnchor="end">{value.toFixed(decimals)}</text></g>)}
+    <path d={linePath(measuredPoints)} className="overview-current-line"/>
+    {measuredPoints.map(([x,y],i)=><circle key={`${history[i].recordedAt}-${i}`} cx={x} cy={y} r="2.2" className="wave-sample-dot"/>)}
+    {aiPoints.length>0&&<path d={timedLinePath(aiPoints,timedAi.map(item=>item.time))} className="overview-ai-line"/>}
+    {aiPoints.map(([x,y],i)=><circle key={`${timedAi[i].time}-${i}`} cx={x} cy={y} r="2.5" className="wave-ai-sample-dot"/>)}
+    {selected!==null&&<g className="wave-selection"><line x1={measuredPoints[index][0]} x2={measuredPoints[index][0]} y1={top} y2={bottom}/><circle cx={measuredPoints[index][0]} cy={measuredPoints[index][1]} r="5"/></g>}
+    {[0,1,2,3,4].map(i=>{const time=start+(end-start)*i/4,x=toX(time);return <g key={i}><line className="wave-axis-tick" x1={x} y1={bottom} x2={x} y2={bottom+5}/><text x={x} y="289" textAnchor={i===0?"start":i===4?"end":"middle"}>{new Date(time).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:false})}</text></g>})}
+  </svg></div><div className="wave-inspector"><div><span>{selected===null?"Latest reading":"Selected reading"} · {new Date(reading.recordedAt).toLocaleTimeString()}</span><strong>{reading.waveHeight.toFixed(2)} <small>m</small></strong></div>{selected!==null&&<button onClick={()=>setSelected(null)}>Latest</button>}</div></div>;
 }

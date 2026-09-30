@@ -1,6 +1,6 @@
-# Calibration Guide v6.1
+# Calibration Guide v7.0
 
-> Current priorities are pressure baseline/depth/reference comparison, DS18B20 reference comparison, GPS geofence accuracy/persistence, wind/power calibration, and tamper false-alert testing. Conductivity/salinity is excluded from required Phase 1 work. IMU alignment is optional legacy work.
+> Use the exact procedures, proposed acceptance limits and recording sheets in [SENSOR_VALIDATION_AND_CALIBRATION_PLAN.md](SENSOR_VALIDATION_AND_CALIBRATION_PLAN.md). Water temperature, conductivity/salinity, and required IMU alignment are excluded from the Phase 1 measurement scope; calibration focuses on pressure-derived wave estimation, wind, supporting telemetry, and security behavior.
 
 ## Purpose
 Define traceable calibration for future measurements.
@@ -17,8 +17,16 @@ Reference -> repeated raw samples -> coefficient/model -> independent verificati
 ## Implementation
 Future records must include sensor identity, firmware commit, reference instrument, environmental conditions, raw samples/timestamps, method, coefficients, uncertainty, acceptance limits, verification data, operator, date, and due date. Test range, repeatability, disconnect state, and recovery.
 
-## Future Expansion
-Add approved procedures for selected pressure and water-temperature sensors, GPS reference, wind, voltage/current, security inputs, and optional model normalization.
+## Required Calibration Set
+
+- Bar02 static air/depth points, independent verification and controlled dynamic wave scenarios;
+- Celsius R2 three-point temperature comparison and installation leak test;
+- MCP9808 enclosure reference comparison and placement-bias test;
+- wind-speed reference comparison and wind-direction code/alignment map;
+- GPS stationary scatter and evidence-based geofence/persistence values;
+- battery and solar INA260 comparison at idle, normal and near-maximum project load;
+- enclosure-contact and optional tamper false-alarm trials;
+- separate AI model evaluation using chronological held-out data.
 
 ## Engineering Notes
 Store coefficients outside code when persistent configuration exists. Never tune values only to improve appearance.
@@ -26,4 +34,5 @@ Store coefficients outside code when persistent configuration exists. Never tune
 ## Revision History
 | Version | Date | Change |
 | --- | --- | --- |
+| 7.0 | 2026-08-31 | Adopted the formal sensor validation plan and corrected marine water-temperature scope. |
 | 1.0 | 2026-08-05 | Initial calibration policy. |

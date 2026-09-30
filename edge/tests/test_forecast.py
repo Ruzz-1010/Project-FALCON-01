@@ -11,6 +11,28 @@ def records(count: int = 20):
 
 
 class ForecastTest(unittest.TestCase):
+    def test_ai_history_covers_visible_wave_window(self):
+        source = records(120)
+        series = build_wave_prediction(source, 10)["historicalPredictionSeries"]
+        self.assertEqual(len(series), 60)
+        self.assertEqual(
+            [datetime.fromisoformat(row["at"]) for row in series],
+            [datetime.fromisoformat(row["recordedAt"]) for row in source[-60:]],
+        )
+
+    def test_ai_history_preserves_warmup(self):
+        self.assertEqual(build_wave_prediction(records(8), 10)["historicalPredictionSeries"], [])
+        self.assertEqual(len(build_wave_prediction(records(10), 10)["historicalPredictionSeries"]), 2)
+
+    def test_historical_estimate_does_not_use_target_or_future_readings(self):
+        source = records(120)
+        original = build_wave_prediction(source, 10)["historicalPredictionSeries"][0]
+        changed = [dict(row) for row in source]
+        for row in changed[60:]:
+            row["waveLevel"] = 3.0
+        updated = build_wave_prediction(changed, 10)["historicalPredictionSeries"][0]
+        self.assertEqual(updated, original)
+
     def test_only_approved_horizons_are_returned(self):
         result = build_forecast(records())
         self.assertEqual(set(result["horizons"]), {"5", "10", "15"})

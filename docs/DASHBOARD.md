@@ -1,10 +1,30 @@
-# Dashboard Specification v6.1
+# Dashboard Specification v8.4
 
-> Prototype visual status: the current 3D buoy asset is a reference model under redesign. Live data behavior and the five-page information architecture remain valid; replace the model only from the approved new mechanical revision.
+## Current implemented layout — September 11, 2026
 
-The Orange Pi-hosted `dashboard-next/` application has five primary pages in this order: **Overview**, **Sensors**, **Buoy Motion**, **GPS**, and **Logs & Alerts**. Logs & Alerts is intentionally last, while Settings remains a compact header action.
+The approved coastal design is applied across Overview, Sensors, Buoy Motion, GPS, Logs & Alerts, and Settings. Navigation retains five main entries; Settings remains a header action. The older four-page proposal below is historical and does not describe the current navigation.
 
-Overview requires no graph-selection controls. It shows one large Estimated Wave Height graph with a clear muted-teal line, lightly shaded area, readable axes, and current value; one readable Station Status summary; one always-visible FALCON AI Wave Prediction card; and three compact trends for Water Pressure, Wind Speed, and GPS Distance from Anchor. The AI card shows the current estimate, selected prediction horizon, predicted height, expected condition, confidence, model state, sample count, and data source without opening another page. Battery, solar, water temperature, and enclosure temperature remain clear current readings rather than additional controls. A dedicated GPS sidebar page provides position and anchor-distance details. The FALCON Assistant assets are preserved for later design work but the assistant is not currently mounted in the operator dashboard. Buoy Motion retains the interactive 3D model, but its water-surface amplitude, heave, and tilt are generated only from the pressure-based estimated wave height; GPS contributes heading context. It has no IMU, roll, or pitch input and is explicitly a visualization rather than a measured orientation. Current Data uses the received estimate, while Calm, Moderate, Rough, and Pressure Offline are clearly labeled local demonstration presets; these never overwrite or masquerade as live telemetry. Sensors groups individual hardware devices into six user-facing monitoring categories—Wave & Pressure, GPS & Security, Wind, Water, Power, and System—to improve readability while preserving detailed technical diagnostics through expandable views. Logs & Alerts combines active alerts with persisted telemetry, security/calibration events, search, acknowledgement, and export.
+Overview now has one full-width wave chart, a current-condition badge beside the wave-height reading, and a clearly separate numeric AI research estimate in the same card. Earlier AI predictions are labeled separately in the chart legend. The former right-hand status card and mini-trend widgets are removed. A four-column readings strip shows wind, pressure, battery, and solar, followed by GPS security, enclosure temperature, and last-update information.
+
+White cards, an off-white background, dark blue-gray text, muted blue navigation, larger controls, and responsive spacing are shared across all pages. Motion retains its existing 3D structure and controls. Sensor details remain expandable; logs retain search and export. Gentle transitions respect reduced-motion preferences. Data acquisition, estimation, and forecasting logic are unchanged.
+
+Validation: TypeScript and production build passed. The 3D Motion bundle still triggers the existing large-chunk warning. Browser visual verification remains pending.
+
+## Previous specification and implementation history
+
+Source cleanup 2026-09-11: the saved FalconAssistant component/style remain in `archive/dashboard-next/src/`. Seven disconnected legacy pages were subsequently moved to Trash and remain recoverable from Git history. Active imports, current page components, shared CSS, API contracts, and model assets remain in `dashboard-next/`. See `archive/README.md` for recovery instructions.
+
+UI revision 2026-09-11: the existing implementation keeps five navigation entries (Overview, Sensors, Buoy Motion, GPS, Logs & Alerts) and a Settings header button. This differs from the earlier four-page thesis proposal below; the current redesign preserves the working navigation pending a separate scope decision.
+
+The refreshed shared theme uses white cards, a light gray background, dark blue-gray text, muted blue navigation and teal details. Sensor values and explanatory text are larger, cards reflow on smaller screens, and the current sea condition appears in one clearly labeled block. A wave-chart inspector supports pointer selection and a keyboard/touch range control for reading earlier values. Narrow displays scroll the chart locally to preserve axis readability.
+
+Entrance transitions, expandable sensor details and a floating loading logo provide gentle animation. Reduced-motion preferences disable animation. Chart lines remain fully drawn during polling. Connection failures show the last received values with a reconnect message and a Try again button.
+
+> Prototype visual status: the current 3D buoy asset is a reference model under redesign. Live data behavior and the four-page Bay Station information architecture remain valid; replace the model only from the approved new mechanical revision.
+
+The shore Bay Station-hosted `dashboard-next/` application has four primary pages in this order: **Overview**, **Buoy Motion**, **Sensors**, and **Logs & Alerts**. GPS position/security details are grouped under Sensors and summarized on Overview. Logs & Alerts is intentionally last, while Settings remains a compact header action.
+
+Overview requires no graph-selection controls. It shows one large Estimated Wave Height graph with a muted blue-gray pressure-derived line and a labeled red historical AI-comparison line; the future predicted value remains in a separate always-visible FALCON AI card so it cannot be mistaken for a measured value. It also shows one Station Status summary and compact trends for Water Pressure, Wind Speed, Wind Direction, and GPS Distance from Anchor. Battery and solar status remain supporting telemetry. FALCON Assistant assets are preserved but not currently mounted. Buoy Motion remains a pressure-driven visualization, while Sensors groups Wave & Pressure, Wind, and Supporting Telemetry. Water-temperature and other environmental sensor views are excluded from the active proposal scope. Logs & Alerts combines active alerts with persisted telemetry, security/calibration events, search, acknowledgement, and export.
 
 The operator palette uses a warm light-gray background, soft-white cards, charcoal text, muted teal accents, pale borders, and low-opacity graph fills. Strong green, amber, and red are reserved for meaningful status changes and alerts to reduce visual fatigue for older users.
 

@@ -1,99 +1,206 @@
 # Project FALCON-01
 
-Project FALCON is a solar-powered smart coastal observation buoy for near-real-time local monitoring. Its Phase 1 baseline uses an ESP32 for sensor acquisition and an Orange Pi Zero 3 (4 GB) for local logging, API hosting, and the web dashboard.
-
-The current adviser-approved functional direction is documented in [PROJECT_CONTEXT.md](docs/PROJECT_CONTEXT.md). The physical/visual buoy is currently being replaced; [PROTOTYPE_REDESIGN_BASELINE.md](docs/PROTOTYPE_REDESIGN_BASELINE.md) controls that redesign. Existing CAD and renders are references, not the approved replacement prototype.
-
-## Phase 1 focus
-
-- pressure-based **estimated** wave height using Bar02 or a compatible sensor;
-- GPS position and persistent geofence monitoring;
-- wind speed and direction;
-- sealed DS18B20 water-temperature monitoring;
-- battery, solar, and enclosure health;
-- simple vibration/tamper and enclosure-access detection;
-- local SQLite records and responsive dashboard;
-- optional supporting AI only.
-
-BNO085 is not required in the primary baseline. Load cell/HX711 anchor-chain sensing is removed. The buoy uses passive mooring with sufficient line scope for tides and ordinary movement.
-
-## Current truth
-
-The repository contains working firmware, simulator, local edge API, database, and dashboard prototypes. Most physical sensors and the Orange Pi have not yet been integrated or field-validated. Simulator readings are labeled `SIMULATED`; wave values are labeled `ESTIMATED`; uncalibrated channels say `CALIBRATION REQUIRED`.
-
-The current mechanical geometry, component placement, presentation image, and dashboard 3D model are under redesign. Dimensions and placements from older revisions must not be reused without verification.
-
-## Run the full local dashboard on Linux Mint
-
-The simplest normal workflow runs the bundled production dashboard from the Python edge service:
-
-```bash
 cd "/home/ruzz/Documents/PlatformIO/Projects/Project FALCON-01/edge"
 python3 -m falcon_edge.service
-```
 
-Open <http://127.0.0.1:8765/>.
+**Fullbright College's AI-powered Live Coastal Observation Network**
 
-For frontend development, Node.js 20.19 or newer is required:
+Project FALCON is a Phase 1 coastal monitoring buoy proposal focused on two primary measurements:
 
-```bash
-cd "/home/ruzz/Documents/PlatformIO/Projects/Project FALCON-01/dashboard-next"
+1. pressure-derived wave monitoring; and
+2. wind speed and direction monitoring, with optional short-term wave-height prediction research.
+
+The AI scope is limited to short-term wave-height prediction and sea-condition classification as **Calm**, **Moderate**, or **Rough**.
+
+## Source of Truth
+
+[PROJECT_CONTEXT.md v8.0](docs/PROJECT_CONTEXT.md) is the official engineering source of truth.
+
+Working source code remains authoritative for what is currently implemented. Documentation describes both the verified prototype and the approved Phase 1 target; it does not turn planned hardware into implemented hardware.
+
+## Current Status
+
+Status: **Phase 1 Prototype**
+
+Implemented in the repository:
+
+- PlatformIO ESP32 Arduino firmware;
+- `FALCON-01` Wi-Fi access point and captive portal;
+- LittleFS fallback dashboard and basic ESP32 controls;
+- laptop-hosted Python edge-service prototype (shore-based Bay Station mini PC for deployment);
+- simulated telemetry and deterministic alert scenarios;
+- local SQLite telemetry history;
+- presentation forecast and backtest pipeline;
+- responsive local dashboard with light/dark mode;
+- current-versus-predicted forecast presentation;
+- browser notifications and alert history;
+- and interactive Fusion-derived 3D buoy visualization.
+
+Current mechanical direction: a compact traditional single-body Ø650 mm HDPE buoy with a rounded 240 mm tapered underwater keel, central ballast, and single-anchor mooring. The former four-outrigger configuration is retained only as Legacy Revision 4.
+
+### Safe frontend migration
+
+The production dashboard in `data/` remains the verified fallback. The page-by-page React + TypeScript migration in `dashboard-next/` now includes the responsive shell plus Overview, Wave AI, Motion, GPS, Power, System Health, Alerts, Logs, and Settings. Wave AI includes current-versus-predicted results, forecast horizons, model evidence, and presentation scenarios. Motion preserves the Fusion GLB digital twin with telemetry-driven sea motion, camera controls, navigation lights, and component alert highlighting. GPS provides a live Puerto Princesa coastal map, deployment reference, geofence, and drift telemetry. Power presents battery, solar, thermal, fan, and recent-history telemetry. System Health presents local service connectivity, sensor availability, edge resource use, and diagnostics. Alerts provides live notification badges and toasts, active warnings, persisted history, severity filters, and non-destructive acknowledgement. Logs provides searchable telemetry, AI prediction, alert, and system-event archives with filtered CSV/JSON export. Settings provides local presentation preferences, notification permission, scenarios, and auditable maintenance controls.
+
+Run the migration preview with the edge service on port `8765`:
+
+```powershell
+cd dashboard-next
 npm install
 npm run dev
 ```
 
-Open <http://127.0.0.1:5173/> while the edge service runs on port 8765.
+Then open `http://127.0.0.1:5173`.
 
-## Tests and builds
+Important limitations:
 
-```bash
-cd "/home/ruzz/Documents/PlatformIO/Projects/Project FALCON-01"
-PYTHONPATH=edge python3 -m unittest discover -s edge/tests -v
-cd dashboard-next
-npm run build
-```
+- physical Phase 1 sensors are not yet fully integrated;
+- the laptop currently represents the shore Bay Station during demonstrations;
+- simulator results are not field-validation results;
+- the current presentation forecast is not the final trained AI model;
+- and the 3D dashboard assets exceed the configured ESP32 LittleFS capacity.
 
-ESP32 firmware:
-
-```bash
-cd "/home/ruzz/Documents/PlatformIO/Projects/Project FALCON-01"
-pio run
-```
-
-## Dashboard
-
-The canonical dashboard has five primary pages:
-
-1. Overview
-2. Sensors
-3. Buoy Motion (optional visualization, not a required IMU reading)
-4. GPS
-5. Logs & Alerts
-
-Settings are opened using the header icon. FALCON AI wave prediction is always visible on Overview and estimates the selected 5-, 10-, or 15-minute wave height from recent pressure-based wave records. Its status, input source, sample count, confidence, and limitations are shown clearly; prediction failure cannot interrupt monitoring or logging.
-The Sensors page presents six operator-friendly groups—Wave & Pressure, GPS & Security, Wind, Water, Power, and System—with technical device diagnostics available through **View Details**.
-
-## API
-
-The primary grouped route is:
+## Approved Phase 1 Architecture
 
 ```text
-GET /api/telemetry/current
+Marine Sensors -> ESP32 -> LoRa -> Barangay-Hall Bay Station -> SIM/4G/5G Internet -> Cloud/Remote Access
+                                              |
+                                              +-> AI prediction + XAI
+                                              +-> SQLite + historical data
+                                              +-> REST API + web server
+                                              +-> Local dashboard -> laptop / tablet / phone
 ```
 
-Compatibility alias: `GET /api/dashboard`. Legacy sensor endpoints remain temporarily available to avoid breaking existing code. See [API.md](docs/API.md).
+Cloud connectivity is Future Expansion and is not required for Phase 1 operation.
 
-## Repository map
+## Approved Primary Sensor Set
+
+- water-pressure sensor for pressure-derived wave estimation;
+- wind-speed sensor; and
+- wind-direction sensor.
+
+GPS, battery/solar status, timestamps, and security states are supporting system telemetry only. Water temperature, BNO085, salinity, conductivity, and other environmental sensors are excluded from Phase 1.
+
+pH, salinity, turbidity, dissolved oxygen, rain, UV, cameras, hydrophones, current meters, and Water Quality Index inputs are Future Expansion.
+
+## Approved AI Outputs
+
+- current wave height;
+- predicted wave height for a 5–15 minute horizon;
+- prediction confidence or quality indicator;
+- prediction status and model version;
+- and sea condition: Calm, Moderate, or Rough.
+
+Weather, typhoon, storm, ocean-current, fish, maintenance, camera, and water-quality predictions are not part of Phase 1.
+
+## Approved API Direction
 
 ```text
-dashboard-next/   React/TypeScript dashboard source
-data/             small ESP32 setup/diagnostic portal
-docs/             current engineering documentation
-edge/             Python service, tests, database, bundled dashboard
-src/              ESP32 firmware
-THESIS DOCUMENTATION/ thesis and presentation files
+GET  /status
+GET  /wave
+GET  /gps
+GET  /battery
+GET  /solar
+GET  /ai
+POST /restart
+POST /calibrate
 ```
 
-## Safety and research limits
+Current `/api/...` endpoints are prototype compatibility routes and require a controlled migration to the approved v4 contract.
 
-FALCON is a research prototype. It is not an official weather, storm, tsunami, navigation, or emergency-warning system and must not replace PAGASA or authorized coastal agencies.
+## Development Setup
+
+### ESP32 Firmware
+
+```powershell
+platformio run
+platformio run --target buildfs
+platformio run --target upload
+platformio run --target uploadfs
+```
+
+Close the serial monitor before uploading. Hold BOOT if required; after flashing, release BOOT and press EN/RESET.
+
+Prototype access-point settings:
+
+| Setting | Value |
+| --- | --- |
+| SSID | `FALCON-01` |
+| Prototype password | `falcon123` |
+| ESP32 dashboard | `http://192.168.4.1` |
+
+The prototype password must be changed before field deployment.
+
+### Laptop Edge-Service Demonstration
+
+```powershell//windos
+cd "C:\Users\Admin\Documents\PlatformIO\Projects\Project FALCON-01\edge"
+python -m falcon_edge.service
+```
+terminal//linux
+cd "/home/ruzz/Documents/PlatformIO/Projects/Project FALCON-01/edge"
+python3 -m falcon_edge.service
+
+
+Open `http://127.0.0.1:8765/`.
+
+Run tests:
+
+```powershell
+cd edge
+python -m unittest discover -s tests -v
+```
+
+## Repository Today
+
+```text
+Project FALCON-01/
+├── data/               # current dashboard assets and 3D model
+├── docs/               # engineering documentation
+├── edge/               # laptop-hosted Bay Station edge-service prototype
+├── exports/            # archived CAD exchange assets
+├── fusion360/          # mechanical component documentation
+├── include/            # ESP32 configuration headers
+├── src/                # ESP32 firmware source
+├── test/               # PlatformIO test location
+├── platformio.ini
+└── README.md
+```
+
+The target v4 repository organization is documented in PROJECT_CONTEXT.md and will be adopted incrementally without breaking working code.
+
+## Documentation
+
+Start here:
+
+1. [PROJECT_CONTEXT.md](docs/PROJECT_CONTEXT.md) — master engineering context;
+2. [ROADMAP.md](docs/ROADMAP.md) — focused delivery gates;
+3. [HARDWARE.md](docs/HARDWARE.md) — electronics and sensor baseline;
+4. [SOFTWARE.md](docs/SOFTWARE.md) — firmware and edge-software boundaries;
+5. [AI.md](docs/AI.md) — focused prediction and classification specification;
+6. [DASHBOARD.md](docs/DASHBOARD.md) — approved information architecture;
+7. [API.md](docs/API.md) — approved REST contract and migration status;
+8. [MECHANICAL.md](docs/MECHANICAL.md) — approved buoy mechanical baseline;
+9. [INDEX.md](docs/INDEX.md) — full documentation index.
+
+## Engineering Principles
+
+- Focus over feature count.
+- Reliability over decoration.
+- Local-first operation.
+- Measured, estimated, predicted, simulated, and unavailable values must remain distinguishable.
+- No field claim without calibration and evidence.
+- No AI claim outside wave prediction and three-class sea-condition classification.
+- Preserve working source and migrate incrementally.
+
+## Future Expansion
+
+Cloud synchronization, satellite communication, multi-buoy networking, mobile applications, water-quality sensing, computer vision, additional AI models, and autonomous capabilities are outside the validated Phase 1 implementation. LoRa is the planned primary buoy telemetry path to the barangay-hall Bay Station; SIM/4G/5G is the planned Bay Station Internet backhaul for cloud upload and authorized remote access. Both paths require hardware, security, and site validation.
+
+## Revision History
+
+| Version | Date | Change |
+| --- | --- | --- |
+| 3.1 | 2026-08-05 | Added source-verified implementation status. |
+| 4.0 | 2026-08-09 | Aligned repository entry point with PROJECT_CONTEXT.md v4.0 and the focused wave-monitoring research scope. |
+| 5.0 | 2026-08-13 | Adopted the single-body rounded-keel buoy baseline and retired the four-stabilizer arrangement to legacy status. |

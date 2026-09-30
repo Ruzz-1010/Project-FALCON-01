@@ -16,6 +16,18 @@ class MemoryStore:
 
 
 class ForecastHistoryTests(unittest.TestCase):
+    def test_hours_apart_are_not_connected_or_used_for_prediction(self):
+        records = [
+            {"recordedAt": f"2026-09-12T{hour}:00:{second:02d}+00:00", "waveLevel": .5, "source": "simulator"}
+            for hour in ("09", "22") for second in (0, 2, 4)
+        ]
+        for source in (SimulatorSource(), object()):
+            store = MemoryStore(records)
+            runtime = EdgeRuntime(source, store, 2.0)
+            self.assertEqual(len(runtime.forecast_records()), 3)
+            self.assertTrue(all("T22:" in r["recordedAt"] for r in runtime.forecast_records()))
+            self.assertEqual(len(store.records), 6)
+
     def test_grouped_dashboard_contract_uses_adviser_sections(self):
         with tempfile.TemporaryDirectory() as directory:
             runtime = EdgeRuntime(SimulatorSource(), TelemetryStore(Path(directory) / "test.db"), 2.0)
@@ -34,6 +46,16 @@ class ForecastHistoryTests(unittest.TestCase):
             self.assertTrue(history)
             self.assertTrue({"recordedAt", "windSpeed", "waterTemperature", "internalTemperature",
                              "anchorDistance", "solarPower"}.issubset(history[-1]))
+
+    def test_status_exposes_bay_station_transport_names(self):
+        with tempfile.TemporaryDirectory() as directory:
+            runtime = EdgeRuntime(SimulatorSource(), TelemetryStore(Path(directory) / "bay-station.db"), 2.0)
+            runtime.collect_once()
+            status = runtime.v4_status()
+            self.assertEqual(status["bayStation"], "ONLINE")
+            self.assertEqual(status["telemetryLink"], "SIMULATED")
+            self.assertIn("miniPc", status)  # temporary compatibility alias
+            self.assertIn("uart", status)  # temporary compatibility alias
 
     def test_tamper_requires_three_consecutive_frames(self):
         with tempfile.TemporaryDirectory() as directory:

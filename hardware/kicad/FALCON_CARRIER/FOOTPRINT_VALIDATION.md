@@ -37,7 +37,7 @@ length, USB connector, and regulator placement.
 | --- | --- | --- | --- |
 | 1 | U2 | Espressif ESP32-DevKitC V4 with ESP32-WROOM-32E | Official 38-pin CAD is locked; verify delivered revision, USB overhang, antenna end, and header fit at 1:1 |
 | 2 | U3 | Adafruit BNO085 PID 4754 | Board outline, full header order, holes, P0/P1 access, axis orientation |
-| 3 | J2 | Blue Robotics Bar02 R2 | Exact cable/connector revision and JST-GH pin order |
+| 3 | J2 | Historical Blue Robotics Bar02 R2 | Obsolete; replace with exact HPT604 loop connector and receiver components |
 | 4 | J3 | GPS breakout | Exact product/revision, header order, antenna and keep-out |
 | 5 | J4/J5 | INA260 breakouts | Logic header geometry plus high-current terminal orientation and cable clearance |
 | 6 | U4/J6 | ADS1115/MCP9808 | Exact breakout revision, header/Qwiic geometry, address-jumper access |
@@ -52,7 +52,7 @@ length, USB connector, and regulator placement.
 - Confirm INA260 solar address configuration produces `0x41` after power cycle.
 - Confirm BNO085 P0 and P1 can be held high for SPI mode.
 - Confirm USB and external 5 V cannot back-feed one another.
-- Confirm the Bar02 rear/cable termination and bulkhead sealing method.
+- Confirm the exact HPT604 cable, vent, connector/gland, strain relief, probe guard, and dry-end desiccant/breather arrangement.
 - Confirm fan voltage, running current, startup current, and whether it contains
   internal electronics that affect flyback protection or PWM.
 - Confirm the leak detector's idle/output/fault voltages before connecting GPIO32.

@@ -1,5 +1,7 @@
 # Project FALCON V2 — Final Fusion Script Set
 
+> **Mechanical reference under Bay Station revision:** any generator that places an Orange Pi/mini PC inside the buoy is superseded and must not be used for the replacement electronics pod. Preserve the external geometry only until ESP32 + sensors + LTE + power/security placement is approved.
+
 This directory has been cleaned against the top-level component structure in
 `exports/PROJECT FALCON -V2.fbx` dated 2026-08-27. Superseded prototype,
 stabilizer, electronics-box, ventilation, solar-frame, and structural-cage
@@ -28,9 +30,11 @@ generators were removed on 2026-08-30. Their history remains recoverable in Git.
 - `REV5_TOWER_FRONT_MAINTENANCE_GATE`
 - `WATER_PRESSURE_SENSOR_ASSEMBLY`
 
-`MAIN_FLOAT` is retained only as the foundational dependency used when creating
-`MAIN_FLOAT_TRADITIONAL_V2`. `REV5_FINAL_ASSEMBLY_CLEANUP` is retained as the
-visibility and completeness checker for the finalized export set.
+The legacy `MAIN_FLOAT` generator and the temporary
+`REV5_FINAL_ASSEMBLY_CLEANUP` utility were removed during the screenshot-based
+folder audit on 2026-08-30. The resulting source directory now matches the 20
+component groups visible in the shared Fusion V2 browser tree. Their previous
+versions remain recoverable from Git history.
 
 ## Safety rules
 

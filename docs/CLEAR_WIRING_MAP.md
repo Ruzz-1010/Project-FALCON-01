@@ -1,6 +1,6 @@
 # FALCON-01 Clear Wiring Map — Historical Prototype
 
-> Do not fabricate from this older BNO085-centered map. Use `PINOUT.md`; the final harness awaits exact purchased parts.
+> Do not fabricate from this older BNO085/Orange-Pi-centered map. Use `PINOUT.md` and `BAY_STATION_ARCHITECTURE.md`; the final harness awaits exact purchased parts and an approved LTE modem. No Bay Station computer belongs in the buoy harness.
 
 Status: **bench-wiring reference; not a final marine harness**.
 
@@ -60,6 +60,8 @@ receiver. GPS pins 1, 6, 7, 8, and 9 remain unconnected in the baseline.
 ## Power boundary
 
 The carrier receives protected regulated 5 V only. Raw panel, battery, MPPT,
-and branch load current do not enter ordinary carrier headers. The Orange Pi
+and branch load current do not enter ordinary carrier headers. The selected LTE modem
 uses a separate regulated 5 V / at least 3 A branch. INA260 high-current
 terminals remain in their separately fused external paths.
+
+The Bar02 entry above is retained only to interpret the historical drawing. The deployment candidate is an HPT604 4–20 mA probe and requires a protected 12 V loop, 150 ohm precision shunt, ADS1115 receiver, and dry vent termination as specified in [PRESSURE_SENSOR_BASELINE.md](PRESSURE_SENSOR_BASELINE.md). Do not fabricate the old J2 pressure connection.

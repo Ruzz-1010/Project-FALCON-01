@@ -1,4 +1,4 @@
-# Project FALCON Hardware Baseline v6.1
+# Project FALCON Hardware Baseline v6.2
 
 > Hardware functions remain the Phase 1 baseline. Physical placement, enclosure integration, brackets, harness lengths, and mechanical interfaces are under redesign and remain TBD until the replacement prototype is approved.
 
@@ -7,27 +7,25 @@ Status: adviser-approved design baseline; procurement and physical validation re
 ## Architecture
 
 ```text
-Sensors -> protected interfaces -> ESP32 -> USB/UART -> Orange Pi Zero 3
+Sensors -> protected interfaces -> ESP32 -> LoRa primary -> barangay-hall gateway/Bay Station -> SIM/4G/5G Internet
 Solar -> charge controller -> LiFePO4 battery -> protected DC rails
 ```
 
-The Orange Pi is powered separately from the sensor carrier and is not placed on the ESP32 PCB. It provides local storage, API, dashboard, and optional future AI.
+No single-board computer, mini PC, or SIM/4G/5G Internet modem is installed on the buoy. The barangay-hall Bay Station is facility powered or uses a separately designed UPS and provides storage, pressure processing, required AI prediction, API, dashboard, cloud upload, and remote access. LoRa is the primary buoy-to-Bay-Station link and requires a powered gateway with a raised antenna and tested line of sight. USB/UART is retained only for bench commissioning; the exact LoRa and Bay Station Internet interfaces must be approved before release.
 
 ## Required Phase 1 groups
 
 | Group | Device/function | Status |
 | --- | --- | --- |
-| Core | Blue Robotics Bar02 or compatible waterproof pressure sensor | Selected family; exact interface/range verification required |
-| Core | GPS receiver | Exact model TBD |
-| Core | Wind-speed sensor | Exact model TBD |
-| Core | Wind-direction sensor | Exact model TBD |
-| Supporting | Sealed DS18B20 water-temperature probe | Selected family |
-| Health | Battery voltage/current monitor | Exact design/range TBD |
-| Health | Solar voltage/current monitor | Exact design/range TBD |
-| Health | Enclosure-temperature sensor | Exact model TBD |
+| Core | Blue Robotics Bar02 R2, BR-100891 | Confirmed prototype; continuous-submersion/service limitation must be resolved |
+| Supporting | Adafruit Ultimate GPS, PID 746 | Confirmed prototype; field accuracy and geofence persistence testing required |
+| Core | SparkFun Weather Meter, SEN-15901 | Confirmed prototype; marine durability remains unqualified |
+| Health | Adafruit INA260, PID 4226, battery branch | Confirmed prototype; range, thermal and reference-meter tests pending |
+| Health | Adafruit INA260, PID 4226, solar branch | Confirmed prototype; address and charging-direction tests pending |
+| Health | Adafruit MCP9808, PID 1782 | Recommended enclosure-temperature selection at `0x18` |
 | Security | GPS geofence | Software function using GPS |
-| Security | Vibration/tamper input | Exact part TBD |
-| Security | Reed/limit enclosure switch | Exact part TBD |
+| Security | Adafruit LIS3DH, PID 2809 | Optional tamper candidate only; not used for wave-height estimation |
+| Security | Adafruit magnetic contact switch, PID 375 | Recommended prototype selection; sealed installation and debounce pending |
 | Security | Buzzer | Exact part/driver TBD |
 
 ## Removed or optional items
@@ -36,6 +34,9 @@ The Orange Pi is powered separately from the sensor carrier and is not placed on
 - Load cell and HX711 anchor-chain tension sensing are removed.
 - Passive single-anchor mooring uses adequate line scope for tides, waves, and ordinary buoy movement.
 - AI hardware acceleration is not required.
+- LoRa is the primary compact buoy telemetry link, not a general Internet connection; it requires a barangay-hall gateway and site-specific range testing. SIM/4G/5G is the Bay Station Internet backhaul for cloud upload and remote access.
+
+The detailed selection evidence, interface allocation, calibration plan and manufacturer references are in [SENSOR_SELECTION_BASELINE.md](SENSOR_SELECTION_BASELINE.md). That document is the component-selection authority where this summary is abbreviated.
 
 ## Pressure installation
 

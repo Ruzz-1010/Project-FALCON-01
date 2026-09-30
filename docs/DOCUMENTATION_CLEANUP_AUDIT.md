@@ -1,7 +1,7 @@
 # Documentation Cleanup Audit — Prototype Redesign Baseline
 
-Date: 26 August 2026  
-Authority: `PROJECT_CONTEXT.md` v6.1
+Date: 2026-09-08
+Authority: `PROJECT_CONTEXT.md` v8.1
 
 ## Result
 
@@ -19,13 +19,14 @@ The cleanup does not delete earlier engineering work. Instead, documents now fol
 - Reset the current physical/visual prototype status to `UNDER REDESIGN`.
 - Removed old “current/approved production prototype” authority from Revision 5 CAD and export notes.
 - Preserved system requirements that do not depend on external shape or component placement.
+- Replaced the former cellular-first transport wording with LoRa-primary buoy telemetry and SIM/4G/5G Bay Station backhaul.
 - Kept BNO085, salinity, anchor-load sensing, AI-first operation, and cloud dependency outside the required Phase 1 baseline.
 - Aligned dashboard documentation to Overview, Sensors, Buoy Motion, GPS, and Logs & Alerts.
 - Documented Current Data, Calm, Moderate, Rough, and Pressure Offline motion scenarios as non-telemetry presentation presets.
 - Corrected Linux Mint run instructions and the current thesis DOCX filename.
 - Marked old deployment-video prompts and visual assets as references awaiting replacement.
 - Marked the old carrier PCB and enclosure/component layout as non-fabrication historical drafts.
-- Replaced outdated ESP32-only operator instructions with the current ESP32-to-Orange-Pi workflow.
+- Replaced outdated ESP32-only operator instructions with the current ESP32-to-Bay-Station workflow.
 
 ## Items intentionally preserved
 

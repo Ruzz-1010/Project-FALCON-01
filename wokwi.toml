@@ -1,3 +1,5 @@
+# Historical bench simulation only. BNO085 and Orange Pi custom chips are not
+# part of the adviser-approved Bay Station Phase 1 hardware baseline.
 [wokwi]
 version = 1
 firmware = ".pio/build/esp32dev/firmware.bin"

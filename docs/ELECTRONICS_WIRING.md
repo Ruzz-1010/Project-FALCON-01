@@ -13,7 +13,9 @@ Wind speed/direction -> digital pulse + ADC interface -> ESP32
 DS18B20 -> protected OneWire -> ESP32
 Tamper + enclosure switch -> filtered/debounced GPIO -> ESP32
 ESP32 GPIO -> buzzer transistor/driver -> buzzer
-ESP32 USB serial -> Orange Pi Zero 3
+ESP32 -> LoRa primary -> barangay-hall gateway/Bay Station -> SIM/4G/5G Internet backhaul
+
+USB serial to the development laptop remains a bench-only substitute. The SIM/4G/5G modem belongs at the barangay-hall Bay Station, not in the buoy. No Bay Station computer or Internet-backhaul modem is wired into or powered by the buoy enclosure.
 ```
 
 Disconnect power before wiring. Confirm exact pin labels, logic voltage, connector pin 1, polarity, pull-ups, cable shield/ground strategy, and module revision. Add one device at a time, verify rail voltage/current, scan interfaces, record raw readings, then test invalid/disconnected behavior. Never infer final marine wiring from illustrative 3D images.

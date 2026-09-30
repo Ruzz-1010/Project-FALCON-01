@@ -11,10 +11,12 @@ Start with [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md), the current source of truth
 - [ADVISER_REVISION_AUDIT.md](ADVISER_REVISION_AUDIT.md) explains current, legacy, and pending records.
 - [DOCUMENTATION_CLEANUP_AUDIT.md](DOCUMENTATION_CLEANUP_AUDIT.md) records the pre-redesign Markdown cleanup and document authority order.
 - [IMPLEMENTATION_REPORT_V6.md](IMPLEMENTATION_REPORT_V6.md) records delivered code, verification, commands, and remaining work.
-- [Adviser architecture diagram](diagrams/FALCON-01-adviser-architecture.svg) is the current high-level visual.
+- [Adviser architecture diagram](diagrams/FALCON-01-adviser-architecture.svg) is the current high-level visual; update it with the approved LoRa-primary/Bay-Station-backhaul flow before fabrication release.
 
-The current thesis file is `THESIS DOCUMENTATION/PROJECT FALCON-01 - V3 Documentation.docx`.
+The canonical thesis file is `THESIS DOCUMENTATION/BayStation.docx`; the V3 filename is a synchronized copy.
 
 ## Design records on hold
 
 All `fusion360/` component notes, `exports/MODEL_STATUS.md`, existing prototype renders, dashboard 3D models, video prompts, and prototype-specific mechanical dimensions are retained for traceability only. They are not the approved replacement design. Older Wokwi, PCB, motion, IMU, and wiring visuals likewise remain historical until explicitly revised against v6.1 and the selected physical parts.
+
+- [Proposed blueprint package](blueprints/README.md) documents the current Fusion V2 reference geometry and component layout. Every sheet is marked **REFERENCE / NOT FOR FABRICATION** until the redesign acceptance gates are completed.

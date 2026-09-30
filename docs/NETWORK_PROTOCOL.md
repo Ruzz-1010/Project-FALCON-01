@@ -7,7 +7,7 @@ Specify current local networking and constrain future links.
 AP, DNS, HTTP, captive routes, dashboard polling, and future edge/remote protocols.
 
 ## Current Status
-Local Wi-Fi/DNS/HTTP are implemented; edge and remote links are not.
+Local Wi-Fi/DNS/HTTP are implemented; the deployed LoRa buoy link, Bay Station SIM/4G/5G backhaul, cloud endpoint, and remote links are not yet implemented.
 
 ## Architecture
 Client -> FALCON-01 AP -> wildcard DNS `192.168.4.1` -> HTTP dashboard/API.
@@ -24,7 +24,7 @@ frames never fabricate measurements; absent driver values leave `measurements`
 empty and report sensor state explicitly.
 
 ```json
-{"protocol":"falcon.telemetry","version":1,"sequence":7,"uptimeMs":4200,"source":"hardware-diagnostic","monitoring":true,"sensors":{"bar02":"DETECTED","gps":"DETECTED","waterTemperature":"UNTESTED","tamper":"UNTESTED"},"measurements":{}}
+{"protocol":"falcon.telemetry","version":1,"sequence":7,"uptimeMs":4200,"source":"hardware-diagnostic","monitoring":true,"sensors":{"bar02":"DETECTED","gps":"DETECTED","tamper":"UNTESTED"},"measurements":{}}
 ```
 
 Required envelope fields are `protocol`, `version`, integer `sequence`,
@@ -44,7 +44,11 @@ alternate development transport.
 
 ## Future Expansion
 Add checksum/framing beyond newline JSON if field error testing demonstrates the
-need, plus authenticated LoRa/cellular transport and explicit time synchronization.
+need, plus authenticated LoRa transport, explicit gateway/recovery status, Bay
+Station SIM/4G/5G backhaul, and time synchronization. LoRa is the primary buoy
+link; SIM/4G/5G is used at the Bay Station for Internet backhaul and remote access.
+If the LoRa gateway is unreachable, the buoy continues local acquisition and
+buffers telemetry for later retransmission.
 
 An optional camera requires a separate authenticated streaming path and must not
 delay or congest safety-relevant telemetry. See

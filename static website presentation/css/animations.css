@@ -1,0 +1,7 @@
+
+.scene.active{animation:fade 1s}
+.wave{height:100%;animation:move 5s infinite alternate}
+.packet{animation:travel 3s infinite;font-weight:bold}
+@keyframes fade{from{opacity:0;transform:translateY(40px)}to{opacity:1}}
+@keyframes move{from{transform:translateX(-20px)}to{transform:translateX(20px)}}
+@keyframes travel{from{transform:translateX(-200px)}to{transform:translateX(200px)}}

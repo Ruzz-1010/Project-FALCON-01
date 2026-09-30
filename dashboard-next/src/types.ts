@@ -11,7 +11,7 @@ export type Status = {
   internalTemperature: number | null; alerts: Alert[];
   intakeFanRpm: number | null; exhaustFanRpm: number | null;
   sensorHistory: Array<{recordedAt:string;windSpeed:number|null;waterTemperature:number|null;internalTemperature:number|null;anchorDistance:number|null;solarPower:number|null}>;
-  monitoring:boolean; uptimeSeconds:number; esp32:string; miniPc:string; uart:string; api:string;
+  monitoring:boolean; uptimeSeconds:number; esp32:string; bayStation?:string; telemetryLink?:string; miniPc:string; uart:string; api:string;
   cpuUsage:number|null; memoryUsage:number|null; storageUsage:number|null; wifiSignalDbm:number|null;
   databaseSizeMb:number|null; communicationLatencyMs:number|null; packetLossPercent:number|null;
   samplingFrequencyHz:number|null; lastPacketAgeMs:number|null; database:string;

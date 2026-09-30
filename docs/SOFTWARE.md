@@ -1,13 +1,14 @@
 # Software Architecture v6.1
 
 ```text
-ESP32 drivers/acquisition -> versioned USB/UART telemetry -> Orange Pi ingestion
--> validation/filtering -> SQLite -> REST API -> five-page local dashboard
+Sensors -> ESP32 acquisition/validation -> LoRa primary
+-> barangay-hall gateway/Bay Station -> pressure processing -> SQLite + AI
+-> local REST API/dashboard -> SIM/4G/5G Internet -> cloud/remote access
 ```
 
-The ESP32 performs deterministic acquisition, calibration application, range checks, security input debounce, watchdog handling, and serial framing. It must continue sensing when the Orange Pi is unavailable.
+The ESP32 performs deterministic acquisition, engineering-unit/range checks, security debounce, watchdog handling, versioned telemetry framing, LoRa transport, and short-outage buffering. It sends compact telemetry to the verified barangay-hall gateway and continues sensing/local security while the LoRa path is unavailable. USB serial remains a bench transport until the deployed LoRa link is selected and implemented.
 
-The Orange Pi performs ingestion, stale-data detection, pressure filtering/wave estimation, GPS geofence persistence, event aggregation, SQLite storage, API/dashboard hosting, and optional isolated model inference.
+The shore Bay Station performs authenticated LoRa ingestion, stale-data detection, pressure filtering/wave estimation, event aggregation, SQLite storage, API/dashboard hosting, alerts, required isolated AI prediction, and cloud/remote synchronization over its SIM/4G/5G Internet backhaul. The final mini PC, LoRa module/gateway, SIM/provider, cloud endpoint, transport protocol, authentication, and deployment network remain selection gates.
 
 Primary software sections follow the grouped schema: `system`, `wave`, `environment`, `gps`, `power`, `security`, `health`, `assistant`, and `alerts`. Missing values stay null. Every value carries or inherits timestamp, source, state, and units.
 

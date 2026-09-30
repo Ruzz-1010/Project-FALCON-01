@@ -18,7 +18,7 @@ away from the BNO085, GPS antenna, fan PWM section, and power protection block.
 
 | Ref | Service | PCB header | Plug housing | Circuits | Cable label |
 | --- | --- | --- | --- | ---: | --- |
-| J2 | Bar02 pressure | `BM04B-GHS-TBT` | `GHR-04V-S` | 4 | `PRES-01` |
+| J2 | Historical Bar02 pressure | `BM04B-GHS-TBT` | `GHR-04V-S` | 4 | OBSOLETE; replace with HPT604 4–20 mA loop termination |
 | J7 | Anemometer | `BM03B-GHS-TBT` | `GHR-03V-S` | 3 | `WIND-SPD` |
 | J8 | Wind vane | `BM03B-GHS-TBT` | `GHR-03V-S` | 3 | `WIND-DIR` |
 | J9 | DS18B20 water temperature | `BM03B-GHS-TBT` | `GHR-03V-S` | 3 | `WATER-T` |
@@ -32,13 +32,13 @@ pre-crimped leads. Do not crush contacts using ordinary pliers.
 
 | Ref | Pin 1 | Pin 2 | Pin 3 | Pin 4 |
 | --- | --- | --- | --- | --- |
-| J2 Bar02 | Red — `3V3/VIN` | Green — `SCL` | White — `SDA` | Black — `GND` |
+| J2 historical Bar02 | Red — `3V3/VIN` | Green — `SCL` | White — `SDA` | Black — `GND`; DO NOT USE FOR HPT604 |
 | J7 wind speed | Red — `3V3` reserved | Yellow — `WIND_PULSE` | Black — `GND` | — |
 | J8 wind direction | Red — `3V3` | Blue — `WIND_VANE` | Black — `GND` | — |
 | J9 water temperature | Red — `3V3` | Yellow — `WATER_TEMP/DQ` | Black — `GND` | — |
 | J10 leak | Red — `3V3` | White — `LEAK_SIGNAL` | Black — `GND` | — |
 
-Bar02 colors follow the manufacturer cable order. Colors for J7–J10 are the
+Bar02 colors document the historical cable only. HPT604 conductor colors and polarity must come from the exact delivered datasheet and receiving inspection. Colors for J7–J10 are the
 carrier harness convention, not proof of a sensor's delivered wire function.
 The exact leak sensor remains TBD; do not energize J10 until its output type and
 voltage have been verified.
@@ -69,4 +69,3 @@ leave J7 pin 1 unpopulated in the cable housing; never short it to another pin.
 ## Primary reference
 
 - [JST GH connector family](https://www.jst-mfg.com/product/pdf/eng/eGH.pdf)
-

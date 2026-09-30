@@ -7,6 +7,9 @@
     "node": ">=20.19"
   },
   "scripts": {
+    "thesis:dev": "vite --config '../static website presentation/vite.config.mjs'",
+    "thesis:build": "vite build --config '../static website presentation/vite.config.mjs'",
+    "thesis:preview": "vite preview --config '../static website presentation/vite.config.mjs'",
     "dev": "vite --host 0.0.0.0",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host 0.0.0.0"

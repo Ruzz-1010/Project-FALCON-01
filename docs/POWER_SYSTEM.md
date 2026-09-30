@@ -1,50 +1,55 @@
-# Power System
+# FALCON Buoy Power System — Bay Station Baseline v2.0
 
-## Purpose
-Define safety and design gates for autonomous power.
+The buoy and shore Bay Station are separate power domains. No mini PC is installed on the buoy.
 
-## Scope
-Solar generation, charging, battery, protection, regulation, monitoring, and thermal behavior.
+## Buoy power path
 
-## Current Status
-**Status: Provisional sizing baseline.** Current development uses USB power; the complete marine charging and protection system is not yet integrated.
+```text
+Solar panel -> LiFePO4-compatible MPPT -> 12.8 V LiFePO4 battery
+             -> fused disconnect/distribution -> protected regulated rails
+             -> ESP32 + sensors + LoRa radio + security electronics
+```
 
-## Architecture
-Solar panel -> disconnect/protection -> charger -> protected battery -> fused distribution -> regulated rails -> loads.
+The provisional starting point is a 12.8 V 20 Ah LiFePO4 battery (256 Wh nominal), an 80% usable-energy planning limit (204.8 Wh), and either a 40 W or 60 W solar candidate. These are design assumptions—not validated endurance claims.
 
-## Implementation
-No marine power system exists. The previous 12 V 60 Ah battery and 150 W panel concept is no longer the preferred Phase 1 starting point. The selected Orange Pi Zero 3 uses a regulated 5 V input. Official Orange Pi guidance permits a 5 V/2 A or 5 V/3 A Type-C source, so the buoy regulator shall be designed for a stable 5 V/3 A transient envelope even if measured average consumption is lower.
+| Complete measured average buoy load | Daily energy | Approximate no-solar runtime from 204.8 Wh |
+| ---: | ---: | ---: |
+| 2 W | 48 Wh/day | 102.4 h |
+| 4 W | 96 Wh/day | 51.2 h |
+| 6 W | 144 Wh/day | 34.1 h |
 
-## Recommended Prototype Baseline
+Preliminary solar harvest uses `panel rating × 4 peak-sun-hours × 70% net efficiency`:
 
-- **Battery:** 12.8 V 20 Ah LiFePO4 with integrated BMS and a marine-rated fuse near the battery.
-- **Solar panel:** 60 W nominal monocrystalline for supervised presentations, bench endurance, and controlled short coastal trials.
-- **Preferred margin:** 80 W when cloudy-day recovery, partial shading, continuous Wi-Fi, active fans, or longer unattended trials are expected.
-- **Charger:** LiFePO4-compatible MPPT controller sized for the selected panel voltage and current.
-- **Orange Pi regulator:** quality synchronous 12 V-to-5 V buck regulator rated for at least 5 V/3 A continuous, with ripple, temperature, transient, and brownout validation.
+| Candidate | Planning harvest | Status |
+| --- | ---: | --- |
+| 40 W | 112 Wh/day | Accept only if measured load and modem peaks retain margin |
+| 60 W | 168 Wh/day | Preferred prototype starting candidate pending measurements |
 
-A 20 Ah LiFePO4 battery stores about 256 Wh nominal. Assuming 80% usable energy gives approximately 205 Wh. At a complete measured average load of 6 W, the estimate is about 34 hours without solar; at 10 W, about 20 hours. These are design estimates, not validated endurance claims.
+At the 4 W design-planning load, the 40 W candidate leaves only 16 Wh/day of
+nominal recovery energy, while the 60 W candidate leaves 72 Wh/day. With a 25%
+planning margin, the calculated minimum panel is 42.9 W. Therefore, use **60 W
+as the provisional prototype baseline**, subject to panel Voc/Isc, MPPT,
+mounting, and measured-load verification.
 
-A 60 W panel at four peak-sun-hours and 70% net system efficiency gives an estimated 168 Wh/day. An 80 W panel gives about 224 Wh/day. Puerto Princesa weather, tilt, salt contamination, temperature, wiring, charger, and shading losses must be measured.
+The 20 Ah battery provides only about 51.2 hours at 4 W. If the project adopts
+a 72-hour no-solar requirement at that load, the calculation requires 28.1 Ah;
+select at least a nominal 30 Ah LiFePO4 battery after verifying its BMS and
+charge limits. Keep 20 Ah only as an early-test option or for a shorter verified
+autonomy requirement.
 
-Do not reduce below 12.8 V 20 Ah and 60 W for unattended operation until a 24-hour load log and at least a 72-hour solar-endurance trial demonstrate adequate reserve. A smaller protected battery is acceptable for a supervised indoor presentation only when clearly labeled non-deployment hardware.
+Detailed nominal, margin, poor-weather, and 72-hour calculations are recorded
+in [POWER_CALCULATIONS.md](POWER_CALCULATIONS.md).
 
-Required artifacts: load table, energy budget, sizing calculations, protection/wire/connector schedule, thermal review, low-voltage behavior, and endurance/fault tests.
+## Required measurements before release
 
-## Future Expansion
-Power modes, telemetry, controlled loads, and energy-aware AI after hardware approval.
+- 24-hour current log covering sampling, idle, security, network registration, reconnect, and LTE transmit peaks.
+- Converter efficiency, ripple, temperature, voltage drop, and brownout behavior.
+- Battery BMS/charge limits and MPPT compatibility with panel Voc/Isc.
+- Fuse, wire, connector, disconnect, reverse-polarity, and transient-protection ratings.
+- Minimum 72-hour supervised solar-endurance trial.
 
-Optional cameras, remote modems, added sensors, and a possible Raspberry Pi 5
-shall trigger a complete energy-budget revision. A Pi 5 path requires a protected
-5 V / 5 A-class branch and active-cooling thermal validation; it must not be
-connected to the existing Orange Pi branch by assumption. See
-[`FUTURE_UPGRADES.md`](FUTURE_UPGRADES.md).
+## Bay Station power
 
-## Engineering Notes
-LM2596 is a regulator, not a charger/BMS/fuse. Verify its output before connection. Do not field-deploy an unreviewed battery system.
+The shore mini PC and SIM/4G/5G Internet backhaul use facility power or a separately engineered UPS. Measure startup, idle, storage, dashboard, AI, and backhaul loads separately. Never include Bay Station energy in the buoy battery/solar calculation.
 
-## Revision History
-| Version | Date | Change |
-| --- | --- | --- |
-| 1.1 | 2026-08-12 | Added provisional Orange Pi-based 20 Ah battery and 60–80 W solar sizing baseline. |
-| 1.0 | 2026-08-05 | Initial power gates. |
+Final panel, MPPT, battery, converter, fuse, and wire selections remain `TBD` until the LoRa radio and all installed buoy loads are frozen and bench measured. The Bay Station SIM/4G/5G backhaul is a separate shore power domain.

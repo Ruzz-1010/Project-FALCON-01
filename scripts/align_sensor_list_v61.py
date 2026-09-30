@@ -1,11 +1,11 @@
-"""Align the existing sensor-list DOCX with PROJECT_CONTEXT.md v6.1."""
+"""LEGACY v6.1 updater retained only for traceability after Bay Station v7.0."""
 
 from pathlib import Path
 
 from docx import Document
 
 
-DOCUMENT = Path(__file__).resolve().parents[1] / "THESIS DOCUMENTATION" / "Project_FALCON_Sensor_List.docx"
+DOCUMENT = Path(__file__).resolve().parents[1] / "THESIS DOCUMENTATION" / "archive" / "Project_FALCON_Sensor_List.docx"
 
 
 def set_row(row, values):
@@ -23,7 +23,7 @@ def align():
     )
     paragraphs[4].text = "The required Phase 1 sensing functions are water pressure, GPS position, wind speed, and wind direction."
     paragraphs[5].text = (
-        "Bar02 or a compatible pressure sensor is the primary wave-observation input. The system retains raw and "
+        "A Holykell HPT604 Type A 0–2 mH2O 4–20 mA candidate is the primary wave-observation input. Bar02 is bench-only. The system retains raw and "
         "filtered pressure, baseline, optional depth, estimated wave height, validity, timestamp/source, and calibration state."
     )
     paragraphs[16].text = (
@@ -44,7 +44,7 @@ def align():
 
     main = document.tables[0]
     rows = [
-        ["1", "Water-pressure sensor", "Bar02 or compatible; exact model to be verified", "I2C", "Raw/filtered pressure and calibrated estimated-wave support"],
+        ["1", "Water-pressure sensor", "Holykell HPT604 Type A candidate; exact order code to be verified", "4–20 mA via protected ADS1115 receiver", "Raw/filtered pressure and calibrated estimated-wave support"],
         ["2", "GPS receiver", "Exact model TBD", "UART", "Position, UTC, fix validity, satellite state, and persistent geofence"],
         ["3", "Wind-speed sensor", "Exact model TBD", "Pulse/GPIO", "Local wind speed"],
         ["4", "Wind-direction sensor", "Exact model TBD", "Analog/ADC", "Local wind direction"],
@@ -84,4 +84,4 @@ def align():
 
 
 if __name__ == "__main__":
-    align()
+    raise SystemExit("Legacy updater blocked: align future records with PROJECT_CONTEXT.md v7.0")

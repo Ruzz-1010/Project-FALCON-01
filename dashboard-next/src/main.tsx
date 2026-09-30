@@ -32,5 +32,6 @@ import "./engineering.css";
 import "./operator-simple.css";
 import "./grouped-sensors.css";
 import "./calm-operator-theme.css";
+import "./accessible-modern.css";
 
 createRoot(document.getElementById("root")!).render(<StrictMode><App /></StrictMode>);

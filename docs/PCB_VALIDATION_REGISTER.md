@@ -1,6 +1,6 @@
 # FALCON-01 Carrier PCB Validation Register — Historical Revision
 
-> Not manufacturing-ready under adviser revision v6.1. This historical carrier also predates the prototype redesign. Revise only after exact pressure, water-temperature, security, wind, GPS, health, connectors, and mechanical interfaces are approved.
+> Not manufacturing-ready under the Bay Station baseline. This historical carrier predates the prototype redesign and approved LoRa-primary/Bay-Station-backhaul architecture. Revise only after exact pressure, wind, security, GPS, health, LoRa radio, Bay Station Internet, connectors, and mechanical interfaces are approved.
 
 ## Status
 
