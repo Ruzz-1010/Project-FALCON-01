@@ -783,6 +783,19 @@ body.theme-deep #shore #open-bay:hover{
 body.theme-deep #shore #open-bay span{color:var(--w-sea)}
 body.theme-deep #shore .bay-inspect-cta strong{color:var(--w-ink)}
 
+/* ---------------------------------------------------------------------------
+   13b. THE BAY STATION INSPECTION PLATE — rebuilt
+   What was wrong with the old one, plainly:
+     - the labels were 7px tall (0.47rem), unreadable past the front row;
+     - the element list was a two-column grid, so every button was cramped;
+     - the plate sat at left:3vw, which put it UNDER the 96px navigation
+       spine, hiding its left edge and its sea-coloured rule.
+   The rebuild gives it one job: be the easiest thing in the room to read.
+   Wider plate, one calm column, a real title size, and one clearly louder
+   line (the explanation) with everything else stepped back. Still no glow,
+   no blur and no :has() — it stays as fast as the rest of the theme.
+   -------------------------------------------------------------------------- */
+
 body.theme-deep #bay-menu button{
   background:transparent;
   border:0;
@@ -798,41 +811,205 @@ body.theme-deep #bay-menu button[aria-pressed=true]{
 body.theme-deep #bay-menu button.receiving-stage{color:var(--w-brass)}
 
 body.theme-deep #shore #bay-panel{
-  background:rgba(9,18,24,.97);
+  left:calc(var(--w-rail) + 2vw);
+  right:auto;
+  top:9svh;
+  width:min(440px,34vw);
+  max-height:82svh;
+  padding:1.35rem 1.35rem 1.2rem;
+  background:rgba(9,18,24,.98);
   border:1px solid var(--w-line);
   border-left:2px solid var(--w-sea);
-  border-radius:2px;
+  border-radius:3px;
 }
-body.theme-deep #shore #bay-panel h3{color:var(--w-ink)}
-body.theme-deep #shore #bay-panel p{color:var(--w-ink-soft)}
-body.theme-deep #shore .panel-kicker,
+
+/* Header: chapter mark on the left, one real exit button on the right. */
+body.theme-deep #shore .bay-panel-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:1rem;
+  padding:0 0 .9rem;
+  margin-bottom:1rem;
+  border-bottom:1px solid var(--w-line-soft);
+}
+body.theme-deep #shore .panel-kicker{
+  color:var(--w-sea);font-size:.62rem;letter-spacing:.18em;
+}
 body.theme-deep #shore .panel-mode,
 body.theme-deep #shore #bay-panel .kicker{color:var(--w-ink-faint)}
+body.theme-deep #shore .panel-mode{
+  display:block;margin-top:.24rem;font-size:.58rem;letter-spacing:.12em;
+}
 body.theme-deep #shore #bay-panel .kicker::before{display:none}
-body.theme-deep #shore .bay-step-mark span{color:var(--w-sea)}
-body.theme-deep #shore .bay-step-mark small{color:var(--w-ink-faint)}
+body.theme-deep #shore #close-bay{
+  flex:none;
+  padding:.45rem .7rem;
+  background:transparent;
+  border:1px solid var(--w-line);
+  border-radius:2px;
+  color:var(--w-ink-soft);
+  font-size:.66rem;
+  letter-spacing:.04em;
+  white-space:nowrap;
+}
+body.theme-deep #shore #close-bay:hover{border-color:var(--w-sea);color:var(--w-ink)}
+
+body.theme-deep #shore .bay-inspect-headline{
+  display:flex;align-items:center;gap:.6rem;margin-bottom:1rem;
+}
 body.theme-deep #shore .bay-inspect-chip{
-  background:var(--w-sea-soft);border:1px solid var(--w-sea-line);color:var(--w-sea);
+  padding:.36rem .55rem;
+  background:var(--w-sea-soft);
+  border:1px solid var(--w-sea-line);
+  border-radius:2px;
+  color:var(--w-sea);
+  font-size:.58rem;
+  letter-spacing:.16em;
 }
-body.theme-deep #shore .bay-inspect-hint{color:var(--w-ink-faint)}
+body.theme-deep #shore .bay-inspect-hint{color:var(--w-ink-faint);font-size:.62rem}
+
+/* The selected element: big number, big name, one line. */
+body.theme-deep #shore .bay-selection-head{
+  display:grid;
+  grid-template-columns:66px 1fr;
+  gap:1rem;
+  align-items:center;
+  padding:0 0 1.05rem;
+  background:transparent;
+  border:0;
+  border-bottom:1px solid var(--w-line-soft);
+}
+body.theme-deep #shore .bay-step-mark{
+  width:66px;height:66px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  border:1px solid var(--w-sea-line);
+  border-radius:2px;
+  background:var(--w-inset);
+}
+body.theme-deep #shore .bay-step-mark span{color:var(--w-sea);font-size:1.7rem;line-height:1}
+body.theme-deep #shore .bay-step-mark small{
+  margin-top:.35rem;color:var(--w-ink-faint);font-size:.5rem;letter-spacing:.14em;
+}
+body.theme-deep #shore .bay-selection-head .kicker{
+  margin:0 0 .35rem;color:var(--w-ink-faint);font-size:.56rem;letter-spacing:.18em;
+}
+body.theme-deep #shore #bay-panel h3{
+  color:var(--w-ink);font-size:1.62rem;line-height:1.16;
+}
+
+/* The explanation is the loudest text on the plate, on purpose. */
+body.theme-deep #shore #bay-explanation{padding:1.05rem 0 .2rem}
+body.theme-deep #shore #bay-explanation #bay-detail{
+  margin:0;color:var(--w-ink);font-size:.94rem;line-height:1.62;
+}
+body.theme-deep #shore #bay-explanation #bay-note{
+  margin:.8rem 0 0;
+  padding-left:.8rem;
+  border-left:1px solid var(--w-line-firm);
+  color:var(--w-ink-muted);
+  font-size:.74rem;line-height:1.55;
+}
+
 body.theme-deep #shore .bay-live-path{
-  border-color:var(--w-line-soft);color:var(--w-ink-faint);
+  justify-content:flex-start;
+  gap:.5rem;
+  margin:.95rem 0 0;
+  padding:.7rem .1rem;
+  border-top:1px solid var(--w-line-soft);
+  border-bottom:1px solid var(--w-line-soft);
+  color:var(--w-ink-faint);
+  font-size:.6rem;letter-spacing:.12em;
 }
-body.theme-deep #shore .bay-live-path strong{color:var(--w-brass)}
+body.theme-deep #shore .bay-live-path strong{color:var(--w-brass);font-size:.64rem}
 body.theme-deep #shore .bay-live-path i{color:var(--w-line-firm)}
-body.theme-deep #shore .bay-divider-label{color:var(--w-ink-faint)}
-body.theme-deep #shore .bay-divider-label i{background:var(--w-line)}
-body.theme-deep #shore .bay-hardware-line span{
-  border-color:var(--w-line-soft);color:var(--w-ink-muted);
+
+/* The element list: one column, full width, comfortable to hit. */
+body.theme-deep #shore .bay-divider-label{
+  margin:1.15rem 0 .6rem;color:var(--w-ink-faint);font-size:.58rem;letter-spacing:.18em;
 }
+body.theme-deep #shore .bay-divider-label i{background:var(--w-line)}
+body.theme-deep #shore #bay-panel-menu #bay-menu{
+  display:block;grid-template-columns:none;
+}
+body.theme-deep #shore #bay-panel-menu #bay-menu button{
+  display:block;width:100%;
+  min-height:46px;
+  margin-bottom:.4rem;
+  padding:.72rem .85rem;
+  text-align:left;
+  background:var(--w-plate-2);
+  border:1px solid var(--w-line-soft);
+  border-radius:2px;
+  color:var(--w-ink-soft);
+  font-size:.82rem;line-height:1.3;
+}
+body.theme-deep #shore #bay-panel-menu #bay-menu button::after{
+  content:'↗';float:right;color:var(--w-ink-faint);
+}
+body.theme-deep #shore #bay-panel-menu #bay-menu button:hover{
+  border-color:var(--w-sea-line);color:var(--w-ink);
+}
+body.theme-deep #shore #bay-panel-menu #bay-menu button[aria-pressed=true]{
+  background:var(--w-sea-soft);
+  border-color:var(--w-sea-line);
+  color:var(--w-ink);
+}
+body.theme-deep #shore #bay-panel-menu #bay-menu button[aria-pressed=true]::after{color:var(--w-sea)}
+body.theme-deep #shore #bay-panel-menu #bay-menu button.receiving-stage{color:var(--w-brass)}
+
+/* Physical equipment, as quiet chips. */
+body.theme-deep #shore .bay-hardware-line{
+  gap:.4rem;margin-top:1.15rem;padding-top:.9rem;
+  border-top:1px solid var(--w-line-soft);
+}
+body.theme-deep #shore .bay-hardware-line span{
+  padding:.35rem .5rem;
+  border:1px solid var(--w-line-soft);
+  border-radius:2px;
+  color:var(--w-ink-muted);
+  font-size:.6rem;letter-spacing:.08em;
+}
+
 body.theme-deep #shore .bay-inspect-note{
+  margin-top:1.15rem;
+  padding:.85rem .95rem;
+  background:var(--w-brass-soft);
+  border:0;
   border-left:2px solid var(--w-brass);
   border-radius:0;
 }
-body.theme-deep #shore .bay-inspect-note b{color:var(--w-brass)}
-body.theme-deep #shore .bay-inspect-note span{color:var(--w-ink-muted)}
-body.theme-deep #shore #close-bay{
-  background:transparent;border-color:var(--w-line);color:var(--w-ink-soft);
+body.theme-deep #shore .bay-inspect-note b{
+  display:block;margin-bottom:.3rem;color:var(--w-brass);
+  font-size:.58rem;letter-spacing:.16em;
+}
+body.theme-deep #shore .bay-inspect-note span{
+  color:var(--w-ink-muted);font-size:.74rem;line-height:1.55;
+}
+
+/* Responsive: the plate follows the spine down to the mobile strip. */
+@media(max-width:1200px){
+  body.theme-deep #shore #bay-panel{width:min(400px,42vw)}
+}
+@media(max-width:1000px){
+  body.theme-deep #shore #bay-panel{width:min(400px,48vw)}
+}
+@media(max-width:900px){
+  body.theme-deep #shore #bay-panel{
+    left:calc(7vw + var(--w-rail));width:min(420px,52vw);
+  }
+}
+@media(max-width:650px){
+  body.theme-deep #shore #bay-panel{
+    left:4vw;right:4vw;top:auto;bottom:74px;width:auto;
+    max-height:62svh;padding:1.1rem 1rem 1rem;
+  }
+  body.theme-deep #shore .bay-selection-head{grid-template-columns:56px 1fr;gap:.8rem}
+  body.theme-deep #shore .bay-step-mark{width:56px;height:58px}
+  body.theme-deep #shore .bay-step-mark span{font-size:1.45rem}
+  body.theme-deep #shore #bay-panel h3{font-size:1.38rem}
+  body.theme-deep #shore #bay-explanation #bay-detail{font-size:.86rem}
+  body.theme-deep #shore .bay-inspect-hint{display:none}
 }
 
 
