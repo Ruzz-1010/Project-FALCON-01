@@ -34,7 +34,7 @@ function openBay(id='station'){
   $('#bay-step-index').textContent=id==='station'?'01':'02';
   $('#bay-step-kind').textContent='SYSTEM';
   $('#bay-panel-menu').empty();
-  $('#bay-explanation').hidden=false;
+  $('#bay-explanation').hidden=id==='station';
   $('#bay-path-current').textContent='RECEIVE → PROCESS → INSIGHT';
   document.querySelectorAll('[data-bay]').forEach(b=>b.setAttribute('aria-pressed','false'));
 }
