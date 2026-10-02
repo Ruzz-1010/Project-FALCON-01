@@ -26,7 +26,7 @@ let bayInspecting=false,bayTrigger;
 function openBay(id='station'){
   if(!world?.inspectBay?.(id)){ $('#open-bay').textContent='3D unavailable — reload to inspect';return; }
   bayTrigger=document.activeElement;bayInspecting=true;document.body.classList.add('bay-inspecting');
-  $('#bay-panel').hidden=false;
+  $('#bay-panel').hidden=id==='station';
   const info=baySteps[id==='validate'?'computer':id];
   $('#bay-title').textContent=info.title;
   $('#bay-detail').textContent=info.detail;
@@ -34,7 +34,7 @@ function openBay(id='station'){
   $('#bay-step-index').textContent=id==='station'?'01':'02';
   $('#bay-step-kind').textContent='SYSTEM';
   $('#bay-panel-menu').empty();
-  $('#bay-explanation').hidden=id==='station';
+  $('#bay-explanation').hidden=false;
   $('#bay-path-current').textContent='RECEIVE → PROCESS → INSIGHT';
   document.querySelectorAll('[data-bay]').forEach(b=>b.setAttribute('aria-pressed','false'));
 }
