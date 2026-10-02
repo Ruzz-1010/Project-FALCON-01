@@ -85,7 +85,7 @@ function pick(id,inspect=true){
 }
 for(const [id,c] of Object.entries(components)){
   for(const container of [$('#reveal-picks'),$('#sensor-menu')]){
-    const b=document.createElement('button');b.textContent=c.label;b.dataset.component=id;b.dataset.index=String(Object.keys(components).indexOf(id)+1).padStart(2,'0');b.setAttribute('aria-pressed',String(id===selected));b.addEventListener('click',()=>pick(id));container.append(b);
+    const b=document.createElement('button');b.textContent=c.label;b.dataset.component=id;b.dataset.index=String(Object.keys(components).indexOf(id)+1).padStart(2,'0');b.setAttribute('aria-pressed',String(id===selected));b.addEventListener('click',()=>pick(id, container.id!=='sensor-menu'));container.append(b);
   }
 }
 pick(selected,false);
