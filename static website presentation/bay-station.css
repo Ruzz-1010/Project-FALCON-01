@@ -149,8 +149,8 @@
 
 /* Page 05 v3 — immersive inspection mode. Keep the 3D cutaway dominant. */
 #shore #bay-panel{
-  left:3vw;
-  right:auto;
+  left:auto;
+  right:3vw;
   top:11svh;
   width:min(360px,29vw);
   max-height:78svh;
