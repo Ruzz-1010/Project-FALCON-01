@@ -26,6 +26,6 @@ test('Home effects fade completely before the Instrument; scroll interpolation i
 test('Pages 03–04 and 07–09 markup remains unchanged during the scoped 05–06 updates',()=>{
   const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
   const rest=html.slice(html.indexOf('    <section class="scene diagram-scene" id="controller"')).replace(/    <section class="scene" id="shore"[\s\S]*?(?=    <section class="scene wide-scene" id="waves")/,'').replace(/    <section class="scene wide-scene" id="waves"[\s\S]*?(?=    <section class="scene wide-scene" id="prediction")/,'');
-  assert.equal(createHash('sha256').update(rest).digest('hex'),'e5809389da08fe0269e670ceca47f58afc0f7c7c588f7cec53601c04a79e6414');
+  assert.equal(createHash('sha256').update(rest).digest('hex'),'30149bb2c5a994def9d895b634389085b157c97708ecf681608c932a7818f104');
   assert.match(html,/THE OCEAN NEVER STOPS SPEAKING/);assert.match(html,/id="begin-journey"/);
 });

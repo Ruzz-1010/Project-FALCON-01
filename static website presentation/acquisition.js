@@ -1,10 +1,11 @@
 // Illustrative signals only. No live measurements, invented calibration or onboard estimation.
 export const signals={
-  pressure:{source:'Pressure variation',raw:'Relative pressure · illustrative',record:'Pressure + sample time + quality',result:'On shore → pressure-derived estimated wave height',kind:'wave'},
-  wind:{source:'Wind observation',raw:'Pulse / direction response · illustrative',record:'Wind speed + direction + sample time',result:'Environmental observations → ESP32 record',kind:'pulse'},
-  gps:{source:'Position & time',raw:'Position fix messages · illustrative',record:'Position + UTC time + fix quality',result:'Quality-checked location and timing',kind:'fix'},
-  solar:{source:'Energy & health',raw:'Voltage / current trend · illustrative',record:'Energy observations + time + quality',result:'Power monitoring → station health record',kind:'energy'},
-  esp32:{source:'Sensor streams',raw:'Incoming records · illustrative',record:'Timestamp + quality + packet sequence',result:'Acquire → validate → package for LoRa',kind:'streams'}
+  pressure:{source:'Pressure',raw:'Relative pressure · illustrative',record:'Pressure, time and quality',result:'On shore → pressure-derived estimated wave height',kind:'wave'},
+  wind:{source:'Wind',raw:'Wind pulses · illustrative',record:'Speed, direction and time',result:'Local wind conditions at the buoy',kind:'pulse'},
+  gps:{source:'Position & time',raw:'Position fixes · illustrative',record:'Position, time and fix quality',result:'Quality-checked location and timing',kind:'fix'},
+  solar:{source:'Solar power',raw:'Voltage / current · illustrative',record:'Panel and battery state + time',result:'Power monitoring for buoy health',kind:'energy'},
+  battery:{source:'Battery',raw:'Stored energy · illustrative',record:'Battery and charging state + time',result:'Energy kept for sensing and telemetry',kind:'energy'},
+  esp32:{source:'All sensor streams',raw:'Incoming records · illustrative',record:'Timestamp, quality and sequence',result:'Acquire → check → package for LoRa',kind:'streams'}
 };
 export function signalTrace(kind,time,row=0){
   return Array.from({length:100},(_,i)=>{

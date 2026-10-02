@@ -20,9 +20,9 @@ export function createWaveEstimation(root){
   let stage=0,manual=null,lastFraction=0,previousLabel=-1;
   const trace=root.querySelector('#raw-trace'),reference=root.querySelector('#processed-trace'),buttons=[...root.querySelectorAll('[data-process]')];
   const descriptions=[
-    ['MEASURED QUANTITY','UNDERWATER PRESSURE','Relative pressure · simulated','Small fluctuations ride on a slow background component. These are illustrative samples, not live measurements.'],
-    ['PROCESSED','WAVE-BAND SIGNAL','Relative pressure · simulated','Quality check → static/tidal removal → filtering. The same pressure record becomes a cleaner wave-band signal.'],
-    ['DERIVED','ESTIMATED SIGNIFICANT WAVE HEIGHT (Hs)','Relative demonstration · not metres','A wave statistic is derived from a surface-response proxy. Depth response and calibration must be established before reporting physical Hs.']
+    ['MEASURED QUANTITY','UNDERWATER PRESSURE','Relative pressure · simulated','The buoy feels pressure changing under the water. These are illustrative samples, not live measurements.'],
+    ['PROCESSED','WAVE-BAND SIGNAL','Relative pressure · simulated','We remove the slow background and the noise, so the wave signal stands out clearly.'],
+    ['DERIVED','ESTIMATED SIGNIFICANT WAVE HEIGHT (Hs)','Relative demonstration · not metres','A wave statistic is calculated from the signal. Calibration against a reference is still required before reporting metres.']
   ];
   const path=values=>values.map((v,i)=>`${i?'L':'M'}${(i/159*880+10).toFixed(2)},${(130-v*66).toFixed(2)}`).join(' ');
   buttons.forEach(b=>b.addEventListener('click',()=>{manual={target:Number(b.dataset.process),at:lastFraction};}));

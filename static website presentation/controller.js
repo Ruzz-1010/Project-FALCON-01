@@ -1,4 +1,4 @@
-export const controllerInputs=['PRESSURE','WIND','GPS','POWER / HEALTH'];
+export const controllerInputs=['PRESSURE','WIND','GPS','POWER / SECURITY'];
 
 // One telemetry cycle: all sensing channels arrive together, are timestamped,
 // validated, assembled into one frame, then handed to LoRa.
@@ -69,13 +69,13 @@ export function createController(root){
       previous=key;
       const stamp=new Date((s.sequence-1)*4800).toISOString().slice(11,23);
       if(s.stage==='ACQUIRE'){
-        code.textContent=`PRESSURE + WIND + GPS + POWER / HEALTH\nFrame ${String(s.sequence).padStart(4,'0')} · parallel acquisition`;
+        code.textContent=`PRESSURE + WIND + GPS + POWER / SECURITY\nFrame ${String(s.sequence).padStart(4,'0')} · parallel acquisition`;
       }else if(s.stage==='TIMESTAMP'){
         code.textContent=`FALCON-01 · frame ${String(s.sequence).padStart(4,'0')}\n${stamp} demo time · timestamping all inputs`;
       }else if(s.stage==='VALIDATE'){
         code.textContent=`FALCON-01 · frame ${String(s.sequence).padStart(4,'0')}\n4 inputs · quality checks · no silent zeroing`;
       }else if(s.stage==='PACKAGE'){
-        code.textContent=`FALCON-01 · FRAME ${String(s.sequence).padStart(4,'0')}\npressure | wind | GPS | power/health → one telemetry packet`;
+        code.textContent=`FALCON-01 · FRAME ${String(s.sequence).padStart(4,'0')}\npressure | wind | GPS | power/security → one telemetry packet`;
       }else{
         code.textContent=`FALCON-01 · seq ${String(s.sequence).padStart(4,'0')}\nschema v1 · timestamp · quality flags → LoRa`;
       }

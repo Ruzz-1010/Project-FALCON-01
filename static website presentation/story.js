@@ -1,11 +1,11 @@
 export const chapters = ['Ocean', 'FALCON', 'Sensors', 'ESP32', 'LoRa', 'Bay Station', 'Wave estimate', 'AI prediction', 'Dashboard', 'Connected'];
 export const components = {
-  pressure: {label: 'Underwater pressure', prefix: 'WATER_PRESSURE_SENSOR_ASSEMBLY', detail: 'HPT604 Type A candidate. Pressure variation travels to shore for calibration and wave processing. Continuous-seawater suitability and exact configuration pending.'},
-  wind: {label: 'Wind observation', prefix: 'WIND_SPEED_DIRECTION_SENSOR', detail: 'Wind speed and direction provide environmental context. Marine durability and reference testing pending.'},
-  gps: {label: 'GPS / position', prefix: 'GNSS_GPS_ANTENNA', detail: 'Position and time support. Geofence decisions require quality checks and persistence—not a single drifting coordinate.'},
-  battery: {label: 'Battery / energy storage', prefix: 'LIFEPO4_BATTERY_12V_ENVELOPE', detail: 'Stores solar energy for the buoy electronics and supports operation when solar input is unavailable or insufficient.'},
-  solar: {label: 'Solar / power', prefix: 'DUAL_30W_SOLAR_ARRAY', detail: 'Two-panel CAD reference. Solar charging, battery and two power-monitoring channels support the ESP32 sensing node. Energy performance is not yet measured.'},
-  esp32: {label: 'ESP32 controller', prefix: 'ESP32_CONTROLLER_ENVELOPE', detail: 'Controller envelope in the original CAD. Acquire → timestamp → check → package. Main processing, storage and AI stay on shore.'}
+  pressure: {label: 'Underwater pressure', prefix: 'WATER_PRESSURE_SENSOR_ASSEMBLY', detail: 'The buoy senses pressure under the water. Those readings travel to shore, where they become an estimated wave height. Calibration is still pending.'},
+  wind: {label: 'Wind observation', prefix: 'WIND_SPEED_DIRECTION_SENSOR', detail: 'Wind speed and direction describe conditions at the buoy. Comparison against a reference instrument is still pending.'},
+  gps: {label: 'GPS / position', prefix: 'GNSS_GPS_ANTENNA', detail: 'Position and time support the system. One stray coordinate is never treated as theft—quality checks come first.'},
+  battery: {label: 'Battery / energy storage', prefix: 'LIFEPO4_BATTERY_12V_ENVELOPE', detail: 'Stores solar energy so the buoy keeps sensing when the sun is low or hidden.'},
+  solar: {label: 'Solar / power', prefix: 'DUAL_30W_SOLAR_ARRAY', detail: 'Two solar panels keep the buoy running. Real energy performance has not been measured yet.'},
+  esp32: {label: 'ESP32 controller', prefix: 'ESP32_CONTROLLER_ENVELOPE', detail: 'The buoy’s controller: it reads the sensors, checks the values, and prepares one telemetry frame. The heavy processing stays on shore.'}
 };
 
 // Pure presentation state: no radio, database or operational telemetry involved.
