@@ -26,14 +26,17 @@ let bayInspecting=false,bayTrigger;
 function openBay(id='station'){
   if(!world?.inspectBay?.(id)){ $('#open-bay').textContent='3D unavailable — reload to inspect';return; }
   bayTrigger=document.activeElement;bayInspecting=true;document.body.classList.add('bay-inspecting');
-  $('#bay-panel').hidden=false;const info=baySteps[id==='validate'?'computer':id];$('#bay-title').textContent=info.title;$('#bay-detail').textContent=info.detail;$('#bay-note').textContent=info.note;
-  const displayId=id==='station'?'01':String(bayPipeline.indexOf(id)+2).padStart(2,'0');
-  const isPhysical=id==='station'||id==='rx'||id==='dashboard';
-  $('#bay-step-index').textContent=displayId;$('#bay-step-kind').textContent=isPhysical?'PHYSICAL':'SOFTWARE';
-  $('#bay-menu [data-bay="validate"]').textContent='Bay Station computer';
-  $('#bay-panel-menu').append($('#bay-menu'));$('#bay-explanation').hidden=false;
-  $('#bay-path-current').textContent=({station:'RECEIVE → PROCESS → INSIGHT',rx:'RECEIVE',validate:'AUTHENTICATE / VALIDATE',sqlite:'STORE',processing:'PROCESS',ai:'PREDICT',dashboard:'DISPLAY'})[id]||'RECEIVE';
-  document.querySelectorAll('[data-bay]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.bay===id)));
+  $('#bay-panel').hidden=false;
+  const info=baySteps[id==='validate'?'computer':id];
+  $('#bay-title').textContent=info.title;
+  $('#bay-detail').textContent=info.detail;
+  $('#bay-note').textContent='Illustrative only. Final layout pending.';
+  $('#bay-step-index').textContent=id==='station'?'01':'02';
+  $('#bay-step-kind').textContent='SYSTEM';
+  $('#bay-panel-menu').empty();
+  $('#bay-explanation').hidden=false;
+  $('#bay-path-current').textContent='RECEIVE → PROCESS → INSIGHT';
+  document.querySelectorAll('[data-bay]').forEach(b=>b.setAttribute('aria-pressed','false'));
 }
 function closeBay(restore=true){
   if(!bayInspecting)return;bayInspecting=false;document.body.classList.remove('bay-inspecting');$('#bay-panel').hidden=true;$('#bay-menu-home').append($('#bay-menu'));world?.returnToBay?.();
