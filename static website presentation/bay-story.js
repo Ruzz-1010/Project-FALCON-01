@@ -1,7 +1,7 @@
 export const baySteps={
   computer:{title:'Bay Station computer',detail:'Shore computer receives, stores and processes buoy data for prediction and dashboard.',note:'Illustrative equipment. Final selection pending.'},
-  station:{title:'FALCON-01 Bay Station',detail:'Receives buoy messages and runs local storage, processing and interface.',note:'Illustrative cutaway. Layout not finalized.'},
-  rx:{title:'LoRa receiver',detail:'Receives buoy telemetry via antenna and passes records to computer.',note:'Radio and cabling illustrative. Internet backhaul separate.'},
+  station:{title:'FALCON-01 Bay Station',detail:'Shore mini PC runs storage, processing and interface. External LoRa receiver connects via wired link.',note:'Layout illustrative. Final installation pending.'},
+  rx:{title:'LoRa receiver',detail:'External LoRa receiver mounted outside. Connects to Bay Station mini PC via wired LAN cable.',note:'External antenna placement. Cabling illustrative. Internet backhaul separate.'},
   validate:{title:'Authenticate / validate',detail:'Checks station identity, message format, timestamps and quality.',note:'Software stage. Security validation pending.'},
   sqlite:{title:'SQLite / local storage',detail:'Stores raw and processed records with timestamps and quality flags.',note:'Software on same computer, not separate appliance.'},
   processing:{title:'Processing',detail:'Quality-checks observations and derives pressure-based estimated wave height.',note:'Calibration and validation required.'},
