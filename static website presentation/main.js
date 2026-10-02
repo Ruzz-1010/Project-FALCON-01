@@ -69,7 +69,7 @@ function pick(id,inspect=true){
   selected=id;$('#component-title').textContent=components[id].label;$('#component-detail').textContent=components[id].detail;
   document.querySelectorAll('[data-component]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.component===id)));
   if(inspect){
-    if(!world?.inspect?.(id)){ $('#model-state').textContent='Component guide available; wait for the original 3D model to load before inspection.';return; }
+    if(!world?.inspect?.(id) && id !== 'lora'){ $('#model-state').textContent='Component guide available; wait for the original 3D model to load before inspection.';return; }
     inspectionTrigger=document.activeElement;inspecting=true;
     const info=active===1?instrumentInfo[id]:inspections[id];
     document.body.classList.toggle('instrument-inspection',active===1);

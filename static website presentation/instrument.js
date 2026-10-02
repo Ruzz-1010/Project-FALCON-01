@@ -1,7 +1,7 @@
 // Page 01 targets come from the supplied CAD hierarchy, never from hand-placed offsets.
 export const instrumentPrefixes={
   pressure:'WATER_PRESSURE_SENSOR_ASSEMBLY',wind:'WIND_SPEED_DIRECTION_SENSOR',
-  gps:'GNSS_GPS_ANTENNA',solar:'SOLAR_30W_01_EAST_+X',battery:'LIFEPO4_BATTERY_12V_ENVELOPE',esp32:'ESP32_CONTROLLER_ENVELOPE',lora:'4G_LTE_ANTENNA'
+  gps:'GNSS_GPS_ANTENNA',solar:'SOLAR_30W_01_EAST_+X',battery:'LIFEPO4_BATTERY_12V_ENVELOPE',esp32:'ESP32_CONTROLLER_ENVELOPE',lora:'4G_LTE'
 };
 export function instrumentTargets(root){
   const result=new Map();
