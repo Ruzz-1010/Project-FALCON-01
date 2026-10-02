@@ -6,7 +6,7 @@ export const components = {
   battery: {label: 'Battery / energy storage', prefix: 'LIFEPO4_BATTERY_12V_ENVELOPE', detail: 'Stores solar energy so the buoy keeps sensing when the sun is low or hidden.'},
   solar: {label: 'Solar / power', prefix: 'DUAL_30W_SOLAR_ARRAY', detail: 'Two solar panels keep the buoy running. Real energy performance has not been measured yet.'},
   esp32: {label: 'ESP32 controller', prefix: 'ESP32_CONTROLLER_ENVELOPE', detail: 'The buoy’s controller: it reads the sensors, checks the values, and prepares one telemetry frame. The heavy processing stays on shore.'},
-  lora: {label: 'LoRa transceiver', prefix: '4G_LTE', detail: 'Radio link from buoy to shore Bay Station. Uses LoRa for telemetry. The LTE antenna model is reused for placement illustration.'}
+  lora: {label: 'LoRa transceiver', prefix: 'NAVIGATION_LIGHT', detail: 'Radio link from buoy to shore Bay Station. Uses LoRa for telemetry. The navigation light model is reused for placement illustration.'}
 };
 
 // Pure presentation state: no radio, database or operational telemetry involved.

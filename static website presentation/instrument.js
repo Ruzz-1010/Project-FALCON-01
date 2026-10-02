@@ -1,7 +1,7 @@
 // Page 01 targets come from the supplied CAD hierarchy, never from hand-placed offsets.
 export const instrumentPrefixes={
   pressure:'WATER_PRESSURE_SENSOR_ASSEMBLY',wind:'WIND_SPEED_DIRECTION_SENSOR',
-  gps:'GNSS_GPS_ANTENNA',solar:'SOLAR_30W_01_EAST_+X',battery:'LIFEPO4_BATTERY_12V_ENVELOPE',esp32:'ESP32_CONTROLLER_ENVELOPE',lora:'4G_LTE'
+  gps:'GNSS_GPS_ANTENNA',solar:'SOLAR_30W_01_EAST_+X',battery:'LIFEPO4_BATTERY_12V_ENVELOPE',esp32:'ESP32_CONTROLLER_ENVELOPE',lora:'NAVIGATION_LIGHT'
 };
 export function instrumentTargets(root){
   const result=new Map();
@@ -15,5 +15,5 @@ export const instrumentInfo={
   solar:{name:'Solar / power',function:'Supplies solar energy and supports power-system monitoring.',data:['Voltage / current','Battery / solar status','System health'],flow:['SOLAR','BATTERY','ELECTRONICS'],status:'ENERGY SUPPLY / MONITORING',note:'Inspecting one actual panel of the two-panel array. No measured output is claimed.'},
   battery:{name:'Battery / energy storage',function:'Stores solar energy and supplies power to the buoy electronics when solar input is unavailable or insufficient.',data:['Battery state','Solar / charging state','System health'],flow:['SOLAR','BATTERY','ELECTRONICS'],status:'ENERGY STORAGE / MONITORING',note:'LiFePO4 battery is the energy-storage element. Energy performance remains subject to measured validation.'},
   esp32:{name:'ESP32 controller',function:'Acquires sensor records, checks timestamps and quality, and prepares LoRa telemetry.',data:['Sensor records','Telemetry packets','Outage buffer'],flow:['SENSORS','ESP32','LoRa'],status:'SENSING / CONTROL / TELEMETRY',note:'Controller is inside this actual enclosure. The exterior stays intact; no invented exposed board.'},
-  lora:{name:'LoRa transceiver',function:'Transmits telemetry packets from buoy to shore Bay Station over LoRa.',data:['Packet sequence','Link state','Buffer status','RSSI'],flow:['ESP32','LoRa TX','LoRa RX','BAY STATION'],status:'ILLUSTRATIVE PLACEMENT',note:'Physical placement illustrated using the 4G/LTE antenna model from TOP_SENSOR_ARRAY. No field range or hardware claim.'}
+  lora:{name:'LoRa transceiver',function:'Transmits telemetry packets from buoy to shore Bay Station over LoRa.',data:['Packet sequence','Link state','Buffer status','RSSI'],flow:['ESP32','LoRa TX','LoRa RX','BAY STATION'],status:'ILLUSTRATIVE PLACEMENT',note:'Physical placement illustrated using the NAVIGATION_LIGHT model from the upper equipment deck. No field range or hardware claim.'}
 };
