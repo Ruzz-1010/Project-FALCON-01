@@ -1,0 +1,143 @@
+# Presentation content audit — FALCON-01 web build
+
+**Date:** 2 October 2026
+**Scope:** all ten scenes (`00`–`09`) of `index.html` and `present.html`, plus every
+string that ships from `story.js`, `acquisition.js`, `inspection.js`,
+`instrument.js`, `bay-story.js`, `controller.js`, `wave-estimation.js`,
+`bay-station.js` and `main.js`.
+**Authority:** `docs/PROJECT_CONTEXT.md` v8.1, `docs/BAY_STATION_ARCHITECTURE.md`,
+`THESIS DOCUMENTATION/BayStation.docx` V4.1.
+
+---
+
+## 1. Verdict
+
+The presentation was **substantially accurate**. The architecture boundaries held
+everywhere, and the honesty vocabulary (`SIMULATED`, `ESTIMATED`,
+`CALIBRATION REQUIRED`, `MEASURED QUANTITY`) was already in place on the pages
+where it matters most.
+
+Six issues were found. **All six are fixed.** Two were genuine overclaims that a
+DOST panel could reasonably challenge; four were internal inconsistencies that
+made the deck contradict itself.
+
+---
+
+## 2. Boundary checks — all pass
+
+| Boundary | Result |
+|---|---|
+| Buoy = ESP32 + pressure/wind sensors + LoRa + power + security. **No mini PC.** | **Pass.** The only "Orange Pi" on screen is inside the `cad-detail` disclosure on page 01, which explicitly says the legacy envelope *is not V4.1 buoy equipment*. |
+| **No cellular modem on the water.** | **Pass.** Zero occurrences of cellular / 4G / 5G / SIM. Chapter 04 states plainly: *"The buoy never connects to the Internet directly."* Shore Internet backhaul appears only on page 05, correctly. |
+| Shore Bay Station owns storage, processing, AI, dashboard, alerts. | **Pass.** Page 05 states *"One shared shore computer — software stages run locally; Internet backhaul stays on shore."* All six pipeline stages (RX, validate, SQLite, processing, AI, dashboard) are declared as functions of the same machine in `bay-station.js`. |
+| Dashboard = exactly 4 pages. | **Pass.** Overview, Buoy Motion, Sensors, Logs & Alerts. |
+| Phase 1 measurements = pressure-derived wave sensing + wind speed/direction. GPS / power / timestamps / security are supporting telemetry. | **Pass** after fix #1 below. |
+| Water temperature, salinity, BNO085 IMU, HX711 excluded from Phase 1. | **Pass.** Zero occurrences anywhere in the build. |
+| Pressure is never "direct wave height". | **Pass.** `wave-estimation.js` and page 06 both hold the line; a regression test now locks it. |
+| Pressure candidate is provisional (Holykell HPT604), not purchased. | **Pass.** `inspection.js` / `instrument.js` say *"HPT604 deployment candidate"* with status `CALIBRATION REQUIRED`. Bar02 does not appear. |
+| No live telemetry, no backend, all values simulated. | **Pass.** Stated on the closing page, the monitor footer, the packet console, the LoRa status line and the presenter chapter list. |
+
+---
+
+## 3. Issues found and fixed
+
+### 1. Wind was labelled "environmental observation" — **contradicted the scope** *(fixed)*
+`instrument.js`, page 01 inspection status read `ENVIRONMENTAL OBSERVATION` with the
+note *"Observes local conditions; validation remains pending."*
+
+Wind speed and direction are a **primary Phase 1 measurement**, and the dashboard's
+own sensor table on page 08 already said so. Two pages disagreed.
+
+> **Now:** `PRIMARY MEASUREMENT` — *"A primary Phase 1 measurement. Comparison
+> against a reference anemometer is still pending."*
+
+### 2. Uncalibrated values were displayed in metres — **the deck contradicted itself** *(fixed)*
+Page 06 states, in its own highlighted honesty label, **`Hs PROXY · RELATIVE UNITS /
+NOT CALIBRATED METRES`**, and the process detail says *"Relative demonstration —
+not metres."*
+
+Three other places then printed those same uncalibrated numbers as metres:
+
+| Location | Was | Now |
+|---|---|---|
+| Page 07 forecast chart, y-axis | `1 m` / `0 m` | `1 rel` / `0 rel` |
+| Page 08 dashboard Overview | `0.61 m`, `0.68 m` | `0.61 rel · uncalibrated` |
+| Page 05 3D monitor screen texture | `0.62 m`, `0.68 m` | `0.62 rel.`, `0.68 rel.` |
+
+This was the single most defensible thing to fix. A panel member who reads page 06
+and then looks at page 08 sees metres, and the whole "we haven't calibrated
+anything" position falls over. A new regression test
+(`tests/home.test.mjs`, *"The story never claims calibrated metres…"*) locks it.
+
+### 3. The AI stage claimed "calibrated" input data — **overclaim** *(fixed)*
+`bay-story.js`, Bay Station cutaway, AI step read:
+*"Produces a short-term prediction from versioned, **calibrated** wave-height data."*
+
+Calibration is explicitly pending everywhere else in the project.
+
+> **Now:** *"…from versioned, **quality-checked** estimated wave-height data"*, with
+> the note extended: *"Calibration and model evaluation are not completed; results
+> shown are illustrative."*
+
+### 4. Opening page said the buoy "measures waves" — **mild overclaim** *(fixed)*
+The home explanation read: *"a coastal buoy that **measures waves** and wind at
+sea."* The buoy measures pressure; wave height is a shore-side estimate.
+
+> **Now:** *"An affordable, solar-powered coastal buoy design. It senses underwater
+> pressure and wind at sea; the shore turns those readings into estimated wave
+> height and clear, usable information."* This also makes the offshore/shore split
+> do visible work on the first screen.
+
+### 5. GPS was not marked as supporting telemetry on the opening page *(fixed)*
+`Pressure · Wind · GPS` → `Pressure · Wind · GPS (supporting)`, matching the
+dashboard's own role column.
+
+### 6. The Bay Station panel called itself a "LIVE GUIDE" *(fixed)*
+`INTERNAL CUTAWAY · LIVE GUIDE` → `INTERNAL CUTAWAY · INTERACTIVE GUIDE`. It is a
+guided model inspection; nothing about it is live. Also `Security: Secure demo` on
+the dashboard became `Demo only`.
+
+---
+
+## 4. Confirmed correct — no change needed
+
+- **Page 02** sensor menu: pressure, wind, GPS, solar, battery, ESP32. Correct Phase 1 set, no excluded sensors. *"Underwater pressure"* and its result line both say *"pressure-derived estimated wave height"*.
+- **Page 03** controller: four inputs in parallel → one timestamped frame. The micro-line *"ESP32 handles sensing and telemetry. No main AI computer on the buoy"* is exactly the boundary.
+- **Page 04** LoRa: outage keeps sensing, original timestamps preserved, duplicates rejected. Copy already says *"This is a simulated buffer—not proof of field recovery"* and *"No range guarantee."*
+- **Page 05** Bay Station: SIMULATED badge, *"Illustrative shore computer"*, hardware line listed as LoRa RX / shore computer / UPS / display.
+- **Page 06** transformation: `MEASURED QUANTITY → PROCESSED → DERIVED` with `CALIBRATION REQUIRED` on the pressure component and *"CALIBRATION REQUIRED"* on the section. Correctly labels rings as *"variation, not upward transmission."*
+- **Page 07** prediction: *"SIMULATED / NOT A TRAINED MODEL RESULT"*, *"Accuracy and skill remain unvalidated"*, persistence baseline drawn as the comparison. Correct.
+- **Page 08** dashboard: four tabs, `SIMULATED PREVIEW`, *"Static interpretation of FALCON's interface · no live connection"*. Buoy Motion is labelled *"a pressure-informed illustration—not measured roll or pitch."*
+- **Page 09** closing: *"Observe locally. Process on shore. Validate before claiming performance."* Research notes list everything still pending and disclaim it as a warning/navigation system.
+- **Presenter layer** (`present.js`): footer reads *"All readings shown are simulated. Nothing here is a live measurement."*
+
+---
+
+## 5. Known open items (thesis side, not presentation side)
+
+These do not affect the web build but were flagged while auditing:
+
+1. **Seven orphan Chapter 2 citations** have no source anywhere in the repo — Bekiryazıcı et al. (2025), **Chan et al. (2026)**, Meulé et al. (2024), Mohammadi et al. (2024), Rojas et al. (2025), Suwardiyanto et al. (2024), Wiranata & Widodo (2026). Recorded in the EDITORIAL NOTES page of `Project_FALCON_Proposal_Ch1-2.docx`; **not fabricated**.
+2. **§1.4 IPO figure** in the Ch1 draft is still a placeholder.
+3. **Table 1 numbering collides** between Ch1 and Ch2.
+4. **Four RRL references fall outside the 5–7 year window** (Albaladejo 2012; Bishop & Donelan 1987 — seminal, keep with an exception note; Bonneton 2018; Thomson 2018).
+
+---
+
+## 6. How to re-run this audit
+
+The rules above are now enforced by tests rather than by memory:
+
+```bash
+cd "static website presentation" && npm test
+```
+
+- `tests/home.test.mjs` — *"The story never claims calibrated metres or a direct
+  wave-height measurement"* locks fix #2 and the pressure/wave-height boundary.
+- `tests/wave-estimation.test.mjs` — locks the `MEASURED QUANTITY` /
+  `NOT CALIBRATED METRES` / `CALIBRATION REQUIRED` labels in page 06.
+- `tests/story.test.mjs` — locks "Only local static resources; no React,
+  operational API, database or live telemetry."
+
+The three Deep Water performance rules in `PRESENTATION-BUILD.md` are also
+enforced: no `:has()` selectors, no `backdrop-filter`, borders instead of shadows.

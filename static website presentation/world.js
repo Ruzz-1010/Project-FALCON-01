@@ -96,8 +96,31 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
   const targetFor=id=>currentChapter===1||currentChapter===2?pageOneTargets.get(id):markers.get(id)?.target;
   let model, disposed=false, contextLost=false, yaw=0, drag=null, orbitReset=null, needsDraw=true;
   let inspection=null, overview=null, hovered=null, tintKey='';
+  // The callout solver reads layout from six elements every frame. Resolving
+  // the list once and reusing the leader paths turns ~40 DOM operations per
+  // frame into two attribute writes, which is the difference between a smooth
+  // chapter and a stuttering one.
+  const leaderPaths=new Map();
+  const allObstacleEls=[
+    ...document.querySelectorAll('header,.journey-nav,.model-state,.cad-caption,.source-caption,#inspection-panel,#acquisition-signal')
+  ];
+  // Which elements actually stand in the way only changes when the chapter or
+  // the inspection panel changes - never frame to frame. The rects, on the
+  // other hand, move with the scroll, so those are still measured every frame.
+  let obstacleEpoch='',obstacleEls=[];
+  function obstacleRects(chapter,isInspecting){
+    const epoch=`${chapter}|${isInspecting?1:0}`;
+    if(epoch!==obstacleEpoch){
+      obstacleEpoch=epoch;
+      obstacleEls=[...allObstacleEls,...document.querySelectorAll('#buoy.is-active .copy,#sensors.is-active .copy')]
+        .filter(e=>e.getClientRects().length&&getComputedStyle(e).visibility!=='hidden');
+    }
+    return obstacleEls.map(e=>e.getBoundingClientRect());
+  }
   const materialCopies=[];
   const connection=document.querySelector('#inspection-wire path');
+  const inspectionPanel=document.querySelector('#inspection-panel');
+  const acquisitionSignal=document.querySelector('#acquisition-signal');
   function restoreMaterials(){for(const {mesh,original,copies} of materialCopies){mesh.material=original;copies.forEach(m=>m.dispose());}materialCopies.length=0;}
   function tint(target,focused){
     restoreMaterials();if(!model||!target)return;
@@ -253,17 +276,27 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
       }
       const visible=chapter===1||chapter===2;
       hotspotLayer.hidden=!visible;
-      const occupied=[];
-      const obstacles=[...document.querySelectorAll('header,.journey-nav,.model-state,#buoy.is-active .copy,#sensors.is-active .copy,.cad-caption,.source-caption,#inspection-panel:not([hidden])')].filter(e=>e.getClientRects().length&&getComputedStyle(e).visibility!=='hidden').map(e=>e.getBoundingClientRect());
-      const silhouette=compositionBounds.isEmpty()?{left:0,right:innerWidth}:projectedBounds(compositionBounds);
-      leaderSvg.replaceChildren();
-      for(const [id,{button}] of markers){
-        const target=targetFor(id);
-        box.setFromObject(target).getCenter(projection);projection.project(camera);
-        const x=(projection.x*.5+.5)*innerWidth,y=(-projection.y*.5+.5)*innerHeight;
-        const placement=visible&&!inspection&&projection.z<1&&projection.z>-1?placeCallout({x,y},silhouette,[...obstacles,...occupied],{left:24,right:innerWidth-24,top:115,bottom:innerHeight-105}):null;
-        button.hidden=!placement;button.setAttribute('aria-pressed',String(id===selected));
-        if(placement){button.style.left=`${placement.x}px`;button.style.top=`${placement.y}px`;occupied.push(placement.rect);const line=document.createElementNS('http://www.w3.org/2000/svg','path');line.setAttribute('d',placement.path);leaderSvg.append(line);}
+      if(visible){
+        const occupied=[];
+        const obstacles=obstacleRects(chapter,!!inspection);
+        const silhouette=compositionBounds.isEmpty()?{left:0,right:innerWidth}:projectedBounds(compositionBounds);
+        for(const [id,{button}] of markers){
+          const target=targetFor(id);
+          box.setFromObject(target).getCenter(projection);projection.project(camera);
+          const x=(projection.x*.5+.5)*innerWidth,y=(-projection.y*.5+.5)*innerHeight;
+          const placement=!inspection&&projection.z<1&&projection.z>-1?placeCallout({x,y},silhouette,[...obstacles,...occupied],{left:24,right:innerWidth-24,top:115,bottom:innerHeight-105}):null;
+          button.hidden=!placement;button.setAttribute('aria-pressed',String(id===selected));
+          let line=leaderPaths.get(id);
+          if(placement){
+            button.style.left=`${placement.x}px`;button.style.top=`${placement.y}px`;occupied.push(placement.rect);
+            if(!line){line=document.createElementNS('http://www.w3.org/2000/svg','path');leaderPaths.set(id,line);leaderSvg.append(line);}
+            if(line.getAttribute('d')!==placement.path)line.setAttribute('d',placement.path);
+          }else if(line)line.setAttribute('d','');
+        }
+      }else{
+        // Leaving the chapter clears the layer once instead of laying out for
+        // callouts that are already hidden.
+        for(const [id,{button}] of markers){button.hidden=true;leaderPaths.get(id)?.setAttribute('d','');}
       }
       const focused=inspection?.id;
       const chosenTarget=targetFor(focused||hovered||selected),chosen=chosenTarget?{target:chosenTarget}:null;halo.visible=visible&&!!chosen;
@@ -281,12 +314,12 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
       if(focused&&!inspection.returning&&inspection.ready&&chosen){
         projection.copy(halo.position).project(camera);
         const x=(projection.x*.5+.5)*innerWidth,y=(-projection.y*.5+.5)*innerHeight;
-        const rect=document.querySelector('#inspection-panel').getBoundingClientRect();
+        const rect=inspectionPanel.getBoundingClientRect();
         const endX=innerWidth<650?rect.left+rect.width*.5:rect.left,endY=innerWidth<650?rect.top:rect.top+110;
         connection.setAttribute('d',`M${x},${y} L${(x+endX)*.5},${y} L${endX},${endY}`);
       }else if(chapter===2&&chosen&&!inspection){
         projection.copy(halo.position).project(camera);
-        const rect=document.querySelector('#acquisition-signal').getBoundingClientRect();
+        const rect=acquisitionSignal.getBoundingClientRect();
         const x=(projection.x*.5+.5)*innerWidth,y=(-projection.y*.5+.5)*innerHeight;
         connection.setAttribute('d',projection.z<1&&x>0&&x<innerWidth&&rect.top>90&&rect.top<innerHeight-80?`M${x},${y} L${rect.left-22},${y} L${rect.left},${rect.top+35}`:'');
       }else connection.setAttribute('d','');

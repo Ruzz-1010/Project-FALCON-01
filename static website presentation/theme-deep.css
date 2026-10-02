@@ -341,6 +341,60 @@ body.theme-deep #chapter-name{
   max-height:22svh;
   overflow:hidden;
 }
+/* --- THE PAGING CONTROLS ---------------------------------------------------
+   The chapter ladder tells the panel where they are. These two buttons tell
+   them where they can go, and they name the destination, so the presenter
+   never has to remember what comes next. Sits under the ladder, above the
+   sideways chapter name. */
+body.theme-deep .chapter-paging{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:.3rem;
+  width:100%;
+}
+body.theme-deep .chapter-paging button{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:.3rem;
+  width:44px;
+  min-height:26px;
+  padding:.2rem .25rem;
+  background:transparent;
+  border:1px solid var(--w-line-soft);
+  border-radius:2px;
+  color:var(--w-ink-muted);
+  font-size:.62rem;
+  line-height:1.2;
+  transition:color .2s,border-color .2s,background .2s;
+}
+body.theme-deep .chapter-paging button:hover:not(:disabled){
+  color:var(--w-ink);
+  border-color:var(--w-sea-line);
+  background:var(--w-sea-soft);
+}
+body.theme-deep .chapter-paging button:disabled{opacity:.28;cursor:default}
+/* The destination name runs vertically beside the arrow, matching the spine. */
+body.theme-deep #chapter-next{
+  height:auto;
+  min-height:104px;
+  writing-mode:vertical-rl;
+  padding:.5rem .2rem;
+}
+body.theme-deep #chapter-next span{
+  max-height:88px;
+  overflow:hidden;
+  letter-spacing:.14em;
+  font-size:.56rem;
+  color:var(--w-ink-faint);
+}
+body.theme-deep #chapter-next:hover span{color:var(--w-ink-soft)}
+body.theme-deep #chapter-prev{
+  writing-mode:vertical-rl;
+  font-size:.7rem;
+}
+
 /* main.js writes an inline WIDTH on this bar as a percentage of the page
    scrolled. It stays a full-width line along the very bottom of the screen,
    where that percentage means exactly what it says, and it reads as the
@@ -1296,6 +1350,8 @@ body.theme-deep.p-presenter .journey-nav{background:linear-gradient(90deg,rgba(6
   }
   body.theme-deep #journey-progress{display:none}
   body.theme-deep #chapter-name{writing-mode:horizontal-tb;transform:none;color:#33474f}
+  /* Screen controls do not belong on a printed page. */
+  body.theme-deep .chapter-paging{display:none}
   body.theme-deep .scene,
   body.theme-deep .scene.opening{min-height:0;padding:1.4rem 0;page-break-after:always;display:block}
   body.theme-deep header{padding:0 0 1rem;background:none;border-bottom:1px solid #ccd8dc;position:static}
@@ -1346,6 +1402,12 @@ body.theme-deep.p-presenter .journey-nav{background:linear-gradient(90deg,rgba(6
   body.theme-deep #chapter-name{
     writing-mode:horizontal-tb;transform:none;font-size:.58rem;max-height:none;
   }
+  /* On the bottom strip the paging buttons lie flat again, with the
+     destination spelled out horizontally next to the arrow. */
+  body.theme-deep .chapter-paging{flex-direction:row;width:auto;gap:.35rem}
+  body.theme-deep .chapter-paging button{width:auto;min-height:36px;padding:.4rem .6rem;writing-mode:horizontal-tb}
+  body.theme-deep #chapter-next{min-height:36px;gap:.4rem}
+  body.theme-deep #chapter-next span{max-height:none;font-size:.6rem}
   body.theme-deep .scene::before{display:none}
   body.theme-deep .monitor{transform:none}
 }

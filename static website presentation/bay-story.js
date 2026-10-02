@@ -5,7 +5,7 @@ export const baySteps={
   validate:{title:'Authenticate / validate',detail:'Checks the station identity, message format, timestamps, and quality before accepting any data.',note:'A software stage on the shore computer; security validation still needs to be demonstrated.'},
   sqlite:{title:'SQLite / local storage',detail:'Stores raw and processed records locally, keeping their original timestamps and quality flags.',note:'Software on the same shore computer—not a separate appliance.'},
   processing:{title:'Processing',detail:'Quality-checks the observations and derives the pressure-based estimated wave height.',note:'Calibration and deployment validation are still required.'},
-  ai:{title:'AI prediction',detail:'Produces a short-term prediction from versioned, calibrated wave-height data.',note:'Runs on this same computer. The predicted value is separate from the current estimate. Results shown are illustrative.'},
+  ai:{title:'AI prediction',detail:'Produces a short-term prediction from versioned, quality-checked estimated wave-height data.',note:'Runs on this same computer. The predicted value is separate from the current estimate. Calibration and model evaluation are not completed; results shown are illustrative.'},
   dashboard:{title:'Dashboard / alerts',detail:'Shows current observations, system state, and authorized alerts.',note:'Local display first; authorized remote access uses the shore Internet backhaul.'}
 };
 export const bayPipeline=['rx','validate','sqlite','processing','ai','dashboard'];

@@ -15,6 +15,10 @@ const controller=createController($('#controller .chip-stage'));
 const waveEstimation=createWaveEstimation($('#waves'));
 $('#logo').src=logoUrl;
 const sections=[...document.querySelectorAll('.scene')];
+// Nodes the render loop touches every frame, resolved once. Querying these
+// inside the loop is what made scrolling feel heavy.
+const chapterNumber=$('#chapter-number'),chapterTitle=$('#chapter-name'),coordinateTop=$('#coordinate-top');
+const journeyProgress=$('#journey-progress'),homeShotLabel=$('#home-shot-label');
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 let paused=reduced.matches,active=0,selected='pressure',world,elapsed=0,last=0,lastPacket=0,process=0,predicting=false,predictionProgress=0,currentTab='overview';
 let link=createLink();
@@ -37,7 +41,8 @@ function closeBay(restore=true){
   $('#bay-path-current').textContent='RECEIVE';
   if(restore&&bayTrigger?.isConnected)bayTrigger.focus({preventScroll:true});
 }
-for(const id of bayPipeline){const b=document.createElement('button');b.dataset.bay=id;b.textContent=({rx:'LoRa receiver',validate:'Bay Station computer',sqlite:'Local storage',processing:'Processing',ai:'AI prediction',dashboard:'Dashboard / alerts'})[id]||baySteps[id].title;b.setAttribute('aria-pressed','false');b.addEventListener('click',()=>openBay(id));$('#bay-menu').append(b);}
+const bayButtons=[];
+for(const id of bayPipeline){const b=document.createElement('button');b.dataset.bay=id;b.textContent=({rx:'LoRa receiver',validate:'Bay Station computer',sqlite:'Local storage',processing:'Processing',ai:'AI prediction',dashboard:'Dashboard / alerts'})[id]||baySteps[id].title;b.setAttribute('aria-pressed','false');b.addEventListener('click',()=>openBay(id));$('#bay-menu').append(b);bayButtons.push(b);}
 $('#open-bay').addEventListener('click',()=>openBay());$('#close-bay').addEventListener('click',()=>closeBay());
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeBay();});
 const pointer={x:0,y:0};
@@ -120,7 +125,7 @@ $('#history-trace').setAttribute('d',linePath(history,45,585,190,140));$('#futur
 $('#predict').addEventListener('click',()=>{if(!link.online){$('#prediction-status').textContent='UNAVAILABLE: restore LoRa before running a new prediction.';return;}predicting=true;predictionProgress=paused?1:0;$('#prediction-status').textContent='SIMULATED: extending a candidate trace against persistence.';if(paused)drawPrediction(0);});
 function drawPrediction(dt){if(!predicting)return;predictionProgress=Math.min(1,predictionProgress+dt*.32);$('#future-reveal').setAttribute('width',String(predictionProgress*350));if(predictionProgress===1){predicting=false;$('#prediction-status').textContent='Illustrative AI trace vs. persistence. No accuracy claim.';}}
 
-function overviewMarkup(){const stale=!link.online;return `<div class="demo-overview"><div><div class="demo-readings"><span>Estimated wave height<strong>${stale?'—':history.at(-1).toFixed(2)+' <small>m</small>'}</strong></span><span>Prediction · next 10 min<strong>${stale?'—':future.at(-1).toFixed(2)+' <small>m</small>'}</strong></span></div><svg class="demo-chart" viewBox="0 0 700 170" role="img" aria-label="Simulated estimated wave height and illustrative AI trace"><path class="chart-grid" d="M0 30H700 M0 85H700 M0 140H700"/>${stale?'<text x="210" y="85">STALE · waiting for packets</text>':`<path class="estimated-trace" d="${linePath(history,0,480,150,150)}"/><path class="future-trace" d="${linePath(future,480,210,150,150)}"/>`}</svg></div><dl class="demo-summary"><div><dt>Station</dt><dd>${stale?'STALE':'Simulation'}</dd></div><div><dt>LoRa</dt><dd>${stale?'Offline':'Receiving'}</dd></div><div><dt>Wind</dt><dd>${stale?'—':'11 km/h NE'}</dd></div><div><dt>Battery</dt><dd>${stale?'—':'78% demo'}</dd></div><div><dt>Security</dt><dd>${stale?'Unknown':'Secure demo'}</dd></div></dl></div>`;}
+function overviewMarkup(){const stale=!link.online;return `<div class="demo-overview"><div><div class="demo-readings"><span>Estimated wave height<strong>${stale?'—':history.at(-1).toFixed(2)+' <small>rel · uncalibrated</small>'}</strong></span><span>Prediction · next 10 min<strong>${stale?'—':future.at(-1).toFixed(2)+' <small>rel · uncalibrated</small>'}</strong></span></div><svg class="demo-chart" viewBox="0 0 700 170" role="img" aria-label="Simulated estimated wave height and illustrative AI trace"><path class="chart-grid" d="M0 30H700 M0 85H700 M0 140H700"/>${stale?'<text x="210" y="85">STALE · waiting for packets</text>':`<path class="estimated-trace" d="${linePath(history,0,480,150,150)}"/><path class="future-trace" d="${linePath(future,480,210,150,150)}"/>`}</svg></div><dl class="demo-summary"><div><dt>Station</dt><dd>${stale?'STALE':'Simulation'}</dd></div><div><dt>LoRa</dt><dd>${stale?'Offline':'Receiving'}</dd></div><div><dt>Wind</dt><dd>${stale?'—':'11 km/h NE'}</dd></div><div><dt>Battery</dt><dd>${stale?'—':'78% demo'}</dd></div><div><dt>Security</dt><dd>${stale?'Unknown':'Demo only'}</dd></div></dl></div>`;}
 function renderDashboard(){
   const host=$('#dashboard-content');
   if(currentTab==='overview')host.innerHTML=overviewMarkup();
@@ -130,14 +135,13 @@ function renderDashboard(){
 }
 document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{currentTab=b.dataset.tab;document.querySelectorAll('[data-tab]').forEach(el=>el.setAttribute('aria-pressed',String(el===b)));renderDashboard();}));renderDashboard();
 
-let offsets=[];
-let homeJourney=null;
+let offsets=[],scrollRange=1;
 const home=$('#ocean');
 let homeOrbitActive=false;
 function setHomeOrbit(enabled){
   if(enabled&&!world?.setHomeOrbit?.(true)){$('#home-orbit-status').textContent='The original CAD is still loading or 3D is unavailable.';return;}
   if(!enabled)world?.setHomeOrbit?.(false);
-  homeOrbitActive=enabled;homeJourney=null;document.body.classList.toggle('home-orbit',enabled);
+  homeOrbitActive=enabled;cancelScrollTween();document.body.classList.toggle('home-orbit',enabled);
   $('#explore-home').hidden=enabled;$('#explore-home').setAttribute('aria-pressed',String(enabled));
   $('#reset-home').hidden=!enabled;$('#home-orbit-help').hidden=!enabled;$('#home-orbit-status').textContent='';
   if(enabled)$('#reset-home').focus({preventScroll:true});
@@ -150,18 +154,81 @@ window.addEventListener('keydown',e=>{
   const steps={ArrowLeft:[-20,0],ArrowRight:[20,0],ArrowUp:[0,-20],ArrowDown:[0,20],'+':[0,0,-80],'-':[0,0,80]};
   if(steps[e.key]){e.preventDefault();world?.moveHomeOrbit?.(...steps[e.key]);}
 });
-const cancelHomeJourney=()=>{homeJourney=null;};
-for(const event of ['wheel','touchstart','pointerdown'])window.addEventListener(event,cancelHomeJourney,{passive:true});
-window.addEventListener('keydown',e=>{if(['Escape','ArrowDown','ArrowUp','PageDown','PageUp','Home','End',' '].includes(e.key))cancelHomeJourney();});
+/* ---------------------------------------------------------------------------
+   ONE SCROLL ENGINE
+   Everything that moves the page — the opening journey, the chapter ladder,
+   the Next/Previous controls, the keyboard and the presenter jump list — runs
+   through a single eased tween instead of the browser's own smooth scrolling.
+   That matters for three reasons:
+     - the easing curve is the same smootherstep the 3D camera uses, so the
+       words and the water arrive together instead of a beat apart;
+     - the duration scales with distance, so one chapter and five chapters
+       both feel deliberate rather than one feeling like a lurch;
+     - reduced motion and the Pause-motion control get an instant, honest
+       jump instead of a half-finished animation.
+   Any wheel, touch or pointer input cancels the tween, so the reader is never
+   fighting the page for control of the scroll position.
+   --------------------------------------------------------------------------- */
+let scrollTween=null;
+const scrollCeiling=()=>Math.max(1,document.documentElement.scrollHeight-innerHeight);
+function cancelScrollTween(){scrollTween=null;}
+/** Ease toward a scroll position. `label` is only used for the address bar. */
+function glideTo(top,{minSeconds=.55,maxSeconds=1.35,label=null}={}){
+  cancelScrollTween();
+  const to=Math.max(0,Math.min(top,scrollCeiling()));
+  const distance=Math.abs(to-scrollY);
+  if(paused||distance<4){window.scrollTo({top:to,behavior:'instant'});if(label)window.history.replaceState(null,'',`#${label}`);return;}
+  scrollTween={from:scrollY,to,elapsed:0,duration:Math.min(maxSeconds,Math.max(minSeconds,distance/(innerHeight*1.45))),label};
+}
+for(const event of ['wheel','touchstart','pointerdown'])window.addEventListener(event,cancelScrollTween,{passive:true});
+window.addEventListener('keydown',e=>{if(['Escape','ArrowDown','ArrowUp','PageDown','PageUp','Home','End',' '].includes(e.key))cancelScrollTween();});
 $('#begin-journey').addEventListener('click',e=>{
   if(homeOrbitActive)setHomeOrbit(false);
-  e.preventDefault();const to=$('#buoy').offsetTop-Math.min(80,innerHeight*.15);
-  if(paused){window.scrollTo({top:to,behavior:'instant'});return;}
-  homeJourney={from:scrollY,to,elapsed:0};
+  e.preventDefault();glideTo(offsets[1]-Math.min(80,innerHeight*.15),{label:'buoy'});
 });
-function measure(){offsets=sections.map(s=>s.offsetTop);}
+function measure(){offsets=sections.map(s=>s.offsetTop);scrollRange=scrollCeiling();}
 measure();window.addEventListener('resize',measure);document.fonts.ready.then(measure);
 const layoutObserver=new ResizeObserver(measure);sections.forEach(s=>layoutObserver.observe(s));
+
+/* --- CHAPTER PAGING ------------------------------------------------------
+   The audience needs one obvious way forward. These are the controls, and
+   every other entry point (ladder, keys, presenter list) calls the same two
+   functions, so they can never disagree about where "next" is. */
+const chapterTop=i=>Math.max(0,offsets[Math.max(0,Math.min(sections.length-1,i))]-(i?Math.min(80,innerHeight*.15):0));
+function goToChapter(i){
+  const index=Math.max(0,Math.min(sections.length-1,i));
+  if(inspecting)endInspection(false);
+  if(bayInspecting)closeBay(false);
+  if(homeOrbitActive&&index!==0)setHomeOrbit(false);
+  // setChapter is driven by scroll position, so announce the destination now
+  // and let the tween confirm it. This keeps the ladder in step on long jumps.
+  if(index!==active)setChapter(index);
+  glideTo(chapterTop(index),{label:sections[index].id});
+}
+const nextChapter=()=>goToChapter(active>=sections.length-1?0:active+1);
+const prevChapter=()=>goToChapter(active<=0?0:active-1);
+const nextBtn=$('#chapter-next'),prevBtn=$('#chapter-prev');
+if(nextBtn)nextBtn.addEventListener('click',nextChapter);
+if(prevBtn)prevBtn.addEventListener('click',prevChapter);
+// Clicking a chapter tick glides there instead of jumping.
+nav.addEventListener('click',e=>{const link=e.target.closest('a');if(!link)return;e.preventDefault();goToChapter([...nav.children].indexOf(link));});
+document.addEventListener('keydown',e=>{
+  if(e.defaultPrevented||e.metaKey||e.ctrlKey||e.altKey)return;
+  const el=e.target;
+  if(el&&(el.isContentEditable||['INPUT','TEXTAREA','SELECT'].includes(el.tagName)))return;
+  // The orbit camera owns the arrow keys while it is open, and Escape still
+  // belongs to the inspection panels.
+  if(homeOrbitActive)return;
+  if(e.key==='ArrowRight'||e.key==='PageDown'){e.preventDefault();nextChapter();}
+  else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();prevChapter();}
+  else if(e.key==='Home'){e.preventDefault();goToChapter(0);}
+  else if(e.key==='End'){e.preventDefault();goToChapter(sections.length-1);}
+  // Space advances, which is what a presenter expects from a clicker. It is
+  // left alone when a button or link holds focus, so the keyboard can still
+  // operate whatever the panel is currently pointing at.
+  else if(e.key===' '&&!el?.closest('button,a[href],summary,details,[role=button]')){e.preventDefault();nextChapter();}
+});
+window.falcon={goToChapter,nextChapter,prevChapter,isPaused:()=>paused};
 function scrollState(){
   const y=scrollY+innerHeight*.18;let chapter=0;
   for(let i=0;i<offsets.length;i++)if(y>=offsets[i])chapter=i;
@@ -169,28 +236,49 @@ function scrollState(){
   const fraction=Math.max(0,Math.min(1,(y-offsets[chapter])/span));
   return {chapter,progress:Math.min(9,chapter+fraction)};
 }
-function setChapter(chapter){active=chapter;document.body.dataset.experience=chapter<3?String(chapter):'later';sections.forEach((s,i)=>s.classList.toggle('is-active',i===chapter));[...nav.children].forEach((a,i)=>{if(i===chapter)a.setAttribute('aria-current','step');else a.removeAttribute('aria-current');});$('#chapter-number').textContent=`${String(chapter+1).padStart(2,'0')} / 10`;$('#chapter-name').textContent=chapters[chapter];$('#coordinate-top').textContent=chapter<4?'OFFSHORE / OBSERVATION NODE':chapter<9?'ON SHORE / BAY STATION':'BUOY TO SHORE / CONNECTED';}
+function setChapter(chapter){
+  active=chapter;document.body.dataset.experience=chapter<3?String(chapter):'later';
+  sections.forEach((s,i)=>s.classList.toggle('is-active',i===chapter));
+  [...nav.children].forEach((a,i)=>{if(i===chapter)a.setAttribute('aria-current','step');else a.removeAttribute('aria-current');});
+  chapterNumber.textContent=`${String(chapter+1).padStart(2,'0')} / 10`;
+  chapterTitle.textContent=chapters[chapter];
+  coordinateTop.textContent=chapter<4?'OFFSHORE / OBSERVATION NODE':chapter<9?'ON SHORE / BAY STATION':'BUOY TO SHORE / CONNECTED';
+  // The paging controls carry their own labels, so the panel can read the
+  // destination out loud instead of only seeing an arrow.
+  if(nextBtn){const last=chapter>=sections.length-1;nextBtn.querySelector('span').textContent=last?'Back to the ocean':chapters[chapter+1];nextBtn.setAttribute('aria-label',last?'Return to the first chapter':`Next chapter: ${chapters[chapter+1]}`);}
+  if(prevBtn)prevBtn.disabled=chapter===0;
+}
 setChapter(0);
-let raf;
+let raf,lastShot='';
 function frame(now){
-  raf=requestAnimationFrame(frame);if(now-last<33)return;
+  raf=requestAnimationFrame(frame);
+  // ~60fps. The old 33ms gate capped the whole page at 30fps, which is what
+  // made every scroll-driven movement look like it was being dragged.
+  if(now-last<16)return;
   const dt=Math.min(.06,(now-last)/1000);last=now;if(document.hidden)return;
-  if(homeJourney){
-    if(paused)homeJourney=null;
-    else{homeJourney.elapsed+=dt;const t=Math.min(1,homeJourney.elapsed/5.2);window.scrollTo({top:homeJourney.from+(homeJourney.to-homeJourney.from)*smooth(t),behavior:'instant'});if(t===1){homeJourney=null;window.history.replaceState(null,'','#buoy');}}
+  if(scrollTween){
+    if(paused)scrollTween=null;
+    else{
+      scrollTween.elapsed+=dt;
+      const t=Math.min(1,scrollTween.elapsed/scrollTween.duration);
+      window.scrollTo({top:scrollTween.from+(scrollTween.to-scrollTween.from)*smooth(t),behavior:'instant'});
+      if(t===1){const label=scrollTween.label;scrollTween=null;if(label)window.history.replaceState(null,'',`#${label}`);}
+    }
   }
   const moving=!paused;if(moving)elapsed+=dt;
   const state=scrollState();if(inspecting&&state.chapter!==active)endInspection(false);if(state.chapter!==active)setChapter(state.chapter);
   if(homeOrbitActive&&state.chapter!==0)setHomeOrbit(false);
   if(bayInspecting&&state.chapter!==5)closeBay(false);
   const homeProgress=Math.max(0,Math.min(1,scrollY/Math.max(1,offsets[1]-innerHeight*.18)));
-  home.style.setProperty('--home-progress',String(homeProgress));home.classList.toggle('home-departed',homeProgress>.52);
-  $('#home-shot-label').textContent=homeProgress<.25?'01 / THE OCEAN':homeProgress<.55?'02 / DISCOVERY':homeProgress<.82?'03 / APPROACH':'04 / LISTEN';
-  $('#journey-progress').style.width=`${Math.min(100,scrollY/Math.max(1,document.documentElement.scrollHeight-innerHeight)*100)}%`;
-  world?.update({...state,time:elapsed,dt,moving,pointer,selected,linkOnline:link.online,homeProgress});
+  home.style.setProperty('--home-progress',homeProgress.toFixed(4));
+  home.classList.toggle('home-departed',homeProgress>.52);
+  const shot=homeProgress<.25?'01 / THE OCEAN':homeProgress<.55?'02 / DISCOVERY':homeProgress<.82?'03 / APPROACH':'04 / LISTEN';
+  if(shot!==lastShot){lastShot=shot;homeShotLabel.textContent=shot;}
+  journeyProgress.style.width=`${Math.min(100,scrollY/scrollRange*100).toFixed(3)}%`;
+  world?.update({progress:state.progress,chapter:state.chapter,time:elapsed,dt,moving,pointer,selected,linkOnline:link.online,homeProgress});
   if(active===2&&moving)acquisition.draw(elapsed);
   if(active===3)controller.draw(elapsed);
-  if(active===5){const s=arrivalPhase(elapsed,link.online);document.querySelectorAll('[data-bay]').forEach((b,i)=>b.classList.toggle('receiving-stage',i===s.stage));}
+  if(active===5){const s=arrivalPhase(elapsed,link.online);bayButtons.forEach((b,i)=>b.classList.toggle('receiving-stage',i===s.stage));}
   if(active===6)waveEstimation.update(elapsed,dt,state.progress-6,moving);
   if(active===7&&moving)drawPrediction(dt);
   if(moving&&active>=3&&active<=5&&elapsed-lastPacket>1.5){lastPacket=elapsed;link=tickLink(link,new Date().toISOString());updateLink();}

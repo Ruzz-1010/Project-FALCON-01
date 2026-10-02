@@ -47,9 +47,9 @@ export function createBayStation(coast){
   if(typeof document!=='undefined'){
     const canvas=document.createElement('canvas');canvas.width=1024;canvas.height=640;const ctx=canvas.getContext('2d');
     ctx.fillStyle='#e8efed';ctx.fillRect(0,0,1024,640);ctx.fillStyle='#1c3945';ctx.fillRect(0,0,1024,100);ctx.fillStyle='#e7f2ef';ctx.font='bold 35px sans-serif';ctx.fillText('FALCON-01  /  MONITORING',35,60);
-    const rows=[['Estimated wave height','0.62 m'],['AI prediction · +10 min','0.68 m'],['Wind observation','11 km/h · NE'],['Battery / power','78% · demo'],['LoRa connection','Receiving · demo'],['System status','Simulation only']];
+    const rows=[['Estimated wave height','0.62 rel.'],['AI prediction · +10 min','0.68 rel.'],['Wind observation','11 km/h · NE'],['Battery / power','78% · demo'],['LoRa connection','Receiving · demo'],['System status','Simulation only']];
     rows.forEach(([name,value],i)=>{const row=145+i*64;ctx.fillStyle='#344f58';ctx.font='27px sans-serif';ctx.fillText(name,35,row);ctx.font='bold 27px sans-serif';ctx.fillText(value,655,row);ctx.strokeStyle='#c5d3d2';ctx.beginPath();ctx.moveTo(35,row+21);ctx.lineTo(990,row+21);ctx.stroke();});
-    ctx.font='24px sans-serif';ctx.fillStyle='#665b40';ctx.fillText('ILLUSTRATIVE READINGS — NOT LIVE',35,610);
+    ctx.font='24px sans-serif';ctx.fillStyle='#665b40';ctx.fillText('ILLUSTRATIVE · RELATIVE UNITS · NOT LIVE',35,610);
     const map=new THREE.CanvasTexture(canvas);map.colorSpace=THREE.SRGBColorSpace;textures.push(map);screen.material.map=map;screen.material.needsUpdate=true;
   }
   const equipment=[localRadio,pc,router,ups,monitor];const baseColors=new Map(equipment.map(o=>[o,o.material.color.clone()]));

@@ -26,6 +26,18 @@ test('Home effects fade completely before the Instrument; scroll interpolation i
 test('Pages 03–04 and 07–09 markup remains unchanged during the scoped 05–06 updates',()=>{
   const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
   const rest=html.slice(html.indexOf('    <section class="scene diagram-scene" id="controller"')).replace(/    <section class="scene" id="shore"[\s\S]*?(?=    <section class="scene wide-scene" id="waves")/,'').replace(/    <section class="scene wide-scene" id="waves"[\s\S]*?(?=    <section class="scene wide-scene" id="prediction")/,'');
-  assert.equal(createHash('sha256').update(rest).digest('hex'),'30149bb2c5a994def9d895b634389085b157c97708ecf681608c932a7818f104');
+  // 2026-10-02: intentional edits inside this range are the chapter-paging
+  // controls in the footer, the relative-unit axis labels on the forecast
+  // chart, and the Bay Station panel label. Research wording is untouched.
+  assert.equal(createHash('sha256').update(rest).digest('hex'),'3942bb2e9ccd329e0d25542f6edeb91ce92e677e9574a4c1460de43716890a51');
   assert.match(html,/THE OCEAN NEVER STOPS SPEAKING/);assert.match(html,/id="begin-journey"/);
+  // Paging controls are part of the standard build on both pages.
+  assert.match(html,/id="chapter-prev"/);assert.match(html,/id="chapter-next"/);
+});
+test('The story never claims calibrated metres or a direct wave-height measurement',()=>{
+  const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
+  assert.doesNotMatch(html,/direct wave.height|accurate wave height|wave.height sensor/i);
+  assert.match(html,/NOT CALIBRATED METRES/);
+  // Uncalibrated values are plotted in relative units everywhere they appear.
+  assert.doesNotMatch(html,/>1 m</);assert.doesNotMatch(html,/>0 m</);
 });

@@ -41,12 +41,16 @@ export function createController(root){
   const labels=[...svg.querySelectorAll('text')].slice(2,6);
   const code=root.querySelector('#packet-frame');
   let previous='';
+  // getTotalLength() forces a layout read. The path never changes, so each
+  // length is measured once instead of five times per frame.
+  const lengths=new Map();
+  const lengthOf=path=>{let value=lengths.get(path);if(value===undefined){value=path.getTotalLength();lengths.set(path,value);}return value;};
 
   function placePulse(pulse,path,fraction,visible){
-    const point=path.getPointAtLength(path.getTotalLength()*Math.max(0,Math.min(1,fraction)));
+    const point=path.getPointAtLength(lengthOf(path)*Math.max(0,Math.min(1,fraction)));
     pulse.setAttribute('cx',point.x);
     pulse.setAttribute('cy',point.y);
-    pulse.style.opacity=visible?'1':'0';
+    if(pulse.style.opacity!==(visible?'1':'0'))pulse.style.opacity=visible?'1':'0';
   }
 
   function draw(time){
@@ -62,7 +66,7 @@ export function createController(root){
     labels.forEach(label=>label.classList.toggle('input-arrived',!acquiring));
     root.classList.toggle('processing',!acquiring&&!sending);
     root.classList.toggle('sending',sending);
-    status.textContent=s.stage;
+    if(status.textContent!==s.stage)status.textContent=s.stage;
 
     const key=s.sequence+':'+s.stage;
     if(key!==previous){

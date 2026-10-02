@@ -32,6 +32,17 @@ const CHAPTERS=[
 const scenes=[...document.querySelectorAll('main .scene')];
 const presenterBtn=document.getElementById('p-presenter');
 
+/* --- movement --------------------------------------------------------------
+   main.js owns one eased scroll engine and publishes it on window.falcon, so
+   the jump list glides with exactly the same curve as the on-screen Next
+   button. If the 3D chunk failed to load the page still moves, using the
+   browser's own smooth scroll. */
+const nav=window.falcon;
+function goTo(index){
+  if(nav?.goToChapter)nav.goToChapter(index);
+  else scenes[index]?.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
 /* --- projector mode: ?big=1 ------------------------------------------------ */
 if(new URLSearchParams(location.search).get('big')==='1'){
   document.body.classList.add('p-big');
@@ -62,14 +73,14 @@ jump.innerHTML=`
     </button></li>`).join('')}
   </ol>
   <p class="p-jump-foot">Press <b>L</b> to close · <b>P</b> for presenter mode.<br>
+  <b>&larr;</b> <b>&rarr;</b> or <b>Space</b> step between chapters.<br>
   All readings shown are simulated. Nothing here is a live measurement.</p>`;
 document.body.append(jump);
 
 jump.addEventListener('click',e=>{
   const btn=e.target.closest('[data-jump]');
   if(!btn)return;
-  const target=scenes[Number(btn.dataset.jump)];
-  if(target)target.scrollIntoView({behavior:'smooth',block:'start'});
+  goTo(Number(btn.dataset.jump));
   setJump(false);
 });
 
@@ -99,7 +110,7 @@ hint.textContent='L CHAPTERS · P PRESENTER MODE';
 document.body.append(hint);
 
 /* --- keyboard ------------------------------------------------------------
-   The page already uses Escape, the arrow keys, Page Up/Down, Home, End,
+   main.js already owns Escape, the arrow keys, Page Up/Down, Home, End,
    Space and the + and - keys, so this layer only claims L and P. -------- */
 document.addEventListener('keydown',e=>{
   const tag=e.target&&e.target.tagName;

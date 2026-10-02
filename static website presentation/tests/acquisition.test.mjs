@@ -16,7 +16,11 @@ test('Acquisition has an honest source → signal → record explanation for all
 test('Acquisition connection uses projected CAD geometry, not a hand-positioned floating source',()=>{
   const world=readFileSync(new URL('../world.js',import.meta.url),'utf8');
   assert.match(world,/projection.copy\(halo.position\).project\(camera\)/);
-  assert.match(world,/querySelector\('#acquisition-signal'\).getBoundingClientRect\(\)/);
+  // The leader line must still be anchored to the live DOM panel. Resolving the
+  // node once and caching it is allowed - what is not allowed is a hardcoded
+  // position, so the guard accepts either spelling of the same lookup.
+  assert.match(world,/document\.querySelector\('#acquisition-signal'\)/);
+  assert.match(world,/(acquisitionSignal|querySelector\('#acquisition-signal'\))\.getBoundingClientRect\(\)/);
   const main=readFileSync(new URL('../main.js',import.meta.url),'utf8');
   assert.match(main,/if\(active===2&&moving\)acquisition.draw/);
   assert.match(main,/if\(inspecting&&state.chapter!==active\)endInspection/);
