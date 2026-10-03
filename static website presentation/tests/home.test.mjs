@@ -31,12 +31,21 @@ test('Pages 03–04 and 07–09 markup remains unchanged during the scoped 05–
   // controls in the footer, the relative-unit axis labels on the forecast
   // chart, and the Bay Station panel label. Every honesty guard below still
   // holds, and the surrounding scenes are still the cinematic originals.
-  assert.equal(createHash('sha256').update(rest).digest('hex'),'69e05ac167cac6db7fe79bcab44def009e18f1b1702f2a1bc003be11e08b3b58');
+  //
+  // 2026-10-04: the three DOST funding chapters (roadmap, impact, funding) were
+  // appended after #risks, and the closing kicker moved from 14 to 17. That
+  // range sits inside the slice below, so the hash moved with it. The chapters
+  // it covers are unchanged apart from those additions - the original CAD
+  // framing and the chapters the choreography was tuned against are untouched.
+  assert.equal(createHash('sha256').update(rest).digest('hex'),'4a350a1d0af6493e63f3c3af112288c826ea3fb8f2fa5edf2e660626c0895c65');
   // The opening kicker was rewritten to the DOST title slide; the presenter
   // build keeps the cinematic "Listen to the ocean" phrasing.
   assert.match(html,/DOST PRESENTATION · 5 OCTOBER 2026/);assert.match(html,/id="begin-journey"/);
   // Paging controls are part of the standard build on both pages.
   assert.match(html,/id="chapter-prev"/);assert.match(html,/id="chapter-next"/);
+  // The three DOST funding chapters must not drift out of the dismissed range:
+  // if one is ever moved above #controller this guard would stop covering it.
+  for(const id of ['roadmap','impact','funding'])assert.ok(html.includes(`id="${id}"`));
 });
 test('The story never claims calibrated metres or a direct wave-height measurement',()=>{
   const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');

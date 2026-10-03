@@ -1,1 +1,0 @@
-Replace smart-buoy-placeholder with final .glb/.gltf model.

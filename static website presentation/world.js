@@ -30,8 +30,12 @@ const poses = [
   {eye:[7.2,2.7,8.3], aim:[4.5,.35,-1]},
   {eye:[7,2.8,8.4], aim:[4,.35,-1]},
   {eye:[6,3,8.8], aim:[2.5,.25,-.5]},
-  {eye:[5,3,9], aim:[0,.15,0]},
-  {eye:[5,3,9], aim:[0,.15,0]},
+  // Roadmap -> Impact -> Funding -> Acknowledgement: one slow, continuous
+  // pull-back over the water. The last pose is the original finale framing, so
+  // the ending still looks exactly as it always did.
+  {eye:[5.6,3,8.9], aim:[1.8,.2,-.3]},
+  {eye:[5.3,3,8.95], aim:[1.1,.18,-.15]},
+  {eye:[5.1,3,9], aim:[.5,.16,-.05]},
   {eye:[5,3,9], aim:[0,.15,0]}
 ];
 // The poses array and the chapter list must stay the same length: a mismatch

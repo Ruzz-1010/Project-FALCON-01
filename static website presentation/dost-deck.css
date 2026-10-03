@@ -1,0 +1,310 @@
+/* ============================================================================
+   FALCON-01 — DOST DECK  (dost-deck.css)
+
+   Styles for the three funding chapters the DOST panel needs and the earlier
+   build had no page for: 14 Roadmap, 15 Impact, 16 Funding.
+
+   Loads last. It has two layers on purpose:
+
+     1. BASELINE (unscoped) — layout only, using the older stylesheet's own
+        variables, so the chapters still work with Deep Water switched off. The
+        D key is a documented toggle, so nothing new may depend on the theme.
+     2. DEEP WATER (scoped to body.theme-deep) — the palette, type and hairlines.
+
+   The three performance rules from PRESENTATION-BUILD.md are respected:
+
+     1. No :has() anywhere. That selector makes the browser re-check the whole
+        document whenever any class changes, and main.js changes a class on
+        <body> every animation frame.
+     2. No backdrop-filter. Blur over the live WebGL canvas re-reads the frame
+        on every movement.
+     3. Borders instead of shadows.
+
+   Research wording is untouched: this file only decides how the page looks.
+   ========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   1. BASELINE — structure that does not depend on the theme
+   -------------------------------------------------------------------------- */
+
+.dost-plate{
+  border:1px solid var(--line);
+  background:#071119;
+  border-radius:2px;
+  padding:1.6rem 1.7rem 1.5rem;
+}
+
+/* The plate note at the foot of each chapter. */
+.dost-plate>.dost-foot{
+  margin:1.1rem 0 0;
+  padding-top:1rem;
+  border-top:1px solid var(--line);
+}
+
+/* --- 14 Roadmap: seven stages on a rail ---------------------------------- */
+
+.phase-track{
+  display:grid;
+  grid-template-columns:repeat(7,minmax(0,1fr));
+  border:1px solid var(--line);
+  background:#050e16;
+}
+
+.phase-track button{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:.3rem;
+  min-height:96px;
+  padding:.85rem .8rem .8rem;
+  border:0;
+  border-right:1px solid var(--line);
+  border-radius:0;
+  background:transparent;
+  text-align:left;
+  color:var(--muted);
+  /* The rail has to hold seven labels without them colliding. */
+  font-size:.72rem;
+  line-height:1.35;
+  letter-spacing:.04em;
+  transition:color .25s,border-color .25s;
+}
+.phase-track button:last-of-type{border-right:0}
+.phase-track button:hover{color:var(--ink);background:#12242e}
+.phase-track button[aria-selected="true"]{color:var(--ink);background:#12242e;border-color:var(--sea)}
+
+.phase-track button b{
+  font-size:.72rem;
+  font-weight:600;
+  letter-spacing:.14em;
+  color:var(--sea);
+}
+.phase-track button[aria-selected="true"] b{color:var(--ink)}
+.phase-track button small{margin-top:auto;font-size:.64rem;letter-spacing:.08em}
+/* The arrow between stages is decorative; JS renders it, CSS hides it. */
+.phase-track>i{display:none}
+
+.phase-detail{
+  margin-top:1.3rem;
+  padding-top:1.2rem;
+  border-top:1px solid var(--line);
+  min-height:150px;
+}
+.phase-head{display:flex;align-items:baseline;flex-wrap:wrap;gap:.9rem;margin-bottom:1rem}
+.phase-head h3{margin:0;font-size:clamp(1.25rem,1.7vw,1.7rem);font-weight:400;letter-spacing:-.02em}
+.phase-index{font-size:.66rem;letter-spacing:.18em;color:var(--sea);border:1px solid var(--line);padding:.28rem .55rem;border-radius:2px}
+.phase-span{margin-left:auto;font-size:.74rem;letter-spacing:.1em;color:var(--gold)}
+.phase-body{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin:0}
+.phase-body dt{font-size:.66rem;letter-spacing:.15em;color:var(--muted);margin-bottom:.35rem}
+.phase-body dd{margin:0;font-size:.86rem;line-height:1.6;color:var(--ink)}
+
+/* --- 15 Impact: beneficiary cards ---------------------------------------- */
+
+.beneficiary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+.beneficiary{border:1px solid var(--line);border-radius:2px;padding:1rem 1.1rem 1.05rem;background:#050e16}
+.beneficiary h3{margin:0 0 .5rem;font-size:1.02rem;font-weight:500}
+.beneficiary-value{margin:0 0 .85rem;font-size:.82rem;line-height:1.6;color:var(--muted)}
+.beneficiary-check{margin:0;padding-top:.7rem;border-top:1px solid var(--line);font-size:.76rem;line-height:1.55;color:var(--muted)}
+.beneficiary-check b{display:block;margin-bottom:.25rem;font-size:.62rem;font-weight:600;letter-spacing:.16em;color:var(--gold)}
+
+.innovation-note{
+  display:flex;
+  gap:1rem;
+  align-items:flex-start;
+  margin-top:1.2rem;
+  border-left:2px solid var(--sea);
+  padding:.95rem 1.1rem;
+  font-size:.82rem;
+  line-height:1.62;
+  color:var(--muted);
+}
+.innovation-note b{flex:0 0 auto;max-width:9.5rem;font-size:.62rem;font-weight:600;letter-spacing:.16em;line-height:1.7;color:var(--sea)}
+
+/* --- 16 Funding: filters, table, running total --------------------------- */
+
+.funding-controls{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.2rem}
+.funding-controls button{min-height:40px;padding:.5rem .85rem;font-size:.76rem;letter-spacing:.06em}
+
+#funding .sensor-table{font-size:.82rem}
+#funding .sensor-table th{font-size:.64rem;letter-spacing:.14em;text-transform:uppercase}
+#funding .sensor-table td{padding:.72rem .6rem;line-height:1.5}
+
+/* The amount is the number the panel reads first. */
+.funding-amount{white-space:nowrap;font-weight:600;font-variant-numeric:tabular-nums}
+.funding-kind{font-size:.68rem;letter-spacing:.08em;white-space:nowrap}
+.funding-kind[data-kind="installed"]{color:#6f9d7c}
+.funding-kind[data-kind="reusable"]{color:var(--gold)}
+
+.funding-total{
+  display:flex;
+  align-items:baseline;
+  flex-wrap:wrap;
+  gap:.4rem 1rem;
+  margin-top:1.2rem;
+  padding:1rem 1.15rem;
+  border:1px solid var(--sea);
+  background:#050e16;
+  border-radius:2px;
+}
+.funding-total span{font-size:.64rem;letter-spacing:.17em;color:var(--muted)}
+.funding-total strong{font-size:clamp(1.3rem,2.1vw,1.85rem);font-weight:500;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.funding-total small{margin-left:auto;font-size:.72rem;color:var(--muted)}
+
+/* Which total the page is showing. A footnote for a reviewer who adds the
+   column up, not a headline. */
+.funding-source{margin:.9rem 0 0;max-width:78ch;font-size:.7rem;line-height:1.6;color:var(--muted)}
+
+#funding details{margin-top:1.1rem;border-top:1px solid var(--line)}
+#funding details summary{padding:.85rem 0;font-size:.68rem;letter-spacing:.16em;color:var(--muted);cursor:pointer}
+#funding details summary:hover{color:var(--ink)}
+#funding details p{margin:0 0 .5rem;max-width:80ch;font-size:.82rem;line-height:1.7;color:var(--muted)}
+
+/* ---------------------------------------------------------------------------
+   2. DEEP WATER — palette, type and hairlines
+   -------------------------------------------------------------------------- */
+
+body.theme-deep .dost-plate{
+  border:1px solid var(--w-line);
+  background:var(--w-plate);
+}
+
+body.theme-deep .dost-plate>.dost-foot{border-top:1px solid var(--w-line-soft)}
+
+body.theme-deep .phase-track{border-color:var(--w-line-soft);background:var(--w-inset)}
+body.theme-deep .phase-track button{border-right-color:var(--w-line-soft);color:var(--w-ink-muted)}
+body.theme-deep .phase-track button:hover{color:var(--w-ink);background:var(--w-sea-soft)}
+body.theme-deep .phase-track button[aria-selected="true"]{border-color:var(--w-sea-line);background:var(--w-sea-soft);color:var(--w-ink)}
+body.theme-deep .phase-track button b{color:var(--w-sea)}
+body.theme-deep .phase-track button small{color:var(--w-ink-faint)}
+
+body.theme-deep .phase-detail{border-top-color:var(--w-line)}
+body.theme-deep .phase-index{color:var(--w-sea);border-color:var(--w-sea-line)}
+body.theme-deep .phase-head h3{color:var(--w-ink)}
+body.theme-deep .phase-span{color:var(--w-brass)}
+body.theme-deep .phase-body dt{color:var(--w-ink-faint)}
+body.theme-deep .phase-body dd{color:var(--w-ink-soft)}
+body.theme-deep .phase-body>div:last-child dd{color:var(--w-ink)}
+
+body.theme-deep .beneficiary{border-color:var(--w-line-soft);background:var(--w-inset)}
+body.theme-deep .beneficiary h3{color:var(--w-ink)}
+body.theme-deep .beneficiary-value{color:var(--w-ink-soft)}
+body.theme-deep .beneficiary-check{border-top-color:var(--w-line-soft);color:var(--w-ink-muted)}
+body.theme-deep .beneficiary-check b{color:var(--w-brass)}
+
+body.theme-deep .innovation-note{border-left-color:var(--w-sea-line);background:var(--w-sea-soft);color:var(--w-ink-soft)}
+body.theme-deep .innovation-note b{color:var(--w-sea)}
+
+body.theme-deep .funding-controls button{border-color:var(--w-line);color:var(--w-ink-muted)}
+body.theme-deep .funding-controls button:hover{color:var(--w-ink);border-color:var(--w-line-firm)}
+body.theme-deep .funding-controls button[aria-pressed="true"]{border-color:var(--w-sea-line);background:var(--w-sea-soft);color:var(--w-ink)}
+
+body.theme-deep #funding .sensor-table th{color:var(--w-ink-muted)}
+body.theme-deep #funding .sensor-table td{border-bottom:1px solid var(--w-line-soft);color:var(--w-ink-soft)}
+body.theme-deep #funding .sensor-table tbody tr:hover{background:var(--w-sea-soft)}
+body.theme-deep .funding-amount{color:var(--w-ink)}
+body.theme-deep .funding-kind[data-kind="installed"]{color:var(--w-ok)}
+body.theme-deep .funding-kind[data-kind="reusable"]{color:var(--w-brass)}
+body.theme-deep .funding-kind[data-kind="process"]{color:var(--w-ink-muted)}
+
+body.theme-deep .funding-total{border-color:var(--w-sea-line);background:var(--w-inset)}
+body.theme-deep .funding-total span{color:var(--w-ink-muted)}
+body.theme-deep .funding-total strong{color:var(--w-ink)}
+body.theme-deep .funding-total small{color:var(--w-ink-faint)}
+body.theme-deep .funding-source{color:var(--w-ink-faint)}
+
+body.theme-deep #funding details{border-top-color:var(--w-line-soft)}
+body.theme-deep #funding details summary{color:var(--w-ink-muted)}
+body.theme-deep #funding details summary:hover{color:var(--w-ink)}
+body.theme-deep #funding details p{color:var(--w-ink-soft)}
+
+/* ---------------------------------------------------------------------------
+   3. SMALLER SCREENS — the seven-stage rail cannot be a row on a phone
+   -------------------------------------------------------------------------- */
+
+@media(max-width:1100px){
+  .phase-track{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .phase-track button{border-bottom:1px solid var(--line)}
+  .phase-track button:nth-child(4n){border-right:0}
+  body.theme-deep .phase-track button{border-bottom-color:var(--w-line-soft)}
+}
+
+@media(max-width:850px){
+  .phase-body{grid-template-columns:1fr;gap:.9rem}
+  .beneficiary-grid{grid-template-columns:1fr}
+}
+
+@media(max-width:650px){
+  .dost-plate{padding:1.1rem 1rem 1.15rem}
+  .phase-track{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .phase-track button{min-height:82px}
+  .phase-track button:nth-child(4n){border-right:1px solid var(--line)}
+  .phase-track button:nth-child(2n){border-right:0}
+  body.theme-deep .phase-track button:nth-child(4n){border-right-color:var(--w-line-soft)}
+  .phase-span{margin-left:0}
+  .innovation-note{flex-direction:column;gap:.45rem}
+  .innovation-note b{max-width:none}
+  .funding-controls button{flex:1 1 auto;font-size:.72rem}
+  /* The category name is the long column: let it wrap instead of pushing the
+     amount off the edge of a phone. */
+  #funding .sensor-table{font-size:.74rem}
+  #funding .sensor-table td{padding:.6rem .35rem}
+  .funding-amount{font-size:.74rem}
+  .funding-kind{font-size:.6rem}
+  .funding-total small{margin-left:0}
+}
+
+/* The funding request, stated in the deck's own words at the close. It sat in the
+   thesis slides but never on the site, so the audience reached the end without
+   ever hearing what was being asked for. */
+.closing-ask{
+  margin:1.4rem 0 1.6rem;
+  padding:1rem 1.15rem;
+  border-left:2px solid var(--sea);
+  font-size:.9rem;
+  line-height:1.7;
+  color:var(--muted);
+}
+.closing-ask b{
+  display:block;
+  margin-bottom:.35rem;
+  font-size:.64rem;
+  font-weight:600;
+  letter-spacing:.18em;
+  color:var(--sea);
+}
+body.theme-deep .closing-ask{
+  border-left-color:var(--w-sea-line);
+  background:var(--w-sea-soft);
+  color:var(--w-ink-soft);
+}
+body.theme-deep .closing-ask b{color:var(--w-sea)}
+
+/* ---------------------------------------------------------------------------
+   4. PRINT — the handout already flattens the story; keep the numbers on it
+   -------------------------------------------------------------------------- */
+
+@media print{
+  .closing-ask{border-left-color:#1c8b9c;background:#eef6f8;color:#243642}
+  .closing-ask b{color:#1c8b9c}
+  .phase-track{display:block;border:0}
+  .phase-track button{
+    display:block;
+    min-height:0;
+    border:0;
+    border-bottom:1px solid #ccd6da;
+    color:#243642;
+    padding:.3rem 0;
+  }
+  .phase-track button b{color:#1c8b9c}
+  .phase-detail{display:none}
+  .beneficiary-grid{display:block}
+  .beneficiary{border-color:#bcd3d8;background:#fff;margin-bottom:.6rem}
+  .beneficiary h3,.beneficiary-value,.beneficiary-check,.innovation-note{color:#243642!important}
+  .innovation-note{background:#eef6f8;border-left-color:#1c8b9c}
+  .funding-total{background:#f4fafb;border-color:#bcd3d8}
+  .funding-total span,.funding-total small{color:#4a636e}
+  .funding-total strong,.funding-amount{color:#0d2b38}
+  .funding-kind[data-kind]{color:#4a636e}
+  .funding-source{color:#4a636e}
+  .funding-controls{display:none}
+}

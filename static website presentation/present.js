@@ -30,8 +30,11 @@ const CHAPTERS=[
   {n:'10',name:'Validation',plain:'The tests each number has to pass before it is called accurate.'},
   {n:'11',name:'Current status',plain:'What is built and what is not, before we claim performance.'},
   {n:'12',name:'Scope limits',plain:'What this prototype does not do, and why that is safe.'},
-  {n:'13',name:'Risks and next steps',plain:'Known risks, and the work that remains before any claim.'},
-  {n:'14',name:'Acknowledgment',plain:'The people and places the project exists because of.'}
+  {n:'13',name:'Risks',plain:'Known risks, and how each one is handled before any claim.'},
+  {n:'14',name:'Development plan',plain:'Seven funded stages, 8-12 months, each one feeding the next.'},
+  {n:'15',name:'Beneficiaries',plain:'Who the pilot serves, and what still has to be confirmed with them.'},
+  {n:'16',name:'Funding plan',plain:'The preliminary request in pesos, and exactly what it pays for.'},
+  {n:'17',name:'Acknowledgement',plain:'Next steps, the team and the closing statement.'}
 ];
 
 const scenes=[...document.querySelectorAll('main .scene')];

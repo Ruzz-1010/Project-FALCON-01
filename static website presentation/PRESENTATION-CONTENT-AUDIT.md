@@ -232,3 +232,70 @@ scroll engine, the RAF loop and the Deep Water performance rules are untouched.
   are unrelated to copy and were failing before this change.
 - Production build with Node 22 succeeds; all DOST strings above were confirmed
   present in `dist/index.html`, `dist/present.html` and the JS chunks.
+
+---
+
+## 9. The three missing funding chapters added (4 October 2026)
+
+**Why:** the 15 draft slides answer *what* and *how*, but a funding panel also asks
+*when*, *for whom*, and *how much*. The earlier build had no chapter for any of the
+three, and the DOST package devotes its slides 7, 8 and 9 to exactly those
+questions. They were the largest gaps between the deck and the source material.
+
+| Chapter | Scene id | Source |
+|---|---|---|
+| 14 | `roadmap` | DOST package slide 8 — development plan (7 phases, 8–12 months) |
+| 15 | `impact` | DOST package slide 7 — beneficiaries and value; slide 6 — innovation boundary |
+| 16 | `funding` | DOST package slide 9 — preliminary funding plan |
+
+**Method:** appended after `#risks`, never inserted. Every existing chapter keeps
+its original index, so the CAD framing, the coast fly-through span (`CH.radio` →
+`CH.shore + 1`), the page-one inspection targets and the chapter choreography are
+all untouched. One camera pose was added per new chapter, and the finale pose is
+still the original one.
+
+### Honesty additions
+
+- **Per-stage claim limits.** Every one of the seven development stages states
+  what may be claimed once it finishes. Stage 04 (calibrate and test) is named on
+the page as the gate: *"no accuracy figure leaves stage 04."*
+- **Beneficiaries are intentions, not partners.** Each card carries its own
+  `STILL TO CONFIRM` line, and the chapter states plainly that no site or
+  beneficiary is confirmed yet.
+- **The funding total is computed, never typed twice.** `fundingRange()` sums the
+  seven categories, so the headline figure cannot drift away from the table. A
+  test locks it.
+- **The innovation boundary is stated on the page** — integration and local
+  evaluation, not the invention of a sensor, buoy or algorithm — because this is
+  the single easiest claim for a panel to challenge.
+
+### A real discrepancy found in the source, not smoothed over
+
+The DOST package is inconsistent with itself on the funding total:
+
+| Where | Figure |
+|---|---|
+| Package table, slide 9 summary row | PHP 72,000–**127,000** |
+| Package `visuals/funding-breakdown.svg` | ₱72,000–**127,000** |
+| Package spoken script, same slide | "seventy-two thousand to one hundred **thirty-one** thousand" |
+| The seven line items, added up | ₱72,000–**131,000** |
+
+A panel member can add the column by hand in a few seconds, so the deck shows the
+figure **the line items produce (₱131,000)** and carries a visible footnote saying
+the earlier summary said ₱127,000 and why the shown total follows the rows. This is
+recorded here rather than silently corrected, the same way the orphan Chapter 2
+citations are recorded in section 5: the slide 9 discrepancy is a thesis-side
+item, and the deck is now consistent with itself whichever way the team resolves
+it.
+
+### Verification
+
+- **32 pass / 3 fail** (was 31 / 2 before the tests were extended for these
+  chapters). The three failures are the pre-existing camera-framing math checks
+  listed in `PRESENTATION-BUILD.md`, unrelated to this change.
+- Two new guards: *"Both pages carry one camera pose per chapter and the same
+  chapter count"* and *"The funding plan is internally consistent and never
+  quoted as a firm price"*.
+- `tests/home.test.mjs` markup hash updated, with the reason recorded in the test
+  comment.
+- Production build with Node 22 succeeds.

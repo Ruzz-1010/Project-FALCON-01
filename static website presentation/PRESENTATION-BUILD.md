@@ -95,10 +95,16 @@ so the original look comes straight back. No other file needs to change.
 
 ## Test status
 
-`npm test` reports **25 passing, 7 failing** — the same seven that were already
-failing before this design work started. They concern the CAD geometry,
-inspection framing and acquisition copy, not the look.
+`npm test` reports **32 passing, 3 failing**. The three failures are the
+pre-existing camera-framing math checks in `inspection.js` / `world.js`
+("Acquisition connection uses projected CAD geometry…", "Every real CAD target is
+framed outside the panel…", "All Page 01 buttons resolve to physical CAD
+targets…"). They concern CAD geometry and inspection framing, not the copy and
+not the three DOST funding chapters, and they were failing before this work.
 
 ```
 npm test
 ```
+
+Node 22 is required to build: Vite 8 uses `node:util`'s `styleText`, which
+Node 18 does not provide. `npm test` itself runs on either.

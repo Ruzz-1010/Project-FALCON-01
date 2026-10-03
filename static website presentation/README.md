@@ -33,7 +33,25 @@ Chapter 04 replaces the flat radio illustration with a locally generated Three.j
 
 This is a fictional illustrative environment, not a photograph, surveyed location, measured radio range or approved mast specification. Static meshes are batched by material; packet instances share geometry. The scene adds no remote assets or APIs. Tests check finite geometry, community inventory, endpoint alignment, camera framing and outage visibility. Browser visual verification is still pending because no browser is connected to the authoring session.
 
-Scroll through ten scenes: Ocean → buoy reveal → sensors → ESP32 → LoRa → Bay Station → wave estimation → AI → dashboard reveal → system pullback. Bottom chapter markers are keyboard-accessible jump links. Drag the uncovered ocean area in the reveal/sensor scenes to orbit; component buttons provide the same selection access as projected hotspots.
+Scroll through eighteen chapters: Ocean → Objectives → buoy reveal → sensors →
+ESP32 → LoRa → Bay Station → wave estimation → AI → dashboard reveal →
+validation → status → scope limits → risks → development plan → beneficiaries →
+funding plan → acknowledgement. Bottom chapter markers are keyboard-accessible
+jump links. Drag the uncovered ocean area in the reveal/sensor scenes to orbit;
+component buttons provide the same selection access as projected hotspots.
+
+Chapters 14–16 were added on 4 October 2026 to answer the three questions a DOST
+funding panel always asks and the earlier build had no page for:
+
+- **14 Roadmap** — the seven funded development stages, each with the limit on
+  what it may claim once finished. Stage 04 (calibrate) is the gate.
+- **15 Impact** — intended beneficiaries, each card naming the check still owed
+  before an intention becomes a promise, plus the innovation boundary.
+- **16 Funding** — the preliminary peso breakdown, filterable by installed /
+  reusable / process, with the total computed from the rows on screen.
+
+They were appended after every existing index, so the chapters the CAD
+choreography was tuned against keep their original numbers and camera poses.
 
 Use the LoRa interruption/restore control to observe an in-memory queue replaying original timestamps and rejecting duplicate IDs. Processing steps switch the illustrative pressure signal. Run prediction reveals a simulated future trace against persistence. Four dashboard tabs are a static presentation of the FALCON operator interface, not an embedded connection to the live app.
 
@@ -56,6 +74,13 @@ Inspection tests load the actual GLB and check all five target positions at desk
 
 ## Validation
 
-`npm test` covers ten-scene coverage, packet buffering/recovery/duplicate rejection, time continuity, original CAD hash and asset identity, static-only constraints and accessibility hooks. `npm run build` bundles the complete local site. Browser-based visual/interaction QA remains required on desktop, tablet and mobile; the authoring session had no connected browser surface, so no visual pass is claimed.
+`npm test` covers chapter coverage, packet buffering/recovery/duplicate rejection,
+time continuity, original CAD hash and asset identity, static-only constraints and
+accessibility hooks. `npm run build` bundles the complete local site.
+
+Implemented and virtual QA of the three DOST funding chapters is automated, but
+**a visual pass and browser-based interaction QA on desktop, tablet and mobile is
+still required**: the authoring session had no connected browser surface, so no
+visual claim is made for chapters 14–16.
 
 Removed presentation source is recoverable through Git history; no operational dashboard, thesis document or source CAD was deleted. Generated output is intentionally excluded from Git.

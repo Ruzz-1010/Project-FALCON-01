@@ -2,15 +2,19 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync,readdirSync} from 'node:fs';
 import {createHash} from 'node:crypto';
-import {chapters,chapterCount,components,createLink,setLink,tickLink,waveSamples,forecastSamples,linePath} from '../story.js';
+import {chapters,chapterCount,components,createLink,setLink,tickLink,waveSamples,forecastSamples,linePath,phases,funding,fundingRange} from '../story.js';
 const read=path=>readFileSync(new URL(path,import.meta.url),'utf8');
 
 test('Every required chapter exists exactly once in the new static story',()=>{
   const html=read('../index.html');
   assert.equal(chapters.length,chapterCount);
   assert.equal([...html.matchAll(/data-chapter="\d{1,2}"/g)].length,chapterCount);
-  for(let i=0;i<10;i++)assert.equal(html.split(`data-chapter="${i}"`).length,2);
-  for(const id of ['ocean','objectives','buoy','sensors','controller','radio','shore','waves','prediction','dashboard','validation','status','scope','risks','connected'])assert.ok(html.includes(`id="${id}"`));
+  // Every chapter index appears exactly once as a data-chapter attribute. The
+  // original count was 15; the three DOST funding chapters (Roadmap, Impact,
+  // Funding) were appended after every existing index, so the chapters the CAD
+  // choreography was tuned against keep their original numbers.
+  for(let i=0;i<chapterCount;i++)assert.equal(html.split(`data-chapter="${i}"`).length,2);
+  for(const id of ['ocean','objectives','buoy','sensors','controller','radio','shore','waves','prediction','dashboard','validation','status','scope','risks','roadmap','impact','funding','connected'])assert.ok(html.includes(`id="${id}"`));
   const ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);assert.equal(new Set(ids).size,ids.length);
 });
 test('LoRa outage keeps sensing and original timestamps without accepting packets at shore',()=>{
@@ -48,6 +52,30 @@ test('Only local static resources; no React, operational API, database or live t
   }
   assert.equal([...read('../index.html').matchAll(/data-tab="/g)].length,4);
   const html=read('../dist/index.html');assert.doesNotMatch(html,/(?:src|href)="https?:/);assert.match(html,/\.\/assets\//);
+});
+test('Both pages carry one camera pose per chapter and the same chapter count',()=>{
+  // A pose/chapter mismatch would silently stretch or compress the whole camera
+  // timeline, which is the failure the pose list warns about in a comment.
+  const world=read('../world.js');
+  const block=world.slice(world.indexOf('const poses = ['),world.indexOf('// The poses array and the chapter list'));
+  const poses=[...block.matchAll(/\{eye:/g)].length+[...block.matchAll(/homeShots\[|coastCamera\[/g)].length;
+  assert.equal(poses,chapterCount);
+  // The presenter build is a separate document and must stay in step with it.
+  const present=read('../present.html');
+  assert.equal([...present.matchAll(/data-chapter="\d{1,2}"/g)].length,chapterCount);
+  for(const id of ['roadmap','impact','funding'])assert.ok(present.includes(`id="${id}"`));
+});
+test('The funding plan is internally consistent and never quoted as a firm price',()=>{
+  // The headline figure must always equal the sum of the visible categories, so
+  // the total can never drift away from the table above it.
+  assert.equal(fundingRange(),'₱72,000 – ₱131,000');
+  assert.equal(fundingRange(funding.filter(r=>r.kind!=='installed')),'₱18,000 – ₱35,000');
+  const html=read('../index.html');
+  assert.match(html,/Planning range only, not a supplier quotation/);
+  assert.match(html,/subject to supplier quotations|replaced with current quotations/);
+  // Every category has to carry one of the three filterable kinds.
+  for(const row of funding)assert.ok(['installed','reusable','process'].includes(row.kind));
+  for(const phase of phases)assert.match(phase.claim,/./);
 });
 test('All original geometry is shipped byte-identically; no pretend replacement buoy',()=>{
   const bytes=readFileSync(new URL('../../dashboard-next/public/models/PROJECT-FALCON-V2.glb',import.meta.url));

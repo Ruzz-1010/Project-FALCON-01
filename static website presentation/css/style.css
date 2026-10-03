@@ -1,9 +1,0 @@
-*{box-sizing:border-box}
-body{margin:0;background:#041522;color:white;font-family:Arial;overflow:hidden}
-header{position:fixed;top:0;width:100%;padding:20px;display:flex;justify-content:space-between}
-button{padding:12px 25px;border-radius:25px}
-section{height:100vh;padding:10%;display:none}
-section.active{display:block;animation:fade .7s}
-h1{font-size:clamp(35px,6vw,80px)}
-.box,.flow{background:#ffffff15;padding:30px;border-radius:20px;font-size:22px}
-@keyframes fade{from{opacity:0}to{opacity:1}}

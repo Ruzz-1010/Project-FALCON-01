@@ -39,3 +39,16 @@ This pass is a **visual composition redesign** for the DOST/thesis presentation.
 ## Engineering constraint
 
 The redesign does not replace the original FALCON CAD geometry or invent new hardware capabilities.
+
+## Later state (4 October 2026)
+
+This changelog describes a superseded pass and is kept as a record. Two of the
+files it lists no longer exist:
+
+- `presentation-v2.css` was replaced by `theme-deep.css` (the Deep Water design)
+  and has been deleted.
+- The `dist/` bundle is generated and is no longer tracked; `dist/presentation-v2.css`
+  is gone with it.
+
+`index.html` is current, but it no longer loads `presentation-v2.css`. For the
+current build, read `PRESENTATION-BUILD.md` and `README.md` instead.

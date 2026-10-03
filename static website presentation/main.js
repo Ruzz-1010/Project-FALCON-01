@@ -7,8 +7,12 @@ import {createController} from './controller.js';
 import {baySteps,bayPipeline,arrivalPhase} from './bay-story.js';
 import {createWaveEstimation} from './wave-estimation.js';
 import {chapters,CH,chapterCount,components,createLink,setLink,tickLink,waveSamples,forecastSamples,linePath} from './story.js';
+import {buildDostDeck} from './dost-deck.js';
 
 const $=selector=>document.querySelector(selector);
+// The three DOST funding chapters are static markup, so they are populated once
+// at load rather than every frame. This adds no 3D work and no animation loop.
+buildDostDeck();
 const acquisition=createAcquisition($('#acquisition-dock'));
 const controllerOutput=document.createElement('p');controllerOutput.className='controller-output';$('#controller .packet-console').append(controllerOutput);
 const controller=createController($('#controller .chip-stage'));
