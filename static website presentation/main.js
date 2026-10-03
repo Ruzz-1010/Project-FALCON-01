@@ -33,7 +33,7 @@ function openBay(id='station'){
   $('#bay-note').textContent='Illustrative only. Final layout pending.';
   $('#bay-step-index').textContent=id==='station'?'01':'02';
   $('#bay-step-kind').textContent='SYSTEM';
-  $('#bay-panel-menu').empty();
+  $('#bay-panel-menu').replaceChildren();
   $('#bay-explanation').hidden=false;
   $('#bay-path-current').textContent='RECEIVE → PROCESS → INSIGHT';
   document.querySelectorAll('[data-bay]').forEach(b=>b.setAttribute('aria-pressed','false'));
@@ -132,9 +132,9 @@ function overviewMarkup(){const stale=!link.online;return `<div class="demo-over
 function renderDashboard(){
   const host=$('#dashboard-content');
   if(currentTab==='overview')host.innerHTML=overviewMarkup();
-  if(currentTab==='motion')host.innerHTML='<div class="demo-motion"><svg viewBox="0 0 160 200" aria-label="Illustrative heave indicator, not a replacement buoy model" role="img"><path d="M10 125Q40 113 80 125T150 125" fill="none" stroke="#448591"/><g class="motion-outline"><path d="M80 40V100M70 50L80 40 90 50M70 90L80 100 90 90" fill="none" stroke="#357889" stroke-width="2"/><circle cx="80" cy="125" r="9" fill="#397d8a"/></g><text x="80" y="175" text-anchor="middle">HEAVE / DEMO</text></svg><p><strong>Buoy Motion</strong><br>A pressure-informed illustration—not measured roll or pitch.<br>The original CAD stays the physical reference.<br><a href="#buoy">Return to the buoy ↗</a></p></div>';
-  if(currentTab==='sensors')host.innerHTML=`<table class="sensor-table"><thead><tr><th>Observation</th><th>Role</th><th>Status</th></tr></thead><tbody><tr><td>Pressure</td><td>Wave processing input</td><td>${link.online?'Calibration pending':'Stale'}</td></tr><tr><td>Wind</td><td>Primary measurement</td><td>Simulated</td></tr><tr><td>GPS</td><td>Supporting telemetry</td><td>Simulated</td></tr><tr><td>LoRa</td><td>Telemetry sender</td><td>${link.online?'Simulated link':'Interrupted'}</td></tr><tr><td>Battery / solar</td><td>Energy monitoring</td><td>Simulated</td></tr><tr><td>Enclosure</td><td>Health / security</td><td>Simulated</td></tr></tbody></table>`;
-  if(currentTab==='logs')host.innerHTML=`<div class="demo-log"><time>SIM</time><span>${link.online?'Shore link available.':'LoRa interrupted. Buoy packets buffered.'}</span></div><div class="demo-log"><time>SIM</time><span>${link.buffer.length} packets queued · ${link.received.length} accepted without duplicate IDs.</span></div><div class="demo-log"><time>NOTE</time><span>Calibration and controlled deployment validation remain pending.</span></div><p class="demo-note">Presentation events only. No hardware, alarm or database connection.</p>`;
+  if(currentTab==='motion')host.innerHTML='<div class="demo-motion"><svg viewBox="0 0 160 200" aria-label="Illustrative heave indicator, not a replacement buoy model" role="img"><path d="M10 125Q40 113 80 125T150 125" fill="none" stroke="#448591"/><g class="motion-outline"><path d="M80 40V100M70 50L80 40 90 50M70 90L80 100 90 90" fill="none" stroke="#357889" stroke-width="2"/><circle cx="80" cy="125" r="9" fill="#397d8a"/></g><text x="80" y="175" text-anchor="middle">HEAVE / DEMO</text></svg><p><strong>Buoy Motion</strong><br>A pressure-informed illustration—not measured roll or pitch.<br>Normal wave motion must not generate a security alert.<br>The original CAD stays the physical reference.<br><a href="#buoy">Return to the buoy ↗</a></p></div>';
+  if(currentTab==='sensors')host.innerHTML=`<table class="sensor-table"><thead><tr><th>Observation</th><th>Role</th><th>Status</th></tr></thead><tbody><tr><td>Pressure</td><td>Primary · wave estimation input</td><td>${link.online?'Calibration pending':'Stale'}</td></tr><tr><td>Wind</td><td>Primary measurement</td><td>Simulated</td></tr><tr><td>GPS</td><td>Supporting telemetry</td><td>Simulated</td></tr><tr><td>LoRa</td><td>Telemetry sender</td><td>${link.online?'Simulated link':'Interrupted'}</td></tr><tr><td>Battery / solar</td><td>Energy monitoring</td><td>Simulated</td></tr><tr><td>Enclosure</td><td>Health / security</td><td>Simulated</td></tr></tbody></table>`;
+  if(currentTab==='logs')host.innerHTML=`<div class="demo-log"><time>SIM</time><span>${link.online?'Shore link available.':'LoRa interrupted. Buoy packets buffered.'}</span></div><div class="demo-log"><time>SIM</time><span>${link.buffer.length} packets queued · ${link.received.length} accepted without duplicate IDs.</span></div><div class="demo-log"><time>NOTE</time><span>Security states shown as demo only: SECURE, WARNING, ALERT, DISARMED. Normal wave motion must not raise an alert.</span></div><div class="demo-log"><time>NOTE</time><span>Calibration, false-positive testing and controlled deployment validation remain pending.</span></div><p class="demo-note">Presentation events only. No hardware, alarm or database connection.</p>`;
 }
 document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{currentTab=b.dataset.tab;document.querySelectorAll('[data-tab]').forEach(el=>el.setAttribute('aria-pressed',String(el===b)));renderDashboard();}));renderDashboard();
 
@@ -202,6 +202,7 @@ function goToChapter(i){
   const index=Math.max(0,Math.min(sections.length-1,i));
   if(inspecting)endInspection(false);
   if(bayInspecting)closeBay(false);
+  if(inspecting&&index!==active)endInspection(false);
   if(homeOrbitActive&&index!==0)setHomeOrbit(false);
   // setChapter is driven by scroll position, so announce the destination now
   // and let the tween confirm it. This keeps the ladder in step on long jumps.
@@ -219,6 +220,9 @@ document.addEventListener('keydown',e=>{
   if(e.defaultPrevented||e.metaKey||e.ctrlKey||e.altKey)return;
   const el=e.target;
   if(el&&(el.isContentEditable||['INPUT','TEXTAREA','SELECT'].includes(el.tagName)))return;
+  // A panel that owns focus owns the arrow keys: the open inspection panel and
+  // the Bay Station cutaway would otherwise be scrolled away mid-look.
+  if(document.body.classList.contains('inspecting')||bayInspecting)return;
   // The orbit camera owns the arrow keys while it is open, and Escape still
   // belongs to the inspection panels.
   if(homeOrbitActive)return;

@@ -141,3 +141,94 @@ cd "static website presentation" && npm test
 
 The three Deep Water performance rules in `PRESENTATION-BUILD.md` are also
 enforced: no `:has()` selectors, no `backdrop-filter`, borders instead of shadows.
+---
+
+## 8. DOST presentation draft applied (3 October 2026)
+
+**Source:** `docs/DOST_PRESENTATION_DRAFT.md` (15 slides, adviser revision 2026-08-29).
+
+**Method:** the 15 draft slides were folded into the **existing ten cinematic
+chapters**. No scene was added, removed or reordered, so every camera pose, the
+scroll engine, the RAF loop and the Deep Water performance rules are untouched.
+
+| Chapter | Scene id | DOST slides absorbed |
+|---|---|---|
+| 00 | `ocean` | 1 Title, 2 Problem Statement |
+| 01 | `buoy` | 3 Objectives, 5 Hardware Baseline |
+| 02 | `sensors` | 5 Hardware Baseline (sensing side) |
+| 03 | `controller` | 6 Software Baseline (firmware) |
+| 04 | `radio` | 4 System Architecture |
+| 05 | `shore` | 4 System Architecture, 6 Software Baseline |
+| 06 | `waves` | 7 Wave Estimation Method |
+| 07 | `prediction` | 8 AI Prediction Requirement |
+| 08 | `dashboard` | 6 Software Baseline, 9 Security and Health |
+| 09 | `connected` | 10 Validation, 11 Status, 12 Scope, 13 Risks, 14 Next Steps |
+
+### What changed
+
+- **Chapter titles now use the draft's own section names** — Objectives and
+  Hardware Baseline, System Architecture, Wave Estimation Method, AI Prediction
+  Requirement, Dashboard / Security and Health, Validation / Status / Next Steps.
+- **Objectives** (slide 3) added as a six-item disclosure on chapter 01, verbatim
+  from the draft.
+- **Software Baseline** (slide 6): SQLite, REST API, dashboard and AI prediction
+  are now named as Bay Station functions, with the grouped telemetry endpoint and
+  its explicit LIVE / SIMULATED / ESTIMATED states.
+- **Wave Estimation Method** (slide 7): the pipeline now reads *quality check →
+  filter → baseline removal → depth response → calibration → estimated Hs*, and
+  the caption states that calibration and reference comparison are required
+  before any accuracy claim.
+- **AI Prediction Requirement** (slide 8): the 5 / 10 / 15-minute targets, the
+  chronological train / validation / test split and MAE / RMSE / bias reporting
+  are stated, along with "not a trained model result yet".
+- **Security and Health** (slide 9): SECURE / WARNING / ALERT / DISARMED, geofence
+  persistence, vibration / tamper and the enclosure switch, plus the rule that
+  normal wave motion must not generate alerts and that false-positive testing is
+  required. Added on chapter 08 and in the dashboard Logs tab.
+- **Validation Plan** (slide 10), **Current Status** (slide 11), **Scope Limits**
+  (slide 12), **Risks and Mitigations** (slide 13) and **Next Steps** (slide 14)
+  are all present on chapter 09 as disclosures, with the scope limits also stated
+  in the closing line.
+- **Metadata:** page title, description, header edition and coordinate stamp now
+  carry the DOST identity (5 October 2026, Fullbright College, Phase 1
+  undergraduate prototype, Master Context v8.1).
+
+### Boundary discipline preserved
+
+- Chapter 03 now says *"No mini PC or cellular modem on the buoy"* — the draft's
+  slide 4 boundary, stated on screen rather than implied.
+- Slide 4's "Bay Station mini PC" and slide 5's "Shore: Bay Station mini PC" are
+  consistent with the existing copy; SIM / 4G / 5G remain shore-only backhaul.
+- Pressure is still never called a direct wave-height measurement; the estimate
+  and calibration language is unchanged, and no accuracy claim was added.
+
+### Two real defects fixed while in the file
+
+1. **The Bay Station panel never opened.** `main.js` called
+   `$('#bay-panel-menu').empty()`, and `Element.prototype.empty()` does not exist,
+   so `openBay()` threw a `TypeError` on every click — the `bay-menu` was never
+   moved into the panel and no stage could be selected. Replaced with
+   `replaceChildren()`. This affected every Bay Station interaction, including the
+   new slide 6 software stages.
+2. **Inspection and Bay Station panels lost focus to the paging keys.**
+   Arrow / PageUp / PageDown / Space were still captured by the chapter pager
+   while a panel was open, so the panel could be scrolled away mid-look. The
+   chapter-paging keyboard handler now stands down while `inspecting` or
+   `bayInspecting` is set.
+
+### Verification
+
+- `tests/home.test.mjs` markup hash updated to the new content, with the reason
+  recorded in the test comment. The stale assertion `THE OCEAN NEVER STOPS
+  SPEAKING` (removed from `index.html` in commit `6b5cc32`, still present in the
+  presenter build) was corrected to the current DOST opening kicker.
+- `tests/acquisition.test.mjs` now passes: the `lora` signal was missing from
+  `signals`, so the suite's "all physical targets have an honest source → signal
+  → record explanation" check failed on a genuine gap. Adding it also means the
+  seventh inspectable part is no longer silent on chapter 02.
+- **31 pass / 2 fail.** The two failures are the pre-existing camera-framing math
+  checks in `inspection.js` / `world.js` ("Every real CAD target is framed outside
+  the panel…" and "All Page 01 buttons resolve to physical CAD targets…"), which
+  are unrelated to copy and were failing before this change.
+- Production build with Node 22 succeeds; all DOST strings above were confirmed
+  present in `dist/index.html`, `dist/present.html` and the JS chunks.

@@ -1,12 +1,12 @@
 export const chapters = ['Ocean', 'FALCON', 'Sensors', 'ESP32', 'LoRa', 'Bay Station', 'Wave estimate', 'AI prediction', 'Dashboard', 'Connected'];
 export const components = {
-  pressure: {label: 'Underwater pressure', prefix: 'WATER_PRESSURE_SENSOR_ASSEMBLY', detail: 'Underwater pressure sensor provides input for pressure-based estimated wave height. Calibration is pending.'},
-  wind: {label: 'Wind observation', prefix: 'WIND_SPEED_DIRECTION_SENSOR', detail: 'Wind speed and direction sensors provide primary meteorological measurements. Reference comparison pending.'},
-  gps: {label: 'GPS / position', prefix: 'GNSS_GPS_ANTENNA', detail: 'GPS provides position and timing for system health and security. Quality checks are applied before alerts.'},
-  battery: {label: 'Battery / energy storage', prefix: 'LIFEPO4_BATTERY_12V_ENVELOPE', detail: 'LiFePO4 battery stores solar energy for continuous operation during low light.'},
-  solar: {label: 'Solar / power', prefix: 'DUAL_30W_SOLAR_ARRAY', detail: 'Dual solar panels supply power to the buoy. Energy performance measurement is pending.'},
-  esp32: {label: 'ESP32 controller', prefix: 'ESP32_CONTROLLER_ENVELOPE', detail: 'ESP32 acquires sensor data, timestamps and validates values, then prepares LoRa telemetry frames. Processing remains on shore.'},
-  lora: {label: 'LoRa transceiver', prefix: 'NAVIGATION_LIGHT', detail: 'LoRa radio link transmits telemetry from buoy to shore Bay Station. Placement illustrated using existing model.'}
+  pressure: {label: 'Underwater pressure', prefix: 'WATER_PRESSURE_SENSOR_ASSEMBLY', detail: 'Primary Phase 1 measurement. Pressure is the input for the pressure-derived estimated wave height; calibration is required before any accuracy claim.'},
+  wind: {label: 'Wind observation', prefix: 'WIND_SPEED_DIRECTION_SENSOR', detail: 'Primary Phase 1 measurement: wind speed and direction at the buoy. Comparison against a reference anemometer is still pending.'},
+  gps: {label: 'GPS / position', prefix: 'GNSS_GPS_ANTENNA', detail: 'Supporting telemetry: position, time and geofence persistence for system health and security. Quality checks are applied before alerts.'},
+  battery: {label: 'Battery / energy storage', prefix: 'LIFEPO4_BATTERY_12V_ENVELOPE', detail: 'LiFePO4 battery stores solar energy for continuous operation during low light. Power budget validation is pending.'},
+  solar: {label: 'Solar / power', prefix: 'DUAL_30W_SOLAR_ARRAY', detail: 'Dual solar panels supply power to the buoy. No measured output is claimed until the power budget is validated.'},
+  esp32: {label: 'ESP32 controller', prefix: 'ESP32_CONTROLLER_ENVELOPE', detail: 'ESP32 firmware acquires sensor data, timestamps and validates values, then prepares LoRa telemetry frames. No mini PC or cellular modem on the buoy.'},
+  lora: {label: 'LoRa transceiver', prefix: 'NAVIGATION_LIGHT', detail: 'LoRa radio link carries telemetry from buoy to shore Bay Station. Hardware selection and range are not yet validated.'}
 };
 
 // Pure presentation state: no radio, database or operational telemetry involved.

@@ -26,11 +26,15 @@ test('Home effects fade completely before the Instrument; scroll interpolation i
 test('Pages 03–04 and 07–09 markup remains unchanged during the scoped 05–06 updates',()=>{
   const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
   const rest=html.slice(html.indexOf('    <section class="scene diagram-scene" id="controller"')).replace(/    <section class="scene" id="shore"[\s\S]*?(?=    <section class="scene wide-scene" id="waves")/,'').replace(/    <section class="scene wide-scene" id="waves"[\s\S]*?(?=    <section class="scene wide-scene" id="prediction")/,'');
-  // 2026-10-02: intentional edits inside this range are the chapter-paging
+  // 2026-10-03: intentional edits inside this range are the DOST draft copy
+  // (controller, radio, prediction and connected scenes), the chapter-paging
   // controls in the footer, the relative-unit axis labels on the forecast
-  // chart, and the Bay Station panel label. Research wording is untouched.
-  assert.equal(createHash('sha256').update(rest).digest('hex'),'3942bb2e9ccd329e0d25542f6edeb91ce92e677e9574a4c1460de43716890a51');
-  assert.match(html,/THE OCEAN NEVER STOPS SPEAKING/);assert.match(html,/id="begin-journey"/);
+  // chart, and the Bay Station panel label. Every honesty guard below still
+  // holds, and the surrounding scenes are still the cinematic originals.
+  assert.equal(createHash('sha256').update(rest).digest('hex'),'69e05ac167cac6db7fe79bcab44def009e18f1b1702f2a1bc003be11e08b3b58');
+  // The opening kicker was rewritten to the DOST title slide; the presenter
+  // build keeps the cinematic "Listen to the ocean" phrasing.
+  assert.match(html,/DOST PRESENTATION · 5 OCTOBER 2026/);assert.match(html,/id="begin-journey"/);
   // Paging controls are part of the standard build on both pages.
   assert.match(html,/id="chapter-prev"/);assert.match(html,/id="chapter-next"/);
 });

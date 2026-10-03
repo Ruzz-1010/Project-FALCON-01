@@ -5,7 +5,8 @@ export const signals={
   gps:{source:'Position & time',raw:'Position fixes · illustrative',record:'Position, time and fix quality',result:'Quality-checked location and timing',kind:'fix'},
   solar:{source:'Solar power',raw:'Voltage / current · illustrative',record:'Panel and battery state + time',result:'Power monitoring for buoy health',kind:'energy'},
   battery:{source:'Battery',raw:'Stored energy · illustrative',record:'Battery and charging state + time',result:'Energy kept for sensing and telemetry',kind:'energy'},
-  esp32:{source:'All sensor streams',raw:'Incoming records · illustrative',record:'Timestamp, quality and sequence',result:'Acquire → check → package for LoRa',kind:'streams'}
+  esp32:{source:'All sensor streams',raw:'Incoming records · illustrative',record:'Timestamp, quality and sequence',result:'Acquire → check → package for LoRa',kind:'streams'},
+  lora:{source:'LoRa link',raw:'Link packets · illustrative',record:'Sequence, link state and buffer',result:'Buoy → shore telemetry link',kind:'streams'}
 };
 export function signalTrace(kind,time,row=0){
   return Array.from({length:100},(_,i)=>{
