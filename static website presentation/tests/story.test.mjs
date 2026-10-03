@@ -9,12 +9,12 @@ test('Every required chapter exists exactly once in the new static story',()=>{
   const html=read('../index.html');
   assert.equal(chapters.length,chapterCount);
   assert.equal([...html.matchAll(/data-chapter="\d{1,2}"/g)].length,chapterCount);
-  // Every chapter index appears exactly once as a data-chapter attribute. The
-  // original count was 15; the three DOST funding chapters (Roadmap, Impact,
-  // Funding) were appended after every existing index, so the chapters the CAD
-  // choreography was tuned against keep their original numbers.
+  // Every chapter index appears exactly once as a data-chapter attribute.
+  // Fifteen chapters: the wrap-up merges Validation+Status, Scope+Risks and
+  // Impact+Funding into single pages, so the CAD-tuned chapters 0–9 keep
+  // their original numbers and only the tail was renumbered.
   for(let i=0;i<chapterCount;i++)assert.equal(html.split(`data-chapter="${i}"`).length,2);
-  for(const id of ['ocean','objectives','buoy','sensors','controller','radio','shore','waves','prediction','dashboard','validation','status','scope','risks','roadmap','impact','funding','connected'])assert.ok(html.includes(`id="${id}"`));
+  for(const id of ['ocean','objectives','buoy','sensors','controller','radio','shore','waves','prediction','dashboard','validation','risks','roadmap','funding','connected'])assert.ok(html.includes(`id="${id}"`));
   const ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);assert.equal(new Set(ids).size,ids.length);
 });
 test('LoRa outage keeps sensing and original timestamps without accepting packets at shore',()=>{
@@ -63,13 +63,14 @@ test('Both pages carry one camera pose per chapter and the same chapter count',(
   // The presenter build is a separate document and must stay in step with it.
   const present=read('../present.html');
   assert.equal([...present.matchAll(/data-chapter="\d{1,2}"/g)].length,chapterCount);
-  for(const id of ['roadmap','impact','funding'])assert.ok(present.includes(`id="${id}"`));
+  for(const id of ['roadmap','funding'])assert.ok(present.includes(`id="${id}"`));
+  for(const id of ['team-grid','beneficiary-grid','funding-body'])assert.ok(present.includes(`id="${id}"`));
 });
 test('The funding plan is internally consistent and never quoted as a firm price',()=>{
   // The headline figure must always equal the sum of the visible categories, so
   // the total can never drift away from the table above it.
-  assert.equal(fundingRange(),'₱72,000 – ₱131,000');
-  assert.equal(fundingRange(funding.filter(r=>r.kind!=='installed')),'₱18,000 – ₱35,000');
+  assert.equal(fundingRange(),'₱90,000 – ₱150,000');
+  assert.equal(fundingRange(funding.filter(r=>r.kind!=='installed')),'₱21,000 – ₱38,000');
   const html=read('../index.html');
   assert.match(html,/Planning range only, not a supplier quotation/);
   assert.match(html,/subject to supplier quotations|replaced with current quotations/);

@@ -101,7 +101,7 @@ main{position:relative;z-index:2;pointer-events:none}.scene{min-height:115svh;pa
 #buoy .component-picks button:hover,#buoy .component-picks button:focus-visible{transform:translateY(-2px);border-color:#8ccdd1;background:#0b2934}
 #buoy .component-picks button[aria-pressed=true]{border-color:var(--gold);background:#173641}
 #buoy .micro{max-width:31rem;line-height:1.65}
-#inspection-panel{top:14vh;right:5vw;width:min(390px,36vw);max-height:72vh;padding:1.4rem 1.5rem;background:#061a24f2;backdrop-filter:blur(14px);border:1px solid #79c7cf3d;border-left:2px solid var(--sea);border-radius:4px;box-shadow:0 24px 70px #0007}
+#inspection-panel{top:14vh;right:5vw;width:min(390px,36vw);max-height:72vh;padding:1.4rem 1.5rem;background:#061a24;border:1px solid #79c7cf3d;border-left:2px solid var(--sea);border-radius:4px;box-shadow:0 24px 70px #0007}
 #inspection-back{display:inline-flex;align-items:center;min-height:34px;margin-bottom:1.4rem;padding:.35rem 0;color:var(--sea);border-bottom:1px solid #79c7cf44}
 #inspection-panel h2{font-size:clamp(1.7rem,2.6vw,2.25rem);line-height:1.05;margin-bottom:1rem}
 #inspection-panel h3{font-size:.58rem;letter-spacing:.18em;margin-top:1.2rem}
@@ -209,3 +209,30 @@ main{position:relative;z-index:2;pointer-events:none}.scene{min-height:115svh;pa
   .coast-ready #radio .radio-metrics>div{border-right:0;border-bottom:1px solid #6d9ba52b}
   .coast-ready #radio .radio-footer{align-items:flex-start;flex-direction:column}.coast-ready #radio .radio-footer .micro{text-align:left}
 }
+
+/* --- DOST polish: readability panels + unified boxes (2026-10-05) --- */
+/* Text columns over the 3D scene get a fading dark panel, so copy stays
+   readable no matter where the buoy, coast or water renders behind it.
+   Shore keeps its own panel (higher specificity, untouched). */
+.scene:not(.wide-scene):not(.opening) .copy,#radio .copy{background:linear-gradient(100deg,rgba(4,17,25,.92) 0%,rgba(4,17,25,.78) 55%,rgba(4,17,25,0) 100%);padding:1.5rem 2.2rem 1.5rem 1.3rem;border-radius:4px}
+body.theme-deep .scene:not(.wide-scene):not(.opening) .copy,body.theme-deep #radio .copy{background:linear-gradient(100deg,rgba(5,12,17,.94) 0%,rgba(5,12,17,.8) 55%,rgba(5,12,17,0) 100%)}
+/* Lab plates: every content box shares one plate look. Sections that already
+   carry .dost-plate are excluded so borders never double up. */
+.wave-lab,.prediction-lab:not(.dost-plate),.radio-experience{border:1px solid var(--line);background:#07141c;border-radius:4px;padding:1.6rem 1.8rem}
+body.theme-deep .wave-lab,body.theme-deep .prediction-lab:not(.dost-plate),body.theme-deep .radio-experience{border-color:var(--w-line);background:var(--w-plate)}
+/* Tables: dark structural base (dashboard.css only styles the light monitor
+   box; theme-deep already owns the deep colors further down). */
+.sensor-table{width:100%;border-collapse:collapse;font-size:.84rem}
+.sensor-table th{font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;text-align:left;padding:.7rem .6rem;border-bottom:1px solid var(--line)}
+.sensor-table td{padding:.72rem .6rem;line-height:1.55;border-bottom:1px solid var(--line);vertical-align:top}
+.sensor-table tbody tr:last-child td{border-bottom:0}
+.sensor-table tbody tr:hover{background:#0d222c}
+body.theme-deep .sensor-table tbody tr:hover{background:var(--w-sea-soft)}
+/* Pipeline chips become pills, so multi-step flows read as one connected box.
+   #waves keeps its own spaced layout (ID wins); other chapters gain flex. */
+.wave-method{display:flex;flex-wrap:wrap;align-items:center;gap:.55rem .3rem}
+.wave-method span{border:1px solid var(--line);background:#0a1e28;border-radius:20px;padding:.42rem .8rem}
+.wave-method i{font-style:normal;color:var(--sea);margin:0 .15rem}
+body.theme-deep .wave-method span{border-color:var(--w-line);background:var(--w-inset)}
+@media(max-width:650px){.scene:not(.wide-scene):not(.opening) .copy,#radio .copy{padding:1.1rem 1rem}.wave-lab,.prediction-lab:not(.dost-plate),.radio-experience{padding:1.1rem 1rem}}
+@media(prefers-reduced-motion:reduce){.wave-method span{transition:none}}

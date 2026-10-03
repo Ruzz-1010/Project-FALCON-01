@@ -32,20 +32,20 @@ test('Pages 03–04 and 07–09 markup remains unchanged during the scoped 05–
   // chart, and the Bay Station panel label. Every honesty guard below still
   // holds, and the surrounding scenes are still the cinematic originals.
   //
-  // 2026-10-04: the three DOST funding chapters (roadmap, impact, funding) were
-  // appended after #risks, and the closing kicker moved from 14 to 17. That
-  // range sits inside the slice below, so the hash moved with it. The chapters
-  // it covers are unchanged apart from those additions - the original CAD
-  // framing and the chapters the choreography was tuned against are untouched.
-  assert.equal(createHash('sha256').update(rest).digest('hex'),'4a350a1d0af6493e63f3c3af112288c826ea3fb8f2fa5edf2e660626c0895c65');
+  // 2026-10-05: wrap-up merged 18 → 15 pages (Validation+Status,
+  // Scope+Risks, Impact+Funding; Roadmap carries the team grid; radio
+  // carries the 6-step Live Link; funding ₱90,000–₱150,000; roadmap is
+  // 5 bootcamp gates). No section added above #controller, no camera
+  // pose touched for chapters 0–9. Hash updated for the merged tail.
+  assert.equal(createHash('sha256').update(rest).digest('hex'),'67a8ee0adcc0431201effa4e18a95694f05e1f18257c5cc664d11ee65008e89a');
   // The opening kicker was rewritten to the DOST title slide; the presenter
   // build keeps the cinematic "Listen to the ocean" phrasing.
   assert.match(html,/DOST PRESENTATION · 5 OCTOBER 2026/);assert.match(html,/id="begin-journey"/);
   // Paging controls are part of the standard build on both pages.
   assert.match(html,/id="chapter-prev"/);assert.match(html,/id="chapter-next"/);
-  // The three DOST funding chapters must not drift out of the dismissed range:
+  // The wrap-up chapters must not drift out of the dismissed range:
   // if one is ever moved above #controller this guard would stop covering it.
-  for(const id of ['roadmap','impact','funding'])assert.ok(html.includes(`id="${id}"`));
+  for(const id of ['roadmap','funding'])assert.ok(html.includes(`id="${id}"`));
 });
 test('The story never claims calibrated metres or a direct wave-height measurement',()=>{
   const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');

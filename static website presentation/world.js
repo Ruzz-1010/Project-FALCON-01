@@ -18,9 +18,9 @@ import {createHomeOrbit} from './home-orbit.js';
 const poses = [
   homeShots[0],
   {eye:[2.6,1.45,3.8], aim:[-.65,.55,0]},
-  {eye:[2.9,1.25,4.5], aim:[.7,.5,0]},
+  {eye:[2.9,1.25,4.5], aim:[-.2,.5,0]},
   {eye:[1.4,1,2.6], aim:[1.8,.7,0]},
-  {eye:[2.9,1.25,4.5], aim:[.7,.5,0]},
+  {eye:[2.9,1.25,4.5], aim:[-.2,.5,0]},
   coastCamera[0],
   coastCamera[2],
   {eye:[12,1.1,7], aim:[10,.2,-2]},
@@ -30,12 +30,9 @@ const poses = [
   {eye:[7.2,2.7,8.3], aim:[4.5,.35,-1]},
   {eye:[7,2.8,8.4], aim:[4,.35,-1]},
   {eye:[6,3,8.8], aim:[2.5,.25,-.5]},
-  // Roadmap -> Impact -> Funding -> Acknowledgement: one slow, continuous
-  // pull-back over the water. The last pose is the original finale framing, so
-  // the ending still looks exactly as it always did.
-  {eye:[5.6,3,8.9], aim:[1.8,.2,-.3]},
-  {eye:[5.3,3,8.95], aim:[1.1,.18,-.15]},
-  {eye:[5.1,3,9], aim:[.5,.16,-.05]},
+  // Roadmap & Team -> Impact & Funding -> Acknowledgement: one slow,
+  // continuous pull-back over the water. The last pose is the original finale
+  // framing, so the ending still looks exactly as it always did.
   {eye:[5,3,9], aim:[0,.15,0]}
 ];
 // The poses array and the chapter list must stay the same length: a mismatch

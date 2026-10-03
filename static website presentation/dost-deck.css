@@ -45,7 +45,7 @@
 
 .phase-track{
   display:grid;
-  grid-template-columns:repeat(7,minmax(0,1fr));
+  grid-template-columns:repeat(5,minmax(0,1fr));
   border:1px solid var(--line);
   background:#050e16;
 }
@@ -158,6 +158,35 @@
 #funding details summary{padding:.85rem 0;font-size:.68rem;letter-spacing:.16em;color:var(--muted);cursor:pointer}
 #funding details summary:hover{color:var(--ink)}
 #funding details p{margin:0 0 .5rem;max-width:80ch;font-size:.82rem;line-height:1.7;color:var(--muted)}
+
+/* --- Team: bootcamp crew + mentors on the Roadmap chapter -------------- */
+.team-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.8rem;margin-top:1.2rem;padding-top:1.2rem;border-top:1px solid var(--line)}
+.teammate{border:1px solid var(--line);border-radius:2px;padding:.85rem .95rem;background:#050e16}
+.teammate h3{margin:0 0 .3rem;font-size:.92rem;font-weight:600}
+.teammate p{margin:0;font-size:.74rem;line-height:1.55;color:var(--muted)}
+.teammate.mentor{border-left:2px solid var(--sea)}
+.team-model{grid-column:1/-1;margin:.2rem 0 0;font-size:.72rem;color:var(--muted)}
+body.theme-deep .team-grid{border-top-color:var(--w-line-soft)}
+body.theme-deep .teammate{border-color:var(--w-line-soft);background:var(--w-inset)}
+body.theme-deep .teammate h3{color:var(--w-ink)}
+body.theme-deep .teammate p{color:var(--w-ink-soft)}
+body.theme-deep .teammate.mentor{border-left-color:var(--w-sea-line)}
+@media(max-width:850px){.team-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* --- Live Link: 6-step buoy-to-Bay story inside the radio chapter --------- */
+.link-steps{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:.6rem;margin-top:1.2rem}
+.link-step{border:1px solid var(--line);border-radius:2px;padding:.8rem .85rem;background:#050e16;transition:border-color .25s ease,background .25s ease}
+.link-step b{display:block;font-size:.62rem;letter-spacing:.14em;color:var(--sea);margin-bottom:.3rem}
+.link-step span{display:block;font-size:.78rem;font-weight:600;margin-bottom:.25rem}
+.link-step small{display:block;font-size:.7rem;line-height:1.55;color:var(--muted)}
+.link-step.live{border-color:var(--sea)}
+body.theme-deep .link-step{border-color:var(--w-line-soft);background:var(--w-inset)}
+body.theme-deep .link-step b{color:var(--w-sea)}
+body.theme-deep .link-step span{color:var(--w-ink)}
+body.theme-deep .link-step small{color:var(--w-ink-soft)}
+body.theme-deep .link-step.live{border-color:var(--w-sea-line);background:var(--w-sea-soft)}
+@media(max-width:850px){.link-steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(prefers-reduced-motion:reduce){.link-step{transition:none}}
 
 /* ---------------------------------------------------------------------------
    2. DEEP WATER — palette, type and hairlines

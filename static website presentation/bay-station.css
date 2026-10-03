@@ -105,7 +105,7 @@
 #shore .bay-inspect-arrow{margin-left:auto;color:var(--sea);font-size:1rem}
 #shore .shore-system-foot{padding-top:.7rem}
 
-#shore #bay-panel{left:4vw;right:auto;top:13svh;width:min(410px,34vw);max-height:79svh;padding:1.1rem 1.2rem;background:linear-gradient(145deg,#051923f7,#07151cf5);border:1px solid #80b8b56e;border-radius:3px;box-shadow:0 18px 50px #0009;backdrop-filter:blur(10px)}
+#shore #bay-panel{left:4vw;right:auto;top:13svh;width:min(410px,34vw);max-height:79svh;padding:1.1rem 1.2rem;background:#051923;border:1px solid #80b8b56e;border-radius:3px;box-shadow:0 18px 50px #0009}
 #shore .bay-panel-top{padding-bottom:.7rem;margin-bottom:.8rem}
 #shore .panel-mode{display:block;margin-top:.18rem;font-size:.53rem;letter-spacing:.12em;color:#7ea2a4;font-weight:500}
 #shore .bay-selection-head{display:grid;grid-template-columns:52px 1fr;gap:.8rem;align-items:center;margin-bottom:.85rem}
@@ -156,11 +156,10 @@
   max-height:78svh;
   overflow:auto;
   padding:1rem 1rem .9rem;
-  background:linear-gradient(145deg,#041722f7,#06151cf0 72%,#08232bd8);
+  background:#041722;
   border:1px solid #69b9be66;
   border-radius:4px;
   box-shadow:0 20px 60px #0009;
-  backdrop-filter:blur(14px);
 }
 #shore #bay-panel::before{
   content:'';

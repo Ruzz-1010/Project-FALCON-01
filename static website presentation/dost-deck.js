@@ -1,22 +1,18 @@
 /* ============================================================================
    FALCON-01 — DOST DECK  (dost-deck.js)
 
-   The interactive half of the three DOST funding chapters that the earlier build
-   had no page for:
+   The interactive half of the DOST wrap-up chapters:
 
-     14 ROADMAP   — the seven funded development stages, each with the limit on
-                    what it is allowed to claim once it is finished.
-     15 IMPACT    — intended beneficiaries, each card naming the check that has
-                    to pass before an intention becomes a promise.
-     16 FUNDING   — the preliminary peso breakdown, filterable, with the running
-                    total computed from the rows on screen.
+     ROADMAP & TEAM — five bootcamp gates, each with the limit on what it is
+                      allowed to claim, plus the crew and mentors.
+     IMPACT & FUNDING — intended beneficiaries with the check still owed, and
+                      the preliminary peso breakdown with running total.
 
-   Plain DOM only: no fetch, no storage, no framework, no live data. Every number
-   shown comes from story.js, which took it from the DOST idea package. The
-   wording of the honesty labels is thesis wording and is not softened here.
+   Plain DOM only: no fetch, no storage, no framework, no live data. Every
+   number shown comes from story.js. Thesis honesty wording is not softened.
    ========================================================================== */
 
-import {phases, funding, fundingKinds, pesoAmount, fundingRange, beneficiaries} from './story.js';
+import {phases, execution, funding, fundingKinds, pesoAmount, fundingRange, beneficiaries} from './story.js';
 
 const $ = selector => document.querySelector(selector);
 const esc = value => String(value).replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
@@ -35,11 +31,12 @@ function buildRoadmap() {
 
   function show(index) {
     const phase = phases[index];
-    detail.innerHTML = `<div class="phase-head"><span class="phase-index">STAGE ${phase.index}</span><h3>${esc(phase.name)}</h3><span class="phase-span">${esc(phase.span)}</span></div>
+    detail.innerHTML = `<div class="phase-head"><span class="phase-index">GATE ${phase.index} · ${esc(phase.span)}</span><h3>${esc(phase.name)}</h3></div>
       <dl class="phase-body">
         <div><dt>Output</dt><dd>${esc(phase.output)}</dd></div>
         <div><dt>What may be claimed afterwards</dt><dd>${esc(phase.claim)}</dd></div>
-      </dl>`;
+      </dl>
+      <p class="micro">Bootcamp: ${esc(execution.model)} — ${esc(execution.weekly)}.</p>`;
     track.querySelectorAll('[data-phase]').forEach((button, i) => {
       const on = i === index;
       button.setAttribute('aria-selected', String(on));
@@ -117,8 +114,22 @@ function buildFunding() {
   render('all');
 }
 
+/* ---------------------------------------------------------------------------
+   TEAM — bootcamp crew + mentors. Rendered into #team-grid on the Roadmap
+   chapter so the panel sees who owns each gate.
+   -------------------------------------------------------------------------- */
+function buildTeam() {
+  const grid = $('#team-grid');
+  if (!grid || !execution) return;
+  grid.innerHTML =
+    execution.team.map(m => `<article class="teammate"><h3>${esc(m.name)}</h3><p>${esc(m.role)}</p></article>`).join('') +
+    execution.mentors.map(m => `<article class="teammate mentor"><h3>${esc(m.name)}</h3><p>${esc(m.role)}</p></article>`).join('') +
+    `<p class="micro team-model">${esc(execution.model)} — ${esc(execution.weekly)}.</p>`;
+}
+
 export function buildDostDeck() {
   buildRoadmap();
   buildImpact();
   buildFunding();
+  buildTeam();
 }

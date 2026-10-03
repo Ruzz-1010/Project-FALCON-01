@@ -1,59 +1,70 @@
-// Eighteen chapters. The first fifteen carry the DOST draft slides; the last
-// three answer the three questions a funding panel always asks and the earlier
-// build had no slide for: what is the plan, who benefits, and what will it cost.
-// The first half keeps the spatial journey (offshore -> buoy -> shore) so the
-// original CAD stays the centrepiece; the second half is the wrap-up slides.
-export const chapters = ['Ocean', 'Objectives', 'FALCON buoy', 'Sensors', 'Software', 'LoRa link', 'Bay Station', 'Wave estimate', 'AI prediction', 'Dashboard', 'Validation', 'Status', 'Scope limits', 'Risks', 'Roadmap', 'Impact', 'Funding', 'Acknowledgement'];
+// Fifteen chapters. The first ten carry the DOST draft slides as a spatial
+// journey (offshore -> buoy -> shore) so the original CAD stays the
+// centrepiece; the last five are the wrap-up: evidence, boundaries, plan,
+// cost and close.
+export const chapters = ['Ocean', 'Objectives', 'FALCON buoy', 'Sensors', 'Software', 'LoRa link', 'Bay Station', 'Wave estimate', 'AI prediction', 'Dashboard', 'Validation & Status', 'Scope & Risks', 'Roadmap & Team', 'Impact & Funding', 'Acknowledgement'];
 
 // Named chapter indices. The 3D choreography in world.js and the paging engine
 // in main.js both read these instead of magic numbers, so inserting or moving a
 // chapter can never silently re-point a camera pose at the wrong scene.
-// Roadmap, Impact and Funding were appended AFTER every original index, so the
-// chapters the CAD choreography was tuned against (1, 2, 5, 6) keep their exact
-// original numbers.
+// Chapters 0–9 keep their exact original numbers, which the CAD choreography
+// was tuned against; 10–14 are the merged wrap-up chapters.
 export const CH = {
   ocean: 0, objectives: 1, buoy: 2, sensors: 3, controller: 4, radio: 5, shore: 6,
-  waves: 7, prediction: 8, dashboard: 9, validation: 10, status: 11, scope: 12,
-  risks: 13, roadmap: 14, impact: 15, funding: 16, connected: 17
+  waves: 7, prediction: 8, dashboard: 9, validation: 10, risks: 11,
+  roadmap: 12, funding: 13, connected: 14
 };
 
-// The seven funded development stages, straight from the DOST idea package
-// (Slide 8, "Development plan"). These are proposals with indicative durations,
-// not commitments, and are shown that way on the Roadmap chapter.
+// Five bootcamp gates over 5 months (20 weeks), adviser-directed focused
+// execution. Half-OJT half-thesis with dorm bootcamp; DOST as OJT host.
+// Durations are planning ranges, not field results.
 export const phases = [
-  {index: '01', name: 'Design + procure', span: '1 month', output: 'Frozen parts list and purchased components.', claim: 'Nothing is claimable here. Procurement is not evidence.'},
-  {index: '02', name: 'Integrate electronics', span: '1–2 months', output: 'Working sensor and power assemblies on the bench.', claim: 'Continuity, power-up and bench behaviour only.'},
-  {index: '03', name: 'Fabricate buoy', span: '1 month', output: 'A sealed and mechanically stable physical prototype.', claim: 'Ingress and stability check results, not sea performance.'},
-  {index: '04', name: 'Calibrate + test', span: '1–2 months', output: 'Calibration records and corrected readings against a reference.', claim: 'This is the gate: no accuracy claim may leave this stage.'},
-  {index: '05', name: 'Coastal pilot', span: '2–3 months', output: 'A supervised local dataset from one identified site.', claim: 'Documented site conditions and uptime — not a public service.'},
-  {index: '06', name: 'Train + evaluate', span: '1–2 months', output: 'A baseline-versus-model comparison with MAE, RMSE and bias.', claim: 'Prediction skill figures may be quoted only with those numbers.'},
-  {index: '07', name: 'Demonstrate + report', span: '1 month', output: 'A validated prototype and the technical report.', claim: 'Only what the earlier stages actually measured.'}
+  {index: '01', name: 'Freeze + procure', span: 'Month 1 · Wks 1-4', output: 'Frozen parts list, ordered sensors/power/LoRa/BayStation; barangay-hall permits + reference access.', claim: 'Nothing is claimable here. Procurement is not evidence.'},
+  {index: '02', name: 'Bench integration', span: 'Month 2 · Wks 5-8', output: 'ESP32 + pressure + wind one at a time, then GPS/INA260/security; rails, protection, connectors verified.', claim: 'Continuity, power-up and bench behaviour only.'},
+  {index: '03', name: 'Calibrate + software', span: 'Month 3 · Wks 9-12', output: 'Pressure baseline/depth/coeffs, wind cal; serial/API/SQLite/stale/security-persistence; LoRa gateway + Bay SIM backhaul + outage recovery.', claim: 'Corrected readings vs reference only; no field claim yet.'},
+  {index: '04', name: 'Controlled validation', span: 'Month 4 · Wks 13-16', output: 'Tank/pool wave vs reference (MAE/RMSE/bias); geofence/tamper false-positive tests; 24h power log + 72h solar; waterproofing.', claim: 'This is the gate: no accuracy figure leaves this stage.'},
+  {index: '05', name: 'Coastal trial + thesis', span: 'Month 5 · Wks 17-20', output: 'Supervised pilot dataset; AI baseline vs persistence on chronological held-out; updated BOM/drawings/limitations; DOST + thesis report.', claim: 'Only what the earlier stages actually measured.'}
 ];
 
-// The preliminary funding plan from the DOST idea package (Slide 9). A planning
-// range, and it says so on the page. "kind" drives the little filter on the
-// Funding chapter: a panel member can separate parts that stay in the prototype
-// from reusable tools and process costs.
+// Bootcamp execution model shown on the Roadmap chapter.
+export const execution = {
+  model: 'Bootcamp dorm · half-OJT half-thesis · DOST as OJT host',
+  weekly: 'AM OJT tasks · PM thesis block · Sat build day · Sun docs/rest',
+  team: [
+    {name: 'Jhon Ruzzel Correa', role: 'Hardware + Power + LoRa firmware'},
+    {name: 'Mayla Bacaltos', role: 'Thesis paper (co-lead)'},
+    {name: 'Gina Caballero', role: 'Thesis paper (co-lead)'},
+    {name: 'Gwyn Isabel Enriquez', role: 'Edge + AI + Dashboard'}
+  ],
+  mentors: [
+    {name: 'Sir Jam', role: 'Papers adviser · Gates 1 & 5'},
+    {name: 'Sir Jeff', role: 'Hardware adviser · Gates 2 & 4'},
+    {name: 'TBD · sourcing', role: 'Software/AI or DOST counterpart · Gate 3'}
+  ]
+};
+
+// Adviser-approved planning range PHP 90,000–150,000 (midpoint ~₱115,000).
+// "kind" drives the filter: installed stays with the delivered system,
+// reusable are tools kept for later tests, process covers trials/contingency.
+// Planning range only — replaced with 3-supplier quotations before submission.
 export const funding = [
-  {category: 'Sensors and embedded electronics', min: 15000, max: 22000, kind: 'installed'},
-  {category: 'Bay Station computer, storage, LoRa networking and backhaul', min: 5000, max: 12000, kind: 'installed'},
-  {category: 'Solar, battery, charging and protected distribution', min: 12000, max: 20000, kind: 'installed'},
-  {category: 'Buoy body, structure, enclosure and marine connectors', min: 15000, max: 28000, kind: 'installed'},
-  {category: 'Mooring, anchor, corrosion protection and safety hardware', min: 7000, max: 14000, kind: 'installed'},
-  {category: 'Calibration, reference tools, fabrication and field trials', min: 10000, max: 20000, kind: 'reusable'},
-  {category: 'Transport, documentation, spares and contingency', min: 8000, max: 15000, kind: 'process'}
+  {category: 'Sensors and embedded electronics (pressure, wind, ESP32, GPS)', min: 18000, max: 26000, kind: 'installed'},
+  {category: 'Bay Station computer, LoRa gateway, SIM backhaul + antennas', min: 15000, max: 25000, kind: 'installed'},
+  {category: 'Solar 60W, battery 20–30Ah, MPPT + protected distribution', min: 14000, max: 22000, kind: 'installed'},
+  {category: 'Buoy body Ø650mm, keel, ballast, enclosure + marine connectors', min: 15000, max: 25000, kind: 'installed'},
+  {category: 'Single-anchor mooring, corrosion protection + safety hardware', min: 7000, max: 14000, kind: 'installed'},
+  {category: 'Calibration, reference rental, fabrication + supervised trials', min: 12000, max: 20000, kind: 'reusable'},
+  {category: 'Transport, documentation, spares + contingency', min: 9000, max: 18000, kind: 'process'}
 ];
 
 // Formatting and totals live here so the figure under the table can never
 // drift away from the categories above it. No locale-dependent formatting: the
 // peso breakdown has to read the same on every machine.
 //
-// NOTE ON THE TOTAL: the seven categories above sum to 72,000-131,000. The
-// source package is inconsistent with itself here - its table's summary row and
-// its funding-breakdown graphic say 72,000-127,000, while its own spoken script
-// says "thousand to one hundred thirty-one thousand" and its line items actually
-// add up to 131,000. The line items are what a panel can check by hand, so the
-// sum is what this page shows. Recorded rather than silently smoothed over.
+// NOTE ON THE TOTAL: the seven categories above sum to 90,000–150,000
+// (midpoint ~115,000). Landed cost includes 20–30% shipping/tax/markup on
+// imported modules; LoRa gateway + mini-PC + SIM are now budgeted (were TBD).
+// Reusable tools are separated from installed parts before submission.
 const peso = value => `₱${String(value).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
 export const pesoAmount = value => `${peso(value.min)} – ${peso(value.max)}`;
 export function fundingRange(rows = funding) {

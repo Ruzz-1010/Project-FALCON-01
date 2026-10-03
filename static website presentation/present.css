@@ -206,9 +206,8 @@ body.p-presenter .skip{display:none}
   width:min(340px,86vw);
   padding:1rem 1.1rem 1.15rem;
   border:1px solid rgba(94,231,255,.34);
-  background:rgba(3,15,23,.96);
+  background:#030f17;
   box-shadow:0 26px 70px rgba(0,0,0,.6);
-  backdrop-filter:blur(6px);
 }
 
 #p-jump h2{

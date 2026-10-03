@@ -215,9 +215,13 @@ function goToChapter(i){
 }
 const nextChapter=()=>goToChapter(active>=sections.length-1?0:active+1);
 const prevChapter=()=>goToChapter(active<=0?0:active-1);
+// 200ms key debounce so a held clicker key never double-jumps chapters.
+let lastPageAt=0;
+function pagedNext(){const now=performance.now();if(now-lastPageAt<200)return;lastPageAt=now;nextChapter();}
+function pagedPrev(){const now=performance.now();if(now-lastPageAt<200)return;lastPageAt=now;prevChapter();}
 const nextBtn=$('#chapter-next'),prevBtn=$('#chapter-prev');
-if(nextBtn)nextBtn.addEventListener('click',nextChapter);
-if(prevBtn)prevBtn.addEventListener('click',prevChapter);
+if(nextBtn)nextBtn.addEventListener('click',pagedNext);
+if(prevBtn)prevBtn.addEventListener('click',pagedPrev);
 // Clicking a chapter tick glides there instead of jumping.
 nav.addEventListener('click',e=>{const link=e.target.closest('a');if(!link)return;e.preventDefault();goToChapter([...nav.children].indexOf(link));});
 document.addEventListener('keydown',e=>{
@@ -230,14 +234,14 @@ document.addEventListener('keydown',e=>{
   // The orbit camera owns the arrow keys while it is open, and Escape still
   // belongs to the inspection panels.
   if(homeOrbitActive)return;
-  if(e.key==='ArrowRight'||e.key==='PageDown'){e.preventDefault();nextChapter();}
-  else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();prevChapter();}
+  if(e.key==='ArrowRight'||e.key==='PageDown'){e.preventDefault();pagedNext();}
+  else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();pagedPrev();}
   else if(e.key==='Home'){e.preventDefault();goToChapter(0);}
   else if(e.key==='End'){e.preventDefault();goToChapter(sections.length-1);}
   // Space advances, which is what a presenter expects from a clicker. It is
   // left alone when a button or link holds focus, so the keyboard can still
   // operate whatever the panel is currently pointing at.
-  else if(e.key===' '&&!el?.closest('button,a[href],summary,details,[role=button]')){e.preventDefault();nextChapter();}
+  else if(e.key===' '&&!el?.closest('button,a[href],summary,details,[role=button]')){e.preventDefault();pagedNext();}
 });
 window.falcon={goToChapter,nextChapter,prevChapter,isPaused:()=>paused};
 function scrollState(){
