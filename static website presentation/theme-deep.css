@@ -694,9 +694,10 @@ body.theme-deep #controller .controller-output{
    -------------------------------------------------------------------------- */
 
 body.theme-deep .coast-ready #radio .radio-experience{
-  background:linear-gradient(transparent,rgba(6,13,18,.9) 22%);
-  border:0;
-  border-radius:0;
+  background:var(--w-plate);
+  border:1px solid var(--w-line);
+  border-radius:4px;
+  padding:1.6rem 1.8rem;
 }
 body.theme-deep .coast-ready #radio .radio-flow{color:var(--w-ink-faint);letter-spacing:.16em}
 body.theme-deep .coast-ready #radio .radio-flow i{color:var(--w-line-firm)}

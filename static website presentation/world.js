@@ -18,9 +18,9 @@ import {createHomeOrbit} from './home-orbit.js';
 const poses = [
   homeShots[0],
   {eye:[2.6,1.45,3.8], aim:[-.65,.55,0]},
-  {eye:[2.9,1.25,4.5], aim:[-.2,.5,0]},
+  {eye:[2.9,1.25,4.5], aim:[-.9,.5,0]},
   {eye:[1.4,1,2.6], aim:[1.8,.7,0]},
-  {eye:[2.9,1.25,4.5], aim:[-.2,.5,0]},
+  {eye:[2.9,1.25,4.5], aim:[-.9,.5,0]},
   coastCamera[0],
   coastCamera[2],
   {eye:[12,1.1,7], aim:[10,.2,-2]},

@@ -36,7 +36,7 @@ main{position:relative;z-index:2;pointer-events:none}.scene{min-height:115svh;pa
 .coast-ready #radio{min-height:135svh;justify-content:flex-start;padding-top:17svh}
 .coast-ready #radio .copy{width:55%;max-width:640px}
 .coast-ready #radio .copy h2{font-size:clamp(2.3rem,3.8vw,4.3rem)}
-.coast-ready #radio .radio-experience{margin-top:36svh;background:linear-gradient(transparent,#051721d9 25%);padding:1rem 0 0}
+.coast-ready #radio .radio-experience{margin-top:36svh;background:#07141c;border:1px solid var(--line);border-radius:4px;padding:1.6rem 1.8rem}
 .coast-ready #radio .radio-route{display:none}
 .coast-ready #radio .link-controls{justify-content:flex-start;margin:0 0 1rem}
 .coast-ready #radio .buffer-strip{background:#071b2699}
