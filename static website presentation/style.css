@@ -236,3 +236,25 @@ body.theme-deep .sensor-table tbody tr:hover{background:var(--w-sea-soft)}
 body.theme-deep .wave-method span{border-color:var(--w-line);background:var(--w-inset)}
 @media(max-width:650px){.scene:not(.wide-scene):not(.opening) .copy,#radio .copy{padding:1.1rem 1rem}.wave-lab,.prediction-lab:not(.dost-plate),.radio-experience{padding:1.1rem 1rem}}
 @media(prefers-reduced-motion:reduce){.wave-method span{transition:none}}
+
+/* --- 05 readability: HUD floats over bright 3D, so plate it solid and lift every micro-label (2026-10-05) --- */
+body.coast-ready #radio .radio-experience{background:#0a1922;border:1px solid var(--line);border-radius:4px;padding:1.6rem 1.8rem}
+body.theme-deep.coast-ready #radio .radio-experience{background:var(--w-plate);border-color:var(--w-line)}
+body.coast-ready #radio .radio-flow{font-size:.68rem;color:#a7c3c9}
+body.coast-ready #radio .transmission-head small{font-size:.62rem;color:#9db8be}
+body.coast-ready #radio .transmission-head b{font-size:.8rem}
+body.coast-ready #radio .route-node b{font-size:.78rem}
+body.coast-ready #radio .route-node small{font-size:.6rem;color:#9db8be}
+body.coast-ready #radio .radio-beam span{font-size:.62rem;color:#a5cdd3}
+body.coast-ready #radio .packet-id small{font-size:.58rem;color:#93adb3}
+body.coast-ready #radio .packet-id b{font-size:.8rem}
+body.coast-ready #radio .packet-id span{font-size:.58rem;color:#93adb3}
+body.coast-ready #radio .packet-fields span{font-size:.62rem;color:#b6cdd2}
+body.coast-ready #radio .packet-result small{font-size:.56rem;color:#93adb3}
+body.coast-ready #radio .radio-metrics small{font-size:.6rem;color:#93adb3}
+body.coast-ready #radio .radio-metrics span{font-size:.58rem;color:#8ba6ac}
+body.coast-ready #radio .radio-metrics b{font-size:1.15rem}
+body.coast-ready #radio .buffer-packets i{font-size:.58rem;padding:.3rem .45rem}
+body.coast-ready #radio .radio-footer .micro{font-size:.6rem!important;color:#93adb3}
+body.coast-ready #radio .link-scale-label{font-size:.58rem;color:#7e9aa1}
+@media(max-width:650px){body.coast-ready #radio .radio-flow{font-size:.56rem}body.coast-ready #radio .radio-experience{padding:1.1rem 1rem}}
