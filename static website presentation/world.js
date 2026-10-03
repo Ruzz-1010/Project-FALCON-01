@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
 import modelUrl from '../dashboard-next/public/models/PROJECT-FALCON-V2.glb?url';
-import {components} from './story.js';
+import {components,CH,chapterCount} from './story.js';
 import {easeInspection,inspectionFrame} from './inspection.js';
 import {createCoast,coastCamera,crossingCamera,RECEIVER} from './coast.js';
 import {homeShots,homeCamera,homeWeight,oceanFieldGLSL} from './home.js';
@@ -12,18 +12,31 @@ import {createBayStation} from './bay-station.js';
 import {createHomeOrbit} from './home-orbit.js';
 
 // Camera choreography only. The supplied CAD mesh and its materials are untouched.
+// One pose per chapter, in chapter order. Indices 2, 3 and 4 are the buoy
+// views the chapter-01/02 hotspot solver was tuned against, so they keep their
+// exact original framing; the wrap-up chapters reuse the final wide shot.
 const poses = [
   homeShots[0],
   {eye:[2.6,1.45,3.8], aim:[-.65,.55,0]},
   {eye:[2.9,1.25,4.5], aim:[.7,.5,0]},
   {eye:[1.4,1,2.6], aim:[1.8,.7,0]},
+  {eye:[2.9,1.25,4.5], aim:[.7,.5,0]},
   coastCamera[0],
   coastCamera[2],
   {eye:[12,1.1,7], aim:[10,.2,-2]},
   {eye:[10,2.1,7], aim:[9,.3,-2]},
   {eye:[9,2.3,8], aim:[7,.4,-2]},
+  {eye:[8,2.6,8.2], aim:[5,.4,-1]},
+  {eye:[7.2,2.7,8.3], aim:[4.5,.35,-1]},
+  {eye:[7,2.8,8.4], aim:[4,.35,-1]},
+  {eye:[6,3,8.8], aim:[2.5,.25,-.5]},
+  {eye:[5,3,9], aim:[0,.15,0]},
+  {eye:[5,3,9], aim:[0,.15,0]},
   {eye:[5,3,9], aim:[0,.15,0]}
 ];
+// The poses array and the chapter list must stay the same length: a mismatch
+// would silently stretch or compress the whole camera timeline.
+if(poses.length!==chapterCount)console.warn(`FALCON-01: ${poses.length} camera poses for ${chapterCount} chapters.`);
 
 export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=>{},onBayPick=()=>{},onBayReady=()=>{}}) {
   let renderer;
@@ -209,33 +222,36 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
       if(chapter!==0)homeOrbit.exit();
       if(chapter!==5&&(bayMove||bayOverview)){bayMove=null;bayOverview=null;bay.select(null);}
       if(orbitReset){orbitReset.elapsed+=dt;const t=moving?Math.min(1,orbitReset.elapsed/1.2):1;yaw=orbitReset.from*(1-easeInspection(t));if(t===1)orbitReset=null;needsDraw=true;}
-      const a=Math.max(0,Math.min(9,Math.floor(progress))),b=Math.min(9,a+1),t=THREE.MathUtils.smoothstep(progress-a,0,1);
+      const a=Math.max(0,Math.min(chapterCount-1,Math.floor(progress))),b=Math.min(chapterCount-1,a+1),t=THREE.MathUtils.smoothstep(progress-a,0,1);
       desiredEye.fromArray(poses[a].eye).lerp(nextEye.fromArray(poses[b].eye),t);
       desiredAim.fromArray(poses[a].aim).lerp(nextAim.fromArray(poses[b].aim),t);
-      if(progress<1){const shot=homeCamera(homeProgress);desiredEye.fromArray(shot.eye);desiredAim.fromArray(shot.aim);}
-      if(progress>=4&&progress<6){
-        const p=Math.min(3,(progress-4)*2),i=Math.floor(p),j=Math.min(3,i+1),u=THREE.MathUtils.smoothstep(p-i,0,1);
+      if(progress<CH.objectives){const shot=homeCamera(homeProgress);desiredEye.fromArray(shot.eye);desiredAim.fromArray(shot.aim);}
+      // The radio -> shore run is a four-shot coastal fly-through. Its span is
+      // derived from the named chapter indices so moving a chapter moves it too.
+      const coastFrom=CH.radio, coastTo=CH.shore+1;
+      if(progress>=coastFrom&&progress<coastTo){
+        const p=Math.min(3,(progress-coastFrom)*2),i=Math.floor(p),j=Math.min(3,i+1),u=THREE.MathUtils.smoothstep(p-i,0,1);
         desiredEye.fromArray(coastCamera[i].eye).lerp(nextEye.fromArray(coastCamera[j].eye),u);
         desiredAim.fromArray(coastCamera[i].aim).lerp(nextAim.fromArray(coastCamera[j].aim),u);
-        if(progress>5.75){const blend=THREE.MathUtils.smoothstep(progress,5.75,6);desiredEye.lerp(nextEye.fromArray(poses[6].eye),blend);desiredAim.lerp(nextAim.fromArray(poses[6].aim),blend);}
+        if(progress>coastTo-.25){const blend=THREE.MathUtils.smoothstep(progress,coastTo-.25,coastTo);desiredEye.lerp(nextEye.fromArray(poses[coastTo].eye),blend);desiredAim.lerp(nextAim.fromArray(poses[coastTo].aim),blend);}
       }
-      if(chapter===4){
-        const p=Math.min(2,(progress-4)*2),i=Math.min(1,Math.floor(p)),u=THREE.MathUtils.smoothstep(p-i,0,1);
+      if(chapter===CH.radio){
+        const p=Math.min(2,(progress-coastFrom)*2),i=Math.min(1,Math.floor(p)),u=THREE.MathUtils.smoothstep(p-i,0,1);
         desiredEye.fromArray(crossingCamera[i].eye).lerp(nextEye.fromArray(crossingCamera[i+1].eye),u);
         desiredAim.fromArray(crossingCamera[i].aim).lerp(nextAim.fromArray(crossingCamera[i+1].aim),u);
-        if(innerWidth<650){const wide=1+.9*(1-THREE.MathUtils.smoothstep(progress,4.65,5));desiredEye.sub(desiredAim).multiplyScalar(wide).add(desiredAim);}
+        if(innerWidth<650){const wide=1+.9*(1-THREE.MathUtils.smoothstep(progress,coastFrom+.65,coastFrom+1));desiredEye.sub(desiredAim).multiplyScalar(wide).add(desiredAim);}
       }
       if(innerWidth<650){desiredEye.multiplyScalar(1.25);desiredAim.x+=.45;desiredAim.y+=.35;}
-      if(innerWidth<650&&progress<1)desiredAim.y+=(1-homeProgress)*desiredEye.distanceTo(desiredAim)*.16;
+      if(innerWidth<650&&progress<CH.objectives)desiredAim.y+=(1-homeProgress)*desiredEye.distanceTo(desiredAim)*.16;
       // Reserve a middle-water stage between the mobile title and source index.
-      if(innerWidth<650&&progress>=1&&progress<3){
-        const weight=THREE.MathUtils.smoothstep(progress,1,1.25)*(1-THREE.MathUtils.smoothstep(progress,2.65,3));
+      if(innerWidth<650&&progress>=CH.objectives&&progress<CH.sensors){
+        const weight=THREE.MathUtils.smoothstep(progress,CH.objectives,CH.objectives+.25)*(1-THREE.MathUtils.smoothstep(progress,CH.sensors-.35,CH.sensors));
         desiredEye.lerp(nextEye.set(3.8,1.8,6),weight);desiredAim.lerp(nextAim.set(0,1.15,0),weight);
       }
       if(moving){desiredEye.x+=pointer.x*.1;desiredEye.y+=pointer.y*.06;}
-      if(chapter===0&&homeOrbit.active){const pose=homeOrbit.update(dt);desiredEye.fromArray(pose.eye);desiredAim.fromArray(pose.aim);needsDraw=true;}
+      if(chapter===CH.ocean&&homeOrbit.active){const pose=homeOrbit.update(dt);desiredEye.fromArray(pose.eye);desiredAim.fromArray(pose.aim);needsDraw=true;}
       const blend=moving?cameraBlend(dt):1;
-      if(chapter===5&&bayMove){
+      if(chapter===CH.shore&&bayMove){
         bayMove.elapsed+=dt;const t=moving?Math.min(1,bayMove.elapsed/1.65):1,u=easeInspection(t);
         camera.position.lerpVectors(bayMove.from,bayMove.eye,u);aim.lerpVectors(bayMove.fromAim,bayMove.aim,u);
         if(t===1&&!bayMove.ready){bayMove.ready=true;if(bayMove.returning)bayMove=null;else{bay.reveal(true);onBayReady();}}
@@ -252,21 +268,22 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
       }else{camera.position.lerp(desiredEye,blend);aim.lerp(desiredAim,blend);}
       camera.lookAt(aim);
       buoy.rotation.y=yaw;
-      const homeMix=progress<1?homeWeight(homeProgress):0;
+      const homeMix=progress<CH.objectives?homeWeight(homeProgress):0;
       ocean.geometry=homeMix>0?homeOceanGeometry:legacyOceanGeometry;
       ocean.material.uniforms.homeWeight.value=homeMix;ocean.material.uniforms.homeProgress.value=homeProgress;
       const motion=buoyMotion(time);
-      buoy.position.x=progress>=3.65&&progress<6.15?-8:0;
+      buoy.position.x=progress>=coastFrom-.35&&progress<coastTo+.15?-8:0;
       buoy.position.y=motion.heave;
       buoy.rotation.z=motion.roll;
       buoy.rotation.x=motion.pitch;
       ocean.material.uniforms.time.value=time;
-      ocean.material.uniforms.opacity.value=inspection?.id==='pressure'?.12:chapter===2?.62:1;
+      ocean.material.uniforms.opacity.value=inspection?.id==='pressure'?.12:chapter===CH.buoy?.62:1;
       buoy.updateMatrixWorld(true);camera.updateMatrixWorld(true);
-      compositionBounds.makeEmpty();if(chapter<3)for(const target of pageOneTargets.values())compositionBounds.union(box.setFromObject(target));
-      const coastVisible=progress>=3.65&&progress<6.15;
-      coast.update(time,linkOnline,camera,coastVisible,chapter===4,chapter===5);
-      bay.update(time,linkOnline,chapter===5);
+      compositionBounds.makeEmpty();if(chapter<=CH.buoy)for(const target of pageOneTargets.values())compositionBounds.union(box.setFromObject(target));
+      const coastVisible=progress>=coastFrom-.35&&progress<coastTo+.15;
+      coast.update(time,linkOnline,camera,coastVisible,chapter===CH.radio,chapter===CH.shore);
+      // The coastal hamlet only exists while the radio -> shore run is on screen.
+      bay.update(time,linkOnline,chapter===CH.shore);
       if(receiverLabel){
         projection.set(...RECEIVER).project(camera);
         const x=(projection.x*.5+.5)*innerWidth,y=(-projection.y*.5+.5)*innerHeight;
@@ -274,7 +291,7 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
         receiverLabel.style.left=`${x}px`;receiverLabel.style.top=`${y-25}px`;
         receiverLabel.textContent=linkOnline?'LoRa RX · BAY STATION':'LoRa RX · LINK INTERRUPTED';
       }
-      const visible=chapter===1||chapter===2;
+      const visible=chapter===CH.objectives||chapter===CH.buoy;
       hotspotLayer.hidden=!visible;
       if(visible){
         const occupied=[];
@@ -317,7 +334,7 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
         const rect=inspectionPanel.getBoundingClientRect();
         const endX=innerWidth<650?rect.left+rect.width*.5:rect.left,endY=innerWidth<650?rect.top:rect.top+110;
         connection.setAttribute('d',`M${x},${y} L${(x+endX)*.5},${y} L${endX},${endY}`);
-      }else if(chapter===2&&chosen&&!inspection){
+      }else if(chapter===CH.buoy&&chosen&&!inspection){
         projection.copy(halo.position).project(camera);
         const rect=acquisitionSignal.getBoundingClientRect();
         const x=(projection.x*.5+.5)*innerWidth,y=(-projection.y*.5+.5)*innerHeight;

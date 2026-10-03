@@ -428,7 +428,7 @@ body.theme-deep .scene.opening{padding-left:7vw}
    -------------------------------------------------------------------------- */
 
 body.theme-deep .scene::before{
-  content:'0' attr(data-chapter);
+  content:attr(data-chapter);
   position:absolute;
   right:3vw;
   bottom:5svh;

@@ -17,16 +17,21 @@
    ========================================================================== */
 
 const CHAPTERS=[
-  {n:'00',name:'Title and Problem',plain:'Why barangay-level coastal wave and wind data is hard to afford.'},
-  {n:'01',name:'Objectives and Hardware',plain:'Our floating sensing buoy and what Phase 1 set out to do.'},
-  {n:'02',name:'Signals',plain:'Pressure and wind are primary; GPS, power and security support them.'},
-  {n:'03',name:'ESP32',plain:'The controller turns the readings into one clear frame.'},
-  {n:'04',name:'Architecture',plain:'A long-range radio carries the frame to shore. No cellular on the buoy.'},
-  {n:'05',name:'Bay Station',plain:'The shore computer stores, processes, and prepares the data.'},
-  {n:'06',name:'Wave Estimate',plain:'Pressure in — estimated wave height out. Calibration still required.'},
-  {n:'07',name:'AI Prediction',plain:'A research target: 5, 10 and 15 minutes ahead, versus a baseline.'},
-  {n:'08',name:'Dashboard and Health',plain:'Four pages, plus the security states that must not false-alarm.'},
-  {n:'09',name:'Validation and Status',plain:'What is implemented, what is not validated, and what comes next.'}
+  {n:'00',name:'The Ocean',plain:'Title plus the problem: affordable coastal data is hard to get.'},
+  {n:'01',name:'Objectives',plain:'Six objectives for a Phase 1 prototype — serviceable, calibrated, evaluated.'},
+  {n:'02',name:'FALCON buoy',plain:'The floating sensing buoy, and what lives on it and what does not.'},
+  {n:'03',name:'Sensors',plain:'Pressure and wind are primary; GPS, power and security support them.'},
+  {n:'04',name:'ESP32',plain:'The controller turns the readings into one clear frame.'},
+  {n:'05',name:'LoRa link',plain:'A long-range radio carries the frame to shore. No cellular on the buoy.'},
+  {n:'06',name:'Bay Station',plain:'The shore computer stores, processes, and prepares the data.'},
+  {n:'07',name:'Wave estimate',plain:'Pressure in — estimated wave height out. Calibration still required.'},
+  {n:'08',name:'AI prediction',plain:'A research target: 5, 10 and 15 minutes ahead, versus a baseline.'},
+  {n:'09',name:'Dashboard and health',plain:'Four pages, plus the security states that must not false-alarm.'},
+  {n:'10',name:'Validation',plain:'The tests each number has to pass before it is called accurate.'},
+  {n:'11',name:'Current status',plain:'What is built and what is not, before we claim performance.'},
+  {n:'12',name:'Scope limits',plain:'What this prototype does not do, and why that is safe.'},
+  {n:'13',name:'Risks and next steps',plain:'Known risks, and the work that remains before any claim.'},
+  {n:'14',name:'Acknowledgment',plain:'The people and places the project exists because of.'}
 ];
 
 const scenes=[...document.querySelectorAll('main .scene')];

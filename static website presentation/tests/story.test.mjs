@@ -2,15 +2,15 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync,readdirSync} from 'node:fs';
 import {createHash} from 'node:crypto';
-import {chapters,components,createLink,setLink,tickLink,waveSamples,forecastSamples,linePath} from '../story.js';
+import {chapters,chapterCount,components,createLink,setLink,tickLink,waveSamples,forecastSamples,linePath} from '../story.js';
 const read=path=>readFileSync(new URL(path,import.meta.url),'utf8');
 
 test('Every required chapter exists exactly once in the new static story',()=>{
   const html=read('../index.html');
-  assert.equal(chapters.length,10);
-  assert.equal([...html.matchAll(/data-chapter="\d"/g)].length,10);
+  assert.equal(chapters.length,chapterCount);
+  assert.equal([...html.matchAll(/data-chapter="\d{1,2}"/g)].length,chapterCount);
   for(let i=0;i<10;i++)assert.equal(html.split(`data-chapter="${i}"`).length,2);
-  for(const id of ['ocean','buoy','sensors','controller','radio','shore','waves','prediction','dashboard','connected'])assert.ok(html.includes(`id="${id}"`));
+  for(const id of ['ocean','objectives','buoy','sensors','controller','radio','shore','waves','prediction','dashboard','validation','status','scope','risks','connected'])assert.ok(html.includes(`id="${id}"`));
   const ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);assert.equal(new Set(ids).size,ids.length);
 });
 test('LoRa outage keeps sensing and original timestamps without accepting packets at shore',()=>{

@@ -1,4 +1,20 @@
-export const chapters = ['Ocean', 'FALCON', 'Sensors', 'ESP32', 'LoRa', 'Bay Station', 'Wave estimate', 'AI prediction', 'Dashboard', 'Connected'];
+// Fifteen chapters, matching the fifteen slides of the DOST presentation draft.
+// The first half keeps the spatial journey (offshore -> buoy -> shore) so the
+// original CAD stays the centrepiece; the second half is the wrap-up slides.
+export const chapters = ['Ocean', 'Objectives', 'FALCON buoy', 'Sensors', 'Software', 'LoRa link', 'Bay Station', 'Wave estimate', 'AI prediction', 'Dashboard', 'Validation', 'Status', 'Scope limits', 'Risks & next steps', 'Acknowledgement'];
+
+// Named chapter indices. The 3D choreography in world.js and the paging engine
+// in main.js both read these instead of magic numbers, so inserting or moving a
+// chapter can never silently re-point a camera pose at the wrong scene.
+export const CH = {
+  ocean: 0, objectives: 1, buoy: 2, sensors: 3, controller: 4, radio: 5, shore: 6,
+  waves: 7, prediction: 8, dashboard: 9, validation: 10, status: 11, scope: 12,
+  risks: 13, connected: 14
+};
+export const chapterCount = chapters.length;
+// The coast and the buoy's offshore relocation both span the radio -> shore run.
+// Kept here so world.js has one place to ask instead of two copies of a range.
+export const coastSpan = {from: CH.radio - .35, to: CH.shore + 1.15};
 export const components = {
   pressure: {label: 'Underwater pressure', prefix: 'WATER_PRESSURE_SENSOR_ASSEMBLY', detail: 'Primary Phase 1 measurement. Pressure is the input for the pressure-derived estimated wave height; calibration is required before any accuracy claim.'},
   wind: {label: 'Wind observation', prefix: 'WIND_SPEED_DIRECTION_SENSOR', detail: 'Primary Phase 1 measurement: wind speed and direction at the buoy. Comparison against a reference anemometer is still pending.'},

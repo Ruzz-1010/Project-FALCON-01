@@ -6,7 +6,7 @@ import {createAcquisition} from './acquisition.js';
 import {createController} from './controller.js';
 import {baySteps,bayPipeline,arrivalPhase} from './bay-story.js';
 import {createWaveEstimation} from './wave-estimation.js';
-import {chapters,components,createLink,setLink,tickLink,waveSamples,forecastSamples,linePath} from './story.js';
+import {chapters,CH,chapterCount,components,createLink,setLink,tickLink,waveSamples,forecastSamples,linePath} from './story.js';
 
 const $=selector=>document.querySelector(selector);
 const acquisition=createAcquisition($('#acquisition-dock'));
@@ -74,14 +74,14 @@ function pick(id,inspect=true){
   if(inspect){
     if(!world?.inspect?.(id) && id !== 'lora'){ $('#model-state').textContent='Component guide available; wait for the original 3D model to load before inspection.';return; }
     inspectionTrigger=document.activeElement;inspecting=true;
-    const info=active===1?instrumentInfo[id]:inspections[id];
-    document.body.classList.toggle('instrument-inspection',active===1);
-    $('#inspection-back').textContent=active===1?'← Return to buoy':'← Back to buoy';
+    const info=active===CH.objectives?instrumentInfo[id]:inspections[id];
+    document.body.classList.toggle('instrument-inspection',active===CH.objectives);
+    $('#inspection-back').textContent=active===CH.objectives?'← Return to buoy':'← Back to buoy';
     $('#inspection-title').textContent=info.name;$('#inspection-function').textContent=info.function;
     $('#inspection-data').replaceChildren(...info.data.map(text=>{const li=document.createElement('li');li.textContent=text;return li;}));
     $('#inspection-flow').replaceChildren(...info.flow.map(text=>{const span=document.createElement('span');span.textContent=text;return span;}));
     $('#inspection-status').textContent=info.status;$('#inspection-note').textContent=info.note;
-    acquisition.place(active===2?$('#inspection-content'):null);
+    acquisition.place(active===CH.buoy?$('#inspection-content'):null);
     $('#inspection-panel').hidden=false;$('#inspection-content').hidden=true;$('#inspection-travel').hidden=false;
     document.body.classList.add('inspecting');document.body.classList.remove('inspection-ready');
   }
@@ -187,7 +187,7 @@ for(const event of ['wheel','touchstart','pointerdown'])window.addEventListener(
 window.addEventListener('keydown',e=>{if(['Escape','ArrowDown','ArrowUp','PageDown','PageUp','Home','End',' '].includes(e.key))cancelScrollTween();});
 $('#begin-journey').addEventListener('click',e=>{
   if(homeOrbitActive)setHomeOrbit(false);
-  e.preventDefault();glideTo(offsets[1]-Math.min(80,innerHeight*.15),{label:'buoy'});
+  e.preventDefault();glideTo(offsets[CH.objectives]-Math.min(80,innerHeight*.15),{label:sections[CH.objectives].id});
 });
 function measure(){offsets=sections.map(s=>s.offsetTop);scrollRange=scrollCeiling();}
 measure();window.addEventListener('resize',measure);document.fonts.ready.then(measure);
@@ -241,15 +241,15 @@ function scrollState(){
   for(let i=0;i<offsets.length;i++)if(y>=offsets[i])chapter=i;
   const span=(offsets[chapter+1]??offsets[chapter]+innerHeight)-offsets[chapter];
   const fraction=Math.max(0,Math.min(1,(y-offsets[chapter])/span));
-  return {chapter,progress:Math.min(9,chapter+fraction)};
+  return {chapter,progress:Math.min(chapterCount-1,chapter+fraction)};
 }
 function setChapter(chapter){
-  active=chapter;document.body.dataset.experience=chapter<3?String(chapter):'later';
+  active=chapter;document.body.dataset.experience=chapter<=CH.buoy?String(chapter):'later';
   sections.forEach((s,i)=>s.classList.toggle('is-active',i===chapter));
   [...nav.children].forEach((a,i)=>{if(i===chapter)a.setAttribute('aria-current','step');else a.removeAttribute('aria-current');});
-  chapterNumber.textContent=`${String(chapter+1).padStart(2,'0')} / 10`;
+  chapterNumber.textContent=`${String(chapter+1).padStart(2,'0')} / ${chapterCount}`;
   chapterTitle.textContent=chapters[chapter];
-  coordinateTop.textContent=chapter<4?'OFFSHORE / OBSERVATION NODE':chapter<9?'ON SHORE / BAY STATION':'BUOY TO SHORE / CONNECTED';
+  coordinateTop.textContent=chapter<CH.radio?'OFFSHORE / OBSERVATION NODE':chapter<=CH.shore?'ON SHORE / BAY STATION':'BUOY TO SHORE / CONNECTED';
   // The paging controls carry their own labels, so the panel can read the
   // destination out loud instead of only seeing an arrow.
   if(nextBtn){const last=chapter>=sections.length-1;nextBtn.querySelector('span').textContent=last?'Back to the ocean':chapters[chapter+1];nextBtn.setAttribute('aria-label',last?'Return to the first chapter':`Next chapter: ${chapters[chapter+1]}`);}
@@ -275,20 +275,20 @@ function frame(now){
   const moving=!paused;if(moving)elapsed+=dt;
   const state=scrollState();if(inspecting&&state.chapter!==active)endInspection(false);if(state.chapter!==active)setChapter(state.chapter);
   if(homeOrbitActive&&state.chapter!==0)setHomeOrbit(false);
-  if(bayInspecting&&state.chapter!==5)closeBay(false);
-  const homeProgress=Math.max(0,Math.min(1,scrollY/Math.max(1,offsets[1]-innerHeight*.18)));
+  if(bayInspecting&&state.chapter!==CH.shore)closeBay(false);
+  const homeProgress=Math.max(0,Math.min(1,scrollY/Math.max(1,offsets[CH.objectives]-innerHeight*.18)));
   home.style.setProperty('--home-progress',homeProgress.toFixed(4));
   home.classList.toggle('home-departed',homeProgress>.52);
   const shot=homeProgress<.25?'01 / THE OCEAN':homeProgress<.55?'02 / DISCOVERY':homeProgress<.82?'03 / APPROACH':'04 / LISTEN';
   if(shot!==lastShot){lastShot=shot;homeShotLabel.textContent=shot;}
   journeyProgress.style.width=`${Math.min(100,scrollY/scrollRange*100).toFixed(3)}%`;
   world?.update({progress:state.progress,chapter:state.chapter,time:elapsed,dt,moving,pointer,selected,linkOnline:link.online,homeProgress});
-  if(active===2&&moving)acquisition.draw(elapsed);
-  if(active===3)controller.draw(elapsed);
-  if(active===5){const s=arrivalPhase(elapsed,link.online);bayButtons.forEach((b,i)=>b.classList.toggle('receiving-stage',i===s.stage));}
-  if(active===6)waveEstimation.update(elapsed,dt,state.progress-6,moving);
-  if(active===7&&moving)drawPrediction(dt);
-  if(moving&&active>=3&&active<=5&&elapsed-lastPacket>1.5){lastPacket=elapsed;link=tickLink(link,new Date().toISOString());updateLink();}
+  if(active===CH.buoy&&moving)acquisition.draw(elapsed);
+  if(active===CH.controller)controller.draw(elapsed);
+  if(active===CH.shore){const s=arrivalPhase(elapsed,link.online);bayButtons.forEach((b,i)=>b.classList.toggle('receiving-stage',i===s.stage));}
+  if(active===CH.waves)waveEstimation.update(elapsed,dt,state.progress-CH.waves,moving);
+  if(active===CH.prediction&&moving)drawPrediction(dt);
+  if(moving&&active>=CH.controller&&active<=CH.radio&&elapsed-lastPacket>1.5){lastPacket=elapsed;link=tickLink(link,new Date().toISOString());updateLink();}
 }
 raf=requestAnimationFrame(frame);
 // 3D is a separate local chunk. All HTML diagrams and controls work if WebGL fails.
