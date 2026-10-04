@@ -292,7 +292,9 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
         receiverLabel.style.left=`${x}px`;receiverLabel.style.top=`${y-25}px`;
         receiverLabel.textContent=linkOnline?'LoRa RX · BAY STATION':'LoRa RX · LINK INTERRUPTED';
       }
-      const visible=chapter===CH.objectives||chapter===CH.buoy;
+      // Hotspots only on the buoy chapter. Showing them on 01 Objectives
+      // put buoy component labels over the objectives text.
+      const visible=chapter===CH.buoy;
       hotspotLayer.hidden=!visible;
       if(visible){
         const occupied=[];

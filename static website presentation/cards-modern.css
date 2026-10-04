@@ -868,6 +868,300 @@ body.theme-deep .funding-total {
   border-color: var(--w-sea-line);
 }
 
+/* --- 01 Objectives: placement + card grid ---------------------------------
+   Dati: narrow .copy column + nakatago sa <details>.
+   Ngayon: wide scene, copy sa taas, 6 cards sa baba na laging visible. */
+
+.objectives-scene {
+  align-items: center;
+}
+
+.objectives-scene .copy {
+  width: 100%;
+  max-width: 1100px;
+}
+
+.objectives-scene .copy > p:not(.kicker) {
+  max-width: 46em;
+}
+
+details.objectives {
+  border: 0;
+  background: transparent;
+  margin: 1.4rem 0 0;
+}
+
+details.objectives summary {
+  list-style: none;
+  cursor: default;
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+  color: var(--muted);
+  padding: 0;
+  margin-bottom: .9rem;
+}
+
+details.objectives summary::-webkit-details-marker {
+  display: none;
+}
+
+details.objectives summary::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+details.objectives ol {
+  list-style: none;
+  counter-reset: obj;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .8rem;
+}
+
+details.objectives li {
+  counter-increment: obj;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #050e16;
+  padding: 1.05rem 1.1rem 1rem;
+  font-size: .86rem;
+  line-height: 1.6;
+  position: relative;
+  overflow: hidden;
+  transition: transform .2s ease, border-color .2s ease;
+}
+
+details.objectives li:hover {
+  transform: translateY(-2px);
+  border-color: var(--sea);
+}
+
+details.objectives li::before {
+  content: '0' counter(obj);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.2rem;
+  height: 1.5rem;
+  padding: 0 .5rem;
+  margin-bottom: .65rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  color: var(--sea);
+}
+
+details.objectives li::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--sea), transparent 75%);
+  opacity: .7;
+}
+
+body.theme-deep details.objectives summary {
+  color: var(--w-ink-muted);
+}
+
+body.theme-deep details.objectives summary::after {
+  background: var(--w-line-soft);
+}
+
+body.theme-deep details.objectives li {
+  background: var(--w-plate);
+  border-color: var(--w-line);
+  color: var(--w-ink-soft);
+}
+
+body.theme-deep details.objectives li:hover {
+  border-color: var(--w-sea-line);
+}
+
+body.theme-deep details.objectives li::before {
+  border-color: var(--w-line);
+  color: var(--w-sea);
+}
+
+.objectives-scene .plain-why {
+  max-width: 46em;
+  margin-top: 1.1rem;
+}
+
+/* --- 02 Buoy placement: malinis na context layout ---------------------------
+   Dati: siksik na flex-wrap buttons + absolute caption na tumatama sa text.
+   Ngayon: copy plate sa kaliwa, 2-col component grid, footnote caption. */
+
+#buoy {
+  gap: 3vw;
+  align-items: center;
+}
+
+#buoy .copy {
+  width: min(460px, 38%);
+  display: flex;
+  flex-direction: column;
+  gap: .15rem;
+}
+
+#buoy .copy h2 {
+  margin-bottom: .8rem;
+}
+
+#buoy .copy > p:not(.kicker) {
+  margin-bottom: .7rem;
+}
+
+#buoy .index-caption {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  margin: 1rem 0 .1rem;
+  font-size: .64rem;
+  letter-spacing: .14em;
+}
+
+#buoy .index-caption::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+#buoy .component-picks,
+#reveal-picks {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .55rem;
+  max-width: none;
+  width: 100%;
+  margin: .8rem 0 .4rem;
+}
+
+#buoy .component-picks button {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  min-height: 48px;
+  padding: .65rem .7rem;
+  border-radius: 12px;
+  font-size: .76rem;
+  line-height: 1.35;
+  text-align: left;
+  letter-spacing: .01em;
+}
+
+#buoy .component-picks button::before {
+  content: attr(data-index);
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.9rem;
+  height: 1.45rem;
+  padding: 0 .4rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: .64rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+
+#buoy .text-button {
+  align-self: flex-start;
+  margin: .6rem 0 .2rem;
+  border-radius: 999px;
+  padding: .5rem .9rem;
+}
+
+#buoy .micro {
+  margin: .3rem 0 0;
+}
+
+#buoy .cad-caption {
+  z-index: 6;
+  background: rgba(6, 17, 25, .82);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: .75rem .85rem;
+  max-width: 350px;
+  text-align: left;
+}
+
+body.theme-deep #buoy .cad-caption {
+  background: var(--w-plate);
+  border-color: var(--w-line);
+}
+
+body.theme-deep #buoy .component-picks button::before {
+  border-color: var(--w-line);
+}
+
+body.theme-deep #buoy .component-picks button[aria-pressed="true"]::before {
+  background: var(--w-sea);
+  border-color: var(--w-sea);
+  color: #06141b;
+}
+
+/* --- Buoy overlay fix: giant chapter number + hotspots vs text ----------- */
+
+#hotspots {
+  z-index: 4;
+}
+
+#buoy .copy,
+#sensors .copy {
+  position: relative;
+  z-index: 8;
+  background: rgba(6, 17, 25, .78);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 1.3rem 1.35rem 1.2rem;
+}
+
+body.theme-deep #buoy .copy,
+body.theme-deep #sensors .copy {
+  background: var(--w-plate);
+  border-color: var(--w-line);
+}
+
+body.theme-deep #buoy::before,
+body.theme-deep #sensors::before {
+  right: 4vw;
+  top: 9svh;
+  bottom: auto;
+  font-size: clamp(4rem, 8vw, 7rem);
+  opacity: .04;
+}
+
+/* 01 Objectives: tanggalin ang giant number para malinis ang cards */
+body.theme-deep #objectives::before {
+  display: none;
+}
+
+body.theme-deep #buoy .copy,
+body.theme-deep #sensors .copy {
+  max-width: 500px;
+}
+
+/* Hotspot labels: huwag hayaang tumawid sa text plate */
+.hotspot {
+  max-width: 210px;
+  z-index: 4;
+}
+
 /* --- Responsive ---------------------------------------------------------- */
 
 @media (max-width: 1000px) {
@@ -876,6 +1170,9 @@ body.theme-deep .funding-total {
   }
   .phase-body {
     grid-template-columns: 1fr;
+  }
+  details.objectives ol {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -888,6 +1185,32 @@ body.theme-deep .funding-total {
     padding: 1.1rem 1rem;
     border-radius: 14px;
   }
+  /* Sa phone, tanggalin ang watermark sa buoy para walang overlay */
+  body.theme-deep #buoy::before,
+  body.theme-deep #sensors::before {
+    display: none;
+  }
+  #buoy {
+    gap: 1.2rem;
+  }
+  #buoy .copy,
+  #sensors .copy {
+    width: 100%;
+    max-width: none;
+    padding: 1.05rem 1rem;
+  }
+  #buoy .component-picks,
+  #reveal-picks {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .45rem;
+  }
+  #buoy .component-picks button {
+    font-size: .7rem;
+    min-height: 44px;
+  }
+  #buoy .cad-caption {
+    max-width: none;
+  }
   .phase-track {
     grid-template-columns: 1fr 1fr;
   }
@@ -899,6 +1222,12 @@ body.theme-deep .funding-total {
   }
   .beneficiary-grid {
     grid-template-columns: 1fr;
+  }
+  details.objectives ol {
+    grid-template-columns: 1fr;
+  }
+  details.objectives li {
+    font-size: .84rem;
   }
   .funding-total strong {
     font-size: 1.3rem;
