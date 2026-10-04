@@ -57,7 +57,22 @@ test('Pages 03–04 and 07–09 markup remains unchanged during the scoped 05–
   // 2026-10-08 (3): 09 now embeds the live edge dashboard (iframe src set
   // from JS with ?edge= override) with a static edge snapshot as the
   // offline fallback — no more mock tabs.
-  assert.equal(createHash('sha256').update(rest).digest('hex'),'0087dc63707e75a0fe4a038fb85a095f36d7463b6c05b30f5f6034184f88d48a');
+  //
+  // 2026-10-09 (4): content polish for the 6 Oct DOST proposal — ch02
+  // buoy copy turned into a scannable shore/buoy split, ch09 presenter
+  // plumbing (edge service instructions) replaced with panel-facing
+  // "BUILT AND RUNNING ALREADY" disclosure, ch10 Implemented list leads
+  // with the live edge service, ch14 closes in plain language (no
+  // internal doc reference).
+  //
+  // 2026-10-09 (5): ch08 explainer rewritten in plain English for the
+  // panel — the 4-step Taglish predict-steps cards ("SAAN GALING /
+  // PAANO KINOCOMPUTE / SAFETY LIMITS / ANO BASEHAN") and the second
+  // "BAKIT" evaluation grid are replaced by one readable 4-step flow
+  // (data source → trend → safety caps → judged vs "no change"
+  // baseline). Same method, same honesty labels; jargon like raw
+  // SQL/field names and version strings removed from the stage.
+  assert.equal(createHash('sha256').update(rest).digest('hex'),'1911804a60dc7327da3950283a57f0a9eb8a1afa301d2afe667d004fb8629b9b');
   // The opening kicker was rewritten to the DOST title slide; the presenter
   // build keeps the cinematic "Listen to the ocean" phrasing.
   assert.match(html,/DOST PRESENTATION · 6 OCTOBER 2026/);assert.match(html,/id="begin-journey"/);
