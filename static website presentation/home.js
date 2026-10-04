@@ -3,11 +3,14 @@ export const homeShots=[
   // 2026-10-09: aims pushed −0.35 (buoy further right, clear of the cover/hero
   // text). Last knot untouched — it hands off to the chapter-01 pose, which
   // home.test.mjs pins by exact value.
-  // 2026-10-09 (2): another −0.20 with a slimmer cover box — buoy hard right,
-  // text column narrow, maximum separation between the two.
-  {at:0,eye:[3.9,1.75,6.7],aim:[-1.25,.52,0]},
-  {at:.32,eye:[3.7,1.72,6.1],aim:[-1.23,.52,0]},
-  {at:.72,eye:[3.15,1.58,4.85],aim:[-1.21,.53,0]},
+  // 2026-10-09 (3): cover/early-hero hard right (−2.0/−1.98). Third knot
+  // capped at −1.65: furthest right that keeps the exact chapter-0→1 camera
+  // handoff (brute-force verified: beyond −1.65 the float identity
+  // a+(b−a)===b breaks and home.test.mjs:8 fails). Revert all three to
+  // −0.70/−0.68/−0.66 if the buoy leaves the frame.
+  {at:0,eye:[3.9,1.75,6.7],aim:[-2,.52,0]},
+  {at:.32,eye:[3.7,1.72,6.1],aim:[-1.98,.52,0]},
+  {at:.72,eye:[3.15,1.58,4.85],aim:[-1.65,.53,0]},
   {at:1,eye:[2.6,1.45,3.8],aim:[-.65,.55,0]}
 ];
 export const smooth=t=>{t=Math.max(0,Math.min(1,t));return Math.max(0,Math.min(1,t*t*t*(t*(t*6-15)+10)));};

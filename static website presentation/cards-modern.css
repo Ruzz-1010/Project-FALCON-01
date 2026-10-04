@@ -1680,19 +1680,24 @@ body.theme-deep #sensors .copy {
 /* Cover card: title + team, first screen of chapter 00. Lives inside #ocean
    so the 15-chapter count, camera poses and paging never see it. */
 #ocean .cover-stage{min-height:100svh;display:flex;align-items:center;padding:14svh 7vw 8svh;position:relative;z-index:4}
-#ocean .cover-copy{max-width:580px;background:linear-gradient(100deg,rgba(4,17,25,.92) 0%,rgba(4,17,25,.78) 60%,rgba(4,17,25,0) 100%);padding:1.2rem 1.5rem 1.2rem 1rem;border-radius:4px}
-#ocean .cover-copy h1{font-size:clamp(2.2rem,3.8vw,3.6rem);margin-bottom:1rem}
-#ocean .cover-copy .kicker{margin-bottom:1rem}
-#ocean .cover-copy .intro{margin-bottom:.8rem}
+/* Cover, split editorial style: title left, thin divider, team right. No box —
+   readability comes from text-shadow over the ocean, so the buoy stays clear. */
+.cover-split{display:flex;align-items:stretch;gap:2.5rem;width:100%;max-width:1200px}
+.cover-title{flex:1.25;min-width:0;text-shadow:0 2px 18px #03111d,0 0 3px #03111d}
+.cover-title h1{font-size:clamp(2.4rem,4.5vw,4.2rem);line-height:1.04;margin-bottom:1rem}
+.cover-title .kicker{margin-bottom:1rem}
+.cover-title .intro{margin-bottom:.8rem}
+.cover-acro-line{font-size:.82rem;letter-spacing:.04em;color:#b7cbd0;margin:0 0 1.4rem;max-width:34em;line-height:1.7}
+.cover-acro-line b{color:var(--gold);font-weight:700}
+.cover-divider{width:1px;flex-shrink:0;background:linear-gradient(#c9ae7900,#c9ae79aa,#c9ae7900)}
+.cover-team-side{flex:.75;min-width:250px;max-width:340px;align-self:center;text-shadow:0 2px 18px #03111d,0 0 3px #03111d}
+.cover-side-label{font-size:.62rem;letter-spacing:.22em;color:var(--gold);margin:0 0 1rem}
+@media(max-width:650px){.cover-split{flex-direction:column;gap:1.5rem}.cover-divider{width:auto;height:1px;background:linear-gradient(90deg,#c9ae7900,#c9ae79aa,#c9ae7900)}.cover-team-side{max-width:none}}
 .cover-team{list-style:none;margin:0 0 1rem;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.6rem 1.5rem}
 .cover-team li{display:flex;flex-direction:column;gap:.15rem;border-left:2px solid var(--gold);padding-left:.7rem}
 .cover-team b{font-size:.92rem;font-weight:600;color:#fff}
 .cover-team span{font-size:.72rem;color:var(--muted)}
-.cover-acro{list-style:none;margin:0 0 1.2rem;padding:0;display:grid;grid-template-columns:repeat(6,1fr);gap:.5rem}
-.cover-acro li{display:flex;flex-direction:column;gap:.15rem;border-top:2px solid var(--sea);padding-top:.45rem}
-.cover-acro b{font-size:1.25rem;font-weight:700;color:var(--gold);line-height:1}
-.cover-acro span{font-size:.66rem;line-height:1.4;color:var(--muted)}
-@media(max-width:650px){.cover-acro{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:650px){#ocean .cover-stage{padding:16svh 6vw 10svh}}
 button#cover-start{background:transparent;border:0;border-bottom:1px solid #809da6;color:inherit;font:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:3rem;min-height:48px;padding:.6rem 0;font-size:.95rem}
 button#cover-start span{font-size:1.6rem;color:var(--gold)}
-@media(max-width:650px){#ocean .cover-stage{padding:16svh 6vw 10svh}#ocean .cover-copy{padding:1.1rem 1rem}}
+@media(max-width:650px){#ocean .cover-stage{padding:16svh 6vw 10svh}}
