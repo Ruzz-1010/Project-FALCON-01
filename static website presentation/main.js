@@ -10,8 +10,9 @@ import {chapters,CH,chapterCount,components,createLink,setLink,tickLink,waveSamp
 import {buildDostDeck} from './dost-deck.js';
 
 const $=selector=>document.querySelector(selector);
-// The three DOST funding chapters are static markup, so they are populated once
-// at load rather than every frame. This adds no 3D work and no animation loop.
+// The DOST wrap-up chapters (12 Roadmap & Team, 13 Impact & Funding) are static
+// markup, so they are populated once at load rather than every frame. This adds
+// no 3D work and no animation loop.
 buildDostDeck();
 const acquisition=createAcquisition($('#acquisition-dock'));
 const controllerOutput=document.createElement('p');controllerOutput.className='controller-output';$('#controller .packet-console').append(controllerOutput);

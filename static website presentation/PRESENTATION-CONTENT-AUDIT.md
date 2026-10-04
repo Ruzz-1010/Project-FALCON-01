@@ -235,30 +235,38 @@ scroll engine, the RAF loop and the Deep Water performance rules are untouched.
 
 ---
 
-## 9. The three missing funding chapters added (4 October 2026)
+## 9. The DOST wrap-up chapters merged into the 15-page deck (4–5 October 2026)
 
 **Why:** the 15 draft slides answer *what* and *how*, but a funding panel also asks
 *when*, *for whom*, and *how much*. The earlier build had no chapter for any of the
 three, and the DOST package devotes its slides 7, 8 and 9 to exactly those
 questions. They were the largest gaps between the deck and the source material.
 
+They were first added as three separate chapters (14 Roadmap, 15 Impact,
+16 Funding), which pushed the story to eighteen pages. On 5 October the wrap-up was
+merged back down so the deck matches `DOST-MASTER-SCRIPT.md` page for page:
+
 | Chapter | Scene id | Source |
 |---|---|---|
-| 14 | `roadmap` | DOST package slide 8 — development plan (7 phases, 8–12 months) |
-| 15 | `impact` | DOST package slide 7 — beneficiaries and value; slide 6 — innovation boundary |
-| 16 | `funding` | DOST package slide 9 — preliminary funding plan |
+| 12 | `roadmap` | DOST package slide 8 — development plan (now 5 bootcamp gates, 5 months) |
+| 13 | `funding` | DOST package slide 7 — beneficiaries and value; slide 6 — innovation boundary; slide 9 — preliminary funding plan |
 
-**Method:** appended after `#risks`, never inserted. Every existing chapter keeps
-its original index, so the CAD framing, the coast fly-through span (`CH.radio` →
+Validation + Status became chapter 10 and Scope + Risks chapter 11, so the tail is
+now 10–14. **There is no `impact` scene id** — the beneficiary cards live inside the
+`funding` scene, which is why `#beneficiary-grid` and `#funding-body` both resolve
+there.
+
+**Method:** nothing was inserted above `#controller`. Chapters 0–9 keep their exact
+original indices, so the CAD framing, the coast fly-through span (`CH.radio` →
 `CH.shore + 1`), the page-one inspection targets and the chapter choreography are
-all untouched. One camera pose was added per new chapter, and the finale pose is
-still the original one.
+all untouched. The pose list was trimmed 18 → 15 and the finale pose is still the
+original one.
 
 ### Honesty additions
 
-- **Per-stage claim limits.** Every one of the seven development stages states
-  what may be claimed once it finishes. Stage 04 (calibrate and test) is named on
-the page as the gate: *"no accuracy figure leaves stage 04."*
+- **Per-gate claim limits.** Every one of the five development gates states what
+  may be claimed once it finishes. Gate 04 (controlled validation) is named on the
+  page as the accuracy gate: *"no accuracy figure leaves Gate 04."*
 - **Beneficiaries are intentions, not partners.** Each card carries its own
   `STILL TO CONFIRM` line, and the chapter states plainly that no site or
   beneficiary is confirmed yet.
@@ -269,7 +277,7 @@ the page as the gate: *"no accuracy figure leaves stage 04."*
   evaluation, not the invention of a sensor, buoy or algorithm — because this is
   the single easiest claim for a panel to challenge.
 
-### A real discrepancy found in the source, not smoothed over
+### A real discrepancy was found in the source, and the budget was resolved away from it
 
 The DOST package is inconsistent with itself on the funding total:
 
@@ -280,18 +288,26 @@ The DOST package is inconsistent with itself on the funding total:
 | Package spoken script, same slide | "seventy-two thousand to one hundred **thirty-one** thousand" |
 | The seven line items, added up | ₱72,000–**131,000** |
 
-A panel member can add the column by hand in a few seconds, so the deck shows the
-figure **the line items produce (₱131,000)** and carries a visible footnote saying
-the earlier summary said ₱127,000 and why the shown total follows the rows. This is
-recorded here rather than silently corrected, the same way the orphan Chapter 2
-citations are recorded in section 5: the slide 9 discrepancy is a thesis-side
-item, and the deck is now consistent with itself whichever way the team resolves
-it.
+A panel member can add that column by hand in a few seconds, so the figure that
+gets presented has to survive the same arithmetic. Rather than pick between the
+package's two answers, the deck carries a rebuilt, adviser-approved planning range
+of **₱90,000–₱150,000 (midpoint ~₱115,000)** — the range agreed with the adviser
+once the packages the old figure left out were costed in:
+
+- the old 72–127k excluded the items still marked TBD: LoRa gateway, Bay Station
+  mini-PC and SIM backhaul, and the 20–30% landed-cost markup on imported modules;
+- the new range adds those, plus one calibration trial and spares;
+- ₱90,000 is the minimum-viable build, ₱150,000 is comfortable with contingency.
+
+`fundingRange()` sums the seven categories, so the headline figure and the table can
+never disagree, and a test locks both the range and the wording *"Planning range
+only, not a supplier quotation"*. The team still owes a 3-supplier canvass before
+submission, and the page says so. The package's own 127k-versus-131k inconsistency
+is recorded here as a thesis-side item to settle, not silently corrected.
 
 ### Verification
 
-- **32 pass / 3 fail** (was 31 / 2 before the tests were extended for these
-  chapters). The three failures are the pre-existing camera-framing math checks
+- **32 pass / 3 fail**. The three failures are the pre-existing camera-framing math checks
   listed in `PRESENTATION-BUILD.md`, unrelated to this change.
 - Two new guards: *"Both pages carry one camera pose per chapter and the same
   chapter count"* and *"The funding plan is internally consistent and never

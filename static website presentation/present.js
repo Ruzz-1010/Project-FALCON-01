@@ -16,26 +16,34 @@
       Bigger text and higher contrast for a weak projector or a bright room.
    ========================================================================== */
 
-const CHAPTERS=[
-  {n:'00',name:'The Ocean',plain:'Title plus the problem: affordable coastal data is hard to get.'},
-  {n:'01',name:'Objectives',plain:'Six objectives for a Phase 1 prototype — serviceable, calibrated, evaluated.'},
-  {n:'02',name:'FALCON buoy',plain:'The floating sensing buoy, and what lives on it and what does not.'},
-  {n:'03',name:'Sensors',plain:'Pressure and wind are primary; GPS, power and security support them.'},
-  {n:'04',name:'ESP32',plain:'The controller turns the readings into one clear frame.'},
-  {n:'05',name:'LoRa link',plain:'A long-range radio carries the frame to shore. No cellular on the buoy.'},
-  {n:'06',name:'Bay Station',plain:'The shore computer stores, processes, and prepares the data.'},
-  {n:'07',name:'Wave estimate',plain:'Pressure in — estimated wave height out. Calibration still required.'},
-  {n:'08',name:'AI prediction',plain:'A research target: 5, 10 and 15 minutes ahead, versus a baseline.'},
-  {n:'09',name:'Dashboard and health',plain:'Four pages, plus the security states that must not false-alarm.'},
-  {n:'10',name:'Validation',plain:'The tests each number has to pass before it is called accurate.'},
-  {n:'11',name:'Current status',plain:'What is built and what is not, before we claim performance.'},
-  {n:'12',name:'Scope limits',plain:'What this prototype does not do, and why that is safe.'},
-  {n:'13',name:'Risks',plain:'Known risks, and how each one is handled before any claim.'},
-  {n:'14',name:'Development plan',plain:'Seven funded stages, 8-12 months, each one feeding the next.'},
-  {n:'15',name:'Beneficiaries',plain:'Who the pilot serves, and what still has to be confirmed with them.'},
-  {n:'16',name:'Funding plan',plain:'The preliminary request in pesos, and exactly what it pays for.'},
-  {n:'17',name:'Acknowledgement',plain:'Next steps, the team and the closing statement.'}
+import {chapters} from './story.js';
+
+/* The chapter list is generated from story.js instead of being typed out here.
+   It used to be a hand-written copy, and when the wrap-up was merged from 18
+   pages to 15 the copy was left behind: the list showed 18 rows, named the
+   merged chapters after pages that no longer existed, and its last three
+   buttons pointed at scenes that were not there. Deriving it means the
+   presenter's list cannot disagree with the deck again.
+
+   Only the plain-language line is presenter-only copy, one per chapter. */
+const PLAIN=[
+  'Title plus the problem: affordable coastal data is hard to get.',
+  'Six objectives for a Phase 1 prototype — serviceable, calibrated, evaluated.',
+  'The floating sensing buoy, and what lives on it and what does not.',
+  'Pressure and wind are primary; GPS, power and security support them.',
+  'The controller turns the readings into one clear frame.',
+  'A long-range radio carries the frame to shore. No cellular on the buoy.',
+  'The shore computer stores, processes, and prepares the data.',
+  'Pressure in — estimated wave height out. Calibration still required.',
+  'A research target: 5, 10 and 15 minutes ahead, versus a baseline.',
+  'Four pages, plus the security states that must not false-alarm.',
+  'The tests each number has to pass before it is called accurate — plus what is built and what is not.',
+  'What this prototype does not do, what the known risks are, and how each is handled.',
+  'Five funded bootcamp gates over five months, and who owns each one.',
+  'Who the pilot serves, and the preliminary peso request.',
+  'Next steps, the team and the closing statement.'
 ];
+const CHAPTERS=chapters.map((name,i)=>({n:String(i).padStart(2,'0'),name,plain:PLAIN[i]??''}));
 
 const scenes=[...document.querySelectorAll('main .scene')];
 const presenterBtn=document.getElementById('p-presenter');

@@ -100,7 +100,8 @@ pre-existing camera-framing math checks in `inspection.js` / `world.js`
 ("Acquisition connection uses projected CAD geometry…", "Every real CAD target is
 framed outside the panel…", "All Page 01 buttons resolve to physical CAD
 targets…"). They concern CAD geometry and inspection framing, not the copy and
-not the three DOST funding chapters, and they were failing before this work.
+not the DOST wrap-up chapters (12 Roadmap & Team, 13 Impact & Funding), and they
+were failing before this work.
 
 ```
 npm test

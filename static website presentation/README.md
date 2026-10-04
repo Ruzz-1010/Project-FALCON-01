@@ -33,25 +33,34 @@ Chapter 04 replaces the flat radio illustration with a locally generated Three.j
 
 This is a fictional illustrative environment, not a photograph, surveyed location, measured radio range or approved mast specification. Static meshes are batched by material; packet instances share geometry. The scene adds no remote assets or APIs. Tests check finite geometry, community inventory, endpoint alignment, camera framing and outage visibility. Browser visual verification is still pending because no browser is connected to the authoring session.
 
-Scroll through eighteen chapters: Ocean → Objectives → buoy reveal → sensors →
+Scroll through fifteen chapters: Ocean → Objectives → buoy reveal → sensors →
 ESP32 → LoRa → Bay Station → wave estimation → AI → dashboard reveal →
-validation → status → scope limits → risks → development plan → beneficiaries →
-funding plan → acknowledgement. Bottom chapter markers are keyboard-accessible
-jump links. Drag the uncovered ocean area in the reveal/sensor scenes to orbit;
-component buttons provide the same selection access as projected hotspots.
+validation & status → scope & risks → roadmap & team → impact & funding →
+acknowledgement. Bottom chapter markers are keyboard-accessible jump links.
+Drag the uncovered ocean area in the reveal/sensor scenes to orbit; component
+buttons provide the same selection access as projected hotspots.
 
-Chapters 14–16 were added on 4 October 2026 to answer the three questions a DOST
-funding panel always asks and the earlier build had no page for:
+The wrap-up was merged from eighteen chapters to fifteen on 5 October 2026 so the
+story matches the DOST master script page for page. Nothing was inserted above
+`#controller`, so every camera pose the CAD choreography was tuned against still
+holds; the tail chapters were merged and renumbered instead:
 
-- **14 Roadmap** — the seven funded development stages, each with the limit on
-  what it may claim once finished. Stage 04 (calibrate) is the gate.
-- **15 Impact** — intended beneficiaries, each card naming the check still owed
-  before an intention becomes a promise, plus the innovation boundary.
-- **16 Funding** — the preliminary peso breakdown, filterable by installed /
-  reusable / process, with the total computed from the rows on screen.
+- **10 Validation & Status** — the tests each number must pass, and what is
+  built versus not yet validated.
+- **11 Scope & Risks** — what the prototype does not do, with each risk and its
+  mitigation.
+- **12 Roadmap & Team** — the five funded bootcamp gates, each with the limit on
+  what it may claim once finished. Gate 04 (calibrate) is the accuracy gate.
+  Carries the crew and mentor grid.
+- **13 Impact & Funding** — intended beneficiaries, each naming the check still
+  owed before an intention becomes a promise, plus the innovation boundary and
+  the preliminary peso breakdown, filterable by installed / reusable / process,
+  with the total computed from the rows on screen.
+- **14 Acknowledgement** — next steps, the request and the credits.
 
-They were appended after every existing index, so the chapters the CAD
-choreography was tuned against keep their original numbers and camera poses.
+`present.html` is the DOST projector master. Its chapter list is generated from
+`story.js`, so it cannot fall out of step with the deck. `DOST-MASTER-SCRIPT.md`
+holds the word-for-word script for the fifteen minutes in front of the panel.
 
 Use the LoRa interruption/restore control to observe an in-memory queue replaying original timestamps and rejecting duplicate IDs. Processing steps switch the illustrative pressure signal. Run prediction reveals a simulated future trace against persistence. Four dashboard tabs are a static presentation of the FALCON operator interface, not an embedded connection to the live app.
 
@@ -78,9 +87,9 @@ Inspection tests load the actual GLB and check all five target positions at desk
 time continuity, original CAD hash and asset identity, static-only constraints and
 accessibility hooks. `npm run build` bundles the complete local site.
 
-Implemented and virtual QA of the three DOST funding chapters is automated, but
+Implemented and virtual QA of the DOST wrap-up chapters is automated, but
 **a visual pass and browser-based interaction QA on desktop, tablet and mobile is
 still required**: the authoring session had no connected browser surface, so no
-visual claim is made for chapters 14–16.
+visual claim is made for chapters 12–13.
 
 Removed presentation source is recoverable through Git history; no operational dashboard, thesis document or source CAD was deleted. Generated output is intentionally excluded from Git.

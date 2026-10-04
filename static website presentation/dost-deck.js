@@ -19,7 +19,7 @@ const esc = value => String(value).replace(/[&<>"]/g, c => ({'&': '&amp;', '<': 
 const SPAN = '<i aria-hidden="true">→</i>';
 
 /* ---------------------------------------------------------------------------
-   14 / ROADMAP — one stage at a time, so the room reads one idea, not seven.
+   12 / ROADMAP & TEAM — one gate at a time, so the room reads one idea, not five.
    -------------------------------------------------------------------------- */
 function buildRoadmap() {
   const track = $('#phase-track'), detail = $('#phase-detail');
@@ -64,7 +64,8 @@ function buildRoadmap() {
 }
 
 /* ---------------------------------------------------------------------------
-   15 / IMPACT — beneficiaries, each with the verification still owed.
+   13 / IMPACT & FUNDING — beneficiaries, each with the verification still owed,
+   then the peso table, its filter and the total that follows it.
    -------------------------------------------------------------------------- */
 function buildImpact() {
   const grid = $('#beneficiary-grid');
@@ -77,7 +78,8 @@ function buildImpact() {
 }
 
 /* ---------------------------------------------------------------------------
-   16 / FUNDING — the table, the filter and the total that follows it.
+   The funding table shares the Impact chapter's scene, so it needs no header
+   of its own.
    -------------------------------------------------------------------------- */
 function buildFunding() {
   const body = $('#funding-body');

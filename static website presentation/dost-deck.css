@@ -1,8 +1,8 @@
 /* ============================================================================
    FALCON-01 — DOST DECK  (dost-deck.css)
 
-   Styles for the three funding chapters the DOST panel needs and the earlier
-   build had no page for: 14 Roadmap, 15 Impact, 16 Funding.
+   Styles for the DOST wrap-up chapters the earlier build had no page for:
+   12 Roadmap & Team and 13 Impact & Funding.
 
    Loads last. It has two layers on purpose:
 
@@ -41,7 +41,7 @@
   border-top:1px solid var(--line);
 }
 
-/* --- 14 Roadmap: seven stages on a rail ---------------------------------- */
+/* --- 12 Roadmap: five gates on a rail ------------------------------------ */
 
 .phase-track{
   display:grid;
@@ -98,7 +98,7 @@
 .phase-body dt{font-size:.66rem;letter-spacing:.15em;color:var(--muted);margin-bottom:.35rem}
 .phase-body dd{margin:0;font-size:.86rem;line-height:1.6;color:var(--ink)}
 
-/* --- 15 Impact: beneficiary cards ---------------------------------------- */
+/* --- 13 Impact: beneficiary cards ---------------------------------------- */
 
 .beneficiary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
 .beneficiary{border:1px solid var(--line);border-radius:2px;padding:1rem 1.1rem 1.05rem;background:#050e16}
@@ -120,7 +120,7 @@
 }
 .innovation-note b{flex:0 0 auto;max-width:9.5rem;font-size:.62rem;font-weight:600;letter-spacing:.16em;line-height:1.7;color:var(--sea)}
 
-/* --- 16 Funding: filters, table, running total --------------------------- */
+/* --- 13 Funding: filters, table, running total --------------------------- */
 
 .funding-controls{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.2rem}
 .funding-controls button{min-height:40px;padding:.5rem .85rem;font-size:.76rem;letter-spacing:.06em}
