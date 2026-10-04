@@ -27,7 +27,7 @@ import {chapters} from './story.js';
 
    Only the plain-language line is presenter-only copy, one per chapter. */
 const PLAIN=[
-  'Title plus the problem: affordable coastal data is hard to get.',
+  'Title cover (team + school) then the problem: affordable coastal data is hard to get.',
   'Six objectives for a Phase 1 prototype — serviceable, calibrated, evaluated.',
   'The floating sensing buoy, and what lives on it and what does not.',
   'Pressure and wind are primary; GPS, power and security support them.',
@@ -35,7 +35,7 @@ const PLAIN=[
   'A long-range radio carries the frame to shore. No cellular on the buoy.',
   'The shore computer stores, processes, and prepares the data.',
   'Pressure in — estimated wave height out. Calibration still required.',
-  'Explanation first: inputs, trend baseline, chronological test, MAE/RMSE/bias vs persistence. No simulated chart.',
+  'Four plain steps: data source, trend, safety caps, judged vs "no change". A trend line today, not a trained model.',
   'Live edge dashboard on stage — needs the edge service running. Security states must not false-alarm.',
   'The tests each number has to pass before it is called accurate — plus what is built and what is not.',
   'What this prototype does not do, what the known risks are, and how each is handled.',

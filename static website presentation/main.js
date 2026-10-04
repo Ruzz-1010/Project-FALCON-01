@@ -143,7 +143,7 @@ function setEdgeOffline(){if(!edgeFrame||edgeResolved)return;edgeResolved=true;e
 function loadEdge(){if(!edgeFrame)return;setEdgeChecking();window.clearTimeout(edgeTimer);edgeFrame.src=`${edgeBase}/`;edgeTimer=window.setTimeout(setEdgeOffline,6000);}
 if(edgeFrame){edgeOpen.href=`${edgeBase}/`;edgeFrame.addEventListener('load',setEdgeOnline);$('#edge-retry').addEventListener('click',loadEdge);loadEdge();}
 
-let offsets=[],scrollRange=1;
+let offsets=[],scrollRange=1,coverH=0;
 const home=$('#ocean');
 let homeOrbitActive=false;
 function setHomeOrbit(enabled){
@@ -194,7 +194,14 @@ $('#begin-journey').addEventListener('click',e=>{
   if(homeOrbitActive)setHomeOrbit(false);
   e.preventDefault();glideTo(offsets[CH.objectives]-Math.min(80,innerHeight*.15),{label:sections[CH.objectives].id});
 });
-function measure(){offsets=sections.map(s=>s.offsetTop);scrollRange=scrollCeiling();}
+// Cover card (chapter 00, first screen): title + team, then glide one screen
+// down to the hero. Uses the same eased engine as every other move.
+$('#cover-start').addEventListener('click',()=>{
+  if(homeOrbitActive)setHomeOrbit(false);
+  const cover=$('#ocean .cover-stage');
+  glideTo(cover?cover.offsetHeight:innerHeight,{});
+});
+function measure(){offsets=sections.map(s=>s.offsetTop);scrollRange=scrollCeiling();coverH=document.querySelector('#ocean .cover-stage')?.offsetHeight??0;}
 measure();window.addEventListener('resize',measure);document.fonts.ready.then(measure);
 const layoutObserver=new ResizeObserver(measure);sections.forEach(s=>layoutObserver.observe(s));
 
@@ -253,7 +260,7 @@ function scrollState(){
   return {chapter,progress:Math.min(chapterCount-1,chapter+fraction)};
 }
 function setChapter(chapter){
-  active=chapter;document.body.dataset.experience=chapter<=CH.buoy?String(chapter):'later';
+  active=chapter;document.body.dataset.experience=chapter<=CH.sensors?String(chapter):'later';
   sections.forEach((s,i)=>s.classList.toggle('is-active',i===chapter));
   [...nav.children].forEach((a,i)=>{if(i===chapter)a.setAttribute('aria-current','step');else a.removeAttribute('aria-current');});
   chapterNumber.textContent=`${String(chapter+1).padStart(2,'0')} / ${chapterCount}`;
@@ -285,7 +292,9 @@ function frame(now){
   const state=scrollState();if(inspecting&&state.chapter!==active)endInspection(false);if(state.chapter!==active)setChapter(state.chapter);
   if(homeOrbitActive&&state.chapter!==0)setHomeOrbit(false);
   if(bayInspecting&&state.chapter!==CH.shore)closeBay(false);
-  const homeProgress=Math.max(0,Math.min(1,scrollY/Math.max(1,offsets[CH.objectives]-innerHeight*.18)));
+  // The cover card sits one screen above the hero inside #ocean, so its
+  // height is subtracted: progress 0 = hero fully visible, same as before.
+  const homeProgress=Math.max(0,Math.min(1,(scrollY-coverH)/Math.max(1,offsets[CH.objectives]-coverH-innerHeight*.18)));
   home.style.setProperty('--home-progress',homeProgress.toFixed(4));
   home.classList.toggle('home-departed',homeProgress>.52);
   const shot=homeProgress<.25?'01 / THE OCEAN':homeProgress<.55?'02 / DISCOVERY':homeProgress<.82?'03 / APPROACH':'04 / LISTEN';

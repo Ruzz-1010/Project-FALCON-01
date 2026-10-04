@@ -1,8 +1,13 @@
 // Home-only choreography. At t=1 this exactly meets the existing Instrument pose.
 export const homeShots=[
-  {at:0,eye:[3.9,1.75,6.7],aim:[-.7,.52,0]},
-  {at:.32,eye:[3.7,1.72,6.1],aim:[-.68,.52,0]},
-  {at:.72,eye:[3.15,1.58,4.85],aim:[-.66,.53,0]},
+  // 2026-10-09: aims pushed −0.35 (buoy further right, clear of the cover/hero
+  // text). Last knot untouched — it hands off to the chapter-01 pose, which
+  // home.test.mjs pins by exact value.
+  // 2026-10-09 (2): another −0.20 with a slimmer cover box — buoy hard right,
+  // text column narrow, maximum separation between the two.
+  {at:0,eye:[3.9,1.75,6.7],aim:[-1.25,.52,0]},
+  {at:.32,eye:[3.7,1.72,6.1],aim:[-1.23,.52,0]},
+  {at:.72,eye:[3.15,1.58,4.85],aim:[-1.21,.53,0]},
   {at:1,eye:[2.6,1.45,3.8],aim:[-.65,.55,0]}
 ];
 export const smooth=t=>{t=Math.max(0,Math.min(1,t));return Math.max(0,Math.min(1,t*t*t*(t*(t*6-15)+10)));};

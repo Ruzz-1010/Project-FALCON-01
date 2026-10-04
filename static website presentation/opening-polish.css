@@ -1,4 +1,5 @@
-/* Deliberately scoped to the first three experiences. No later-scene overrides. */
+/* Deliberately scoped to the first four experiences (cover/hero, objectives,
+// buoy, sensors). No later-scene overrides. */
 #ocean .home-stage{padding-inline:8vw}
 #ocean .home-copy{width:49%;max-width:640px}
 #ocean h1{font-size:clamp(3rem,5.8vw,6.4rem);line-height:1.07;letter-spacing:-.055em;margin-bottom:1.7rem}
@@ -8,7 +9,12 @@
 #ocean .enter{font-size:.85rem;gap:2.4rem;border-color:#a1bfc064}
 #ocean .home-shot{left:8vw;font-size:.6rem}
 body[data-experience="0"] .model-state,body[data-experience="0"] .coordinates{visibility:hidden}
-body[data-experience="0"] .atmosphere{background:linear-gradient(90deg,#03111dd9, #03111d50 43%,transparent 68%),linear-gradient(0deg,#04131ed9,transparent 28%,transparent 80%,#04131e99)}
+body[data-experience="0"] .atmosphere{background:linear-gradient(90deg,#03111dd9, #03111d50 43%,transparent 68%),linear-gradient(0deg,#04131ed9,transparent 28%,transparent 80%,#04131e99),radial-gradient(ellipse 46% 58% at 70% 44%,#2a6b7d66,transparent 70%)}
+/* Buoy highlight, chapters 00–03. The buoy sits right (aims −0.65…−0.9) on
+   00–02 and left (aim +1.8, copy pushed right) on 03, so the dark stays on
+   the text side and a soft teal lift sits on the buoy side. Text panels keep
+   their own backgrounds, so copy stays readable. */
+body[data-experience="1"] .atmosphere{background:linear-gradient(90deg,#03111dd9, #03111d50 43%,transparent 68%),linear-gradient(0deg,#04131eb0,transparent 30%,transparent 78%,#04131e66),radial-gradient(ellipse 46% 58% at 70% 44%,#2a6b7d66,transparent 70%)}
 #buoy{padding-inline:8vw;min-height:120svh}
 #buoy .copy{width:31%;max-width:390px}
 #buoy h2{font-size:clamp(2.6rem,4vw,4.5rem);line-height:1.06;margin-bottom:1.2rem}
@@ -37,7 +43,8 @@ body[data-experience="1"] .hotspot[aria-pressed=true]::before,body[data-experien
 #sensors #component-detail{display:none}
 #sensors .source-caption{position:absolute;bottom:12svh;left:8vw;font-size:.58rem;letter-spacing:.1em;color:#a9c2c9;line-height:2}
 #sensors .source-caption span{margin:0 .8rem;color:var(--gold)}
-body[data-experience="2"] .atmosphere{background:linear-gradient(270deg,#03111ded, #03111d9c 38%,transparent 68%),linear-gradient(0deg,#04131ec9,transparent 30%,#04131e66)}
+body[data-experience="2"] .atmosphere{background:linear-gradient(90deg,#03111ded, #03111d9c 38%,transparent 68%),linear-gradient(0deg,#04131ec9,transparent 30%,#04131e66),radial-gradient(ellipse 46% 58% at 70% 44%,#2a6b7d73,transparent 70%)}
+body[data-experience="3"] .atmosphere{background:linear-gradient(270deg,#03111dd9, #03111d50 43%,transparent 68%),linear-gradient(0deg,#04131eb0,transparent 30%,transparent 78%,#04131e66),radial-gradient(ellipse 46% 58% at 30% 44%,#2a6b7d66,transparent 70%)}
 body[data-experience="2"] #inspection-wire{opacity:.55}
 #acquisition-signal{border-top:1px solid #9dc3c747;padding-top:.9rem;max-width:440px}
 .signal-heading{display:flex;justify-content:space-between;gap:1rem;font-size:.58rem;letter-spacing:.12em;color:var(--sea)}

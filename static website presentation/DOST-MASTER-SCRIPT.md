@@ -56,13 +56,16 @@ Stop at these three, in this order.
 
 # THE SCRIPT
 
-## 00 — THE OOCEAN · 1.5 min
-**On screen:** Title slide · **Click:** `Begin the journey ↓`
+## 00 — THE OCEAN · 1.5 min
+**On screen (first):** Cover — title, FALCON acronym, team, school · **Click:** `Start the presentation ↓`
+**On screen (second):** Hero + problem · **Click:** `Begin the journey ↓`
 
 > "Good morning. Thank you for having us.
 >
 > My name is [your name]. I am from the FALCON Research Group. BS Information Technology,
-> Fullbright College.
+> Fullbright College. With me are [names of teammates present].
+>
+> Our advisers are Sir Jam on the papers and Sir Jeff on the hardware."
 >
 > Let me start with a question.
 >
@@ -309,38 +312,25 @@ forecast is made."*
 ---
 
 ## 08 — AI PREDICTION · 1.5 min · explanation, no demo
-**On screen:** 4-step how-it-computes + 4-step bakit-ganito explainer · **No clicking — explain only**
+**On screen:** 4 plain-English steps: where data comes from → how it predicts → safety limits → how it is judged · **No clicking — explain only**
 
 > "The goal is to predict waves five, ten, and fifteen minutes ahead.
 >
 > Here is where we actually are. **Today it is a simple trend line. It is not a trained model.**
 >
-> We did this on purpose. We need something simple to beat. Otherwise how would we know if the
-> real model is any good?
+> Walk the four cards with me.
 >
-> That simple answer is called **persistence.** It means: *tomorrow will look like today.*
+> **One — where the data comes from.** The shore computer stores every reading. The predictor looks at the last 120 wave-height records, and waits until there are enough samples to trust.
 >
-> That is a hard thing to beat. Anyone who tells you wave forecasting is easy is exaggerating.
+> **Two — how it predicts.** It draws a straight line through the recent history and extends it 5, 10 and 15 minutes ahead. Distant predictions are shrunk on purpose — the further out, the less sure.
 >
-> So here is what we are asking DOST to fund. Calibrated data. A **chronological** split for
-> training and testing. And three numbers: **MAE, RMSE, and bias.**
+> **Three — safety limits.** Changes are capped and clamped so one noisy reading cannot spike the forecast. Each prediction shows a confidence level, and the sea reads CALM, MODERATE or ROUGH.
 >
-> Three choices matter here.
+> **Four — how it is judged.** The model must beat the simplest baseline — assume nothing changed — on real held-out data, measured with MAE, RMSE and bias. Until it does, it is a demo.
 >
-> **Chronological**, because shuffling a time series lets the future leak into the training.
-> That flatters your score and teaches you nothing.
+> That baseline has a name: **persistence.** Tomorrow looks like today. It is embarrassingly hard to beat, which is exactly why we use it.
 >
-> **All three metrics**, because each one hides a different mistake.
->
-> **Against persistence**, because a model that cannot beat 'tomorrow looks like today' has not
-> told us anything."
->
-> **— point to the explainer, do not run anything —** "No simulated chart on this page.
-> The method is the message: SQLite history, damped trend, safety caps, then proof against
-> persistence.
->
-> **Accuracy and skill are still unvalidated.** I will not tell you this is accurate. We do not
-> know yet."
+> **Accuracy and skill are still unvalidated.** I will not tell you this is accurate. We do not know yet."
 
 ---
 
