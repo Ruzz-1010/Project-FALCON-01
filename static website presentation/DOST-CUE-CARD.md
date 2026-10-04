@@ -1,5 +1,6 @@
 # FALCON-01 — 1-Page Cue Card (Taglish, Pang-hawak)
-**present.html · `present.html?big=1` sa projector · Space/→ next, ← back, P presenter mode · ~20 min**
+**present.html · `present.html?big=1` sa projector · Space/→ next, ← back, P presenter mode · ~20 min · 6 October 2026**
+**Full Taglish script: `DOST-MASTER-SCRIPT-TAGLISH.md`**
 Thesis line: *“Affordable, documented, locally-evaluable — integration, hindi invention.”* | Laging sabihin: **“SIMULATED, hindi pa validated.”** (Ch.5,7,8,10)
 
 | Ch. | Screen + CLICK | SABIHIN (1-2 lines) |

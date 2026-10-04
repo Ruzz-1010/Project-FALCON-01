@@ -1000,37 +1000,90 @@ body.theme-deep details.objectives li::before {
   margin-top: 1.1rem;
 }
 
-/* --- 02 Buoy placement: malinis na context layout ---------------------------
-   Dati: siksik na flex-wrap buttons + absolute caption na tumatama sa text.
-   Ngayon: copy plate sa kaliwa, 2-col component grid, footnote caption. */
+/* --- 02 Buoy: premium modern instrument card --------------------------------
+   More modern: badge kicker, tight hero type, 2-col pill cards na may
+   number chips, soft dividers, at floating footnote. */
 
 #buoy {
-  gap: 3vw;
+  gap: 2.5vw;
   align-items: center;
+  min-height: auto;
+  padding-top: 12svh;
+  padding-bottom: 6svh;
 }
 
 #buoy .copy {
-  width: min(460px, 38%);
+  width: min(420px, 34%);
   display: flex;
   flex-direction: column;
-  gap: .15rem;
+  gap: 0;
+  border-radius: 16px;
+  padding: .95rem 1rem .85rem;
+  overflow: hidden;
+  position: relative;
+}
+
+#buoy .copy::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--sea), transparent 70%);
+  opacity: .9;
+}
+
+#buoy .kicker {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: .45rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: .35rem .75rem;
+  font-size: .68rem;
+  letter-spacing: .14em;
+  margin-bottom: .7rem;
+  background: rgba(114, 188, 191, .08);
+}
+
+#buoy .kicker::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--sea);
 }
 
 #buoy .copy h2 {
-  margin-bottom: .8rem;
+  font-size: clamp(2rem, 3vw, 2.8rem);
+  line-height: 1.08;
+  letter-spacing: -.03em;
+  font-weight: 650;
+  margin: 0 0 .6rem;
 }
 
 #buoy .copy > p:not(.kicker) {
-  margin-bottom: .7rem;
+  font-size: .95rem;
+  line-height: 1.65;
+  margin: 0 0 .55rem;
+}
+
+#buoy .plain-why {
+  margin: .9rem 0 0;
+  border-radius: 12px;
+  font-size: .86rem;
 }
 
 #buoy .index-caption {
   display: flex;
   align-items: center;
-  gap: .6rem;
-  margin: 1rem 0 .1rem;
-  font-size: .64rem;
-  letter-spacing: .14em;
+  gap: .55rem;
+  margin: .6rem 0 .1rem;
+  font-size: .58rem;
+  font-weight: 700;
+  letter-spacing: .15em;
 }
 
 #buoy .index-caption::after {
@@ -1040,27 +1093,42 @@ body.theme-deep details.objectives li::before {
   background: var(--line);
 }
 
+/* Single-row scroll chips: 1 row lang, hindi 3 rows */
 #buoy .component-picks,
 #reveal-picks {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: .55rem;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: .4rem;
   max-width: none;
   width: 100%;
-  margin: .8rem 0 .4rem;
+  margin: .55rem 0 .2rem;
+  padding-bottom: .25rem;
+  scrollbar-width: thin;
 }
 
 #buoy .component-picks button {
-  display: flex;
+  flex: 0 0 auto;
+  display: inline-flex;
   align-items: center;
   gap: .55rem;
-  min-height: 48px;
-  padding: .65rem .7rem;
-  border-radius: 12px;
-  font-size: .76rem;
-  line-height: 1.35;
-  text-align: left;
-  letter-spacing: .01em;
+  min-height: 44px;
+  padding: .55rem .85rem;
+  border-radius: 999px;
+  font-size: .82rem;
+  font-weight: 600;
+  line-height: 1.3;
+  white-space: nowrap;
+  background: rgba(255, 255, 255, .02);
+  transition: border-color .18s ease, background .18s ease;
+}
+
+#buoy .component-picks button:hover {
+  transform: none;
+}
+
+#buoy .component-picks button[aria-pressed="true"] {
+  background: rgba(114, 188, 191, .13);
 }
 
 #buoy .component-picks button::before {
@@ -1069,50 +1137,382 @@ body.theme-deep details.objectives li::before {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 1.9rem;
-  height: 1.45rem;
-  padding: 0 .4rem;
+  width: 1.7rem;
+  height: 1.7rem;
   border: 1px solid var(--line);
-  border-radius: 999px;
-  font-size: .64rem;
-  font-weight: 700;
-  letter-spacing: .08em;
+  border-radius: 50%;
+  font-size: .66rem;
+  font-weight: 750;
+  letter-spacing: .04em;
+  background: rgba(255, 255, 255, .03);
 }
 
 #buoy .text-button {
   align-self: flex-start;
-  margin: .6rem 0 .2rem;
+  margin: .55rem 0 0;
   border-radius: 999px;
-  padding: .5rem .9rem;
+  padding: .55rem .95rem;
+  font-size: .8rem;
+  min-height: 40px;
 }
 
 #buoy .micro {
   margin: .3rem 0 0;
+  font-size: .78rem;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+
+#buoy .micro::before {
+  content: '';
+  width: 14px;
+  height: 1px;
+  background: var(--line);
+  flex: 0 0 auto;
 }
 
 #buoy .cad-caption {
   z-index: 6;
-  background: rgba(6, 17, 25, .82);
+  background: rgba(6, 17, 25, .86);
   border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: .75rem .85rem;
-  max-width: 350px;
+  border-left: 3px solid var(--gold, #dcc094);
+  border-radius: 10px;
+  padding: .55rem .7rem;
+  max-width: 280px;
   text-align: left;
+  font-size: .58rem;
+  line-height: 1.5;
 }
 
-body.theme-deep #buoy .cad-caption {
-  background: var(--w-plate);
+body.theme-deep #buoy .copy {
+  background: linear-gradient(180deg, var(--w-plate-2), var(--w-plate));
   border-color: var(--w-line);
+}
+
+body.theme-deep #buoy .kicker {
+  background: var(--w-sea-soft);
+  border-color: var(--w-sea-line);
+  color: var(--w-sea);
+}
+
+body.theme-deep #buoy .kicker::before {
+  background: var(--w-sea);
+}
+
+body.theme-deep #buoy .component-picks button {
+  background: var(--w-inset);
+  border-color: var(--w-line-soft);
+  color: var(--w-ink-soft);
+}
+
+body.theme-deep #buoy .component-picks button:hover {
+  border-color: var(--w-sea-line);
+  color: var(--w-ink);
+  background: var(--w-sea-soft);
+}
+
+body.theme-deep #buoy .component-picks button[aria-pressed="true"] {
+  background: var(--w-sea-soft);
+  border-color: var(--w-sea);
+  color: var(--w-ink);
 }
 
 body.theme-deep #buoy .component-picks button::before {
   border-color: var(--w-line);
+  background: transparent;
+  color: var(--w-sea);
 }
 
 body.theme-deep #buoy .component-picks button[aria-pressed="true"]::before {
   background: var(--w-sea);
   border-color: var(--w-sea);
   color: #06141b;
+}
+
+body.theme-deep #buoy .cad-caption {
+  background: var(--w-plate);
+  border-color: var(--w-line);
+  border-left-color: var(--w-brass);
+}
+
+/* DOST readability: sa presenter/projector build, laging malaki ang type */
+body.p-layer-head #buoy .copy h2,
+body.p-layer-head #sensors .copy h2 {
+  font-size: clamp(2.2rem, 3.6vw, 3.2rem);
+}
+
+body.p-layer-head #buoy .copy > p:not(.kicker),
+body.p-layer-head #buoy .micro,
+body.p-layer-head #sensors .copy > p,
+body.p-layer-head #sensors .micro {
+  font-size: clamp(.95rem, 1.1vw, 1.1rem);
+}
+
+body.p-layer-head #buoy .component-picks button,
+body.p-layer-head #sensor-menu button {
+  font-size: .9rem;
+  min-height: 48px;
+}
+
+body.p-big #buoy .copy h2,
+body.p-big #sensors .copy h2 {
+  font-size: clamp(2.5rem, 4vw, 3.6rem);
+}
+
+body.p-big #buoy .copy > p:not(.kicker),
+body.p-big #sensors .copy > p {
+  font-size: clamp(1.05rem, 1.3vw, 1.25rem);
+}
+
+body.p-big #buoy .component-picks button,
+body.p-big #sensor-menu button {
+  font-size: 1rem;
+}
+
+/* --- 03 Sensors: compact pero readable ------------------------------------
+   Dati: 7 full-width rows (sobrang haba) + siksik na callout.
+   Ngayon: 2-col chip grid + compact callout + pill footer. */
+
+#sensors {
+  min-height: auto;
+  padding-top: 12svh;
+  padding-bottom: 6svh;
+  gap: 1.5rem;
+}
+
+#sensors .copy {
+  width: min(500px, 40%);
+  border-radius: 18px;
+  padding: 1.2rem 1.25rem 1.05rem;
+  display: flex;
+  flex-direction: column;
+}
+
+#sensors .kicker {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: .45rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: .35rem .75rem;
+  font-size: .68rem;
+  letter-spacing: .14em;
+  margin-bottom: .7rem;
+  background: rgba(114, 188, 191, .08);
+}
+
+#sensors .kicker::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--sea);
+}
+
+#sensors .copy h2 {
+  font-size: clamp(2rem, 3vw, 2.8rem);
+  line-height: 1.08;
+  letter-spacing: -.03em;
+  font-weight: 650;
+  margin: 0 0 .6rem;
+}
+
+#sensors .acquisition-intro {
+  font-size: .95rem;
+  line-height: 1.6;
+  margin: 0 0 .5rem;
+}
+
+#sensors .micro {
+  font-size: .78rem;
+  line-height: 1.6;
+  margin: 0 0 .2rem;
+}
+
+#sensor-menu {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .45rem;
+  width: 100%;
+  margin: .7rem 0 .6rem;
+}
+
+#sensor-menu button {
+  min-height: 44px;
+  padding: .55rem .7rem;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .02);
+  font-size: .8rem;
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  width: auto;
+}
+
+#sensor-menu button::after {
+  margin-left: auto;
+  flex: 0 0 auto;
+}
+
+#sensors .callout {
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--sea);
+  border-radius: 12px;
+  padding: .85rem .95rem;
+  margin: 0;
+}
+
+#sensors .callout h3 {
+  font-size: 1.02rem;
+  margin: 0 0 .3rem;
+}
+
+#sensors .callout p {
+  font-size: .86rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+#acquisition-dock {
+  margin-top: .6rem;
+}
+
+#acquisition-signal {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: .7rem .8rem;
+}
+
+#acquisition-signal svg {
+  max-height: 90px;
+}
+
+#sensors .source-caption {
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: .45rem .9rem;
+  font-size: .64rem;
+  letter-spacing: .1em;
+  margin: 0;
+}
+
+body.theme-deep #sensors .kicker {
+  background: var(--w-sea-soft);
+  border-color: var(--w-sea-line);
+  color: var(--w-sea);
+}
+
+body.theme-deep #sensors .kicker::before {
+  background: var(--w-sea);
+}
+
+body.theme-deep #sensor-menu button {
+  background: var(--w-inset);
+  border-color: var(--w-line-soft);
+}
+
+body.theme-deep #sensor-menu button:hover {
+  border-color: var(--w-sea-line);
+}
+
+body.theme-deep #sensors .callout,
+body.theme-deep #acquisition-signal {
+  background: var(--w-plate);
+  border-color: var(--w-line);
+}
+
+/* --- 08 AI: how our system predicts (panel-friendly, hindi puro chart) ---- */
+
+.predict-steps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: .7rem;
+  margin-bottom: 1.1rem;
+}
+
+.predict-steps > div {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #050e16;
+  padding: .95rem .95rem .9rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.predict-steps > div::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--sea), transparent 75%);
+  opacity: .7;
+}
+
+.predict-steps b {
+  display: inline-flex;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: .2rem .55rem;
+  font-size: .6rem;
+  letter-spacing: .12em;
+  color: var(--sea);
+  margin-bottom: .5rem;
+}
+
+.predict-steps span {
+  display: block;
+  font-size: .84rem;
+  font-weight: 650;
+  margin-bottom: .3rem;
+}
+
+.predict-steps small {
+  display: block;
+  font-size: .76rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+body.theme-deep .predict-steps > div {
+  background: var(--w-plate);
+  border-color: var(--w-line);
+}
+
+body.theme-deep .predict-steps b {
+  border-color: var(--w-line);
+  color: var(--w-sea);
+}
+
+body.theme-deep .predict-steps span {
+  color: var(--w-ink);
+}
+
+body.theme-deep .predict-steps small {
+  color: var(--w-ink-soft);
+}
+
+@media (max-width: 1000px) {
+  .predict-steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 650px) {
+  .predict-steps {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* --- Buoy overlay fix: giant chapter number + hotspots vs text ----------- */
@@ -1128,7 +1528,6 @@ body.theme-deep #buoy .component-picks button[aria-pressed="true"]::before {
   background: rgba(6, 17, 25, .78);
   border: 1px solid var(--line);
   border-radius: 16px;
-  padding: 1.3rem 1.35rem 1.2rem;
 }
 
 body.theme-deep #buoy .copy,
@@ -1191,22 +1590,45 @@ body.theme-deep #sensors .copy {
     display: none;
   }
   #buoy {
-    gap: 1.2rem;
+    gap: .8rem;
+    min-height: auto;
+  }
+  #sensors {
+    min-height: auto;
+    gap: 1rem;
   }
   #buoy .copy,
   #sensors .copy {
     width: 100%;
     max-width: none;
-    padding: 1.05rem 1rem;
+    padding: 1rem .95rem .9rem;
   }
   #buoy .component-picks,
   #reveal-picks {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: .45rem;
+    gap: .4rem;
   }
   #buoy .component-picks button {
-    font-size: .7rem;
+    flex: 0 0 auto;
+    font-size: .78rem;
     min-height: 44px;
+    padding: .5rem .7rem;
+  }
+  #buoy .component-picks button::before {
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: .6rem;
+  }
+  #sensor-menu {
+    grid-template-columns: 1fr 1fr;
+    gap: .4rem;
+  }
+  #sensor-menu button {
+    min-height: 44px;
+    font-size: .78rem;
+  }
+  #sensors .source-caption {
+    font-size: .6rem;
+    text-align: center;
   }
   #buoy .cad-caption {
     max-width: none;
@@ -1241,7 +1663,9 @@ body.theme-deep #sensors .copy {
   .teammate,
   .beneficiary,
   .link-step,
-  .funding-controls button {
+  .funding-controls button,
+  #buoy .component-picks button,
+  details.objectives li {
     transition: none;
     transform: none;
   }

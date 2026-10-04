@@ -37,10 +37,26 @@ test('Pages 03–04 and 07–09 markup remains unchanged during the scoped 05–
   // carries the 6-step Live Link; funding ₱90,000–₱150,000; roadmap is
   // 5 bootcamp gates). No section added above #controller, no camera
   // pose touched for chapters 0–9. Hash updated for the merged tail.
-  assert.equal(createHash('sha256').update(rest).digest('hex'),'67a8ee0adcc0431201effa4e18a95694f05e1f18257c5cc664d11ee65008e89a');
+  //
+  // 2026-10-06: presentation date moved from 5 to 6 October in the opening
+  // kicker, the Fullbright College disclosure and the acknowledgement. Both
+  // fall inside `rest` (the acknowledgement closes the tail), so the hash
+  // moved with them. No structural change: still 15 scenes, same ids, same
+  // order, and the honesty guards below are untouched.
+  //
+  // 2026-10-07: Chapter 08 AI prediction now carries a 4-step
+  // "How our system predicts" explainer (GATHER → READ TREND → PROJECT →
+  // PROVE IT) above the chart, so the panel reads the process instead of
+  // only the display. Chart, honesty labels and evaluation wording untouched.
+  //
+  // 2026-10-07 (2): explainer grounded in edge/falcon_edge/forecast.py —
+  // last-120 SQLite waveLevel records, damped linear trend, change cap +
+  // 0–15 m clamp, 35–94% confidence, CALM/MODERATE/ROUGH thresholds,
+  // wave-short-term v1.0.0-demo vs persistence with MAE/RMSE/bias.
+  assert.equal(createHash('sha256').update(rest).digest('hex'),'7b61096c4be8a909542f2f52a91d015c77e1eba3bbc991ea45fdbf2932335853');
   // The opening kicker was rewritten to the DOST title slide; the presenter
   // build keeps the cinematic "Listen to the ocean" phrasing.
-  assert.match(html,/DOST PRESENTATION · 5 OCTOBER 2026/);assert.match(html,/id="begin-journey"/);
+  assert.match(html,/DOST PRESENTATION · 6 OCTOBER 2026/);assert.match(html,/id="begin-journey"/);
   // Paging controls are part of the standard build on both pages.
   assert.match(html,/id="chapter-prev"/);assert.match(html,/id="chapter-next"/);
   // The wrap-up chapters must not drift out of the dismissed range:
