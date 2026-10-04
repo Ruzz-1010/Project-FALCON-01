@@ -6,7 +6,7 @@ import {createAcquisition} from './acquisition.js';
 import {createController} from './controller.js';
 import {baySteps,bayPipeline,arrivalPhase} from './bay-story.js';
 import {createWaveEstimation} from './wave-estimation.js';
-import {chapters,CH,chapterCount,components,createLink,setLink,tickLink,waveSamples,forecastSamples,linePath} from './story.js';
+import {chapters,CH,chapterCount,components,createLink,setLink,tickLink} from './story.js';
 import {buildDostDeck} from './dost-deck.js';
 
 const $=selector=>document.querySelector(selector);
@@ -25,7 +25,7 @@ const sections=[...document.querySelectorAll('.scene')];
 const chapterNumber=$('#chapter-number'),chapterTitle=$('#chapter-name'),coordinateTop=$('#coordinate-top');
 const journeyProgress=$('#journey-progress'),homeShotLabel=$('#home-shot-label');
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
-let paused=reduced.matches,active=0,selected='pressure',world,elapsed=0,last=0,lastPacket=0,process=0,predicting=false,predictionProgress=0,currentTab='overview';
+let paused=reduced.matches,active=0,selected='pressure',world,elapsed=0,last=0,lastPacket=0,process=0;
 let link=createLink();
 let bayInspecting=false,bayTrigger;
 function openBay(id='station'){
@@ -54,7 +54,6 @@ for(const id of bayPipeline){const b=document.createElement('button');b.dataset.
 $('#open-bay').addEventListener('click',()=>openBay());$('#close-bay').addEventListener('click',()=>closeBay());
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeBay();});
 const pointer={x:0,y:0};
-const history=waveSamples(),future=forecastSamples(history.at(-1));
 const nav=$('#chapter-nav');
 chapters.forEach((name,i)=>{const a=document.createElement('a');a.href=`#${sections[i].id}`;a.title=name;a.setAttribute('aria-label',`${i+1}. ${name}`);nav.append(a);});
 let inspecting=false,inspectionTrigger;
@@ -124,24 +123,25 @@ function updateLink(){
 $('#interrupt').addEventListener('click',()=>{
   link=setLink(link,!link.online);
   // Always demonstrate an immediate state change, even with reduced motion enabled.
-  link=tickLink(link,new Date().toISOString());updateLink();renderDashboard();
-  if(!link.online){predicting=false;predictionProgress=0;$('#future-reveal').setAttribute('width','0');$('#prediction-status').textContent='UNAVAILABLE: shore input is stale while LoRa is interrupted.';}
+  link=tickLink(link,new Date().toISOString());updateLink();
 });
 updateLink();
 
-$('#history-trace').setAttribute('d',linePath(history,45,585,190,140));$('#future-trace').setAttribute('d',linePath(future,630,340,190,140));$('#baseline-trace').setAttribute('d',linePath([history.at(-1),history.at(-1)],630,340,190,140));
-$('#predict').addEventListener('click',()=>{if(!link.online){$('#prediction-status').textContent='UNAVAILABLE: restore LoRa before running a new prediction.';return;}predicting=true;predictionProgress=paused?1:0;$('#prediction-status').textContent='SIMULATED: extending a candidate trace against persistence.';if(paused)drawPrediction(0);});
-function drawPrediction(dt){if(!predicting)return;predictionProgress=Math.min(1,predictionProgress+dt*.32);$('#future-reveal').setAttribute('width',String(predictionProgress*350));if(predictionProgress===1){predicting=false;$('#prediction-status').textContent='Illustrative AI trace vs. persistence. No accuracy claim.';}}
-
-function overviewMarkup(){const stale=!link.online;return `<div class="demo-overview"><div><div class="demo-readings"><span>Estimated wave height<strong>${stale?'—':history.at(-1).toFixed(2)+' <small>rel · uncalibrated</small>'}</strong></span><span>Prediction · next 10 min<strong>${stale?'—':future.at(-1).toFixed(2)+' <small>rel · uncalibrated</small>'}</strong></span></div><svg class="demo-chart" viewBox="0 0 700 170" role="img" aria-label="Simulated estimated wave height and illustrative AI trace"><path class="chart-grid" d="M0 30H700 M0 85H700 M0 140H700"/>${stale?'<text x="210" y="85">STALE · waiting for packets</text>':`<path class="estimated-trace" d="${linePath(history,0,480,150,150)}"/><path class="future-trace" d="${linePath(future,480,210,150,150)}"/>`}</svg></div><dl class="demo-summary"><div><dt>Station</dt><dd>${stale?'STALE':'Simulation'}</dd></div><div><dt>LoRa</dt><dd>${stale?'Offline':'Receiving'}</dd></div><div><dt>Wind</dt><dd>${stale?'—':'11 km/h NE'}</dd></div><div><dt>Battery</dt><dd>${stale?'—':'78% demo'}</dd></div><div><dt>Security</dt><dd>${stale?'Unknown':'Demo only'}</dd></div></dl></div>`;}
-function renderDashboard(){
-  const host=$('#dashboard-content');
-  if(currentTab==='overview')host.innerHTML=overviewMarkup();
-  if(currentTab==='motion')host.innerHTML='<div class="demo-motion"><svg viewBox="0 0 160 200" aria-label="Illustrative heave indicator, not a replacement buoy model" role="img"><path d="M10 125Q40 113 80 125T150 125" fill="none" stroke="#448591"/><g class="motion-outline"><path d="M80 40V100M70 50L80 40 90 50M70 90L80 100 90 90" fill="none" stroke="#357889" stroke-width="2"/><circle cx="80" cy="125" r="9" fill="#397d8a"/></g><text x="80" y="175" text-anchor="middle">HEAVE / DEMO</text></svg><p><strong>Buoy Motion</strong><br>A pressure-informed illustration—not measured roll or pitch.<br>Normal wave motion must not generate a security alert.<br>The original CAD stays the physical reference.<br><a href="#buoy">Return to the buoy ↗</a></p></div>';
-  if(currentTab==='sensors')host.innerHTML=`<table class="sensor-table"><thead><tr><th>Observation</th><th>Role</th><th>Status</th></tr></thead><tbody><tr><td>Pressure</td><td>Primary · wave estimation input</td><td>${link.online?'Calibration pending':'Stale'}</td></tr><tr><td>Wind</td><td>Primary measurement</td><td>Simulated</td></tr><tr><td>GPS</td><td>Supporting telemetry</td><td>Simulated</td></tr><tr><td>LoRa</td><td>Telemetry sender</td><td>${link.online?'Simulated link':'Interrupted'}</td></tr><tr><td>Battery / solar</td><td>Energy monitoring</td><td>Simulated</td></tr><tr><td>Enclosure</td><td>Health / security</td><td>Simulated</td></tr></tbody></table>`;
-  if(currentTab==='logs')host.innerHTML=`<div class="demo-log"><time>SIM</time><span>${link.online?'Shore link available.':'LoRa interrupted. Buoy packets buffered.'}</span></div><div class="demo-log"><time>SIM</time><span>${link.buffer.length} packets queued · ${link.received.length} accepted without duplicate IDs.</span></div><div class="demo-log"><time>NOTE</time><span>Security states shown as demo only: SECURE, WARNING, ALERT, DISARMED. Normal wave motion must not raise an alert.</span></div><div class="demo-log"><time>NOTE</time><span>Calibration, false-positive testing and controlled deployment validation remain pending.</span></div><p class="demo-note">Presentation events only. No hardware, alarm or database connection.</p>`;
-}
-document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{currentTab=b.dataset.tab;document.querySelectorAll('[data-tab]').forEach(el=>el.setAttribute('aria-pressed',String(el===b)));renderDashboard();}));renderDashboard();
+/* --- 09 LIVE EDGE DASHBOARD -------------------------------------------
+   Chapter 09 embeds the real edge service (dashboard-next build) instead of
+   a mock. The iframe src is set from JS so the static build stays free of
+   hard-coded hosts; `?edge=http://host:8765` points at another machine.
+   No fetch/XHR here: iframe load = online, 6s silence = offline fallback.
+   The static snapshot inside #edge-fallback keeps the chapter useful when
+   the service is not running. */
+const edgeBase=(new URLSearchParams(location.search).get('edge')||'http://127.0.0.1:8765').replace(/\/+$/,'');
+const edgeFrame=$('#edge-frame'),edgeDot=$('#edge-dot'),edgeStatus=$('#edge-status'),edgeFallback=$('#edge-fallback'),edgeOpen=$('#edge-open');
+let edgeResolved=false,edgeTimer=0;
+function setEdgeChecking(){if(!edgeFrame)return;edgeResolved=false;edgeDot.className='edge-dot';edgeStatus.textContent=`Connecting to the edge service at ${edgeBase}…`;edgeFrame.hidden=false;edgeFallback.hidden=true;}
+function setEdgeOnline(){if(!edgeFrame||edgeResolved)return;edgeResolved=true;window.clearTimeout(edgeTimer);edgeDot.className='edge-dot online';edgeStatus.textContent=`EDGE ONLINE · live dashboard from ${edgeBase}`;edgeFrame.hidden=false;edgeFallback.hidden=true;}
+function setEdgeOffline(){if(!edgeFrame||edgeResolved)return;edgeResolved=true;edgeDot.className='edge-dot offline';edgeStatus.textContent=`EDGE OFFLINE · start the edge service, then press Retry`;edgeFrame.hidden=true;edgeFallback.hidden=false;}
+function loadEdge(){if(!edgeFrame)return;setEdgeChecking();window.clearTimeout(edgeTimer);edgeFrame.src=`${edgeBase}/`;edgeTimer=window.setTimeout(setEdgeOffline,6000);}
+if(edgeFrame){edgeOpen.href=`${edgeBase}/`;edgeFrame.addEventListener('load',setEdgeOnline);$('#edge-retry').addEventListener('click',loadEdge);loadEdge();}
 
 let offsets=[],scrollRange=1;
 const home=$('#ocean');
@@ -296,7 +296,6 @@ function frame(now){
   if(active===CH.controller)controller.draw(elapsed);
   if(active===CH.shore){const s=arrivalPhase(elapsed,link.online);bayButtons.forEach((b,i)=>b.classList.toggle('receiving-stage',i===s.stage));}
   if(active===CH.waves)waveEstimation.update(elapsed,dt,state.progress-CH.waves,moving);
-  if(active===CH.prediction&&moving)drawPrediction(dt);
   if(moving&&active>=CH.controller&&active<=CH.radio&&elapsed-lastPacket>1.5){lastPacket=elapsed;link=tickLink(link,new Date().toISOString());updateLink();}
 }
 raf=requestAnimationFrame(frame);

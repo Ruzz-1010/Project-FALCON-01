@@ -53,7 +53,11 @@ test('Pages 03–04 and 07–09 markup remains unchanged during the scoped 05–
   // last-120 SQLite waveLevel records, damped linear trend, change cap +
   // 0–15 m clamp, 35–94% confidence, CALM/MODERATE/ROUGH thresholds,
   // wave-short-term v1.0.0-demo vs persistence with MAE/RMSE/bias.
-  assert.equal(createHash('sha256').update(rest).digest('hex'),'7b61096c4be8a909542f2f52a91d015c77e1eba3bbc991ea45fdbf2932335853');
+  //
+  // 2026-10-08 (3): 09 now embeds the live edge dashboard (iframe src set
+  // from JS with ?edge= override) with a static edge snapshot as the
+  // offline fallback — no more mock tabs.
+  assert.equal(createHash('sha256').update(rest).digest('hex'),'0087dc63707e75a0fe4a038fb85a095f36d7463b6c05b30f5f6034184f88d48a');
   // The opening kicker was rewritten to the DOST title slide; the presenter
   // build keeps the cinematic "Listen to the ocean" phrasing.
   assert.match(html,/DOST PRESENTATION · 6 OCTOBER 2026/);assert.match(html,/id="begin-journey"/);

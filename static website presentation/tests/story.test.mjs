@@ -50,7 +50,13 @@ test('Only local static resources; no React, operational API, database or live t
   for(const file of ['../main.js','../world.js','../story.js']){
     const js=read(file);assert.doesNotMatch(js,/from ['"]react|fetch\(|WebSocket\(|EventSource\(|indexedDB|localStorage/);
   }
-  assert.equal([...read('../index.html').matchAll(/data-tab="/g)].length,4);
+  // Chapter 09 embeds the live edge dashboard via an iframe whose src is
+  // set from JS (with `?edge=` override), so the static build carries no
+  // hard-coded host. A static snapshot with the same edge field names is
+  // the offline fallback, never a mock with invented tabs.
+  assert.ok(!read('../index.html').includes('data-tab="'));
+  for(const id of ['edge-frame','edge-fallback','edge-open','edge-retry','edge-status'])assert.ok(read('../index.html').includes(`id="${id}"`));
+  for(const id of ['edge-frame','edge-fallback','edge-open','edge-retry','edge-status'])assert.ok(read('../present.html').includes(`id="${id}"`));
   const html=read('../dist/index.html');assert.doesNotMatch(html,/(?:src|href)="https?:/);assert.match(html,/\.\/assets\//);
 });
 test('Both pages carry one camera pose per chapter and the same chapter count',()=>{

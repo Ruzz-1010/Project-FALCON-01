@@ -308,8 +308,8 @@ forecast is made."*
 
 ---
 
-## 08 — AI PREDICTION · 1.5 min · demo
-**On screen:** Forecast chart · **Demo:** click `Run prediction`
+## 08 — AI PREDICTION · 1.5 min · explanation, no demo
+**On screen:** 4-step how-it-computes + 4-step bakit-ganito explainer · **No clicking — explain only**
 
 > "The goal is to predict waves five, ten, and fifteen minutes ahead.
 >
@@ -335,23 +335,43 @@ forecast is made."*
 > **Against persistence**, because a model that cannot beat 'tomorrow looks like today' has not
 > told us anything."
 >
-> **— click `Run prediction` —** "The blue line is our prediction. The dotted line is persistence.
+> **— point to the explainer, do not run anything —** "No simulated chart on this page.
+> The method is the message: SQLite history, damped trend, safety caps, then proof against
+> persistence.
 >
 > **Accuracy and skill are still unvalidated.** I will not tell you this is accurate. We do not
 > know yet."
 
 ---
 
-## 09 — DASHBOARD · 1 min · cut third
-**On screen:** Four tabs · **Demo:** click Overview, Buoy Motion, Logs & Alerts. **If cutting, just name them.**
+## 09 — DASHBOARD · 1 min · live demo
+**On screen:** the live edge dashboard inside the page · **Needs:** edge service running before you present · **Backup:** static snapshot shows automatically if offline
 
-> "Four pages.
+> "This is not a picture of our dashboard. **This is the dashboard.**
 >
-> **Overview** — the whole state at a glance.
-> **Buoy Motion** — where the buoy is and how it is moving.
-> **Sensors** — the live signals.
-> **Logs and Alerts** — the history and any alarms.
+> Running on this machine right now is our shore computer software — the
+> edge service. It stores the readings, runs the wave calculation, and
+> serves exactly what you see here.
 >
+> **Overview** — estimated wave height, AI prediction, sea condition, wind,
+> pressure, battery, solar, GPS, enclosure. Every number carries its label:
+> simulated, estimated, or live.
+>
+> **Sensors, Buoy Motion, GPS, Logs and Alerts, Settings** — click through
+> them. This is the operator's actual working screen, not a mock.
+>
+> There are four security states: secure, warning, alert, and disarmed.
+>
+> But here is the rule that matters. **Normal wave motion must not raise an alert.**
+>
+> A buoy on a rough sea is doing its job. It is not reporting a break-in.
+>
+> So before we claim any alarm works, **we have to test it staying quiet.**"
+
+**Before presenting, in a terminal next to the browser:**
+> `cd edge && python3 -m falcon_edge.service` → dashboard at `http://127.0.0.1:8765/`.
+> If the live view shows OFFLINE, press Retry after starting the service — a
+> static snapshot stays on screen until then, so the chapter is never blank.
 > There are four security states: secure, warning, alert, and disarmed.
 >
 > But here is the rule that matters. **Normal wave motion must not raise an alert.**
@@ -674,7 +694,7 @@ Say these five, in this order.
 
 - [ ] `present.html?big=1` tested on the real projector
 - [ ] Checked on a phone — panels open these on a phone during questions more often than you think
-- [ ] Clicked `Interrupt LoRa`, `Inspect the Bay Station`, and `Run prediction` once each
+- [ ] Clicked `Interrupt LoRa` and `Inspect the Bay Station` once each
 - [ ] **Said "simulated, not validated" out loud in chapters 05, 07, 08, and 10**
 - [ ] Rehearsed questions 9, 10, and 11 out loud
 - [ ] Timer ready for 20 minutes, with the cut list ready

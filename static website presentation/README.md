@@ -62,7 +62,7 @@ holds; the tail chapters were merged and renumbered instead:
 `story.js`, so it cannot fall out of step with the deck. `DOST-MASTER-SCRIPT.md`
 holds the word-for-word script for the fifteen minutes in front of the panel.
 
-Use the LoRa interruption/restore control to observe an in-memory queue replaying original timestamps and rejecting duplicate IDs. Processing steps switch the illustrative pressure signal. Run prediction reveals a simulated future trace against persistence. Four dashboard tabs are a static presentation of the FALCON operator interface, not an embedded connection to the live app.
+Use the LoRa interruption/restore control to observe an in-memory queue replaying original timestamps and rejecting duplicate IDs. Processing steps switch the illustrative pressure signal. Chapter 08 carries no simulated prediction chart — it explains the requirement, inputs, chronological evaluation and MAE / RMSE / bias against persistence. Chapter 09 embeds the live edge dashboard (the dashboard-next build served by `python3 -m falcon_edge.service` from `edge/`, at `http://127.0.0.1:8765/`) instead of a mock — add `?edge=http://&lt;host&gt;:8765` to point at another machine. If the service is not running, a static snapshot with the same field names stays on screen with start instructions, so the chapter is never blank.
 
 Motion can be paused. System reduced-motion preference disables automatic movement by default; the control allows an explicit opt-in. Tab inactivity pauses rendering; packet simulation runs only in the ESP32/radio/shore scenes. Three.js is loaded separately, pixel ratio capped at 1.4 and the loop capped around 30 fps. No heavy physics. Loss of WebGL leaves the HTML diagrams and story accessible.
 
