@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#060d12">
+  <meta name="description" content="Project FALCON-01 — solar-powered coastal observation buoy prototype. Phase 1 undergraduate prototype, Fullbright College. Presenter build of the simulated engineering journey from ocean pressure to shore-based intelligence.">
+  <title>FALCON-01 — Solar-Powered Coastal Observation Buoy Prototype (presenter build)</title>
+  <!-- Presentation layer. Loaded last so it wins. Remove this line for the original look. -->
+  <!-- DEEP WATER: the new look for the whole presentation build.
+       Loaded last of all so it wins. Press D on the page to flip it off and on,
+       or delete this line (and the class on <body>) to go back for good. -->
+  <!-- The DOST wrap-up chapters (12 Roadmap & Team, 13 Impact & Funding).
+       Loaded after the theme so its plate and rail rules win. -->
+  <!-- CLEAN MODERN CARDS: same card system as index.html, loaded last. -->
+  <script type="module" crossorigin src="./assets/present-DEAbwkg_.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/main-BfLPrFLX.js">
+  <link rel="stylesheet" crossorigin href="./assets/main-BLne_U1C.css">
+  <link rel="stylesheet" crossorigin href="./assets/present-Ck_LdNpZ.css">
+</head>
+<body class="p-layer-head theme-deep">
+  <a class="skip" href="#ocean">Skip to story</a>
+  <div id="world" aria-hidden="true"></div><div class="atmosphere" aria-hidden="true"></div>
+  <header><a class="wordmark" href="#ocean"><img id="logo" alt="FALCON emblem"><span>FALCON<span class="wordmark-id"> / 01</span></span></a><span class="edition">PHASE 1 · UNDERGRADUATE PROTOTYPE</span><div class="header-controls"><button id="p-presenter" aria-pressed="false">Presenter mode</button><button id="motion" aria-pressed="false">Pause motion</button><button id="fullscreen" aria-label="Enter fullscreen">⛶</button></div></header>
+  <div class="model-state" id="model-state" role="status">Loading original CAD…</div>
+  <div class="coordinates" aria-hidden="true"><span id="coordinate-top">OFFSHORE / OBSERVATION NODE</span><i></i><span>PROJECT FALCON-01 / MASTER CONTEXT v8.1</span></div>
+  <div id="hotspots" aria-label="Original CAD component hotspots" hidden></div>
+  <div id="coast-receiver-label" hidden>LoRa RX · BAY STATION</div>
+  <svg id="inspection-wire" aria-hidden="true"><path/></svg>
+  <aside id="inspection-panel" hidden aria-labelledby="inspection-title">
+    <button id="inspection-back">← Back to buoy</button>
+    <div id="inspection-content" hidden>
+      <p class="kicker">COMPONENT INSPECTION</p><h2 id="inspection-title" tabindex="-1"></h2>
+      <h3>FUNCTION</h3><p id="inspection-function"></p>
+      <h3>HOW IT WORKS</h3><p id="inspection-how"></p>
+      <h3>DATA / SIGNAL</h3><ul id="inspection-data"></ul>
+      <h3>DATA ACQUISITION</h3><p id="inspection-acquire"></p>
+      <h3>CONNECTED TO / FLOW</h3><div id="inspection-flow"></div>
+      <strong id="inspection-status"></strong><p id="inspection-note"></p>
+    </div><p id="inspection-travel" role="status">Moving to component…</p>
+  </aside>
+  <main>
+    <section class="scene opening" id="ocean" data-chapter="0">
+      <div class="cover-stage">
+        <div class="cover-split"><div class="cover-title"><p class="kicker">DOST PROJECT PROPOSAL · 6 OCTOBER 2026</p><h1>FALCON-01<br><em>Solar-Powered Coastal Observation Buoy</em></h1><p class="intro">Phase 1 — Undergraduate Prototype · Project FALCON Research Group</p><p class="cover-acro-line" aria-label="What FALCON stands for"><b>F</b>ullbright College's <b>A</b>I-powered <b>L</b>ive <b>C</b>oastal <b>O</b>bservation <b>N</b>etwork</p><button id="cover-start" class="enter" type="button">Start the presentation <span>↓</span></button></div><div class="cover-divider" aria-hidden="true"></div><div class="cover-team-side"><p class="cover-side-label">RESEARCH TEAM</p><ul class="cover-team" aria-label="Research team"><li><b>Jhon Ruzzel Correa</b><span>Hardware + Power + LoRa firmware</span></li><li><b>Mayla Bacaltos</b><span>Thesis papers (co-lead)</span></li><li><b>Gina Caballero</b><span>Thesis papers (co-lead)</span></li><li><b>Gwyn Isabel Enriquez</b><span>Edge + AI + Dashboard</span></li></ul><p class="micro">BS Information Technology · Fullbright College<br>Advisers: Sir Jam (papers) · Sir Jeff (hardware)</p></div></div>
+      </div>
+      <div class="home-stage">
+        <div class="copy home-copy"><p class="kicker">DOST PRESENTATION · 6 OCTOBER 2026</p><h1>FALCON-01.<br><em>Listen to<br>the ocean.</em></h1><p class="intro">PROJECT FALCON-01<br>Solar-Powered Coastal Observation Buoy Prototype<br>Phase 1 — Undergraduate Prototype · Fullbright College</p><p class="home-explanation">Limited access to affordable coastal wave and wind data in barangay-level settings. Commercial buoys are costly, proprietary and maintenance heavy. Phase 1 answers that with a local-first, transparent and evaluable prototype. It senses underwater pressure and wind at sea; the shore turns those readings into estimated wave height and clear, usable information.</p><div class="home-system-strip" aria-label="FALCON system summary"><span>OFFSHORE</span><i>•</i><span>ESP32</span><i>•</i><span>LoRa</span><i>•</i><span>SHORE-BASED</span></div><a id="begin-journey" class="enter" href="#buoy">Begin the journey <span>↓</span></a></div>
+        <div class="home-explore"><span class="home-explore-label">3D BUOY INSPECTION</span><button id="explore-home" type="button" aria-pressed="false"><span>Explore the buoy</span><b>↗</b></button><button id="reset-home" type="button" hidden>Reset view <b>↙</b></button><p id="home-orbit-help" hidden>Drag to orbit · Scroll to zoom · Esc to return</p><p id="home-orbit-status" role="status"></p></div>
+        <div class="home-observation"><span>OBSERVATION NODE</span><small>Pressure · Wind · GPS (supporting)</small></div><details class="home-college"><summary>FULLBRIGHT COLLEGE <span>+</span></summary><p>AI-POWERED COASTAL OBSERVATION · DOST, 6 OCTOBER 2026</p></details>
+        <div class="home-shot" hidden><span id="home-shot-label">01 / THE OCEAN</span></div>
+      </div>
+    </section>
+    <section class="scene wide-scene objectives-scene" id="objectives" data-chapter="1">
+      <div class="copy"><p class="kicker">01 / OBJECTIVES</p><h2>Six objectives.<br><em>One Phase 1 prototype.</em></h2><p>Phase 1 is integration and evaluation, not sensor invention. These are the six objectives that frame the work.</p><details class="objectives" open><summary>PHASE 1 OBJECTIVES</summary><ol><li>Design a serviceable solar-powered buoy with passive mooring.</li><li>Acquire pressure and wind measurements with supporting telemetry.</li><li>Estimate wave height from underwater pressure with explicit calibration.</li><li>Transmit via LoRa to a shore Bay Station for storage, processing and dashboard.</li><li>Evaluate accuracy, reliability, latency, power use and usability.</li><li>Develop and evaluate short-term AI wave prediction against a baseline.</li></ol></details><p class="plain-why"><span class="plain-tag">IN PLAIN WORDS</span> These are the promises we are holding ourselves to — including the last one, which says we will check the numbers before we believe them.</p></div>
+    </section>
+    <section class="scene" id="buoy" data-chapter="2">
+      <div class="copy"><p class="kicker">02 / HARDWARE BASELINE</p><h2>Built to listen.</h2><p>This is FALCON-01.<br>One sensing buoy, linked to a shore station.</p><p>On the buoy: ESP32 controller, underwater pressure sensor, wind speed and direction, GPS for position, time and geofence, battery with solar charging, and a LoRa transceiver. On shore: a mini-PC Bay Station with LoRa receiver, local storage and processing. The heavy work stays on land — the buoy only senses and sends.</p><p class="plain-why"><span class="plain-tag">IN PLAIN WORDS</span> A buoy is a floating device that sits on the water and collects information. It is not a full computer on the sea — the heavy processing happens on shore.</p><p class="index-caption">EXPLORE THE INSTRUMENT</p><div class="component-picks" id="reveal-picks"></div><button class="text-button" id="reset-camera">Return to overview ↗</button><p class="micro">Drag to explore · Choose a part below</p></div>
+      <div class="cad-caption">ORIGINAL CAD / GEOMETRY PRESERVED <button id="cad-note" aria-expanded="false">Reference note +</button><p id="cad-detail" hidden>Reference revision: legacy antenna names and an Orange Pi envelope remain in the supplied geometry. They are not V4.1 buoy equipment. No new hardware placement is invented. Mechanical revision pending.</p></div>
+    </section>
+    <section class="scene" id="sensors" data-chapter="3">
+      <div class="copy"><p class="kicker">03 / THE SENSORS</p><h2>Every signal.<br><em>A different story.</em></h2><p class="acquisition-intro">Acquire pressure and wind measurements<br>with supporting telemetry.</p><p class="plain-why"><span class="plain-tag">IN PLAIN WORDS</span> A sensor is a small electronic part that measures one condition, like pressure or wind. Pressure and wind are the two primary Phase 1 measurements; GPS, power and security are supporting telemetry.</p><div class="sensor-menu" id="sensor-menu" aria-label="Select a signal source"></div><div class="callout" aria-live="polite"><h3 id="component-title">Underwater pressure</h3><p id="component-detail"></p></div><div id="acquisition-dock"></div></div>
+      <p class="source-caption">PHYSICAL SOURCE <span>→</span> RAW SIGNAL <span>→</span> ACQUIRED DATA</p>
+    </section>
+    <section class="scene diagram-scene" id="controller" data-chapter="4">
+      <div class="copy"><p class="kicker">04 / SOFTWARE BASELINE</p><h2>Signals become<br><em>information.</em></h2><p>It reads every sensor, stamps the exact time, checks each value, and packs one clean frame.</p><p class="plain-why"><span class="plain-tag">IN PLAIN WORDS</span> The ESP32 is the small controller that reads the sensors over and over, then packs the readings into one frame.</p><p class="micro">ESP32 handles sensing and telemetry.<br>No mini PC or cellular modem on the buoy.</p></div>
+      <div class="chip-stage engineering"><svg viewBox="0 0 720 470" aria-label="Sensor signals entering the ESP32 and leaving as a timestamped packet" role="img"><defs><pattern id="pins" width="22" height="20" patternUnits="userSpaceOnUse"><rect width="7" height="18" fill="#99bac1"/></pattern></defs><g class="traces"><path d="M30 85H145V175H255"/><path d="M30 190H115V215H255"/><path d="M30 295H145V255H255"/><path d="M30 400H185V295H255"/><path d="M465 235H570V340H690"/></g><g class="trace-packets"><path d="M30 85H145V175H255"/><path d="M30 190H115V215H255"/><path d="M30 295H145V255H255"/><path d="M30 400H185V295H255"/><path d="M465 235H570V340H690"/></g><rect x="274" y="107" width="178" height="23" fill="url(#pins)"/><rect x="274" y="342" width="178" height="23" fill="url(#pins)"/><rect class="chip-body" x="255" y="130" width="210" height="210" rx="8"/><rect class="chip-inner" x="275" y="150" width="170" height="170" rx="2"/><text class="chip-title" x="360" y="225" text-anchor="middle">ESP32</text><text x="360" y="255" text-anchor="middle">SENSOR CONTROLLER</text><text x="30" y="65">PRESSURE</text><text x="30" y="170">WIND</text><text x="30" y="275">GPS</text><text x="30" y="380">POWER / SECURITY</text><text x="566" y="373">TO LoRa →</text></svg><div class="packet-console"><span class="console-head">TELEMETRY FRAME / 4 INPUTS IN PARALLEL</span><code id="packet-frame">FALCON-01 · seq 0001<br>sample time · schema · quality flags</code></div></div>
+    </section>
+    <section class="scene wide-scene" id="radio" data-chapter="5">
+      <div class="copy"><p class="kicker">05 / SYSTEM ARCHITECTURE</p><h2>A small packet.<br><em>A vital connection.</em></h2><p>LoRa carries each frame from the buoy to shore.<br>The buoy never connects to the Internet directly — SIM/4G/5G backhaul stays at the Bay Station.</p><p class="plain-why"><span class="plain-tag">IN PLAIN WORDS</span> LoRa is a long-range radio that sends small packets over the water. Telemetry is just the measurement data being sent.</p></div>
+      <div class="radio-experience">
+        <div class="radio-flow" aria-label="Telemetry path">
+          <span class="active">OBSERVE</span><i>→</i><span>PACKAGE</span><i>→</i><strong>LoRa TX</strong><i>→</i><strong>LoRa RX</strong><i>→</i><span>SHORE PROCESSING</span>
+        </div>
+        <div class="transmission-head">
+          <div><small>OFFSHORE NODE</small><b>ESP32 + LoRa TX</b></div>
+          <div class="transmission-state"><span></span><small id="link-status" role="status">SIMULATED LINK AVAILABLE</small><button id="interrupt">Interrupt LoRa</button></div>
+          <div class="align-right"><small>SHORE NODE</small><b>LoRa RX · BAY STATION</b></div>
+        </div>
+        <div class="radio-route" id="radio-route">
+          <div class="route-node"><span class="station-glyph">◉</span><b>BUOY</b><small>TELEMETRY ORIGIN</small></div>
+          <div class="radio-beam"><i></i><i></i><i></i><span id="link-label">LoRa / transmitting</span></div>
+          <div class="route-node"><span class="station-glyph shore-glyph">⌁</span><b>SHORE RECEIVER</b><small>PACKET ARRIVAL</small></div>
+        </div>
+        <div class="packet-ribbon" aria-label="Telemetry packet contents">
+          <div class="packet-id"><small>FRAME</small><b>FALCON-01</b><span>SEQ <em id="packet-seq">0042</em></span></div>
+          <div class="packet-fields"><span>PRESSURE</span><span>WIND</span><span>GPS</span><span>POWER / SECURITY</span></div>
+          <div class="packet-arrow">→</div>
+          <div class="packet-result"><small>RECEIVED</small><b id="received">00</b></div>
+        </div>
+        <div class="radio-metrics">
+          <div><small>BUOY BUFFER</small><b id="queued">00</b><span>packets waiting</span></div>
+          <div><small>LINK STATE</small><b id="link-state">ONLINE</b><span>LoRa primary path</span></div>
+          <div><small>SHORE RECEIVED</small><b id="received-copy">00</b><span>accepted frames</span></div>
+        </div>
+        <div id="buffer-packets" class="buffer-packets" aria-label="Queued packet IDs"></div>
+        <div class="radio-footer"><span class="link-scale-label">WIDE WATER GAP · NOT TO GEOGRAPHIC SCALE</span><p class="micro" id="recovery-note">Hardware, legal band and site coverage pending. No range guarantee.</p></div>
+        <div class="link-steps" aria-label="How the buoy talks to the Bay Station">
+          <div class="link-step live"><b>01 · SENSE</b><span>Buoy acquires</span><small>PRESSURE + WIND + GPS + POWER/SECURITY in parallel, every 4.8s cycle.</small></div>
+          <div class="link-step live"><b>02 · FRAME</b><span>ESP32 packages</span><small>Timestamp + validate + one FALCON-01 frame with quality flags → LoRa TX.</small></div>
+          <div class="link-step live"><b>03 · CROSS</b><span>LoRa air link</span><small>Cyan packets fly buoy → shore mast in 3D. Try Interrupt LoRa above.</small></div>
+          <div class="link-step live"><b>04 · BUFFER</b><span>Outage-safe</span><small>Interrupted? Buoy keeps sensing, queues original timestamps, rejects duplicate IDs on replay.</small></div>
+          <div class="link-step live"><b>05 · SHORE RX</b><span>Bay Station receives</span><small>External LoRa RX → wired LAN → one shared shore computer. No cellular on buoy.</small></div>
+          <div class="link-step live"><b>06 · INSIGHT</b><span>Store → predict</span><small>Validate → SQLite → estimated Hs → AI 5/10/15-min → dashboard + alerts.</small></div>
+        </div>
+      </div>
+    </section>
+    <section class="scene" id="shore" data-chapter="6">
+      <div class="copy bay-intro">
+        <div class="bay-intro-head"><p class="kicker">06 / THE BAY STATION</p><span class="bay-status"><i></i> SHORE PROCESSING</span></div>
+        <p class="bay-overline">DATA RECEIVED → INSIGHT DELIVERED</p>
+        <h2>Where the ocean<br>becomes <em>information.</em></h2>
+        <p class="bay-lead">Every frame arrives here, where the shore computer checks it, stores it, processes it, and prepares it for analysis. Bay Station runs SQLite storage, a REST API, the dashboard and AI prediction.</p><p class="micro">Grouped telemetry endpoint with explicit states LIVE / SIMULATED / ESTIMATED.</p>
+        <div class="bay-sequence" aria-label="Bay Station processing summary">
+          <div><b>01</b><span>RECEIVE</span><small>LoRa telemetry</small></div>
+          <div><b>02</b><span>PROCESS</span><small>Quality + storage</small></div>
+          <div><b>03</b><span>INSIGHT</span><small>AI + dashboard</small></div>
+        </div>
+        <div class="bay-architecture-note"><i></i><span>One shared shore computer</span><small>Software stages run locally; Internet backhaul stays on shore.</small></div>
+      </div>
+      <div class="shore-system engineering">
+        <div class="shore-system-head"><div><span class="system-label">BAY STATION / DATA PATH</span><strong>LoRa received → local processing → operator view</strong></div><span class="system-state"><i></i> SIMULATED</span></div>
+        <div class="shore-system-rail" aria-hidden="true"><span>LoRa RX</span><i>→</i><span>VALIDATE</span><i>→</i><span>STORE</span><i>→</i><span>PROCESS</span><i>→</i><span>AI</span><i>→</i><span>DISPLAY</span></div>
+        <button id="open-bay" class="bay-inspect-cta"><span class="bay-inspect-icon">⌕</span><strong>Inspect the Bay Station</strong><span class="bay-inspect-arrow">↗</span></button>
+        <p class="micro">Open the cutaway view and follow each physical element to its shore-side role.</p>
+        <div id="bay-menu-home"><nav id="bay-menu" aria-label="Bay Station functional stages"></nav></div>
+        <div class="shore-system-foot"><span>ILLUSTRATIVE INTERNAL LAYOUT</span><span>PHYSICAL EQUIPMENT + SOFTWARE FLOW</span></div>
+      </div>
+      <aside id="bay-panel" hidden aria-labelledby="bay-title">
+        <div class="bay-panel-top">
+          <div><span class="panel-kicker">06 / BAY STATION</span><strong class="panel-mode">INTERNAL CUTAWAY · INTERACTIVE GUIDE</strong></div>
+          <button id="close-bay">← Exit inspection</button>
+        </div>
+        <div class="bay-inspect-headline">
+          <span class="bay-inspect-chip">SYSTEM INSPECTION</span>
+          <span class="bay-inspect-hint">Select a highlighted element</span>
+        </div>
+        <div class="bay-selection-head">
+          <div class="bay-step-mark"><span id="bay-step-index">01</span><small id="bay-step-kind">PHYSICAL</small></div>
+          <div><p class="kicker">SELECTED ELEMENT</p><h3 id="bay-title" tabindex="-1"></h3></div>
+        </div>
+        <div id="bay-explanation"><p id="bay-detail"></p><p id="bay-note" class="micro"></p></div>
+        <div class="bay-live-path"><span>INPUT</span><i>→</i><strong id="bay-path-current">RECEIVE</strong><i>→</i><span>SHORE PROCESSING</span></div>
+        <div class="bay-divider-label"><span>INSPECT</span><i></i></div>
+        <div id="bay-panel-menu"></div>
+        <div class="bay-hardware-line" aria-label="Physical Bay Station equipment"><span>01 LoRa RX</span><span>02 Shore computer</span><span>03 UPS</span><span>04 Display</span></div>
+        <div class="bay-inspect-note"><b>ARCHITECTURE NOTE</b><span>LoRa reception, SQLite storage, processing and AI prediction are functions of the shared shore computer. The room layout is illustrative.</span></div>
+      </aside>
+    </section>
+    <section class="scene wide-scene" id="waves" data-chapter="7">
+      <div class="copy"><p class="kicker">07 / WAVE ESTIMATION METHOD</p><h2>Pressure is the signal.<br><em>Wave height is the estimate.</em></h2><p>Pressure measurement → quality check → filter → baseline removal → depth response → calibration → estimated Hs. Calibration and reference comparison are required before any accuracy claim.</p></div>
+      <div class="wave-lab"><div class="process-controls" role="group" aria-label="Pressure transformation stages"><button aria-pressed="true" data-process="0"><span>01</span> RAW PRESSURE</button><i aria-hidden="true">→</i><button aria-pressed="false" data-process="1"><span>02</span> PROCESSED SIGNAL</button><i aria-hidden="true">→</i><button aria-pressed="false" data-process="2"><span>03</span> ESTIMATE Hs</button></div>
+        <div class="wave-transform"><figure class="pressure-section"><svg viewBox="0 0 210 235" role="img" aria-label="Conceptual measurement section: a pressure sensor below the waterline, depth response required"><path id="pressure-surface" d="M15 65 Q45 61 75 65 T135 65 T195 65"/><path class="depth-rule" d="M175 74V160 M170 74H180 M170 160H180"/><text x="15" y="43">WATERLINE</text><text x="181" y="122">h</text><path class="sensor-lead" d="M105 70V159"/><ellipse class="pressure-front" cx="105" cy="145" rx="20" ry="5"/><ellipse class="pressure-front" cx="105" cy="120" rx="28" ry="5"/><ellipse class="pressure-front" cx="105" cy="95" rx="35" ry="5"/><rect class="pressure-body" x="96" y="158" width="18" height="25" rx="3"/><path class="pressure-tip" d="M100 183H110V187H100Z"/><text x="105" y="212" text-anchor="middle">PRESSURE INPUT</text></svg><figcaption>Measurement principle<br>Depth response matters.<small>Conceptual section—not a CAD replacement. Pressure responds to waves; rings illustrate variation, not upward transmission.</small></figcaption></figure>
+        <div class="wave-signal"><div class="wave-heading"><span id="wave-label">MEASURED QUANTITY</span><span id="wave-unit">Relative pressure · simulated</span></div><h3 id="wave-name">UNDERWATER PRESSURE</h3><svg id="pressure-plot" viewBox="0 0 900 250" role="img" aria-label="One illustrative pressure record morphing into a cleaned signal and relative wave-statistic preview"><path class="wave-reference" d="M10 130H890"/><path id="processed-trace"/><path id="raw-trace"/></svg><div class="wave-result"><p id="process-detail"></p><div class="hs-statistic"><strong id="hs-result">—</strong><span id="hs-caption">Hs PROXY · RELATIVE UNITS<br>NOT CALIBRATED METRES</span></div></div></div></div>
+        <div class="wave-method" aria-label="Processing pipeline"><span>QUALITY CHECK</span><i>→</i><span>FILTER</span><i>→</i><span>BASELINE REMOVAL</span><i>→</i><span>DEPTH RESPONSE</span><i>→</i><span>CALIBRATION</span><i>→</i><span>ESTIMATED Hs</span></div><p class="wave-calibration">ESTIMATE / CALIBRATION REQUIRED <span>Illustrative processing only. Depth correction, calibration and reference comparison are not completed, so no accuracy claim is made.</span></p>
+      </div>
+    </section>
+    <section class="scene wide-scene" id="prediction" data-chapter="8">
+      <div class="copy"><p class="kicker">08 / AI PREDICTION REQUIREMENT</p><h2>Observe the past.<br><em>Estimate what comes next.</em></h2><p>Target: short-term wave-height prediction 5, 10 and 15 minutes ahead. Currently a transparent trend baseline. Evaluation requires calibrated data, a chronological train / validation / test split, and MAE, RMSE and bias reporting. This is not a trained model result yet.</p><p class="plain-why"><span class="plain-tag">IN PLAIN WORDS</span> An AI model is a program trained on past data to estimate one future value. Ours is a target, not a finished result.</p></div>
+      <div class="prediction-lab"><div class="predict-steps" aria-label="How our system predicts"><div><b>01 · WHERE DATA COMES FROM</b><span>Bay Station history</span><small>The shore computer stores every reading. The predictor looks at the last 120 wave-height records and waits until there are enough samples to trust.</small></div><div><b>02 · HOW IT PREDICTS</b><span>Extend the trend</span><small>It draws a straight line through the recent history and extends it 5, 10 and 15 minutes ahead. Distant predictions are shrunk on purpose — the further out, the less sure.</small></div><div><b>03 · SAFETY LIMITS</b><span>Cap + confidence</span><small>Changes are capped and clamped so one noisy reading can't spike the forecast. Each prediction shows a confidence level, and the sea state reads CALM, MODERATE or ROUGH.</small></div><div><b>04 · HOW IT IS JUDGED</b><span>Beat "no change"</span><small>The model must beat the simplest baseline — assume nothing changed — on real held-out data, measured with MAE, RMSE and bias. Until it does, it is a demo.</small></div></div><p class="wave-calibration">SIMULATED / NOT A TRAINED MODEL RESULT <span>This page shows the method, not a finished model: chronological data split, persistence baseline, MAE / RMSE / bias reporting. Accuracy and skill remain unvalidated.</span></p><p class="micro">Shore-based AI target: 5 / 10 / 15-minute-ahead estimated Hs from Bay Station history, compared against the persistence baseline.</p></div></div>
+    </section>
+    <section class="scene wide-scene" id="dashboard" data-chapter="9">
+      <div class="copy"><p class="kicker">09 / DASHBOARD, SECURITY AND HEALTH</p><h2>Complex engineering.<br><em>A clear picture.</em></h2><p>This is not a picture of the dashboard — it is the dashboard itself, served by the project's own edge software. What the panel sees here is what the operator sees at the Bay Station: grouped telemetry with explicit states LIVE / SIMULATED / ESTIMATED, so no reading is ever presented as more than it is.</p><details><summary>SECURITY AND HEALTH</summary><p>Security states: SECURE, WARNING, ALERT, DISARMED. GPS geofence persistence, vibration / tamper detection and the enclosure switch support buoy health. Normal wave motion must not generate alerts; false-positive testing is required.</p></details><details><summary>BUILT AND RUNNING ALREADY</summary><p>The edge service behind this view already runs on a real computer: sensor simulator, SQLite archive, REST API, alerts and this dashboard. It is the software backbone the funded build will connect to the actual buoy hardware.</p></details></div>
+      <div class="monitor dash-live"><div class="dash-live-bar"><span class="edge-dot" id="edge-dot"></span><span id="edge-status" role="status">Connecting to the edge service…</span><a id="edge-open" href="#dashboard">Open full dashboard ↗</a><button id="edge-retry" type="button">Retry</button></div><div class="dash-frame-wrap"><iframe id="edge-frame" title="Live FALCON edge dashboard" loading="lazy"></iframe><div id="edge-fallback" hidden><p><strong>EDGE OFFLINE — STATIC SNAPSHOT</strong></p><dl class="demo-summary"><div><dt>Estimated wave height</dt><dd>0.55 m · SIMULATED · CALIBRATION REQUIRED</dd></div><div><dt>AI prediction</dt><dd>wave-short-term v1.0.0-demo · 5/10/15 min · COLLECTING until 8+ samples</dd></div><div><dt>Wind / pressure</dt><dd>11.1 km/h NE · filtered 115.35 kPa · baseline 114.9 kPa</dd></div><div><dt>Power</dt><dd>Battery 86.7% CHARGING · solar 41.5 W CHARGING</dd></div><div><dt>GPS</dt><dd>Puerto Princesa ref · 3D fix 12 SAT · drift SECURE · 10 m geofence</dd></div><div><dt>Archive</dt><dd>SQLite — telemetry · predictions · alerts · events</dd></div></dl><p class="micro">Shown: the edge service's own offline snapshot. The live view returns automatically once the service is reachable.</p></div></div><div class="monitor-foot">Live view of the edge dashboard · the same interface the Bay Station operator uses</div></div>
+    </section>
+    <section class="scene wide-scene" id="validation" data-chapter="10">
+      <div class="copy"><p class="kicker">10 / VALIDATION &amp; STATUS</p><h2>How each claim<br><em>will be tested.</em></h2><p>Nothing here is claimed as validated yet. Each measurement path has a defined test before it earns a number.</p><p class="plain-why"><span class="plain-tag">IN PLAIN WORDS</span> Before we say a sensor is accurate, we compare it against something already trusted.</p></div>
+      <div class="prediction-lab"><div class="wave-method" aria-label="Validation plan"><span>BENCH SENSOR TESTS</span><i>→</i><span>PRESSURE-TO-WAVE vs REFERENCE</span><i>→</i><span>WIND vs REFERENCE ANEMOMETER</span><i>→</i><span>GPS GEOFENCE</span><i>→</i><span>VIBRATION / TAMPER</span><i>→</i><span>POWER BUDGET</span></div><p class="micro">Plus LoRa packet loss, latency, range and buffering; dashboard usability on desktop, tablet and phone; and AI evaluation against the persistence baseline.</p><div class="demo-summary"><div><dt>Implemented</dt><dd>Live edge service with dashboard (simulator, SQLite archive, REST API, alerts) · firmware shell · captive portal · telemetry framing · pressure-based wave estimate simulation · GPS geofence simulation</dd></div><div><dt>Not yet validated</dt><dd>Final sensor models and calibration coefficients · real GPS and tamper performance · LoRa hardware selection and range · field-trained AI</dd></div></div><p class="micro">Implemented means the software path exists and runs. It does not mean the measurement is accurate.</p></div>
+    </section>
+    <section class="scene wide-scene" id="risks" data-chapter="11">
+      <div class="copy"><p class="kicker">11 / SCOPE &amp; RISKS</p><h2>What it does not do.<br><em>How risks are handled.</em></h2><p>Phase 1 is integration and evaluation, not sensor invention. All claims are prototype status until validation is complete.</p></div>
+      <div class="prediction-lab"><div class="wave-method" aria-label="Out of scope"><span>NO TSUNAMI PREDICTION</span><i>→</i><span>NO TYPHOON PREDICTION</span><i>→</i><span>NO OFFICIAL WARNINGS</span><i>→</i><span>NO NAVIGATION CONTROL</span><i>→</i><span>NO LAB-GRADE WATER QUALITY</span></div><p class="micro">FALCON-01 is not an official warning or navigation system, and it does not replace any government monitoring service.</p><div class="sensor-table"><table><thead><tr><th>Risk</th><th>Mitigation</th></tr></thead><tbody><tr><td>Power autonomy</td><td>Power budget validation and measured consumption</td></tr><tr><td>Waterproofing and corrosion</td><td>Bench testing and staged deployment</td></tr><tr><td>LoRa range and interference</td><td>Documented range testing before any claim</td></tr><tr><td>Calibration drift</td><td>Documented calibration routine and reference comparison</td></tr><tr><td>False security alerts</td><td>False-positive testing before any alarm claim</td></tr></tbody></table></div></div>
+    </section>
+    <section class="scene wide-scene" id="roadmap" data-chapter="12">
+      <div class="copy"><p class="kicker">12 / DEVELOPMENT PLAN &amp; TEAM</p><h2>From concept<br><em>to validated prototype.</em></h2><p>Funding is requested for a sequenced 5-month bootcamp build, not a parts order. Each gate produces what the next gate depends on.</p><p class="plain-why"><span class="plain-tag">IN PLAIN WORDS</span> Build, calibrate, test on the coast, then evaluate. Nothing is called accurate until Gate 04 measures it against a real reference.</p><p class="micro">5 months / 20 weeks focused execution: bootcamp dorm, half-OJT half-thesis with DOST as OJT host. Adviser-directed.</p></div>
+      <div class="prediction-lab dost-plate"><div class="phase-track" id="phase-track" role="tablist" aria-label="Development stages"></div>
+        <div class="phase-detail" id="phase-detail" aria-live="polite"></div>
+        <div class="team-grid" id="team-grid" aria-label="Bootcamp team and mentors"></div>
+        <p class="dost-foot micro">Select a stage to see its output and the limit on what it can claim. Calibration is the gate: no accuracy figure leaves Gate 04.</p></div>
+    </section>
+    <section class="scene wide-scene" id="funding" data-chapter="13">
+      <div class="copy"><p class="kicker">13 / IMPACT &amp; FUNDING</p><h2>Who it serves.<br><em>What it costs.</em></h2><p>The first pilot should solve one verified problem for one identified coastal user. No site or beneficiary is confirmed yet. Midpoint ~₱115,000 of the ₱90,000–₱150,000 planning range.</p><p class="plain-why"><span class="plain-tag">IN PLAIN WORDS</span> We are not claiming to serve everyone at once — and these are planning ranges, not quotations. Before we submit, every line is replaced with a real supplier quote.</p></div>
+      <div class="prediction-lab dost-plate"><div class="beneficiary-grid" id="beneficiary-grid"></div>
+        <div class="innovation-note"><b>WHERE THE INNOVATION ACTUALLY IS</b><span>The contribution is the affordable, documented integration and local evaluation of established sensing, LoRa telemetry, shore processing, solar power, security telemetry and transparent prediction research. It is not the invention of a new sensor, buoy or AI algorithm.</span></div>
+        <div class="funding-controls" role="group" aria-label="Filter the funding categories"><button data-fund="all" aria-pressed="true">All categories</button><button data-fund="installed" aria-pressed="false">Installed in the system</button><button data-fund="reusable" aria-pressed="false">Reusable tools</button><button data-fund="process" aria-pressed="false">Process and contingency</button></div>
+        <div class="sensor-table"><table><thead><tr><th>Category</th><th>Preliminary amount</th><th>Type</th></tr></thead><tbody id="funding-body"></tbody></table></div>
+        <div class="funding-total"><span>INDICATIVE DEVELOPMENT REQUEST</span><strong id="funding-total">₱90,000 – ₱150,000</strong><small id="funding-shown">Showing all 7 categories</small></div>
+        <p class="funding-source">Ranges are the project's preliminary plan. Midpoint ~₱115,000 covers import markup, one calibration trial and spares.</p>
+        <details><summary>WHAT THE REQUEST DELIVERS</summary><p>One integrated and documented physical prototype · calibrated sensor and power subsystems · a local dashboard and data archive · controlled and supervised coastal-test results · a baseline-versus-model prediction evaluation · documentation and datasets future researchers can reuse.</p></details></div>
+    </section>
+    <section class="scene finale wide-scene" id="connected" data-chapter="14">
+      <div class="copy"><p class="kicker">14 / NEXT STEPS AND ACKNOWLEDGEMENT</p><h2>One ocean.<br><em>One connected story.</em></h2></div><div class="signal-journey" role="img" aria-label="Animated signal journey: a packet travels from the buoy through ESP32 framing, the LoRa air link and Bay Station storage to AI prediction and the dashboard. Simulated loop."><p class="sj-head"><span>WATCH IT WORK</span><small>ONE SIGNAL · BUOY TO SHORE · LOOPING · SIMULATED</small></p><svg viewBox="0 0 1000 260" aria-hidden="true"><path class="sj-sea" d="M0,215 C150,200 300,225 450,212 S750,200 1000,214"/><path class="sj-sea" d="M0,232 C180,222 340,240 520,230 S800,222 1000,232"/><path class="sj-track" d="M80,180 C160,180 200,110 290,110 S420,150 500,150 S630,95 710,95 S850,140 920,140"/><g class="sj-node" style="--d:0s"><circle cx="80" cy="180" r="17"/><text x="80" y="187">◉</text><text class="sj-label" x="80" y="216">BUOY · SENSE</text><text class="sj-sub" x="80" y="236">pressure + wind</text></g><g class="sj-node" style="--d:2.4s"><circle cx="290" cy="110" r="17"/><text x="290" y="117">▣</text><text class="sj-label" x="290" y="66">ESP32 · FRAME</text><text class="sj-sub" x="290" y="86">4.8s frame</text></g><g class="sj-node" style="--d:4.8s"><circle cx="500" cy="150" r="17"/><text x="500" y="157">≈</text><text class="sj-label" x="500" y="186">LoRa · CROSS</text><text class="sj-sub" x="500" y="206">air link</text></g><g class="sj-node" style="--d:7.2s"><circle cx="710" cy="95" r="17"/><text x="710" y="102">⌁</text><text class="sj-label" x="710" y="51">BAY · STORE</text><text class="sj-sub" x="710" y="71">SQLite</text></g><g class="sj-node" style="--d:9.6s"><circle cx="920" cy="140" r="17"/><text x="920" y="147">✦</text><text class="sj-label" x="920" y="176">AI + DASH · INSIGHT</text><text class="sj-sub" x="920" y="196">predict + alerts</text></g><circle class="sj-packet" style="--d:0s" cx="0" cy="0" r="7"/><circle class="sj-packet" style="--d:4s" cx="0" cy="0" r="7"/><circle class="sj-packet" style="--d:8s" cx="0" cy="0" r="7"/></svg></div><div class="complete-route" aria-label="Complete FALCON architecture"><span>BUOY</span><i>→</i><span>ESP32</span><i>→</i><span>LoRa</span><i>→</i><span>BAY STATION</span><i>→</i><span>PROCESSING</span><i>→</i><span>AI</span><i>→</i><span>DASHBOARD</span></div><div class="closing"><p>Freeze the exact parts list for the replacement prototype, then build in order: physical pressure acquisition with its calibration routine, the LoRa buoy radio and Bay Station gateway, and controlled reference data — before any performance claim.</p><p class="closing-ask"><b>THE REQUEST</b>Support for component procurement, fabrication, calibration access, supervised field testing and technical mentorship. We are asking for the opportunity to generate local evidence — not acceptance of an untested operational forecast.</p><a href="#ocean" class="enter">Experience it again ↗</a><details><summary>ACKNOWLEDGEMENT</summary><p>Project FALCON Research Group · BS Information Technology, Fullbright College. Adviser revision 2026-08-29. Project FALCON-01 Master Context v8.1. DOST idea presentation, 6 October 2026. Thank you.</p></details><details><summary>RESEARCH &amp; MODEL NOTES</summary><p>Original PROJECT-FALCON-V2.glb geometry preserved. All visual readings and communication events are simulated. Pressure deployment suitability, calibration, LoRa hardware, mechanical revision and AI evaluation are pending. Not an official warning or navigation system.</p></details></div>
+    </section>
+    <section class="scene finale wide-scene" id="animation" data-chapter="15" aria-label="Finale animation: the whole system, alive">
+    </section>
+  </main>
+  <footer class="journey-nav"><span id="chapter-number">01 / 16</span><nav id="chapter-nav" aria-label="Story chapters"></nav><span id="chapter-name">Ocean</span><div class="chapter-paging"><button id="chapter-prev" type="button" aria-label="Previous chapter">↑</button><button id="chapter-next" type="button"><span>Sensors</span>↓</button></div><div id="journey-progress"></div></footer>
+  <noscript><div class="no-script">Enable JavaScript for the animated experience. The story text remains available below.</div></noscript>
+</body>
+</html>
