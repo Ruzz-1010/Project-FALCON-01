@@ -1718,6 +1718,9 @@ body.p-big h2{font-size:clamp(2.6rem,4.6vw,5.4rem)}
 body.p-big .funding-total strong{font-size:clamp(1.6rem,2.6vw,2.3rem)}
 body.p-big .sj-head{font-size:.72rem}
 
+/* Ch05 LoRa crossing: strip the shade so the buoy↔shore communication reads.
+   Text copy keeps its own panel; this only clears the 3D behind it. */
+body[data-experience="radio"] .atmosphere{background:linear-gradient(90deg,#03111d59,transparent 30%,transparent 70%,#03111d59),linear-gradient(0deg,#04131e66,transparent 32%,transparent 84%,#04131e55)}
 /* Finale signal journey: CSS-only looping recap, buoy → shore. One 12s
    timeline shared by packets and node glow; paused off-screen and under
    reduced motion (style.css kills animations globally, leaving all nodes
@@ -1740,6 +1743,21 @@ body.p-big .sj-head{font-size:.72rem}
 @supports not (offset-path:path('M0,0')){.sj-packet{display:none}}
 #connected:not(.is-active) .sj-track,#connected:not(.is-active) .sj-node,#connected:not(.is-active) .sj-packet{animation-play-state:paused}
 @media(max-width:650px){.signal-journey{padding:.9rem .8rem .4rem}.sj-head{font-size:.52rem}}
+/* Page-02 component cards redesign (2026-10-09): true cards, not list rows.
+   Same markup/attributes — pure CSS. Number badge left, label, inspect hint. */
+#reveal-picks{display:grid;grid-template-columns:1fr 1fr;gap:.45rem;max-width:430px;margin:0 0 1.2rem}
+#reveal-picks button{position:relative;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:0;min-height:58px;padding:.55rem .8rem .55rem 2.9rem;text-align:left;font-size:.76rem;line-height:1.3;color:#dcecef;background:linear-gradient(120deg,#0a212cd9,#0a212c59);border:1px solid #9bc5cb2e;border-radius:10px;cursor:pointer;overflow:hidden}
+#reveal-picks button::before{content:attr(data-index);position:absolute;left:.65rem;top:50%;transform:translateY(-50%);display:grid;place-items:center;width:26px;height:26px;margin:0;border:1px solid #8fb7bd80;border-radius:50%;font:10px monospace;letter-spacing:.05em;color:#c6dddd;background:#06141c}
+#reveal-picks button:hover{transform:translateY(-2px);border-color:#8ccdd1;background:linear-gradient(120deg,#0e2c3ad9,#0e2c3a66);color:#eff7f5}
+#reveal-picks button[aria-pressed=true]{border-color:var(--gold);color:#fff;box-shadow:inset 3px 0 0 var(--gold)}
+#reveal-picks button[aria-pressed=true]::before{border-color:var(--gold);color:var(--gold)}
+@media(max-width:650px){#reveal-picks{gap:.4rem}#reveal-picks button{min-height:56px;font-size:.68rem;padding:.5rem .6rem .5rem 2.6rem}#reveal-picks button::before{width:24px;height:24px;left:.55rem}}
+/* Inspection panel accordion: one open section at a time instead of a wall. */
+#inspection-panel details.insp{border:1px solid #9bc5cb2e;border-radius:8px;margin:.55rem 0;background:#0a212c80}
+#inspection-panel details.insp summary{display:flex;align-items:center;min-height:44px;padding:.6rem .8rem;font-size:.62rem;letter-spacing:.18em;color:var(--sea);border-radius:8px}
+#inspection-panel details.insp summary::marker{color:var(--gold)}
+#inspection-panel details.insp[open] summary{border-bottom:1px solid #9bc5cb2e;border-radius:8px 8px 0 0;color:var(--gold)}
+#inspection-panel details.insp p,#inspection-panel details.insp ul{padding:.7rem .8rem .8rem;margin:0;font-size:.8rem}
 /* Adviser shortcut rail: fixed side buttons for the adviser-planned route
    (Cover → Buoy → ESP32 → Bay → Dash → Fund). Same glide engine as paging. */
 #adviser-route{position:fixed;right:1rem;top:50%;transform:translateY(-50%);z-index:30;display:flex;flex-direction:column;gap:.4rem;align-items:center;background:#05141ecc;border:1px solid var(--line);border-radius:8px;padding:.6rem .45rem}

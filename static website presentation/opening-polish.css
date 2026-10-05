@@ -59,7 +59,6 @@ body[data-experience="2"] #inspection-wire{opacity:.55}
 #acquisition-signal .signal-record p{font-size:.78rem;margin:.3rem 0;line-height:1.6}
 #acquisition-signal .signal-result{font-size:.68rem;line-height:1.6;color:var(--muted);margin:.7rem 0 0}
 body[data-experience="2"] #inspection-panel{width:min(360px,35vw)}
-body[data-experience="2"] #inspection-panel h3,body[data-experience="2"] #inspection-data,body[data-experience="2"] #inspection-flow,body[data-experience="2"] #inspection-status{display:none}
 body[data-experience="2"] #inspection-panel h2{font-size:1.7rem}
 body[data-experience="2"] #inspection-panel .kicker{font-size:0}
 body[data-experience="2"] #inspection-panel .kicker::after{content:'SIGNAL ACQUISITION';font-size:.58rem}

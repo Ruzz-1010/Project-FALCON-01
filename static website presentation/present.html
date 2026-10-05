@@ -38,10 +38,10 @@
     <div id="inspection-content" hidden>
       <p class="kicker">COMPONENT INSPECTION</p><h2 id="inspection-title" tabindex="-1"></h2>
       <h3>FUNCTION</h3><p id="inspection-function"></p>
-      <h3>HOW IT WORKS</h3><p id="inspection-how"></p>
-      <h3>DATA / SIGNAL</h3><ul id="inspection-data"></ul>
-      <h3>DATA ACQUISITION</h3><p id="inspection-acquire"></p>
-      <h3>SPECS</h3><ul id="inspection-specs"></ul>
+      <details class="insp" open><summary>HOW IT WORKS</summary><p id="inspection-how"></p></details>
+      <details class="insp"><summary>DATA / SIGNAL</summary><ul id="inspection-data"></ul></details>
+      <details class="insp"><summary>DATA ACQUISITION</summary><p id="inspection-acquire"></p></details>
+      <details class="insp"><summary>SPECS</summary><ul id="inspection-specs"></ul></details>
       <h3>CONNECTED TO / FLOW</h3><div id="inspection-flow"></div>
       <strong id="inspection-status"></strong><p id="inspection-note"></p>
     </div><p id="inspection-travel" role="status">Moving to component…</p>

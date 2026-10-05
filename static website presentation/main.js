@@ -86,7 +86,7 @@ function pick(id,inspect=true){
     $('#inspection-acquire').textContent=info.acquire||info.data.join(' · ');
     const specsEl=$('#inspection-specs');const specs=info.specs||[];
     specsEl.replaceChildren(...specs.map(text=>{const li=document.createElement('li');li.textContent=text;return li;}));
-    specsEl.previousElementSibling.hidden=specs.length===0;
+    specsEl.closest('details').hidden=specs.length===0;
     $('#inspection-data').replaceChildren(...info.data.map(text=>{const li=document.createElement('li');li.textContent=text;return li;}));
     $('#inspection-flow').replaceChildren(...info.flow.map(text=>{const span=document.createElement('span');span.textContent=text;return span;}));
     $('#inspection-status').textContent=info.status;$('#inspection-note').textContent=info.note;
@@ -267,7 +267,7 @@ function scrollState(){
   return {chapter,progress:Math.min(chapterCount-1,chapter+fraction)};
 }
 function setChapter(chapter){
-  active=chapter;document.body.dataset.experience=chapter<=CH.sensors?String(chapter):'later';
+  active=chapter;document.body.dataset.experience=chapter===CH.radio?'radio':(chapter<=CH.sensors?String(chapter):'later');
   sections.forEach((s,i)=>s.classList.toggle('is-active',i===chapter));
   [...nav.children].forEach((a,i)=>{if(i===chapter)a.setAttribute('aria-current','step');else a.removeAttribute('aria-current');});
   document.querySelectorAll('#adviser-route [data-goto]').forEach(b=>{if(Number(b.dataset.goto)===chapter)b.setAttribute('aria-current','true');else b.removeAttribute('aria-current');});
