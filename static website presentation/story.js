@@ -44,26 +44,26 @@ export const execution = {
   ]
 };
 
-// Adviser-approved planning range PHP 90,000–150,000 (midpoint ~₱115,000).
+// Adviser-approved planning range PHP 110,000–150,000 (midpoint ~₱130,000).
 // "kind" drives the filter: installed stays with the delivered system,
 // reusable are tools kept for later tests, process covers trials/contingency.
 // Planning range only — replaced with 3-supplier quotations before submission.
 export const funding = [
-  {category: 'Sensors and embedded electronics (pressure, wind, ESP32, GPS)', min: 18000, max: 26000, kind: 'installed'},
-  {category: 'Bay Station computer, LoRa gateway, SIM backhaul + antennas', min: 15000, max: 25000, kind: 'installed'},
-  {category: 'Solar 60W, battery 20–30Ah, MPPT + protected distribution', min: 14000, max: 22000, kind: 'installed'},
-  {category: 'Buoy body Ø650mm, keel, ballast, enclosure + marine connectors', min: 15000, max: 25000, kind: 'installed'},
-  {category: 'Single-anchor mooring, corrosion protection + safety hardware', min: 7000, max: 14000, kind: 'installed'},
-  {category: 'Calibration, reference rental, fabrication + supervised trials', min: 12000, max: 20000, kind: 'reusable'},
-  {category: 'Transport, documentation, spares + contingency', min: 9000, max: 18000, kind: 'process'}
+  {category: 'Sensors and embedded electronics (pressure, wind, ESP32, GPS)', min: 22000, max: 26000, kind: 'installed'},
+  {category: 'Bay Station computer, LoRa gateway, SIM backhaul + antennas', min: 19000, max: 25000, kind: 'installed'},
+  {category: 'Solar 60W, battery 20–30Ah, MPPT + protected distribution', min: 17000, max: 22000, kind: 'installed'},
+  {category: 'Buoy body Ø650mm, keel, ballast, enclosure + marine connectors', min: 19000, max: 25000, kind: 'installed'},
+  {category: 'Single-anchor mooring, corrosion protection + safety hardware', min: 8000, max: 14000, kind: 'installed'},
+  {category: 'Calibration, reference rental, fabrication + supervised trials', min: 14000, max: 20000, kind: 'reusable'},
+  {category: 'Transport, documentation, spares + contingency', min: 11000, max: 18000, kind: 'process'}
 ];
 
 // Formatting and totals live here so the figure under the table can never
 // drift away from the categories above it. No locale-dependent formatting: the
 // peso breakdown has to read the same on every machine.
 //
-// NOTE ON THE TOTAL: the seven categories above sum to 90,000–150,000
-// (midpoint ~115,000). Landed cost includes 20–30% shipping/tax/markup on
+// NOTE ON THE TOTAL: the seven categories above sum to 110,000–150,000
+// (midpoint ~130,000). Landed cost includes 20–30% shipping/tax/markup on
 // imported modules; LoRa gateway + mini-PC + SIM are now budgeted (were TBD).
 // Reusable tools are separated from installed parts before submission.
 const peso = value => `₱${String(value).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;

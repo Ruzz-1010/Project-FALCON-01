@@ -18,8 +18,8 @@ Thesis line: *“Affordable, documented, locally-evaluable — integration, hind
 | 10 Validation | Basahin Implemented vs Not yet | “Walang validated dito. Implemented = tumatakbo ang software, hindi ibig sabihin accurate. Test muna vs reference bago mag-number. Mas gusto naming honest na prototype kaysa magandang claim.” |
 | 11 Scope | Point sa NO list + table | “HINDI tsunami/typhoon warning, hindi official, hindi pamalit sa gobyerno. Risks: power, waterproofing, LoRa, drift, false alerts — may mitigation lahat.” |
 | 12 Roadmap+Team | Click G1→G5 isa-isa | “5-month/20-week bootcamp, hindi parts order. G4 ang accuracy gate. G1 Freeze, G2 Bench, G3 Calibrate, G4 Validation, G5 Trial+thesis. Team: Ruzzel-Hardware, Mayla+Gina-Papers, Gwyn-Edge/AI/Dash. Sir Jam, Sir Jeff, 3rd TBD/DOST.” |
-| 13 Funding ★NUMBER | Filter All→Installed→Reusable | “1 pilot user muna, walang site pa. Innovation = murang integration + local evaluation, hindi bagong sensor/AI. ₱90k–150k, mid ~₱115k. Planning range lang, papalitan ng 3-supplier canvass.” |
-| 14 Close ★ASK | Click `Experience again` kung Q&A | “Next: freeze BOM, pressure+calibration, LoRa integration, reference data muna. Hingi namin — limang puntos: OJT host, mentor/bench, procurement ₱90-150k, calibration + site access, trial support + co-own data. Hindi forecast ang hinihingi namin — pagkakataong gumawa ng lokal na ebidensya. Salamat — FALCON Research Group, BS IT, Fullbright.” |
+| 13 Funding ★NUMBER | Filter All→Installed→Reusable | “1 pilot user muna, walang site pa. Innovation = murang integration + local evaluation, hindi bagong sensor/AI. ₱110k–150k, mid ~₱130k. Planning range lang, papalitan ng 3-supplier canvass.” |
+| 14 Close ★ASK | Click `Experience again` kung Q&A | “Next: freeze BOM, pressure+calibration, LoRa integration, reference data muna. Hingi namin — limang puntos: OJT host, mentor/bench, procurement ₱110-150k, calibration + site access, trial support + co-own data. Hindi forecast ang hinihingi namin — pagkakataong gumawa ng lokal na ebidensya. Salamat — FALCON Research Group, BS IT, Fullbright.” |
 
 **✂ = CUT LIST kung maikli ang oras:** 04 (diagram lang, 1 pangungusap) → 07 (ituro lang) → 09 (huwag i-click, pangalan lang). Huwag kailanman putulin: 05, 08, 10, 12, 13.
 
@@ -38,4 +38,4 @@ Thesis line: *“Affordable, documented, locally-evaluable — integration, hind
 10. **Kaya ba ng team?** → “4 estudyante, nakatakda na ang hati: Ruzzel-hardware/power/LoRa, Gwyn-edge/AI/dashboard, Mayla+Gina-papers/evaluation. 2 adviser + 1 bakanteng seat (SW/AI o DOST). Kulang: wala pang nakapag-sea deployment — kaya gated ang plano at kasama ang mentor sa ask.”
 11. **Kanino ang IP/data?** → “IP sa team at Fullbright — thesis work. Bukas kami sa co-ownership ng dataset kasama ang LGU/DOST: timestamped, quality-flagged, may docs at limitations. Dataset na kami lang ang makakabasa ay walang halaga.”
 
-**Check bago umakyat:** [ ] big=1 tested [ ] na-try Interrupt/Inspect [ ] edge service running + 09 live OK [ ] "simulated" nasabi 4x [ ] timer 20:00 [ ] na-rehearse ang Q9-11 [ ] natapos sa ₱90k-150k + 5-puntong ask
+**Check bago umakyat:** [ ] big=1 tested [ ] na-try Interrupt/Inspect [ ] edge service running + 09 live OK [ ] "simulated" nasabi 4x [ ] timer 20:00 [ ] na-rehearse ang Q9-11 [ ] natapos sa ₱110k-150k + 5-puntong ask

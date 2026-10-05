@@ -524,16 +524,16 @@ forecast is made."*
 >
 > **— filter the table —**
 >
-> "On cost. The range is **₱90,000 to ₱150,000.** The middle, about **₱115,000,** covers shipping
+> "On cost. The range is **₱110,000 to ₱150,000.** The middle, about **₱130,000,** covers shipping
 > and tax, one calibration session, and spare parts.
 >
 > **These are planning numbers. They are not quotes.** Before we submit, every line gets a real
 > price from three suppliers. I will not give you a final peso figure until we have done that."
 >
-> "The seven lines: sensors and electronics, ₱18,000 to ₱26,000. Shore computer, radio, and SIM,
-> ₱15,000 to ₱25,000. Solar, battery, and controller, ₱14,000 to ₱22,000. Buoy body and
-> enclosure, ₱15,000 to ₱25,000. Mooring, ₱7,000 to ₱14,000. Calibration and trials,
-> ₱12,000 to ₱20,000. Transport, spares, and backup, ₱9,000 to ₱18,000.
+> "The seven lines: sensors and electronics, ₱22,000 to ₱26,000. Shore computer, radio, and SIM,
+> ₱19,000 to ₱25,000. Solar, battery, and controller, ₱17,000 to ₱22,000. Buoy body and
+> enclosure, ₱19,000 to ₱25,000. Mooring, ₱8,000 to ₱14,000. Calibration and trials,
+> ₱14,000 to ₱20,000. Transport, spares, and backup, ₱11,000 to ₱18,000.
 >
 > **What you get:** one working, documented prototype. Calibrated sensors. A dashboard and a
 > data archive. Real sea test results. A fair test of the AI. And documents and data other
@@ -542,7 +542,7 @@ forecast is made."*
 ---
 
 ## 14 — CLOSE · 1 min · the ask
-**On screen:** closing slide + WATCH IT WORK loop · **Static ang 14–15; mag-scroll sa page 16 — flight plays ONCE from the buoy (~30s: buoy → rise → line → receiver → INSIDE Bay Station, then holds) · umalis/bumalik = replay from buoy** · Speak the 5-point ask over the flight
+**On screen:** closing slide + WATCH IT WORK loop · **Static ang 14–15; mag-scroll sa page 16 — flight loops from the buoy (~30s: buoy → rise → line → antenna → INSIDE Bay Station → back to buoy)** · Speak the 5-point ask over the flight
 
 > "Let me finish with what happens next.
 >
@@ -556,7 +556,7 @@ forecast is made."*
 >
 > **Two.** A **mentor.** One person for software or AI, and the third adviser seat.
 >
-> **Three.** **Help buying and building** the parts, in that ₱90,000 to ₱150,000 range.
+> **Three.** **Help buying and building** the parts, in that ₱110,000 to ₱150,000 range.
 >
 > **Four.** **Access to calibration and a site.** A reference instrument, and permission for a
 > supervised tank or pool test.
@@ -598,7 +598,7 @@ For everything else, a short honest answer beats a long one.
 > "Not chosen yet. And I will not name a place we have not spoken to. What we suggest is one
 > town, one real problem, one trial site. Confirmed before we deploy, not after."
 
-**5. "Why ₱90,000 to ₱150,000?"**
+**5. "Why ₱110,000 to ₱150,000?"**
 > "Because that is what things actually cost when they land here. Shipping, tax, and import
 > charges add twenty to thirty percent. It also includes the shore radio, the small computer,
 > and the SIM, which we originally did not know the price of. Plus calibration and spare parts.
@@ -676,7 +676,7 @@ Say these five, in this order.
 
 1. **Accept Project FALCON-01 as a DOST OJT placement** — half OJT, half thesis.
 2. **A mentor seat** — one software or AI mentor, plus the third adviser.
-3. **Help buying and building** — the ₱90,000 to ₱150,000 range.
+3. **Help buying and building** — the ₱110,000 to ₱150,000 range.
 4. **Calibration and site access** — a reference instrument and a supervised tank or pool test.
 5. **Sea trial support and shared data ownership.**
 
@@ -690,7 +690,7 @@ Say these five, in this order.
 - [ ] **Said "simulated, not validated" out loud in chapters 05, 07, 08, and 10**
 - [ ] Rehearsed questions 9, 10, and 11 out loud
 - [ ] Timer ready for 20 minutes, with the cut list ready
-- [ ] Finished on the ₱90,000 to ₱150,000 range and the five-point ask
+- [ ] Finished on the ₱110,000 to ₱150,000 range and the five-point ask
 - [ ] Date on the slide and the closing screen says **6 October 2026**
 - [ ] Third mentor name updated in `story.js` if someone has been confirmed
 

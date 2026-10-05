@@ -82,6 +82,8 @@ function pick(id,inspect=true){
     document.body.classList.toggle('instrument-inspection',active===CH.objectives);
     $('#inspection-back').textContent=active===CH.objectives?'← Return to buoy':'← Back to buoy';
     $('#inspection-title').textContent=info.name;$('#inspection-function').textContent=info.function;
+    $('#inspection-how').textContent=info.how||info.function;
+    $('#inspection-acquire').textContent=info.acquire||info.data.join(' · ');
     $('#inspection-data').replaceChildren(...info.data.map(text=>{const li=document.createElement('li');li.textContent=text;return li;}));
     $('#inspection-flow').replaceChildren(...info.flow.map(text=>{const span=document.createElement('span');span.textContent=text;return span;}));
     $('#inspection-status').textContent=info.status;$('#inspection-note').textContent=info.note;

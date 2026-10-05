@@ -110,7 +110,7 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
   const coast=createCoast();coast.group.visible=false;scene.add(coast.group);
   const bay=createBayStation(coast);let bayMove=null,bayOverview=null;
   function inspectBay(id){
-    if(currentChapter!==5||contextLost)return false;const pose=bay.focus(id,camera.aspect);if(!pose)return false;
+    if(currentChapter!==CH.shore||contextLost)return false;const pose=bay.focus(id,camera.aspect);if(!pose)return false;
     if(!bayOverview){bayOverview={eye:camera.position.clone(),aim:aim.clone()};bay.reveal(false);}bay.select(id);
     bayMove={id,from:camera.position.clone(),fromAim:aim.clone(),eye:new THREE.Vector3(...pose.eye),aim:new THREE.Vector3(...pose.aim),elapsed:0,ready:false};return true;
   }
@@ -202,15 +202,15 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
   const raycaster=new THREE.Raycaster();
   let currentChapter=0;
   const homeOrbit=createHomeOrbit();
-  const down=e=>{if(homeOrbit.active&&currentChapter===0){drag={last:e.clientX,lastY:e.clientY};return;}if(currentChapter===5||(!inspection&&(currentChapter===1||currentChapter===2))){orbitReset=null;drag={x:e.clientX,y:e.clientY,last:e.clientX,distance:0};}};
-  const move=e=>{if(!drag)return;if(homeOrbit.active&&currentChapter===0){homeOrbit.drag(e.clientX-drag.last,e.clientY-drag.lastY);drag.last=e.clientX;drag.lastY=e.clientY;needsDraw=true;return;}if(e.pointerType==='touch')return;const delta=e.clientX-drag.last;drag.distance+=Math.abs(delta);if(currentChapter!==5)yaw+=delta*.005;drag.last=e.clientX;};
+  const down=e=>{if(homeOrbit.active&&currentChapter===0){drag={last:e.clientX,lastY:e.clientY};return;}if(currentChapter===CH.shore||(!inspection&&(currentChapter===1||currentChapter===2))){orbitReset=null;drag={x:e.clientX,y:e.clientY,last:e.clientX,distance:0};}};
+  const move=e=>{if(!drag)return;if(homeOrbit.active&&currentChapter===0){homeOrbit.drag(e.clientX-drag.last,e.clientY-drag.lastY);drag.last=e.clientX;drag.lastY=e.clientY;needsDraw=true;return;}if(e.pointerType==='touch')return;const delta=e.clientX-drag.last;drag.distance+=Math.abs(delta);if(currentChapter!==CH.shore)yaw+=delta*.005;drag.last=e.clientX;};
   const up=e=>{
     if(!drag)return;
     if(homeOrbit.active&&currentChapter===0){drag=null;return;}
     const distance=Math.hypot(e.clientX-drag.x,e.clientY-drag.y)+drag.distance;drag=null;
     if(distance>8)return;
     raycaster.setFromCamera(new THREE.Vector2(e.clientX/innerWidth*2-1,1-e.clientY/innerHeight*2),camera);
-    if(currentChapter===5){const id=bay.pick(raycaster);if(id)onBayPick(id);return;}
+    if(currentChapter===CH.shore){const id=bay.pick(raycaster);if(id)onBayPick(id);return;}
     if(!model)return;
     for(const hit of raycaster.intersectObject(model,true)){let object=hit.object;while(object){const id=Object.keys(components).find(key=>object===targetFor(key));if(id){onPick(id);return;}object=object.parent;}}
   };
@@ -234,7 +234,7 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
       if(disposed||contextLost)return;
       currentChapter=chapter;
       if(chapter!==0)homeOrbit.exit();
-      if(chapter!==5&&(bayMove||bayOverview)){bayMove=null;bayOverview=null;bay.select(null);}
+      if(chapter!==CH.shore&&(bayMove||bayOverview)){bayMove=null;bayOverview=null;bay.select(null);}
       if(orbitReset){orbitReset.elapsed+=dt;const t=moving?Math.min(1,orbitReset.elapsed/1.2):1;yaw=orbitReset.from*(1-easeInspection(t));if(t===1)orbitReset=null;needsDraw=true;}
       const a=Math.max(0,Math.min(chapterCount-1,Math.floor(progress))),b=Math.min(chapterCount-1,a+1),t=THREE.MathUtils.smoothstep(progress-a,0,1);
       desiredEye.fromArray(poses[a].eye).lerp(nextEye.fromArray(poses[b].eye),t);
@@ -262,14 +262,14 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
       // Finale page (chapter 15): the flight plays on entry — this page
       // exists for the animation. A paused page (moving=false, time frozen)
       // never advances the flight.
-      // Finale flight is one-shot per entry: it always starts at the buoy,
-      // rises slowly, then follows the line to the station and holds there.
-      // Leaving and coming back replays it from the buoy.
+      // Finale flight loops from the buoy: entry always starts at the buoy
+      // close-up, flies the line to the station, then wraps back to the buoy.
+      // The camera easing smooths the wrap into a soft rewind.
       if(chapter===CH.finale&&lastCh!==CH.finale)flightT0=time;
       lastCh=chapter;
       const finale=chapter===CH.finale;
       if(finale&&!inspection&&!bayMove){
-        const reach=Math.min(1,(time-flightT0)/30);
+        const reach=((time-flightT0)/30)%1;
         const seg=Math.min(4.999,reach*5),fi=Math.floor(seg),fu=THREE.MathUtils.smoothstep(seg-fi,0,1);
         desiredEye.fromArray(FINALE_EYE[fi]).lerp(nextEye.fromArray(FINALE_EYE[fi+1]),fu);
         desiredAim.fromArray(FINALE_AIM[fi]).lerp(nextAim.fromArray(FINALE_AIM[fi+1]),fu);

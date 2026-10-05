@@ -186,3 +186,19 @@ cd edge && python3 -m falcon_edge.service
 - Validation: build passes, `home`+`motion`+`controller` 10/10,
   `git diff --check` clean. 3 pre-existing failures untouched
   (acquisition regex + 2 camera-framing).
+
+## 16. Budget floor raised 90k→110k (2026-10-09, presenter-confirmed)
+
+- Asked "11000-15000?" → clarified to **₱110,000–₱150,000** (literal 11-15k
+  would not cover the BOM and would sink panel credibility).
+- Category minimums rescaled 18/15/14/15/7/12/9k → 22/19/17/19/8/14/11k;
+  ceiling 150k kept; midpoint now ~₱130,000.
+- Touched: `story.js` + comments, both HTML funding blocks, `story.test`
+  (`₱110–150k`, non-installed `₱25–38k`), test comments, master script
+  (6 spots incl. 7 category lines), cue card, content audit, home hash →
+  `9fff1934…`.
+- Share pack: Slide-Script.md + CLEAN pptx patched (16 spots + heading);
+  Mirror pptx + first summary pptx are gone from Documents (keep CLEAN only).
+  `/tmp` wiped by a restart mid-task — rebuilt venv, republished `gh-pages`.
+- Validation: build passes, home/motion/controller 10/10, bay 2/2,
+  diff clean. Site redeployed with new budget.
