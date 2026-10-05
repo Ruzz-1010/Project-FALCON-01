@@ -12,9 +12,9 @@
   <!-- The DOST wrap-up chapters (12 Roadmap & Team, 13 Impact & Funding).
        Loaded after the theme so its plate and rail rules win. -->
   <!-- CLEAN MODERN CARDS: same card system as index.html, loaded last. -->
-  <script type="module" crossorigin src="./assets/present-BmvY7y5X.js"></script>
-  <link rel="modulepreload" crossorigin href="./assets/main-DX0_taxw.js">
-  <link rel="stylesheet" crossorigin href="./assets/main-BLne_U1C.css">
+  <script type="module" crossorigin src="./assets/present-CzdS-saR.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/main-1JJDmwxx.js">
+  <link rel="stylesheet" crossorigin href="./assets/main-BuhM55Mk.css">
   <link rel="stylesheet" crossorigin href="./assets/present-Ck_LdNpZ.css">
 </head>
 <body class="p-layer-head theme-deep">
@@ -22,6 +22,7 @@
   <div id="world" aria-hidden="true"></div><div class="atmosphere" aria-hidden="true"></div>
   <header><a class="wordmark" href="#ocean"><img id="logo" alt="FALCON emblem"><span>FALCON<span class="wordmark-id"> / 01</span></span></a><span class="edition">PHASE 1 · UNDERGRADUATE PROTOTYPE</span><div class="header-controls"><button id="p-presenter" aria-pressed="false">Presenter mode</button><button id="motion" aria-pressed="false">Pause motion</button><button id="fullscreen" aria-label="Enter fullscreen">⛶</button></div></header>
   <div class="model-state" id="model-state" role="status">Loading original CAD…</div>
+  <nav id="adviser-route" aria-label="Adviser shortcut route"><span>ADVISER ROUTE</span><button type="button" data-goto="0" title="Cover + title">00</button><button type="button" data-goto="2" title="Hardware baseline (buoy)">02</button><button type="button" data-goto="4" title="Software baseline (ESP32)">04</button><button type="button" data-goto="6" title="Bay Station">06</button><button type="button" data-goto="9" title="Dashboard">09</button><button type="button" data-goto="13" title="Funding">13</button></nav>
   <div class="coordinates" aria-hidden="true"><span id="coordinate-top">OFFSHORE / OBSERVATION NODE</span><i></i><span>PROJECT FALCON-01 / MASTER CONTEXT v8.1</span></div>
   <div id="hotspots" aria-label="Original CAD component hotspots" hidden></div>
   <div id="coast-receiver-label" hidden>LoRa RX · BAY STATION</div>
@@ -34,6 +35,7 @@
       <h3>HOW IT WORKS</h3><p id="inspection-how"></p>
       <h3>DATA / SIGNAL</h3><ul id="inspection-data"></ul>
       <h3>DATA ACQUISITION</h3><p id="inspection-acquire"></p>
+      <h3>SPECS</h3><ul id="inspection-specs"></ul>
       <h3>CONNECTED TO / FLOW</h3><div id="inspection-flow"></div>
       <strong id="inspection-status"></strong><p id="inspection-note"></p>
     </div><p id="inspection-travel" role="status">Moving to component…</p>
@@ -41,7 +43,7 @@
   <main>
     <section class="scene opening" id="ocean" data-chapter="0">
       <div class="cover-stage">
-        <div class="cover-split"><div class="cover-title"><p class="kicker">DOST PROJECT PROPOSAL · 6 OCTOBER 2026</p><h1>FALCON-01<br><em>Solar-Powered Coastal Observation Buoy</em></h1><p class="intro">Phase 1 — Undergraduate Prototype · Project FALCON Research Group</p><p class="cover-acro-line" aria-label="What FALCON stands for"><b>F</b>ullbright College's <b>A</b>I-powered <b>L</b>ive <b>C</b>oastal <b>O</b>bservation <b>N</b>etwork</p><button id="cover-start" class="enter" type="button">Start the presentation <span>↓</span></button></div><div class="cover-divider" aria-hidden="true"></div><div class="cover-team-side"><p class="cover-side-label">RESEARCH TEAM</p><ul class="cover-team" aria-label="Research team"><li><b>Jhon Ruzzel Correa</b><span>Hardware + Power + LoRa firmware</span></li><li><b>Mayla Bacaltos</b><span>Thesis papers (co-lead)</span></li><li><b>Gina Caballero</b><span>Thesis papers (co-lead)</span></li><li><b>Gwyn Isabel Enriquez</b><span>Edge + AI + Dashboard</span></li></ul><p class="micro">BS Information Technology · Fullbright College<br>Advisers: Sir Jam (papers) · Sir Jeff (hardware)</p></div></div>
+        <div class="cover-split"><div class="cover-title"><p class="kicker">DOST PROJECT PROPOSAL · 6 OCTOBER 2026</p><h1>FALCON-01<br><em>Solar-Powered Coastal Observation Buoy</em></h1><p class="intro">Phase 1 — Undergraduate Prototype · Project FALCON Research Group</p><p class="cover-acro-line" aria-label="What FALCON and PALCON stand for"><b>FALCON</b> — <b>F</b>ullbright College's <b>A</b>I-powered <b>L</b>ive <b>C</b>oastal <b>O</b>bservation <b>N</b>etwork <span>(for our school)</span><br><b>PALCON</b> — <b>P</b>alawan <b>A</b>I-powered <b>L</b>ive <b>C</b>oastal <b>O</b>bservation <b>N</b>etwork <span>(for Palawan)</span></p><button id="cover-start" class="enter" type="button">Start the presentation <span>↓</span></button></div><div class="cover-divider" aria-hidden="true"></div><div class="cover-team-side"><p class="cover-side-label">RESEARCH TEAM</p><ul class="cover-team" aria-label="Research team"><li><b>Jhon Ruzzel Correa</b><span>Hardware + Power + LoRa firmware</span></li><li><b>Mayla Bacaltos</b><span>Thesis papers (co-lead)</span></li><li><b>Gina Caballero</b><span>Thesis papers (co-lead)</span></li><li><b>Gwyn Isabel Enriquez</b><span>Edge + AI + Dashboard</span></li></ul><p class="micro">BS Information Technology · Fullbright College<br>Advisers: Sir Jam (papers) · Sir Jeff (hardware)</p></div></div>
       </div>
       <div class="home-stage">
         <div class="copy home-copy"><p class="kicker">DOST PRESENTATION · 6 OCTOBER 2026</p><h1>FALCON-01.<br><em>Listen to<br>the ocean.</em></h1><p class="intro">PROJECT FALCON-01<br>Solar-Powered Coastal Observation Buoy Prototype<br>Phase 1 — Undergraduate Prototype · Fullbright College</p><p class="home-explanation">Limited access to affordable coastal wave and wind data in barangay-level settings. Commercial buoys are costly, proprietary and maintenance heavy. Phase 1 answers that with a local-first, transparent and evaluable prototype. It senses underwater pressure and wind at sea; the shore turns those readings into estimated wave height and clear, usable information.</p><div class="home-system-strip" aria-label="FALCON system summary"><span>OFFSHORE</span><i>•</i><span>ESP32</span><i>•</i><span>LoRa</span><i>•</i><span>SHORE-BASED</span></div><a id="begin-journey" class="enter" href="#buoy">Begin the journey <span>↓</span></a></div>
