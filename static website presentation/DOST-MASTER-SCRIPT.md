@@ -50,6 +50,8 @@ Stop at these three, in this order.
 | 1 | 05 — LoRa | ~0.5 min | Run the break-and-recover demo twice |
 | 2 | 08 — AI | ~0.5 min | Explain the baseline properly |
 
+**Page 16 (Finale animation) sits outside the timed talk:** after the ask, step onto it and let the 3D flight loop behind questions — or skip it if time is short.
+
 **Never cut 05, 08, 10, 12, or 13.** Those carry the demo, the honesty, the plan, and the cost.
 
 ---
@@ -540,7 +542,7 @@ forecast is made."*
 ---
 
 ## 14 — CLOSE · 1 min · the ask
-**On screen:** The full path, buoy to dashboard
+**On screen:** closing slide + WATCH IT WORK loop · **Static ang 14–15; mag-scroll sa page 16 — flight plays ONCE from the buoy (~30s: buoy → rise → line → receiver → INSIDE Bay Station, then holds) · umalis/bumalik = replay from buoy** · Speak the 5-point ask over the flight
 
 > "Let me finish with what happens next.
 >

@@ -18,7 +18,9 @@ import {createHomeOrbit} from './home-orbit.js';
 const poses = [
   homeShots[0],
   {eye:[2.6,1.45,3.8], aim:[-.65,.55,0]},
-  {eye:[2.9,1.25,4.5], aim:[-.9,.5,0]},
+  // 2026-10-09: ch02 eye 0.9x closer (buoy slightly bigger on stage); same
+  // direction/aim so hotspot framing is preserved.
+  {eye:[2.6,1.12,4.05], aim:[-.9,.5,0]},
   {eye:[1.4,1,2.6], aim:[1.8,.7,0]},
   {eye:[2.9,1.25,4.5], aim:[-.9,.5,0]},
   coastCamera[0],
@@ -33,11 +35,22 @@ const poses = [
   // Roadmap & Team -> Impact & Funding -> Acknowledgement: one slow,
   // continuous pull-back over the water. The last pose is the original finale
   // framing, so the ending still looks exactly as it always did.
-  {eye:[5,3,9], aim:[0,.15,0]}
+  {eye:[5,3,9], aim:[0,.15,0]},
+  // 2026-10-09: 16th pose for the dedicated finale animation page. Wide
+  // system framing; the flight overrides it while active, this only carries
+  // the transitions in and out.
+  {eye:[7,3.4,11], aim:[5,1.4,-.7]}
 ];
 // The poses array and the chapter list must stay the same length: a mismatch
 // would silently stretch or compress the whole camera timeline.
 if(poses.length!==chapterCount)console.warn(`FALCON-01: ${poses.length} camera poses for ${chapterCount} chapters.`);
+// Finale fly-through waypoints (chapter 14 only, defined outside the poses
+// block so the one-pose-per-chapter guard above never sees them). Plain
+// arrays on purpose: the guard counts `{eye:` literals. The camera itself
+// travels the signal path — buoy close-up, up over the route, across to the
+// receiver, rest at the station — ping-pong loop, no cuts.
+const FINALE_EYE=[[-3.8,1.3,3.6],[-6.5,2.4,6.8],[5,3.8,8.5],[10.5,4.2,6.5],[14.2,3.4,4.6],[16.9,2.7,2.6]];
+const FINALE_AIM=[[-6,.7,0],[-5.5,1,-.3],[7,2.2,-.8],[15,4.5,-1.6],[16.5,3.2,-1],[18.2,1.8,-.1]];
 
 export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=>{},onBayPick=()=>{},onBayReady=()=>{}}) {
   let renderer;
@@ -209,7 +222,7 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
   const resize=()=>{renderer.setSize(innerWidth,innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();if(inspection?.id&&!inspection.returning)beginInspection(inspection.id);if(bayMove?.id&&!bayMove.returning)inspectBay(bayMove.id);needsDraw=true;};resize();window.addEventListener('resize',resize);
   const lost=e=>{e.preventDefault();contextLost=true;onStatus('3D paused by device · reload to restore');document.body.classList.add('webgl-unavailable');};renderer.domElement.addEventListener('webglcontextlost',lost);
   const desiredEye=new THREE.Vector3(),desiredAim=new THREE.Vector3(),nextEye=new THREE.Vector3(),nextAim=new THREE.Vector3();
-  let lastProgress=-1,lastPick='',lastYaw=-1,lastLink=true;
+  let lastProgress=-1,lastPick='',lastYaw=-1,lastLink=true,flightT0=0,lastCh=-1,buoyShift=0;
   return {
     setHomeOrbit(enabled){if(enabled){if(currentChapter!==0||!model||contextLost)return false;homeOrbit.enter(camera.position.toArray());}else homeOrbit.exit();drag=null;needsDraw=true;return true;},
     moveHomeOrbit(dx,dy,zoom=0){if(currentChapter===0&&homeOrbit.active){homeOrbit.drag(dx,dy);homeOrbit.zoom(zoom);needsDraw=true;}},
@@ -242,6 +255,26 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
         desiredAim.fromArray(crossingCamera[i].aim).lerp(nextAim.fromArray(crossingCamera[i+1].aim),u);
         if(innerWidth<650){const wide=1+.9*(1-THREE.MathUtils.smoothstep(progress,coastFrom+.65,coastFrom+1));desiredEye.sub(desiredAim).multiplyScalar(wide).add(desiredAim);}
       }
+      // Finale fly-through (chapter 14): the camera itself travels the signal
+      // path — buoy close-up, up over the route, across to the receiver,
+      // rest at the station — ping-pong loop, no cuts. Runs before the
+      // mobile widening so phones keep their framing.
+      // Finale page (chapter 15): the flight plays on entry — this page
+      // exists for the animation. A paused page (moving=false, time frozen)
+      // never advances the flight.
+      // Finale flight is one-shot per entry: it always starts at the buoy,
+      // rises slowly, then follows the line to the station and holds there.
+      // Leaving and coming back replays it from the buoy.
+      if(chapter===CH.finale&&lastCh!==CH.finale)flightT0=time;
+      lastCh=chapter;
+      const finale=chapter===CH.finale;
+      if(finale&&!inspection&&!bayMove){
+        const reach=Math.min(1,(time-flightT0)/30);
+        const seg=Math.min(4.999,reach*5),fi=Math.floor(seg),fu=THREE.MathUtils.smoothstep(seg-fi,0,1);
+        desiredEye.fromArray(FINALE_EYE[fi]).lerp(nextEye.fromArray(FINALE_EYE[fi+1]),fu);
+        desiredAim.fromArray(FINALE_AIM[fi]).lerp(nextAim.fromArray(FINALE_AIM[fi+1]),fu);
+        needsDraw=true;
+      }
       if(innerWidth<650){desiredEye.multiplyScalar(1.25);desiredAim.x+=.45;desiredAim.y+=.35;}
       if(innerWidth<650&&progress<CH.objectives)desiredAim.y+=(1-homeProgress)*desiredEye.distanceTo(desiredAim)*.16;
       // Reserve a middle-water stage between the mobile title and source index.
@@ -273,7 +306,11 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
       ocean.geometry=homeMix>0?homeOceanGeometry:legacyOceanGeometry;
       ocean.material.uniforms.homeWeight.value=homeMix;ocean.material.uniforms.homeProgress.value=homeProgress;
       const motion=buoyMotion(time);
-      buoy.position.x=progress>=coastFrom-.35&&progress<coastTo+.15?-8:0;
+      // Finale-only berth: the buoy glides out to x=-6 (far from shore) and
+      // eases back when leaving, so no other chapter is affected.
+      const berth=chapter===CH.finale?-6:(progress>=coastFrom-.35&&progress<coastTo+.15?-8:0);
+      buoyShift+=(berth-buoyShift)*Math.min(1,dt*2);
+      buoy.position.x=buoyShift;
       buoy.position.y=motion.heave;
       buoy.rotation.z=motion.roll;
       buoy.rotation.x=motion.pitch;
@@ -281,14 +318,21 @@ export async function createWorld(host, {onPick, onStatus, onInspectionReady=()=
       ocean.material.uniforms.opacity.value=inspection?.id==='pressure'?.12:chapter===CH.buoy?.62:1;
       buoy.updateMatrixWorld(true);camera.updateMatrixWorld(true);
       compositionBounds.makeEmpty();if(chapter<=CH.buoy)for(const target of pageOneTargets.values())compositionBounds.union(box.setFromObject(target));
+      // Finale holds the shore link on screen: packets keep streaming to the
+      // Bay Station behind the closing words. Respects the LoRa switch.
+      // (`finale` is computed above with the 6s entry delay.)
       const coastVisible=progress>=coastFrom-.35&&progress<coastTo+.15;
-      coast.update(time,linkOnline,camera,coastVisible,chapter===CH.radio,chapter===CH.shore);
+      coast.update(time,linkOnline,camera,coastVisible||finale,chapter===CH.radio,chapter===CH.shore||finale,finale);
       // The coastal hamlet only exists while the radio -> shore run is on screen.
-      bay.update(time,linkOnline,chapter===CH.shore);
+      // Finale opens the Bay Station cutaway instead: select the computer so
+      // the gear stays lit, reveal the interior for the fly-in.
+      if(finale){bay.select('computer');bay.reveal(true);}
+      else if(chapter!==CH.shore){bay.select(null);bay.reveal(false);}
+      bay.update(time,linkOnline,chapter===CH.shore||finale);
       if(receiverLabel){
         projection.set(...RECEIVER).project(camera);
         const x=(projection.x*.5+.5)*innerWidth,y=(-projection.y*.5+.5)*innerHeight;
-        receiverLabel.hidden=!coastVisible||projection.z>1||x<0||x>innerWidth-110||y<110||y>innerHeight-100;
+        receiverLabel.hidden=!(coastVisible||finale)||projection.z>1||x<0||x>innerWidth-110||y<110||y>innerHeight-100;
         receiverLabel.style.left=`${x}px`;receiverLabel.style.top=`${y-25}px`;
         receiverLabel.textContent=linkOnline?'LoRa RX · BAY STATION':'LoRa RX · LINK INTERRUPTED';
       }

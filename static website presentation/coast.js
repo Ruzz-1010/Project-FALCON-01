@@ -137,7 +137,14 @@ export function createCoast(){
   const points=[new THREE.Vector3(-8,1.2,0),new THREE.Vector3(-2,1.8,-.4),new THREE.Vector3(7,3.2,-1.1),new THREE.Vector3(...RECEIVER)];
   const route=new THREE.CatmullRomCurve3(points);
   const routeGeometry=new THREE.BufferGeometry().setFromPoints(route.getPoints(100));geometries.push(routeGeometry);
-  const routeMaterial=new THREE.LineBasicMaterial({color:'#70d1dc',transparent:true,opacity:.43});materials.push(routeMaterial);linkGroup.add(new THREE.Line(routeGeometry,routeMaterial));
+  const routeMaterial=new THREE.LineBasicMaterial({color:'#70d1dc',transparent:true,opacity:.43});materials.push(routeMaterial);const routeLine=new THREE.Line(routeGeometry,routeMaterial);routeLine.name='Mid-journey LoRa route';linkGroup.add(routeLine);
+  // Finale-only link: the main route starts at x=-8 (the buoy's mid-journey
+  // berth), but the finale parks the buoy back at the origin. This jumper
+  // runs buoy-top -> receiver so the closing flight reads as connected.
+  const finaleCurve=new THREE.CatmullRomCurve3([new THREE.Vector3(-6,1.1,0),new THREE.Vector3(4,1.9,-.5),new THREE.Vector3(9,2.6,-1),new THREE.Vector3(12.5,3.4,-1.4),new THREE.Vector3(...RECEIVER)]);
+  const finaleGeometry=new THREE.BufferGeometry().setFromPoints(finaleCurve.getPoints(100));geometries.push(finaleGeometry);
+  const finaleMaterial=new THREE.LineBasicMaterial({color:'#70d1dc',transparent:true,opacity:.43});materials.push(finaleMaterial);
+  const finaleLine=new THREE.Line(finaleGeometry,finaleMaterial);finaleLine.name='Finale buoy link';finaleLine.visible=false;linkGroup.add(finaleLine);
   const packetGeometry=new THREE.OctahedronGeometry(.075,0),packetMaterial=new THREE.MeshBasicMaterial({color:'#9aedf2'});geometries.push(packetGeometry);materials.push(packetMaterial);
   const packets=new THREE.InstancedMesh(packetGeometry,packetMaterial,9);linkGroup.add(packets);
   const rings=[];
@@ -154,8 +161,9 @@ export function createCoast(){
   }
   return {
     group,route,stationVisual,
-    update(time,online,camera,visible,crossing=false,shore=false){
+    update(time,online,camera,visible,crossing=false,shore=false,finale=false){
       group.visible=visible;linkGroup.visible=visible&&online;
+      finaleLine.visible=visible&&finale;routeLine.visible=!finale;
       crossingPackets.visible=crossing;packets.visible=!crossing;routeMaterial.opacity=crossing?.18:.43;
       rings.forEach(r=>r.visible=!crossing);
       if(!visible)return;
@@ -164,7 +172,7 @@ export function createCoast(){
         frames.instanceMatrix.needsUpdate=true;
         endpointRings.forEach((ring,i)=>{const phase=(time*.5+(i%2)*.5)%1;ring.scale.setScalar(.7+phase*2.3);ring.material.opacity=(1-phase)*.32;ring.quaternion.copy(camera.quaternion);});
       }
-      for(let i=0;i<9;i++){const phase=(time*(shore?.045:.12)+i/9)%1;dummy.position.copy(route.getPoint(phase));dummy.rotation.set(0,time+i,Math.PI/4);dummy.updateMatrix();packets.setMatrixAt(i,dummy.matrix);}
+      for(let i=0;i<9;i++){const phase=(time*(shore?.045:.12)+i/9)%1;dummy.position.copy((finale?finaleCurve:route).getPoint(phase));dummy.rotation.set(0,time+i,Math.PI/4);dummy.updateMatrix();packets.setMatrixAt(i,dummy.matrix);}
       packets.instanceMatrix.needsUpdate=true;
       for(let i=0;i<rings.length;i++){const phase=(time*.7+i/3)%1;rings[i].scale.setScalar(1+phase*2);rings[i].material.opacity=(1-phase)*.55;rings[i].quaternion.copy(camera.quaternion);}
     },

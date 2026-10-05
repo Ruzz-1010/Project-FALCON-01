@@ -41,7 +41,8 @@ const PLAIN=[
   'What this prototype does not do, what the known risks are, and how each is handled.',
   'Five funded bootcamp gates over five months, and who owns each one.',
   'Who the pilot serves, and the preliminary peso request.',
-  'Next steps, the team and the closing statement.'
+  'Next steps, the team and the closing statement. Closes with a looping animated signal journey, buoy to shore.',
+  'The whole system in one looping 3D flight, buoy to Bay Station interior. The animation page.'
 ];
 const CHAPTERS=chapters.map((name,i)=>({n:String(i).padStart(2,'0'),name,plain:PLAIN[i]??''}));
 

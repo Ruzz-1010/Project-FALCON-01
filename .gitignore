@@ -17,3 +17,18 @@ fusion360/**/.vscode/
 wokwi.vcd
 *.original-backup-*
 .~lock.*#
+# OpenCode / AI
+.opencode/
+
+# OpenCode config
+opencode.json
+opencode.jsonc
+
+# AI local files
+.ai/
+.ai-tools/
+
+# Environment / API keys
+.env
+.env.*
+!.env.example

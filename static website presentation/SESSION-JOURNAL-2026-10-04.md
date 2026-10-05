@@ -105,3 +105,84 @@ cd edge && python3 -m falcon_edge.service
 ## 9. User: "okey save this convo"
 
 - This file written as the save point.
+
+---
+
+## 10. Content polish for 6 Oct DOST proposal (same day, continued)
+
+- 09: presenter plumbing removed from stage (`IF THE LIVE VIEW IS OFFLINE`
+  details with `python3 -m falcon_edge.service` / `?edge=` URLs deleted);
+  replaced with panel-facing `BUILT AND RUNNING ALREADY`; snapshot fallback
+  softened (no internal `edge/data/falcon.db` path); footer = "same interface
+  the Bay Station operator uses". Both HTML files.
+- 02: spec-dump → buoy/shore split + "no mini PC or cellular on the buoy".
+- 10: Implemented list leads with live edge service + dashboard.
+- 14: internal `PROTOTYPE_REDESIGN_BASELINE.md` ref → plain language.
+- `home.test.mjs` hash → `23082b8a…` with dated reason. 32/35 (3 pre-existing),
+  build passed.
+
+## 11. User: "paayus ako sa 08 hindi na kase maintindihan yung context"
+
+- 08 `predict-steps` rewritten Taglish-jargon → plain English 4-step flow
+  (WHERE DATA COMES FROM → HOW IT PREDICTS → SAFETY LIMITS → HOW IT IS
+  JUDGED); second BAKIT evaluation grid deleted. Same honesty labels.
+- Master script 08 + `present.js` PLAIN[8] updated to match.
+- `home.test.mjs` hash → `1911804a…`. `home.test.mjs` 5/5 green (full suite
+  kept timing out across two server restarts — sandbox harness issue, GLB
+  model test hangs; unrelated to edits).
+
+## 12. Cover card before the hero (user: title + researchers + school first)
+
+- New first screen inside `#ocean` (NOT a new chapter — 15-count, poses and
+  paging untouched): `DOST PROJECT PROPOSAL · 6 OCTOBER 2026`, title, team
+  (Correa / Bacaltos / Caballero / Enriquez + roles), BS IT Fullbright +
+  Sir Jam / Sir Jeff, `Start the presentation ↓` → eased glide one screen
+  down to hero. Both HTML files + `cards-modern.css` + `main.js` handler.
+- FALCON acronym added (official, from
+  `THESIS DOCUMENTATION/DOST_IDEA_PRESENTATION_PACKAGE.md:78`):
+  **F**ullbright College's **A**I-powered **L**ive **C**oastal **O**bservation
+  **N**etwork.
+- Cover later redesigned to split editorial: title left, gold divider,
+  team right, no box (text-shadow readability). Acronym = one inline line.
+
+## 13. Regression fixes from the cover
+
+- Hero invisible after cover: `home-progress` math didn't account for the
+  extra screen (`style.css:21` opacity + `.home-departed`). Fix `main.js`:
+  `coverH` measured once, subtracted in the progress formula. Simulated
+  0→1.0 progress table verified; hero opacity 1.0 at hero top.
+- Buoy covered by shades ch00–03: ch02 atmosphere was dark-RIGHT (stale,
+  pre-dates buoy move to right third) → flipped to dark-left; ch00/01/02
+  spotlight right, ch03 (buoy left, copy right) spotlight left. Hook
+  extended `main.js:263` `CH.buoy` → `CH.sensors` (no test impact).
+- Buoy further right on ch00: `home.js` aims −0.70/−0.68/−0.66 →
+  −2.0/−1.98/−1.65. Third knot capped at −1.65 (brute-force verified max
+  keeping exact ch0→ch1 handoff for `home.test.mjs:8`). Cover box slimmed
+  760px → 580px (later removed in redesign). `home` 5/5, `home-orbit` 3/3,
+  `motion` 3/3 green.
+
+## 14. User: "save this convo" (again)
+
+- This file appended as the save point. Open items: eyeball buoy position
+  on projector ("sobra/balik" vs "more right"); 3rd mentor name;
+  `npm run build` on presenter's machine; open `present.html?big=1`;
+  run `cd edge && python3 -m falcon_edge.service` for live 09.
+
+## 15. UI/UX polish pass via ui-ux-pro-max skill (2026-10-09)
+
+- Skill loaded; ran `ux` domain search (projector readability) +
+  `--design-system` for "FALCON-01 academic" (result: Minimalism/Swiss,
+  Atkinson/Crimson type pairing — webfont skipped, offline projector risk;
+  kept system stack).
+- Audit: focus-visible present, buttons 44px, body 1.65 line-height,
+  funding tabular-nums present, tables have hover. Gaps fixed, CSS-only in
+  `cards-modern.css` (loads last, both pages; zero markup/JS/camera risk):
+  `text-wrap:balance/pretty` (no projector orphans), gold summary markers,
+  chapter ticks 32px→44px hit area (48px coarse), `p-big` micro/table/h2/
+  funding-total/sj-head size bumps for weak projectors.
+- Caught own typo live: `var(--gold}` + double `}}` broke `npm run build`
+  (lightningcss); fixed, braces balanced, build passes. Removed one
+  duplicate cover `@media` line.
+- Validation: build passes, `home`+`motion`+`controller` 10/10,
+  `git diff --check` clean. 3 pre-existing failures untouched
+  (acquisition regex + 2 camera-framing).

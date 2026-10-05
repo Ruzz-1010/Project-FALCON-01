@@ -43,7 +43,7 @@ body[data-experience="1"] .hotspot[aria-pressed=true]::before,body[data-experien
 #sensors #component-detail{display:none}
 #sensors .source-caption{position:absolute;bottom:12svh;left:8vw;font-size:.58rem;letter-spacing:.1em;color:#a9c2c9;line-height:2}
 #sensors .source-caption span{margin:0 .8rem;color:var(--gold)}
-body[data-experience="2"] .atmosphere{background:linear-gradient(90deg,#03111ded, #03111d9c 38%,transparent 68%),linear-gradient(0deg,#04131ec9,transparent 30%,#04131e66),radial-gradient(ellipse 46% 58% at 70% 44%,#2a6b7d73,transparent 70%)}
+body[data-experience="2"] .atmosphere{background:linear-gradient(90deg,#03111db3, #03111d40 30%,transparent 55%),linear-gradient(0deg,#04131e80,transparent 35%,transparent 80%,#04131e44),radial-gradient(ellipse 46% 58% at 70% 44%,#2a6b7d73,transparent 70%)}
 body[data-experience="3"] .atmosphere{background:linear-gradient(270deg,#03111dd9, #03111d50 43%,transparent 68%),linear-gradient(0deg,#04131eb0,transparent 30%,transparent 78%,#04131e66),radial-gradient(ellipse 46% 58% at 30% 44%,#2a6b7d66,transparent 70%)}
 body[data-experience="2"] #inspection-wire{opacity:.55}
 #acquisition-signal{border-top:1px solid #9dc3c747;padding-top:.9rem;max-width:440px}

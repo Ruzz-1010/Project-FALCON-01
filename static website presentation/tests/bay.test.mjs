@@ -21,7 +21,9 @@ test('Station cutaway, real cable, selectable functions, focus framing and reset
     assert.notEqual(bay.targets.get('dashboard'),bay.targets.get('computer'));
     assert.equal(bay.targets.get('rx').name,'Indoor LoRa radio');
     assert.ok(bay.group.getObjectByName('Small UPS power unit'));
-    assert.ok(bay.group.getObjectByName('Shore Internet router'));
+    // 2026-10-09: the Shore Internet router prop was removed from the cutaway
+    // per presenter (backhaul stays a copy-level concept, not a 3D box).
+    assert.equal(bay.group.getObjectByName('Shore Internet router'),undefined);
     assert.ok(bay.group.getObjectByName('Physical dashboard monitor'));
     assert.equal(coast.group.userData.poleCount,1);
     assert.ok(bay.cableCurve.getPoint(0).distanceTo(new Vector3(...RECEIVER))<.6);

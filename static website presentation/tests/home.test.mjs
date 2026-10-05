@@ -72,7 +72,9 @@ test('Pages 03–04 and 07–09 markup remains unchanged during the scoped 05–
   // (data source → trend → safety caps → judged vs "no change"
   // baseline). Same method, same honesty labels; jargon like raw
   // SQL/field names and version strings removed from the stage.
-  assert.equal(createHash('sha256').update(rest).digest('hex'),'1911804a60dc7327da3950283a57f0a9eb8a1afa301d2afe667d004fb8629b9b');
+  // 2026-10-09 (8): finale page stripped to pure animation (copy removed
+  // per presenter; aria-label kept). Chapters 0–14 untouched.
+  assert.equal(createHash('sha256').update(rest).digest('hex'),'16de13d84afc9003610820d3144fcc52b82cb879e34e785b3f52e7484eecbe2d');
   // The opening kicker was rewritten to the DOST title slide; the presenter
   // build keeps the cinematic "Listen to the ocean" phrasing.
   assert.match(html,/DOST PRESENTATION · 6 OCTOBER 2026/);assert.match(html,/id="begin-journey"/);

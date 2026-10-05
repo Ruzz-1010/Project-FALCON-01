@@ -1697,7 +1697,45 @@ body.theme-deep #sensors .copy {
 .cover-team li{display:flex;flex-direction:column;gap:.15rem;border-left:2px solid var(--gold);padding-left:.7rem}
 .cover-team b{font-size:.92rem;font-weight:600;color:#fff}
 .cover-team span{font-size:.72rem;color:var(--muted)}
-@media(max-width:650px){#ocean .cover-stage{padding:16svh 6vw 10svh}}
 button#cover-start{background:transparent;border:0;border-bottom:1px solid #809da6;color:inherit;font:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:3rem;min-height:48px;padding:.6rem 0;font-size:.95rem}
 button#cover-start span{font-size:1.6rem;color:var(--gold)}
-@media(max-width:650px){#ocean .cover-stage{padding:16svh 6vw 10svh}}
+
+/* UI/UX polish pass (2026-10-09, ui-ux-pro-max review for the DOST panel).
+   CSS-only: no markup, copy, camera or logic touched. Covers both pages
+   (this sheet loads last) and degrades gracefully offline. */
+h1,h2{text-wrap:balance}
+.copy>p:not(.kicker),.closing>p,.wave-result p,.prediction-lab>.micro{text-wrap:pretty}
+summary::marker{color:var(--gold)}
+/* Chapter ladder ticks: keep the slim visual, widen the hit area. */
+#chapter-nav a{width:44px;height:44px}
+@media(pointer:coarse){#chapter-nav a{width:48px;height:48px}}
+/* Projector mode: micro-copy and tables must survive a weak projector. */
+body.p-big .micro{font-size:.95rem;line-height:1.7}
+body.p-big .sensor-table{font-size:1rem}
+body.p-big .sensor-table th{font-size:.78rem}
+body.p-big h2{font-size:clamp(2.6rem,4.6vw,5.4rem)}
+body.p-big .funding-total strong{font-size:clamp(1.6rem,2.6vw,2.3rem)}
+body.p-big .sj-head{font-size:.72rem}
+
+/* Finale signal journey: CSS-only looping recap, buoy → shore. One 12s
+   timeline shared by packets and node glow; paused off-screen and under
+   reduced motion (style.css kills animations globally, leaving all nodes
+   lit and packets hidden as the static fallback). */
+.signal-journey{width:min(1100px,100%);margin:0 auto 1.5rem;border:1px solid #9bc5cb2e;border-radius:10px;padding:1.2rem 1.5rem .6rem;background:linear-gradient(180deg,#071e2a99,transparent)}
+.sj-head{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;margin:0 0 .4rem;font-size:.62rem;letter-spacing:.22em;color:var(--gold)}
+.sj-head small{letter-spacing:.12em;color:var(--muted)}
+.signal-journey svg{display:block;width:100%;height:auto}
+.sj-sea{fill:none;stroke:#83c4c522;stroke-width:2}
+.sj-track{fill:none;stroke:#83c4c455;stroke-width:2;stroke-dasharray:3 9;animation:sj-drift 12s linear infinite}
+@keyframes sj-drift{to{stroke-dashoffset:-240}}
+.sj-node{color:#eaf7f7;animation:sj-glow 12s linear infinite;animation-delay:var(--d,0s)}
+.sj-node circle{fill:#0a2530;stroke:currentColor;stroke-width:2}
+.sj-node text{fill:currentColor;font-size:22px;text-anchor:middle}
+.sj-node .sj-label{font-size:19px;letter-spacing:.14em}
+.sj-node .sj-sub{font-size:15px;letter-spacing:.06em;opacity:.75}
+@keyframes sj-glow{0%{color:#eaf7f7;filter:drop-shadow(0 0 14px #7fd4dc)}16%{color:#eaf7f7;filter:drop-shadow(0 0 14px #7fd4dc)}26%,100%{color:#4d7b84;filter:none}}
+.sj-packet{fill:#8fe3ea;opacity:0;filter:drop-shadow(0 0 10px #7fd4dc);offset-path:path('M80,180 C160,180 200,110 290,110 S420,150 500,150 S630,95 710,95 S850,140 920,140');animation:sj-travel 12s linear infinite;animation-delay:var(--d,0s)}
+@keyframes sj-travel{0%{offset-distance:0%;opacity:0}5%{opacity:1}90%{opacity:1}98%,100%{offset-distance:100%;opacity:0}}
+@supports not (offset-path:path('M0,0')){.sj-packet{display:none}}
+#connected:not(.is-active) .sj-track,#connected:not(.is-active) .sj-node,#connected:not(.is-active) .sj-packet{animation-play-state:paused}
+@media(max-width:650px){.signal-journey{padding:.9rem .8rem .4rem}.sj-head{font-size:.52rem}}

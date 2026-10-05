@@ -1,18 +1,19 @@
-// Fifteen chapters. The first ten carry the DOST draft slides as a spatial
+// Sixteen chapters. The first ten carry the DOST draft slides as a spatial
 // journey (offshore -> buoy -> shore) so the original CAD stays the
-// centrepiece; the last five are the wrap-up: evidence, boundaries, plan,
-// cost and close.
-export const chapters = ['Ocean', 'Objectives', 'FALCON buoy', 'Sensors', 'Software', 'LoRa link', 'Bay Station', 'Wave estimate', 'AI prediction', 'Dashboard', 'Validation & Status', 'Scope & Risks', 'Roadmap & Team', 'Impact & Funding', 'Acknowledgement'];
+// centrepiece; the next five are the wrap-up: evidence, boundaries, plan,
+// cost and close; the last is a dedicated finale animation page.
+export const chapters = ['Ocean', 'Objectives', 'FALCON buoy', 'Sensors', 'Software', 'LoRa link', 'Bay Station', 'Wave estimate', 'AI prediction', 'Dashboard', 'Validation & Status', 'Scope & Risks', 'Roadmap & Team', 'Impact & Funding', 'Acknowledgement', 'Finale'];
 
 // Named chapter indices. The 3D choreography in world.js and the paging engine
 // in main.js both read these instead of magic numbers, so inserting or moving a
 // chapter can never silently re-point a camera pose at the wrong scene.
 // Chapters 0–9 keep their exact original numbers, which the CAD choreography
-// was tuned against; 10–14 are the merged wrap-up chapters.
+// was tuned against; 10–14 are the merged wrap-up chapters; 15 is the
+// dedicated finale animation page (added 2026-10-09, nothing renumbered).
 export const CH = {
   ocean: 0, objectives: 1, buoy: 2, sensors: 3, controller: 4, radio: 5, shore: 6,
   waves: 7, prediction: 8, dashboard: 9, validation: 10, risks: 11,
-  roadmap: 12, funding: 13, connected: 14
+  roadmap: 12, funding: 13, connected: 14, finale: 15
 };
 
 // Five bootcamp gates over 5 months (20 weeks), adviser-directed focused

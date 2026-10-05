@@ -23,11 +23,10 @@ export function createBayStation(coast){
   const pcMat=material('#59666a',{metalness:.35,emissive:'#619d99',emissiveIntensity:0});
   const radioMat=material('#65716c',{metalness:.25,emissive:'#619d99',emissiveIntensity:0});
   const monitorMat=material('#29363b',{emissive:'#619d99',emissiveIntensity:0});
-  const networkMat=material('#6e7771'),upsMat=material('#39454a');
+  const upsMat=material('#39454a');
   const localRadio=box(interior,radioMat,[x-.98,y+1.055,z+.25],[.3,.15,.28]);localRadio.name='Indoor LoRa radio';localRadio.userData.bayId='rx';
   const pc=box(interior,pcMat,[x-.43,y+1.065,z+.25],[.4,.17,.36]);pc.name='Shared Bay Station computer';pc.userData.bayId='validate';
   for(const id of ['computer','validate','sqlite','processing','ai'])targets.set(id,pc);
-  const router=box(interior,networkMat,[x+1.12,y+1.08,z+.3],[.4,.18,.3]);router.name='Shore Internet router';
   box(interior,metal,[x-1.08,y+.23,z-.1],[.6,.06,.6]);
   const ups=box(interior,upsMat,[x-1.08,y+.49,z-.1],[.28,.46,.38]);ups.name='Small UPS power unit';
   label(interior,'UPS',[x-1.08,y+.5,z+.095],.2,.08);
@@ -41,7 +40,6 @@ export function createBayStation(coast){
   label(interior,'SHORE COMPUTER',[x-.42,y+.925,z+.658],.76,.095);
   label(interior,'LOCAL STORAGE',[x-.42,y+.845,z+.658],.76,.068);
   label(interior,'PROCESSING + AI',[x-.42,y+.78,z+.658],.76,.068);
-  label(interior,'INTERNET BACKHAUL',[x+1.12,y+1.08,z+.456],.62,.095);
   // One display attached to a real monitor bezel, not a wall of functional cards.
   const screen=label(interior,'FALCON-01 / SIMULATED',[x+.35,y+1.48,z-.09],.82,.49);screen.userData.bayId='dashboard';
   if(typeof document!=='undefined'){
@@ -52,11 +50,10 @@ export function createBayStation(coast){
     ctx.font='24px sans-serif';ctx.fillStyle='#665b40';ctx.fillText('ILLUSTRATIVE · RELATIVE UNITS · NOT LIVE',35,610);
     const map=new THREE.CanvasTexture(canvas);map.colorSpace=THREE.SRGBColorSpace;textures.push(map);screen.material.map=map;screen.material.needsUpdate=true;
   }
-  const equipment=[localRadio,pc,router,ups,monitor];const baseColors=new Map(equipment.map(o=>[o,o.material.color.clone()]));
+  const equipment=[localRadio,pc,ups,monitor];const baseColors=new Map(equipment.map(o=>[o,o.material.color.clone()]));
   function wire(points,radius=.009){const curve=new THREE.CatmullRomCurve3(points.map(p=>new THREE.Vector3(...p)),false,'centripetal');const geometry=new THREE.TubeGeometry(curve,24,radius,5,false);geometries.push(geometry);interior.add(new THREE.Mesh(geometry,metal));return curve;}
   const radioToPC=wire([[x-.98,y+1.06,.25],[x-.85,y+1.0,.05],[x-.65,y+1.0,.05],[x-.43,y+1.06,.25]]);
   const pcToScreen=wire([[x-.43,y+1.06,.1],[x-.2,y+1.0,-.3],[x+.35,y+1.1,-.2],[x+.35,y+1.45,-.16]]);
-  wire([[x+1.12,y+1.05,.18],[x+.9,y+1.0,-.3],[x-.43,y+1.0,-.3],[x-.43,y+1.06,.1]]);
   wire([[x-1.08,y+.65,-.1],[x-1.08,y+.85,-.3],[x-.43,y+1.0,-.3]]);
   const dataPulse=box(interior,material('#a4cac4',{emissive:'#71aaa4',emissiveIntensity:.2}),[0,0,0],[.025,.025,.025]);
   const rxPosition=[RECEIVER[0],groundHeight(RECEIVER[0],RECEIVER[2])+4.46,RECEIVER[2]+.083];
