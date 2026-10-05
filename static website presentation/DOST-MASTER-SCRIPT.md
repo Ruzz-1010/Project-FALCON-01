@@ -14,6 +14,7 @@ screen. Start the next sentence.
 - Open **`present.html`**, not `index.html`.
 - Bright room or weak projector? Use **`present.html?big=1`**.
 - Keys: `Space` or `→` next · `←` back · `L` chapters · `P` presenter mode · `Esc` exit.
+- **Adviser route (right-side rail):** 00 Cover → 02 Buoy → 04 ESP32 → 06 Bay → 09 Dash → 13 Fund. Same glide as Next; gold = you are here.
 - **Say this out loud four times:** *"simulated, not validated."*
   Say it in chapters 05, 07, 08, and 10.
 

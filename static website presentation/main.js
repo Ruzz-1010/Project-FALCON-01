@@ -84,6 +84,9 @@ function pick(id,inspect=true){
     $('#inspection-title').textContent=info.name;$('#inspection-function').textContent=info.function;
     $('#inspection-how').textContent=info.how||info.function;
     $('#inspection-acquire').textContent=info.acquire||info.data.join(' · ');
+    const specsEl=$('#inspection-specs');const specs=info.specs||[];
+    specsEl.replaceChildren(...specs.map(text=>{const li=document.createElement('li');li.textContent=text;return li;}));
+    specsEl.previousElementSibling.hidden=specs.length===0;
     $('#inspection-data').replaceChildren(...info.data.map(text=>{const li=document.createElement('li');li.textContent=text;return li;}));
     $('#inspection-flow').replaceChildren(...info.flow.map(text=>{const span=document.createElement('span');span.textContent=text;return span;}));
     $('#inspection-status').textContent=info.status;$('#inspection-note').textContent=info.note;
@@ -234,6 +237,8 @@ if(nextBtn)nextBtn.addEventListener('click',pagedNext);
 if(prevBtn)prevBtn.addEventListener('click',pagedPrev);
 // Clicking a chapter tick glides there instead of jumping.
 nav.addEventListener('click',e=>{const link=e.target.closest('a');if(!link)return;e.preventDefault();goToChapter([...nav.children].indexOf(link));});
+// Adviser shortcut rail (side buttons): direct jumps, same engine as paging.
+document.querySelectorAll('#adviser-route [data-goto]').forEach(b=>b.addEventListener('click',()=>goToChapter(Number(b.dataset.goto))));
 document.addEventListener('keydown',e=>{
   if(e.defaultPrevented||e.metaKey||e.ctrlKey||e.altKey)return;
   const el=e.target;
@@ -265,6 +270,7 @@ function setChapter(chapter){
   active=chapter;document.body.dataset.experience=chapter<=CH.sensors?String(chapter):'later';
   sections.forEach((s,i)=>s.classList.toggle('is-active',i===chapter));
   [...nav.children].forEach((a,i)=>{if(i===chapter)a.setAttribute('aria-current','step');else a.removeAttribute('aria-current');});
+  document.querySelectorAll('#adviser-route [data-goto]').forEach(b=>{if(Number(b.dataset.goto)===chapter)b.setAttribute('aria-current','true');else b.removeAttribute('aria-current');});
   chapterNumber.textContent=`${String(chapter+1).padStart(2,'0')} / ${chapterCount}`;
   chapterTitle.textContent=chapters[chapter];
   coordinateTop.textContent=chapter<CH.radio?'OFFSHORE / OBSERVATION NODE':chapter<=CH.shore?'ON SHORE / BAY STATION':'BUOY TO SHORE / CONNECTED';
