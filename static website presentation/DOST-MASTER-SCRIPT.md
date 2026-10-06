@@ -199,7 +199,8 @@ layout. The new design is still being drawn."*
 > It reads all four. It stamps the time. It checks each value. And it packs everything into one
 > clean frame.
 >
-> That frame goes out every **4.8 seconds**.
+> That frame goes out **only on a wave event, an alert, or a heartbeat** — not every cycle.
+> Sensing runs every 4.8 seconds; transmitting only on events is what keeps the power budget alive.
 >
 > But here is what I want you to notice. Each reading carries a **quality flag**.
 >
@@ -214,7 +215,7 @@ layout. The new design is still being drawn."*
 > **An archive that hides its own mistakes is not evidence. It is decoration.**"
 
 **If you cut this chapter, say only:**
-> "A small controller reads the sensors, checks the values, and packs one frame every 4.8 seconds."
+> "A small controller reads the sensors every 4.8 seconds, and transmits only on a wave event, alert, or heartbeat."
 
 ---
 
@@ -533,7 +534,7 @@ forecast is made."*
 > price from three suppliers. I will not give you a final peso figure until we have done that."
 >
 > "The seven lines: sensors and electronics, ₱18,000 to ₱24,000. Shore computer, radio, and SIM,
-> ₱15,000 to ₱22,000. Single 40W solar, battery, and controller, ₱10,000 to ₱18,000.
+> ₱15,000 to ₱22,000. Single compact solar, battery, and controller, ₱10,000 to ₱18,000.
 > Single-tube PVC hull and enclosure, ₱8,000 to ₱18,000. Light mooring, ₱5,000 to
 > ₱10,000. Calibration and one trial, ₱11,000 to ₱16,000. Transport, spares, and
 > backup, ₱8,000 to ₱12,000.

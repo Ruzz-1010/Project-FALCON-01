@@ -72,9 +72,10 @@ test('Pages 03–04 and 07–09 markup remains unchanged during the scoped 05–
   // (data source → trend → safety caps → judged vs "no change"
   // baseline). Same method, same honesty labels; jargon like raw
   // SQL/field names and version strings removed from the stage.
-  // 2026-10-09 (10): FALCON Lite per DOST (simpler buoy, deeper budget cut):
-  // floor 75k / ceiling 120k / mid ~95k. Table follows story.js as always.
-  assert.equal(createHash('sha256').update(rest).digest('hex'),'c67f3c9d9d3cb94b2c45fe30c551c9afc5a94749d7d72dccdbbf484f70f45688');
+  // 2026-10-09 (11): event-driven telemetry per DOST — sense every 4.8s,
+  // transmit only on wave event / alert / heartbeat (link steps, finale
+  // node label, ESP32 inspection copy). Sensing logic untouched.
+  assert.equal(createHash('sha256').update(rest).digest('hex'),'1336422b9a56f5bdb298999beeaf7f454f9db4b4f9dc09daf3d2962024ebff61');
   // The opening kicker was rewritten to the DOST title slide; the presenter
   // build keeps the cinematic "Listen to the ocean" phrasing.
   assert.match(html,/DOST PRESENTATION · 6 OCTOBER 2026/);assert.match(html,/id="begin-journey"/);
