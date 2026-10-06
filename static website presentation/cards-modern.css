@@ -1765,3 +1765,15 @@ body[data-experience="radio"] .atmosphere{background:linear-gradient(90deg,#0311
 #adviser-route button{min-width:44px;min-height:44px;font-size:.72rem;border-radius:6px;padding:.5rem}
 #adviser-route button[aria-current=true]{border-color:var(--gold);color:var(--gold)}
 @media(max-width:900px){#adviser-route{right:.4rem;padding:.4rem .3rem}#adviser-route button{min-width:40px;min-height:40px}}
+/* Lite buoy schematic (ch02): conceptual side view, not CAD. Static SVG. */
+.lite-fig{margin:1.4rem 0 0;max-width:520px}
+.lite-fig svg{width:100%;height:auto;display:block}
+.lite-sea{fill:none;stroke:#83c4c555;stroke-width:2}
+.lite-hull{fill:#0d202c;stroke:#72bcbf;stroke-width:2}
+.lite-line{stroke:#9fcacc;stroke-width:2;fill:none}
+.lite-panel{fill:#dcc0942e;stroke:#dcc094;stroke-width:1.5}
+.lite-pcb{fill:#122b33;stroke:#dcc094;stroke-width:1.5}
+.lite-part{fill:#162f3a;stroke:#8fb7bd;stroke-width:1.5}
+.lite-label{fill:#a5bbc2;font-size:13px;letter-spacing:.12em}
+.lite-water{fill:#72bcbf;font-size:11px;letter-spacing:.2em}
+.lite-fig figcaption{font-size:.62rem;letter-spacing:.08em;color:var(--muted);margin-top:.6rem;line-height:1.6}

@@ -291,14 +291,13 @@ The DOST package is inconsistent with itself on the funding total:
 A panel member can add that column by hand in a few seconds, so the figure that
 gets presented has to survive the same arithmetic. Rather than pick between the
 package's two answers, the deck carries a rebuilt, adviser-approved planning range
-of **₱110,000–₱150,000 (midpoint ~₱130,000)** — the range agreed with the adviser
-once the packages the old figure left out were costed in (floor raised 90k→110k
-2026-10-09 per presenter):
+of **₱75,000–₱120,000 (midpoint ~₱95,000)** — simplified FALCON Lite per DOST
+feedback (single-tube PVC hull, single 40W panel; sensors unchanged):
 
 - the old 72–127k excluded the items still marked TBD: LoRa gateway, Bay Station
   mini-PC and SIM backhaul, and the 20–30% landed-cost markup on imported modules;
 - the new range adds those, plus one calibration trial and spares;
-- ₱110,000 is the minimum-viable build, ₱150,000 is comfortable with contingency.
+- ₱75,000 is the minimum-viable build, ₱120,000 is comfortable with contingency.
 
 `fundingRange()` sums the seven categories, so the headline figure and the table can
 never disagree, and a test locks both the range and the wording *"Planning range

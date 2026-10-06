@@ -139,7 +139,8 @@ Stop at these three, in this order.
 >
 > Let me walk you around it.
 >
-> **On the buoy:** an ESP32 controller. An underwater pressure sensor — that is our main wave
+> **On the buoy:** an ESP32 controller on a single upright PCB — no welding, just one
+> board on standoffs inside the enclosure. An underwater pressure sensor — that is our main wave
 > signal. Wind speed and direction sensors. GPS — it does three jobs. It tells us where the buoy
 > is. It gives us a clock. And it sets a boundary, so we know if the buoy gets dragged away.
 >
@@ -525,16 +526,17 @@ forecast is made."*
 >
 > **— filter the table —**
 >
-> "On cost. The range is **₱110,000 to ₱150,000.** The middle, about **₱130,000,** covers shipping
+> "On cost. The range is **₱75,000 to ₱120,000.** The middle, about **₱95,000,** covers shipping
 > and tax, one calibration session, and spare parts.
 >
 > **These are planning numbers. They are not quotes.** Before we submit, every line gets a real
 > price from three suppliers. I will not give you a final peso figure until we have done that."
 >
-> "The seven lines: sensors and electronics, ₱22,000 to ₱26,000. Shore computer, radio, and SIM,
-> ₱19,000 to ₱25,000. Solar, battery, and controller, ₱17,000 to ₱22,000. Buoy body and
-> enclosure, ₱19,000 to ₱25,000. Mooring, ₱8,000 to ₱14,000. Calibration and trials,
-> ₱14,000 to ₱20,000. Transport, spares, and backup, ₱11,000 to ₱18,000.
+> "The seven lines: sensors and electronics, ₱18,000 to ₱24,000. Shore computer, radio, and SIM,
+> ₱15,000 to ₱22,000. Single 40W solar, battery, and controller, ₱10,000 to ₱18,000.
+> Single-tube PVC hull and enclosure, ₱8,000 to ₱18,000. Light mooring, ₱5,000 to
+> ₱10,000. Calibration and one trial, ₱11,000 to ₱16,000. Transport, spares, and
+> backup, ₱8,000 to ₱12,000.
 >
 > **What you get:** one working, documented prototype. Calibrated sensors. A dashboard and a
 > data archive. Real sea test results. A fair test of the AI. And documents and data other
@@ -557,7 +559,7 @@ forecast is made."*
 >
 > **Two.** A **mentor.** One person for software or AI, and the third adviser seat.
 >
-> **Three.** **Help buying and building** the parts, in that ₱110,000 to ₱150,000 range.
+> **Three.** **Help buying and building** the parts, in that ₱75,000 to ₱120,000 range.
 >
 > **Four.** **Access to calibration and a site.** A reference instrument, and permission for a
 > supervised tank or pool test.
@@ -599,7 +601,7 @@ For everything else, a short honest answer beats a long one.
 > "Not chosen yet. And I will not name a place we have not spoken to. What we suggest is one
 > town, one real problem, one trial site. Confirmed before we deploy, not after."
 
-**5. "Why ₱110,000 to ₱150,000?"**
+**5. "Why ₱75,000 to ₱120,000?"**
 > "Because that is what things actually cost when they land here. Shipping, tax, and import
 > charges add twenty to thirty percent. It also includes the shore radio, the small computer,
 > and the SIM, which we originally did not know the price of. Plus calibration and spare parts.
@@ -677,7 +679,7 @@ Say these five, in this order.
 
 1. **Accept Project FALCON-01 as a DOST OJT placement** — half OJT, half thesis.
 2. **A mentor seat** — one software or AI mentor, plus the third adviser.
-3. **Help buying and building** — the ₱110,000 to ₱150,000 range.
+3. **Help buying and building** — the ₱75,000 to ₱120,000 range.
 4. **Calibration and site access** — a reference instrument and a supervised tank or pool test.
 5. **Sea trial support and shared data ownership.**
 
@@ -691,7 +693,7 @@ Say these five, in this order.
 - [ ] **Said "simulated, not validated" out loud in chapters 05, 07, 08, and 10**
 - [ ] Rehearsed questions 9, 10, and 11 out loud
 - [ ] Timer ready for 20 minutes, with the cut list ready
-- [ ] Finished on the ₱110,000 to ₱150,000 range and the five-point ask
+- [ ] Finished on the ₱75,000 to ₱120,000 range and the five-point ask
 - [ ] Date on the slide and the closing screen says **6 October 2026**
 - [ ] Third mentor name updated in `story.js` if someone has been confirmed
 

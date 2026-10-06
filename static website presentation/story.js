@@ -44,26 +44,28 @@ export const execution = {
   ]
 };
 
-// Adviser-approved planning range PHP 110,000–150,000 (midpoint ~₱130,000).
+// Adviser-approved planning range PHP 75,000–120,000 (midpoint ~₱95,000).
+// Simplified FALCON Lite build per DOST feedback: single-tube PVC hull,
+// single 40W panel, one enclosure; sensor set unchanged (thesis intact).
 // "kind" drives the filter: installed stays with the delivered system,
 // reusable are tools kept for later tests, process covers trials/contingency.
 // Planning range only — replaced with 3-supplier quotations before submission.
 export const funding = [
-  {category: 'Sensors and embedded electronics (pressure, wind, ESP32, GPS)', min: 22000, max: 26000, kind: 'installed'},
-  {category: 'Bay Station computer, LoRa gateway, SIM backhaul + antennas', min: 19000, max: 25000, kind: 'installed'},
-  {category: 'Solar 60W, battery 20–30Ah, MPPT + protected distribution', min: 17000, max: 22000, kind: 'installed'},
-  {category: 'Buoy body Ø650mm, keel, ballast, enclosure + marine connectors', min: 19000, max: 25000, kind: 'installed'},
-  {category: 'Single-anchor mooring, corrosion protection + safety hardware', min: 8000, max: 14000, kind: 'installed'},
-  {category: 'Calibration, reference rental, fabrication + supervised trials', min: 14000, max: 20000, kind: 'reusable'},
-  {category: 'Transport, documentation, spares + contingency', min: 11000, max: 18000, kind: 'process'}
+  {category: 'Sensors and embedded electronics (pressure, wind, ESP32, GPS)', min: 18000, max: 24000, kind: 'installed'},
+  {category: 'Bay Station computer, LoRa gateway, SIM backhaul + antennas', min: 15000, max: 22000, kind: 'installed'},
+  {category: 'Single 40W panel, LiFePO4 battery, MPPT + protected distribution', min: 10000, max: 18000, kind: 'installed'},
+  {category: 'Single-tube PVC hull + light frame, enclosure + marine connectors', min: 8000, max: 18000, kind: 'installed'},
+  {category: 'Single-point light mooring + corrosion protection', min: 5000, max: 10000, kind: 'installed'},
+  {category: 'Calibration, reference rental, fabrication + supervised trial', min: 11000, max: 16000, kind: 'reusable'},
+  {category: 'Transport, documentation, spares + contingency', min: 8000, max: 12000, kind: 'process'}
 ];
 
 // Formatting and totals live here so the figure under the table can never
 // drift away from the categories above it. No locale-dependent formatting: the
 // peso breakdown has to read the same on every machine.
 //
-// NOTE ON THE TOTAL: the seven categories above sum to 110,000–150,000
-// (midpoint ~130,000). Landed cost includes 20–30% shipping/tax/markup on
+// NOTE ON THE TOTAL: the seven categories above sum to 75,000–120,000
+// (midpoint ~95,000). Landed cost includes 20–30% shipping/tax/markup on
 // imported modules; LoRa gateway + mini-PC + SIM are now budgeted (were TBD).
 // Reusable tools are separated from installed parts before submission.
 const peso = value => `₱${String(value).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
@@ -101,7 +103,7 @@ export const components = {
   wind: {label: 'Wind observation', prefix: 'WIND_SPEED_DIRECTION_SENSOR', detail: 'Primary Phase 1 measurement: wind speed and direction at the buoy. Comparison against a reference anemometer is still pending.'},
   gps: {label: 'GPS / position', prefix: 'GNSS_GPS_ANTENNA', detail: 'Supporting telemetry: position, time and geofence persistence for system health and security. Quality checks are applied before alerts.'},
   battery: {label: 'Battery / energy storage', prefix: 'LIFEPO4_BATTERY_12V_ENVELOPE', detail: 'LiFePO4 battery stores solar energy for continuous operation during low light. Power budget validation is pending.'},
-  solar: {label: 'Solar / power', prefix: 'DUAL_30W_SOLAR_ARRAY', detail: 'Dual solar panels supply power to the buoy. No measured output is claimed until the power budget is validated.'},
+  solar: {label: 'Solar / power', prefix: 'DUAL_30W_SOLAR_ARRAY', detail: 'Single 40W panel supplies power to the buoy (simplified Lite build). No measured output is claimed until the power budget is validated.'},
   esp32: {label: 'ESP32 controller', prefix: 'ESP32_CONTROLLER_ENVELOPE', detail: 'ESP32 firmware acquires sensor data, timestamps and validates values, then prepares LoRa telemetry frames. No mini PC or cellular modem on the buoy.'},
   lora: {label: 'LoRa transceiver', prefix: 'NAVIGATION_LIGHT', detail: 'LoRa radio link carries telemetry from buoy to shore Bay Station. Hardware selection and range are not yet validated.'}
 };

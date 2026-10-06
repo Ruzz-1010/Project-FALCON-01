@@ -34,7 +34,7 @@ test('Pages 03–04 and 07–09 markup remains unchanged during the scoped 05–
   //
   // 2026-10-05: wrap-up merged 18 → 15 pages (Validation+Status,
   // Scope+Risks, Impact+Funding; Roadmap carries the team grid; radio
-  // carries the 6-step Live Link; funding ₱110,000–₱150,000; roadmap is
+  // carries the 6-step Live Link; funding ₱75,000–₱120,000 (Lite build); roadmap is
   // 5 bootcamp gates). No section added above #controller, no camera
   // pose touched for chapters 0–9. Hash updated for the merged tail.
   //
@@ -72,10 +72,9 @@ test('Pages 03–04 and 07–09 markup remains unchanged during the scoped 05–
   // (data source → trend → safety caps → judged vs "no change"
   // baseline). Same method, same honesty labels; jargon like raw
   // SQL/field names and version strings removed from the stage.
-  // 2026-10-09 (9): budget floor raised 90k→110k per presenter — category
-  // minimums rescaled (22/19/17/19/8/14/11k), midpoint now ~130k, ceiling
-  // unchanged. All funding copy follows story.js.
-  assert.equal(createHash('sha256').update(rest).digest('hex'),'9fff193416377f2d6c269cf93e40e0741f06724465460ebdf965bb38c4c9519d');
+  // 2026-10-09 (10): FALCON Lite per DOST (simpler buoy, deeper budget cut):
+  // floor 75k / ceiling 120k / mid ~95k. Table follows story.js as always.
+  assert.equal(createHash('sha256').update(rest).digest('hex'),'c67f3c9d9d3cb94b2c45fe30c551c9afc5a94749d7d72dccdbbf484f70f45688');
   // The opening kicker was rewritten to the DOST title slide; the presenter
   // build keeps the cinematic "Listen to the ocean" phrasing.
   assert.match(html,/DOST PRESENTATION · 6 OCTOBER 2026/);assert.match(html,/id="begin-journey"/);
