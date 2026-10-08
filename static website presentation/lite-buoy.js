@@ -168,15 +168,12 @@ const nose = mesh(new THREE.ConeGeometry(0.025, 0.09, 12), M.brass, 0, 0.02, 0.1
 nose.rotation.x = Math.PI/2;
 vane.add(nose);
 
-// --- Deck instruments: GPS dome (true hemisphere), LoRa case, ESP32 hatch box.
-const gps = mesh(new THREE.SphereGeometry(0.082, 24, 12, 0, Math.PI*2, 0, Math.PI/2), M.gps, 0.50, 0.57, 0.25, 'GNSS_GPS_ANTENNA');
-buoy.add(gps);
-const lora = mesh(new THREE.BoxGeometry(0.10, 0.08, 0.06), M.lora, -0.48, 0.61, -0.22, 'LORA_BUOY_RADIO');
-buoy.add(lora);
-const loraSma = mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.05, 10), M.brass, -0.48, 0.68, -0.22, 'LORA_SMA');
+// --- Deck kept clean like the reference: GPS puck, LoRa and controller ride
+// inside the hull/tower (illustrative internal mount, no deck clutter).
+// Only the LoRa SMA stub stays visible on the tower rear face.
+const loraSma = mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.05, 10), M.brass, 0, 0.95, -0.235, 'LORA_SMA');
+loraSma.rotation.x = Math.PI/2;
 buoy.add(loraSma);
-const hatch = mesh(new THREE.BoxGeometry(0.26, 0.10, 0.20), M.enclosure, -0.34, 0.62, 0.28, 'ESP32_CONTROLLER_ENVELOPE');
-buoy.add(hatch);
 
 // --- Camera orbit (manual, no extra addon dependency).
 const views = {
