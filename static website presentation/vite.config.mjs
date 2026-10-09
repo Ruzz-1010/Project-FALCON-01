@@ -7,6 +7,6 @@ export default {
   preview: {host: '127.0.0.1', port: 4175, strictPort: true},
   build: {
     outDir: 'dist', emptyOutDir: true,
-    rollupOptions: {input: {main: local('./index.html'), present: local('./present.html'), lite: local('./lite-buoy.html')}}
+    rollupOptions: {input: {main: local('./index.html'), present: local('./present.html'), lite: local('./lite-buoy.html'), spar: local('./lite-buoy-spar.html')}}
   }
 };

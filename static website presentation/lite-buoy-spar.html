@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="FALCON Lite — proposed low-cost replacement buoy preview. Single-tube PVC hull, single 40W panel. Proposed only, not validated.">
-  <title>FALCON Lite — Low-Cost Buoy Preview (Proposed)</title>
+  <meta name="description" content="FALCON Lite Option B — spar/can buoy preview. Slim PVC tube, collar float, single rack panel. Proposed only, not validated.">
+  <title>FALCON Lite Option B — Spar Buoy Preview (Proposed)</title>
   <style>
     :root{color-scheme:dark;--bg:#08141b;--panel:#0e212c;--line:#1e3a47;--txt:#d7e7ee;--dim:#8fb0bd;--gold:#d8a94e}
     *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font:14px/1.5 system-ui,sans-serif}
@@ -12,7 +12,7 @@
     nav.opts{display:flex;gap:8px;padding:10px 18px 0}
     nav.opts a{border:1px solid var(--line);border-radius:8px;padding:6px 12px;font-size:12.5px;color:var(--dim);text-decoration:none}
     nav.opts a.here{color:var(--gold);border-color:var(--gold)}
-    .warn{margin:0 18px;margin-top:12px;padding:8px 12px;border:1px solid var(--gold);border-radius:8px;color:var(--gold);font-size:12.5px}
+    .warn{margin:12px 18px 0;padding:8px 12px;border:1px solid var(--gold);border-radius:8px;color:var(--gold);font-size:12.5px}
     main{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:12px;padding:12px 18px 24px}
     #stage{position:relative;min-height:520px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:radial-gradient(120% 90% at 70% 10%,#10394a 0%,#08141b 60%)}
     #stage canvas{display:block;width:100%;height:100%;touch-action:none}
@@ -29,35 +29,35 @@
 </head>
 <body>
 <header>
-  <h1>Option A — Drum-buoy preview</h1>
-  <p>Drum hull · 4-face tower panels · sensor set unchanged · drag to orbit · wheel to zoom</p>
+  <h1>Option B — Spar/can buoy preview</h1>
+  <p>Slim PVC tube · collar float · single rack panel · drag to orbit · wheel to zoom</p>
 </header>
-<nav class="opts"><a class="here" href="./lite-buoy.html">OPTION A · DRUM-BUOY (this page)</a><a href="./lite-buoy-spar.html">OPTION B · SPAR</a></nav>
+<nav class="opts"><a href="./lite-buoy.html">OPTION A · DRUM-BUOY</a><a class="here" href="./lite-buoy-spar.html">OPTION B · SPAR (this page)</a></nav>
 <p class="warn"><strong>PROPOSED REPLACEMENT PROTOTYPE</strong> — geometry is illustrative only. Not final, not fabrication-ready, not field-validated. Acceptance per <code>docs/PROTOTYPE_REDESIGN_BASELINE.md</code> still applies.</p>
 <main>
-  <div id="stage"><div id="hud"><button data-view="orbit">Overview</button><button data-view="wind">Wind head</button><button data-view="solar">Solar face</button><button data-view="below">Pressure / mooring</button></div><div id="tip">V2 presentation model untouched — this page is a separate Lite study.</div></div>
+  <div id="stage"><div id="hud"><button data-view="orbit">Overview</button><button data-view="wind">Wind head</button><button data-view="solar">Solar rack</button><button data-view="below">Keel / mooring</button></div><div id="tip">V2 presentation model untouched — this page is a separate Lite study.</div></div>
   <aside>
-    <h2>What changed vs V2</h2>
+    <h2>Why a spar (vs Option A drum)</h2>
     <ul>
-      <li>Squat drum hull <small>Ø1.2m, rounded bilge, bolted deck rim</small> — instead of Ø650mm body + keel</li>
-      <li>Tapered 4-sided tower <small>one solar panel per sloped face, ~40W class total</small> — instead of dual 30W array</li>
-      <li>Red topmark beacon + whip <small>per reference buoy</small>; clean deck — GPS/LoRa/ESP32 internal (illustrative)</li>
-      <li>Light single-point mooring eyes + chain stub</li>
+      <li>Cheapest hull <small>off-the-shelf Ø200mm PVC pipe + fittings, no molding</small></li>
+      <li>Single 40W panel on a flat rack <small>simple aluminum-angle frame, easy to aim south</small></li>
+      <li>Small collar float + bottom ballast <small>self-righting spar behavior</small></li>
+      <li>Trade-off: taller profile, needs ballast + stability calc <small>best for calm barangay waters</small></li>
     </ul>
-    <h2>Sensor placement fixes (from review)</h2>
+    <h2>Sensor placement (same fixes as A)</h2>
     <ul>
       <li>Rotor on a slim Ø36mm mast <small>hub straight on the pole — no fat tube in the rotor plane</small></li>
       <li>3 open cups Ø130mm, Ø600mm spacing <small>was 200mm / Ø880mm</small></li>
       <li>Wind vane 150mm below rotor <small>speed + direction</small></li>
-      <li>GPS puck + LoRa + controller internal <small>illustrative — clean deck per reference</small></li>
-      <li>Whip + LoRa SMA stub on tower <small>kept clear of the rotor plane</small></li>
+      <li>GPS puck + LoRa + controller internal <small>illustrative — clean topside per reference</small></li>
+      <li>Whip + LoRa SMA stub on rack <small>kept clear of the rotor plane</small></li>
     </ul>
     <h2>Planning cost (from deck)</h2>
     <table>
       <tr><td>Sensors + embedded (Bar02, budget wind/GPS)</td><td>₱13–18k</td></tr>
       <tr><td>Bay Station: refurb/borrowed PC, LoRa RX, no SIM</td><td>₱4–7k</td></tr>
       <tr><td>Small panel + 12Ah LiFePO4 + PWM (event-driven TX)</td><td>₱7–11k</td></tr>
-      <tr><td>Drum hull + frame + enclosure</td><td>₱6–8k</td></tr>
+      <tr><td>Spar tube + collar + ballast</td><td>₱6–8k</td></tr>
       <tr><td>Light mooring + protection</td><td>₱3–5k</td></tr>
       <tr><td>Calibration (borrowed ref) + trial</td><td>₱5–8k</td></tr>
       <tr><td>Transport + spares + thin contingency</td><td>₱7–8k</td></tr>
@@ -71,6 +71,6 @@
     </ul>
   </aside>
 </main>
-<script type="module" src="./lite-buoy.js"></script>
+<script type="module" src="./lite-buoy-spar.js"></script>
 </body>
 </html>

@@ -22,7 +22,7 @@ export const CH = {
 export const phases = [
   {index: '01', name: 'Freeze + procure', span: 'Month 1 · Wks 1-4', output: 'Frozen parts list, ordered sensors/power/LoRa/BayStation; barangay-hall permits + reference access.', claim: 'Nothing is claimable here. Procurement is not evidence.'},
   {index: '02', name: 'Bench integration', span: 'Month 2 · Wks 5-8', output: 'ESP32 + pressure + wind one at a time, then GPS/INA260/security; rails, protection, connectors verified.', claim: 'Continuity, power-up and bench behaviour only.'},
-  {index: '03', name: 'Calibrate + software', span: 'Month 3 · Wks 9-12', output: 'Pressure baseline/depth/coeffs, wind cal; serial/API/SQLite/stale/security-persistence; LoRa gateway + Bay SIM backhaul + outage recovery.', claim: 'Corrected readings vs reference only; no field claim yet.'},
+  {index: '03', name: 'Calibrate + software', span: 'Month 3 · Wks 9-12', output: 'Pressure baseline/depth/coeffs, wind cal; serial/API/SQLite/stale/security-persistence; LoRa receiver + offline-first Bay software + outage recovery.', claim: 'Corrected readings vs reference only; no field claim yet.'},
   {index: '04', name: 'Controlled validation', span: 'Month 4 · Wks 13-16', output: 'Tank/pool wave vs reference (MAE/RMSE/bias); geofence/tamper false-positive tests; 24h power log + 72h solar; waterproofing.', claim: 'This is the gate: no accuracy figure leaves this stage.'},
   {index: '05', name: 'Coastal trial + thesis', span: 'Month 5 · Wks 17-20', output: 'Supervised pilot dataset; AI baseline vs persistence on chronological held-out; updated BOM/drawings/limitations; DOST + thesis report.', claim: 'Only what the earlier stages actually measured.'}
 ];
@@ -44,29 +44,31 @@ export const execution = {
   ]
 };
 
-// Adviser-approved planning range PHP 75,000–120,000 (midpoint ~₱95,000).
-// Simplified FALCON Lite build per DOST feedback: single-tube PVC hull,
-// single compact panel, one enclosure; sensor set unchanged (thesis intact).
+// Sub-₱70k minimum-viable range PHP 45,000–65,000 (midpoint ~₱55,000).
+// Lite per team budget cap: drum hull, face panels, refurb/borrowed Bay PC,
+// offline-first (no SIM); event-driven TX keeps the power system small.
+// Sensor set unchanged (thesis intact).
 // "kind" drives the filter: installed stays with the delivered system,
 // reusable are tools kept for later tests, process covers trials/contingency.
 // Planning range only — replaced with 3-supplier quotations before submission.
 export const funding = [
-  {category: 'Sensors and embedded electronics (pressure, wind, ESP32, GPS)', min: 18000, max: 24000, kind: 'installed'},
-  {category: 'Bay Station computer, LoRa gateway, SIM backhaul + antennas', min: 15000, max: 22000, kind: 'installed'},
-  {category: 'Single compact panel, LiFePO4 battery, MPPT + protected distribution', min: 10000, max: 18000, kind: 'installed'},
-  {category: 'Single-tube PVC hull + light frame, enclosure + marine connectors', min: 8000, max: 18000, kind: 'installed'},
-  {category: 'Single-point light mooring + corrosion protection', min: 5000, max: 10000, kind: 'installed'},
-  {category: 'Calibration, reference rental, fabrication + supervised trial', min: 11000, max: 16000, kind: 'reusable'},
-  {category: 'Transport, documentation, spares + contingency', min: 8000, max: 12000, kind: 'process'}
+  {category: 'Sensors and embedded (Bar02 pressure, budget wind/GPS, ESP32)', min: 13000, max: 18000, kind: 'installed'},
+  {category: 'Bay Station: refurb/borrowed PC, LoRa receiver, offline-first, no SIM', min: 4000, max: 7000, kind: 'installed'},
+  {category: 'Small panel + 12Ah LiFePO4 + PWM, sized for event-driven TX', min: 7000, max: 11000, kind: 'installed'},
+  {category: 'Off-the-shelf drum hull + pipe frame, enclosure + glands', min: 6000, max: 8000, kind: 'installed'},
+  {category: 'Single-point light mooring, local sinker + rope', min: 3000, max: 5000, kind: 'installed'},
+  {category: 'Calibration vs borrowed reference + team fabrication + trial', min: 5000, max: 8000, kind: 'reusable'},
+  {category: 'Transport, documentation, spares + thin contingency', min: 7000, max: 8000, kind: 'process'}
 ];
 
 // Formatting and totals live here so the figure under the table can never
 // drift away from the categories above it. No locale-dependent formatting: the
 // peso breakdown has to read the same on every machine.
 //
-// NOTE ON THE TOTAL: the seven categories above sum to 75,000–120,000
-// (midpoint ~95,000). Landed cost includes 20–30% shipping/tax/markup on
-// imported modules; LoRa gateway + mini-PC + SIM are now budgeted (were TBD).
+// NOTE ON THE TOTAL: the seven categories above sum to 45,000–65,000
+// (midpoint ~55,000). Landed cost includes 20–30% shipping/tax/markup on
+// imported modules; Bay PC and calibration reference are borrowed/refurb
+// (dependency risk); no SIM — remote access via site network or physical retrieval.
 // Reusable tools are separated from installed parts before submission.
 const peso = value => `₱${String(value).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
 export const pesoAmount = value => `${peso(value.min)} – ${peso(value.max)}`;

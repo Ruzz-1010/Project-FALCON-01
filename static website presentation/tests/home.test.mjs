@@ -34,7 +34,7 @@ test('Pages 03–04 and 07–09 markup remains unchanged during the scoped 05–
   //
   // 2026-10-05: wrap-up merged 18 → 15 pages (Validation+Status,
   // Scope+Risks, Impact+Funding; Roadmap carries the team grid; radio
-  // carries the 6-step Live Link; funding ₱75,000–₱120,000 (Lite build); roadmap is
+  // carries the 6-step Live Link; funding ₱45,000–₱65,000 (sub-70k minimum-viable); roadmap is
   // 5 bootcamp gates). No section added above #controller, no camera
   // pose touched for chapters 0–9. Hash updated for the merged tail.
   //
@@ -75,7 +75,12 @@ test('Pages 03–04 and 07–09 markup remains unchanged during the scoped 05–
   // 2026-10-09 (11): event-driven telemetry per DOST — sense every 4.8s,
   // transmit only on wave event / alert / heartbeat (link steps, finale
   // node label, ESP32 inspection copy). Sensing logic untouched.
-  assert.equal(createHash('sha256').update(rest).digest('hex'),'1336422b9a56f5bdb298999beeaf7f454f9db4b4f9dc09daf3d2962024ebff61');
+  //
+  // 2026-10-09 (12): sub-₱70k minimum-viable budget ₱45,000–₱65,000 (mid ~55k):
+  // drum/spar hull, refurb/borrowed Bay PC, offline-first no SIM, borrowed
+  // reference, power sized for event-driven TX. ch05 backhaul copy + funding
+  // block updated in both HTML files; story.js rows + tests moved together.
+  assert.equal(createHash('sha256').update(rest).digest('hex'),'52611fb2cdf6fe7e63a10fe81442b53321834564a4687a9021a22c92f1247d6c');
   // The opening kicker was rewritten to the DOST title slide; the presenter
   // build keeps the cinematic "Listen to the ocean" phrasing.
   assert.match(html,/DOST PRESENTATION · 6 OCTOBER 2026/);assert.match(html,/id="begin-journey"/);

@@ -75,8 +75,8 @@ test('Both pages carry one camera pose per chapter and the same chapter count',(
 test('The funding plan is internally consistent and never quoted as a firm price',()=>{
   // The headline figure must always equal the sum of the visible categories, so
   // the total can never drift away from the table above it.
-  assert.equal(fundingRange(),'₱75,000 – ₱120,000');
-  assert.equal(fundingRange(funding.filter(r=>r.kind!=='installed')),'₱19,000 – ₱28,000');
+  assert.equal(fundingRange(),'₱45,000 – ₱65,000');
+  assert.equal(fundingRange(funding.filter(r=>r.kind!=='installed')),'₱12,000 – ₱16,000');
   const html=read('../index.html');
   assert.match(html,/Planning range only, not a supplier quotation/);
   assert.match(html,/subject to supplier quotations|replaced with current quotations/);
