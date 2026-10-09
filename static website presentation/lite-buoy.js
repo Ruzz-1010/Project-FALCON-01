@@ -57,83 +57,83 @@ function mesh(geo, mat, x=0, y=0, z=0, name=''){
 const buoy = new THREE.Group();
 scene.add(buoy);
 
-// --- Hull: compact can Ø0.6m x 0.7m, waterline at y=0.
-const hull = mesh(new THREE.CylinderGeometry(0.30, 0.30, 0.70, 36), M.hull, 0, 0.10, 0, 'CAN_HULL');
+// --- Hull: squat compact can Ø0.84m x 0.42m, waterline at y=0.
+const hull = mesh(new THREE.CylinderGeometry(0.42, 0.42, 0.42, 48), M.hull, 0, 0.08, 0, 'CAN_HULL');
 buoy.add(hull);
-const bottom = mesh(new THREE.CylinderGeometry(0.30, 0.26, 0.06, 36), M.hull, 0, -0.28, 0, 'HULL_BOTTOM');
+const bottom = mesh(new THREE.CylinderGeometry(0.42, 0.34, 0.08, 48), M.hull, 0, -0.17, 0, 'HULL_BOTTOM');
 buoy.add(bottom);
-const bilge = mesh(new THREE.TorusGeometry(0.28, 0.022, 10, 40), M.steel, 0, -0.25, 0, 'BILGE_RING');
+const bilge = mesh(new THREE.TorusGeometry(0.37, 0.024, 10, 48), M.steel, 0, -0.20, 0, 'BILGE_RING');
 bilge.rotation.x = Math.PI/2;
 buoy.add(bilge);
-const rubband = mesh(new THREE.CylinderGeometry(0.305, 0.305, 0.05, 36, 1, true), M.steel, 0, -0.05, 0, 'RUB_BAND');
+const rubband = mesh(new THREE.CylinderGeometry(0.425, 0.425, 0.045, 48, 1, true), M.steel, 0, 0.02, 0, 'RUB_BAND');
 buoy.add(rubband);
 // Deck disc + rim ring + bolts.
-const deck = mesh(new THREE.CylinderGeometry(0.30, 0.30, 0.04, 36), M.deck, 0, 0.45, 0, 'DECK');
+const deck = mesh(new THREE.CylinderGeometry(0.415, 0.415, 0.04, 48), M.deck, 0, 0.31, 0, 'DECK');
 buoy.add(deck);
-const rimRing = mesh(new THREE.TorusGeometry(0.285, 0.014, 10, 40), M.steel, 0, 0.472, 0, 'DECK_RIM');
+const rimRing = mesh(new THREE.TorusGeometry(0.395, 0.014, 10, 48), M.steel, 0, 0.332, 0, 'DECK_RIM');
 rimRing.rotation.x = Math.PI/2;
 buoy.add(rimRing);
-for(let i=0;i<10;i++){
-  const a = (i/10)*Math.PI*2;
-  buoy.add(mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.02, 8), M.steel, Math.cos(a)*0.26, 0.474, Math.sin(a)*0.26, 'DECK_BOLT'));
+for(let i=0;i<12;i++){
+  const a = (i/12)*Math.PI*2;
+  buoy.add(mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.02, 8), M.steel, Math.cos(a)*0.36, 0.334, Math.sin(a)*0.36, 'DECK_BOLT'));
 }
 // Mooring eye + chain stub below the hull.
-const eye = mesh(new THREE.TorusGeometry(0.045, 0.012, 8, 20), M.chain, 0, -0.35, 0, 'MOORING_EYE');
+const eye = mesh(new THREE.TorusGeometry(0.045, 0.012, 8, 20), M.chain, 0, -0.27, 0, 'MOORING_EYE');
 buoy.add(eye);
-const chainStub = mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.25, 10), M.chain, 0, -0.50, 0, 'MOORING_CHAIN_STUB');
+const chainStub = mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.22, 10), M.chain, 0, -0.40, 0, 'MOORING_CHAIN_STUB');
 buoy.add(chainStub);
 
 // --- Pressure stilling tube on the hull side (open top above waterline).
-const still = mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.55, 14, 1, true), M.steel, 0.33, -0.02, 0.10, 'PRESSURE_STILLING_TUBE');
+const still = mesh(new THREE.CylinderGeometry(0.026, 0.026, 0.42, 14, 1, true), M.steel, 0.45, -0.04, 0.12, 'PRESSURE_STILLING_TUBE');
 buoy.add(still);
-const stillCap = mesh(new THREE.CylinderGeometry(0.028, 0.028, 0.03, 14), M.dark, 0.33, -0.30, 0.10, 'STILLING_BOTTOM_CAP');
+const stillCap = mesh(new THREE.CylinderGeometry(0.029, 0.029, 0.03, 14), M.dark, 0.45, -0.26, 0.12, 'STILLING_BOTTOM_CAP');
 buoy.add(stillCap);
-for(const sy of [0.12, -0.14]){
-  buoy.add(mesh(new THREE.BoxGeometry(0.06, 0.03, 0.03), M.frame, 0.30, sy, 0.10, 'STILLING_STRAP'));
+for(const sy of [0.08, -0.12]){
+  buoy.add(mesh(new THREE.BoxGeometry(0.07, 0.026, 0.03), M.frame, 0.41, sy, 0.12, 'STILLING_STRAP'));
 }
 
-// --- Tapered top housing (4-sided frustum): base face 0.44 -> top 0.26, h 0.36.
-const HOUS_Y = 0.47, HOUS_H = 0.36, HOUS_CY = HOUS_Y + HOUS_H/2;
-const housing = mesh(new THREE.CylinderGeometry(0.185, 0.31, HOUS_H, 4, 1), M.hull, 0, HOUS_CY, 0, 'TAPERED_HOUSING');
+// --- Tapered top housing (4-sided frustum): lower and wider like the reference.
+const HOUS_Y = 0.33, HOUS_H = 0.28, HOUS_CY = HOUS_Y + HOUS_H/2;
+const housing = mesh(new THREE.CylinderGeometry(0.18, 0.34, HOUS_H, 4, 1), M.hull, 0, HOUS_CY, 0, 'TAPERED_HOUSING');
 housing.rotation.y = Math.PI/4; // faces look along +-X / +-Z
 buoy.add(housing);
 // Small solar panel on each sloped face.
-const tilt = Math.atan((0.219-0.131)/HOUS_H); // face slope from vertical
+const tilt = Math.atan((0.240-0.127)/HOUS_H); // face slope from vertical
 const solarGroup = new THREE.Group();
 solarGroup.name = 'HOUSING_SOLAR_FACES';
 buoy.add(solarGroup);
 for(let k=0;k<4;k++){
   const face = new THREE.Group();
   face.rotation.y = k*Math.PI/2;
-  const frame = mesh(new THREE.BoxGeometry(0.19, 0.27, 0.008), M.solarFrame, 0, HOUS_CY, 0.182, 'HOUSING_PANEL_FRAME');
-  const panel = mesh(new THREE.BoxGeometry(0.17, 0.25, 0.014), M.solar, 0, HOUS_CY, 0.188, 'HOUSING_SOLAR_PANEL');
+  const frame = mesh(new THREE.BoxGeometry(0.22, 0.23, 0.008), M.solarFrame, 0, HOUS_CY, 0.206, 'HOUSING_PANEL_FRAME');
+  const panel = mesh(new THREE.BoxGeometry(0.20, 0.21, 0.014), M.solar, 0, HOUS_CY, 0.212, 'HOUSING_SOLAR_PANEL');
   frame.rotation.x = -tilt; panel.rotation.x = -tilt;
   face.add(frame, panel);
   solarGroup.add(face);
 }
 // Top cap plate + dark GPS puck + LTE/Wi-Fi antenna + heartbeat LED.
 const TOP_Y = HOUS_Y + HOUS_H;
-const plate = mesh(new THREE.BoxGeometry(0.26, 0.025, 0.26), M.deck, 0, TOP_Y + 0.012, 0, 'TOP_PLATE');
+const plate = mesh(new THREE.BoxGeometry(0.25, 0.025, 0.25), M.deck, 0, TOP_Y + 0.012, 0, 'TOP_PLATE');
 buoy.add(plate);
-const gps = mesh(new THREE.CylinderGeometry(0.045, 0.05, 0.03, 16), M.dark, -0.07, TOP_Y + 0.04, 0.05, 'GNSS_GPS_PUCK');
+const gps = mesh(new THREE.CylinderGeometry(0.042, 0.047, 0.028, 16), M.dark, -0.07, TOP_Y + 0.038, 0.05, 'GNSS_GPS_PUCK');
 buoy.add(gps);
-const ANT_X = 0.07, ANT_Z = -0.04, ANT_BASE = TOP_Y + 0.025, ANT_H = 0.38;
+const ANT_X = 0.07, ANT_Z = -0.04, ANT_BASE = TOP_Y + 0.025, ANT_H = 0.30;
 const ant = mesh(new THREE.CylinderGeometry(0.007, 0.010, ANT_H, 8), M.dark, ANT_X, ANT_BASE + ANT_H/2, ANT_Z, 'LTE_WIFI_ANTENNA');
 buoy.add(ant);
 const antBand = mesh(new THREE.CylinderGeometry(0.011, 0.011, 0.05, 8), M.tipRed, ANT_X, ANT_BASE + ANT_H - 0.03, ANT_Z, 'ANTENNA_TIP_BAND');
 buoy.add(antBand);
 const antTip = mesh(new THREE.SphereGeometry(0.011, 10, 8), M.brass, ANT_X, ANT_BASE + ANT_H + 0.005, ANT_Z, 'ANTENNA_TIP');
 buoy.add(antTip);
-const led = mesh(new THREE.SphereGeometry(0.016, 10, 8), M.led, 0, HOUS_CY + 0.05, 0.170, 'HEARTBEAT_LED');
+const led = mesh(new THREE.SphereGeometry(0.016, 10, 8), M.led, 0, HOUS_CY + 0.04, 0.192, 'HEARTBEAT_LED');
 buoy.add(led);
 
 // --- Camera orbit (manual, no extra addon dependency).
 // HUD views on this page: orbit / cloud / solar / below.
 const views = {
-  orbit: {yaw:0.7, pitch:0.18, dist:3.4, focus:[0,0.35,0]},
+  orbit: {yaw:0.7, pitch:0.18, dist:3.0, focus:[0,0.24,0]},
   cloud: {yaw:0.4, pitch:0.10, dist:1.6, focus:[ANT_X,ANT_BASE+ANT_H-0.1,ANT_Z]},
-  solar: {yaw:0.7, pitch:0.12, dist:2.0, focus:[0,HOUS_CY,0.05]},
-  below: {yaw:3.6, pitch:-0.25, dist:2.4, focus:[0.10,-0.15,0]},
+  solar: {yaw:0.7, pitch:0.12, dist:1.8, focus:[0,HOUS_CY,0.05]},
+  below: {yaw:3.6, pitch:-0.25, dist:2.1, focus:[0.14,-0.10,0]},
 };
 let yaw = views.orbit.yaw, pitch = views.orbit.pitch, dist = views.orbit.dist;
 let focus = new THREE.Vector3(...views.orbit.focus);
