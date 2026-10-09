@@ -1,6 +1,6 @@
 # Project FALCON — DOST Idea Presentation Package
 
-> Proposal baseline updated for v9.0 after DOST feedback. The replacement direction is a smaller single-tube buoy with event-driven cloud telemetry, a reduced battery, and a lower-cost sensor BOM. The physical/visual prototype remains under redesign; do not present an older CAD model or render as the current unit.
+> Proposal baseline updated for v9.0 after DOST feedback. The replacement direction is a smaller compact can-buoy with event-driven cloud telemetry, a reduced battery, and a lower-cost sensor BOM. The physical/visual prototype follows the current reference-style preview only as a proposal; do not present older CAD models or renders as the current unit.
 
 | Field | Value |
 | --- | --- |
@@ -349,7 +349,7 @@ testing, fabrication, transport, spares, and contingency costs.
 > Our revised preliminary development request ranges from thirty-five thousand
 > to eighty-eight thousand pesos. It is not only the cost of the sensors. It
 > includes the ESP32 and optional LTE electronics, event-driven cloud path,
-> smaller solar and battery system, single-tube buoy body, mooring and anchor,
+> smaller solar and battery system, compact can-buoy body, mooring and anchor,
 > calibration or reference tools, fabrication, supervised testing, transport,
 > spare parts, and contingency.
 > Planning range pa lamang ito. Before formal procurement, we will replace the

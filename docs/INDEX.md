@@ -1,6 +1,6 @@
 # Project FALCON Documentation Index v9.0
 
-Start with [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md), the current source of truth, then [REVISION_2026-10-09.md](REVISION_2026-10-09.md) and [CURRENT_PROJECT_DOCUMENTATION.md](CURRENT_PROJECT_DOCUMENTATION.md). For the new single-tube body and component placement, use [PROTOTYPE_REDESIGN_BASELINE.md](PROTOTYPE_REDESIGN_BASELINE.md).
+Start with [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md), the current source of truth, then [REVISION_2026-10-09.md](REVISION_2026-10-09.md) and [CURRENT_PROJECT_DOCUMENTATION.md](CURRENT_PROJECT_DOCUMENTATION.md). For the new compact can-buoy body and component placement, use [PROTOTYPE_REDESIGN_BASELINE.md](PROTOTYPE_REDESIGN_BASELINE.md).
 
 ## Current adviser-approved specifications
 
@@ -19,4 +19,4 @@ The current equipment and alternatives file is `THESIS DOCUMENTATION/FALCON Revi
 
 All `fusion360/` component notes, `exports/MODEL_STATUS.md`, existing prototype renders, dashboard 3D models, video prompts, and prototype-specific mechanical dimensions are retained for traceability only. They are not the approved replacement design. Older Wokwi, PCB, motion, IMU, and wiring visuals likewise remain historical until explicitly revised against v6.1 and the selected physical parts.
 
-- [Proposed blueprint package](blueprints/README.md) documents reference geometry and component layout. Every sheet is marked **REFERENCE / NOT FOR FABRICATION** until the single-tube redesign acceptance gates are completed.
+- [Proposed blueprint package](blueprints/README.md) documents reference geometry and component layout. Every sheet is marked **REFERENCE / NOT FOR FABRICATION** until the compact can-buoy redesign acceptance gates are completed.

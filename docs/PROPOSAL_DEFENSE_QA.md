@@ -114,7 +114,7 @@ FALCON is not an official weather, tsunami, typhoon, storm, navigation, or emerg
 
 ### 22. What must funding enable?
 
-Funding should enable exact component procurement, single-tube buoy fabrication, LTE/cloud integration, pressure and optional wind calibration, power and waterproofing tests, controlled data collection, optional prediction evaluation, and supervised coastal validation.
+Funding should enable exact component procurement, compact can-buoy fabrication, LTE/cloud integration, pressure and optional wind calibration, power and waterproofing tests, controlled data collection, optional prediction evaluation, and supervised coastal validation.
 
 ## Difficult questions
 

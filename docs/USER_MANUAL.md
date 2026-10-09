@@ -11,7 +11,7 @@ cd "/home/ruzz/Documents/PlatformIO/Projects/Project FALCON-01/edge"
 python3 -m falcon_edge.service
 ```
 
-Open <http://127.0.0.1:8765/> on the development laptop. On deployment, use the authorized shore Bay Station address or approved institutional/remote connection configured by the team.
+Open <http://127.0.0.1:8765/> on the development laptop. On deployment, use the approved cloud, institutional, or remote endpoint configured by the team.
 
 ## Source labels
 

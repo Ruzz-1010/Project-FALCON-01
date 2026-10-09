@@ -6,7 +6,7 @@ Status: event-driven cloud buoy baseline; not yet a fabrication or deployment re
 
 ## 1 Purpose
 
-This document defines a low-cost sensor scope for a smaller single-tube buoy. The ESP32 samples locally, calculates short-window summaries and event states, and transmits through Wi-Fi for laboratory work or 4G/LTE for a remote field trial. The core research signal is pressure-derived wave estimation. Wind, GPS, temperature, and security channels are supporting or optional channels and require adviser confirmation.
+This document defines a low-cost sensor scope for a smaller compact can-buoy. The ESP32 samples locally, calculates short-window summaries and event states, and transmits through Wi-Fi for laboratory work or 4G/LTE for a remote field trial. The core research signal is pressure-derived wave estimation. Wind, GPS, temperature, and security channels are supporting or optional channels and require adviser confirmation.
 
 ## 2 System signal flow
 
@@ -74,4 +74,3 @@ A stilling tube can reduce turbulence and mechanical impact around a pressure se
 ## 6 Release rule
 
 No sensor is final until the exact model, datasheet, supplier, price, wiring, protection, calibration method, invalid/stale behavior, and physical test evidence are recorded. A low marketplace price is not evidence of continuous marine suitability.
-

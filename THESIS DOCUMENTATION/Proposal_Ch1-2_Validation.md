@@ -1,6 +1,6 @@
 # Proposal Validation — Chapters 1 & 2
 
-> Architecture revision note 2026-10-09: the chapters still require a content pass to replace the former LoRa/Bay Station path with the event-driven Wi-Fi/LTE cloud path, smaller single-tube design, reduced battery, and revised sensor alternatives. The validation findings below remain useful as template checks but do not constitute approval of the revised hardware.
+> Architecture revision note 2026-10-09: update Chapters 1 and 2 around the event-driven Wi-Fi/LTE cloud path, compact reference-style buoy, reduced battery, and revised sensor alternatives. The validation findings below remain useful as template checks but do not constitute approval of the revised hardware.
 
 Scope: `Chapter1_Introduction_first.docx` and `Chapter2_Methodology_first.docx`
 Benchmark: official template `REVISED-CAPSTONE-IT_CS-PROPOSAL_4.pdf`

@@ -4,7 +4,7 @@
 
 - approve exact models/datasheets for the pressure and wind sensors plus only the supporting telemetry interfaces;
 - remove BNO085 and load-cell requirements from purchasing/fabrication;
-- approve pressure-based estimated-wave wording, passive mooring, single-tube geometry, event-driven Wi-Fi/LTE cloud link, reduced battery, optional wave-prediction scope, and dashboard scope.
+- approve pressure-based estimated-wave wording, passive mooring, compact can-buoy geometry, event-driven Wi-Fi/LTE cloud link, reduced battery, optional wave-prediction scope, and dashboard scope.
 
 ## Gate 2 — Electrical and bench integration
 

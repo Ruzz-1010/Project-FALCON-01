@@ -2,7 +2,7 @@
 
 ## Active design revision 2026-10-09
 
-The current direction is a smaller single-tube buoy with ESP32 local sampling, event-driven summaries and alerts, direct cloud connectivity through Wi-Fi for laboratory work or 4G/LTE for a remote trial, and a reduced battery selected from measured load. LoRa-primary and large Bay Station assumptions are historical unless explicitly marked otherwise.
+The current direction is a smaller compact can-buoy with ESP32 local sampling, event-driven summaries and alerts, direct cloud connectivity through Wi-Fi for laboratory work or 4G/LTE for a remote trial, and a reduced battery selected from measured load. LoRa-primary and large Bay Station assumptions are historical unless explicitly marked otherwise.
 
 cd "/home/ruzz/Documents/PlatformIO/Projects/Project FALCON-01/edge"
 python3 -m falcon_edge.service
@@ -40,7 +40,7 @@ Implemented in the repository:
 - browser notifications and alert history;
 - and interactive Fusion-derived 3D buoy visualization.
 
-Current mechanical direction: a compact single-tube spar/can buoy with a small collar float, lower ballast, protected pressure stilling tube, sealed top electronics canister, small solar panel, and single-anchor mooring. Older drum, large tower, and four-outrigger concepts are retained only as historical studies.
+Current mechanical direction: a compact reference-style can buoy with a round float body, tapered top electronics housing, side solar panels, lower ballast, protected pressure stilling tube, LTE/Wi-Fi antenna, red beacon, and single-anchor mooring. Older spar, large tower, and four-outrigger concepts are retained only as historical studies.
 
 ### Safe frontend migration
 

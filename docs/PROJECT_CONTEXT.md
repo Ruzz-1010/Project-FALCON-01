@@ -135,7 +135,7 @@ The assistant is a saved optional animated, rule-based visual status aid and is 
 
 ## Required FALCON AI wave prediction
 
-Short-term wave-height prediction is a required, always-visible FALCON Bay Station feature. The service estimates the wave height 5, 10, or 15 minutes ahead from recent pressure-based estimated-wave records and reports its condition, model version, sample count, and live/simulated source. The Overview uses a clearly labeled red AI comparison line and a separate numeric future-prediction card; it does not imply that predictions are measured data. The current implementation is a transparent short-term trend baseline, not yet a trained or field-validated model. Calibrated field data, chronological train/validation/test partitions, baseline comparison, MAE/RMSE/bias reporting, and versioned evaluation records are required before claiming AI accuracy.
+Short-term wave-height prediction is a required, always-visible FALCON cloud/edge-service feature. The service estimates the wave height 5, 10, or 15 minutes ahead from recent pressure-based estimated-wave records and reports its condition, model version, sample count, and live/simulated source. The Overview uses a clearly labeled red AI comparison line and a separate numeric future-prediction card; it does not imply that predictions are measured data. The current implementation is a transparent short-term trend baseline, not yet a trained or field-validated model. Calibrated field data, chronological train/validation/test partitions, baseline comparison, MAE/RMSE/bias reporting, and versioned evaluation records are required before claiming AI accuracy.
 
 ## Canonical grouped telemetry contract
 

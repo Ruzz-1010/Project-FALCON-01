@@ -2,7 +2,7 @@
 
 ## Active revision 2026-10-09
 
-The approved direction is a smaller single-tube buoy with ESP32 local sampling, event-driven summaries and alerts, direct cloud connectivity through Wi-Fi for laboratory work or 4G/LTE for a remote trial, and a reduced battery sized from measured modem duty. The active equipment and alternative sensor list is in [FALCON Revised Event Driven BOM and Sensor Options.docx](FALCON%20Revised%20Event%20Driven%20BOM%20and%20Sensor%20Options.docx). The current architecture is maintained in `../docs/PROJECT_CONTEXT.md` and `../docs/BAY_STATION_ARCHITECTURE.md`.
+The approved direction is a smaller compact can-buoy with ESP32 local sampling, event-driven summaries and alerts, direct cloud connectivity through Wi-Fi for laboratory work or 4G/LTE for a remote trial, and a reduced battery sized from measured modem duty. The active equipment and alternative sensor list is in [FALCON Revised Event Driven BOM and Sensor Options.docx](FALCON%20Revised%20Event%20Driven%20BOM%20and%20Sensor%20Options.docx). The current architecture is maintained in `../docs/PROJECT_CONTEXT.md` and `../docs/BAY_STATION_ARCHITECTURE.md`.
 
 ## Current authority
 
@@ -15,7 +15,7 @@ The approved direction is a smaller single-tube buoy with ESP32 local sampling, 
 - `PROJECT FALCON-01 - V3 Documentation.docx` — filename-compatible copy of the
   canonical Bay Station V3.7 thesis; it is retained for users who open the
   earlier V3 filename.
-- `../docs/PROJECT_CONTEXT.md` — canonical repository context v8.1.
+- `../docs/PROJECT_CONTEXT.md` — canonical repository context v9.0.
 - `../docs/BAY_STATION_ARCHITECTURE.md` — approved functional split.
 - `../docs/BAY_STATION_SELECTION_REGISTER.md` — unresolved decisions and release gates.
 - `../docs/PRESSURE_SENSOR_BASELINE.md` — authoritative HPT604 candidate decision, interface, procurement, venting, and validation gates.
@@ -34,7 +34,7 @@ Three files that duplicated existing records were removed after a content audit.
 
 `PROJECT FALCON-01 - V3 Documentation.docx` is intentionally retained because it is the generated sync output of `scripts/build_baystation_thesis.py`, not a duplicate.
 
-Other DOCX files in this directory are supporting or legacy records. Every copy carries a dated document-control notice; any body text that conflicts with `BayStation.docx`, `PROJECT_CONTEXT.md`, or `PRESSURE_SENSOR_BASELINE.md` is superseded. Older V2/V3 files, including `PROJECT FALCON-01 - V3 Documentation - LEGACY.docx`, are retained for historical traceability and must not override the Bay Station architecture.
+Other DOCX files in this directory are supporting or legacy records. Every copy carries a dated document-control notice; any body text that conflicts with the revised BOM DOCX, `PROJECT_CONTEXT.md`, or `PRESSURE_SENSOR_BASELINE.md` is superseded. Older V2/V3 files, including `PROJECT FALCON-01 - V3 Documentation - LEGACY.docx`, are retained for historical traceability and must not override the event-driven cloud architecture.
 They may contain obsolete Orange Pi-on-buoy, USB-only deployment, five-page
 dashboard, BNO085, load-cell, optional-AI, power, or prototype assumptions.
 

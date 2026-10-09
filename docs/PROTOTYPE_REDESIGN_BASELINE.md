@@ -15,7 +15,7 @@ The redesign must preserve the approved functional architecture unless a later a
 - pressure-based **estimated wave height**;
 - ESP32 sensor acquisition;
 - event-driven Wi-Fi/LTE cloud telemetry; USB/UART is bench-only;
-- simple single-tube body with small buoyancy support;
+- compact can-buoy body with a round float, tapered top housing, and protected side pressure/stilling tube;
 - GPS, optional wind speed/direction, power, security, and enclosure-health monitoring; water temperature is optional supporting context;
 - passive single-anchor mooring;
 - cloud storage, API, and dashboard; optional heavier analysis remains outside the buoy;

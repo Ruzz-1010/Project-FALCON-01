@@ -30,7 +30,6 @@ Status: required adviser, supplier, and site-validation gate. `TBD` means not pu
 6. Cloud restart/API outage behavior, stale-data marking, storage retention, export, and dashboard freshness.
 7. Credential rejection, TLS, least-privilege access, and exposed-port review.
 8. Battery/regulator test during modem registration and transmission peaks.
-9. Waterproofing, cable strain relief, condensation, corrosion, retrieval, and single-tube buoyancy/stability review.
+9. Waterproofing, cable strain relief, condensation, corrosion, retrieval, and compact can-buoy buoyancy/stability review.
 
 Do not release the final pressure interface, LTE power branch, cloud endpoint, enclosure feedthroughs, or unattended deployment until this register is complete.
-

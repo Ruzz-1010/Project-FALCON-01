@@ -42,7 +42,7 @@ Open `http://127.0.0.1:8765/`. Use Node.js 20.19+ only when running the Vite dev
 
 ## Next engineering gates
 
-1. Define and approve the replacement single-tube prototype geometry and component placement.
+1. Define and approve the replacement compact can-buoy prototype geometry and component placement.
 2. Finalize exact TBD part models and datasheets.
 3. Freeze new wiring/pinout/PCB revision after physical-fit review.
 4. Connect and bench-test the selected pressure transmitter and protected ADC loop.
