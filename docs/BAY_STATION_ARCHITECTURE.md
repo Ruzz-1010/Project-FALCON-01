@@ -1,50 +1,72 @@
-# Shore-Based Bay Station Architecture v1.1
+# Event Driven Cloud Buoy Architecture v2.0
 
-Authority: `PROJECT_CONTEXT.md` and `THESIS DOCUMENTATION/BayStation.docx`.
+Authority: `PROJECT_CONTEXT.md` and the revised BOM in `THESIS DOCUMENTATION/FALCON Revised Event Driven BOM and Sensor Options.docx`.
 
 ## Approved split
 
 ```text
-Buoy sensors -> ESP32 acquisition/validation/security/buffer
-             -> LoRa primary -> barangay-hall Bay Station gateway
-             -> Bay Station mini PC -> SIM/4G/5G Internet backhaul
-             -> cloud upload / authorized remote access
-             -> ingestion + pressure processing + SQLite + alerts + AI
-             -> REST API + four-page dashboard -> local/cloud authorized user
+Buoy sensors -> ESP32 acquisition / validation / event detection / buffer
+             -> Wi-Fi for laboratory tests or 4G/LTE for field tests
+             -> cloud API / database / dashboard / alerts
+             -> authorized laptop, tablet, or phone
 ```
 
-No Orange Pi, Raspberry Pi, mini PC, SIM/4G/5G Internet modem, database, or AI runtime is installed or powered on the buoy. The development laptop currently substitutes for the final barangay-hall Bay Station mini PC.
+No mini PC, LoRa gateway, database server, or AI runtime is installed on the buoy. The ESP32 is the only required controller. The cloud service may be hosted on a development computer during testing and moved to a selected provider after the endpoint, security, and cost are approved.
 
 ## Buoy responsibilities
 
-- Acquire timestamped pressure, GPS, wind, power, health, and security signals.
-- Validate units/ranges and report invalid, stale, or disconnected channels explicitly.
-- Run local geofence/tamper/enclosure debounce and buzzer rules.
-- Frame versioned telemetry with a unique packet identifier.
-- Transmit compact telemetry over LoRa to the verified barangay-hall gateway.
-- Buffer a defined number/duration of packets during LoRa outages.
-- Reconnect and retransmit buffered packets without changing original timestamps.
+- Acquire timestamped pressure and approved optional wind, GPS, power, health, and security signals.
+- Sample locally at the selected rate and calculate short-window summaries.
+- Detect significant pressure or movement changes, displacement, tamper, low battery, sensor faults, and connection recovery.
+- Frame versioned event and summary telemetry with a unique packet identifier.
+- Upload summaries every 1–5 minutes during normal operation and event packets immediately when a threshold is met.
+- Buffer records in flash or microSD during Wi-Fi/LTE outages and preserve original timestamps.
+- Reconnect with backoff and retransmit queued records without duplicate insertion.
 
-## Bay Station responsibilities
+## Cloud responsibilities
 
-- Authenticate and validate received LoRa telemetry and prevent duplicate insertion.
-- Retain original and derived records in SQLite.
-- Filter pressure, apply the approved baseline/calibration, and estimate wave height.
-- Run required short-term AI prediction and its non-AI comparison baseline.
-- Serve the local REST API, four-page dashboard, logs, alerts, and exports.
-- Use the SIM/4G/5G Internet backhaul for cloud upload and authorized remote access.
-- Mark stale/offline/model-unavailable states instead of fabricating values.
-- Restart services automatically and preserve received data where possible.
+- Authenticate the buoy and validate payloads.
+- Store raw or summarized records and retain event history.
+- Derive pressure-based estimated wave height and expose its calibration/quality state.
+- Serve the responsive dashboard, logs, alerts, and exports.
+- Run optional heavier prediction or analysis without blocking acquisition.
+- Mark stale, offline, simulated, estimated, and calibration-required states explicitly.
+
+## Event-driven reporting rule
+
+The ocean is continuously moving, so “movement” must not mean every individual wave. The ESP32 keeps sampling locally. It sends a regular summary so the cloud remains current, then sends an immediate event when the measured signal changes materially from its learned baseline or when a system-health rule is met. Thresholds must be tuned from measured baseline data rather than invented before calibration.
+
+```text
+continuous local samples
+        |
+one-minute pressure/motion summary
+        |-------------------------------|
+normal summary every 1–5 minutes    immediate event on anomaly/fault
+        |-------------------------------|
+Wi-Fi or LTE upload / local buffer when offline
+```
 
 ## Selection gates
 
-The exact mini PC, LoRa module/gateway, antenna, regional band, transport protocol, device authentication, retry policy, packet identity, buffer capacity, Bay Station SIM/provider, cloud endpoint, remote-access method, firewall/TLS policy, and UPS requirement remain `TBD`. USB serial is the current bench transport only and is not the approved deployed communications path.
+The exact pressure transmitter, wind sensor, movement sensor, LTE modem, antenna, SIM/data plan, cloud endpoint, HTTPS or MQTT protocol, device identity, packet format, retry policy, buffer capacity, and security controls remain `TBD` until supplier and site tests are complete. Wi-Fi is the approved bench path. LTE is required for a remote field path unless the site provides reliable shore Wi-Fi.
 
 ## Failure and power boundaries
 
-- LoRa loss: sensing and local security continue and telemetry is buffered until the verified barangay-hall gateway is reachable again.
-- Bay Station Internet loss: local ingestion, storage, dashboard, alerts, and AI continue; cloud upload and remote access resume after SIM/4G/5G connectivity returns.
-- Stale or uncalibrated inputs: wave estimate/AI output is withheld or explicitly qualified.
-- AI failure: acquisition, security, ingestion, storage, live display, and alerts continue.
-- Buoy solar/battery power covers only ESP32, sensors, LoRa radio, security, and conversion losses.
-- The shore Bay Station uses facility power or a separately engineered UPS and is excluded from buoy autonomy calculations.
+- Wi-Fi/LTE loss: sensing and local event detection continue; records are buffered and synchronized after reconnection.
+- Cloud outage: the buoy continues sampling and buffering; the dashboard marks data stale or offline.
+- LTE reconnect: the modem may draw a short current peak; the regulator and battery must be tested against that peak.
+- Stale or uncalibrated inputs: wave estimates are withheld or explicitly qualified.
+- Prediction failure: acquisition, storage, live status, and alerts continue.
+- Buoy power budget covers ESP32, approved sensors, modem, security inputs, storage, and conversion losses.
+- Cloud or development-computer power is a separate shore/infrastructure budget.
+
+## Required acceptance tests
+
+1. Wi-Fi bench upload and cloud authentication.
+2. LTE registration, signal survey, data-usage measurement, and reconnect test at the proposed site.
+3. Event threshold tests using controlled pressure and tilt changes.
+4. Summary upload interval, immediate event latency, duplicate prevention, and timestamp preservation.
+5. Offline buffering, restart recovery, and queued-record synchronization.
+6. Battery-regulator test during modem registration and transmit peaks.
+7. Cloud storage, dashboard freshness, stale-state behavior, and export verification.
+

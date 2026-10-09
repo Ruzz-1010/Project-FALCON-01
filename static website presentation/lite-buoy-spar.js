@@ -1,5 +1,6 @@
 // FALCON Lite Option B — spar/can buoy preview (procedural, no CAD edit).
-// Slim PVC tube hull, collar float, ballast keel, single rack-mounted panel.
+// Squat proportions, instrument cabinet with the panel as its roof, slim
+// wind mast behind the cabinet.
 // PROPOSED ONLY: illustrative geometry for cost/design review. Not final,
 // not fabrication-ready, not field-validated. V2 GLB used by world.js is untouched.
 import * as THREE from 'three';
@@ -35,7 +36,8 @@ scene.add(sea);
 
 const M = {
   pvc: new THREE.MeshStandardMaterial({color:'#e8edee', roughness:.55, metalness:.05}),
-  collar: new THREE.MeshStandardMaterial({color:'#274b5a', roughness:.7, metalness:.1}),
+  cabinet: new THREE.MeshStandardMaterial({color:'#dfe5e8', roughness:.5, metalness:.1}),
+  collar: new THREE.MeshStandardMaterial({color:'#e8821a', roughness:.6, metalness:.08}),
   frame: new THREE.MeshStandardMaterial({color:'#5b6b72', roughness:.5, metalness:.6}),
   dark: new THREE.MeshStandardMaterial({color:'#161d20', roughness:.6, metalness:.3}),
   solar: new THREE.MeshStandardMaterial({color:'#12283f', roughness:.35, metalness:.55}),
@@ -57,66 +59,68 @@ function mesh(geo, mat, x=0, y=0, z=0, name=''){
 const buoy = new THREE.Group();
 scene.add(buoy);
 
-// --- Hull: slim PVC tube Ø200mm x 2.4m, waterline at y=0 (draft 1.1m).
-const tube = mesh(new THREE.CylinderGeometry(0.10, 0.10, 2.4, 28), M.pvc, 0, 0.10, 0, 'PVC_SPAR_TUBE');
+// --- Hull: PVC tube Ø250mm x 2.0m, waterline at y=0 (1.0m freeboard).
+const tube = mesh(new THREE.CylinderGeometry(0.125, 0.125, 2.0, 28), M.pvc, 0, 0.0, 0, 'PVC_SPAR_TUBE');
 buoy.add(tube);
-// Visibility daymark band above the waterline.
-const daymark = mesh(new THREE.CylinderGeometry(0.105, 0.105, 0.22, 28, 1, true), M.daymark, 0, 0.42, 0, 'DAYMARK_BAND');
+// Orange daymark band + collar float Ø0.9m at the waterline.
+const daymark = mesh(new THREE.CylinderGeometry(0.13, 0.13, 0.26, 28, 1, true), M.daymark, 0, 0.45, 0, 'DAYMARK_BAND');
 buoy.add(daymark);
-// Collar float Ø0.7m at the waterline.
-const collar = mesh(new THREE.CylinderGeometry(0.35, 0.35, 0.18, 32), M.collar, 0, 0.02, 0, 'COLLAR_FLOAT');
+const collar = mesh(new THREE.CylinderGeometry(0.45, 0.45, 0.22, 36), M.collar, 0, 0.02, 0, 'COLLAR_FLOAT');
 buoy.add(collar);
-// Ballast disc at the keel for self-righting.
-const ballast = mesh(new THREE.CylinderGeometry(0.12, 0.14, 0.12, 20), M.dark, 0, -1.05, 0, 'BALLAST');
+// Ballast disc at the keel for self-righting + mooring eye + chain stub.
+const ballast = mesh(new THREE.CylinderGeometry(0.13, 0.15, 0.12, 20), M.dark, 0, -0.92, 0, 'BALLAST');
 buoy.add(ballast);
-// Mooring eye + chain stub below the keel.
-const eye = mesh(new THREE.TorusGeometry(0.05, 0.013, 8, 20), M.chain, 0, -1.16, 0, 'MOORING_EYE');
+const eye = mesh(new THREE.TorusGeometry(0.05, 0.013, 8, 20), M.chain, 0, -1.03, 0, 'MOORING_EYE');
 buoy.add(eye);
-const chainStub = mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.30, 10), M.chain, 0, -1.34, 0, 'MOORING_CHAIN_STUB');
+const chainStub = mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.30, 10), M.chain, 0, -1.21, 0, 'MOORING_CHAIN_STUB');
 buoy.add(chainStub);
 // Pressure sensor can strapped low on the tube (below waterline).
-const psens = mesh(new THREE.CylinderGeometry(0.035, 0.035, 0.12, 16), M.dark, 0.0, -0.50, 0.115, 'WATER_PRESSURE_SENSOR_ASSEMBLY');
+const psens = mesh(new THREE.CylinderGeometry(0.035, 0.035, 0.12, 16), M.dark, 0.0, -0.50, 0.14, 'WATER_PRESSURE_SENSOR_ASSEMBLY');
 psens.rotation.x = Math.PI/2.4;
 buoy.add(psens);
 
-// --- Topside: cap + panel rack (single 40W-class panel, tilted 15°).
-const CAP_Y = 1.30;
-const cap = mesh(new THREE.CylinderGeometry(0.13, 0.13, 0.05, 24), M.frame, 0, CAP_Y, 0, 'TOP_CAP');
+// --- Topside: cap + compact instrument cabinet (GPS/LoRa/ESP32 live
+// inside it) + single 40W-class panel as the cabinet roof.
+const CAP_Y = 1.00;
+const cap = mesh(new THREE.CylinderGeometry(0.15, 0.15, 0.05, 24), M.frame, 0, CAP_Y, 0, 'TOP_CAP');
 buoy.add(cap);
-for(const sx of [-0.24, 0.24]){
-  const post = mesh(new THREE.BoxGeometry(0.035, 0.30, 0.035), M.frame, sx, CAP_Y + 0.15, -0.05, 'RACK_POST');
-  buoy.add(post);
-}
-const rack = new THREE.Group();
-rack.position.set(0, CAP_Y + 0.30, 0.02);
-rack.rotation.x = -0.26; // ~15° tilt, face up-south
-rack.name = 'SINGLE_40W_RACK';
-buoy.add(rack);
-const panelSlab = mesh(new THREE.BoxGeometry(0.67, 0.025, 0.53), M.solar, 0, 0, 0, 'SOLAR_PANEL');
-rack.add(panelSlab);
+const CAB_H = 0.26, CAB_TOP = CAP_Y + 0.03 + CAB_H;
+const cabinet = mesh(new THREE.BoxGeometry(0.46, CAB_H, 0.40), M.cabinet, 0, CAP_Y + 0.03 + CAB_H/2, 0, 'INSTRUMENT_CABINET');
+buoy.add(cabinet);
+const cabTrim = mesh(new THREE.BoxGeometry(0.48, 0.03, 0.42), M.frame, 0, CAP_Y + 0.03, 0, 'CABINET_BASE_TRIM');
+buoy.add(cabTrim);
+const roof = new THREE.Group();
+roof.position.set(0, CAB_TOP + 0.075, -0.08);
+roof.rotation.x = -0.21; // ~12° tilt, face up-south
+roof.name = 'SINGLE_40W_ROOF';
+buoy.add(roof);
+const panelSlab = mesh(new THREE.BoxGeometry(0.56, 0.025, 0.44), M.solar, 0, 0, 0, 'SOLAR_PANEL');
+roof.add(panelSlab);
 for(let i=-1;i<=1;i++){
-  rack.add(mesh(new THREE.BoxGeometry(0.012, 0.028, 0.53), M.solarGrid, i*0.2, 0, 0, 'SOLAR_GRID'));
+  roof.add(mesh(new THREE.BoxGeometry(0.012, 0.028, 0.44), M.solarGrid, i*0.165, 0, 0, 'SOLAR_GRID'));
 }
-// Red beacon on a stub at the rack corner + whip on the other side.
-const beaconStub = mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.10, 10), M.frame, 0.30, CAP_Y + 0.10, -0.15, 'BEACON_STUB');
+for(const sx of [-0.20, 0.20]){
+  buoy.add(mesh(new THREE.BoxGeometry(0.04, 0.06, 0.36), M.frame, sx, CAB_TOP + 0.03, -0.06, 'ROOF_RAIL'));
+}
+// Red topmark light on a finial stub at the panel front edge (clamped look).
+const beaconStub = mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.10, 10), M.frame, 0, CAB_TOP + 0.06, 0.145, 'BEACON_STUB');
 buoy.add(beaconStub);
-const beacon = mesh(new THREE.CylinderGeometry(0.045, 0.045, 0.10, 14), M.beacon, 0.30, CAP_Y + 0.18, -0.15, 'TOPMARK_BEACON');
+const beacon = mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.09, 14), M.beacon, 0, CAB_TOP + 0.145, 0.145, 'TOPMARK_BEACON');
 buoy.add(beacon);
-const beaconDome = mesh(new THREE.SphereGeometry(0.045, 14, 10, 0, Math.PI*2, 0, Math.PI/2), M.beacon, 0.30, CAP_Y + 0.23, -0.15, 'BEACON_DOME');
+const beaconDome = mesh(new THREE.SphereGeometry(0.04, 14, 10, 0, Math.PI*2, 0, Math.PI/2), M.beacon, 0, CAB_TOP + 0.19, 0.145, 'BEACON_DOME');
 buoy.add(beaconDome);
-const whip = mesh(new THREE.CylinderGeometry(0.006, 0.009, 0.40, 8), M.dark, -0.28, CAP_Y + 0.22, -0.12, 'WHIP_ANTENNA');
-buoy.add(whip);
-const whipTip = mesh(new THREE.SphereGeometry(0.012, 10, 8), M.brass, -0.28, CAP_Y + 0.42, -0.12, 'WHIP_TIP');
-buoy.add(whipTip);
+const loraSma = mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.05, 10), M.brass, 0.12, CAP_Y + 0.16, -0.205, 'LORA_SMA');
+loraSma.rotation.x = Math.PI/2;
+buoy.add(loraSma);
 
-// --- Wind head on a slim mast behind the rack (Ø36mm pole straight into
-// the hub: standard anemometer mount, no fat tube in the rotor plane).
-const WMAST_X = 0, WMAST_Z = -0.22, RACK_TOP = CAP_Y + 0.30;
-const ROTOR_Y = RACK_TOP + 0.55;
-const wmast = mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.55, 12), M.frame, WMAST_X, RACK_TOP + 0.275, WMAST_Z, 'WIND_MAST');
+// --- Wind head on a slim mast behind the cabinet (Ø36mm pole straight
+// into the hub: standard anemometer mount, no fat tube in the rotor plane).
+const WMAST_Z = -0.34, ROTOR_Y = CAB_TOP + 0.60;
+buoy.add(mesh(new THREE.BoxGeometry(0.05, 0.05, 0.26), M.frame, 0, CAB_TOP + 0.05, -0.26, 'MAST_BRACKET'));
+const wmast = mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.65, 12), M.frame, 0, CAB_TOP + 0.275, WMAST_Z, 'WIND_MAST');
 buoy.add(wmast);
 const rotor = new THREE.Group();
-rotor.position.set(WMAST_X, ROTOR_Y, WMAST_Z);
+rotor.position.set(0, ROTOR_Y, WMAST_Z);
 rotor.name = 'WIND_SPEED_DIRECTION_SENSOR';
 buoy.add(rotor);
 const hub = mesh(new THREE.SphereGeometry(0.055, 16, 12), M.dark, 0, 0, 0, 'WIND_HUB');
@@ -135,7 +139,7 @@ for(let i=0;i<3;i++){
 }
 // Wind vane on its own turret, 150mm below the rotor.
 const vane = new THREE.Group();
-vane.position.set(WMAST_X, ROTOR_Y - 0.15, WMAST_Z);
+vane.position.set(0, ROTOR_Y - 0.15, WMAST_Z);
 vane.name = 'WIND_VANE';
 buoy.add(vane);
 const vaneMast = mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.12, 8), M.frame, 0, 0, 0, 'VANE_TURRET');
@@ -145,16 +149,19 @@ vane.add(tail);
 const nose = mesh(new THREE.ConeGeometry(0.025, 0.09, 12), M.brass, 0, 0.02, 0.14, 'VANE_NOSE');
 nose.rotation.x = Math.PI/2;
 vane.add(nose);
-// LoRa SMA stub on the cap rear (radio itself internal, deck kept clean).
-const loraSma = mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.05, 10), M.brass, 0.08, CAP_Y + 0.05, -0.10, 'LORA_SMA');
-buoy.add(loraSma);
+// Whip on the wind mast, kept below the rotor plane.
+buoy.add(mesh(new THREE.BoxGeometry(0.10, 0.03, 0.03), M.frame, -0.05, ROTOR_Y - 0.42, WMAST_Z, 'WHIP_BRACKET'));
+const whip = mesh(new THREE.CylinderGeometry(0.006, 0.009, 0.30, 8), M.dark, -0.09, ROTOR_Y - 0.27, WMAST_Z, 'WHIP_ANTENNA');
+buoy.add(whip);
+const whipTip = mesh(new THREE.SphereGeometry(0.012, 10, 8), M.brass, -0.09, ROTOR_Y - 0.12, WMAST_Z, 'WHIP_TIP');
+buoy.add(whipTip);
 
 // --- Camera orbit (manual, no extra addon dependency).
 const views = {
-  orbit: {yaw:0.7, pitch:0.10, dist:5.4, focus:[0,0.45,0]},
-  wind: {yaw:0.3, pitch:0.08, dist:1.9, focus:[WMAST_X,2.02,WMAST_Z]},
-  solar: {yaw:0.7, pitch:0.12, dist:2.6, focus:[0,1.58,0.05]},
-  below: {yaw:3.6, pitch:-0.28, dist:3.2, focus:[0,-0.55,0]},
+  orbit: {yaw:0.7, pitch:0.10, dist:5.4, focus:[0,0.35,0]},
+  wind: {yaw:0.3, pitch:0.08, dist:1.9, focus:[0,ROTOR_Y-0.12,WMAST_Z]},
+  solar: {yaw:0.7, pitch:0.12, dist:2.6, focus:[0,CAB_TOP+0.10,0]},
+  below: {yaw:3.6, pitch:-0.28, dist:3.0, focus:[0,-0.50,0]},
 };
 let yaw = views.orbit.yaw, pitch = views.orbit.pitch, dist = views.orbit.dist;
 let focus = new THREE.Vector3(...views.orbit.focus);

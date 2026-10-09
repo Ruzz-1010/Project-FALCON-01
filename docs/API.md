@@ -1,6 +1,6 @@
 # Project FALCON Local API v8.0
 
-Authority: [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md). Host: barangay-hall Bay Station mini PC or development laptop substitute. Format: UTF-8 JSON with ISO 8601 timestamps. Deployed buoy ingestion requires authenticated LoRa transport to the Bay Station; cloud upload and remote access use the Bay Station SIM/4G/5G backhaul. Exact modules, protocols, and endpoints remain pending.
+Authority: [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md). Host: cloud API or development laptop substitute. Format: UTF-8 JSON with ISO 8601 timestamps. Deployed buoy ingestion requires authenticated Wi-Fi/LTE transport to the cloud endpoint. Exact modem, protocol, provider, and endpoint remain pending.
 
 ## Primary grouped endpoint
 

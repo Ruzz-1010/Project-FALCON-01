@@ -2,7 +2,7 @@
 
 ## 30-second project answer
 
-Project FALCON is a proposed affordable solar-powered coastal observation buoy. It will use pressure sensing to estimate wave height and a wind sensor for local wind observations. The ESP32 is planned to send telemetry through LoRa to a barangay-hall Bay Station. The Bay Station will store and process the data, show it on a dashboard, and use SIM/4G/5G Internet as proposed backhaul for cloud upload and authorized remote access. The current system is still a software prototype; physical integration and validation are pending.
+Project FALCON is a proposed affordable solar-powered coastal observation buoy. It will use pressure sensing to estimate wave height and may include a wind sensor for local wind observations. The ESP32 will sample and process data locally, then send event-driven summaries and alerts through Wi-Fi during testing or 4G/LTE during a remote trial. The cloud service will store and present the data. The current system is still a software prototype; physical integration and validation are pending.
 
 ## Quick answers
 
@@ -18,17 +18,17 @@ The current candidate is a Holykell HPT604 Type A with a provisional 0–2 mH2O 
 
 No. Pressure is directly measured; wave height is derived and must be labeled `ESTIMATED` until reference validation is complete.
 
-**Why is the Bay Station on shore?**
+**Why is most processing outside the buoy?**
 
-To keep storage, processing, dashboard hosting, and AI away from the low-power buoy. This reduces buoy power, heat, waterproofing, and maintenance requirements.
+To keep storage, dashboard hosting, and heavier analysis away from the low-power buoy. The ESP32 remains responsible for sensing, event detection, buffering, and upload. This reduces buoy power, heat, waterproofing, and maintenance requirements.
 
-**Why LoRa?**
+**Why event-driven cloud telemetry?**
 
-LoRa is the proposed low-rate buoy-to-barangay-hall telemetry link. It can support a local gateway path without placing a cellular Internet modem on the buoy. Range, frequency, gateway placement, and reliability still require testing.
+The buoy continuously samples locally but transmits only short summaries and significant event packets. This keeps the cloud data current while reducing mobile-data use and battery load. The ocean is always moving, so an event means a significant change or system condition, not every individual wave.
 
-**What is SIM/4G/5G for?**
+**What is 4G/LTE for?**
 
-It is the proposed Internet backhaul of the Bay Station for cloud upload and authorized remote access. It is not the primary buoy sensor link.
+It is the proposed direct Internet link from the remote buoy to the cloud. The ESP32 requires an external LTE modem and SIM because ordinary ESP32 boards do not have built-in cellular connectivity.
 
 **Is it already deployed?**
 
@@ -40,11 +40,11 @@ Not yet proven. The current output is a transparent research baseline. Accuracy 
 
 **What sensors are required?**
 
-Pressure-derived wave sensing and wind speed/direction are the primary Phase 1 measurements. GPS, power, timestamps, and security are supporting telemetry. Water temperature, salinity, conductivity, BNO085, and HX711 mooring tension are excluded from the required Phase 1 scope.
+Pressure-derived wave sensing is the core measurement. Wind speed/direction, GPS, power, timestamps, and security are supporting or optional channels subject to adviser approval. Water temperature, salinity, conductivity, BNO085, and HX711 mooring tension are excluded from the low-cost minimum build.
 
 **What is the innovation?**
 
-The intended contribution is the affordable, documented integration and local evaluation of established sensing, LoRa telemetry, shore processing, solar power, security telemetry, and transparent prediction research. It is not the invention of a new sensor or AI algorithm.
+The intended contribution is the affordable, documented integration and local evaluation of established sensing, event-driven cloud telemetry, solar power, security telemetry, and transparent prediction research. It is not the invention of a new sensor or AI algorithm.
 
 **Can it issue warnings?**
 

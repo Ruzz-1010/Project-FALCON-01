@@ -1,5 +1,9 @@
 # Project FALCON-01
 
+## Active design revision 2026-10-09
+
+The current direction is a smaller single-tube buoy with ESP32 local sampling, event-driven summaries and alerts, direct cloud connectivity through Wi-Fi for laboratory work or 4G/LTE for a remote trial, and a reduced battery selected from measured load. LoRa-primary and large Bay Station assumptions are historical unless explicitly marked otherwise.
+
 cd "/home/ruzz/Documents/PlatformIO/Projects/Project FALCON-01/edge"
 python3 -m falcon_edge.service
 
@@ -14,7 +18,7 @@ The AI scope is limited to short-term wave-height prediction and sea-condition c
 
 ## Source of Truth
 
-[PROJECT_CONTEXT.md v8.0](docs/PROJECT_CONTEXT.md) is the official engineering source of truth.
+[PROJECT_CONTEXT.md v9.0](docs/PROJECT_CONTEXT.md) is the official engineering source of truth.
 
 Working source code remains authoritative for what is currently implemented. Documentation describes both the verified prototype and the approved Phase 1 target; it does not turn planned hardware into implemented hardware.
 
@@ -27,7 +31,7 @@ Implemented in the repository:
 - PlatformIO ESP32 Arduino firmware;
 - `FALCON-01` Wi-Fi access point and captive portal;
 - LittleFS fallback dashboard and basic ESP32 controls;
-- laptop-hosted Python edge-service prototype (shore-based Bay Station mini PC for deployment);
+- laptop-hosted Python edge/cloud service prototype;
 - simulated telemetry and deterministic alert scenarios;
 - local SQLite telemetry history;
 - presentation forecast and backtest pipeline;
@@ -36,7 +40,7 @@ Implemented in the repository:
 - browser notifications and alert history;
 - and interactive Fusion-derived 3D buoy visualization.
 
-Current mechanical direction: a compact traditional single-body Ø650 mm HDPE buoy with a rounded 240 mm tapered underwater keel, central ballast, and single-anchor mooring. The former four-outrigger configuration is retained only as Legacy Revision 4.
+Current mechanical direction: a compact single-tube spar/can buoy with a small collar float, lower ballast, protected pressure stilling tube, sealed top electronics canister, small solar panel, and single-anchor mooring. Older drum, large tower, and four-outrigger concepts are retained only as historical studies.
 
 ### Safe frontend migration
 
@@ -55,7 +59,7 @@ Then open `http://127.0.0.1:5173`.
 Important limitations:
 
 - physical Phase 1 sensors are not yet fully integrated;
-- the laptop currently represents the shore Bay Station during demonstrations;
+- the laptop currently represents a development cloud/edge host during demonstrations;
 - simulator results are not field-validation results;
 - the current presentation forecast is not the final trained AI model;
 - and the 3D dashboard assets exceed the configured ESP32 LittleFS capacity.
@@ -63,15 +67,15 @@ Important limitations:
 ## Approved Phase 1 Architecture
 
 ```text
-Marine Sensors -> ESP32 -> LoRa -> Barangay-Hall Bay Station -> SIM/4G/5G Internet -> Cloud/Remote Access
-                                              |
-                                              +-> AI prediction + XAI
-                                              +-> SQLite + historical data
-                                              +-> REST API + web server
-                                              +-> Local dashboard -> laptop / tablet / phone
+Marine Sensors -> ESP32 -> Wi-Fi/LTE -> Cloud API/database/dashboard
+                         |
+                         +-> event detection + buffering
+                         +-> slow heartbeat summaries
+                         +-> immediate alerts on pressure/motion/GPS/power thresholds
+                         +-> dashboard -> laptop / tablet / phone
 ```
 
-Cloud connectivity is Future Expansion and is not required for Phase 1 operation.
+Direct cloud connectivity is the revised Phase 1 direction. Wi-Fi is used for laboratory testing; 4G/LTE is the remote field path after modem, SIM/data, antenna, endpoint security, buffering, and coverage tests are approved.
 
 ## Approved Primary Sensor Set
 
@@ -157,7 +161,7 @@ python -m unittest discover -s tests -v
 Project FALCON-01/
 ├── data/               # current dashboard assets and 3D model
 ├── docs/               # engineering documentation
-├── edge/               # laptop-hosted Bay Station edge-service prototype
+├── edge/               # laptop-hosted edge/cloud service prototype
 ├── exports/            # archived CAD exchange assets
 ├── fusion360/          # mechanical component documentation
 ├── include/            # ESP32 configuration headers
@@ -195,7 +199,7 @@ Start here:
 
 ## Future Expansion
 
-Cloud synchronization, satellite communication, multi-buoy networking, mobile applications, water-quality sensing, computer vision, additional AI models, and autonomous capabilities are outside the validated Phase 1 implementation. LoRa is the planned primary buoy telemetry path to the barangay-hall Bay Station; SIM/4G/5G is the planned Bay Station Internet backhaul for cloud upload and authorized remote access. Both paths require hardware, security, and site validation.
+Satellite communication, multi-buoy networking, mobile applications, water-quality sensing, computer vision, additional AI models, autonomous capabilities, and LoRa fallback are outside the reduced Phase 1 minimum build. The revised path uses event-driven Wi-Fi/LTE upload directly from the ESP32 buoy to the selected cloud/development service, subject to hardware, security, coverage, power, and site validation.
 
 ## Revision History
 

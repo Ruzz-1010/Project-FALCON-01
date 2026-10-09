@@ -1,6 +1,6 @@
-# Project FALCON Prototype Redesign Baseline v6.1
+# Project FALCON Prototype Redesign Baseline v9.0
 
-Date: 26 August 2026
+Date: 9 October 2026
 
 ## Current status
 
@@ -14,11 +14,12 @@ The redesign must preserve the approved functional architecture unless a later a
 
 - pressure-based **estimated wave height**;
 - ESP32 sensor acquisition;
-- LoRa telemetry to a barangay-hall Bay Station; SIM/4G/5G is Bay Station Internet backhaul; USB/UART is bench-only;
-- GPS, wind speed/direction, power, security, and enclosure-health monitoring; water temperature remains excluded from Phase 1;
+- event-driven Wi-Fi/LTE cloud telemetry; USB/UART is bench-only;
+- simple single-tube body with small buoyancy support;
+- GPS, optional wind speed/direction, power, security, and enclosure-health monitoring; water temperature is optional supporting context;
 - passive single-anchor mooring;
-- shore-based storage, API, required AI prediction, and four-page dashboard;
-- required AI wave prediction isolated from core monitoring failures;
+- cloud storage, API, and dashboard; optional heavier analysis remains outside the buoy;
+- any prediction isolated from core monitoring failures;
 - no required BNO085, salinity sensor, or anchor-chain load cell.
 
 These requirements define system function, not the new external form or component placement.

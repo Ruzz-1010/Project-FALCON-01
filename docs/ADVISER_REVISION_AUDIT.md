@@ -1,6 +1,6 @@
 # Adviser Revision Documentation Audit
 
-Date: 2026-09-08. Authority: `PROJECT_CONTEXT.md` v8.1.
+Date: 2026-10-09. Authority: `PROJECT_CONTEXT.md` v9.0.
 
 ## Current primary documents
 
@@ -10,7 +10,7 @@ Date: 2026-09-08. Authority: `PROJECT_CONTEXT.md` v8.1.
 - `HARDWARE.md`, `HARDWARE_BOM.md`, `PINOUT.md`, `ELECTRONICS_WIRING.md`
 - `SENSOR_SPEC.md`, `SECURITY.md`, `SOFTWARE.md`, `API.md`, `DASHBOARD.md`, `AI.md`
 - `THESIS DOCUMENTATION/PROJECT FALCON-01 - V3 Documentation.docx`
-- `PROTOTYPE_REDESIGN_BASELINE.md` controls the physical/visual replacement; `BAY_STATION_ARCHITECTURE.md` controls LoRa-primary and Bay Station Internet-backhaul behavior.
+- `PROTOTYPE_REDESIGN_BASELINE.md` controls the physical/visual replacement; `BAY_STATION_ARCHITECTURE.md` controls event-driven Wi-Fi/LTE cloud behavior.
 
 ## Historical/engineering records requiring a later physical-design revision
 
@@ -26,4 +26,4 @@ All Fusion 360 component READMEs, exported models, prototype images, dashboard 3
 
 ## Remaining release gates
 
-Exact LoRa radio, barangay-hall gateway, Bay Station SIM/4G/5G backhaul, tamper, enclosure switch, GPS, wind, and health-monitor models remain TBD. Water temperature and conductivity/salinity are excluded from the required Phase 1 scope. Final schematics, PCB, diagrams, and BOM total must wait for datasheet/footprint/current/rating verification. Physical pressure calibration and security persistence validation are not complete.
+Exact LTE modem, cloud endpoint/data plan, tamper, enclosure switch, GPS, wind, and health-monitor models remain TBD. Water temperature and conductivity/salinity are excluded from the low-cost minimum scope. Final schematics, PCB, diagrams, and BOM total must wait for datasheet/footprint/current/rating verification. Physical pressure calibration and security persistence validation are not complete.

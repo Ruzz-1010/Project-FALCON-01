@@ -1,10 +1,17 @@
 # Project FALCON Thesis Documentation Register
 
+## Active revision 2026-10-09
+
+The approved direction is a smaller single-tube buoy with ESP32 local sampling, event-driven summaries and alerts, direct cloud connectivity through Wi-Fi for laboratory work or 4G/LTE for a remote trial, and a reduced battery sized from measured modem duty. The active equipment and alternative sensor list is in [FALCON Revised Event Driven BOM and Sensor Options.docx](FALCON%20Revised%20Event%20Driven%20BOM%20and%20Sensor%20Options.docx). The current architecture is maintained in `../docs/PROJECT_CONTEXT.md` and `../docs/BAY_STATION_ARCHITECTURE.md`.
+
 ## Current authority
 
-- `BayStation.docx` — canonical expanded V4 thesis documentation with the
-  adviser-aligned wave-and-wind Phase 1 scope, formal Chapters 1–4, methodology,
-  validation plan, risks, references, appendices, and explanatory figures.
+- `FALCON Revised Event Driven BOM and Sensor Options.docx` — current equipment,
+  alternative-sensor, cost, and procurement baseline after the 2026-10-09 DOST
+  revision.
+- `BayStation.docx` — earlier expanded thesis documentation retained for reference;
+  its LoRa/Bay Station assumptions are superseded by the event-driven cloud baseline
+  until the thesis chapters are regenerated.
 - `PROJECT FALCON-01 - V3 Documentation.docx` — filename-compatible copy of the
   canonical Bay Station V3.7 thesis; it is retained for users who open the
   earlier V3 filename.
@@ -34,9 +41,9 @@ dashboard, BNO085, load-cell, optional-AI, power, or prototype assumptions.
 ## Current non-negotiable boundaries
 
 - No mini PC is installed on or powered by the buoy.
-- The buoy contains the ESP32, approved sensors, LoRa telemetry, power, and security electronics. It has no mini PC or cellular Internet modem.
-- The shore Bay Station performs storage, pressure-wave processing, required AI prediction, API/dashboard hosting, and alerts. Its separate SIM/4G/5G connection provides Internet backhaul.
+- The buoy contains the ESP32, approved sensors, event-detection logic, local buffer, power, and either Wi-Fi or a 4G/LTE modem for the selected test path. It has no mini PC or LoRa gateway.
+- The cloud service performs storage, pressure-wave processing, optional prediction, API/dashboard hosting, and alerts. A development computer may temporarily host the service during bench work.
 - The dashboard has four primary pages: Overview, Buoy Motion, Sensors, and Logs & Alerts.
 - Simulator/build/test results are not physical accuracy, cellular reliability, AI accuracy, or deployment-readiness evidence.
-- The only primary Phase 1 sensors are pressure-derived wave sensing and wind speed/direction. GPS, power, timestamps, and security states are supporting telemetry; water temperature and other environmental sensors are excluded.
-- The recommended long-duration pressure candidate is the Holykell HPT604 Type A, provisionally 0–2 mH2O vented gauge with 4–20 mA output. It is not yet purchased or validated; exact seawater compatibility and order details require written supplier confirmation. Bar02 is bench-only.
+- The core minimum sensor is pressure-derived wave sensing. Wind speed/direction, GPS, power, timestamps, and security states are supporting or optional channels; water temperature and other environmental sensors are excluded from the low-cost minimum build.
+- The preferred long-duration pressure candidate is the Holykell HPT604 Type A, provisionally 0–2 mH2O vented gauge with 4–20 mA output. Documented 4–20 mA, 0–5 V/0–10 V, RS485/Modbus, and marine digital alternatives remain under the same seawater, sealing, range, and calibration gates. Bar02 is bench-only.

@@ -16,16 +16,15 @@ Fullbright College
 1. Design serviceable solar-powered buoy with passive mooring
 2. Acquire pressure and wind measurements with supporting telemetry
 3. Estimate wave height from underwater pressure with explicit calibration
-4. Transmit via LoRa to shore Bay Station for storage, processing and dashboard
+4. Upload event-driven summaries and alerts directly to the cloud through Wi-Fi or 4G/LTE
 5. Evaluate accuracy, reliability, latency, power use and usability
 6. Develop and evaluate short-term AI wave prediction vs baseline
 
 ## Slide 4 — System Architecture
-Buoy ESP32 → LoRa → Bay Station mini PC
-Bay Station: SQLite, REST API, Dashboard, AI prediction
-Internet backhaul via SIM/4G/5G from Bay Station only
-No mini PC or cellular on buoy
-Buffering and retransmission on LoRa outage
+Buoy ESP32 → Wi-Fi/LTE modem → Cloud API/database/dashboard
+ESP32: local sampling, event detection, buffering, and upload
+No mini PC or LoRa gateway in the low-cost minimum build
+Buffering and retransmission on Internet outage
 
 ## Slide 5 — Hardware Baseline
 Buoy:
@@ -34,15 +33,15 @@ Buoy:
 * Wind speed / direction sensors
 * GPS for position/time/geofence
 * Battery / solar power
-* LoRa transceiver
-Shore:
-* Bay Station mini PC
-* LoRa receiver
-* Local storage and processing
+* 4G/LTE modem for remote field tests or Wi-Fi for laboratory tests
+* Local flash or microSD buffer
+Cloud:
+* API and database
+* Dashboard, alerts, and optional heavier processing
 
 ## Slide 6 — Software Baseline
 * ESP32 PlatformIO firmware with telemetry framing
-* Python Bay Station service: simulator, SQLite, REST API, prediction baseline
+* Python edge/cloud service: simulator, SQLite, REST API, prediction baseline
 * Four-page dashboard: Overview, Buoy Motion, Sensors, Logs & Alerts
 * Grouped telemetry endpoint with explicit states LIVE/SIMULATED/ESTIMATED
 
@@ -68,7 +67,7 @@ Bench sensor tests, pressure-to-wave calibration vs reference
 Wind sensor comparison
 GPS geofence testing
 Vibration/tamper testing
-LoRa packet loss, latency, range, buffering
+Wi-Fi/LTE upload latency, packet loss, coverage, buffering, and retry testing
 Power budget validation
 Dashboard usability on desktop/tablet/phone
 AI evaluation vs baseline
@@ -76,14 +75,14 @@ AI evaluation vs baseline
 ## Slide 11 — Current Status
 Implemented:
 * ESP32 firmware shell, captive portal, telemetry framing
-* Bay Station service prototype with simulator, SQLite, API, dashboard
+* Edge/cloud service prototype with simulator, SQLite, API, dashboard
 * Grouped telemetry endpoint
 * Pressure-based wave estimate simulation
 * GPS geofence simulation
 Not yet validated:
 * Final sensor models and calibration coefficients
 * Real GPS/tamper performance
-* LoRa hardware selection and range
+* LTE modem selection, coverage, data cost, and upload reliability
 * Field-trained AI
 
 ## Slide 12 — Scope Limits and Safe Claims
@@ -94,7 +93,7 @@ All claims are prototype status until validation is complete
 
 ## Slide 13 — Risks and Mitigations
 Power autonomy, waterproofing, corrosion
-LoRa range and interference
+LTE/Wi-Fi coverage, antenna placement, data cost, and upload retries
 Calibration drift
 False security alerts
 Mitigations via bench testing, staged deployment, documented validation
@@ -103,10 +102,10 @@ Mitigations via bench testing, staged deployment, documented validation
 Define replacement prototype per PROTOTYPE_REDESIGN_BASELINE.md
 Select exact parts and freeze BOM
 Implement physical pressure acquisition and calibration routine
-Integrate LoRa buoy radio and Bay Station gateway
+Integrate Wi-Fi/LTE cloud upload, buffering, and authentication
 Collect controlled reference data before performance claims
 
 ## Slide 15 — Acknowledgement
-Adviser revision 2026-08-29
-Project FALCON-01 Master Context v8.1
+DOST revision direction 2026-10-09
+Project FALCON-01 Master Context v9.0
 Thank you

@@ -194,14 +194,14 @@ If approved, first record ordinary motion profiles during controlled buoy oscill
 
 Test only after an exact buzzer and driver are approved. Verify GPIO isolation, driver temperature, supply dip, duty cycle, sound level at a documented distance, alarm cancellation, and nuisance behavior.
 
-## 12. LoRa telemetry and buffering
+## 12. Event driven cloud telemetry and buffering
 
-The LoRa buoy-to-barangay-hall path must pass:
+The Wi-Fi/LTE buoy-to-cloud path must pass:
 
-- regional band, gateway placement, antenna and line-of-sight verification at the intended site;
-- idle, receive and transmit current measurements for the buoy radio and gateway;
-- 30 forced LoRa-loss/reconnect cycles;
-- packet delivery observation at representative distances and obstructions;
+- LTE coverage, modem band, antenna placement, and signal verification at the intended site;
+- idle, registration, sleep, and transmit current measurements for the modem;
+- 30 forced Internet-loss/reconnect cycles;
+- event-upload observation under representative signal conditions;
 - packet duplication, ordering and timestamp checks;
 - local buffering during at least a 30-minute outage;
 - ordered upload after reconnection without losing the original sample time;
@@ -209,20 +209,20 @@ The LoRa buoy-to-barangay-hall path must pass:
 
 **Proposed pass:** no ESP32 or modem brownout; ≥99% of generated test records eventually received after planned outages; no duplicate record accepted by the database; reconnect succeeds in at least 29 of 30 automated cycles, with the remaining cycle recoverable by the documented watchdog procedure.
 
-### 12.1 SIM/4G/5G Bay Station Internet backhaul
+### 12.1 Direct 4G/LTE cloud path
 
-Install the selected SIM/4G/5G modem/router at the barangay-hall Bay Station. Record
-provider, signal/availability, data plan, antenna placement, registration time,
-backhaul latency, data usage, firewall/TLS controls, cloud endpoint, and remote-access
-permissions. Test cloud synchronization and remote access during ordinary service,
-weak signal, modem restart, and Internet outage. SIM/4G/5G is the Bay Station Internet
-backhaul, not the buoy telemetry path.
+Install the selected 4G/LTE modem, antenna, SIM, and protected regulator on the
+buoy test assembly. Record provider, signal/availability, data plan, antenna
+placement, registration time, upload latency, data usage, TLS controls, cloud
+endpoint, and remote-access permissions. Test cloud synchronization during
+ordinary service, weak signal, modem restart, and Internet outage. Wi-Fi remains
+the bench path.
 
-**Proposed pass:** LoRa delivers telemetry to the verified barangay-hall gateway;
-the Bay Station uploads and exposes authorized remote data over its SIM/4G/5G
-backhaul; the buoy buffers records if LoRa fails and the Bay Station queues cloud
-uploads if Internet fails. The test must report packet loss, latency, duplicate
-handling, gateway/modem restart recovery, and timestamp preservation.
+**Proposed pass:** summary packets arrive within the selected interval; immediate
+event packets arrive within the approved latency; the buoy buffers records when
+LTE fails and synchronizes them once; no duplicate record is accepted; and the
+test reports data usage, modem restart recovery, signal state, and timestamp
+preservation.
 
 ## 13. Integrated system scenarios
 
@@ -234,14 +234,14 @@ handling, gateway/modem restart recovery, and timestamp preservation.
 | SYS-04 | Pressure sensor disconnected | Wave estimate becomes unavailable/stale; other sensors remain operational |
 | SYS-05 | GPS fix lost | `GPS unavailable`; no false geofence movement alarm |
 | SYS-06 | Enclosure opened | Security event timestamped and delivered/buffered; other acquisition continues |
-| SYS-07 | LoRa outage | Samples buffered locally with original timestamps; Bay Station dashboard indicates delayed/offline data |
-| SYS-08 | LoRa recovery | Buffered records uploaded to the Bay Station once, in traceable order; live reporting resumes |
+| SYS-07 | Internet outage | Samples buffered locally with original timestamps; cloud dashboard indicates delayed/offline data |
+| SYS-08 | Internet recovery | Buffered records uploaded to the cloud once, in traceable order; live reporting resumes |
 | SYS-09 | Battery low / solar absent | Warning thresholds operate; no immediate corrupt shutdown; event recorded |
 | SYS-10 | Sensor returns invalid/spike | Invalid value rejected or flagged; graph does not imply a verified extreme wave |
 | SYS-11 | ESP32 restart | Reset reason recorded; sensors reinitialize; no duplicate identity/time corruption |
-| SYS-12 | Bay Station unavailable | Buoy continues safe acquisition/buffering; recovers when service returns |
-| SYS-13 | Bay Station Internet outage | Local ingestion/storage/dashboard continue; cloud upload and remote access queue or show unavailable |
-| SYS-14 | Bay Station Internet recovery | Queued cloud records synchronize once and authorized remote access resumes |
+| SYS-12 | Cloud unavailable | Buoy continues safe acquisition/buffering; recovers when service returns |
+| SYS-13 | LTE outage | Local sampling and event detection continue; cloud upload queues or shows unavailable |
+| SYS-14 | LTE recovery | Queued cloud records synchronize once and authorized remote access resumes |
 
 ## 14. AI wave-prediction validation
 
@@ -331,4 +331,3 @@ The required AI feature predicts future estimated wave height at the Bay Station
 - [TEST_PLAN.md](TEST_PLAN.md)
 - [CALIBRATION_GUIDE.md](CALIBRATION_GUIDE.md)
 - [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md)
-

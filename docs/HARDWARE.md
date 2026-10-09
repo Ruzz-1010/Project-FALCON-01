@@ -7,11 +7,11 @@ Status: adviser-approved design baseline; procurement and physical validation re
 ## Architecture
 
 ```text
-Sensors -> protected interfaces -> ESP32 -> LoRa primary -> barangay-hall gateway/Bay Station -> SIM/4G/5G Internet
+Sensors -> protected interfaces -> ESP32 local event processing -> Wi-Fi/LTE -> cloud API/dashboard
 Solar -> charge controller -> LiFePO4 battery -> protected DC rails
 ```
 
-No single-board computer, mini PC, or SIM/4G/5G Internet modem is installed on the buoy. The barangay-hall Bay Station is facility powered or uses a separately designed UPS and provides storage, pressure processing, required AI prediction, API, dashboard, cloud upload, and remote access. LoRa is the primary buoy-to-Bay-Station link and requires a powered gateway with a raised antenna and tested line of sight. USB/UART is retained only for bench commissioning; the exact LoRa and Bay Station Internet interfaces must be approved before release.
+No single-board computer, mini PC, or cloud server is installed on the buoy. The buoy uses an ESP32, approved sensors, local storage, and Wi-Fi for bench tests or an LTE modem for a remote field path. The cloud provides storage, pressure processing, optional prediction, API, dashboard, and remote access. USB/UART is retained only for bench commissioning; the exact LTE and cloud interfaces must be approved before release.
 
 ## Required Phase 1 groups
 
@@ -34,7 +34,7 @@ No single-board computer, mini PC, or SIM/4G/5G Internet modem is installed on t
 - Load cell and HX711 anchor-chain tension sensing are removed.
 - Passive single-anchor mooring uses adequate line scope for tides, waves, and ordinary buoy movement.
 - AI hardware acceleration is not required.
-- LoRa is the primary compact buoy telemetry link, not a general Internet connection; it requires a barangay-hall gateway and site-specific range testing. SIM/4G/5G is the Bay Station Internet backhaul for cloud upload and remote access.
+- Event-driven telemetry is the compact buoy reporting method. LTE is the field Internet link and requires site-specific coverage, data-usage, antenna, and peak-current testing. Wi-Fi is the laboratory path.
 
 The detailed selection evidence, interface allocation, calibration plan and manufacturer references are in [SENSOR_SELECTION_BASELINE.md](SENSOR_SELECTION_BASELINE.md). That document is the component-selection authority where this summary is abbreviated.
 

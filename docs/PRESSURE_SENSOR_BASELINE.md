@@ -1,12 +1,12 @@
-# Project FALCON Pressure-Sensor Baseline
+# Project FALCON Pressure Sensor Baseline and Alternatives
 
-Revision: 1.0  
-Date: 2026-09-10  
-Status: recommended deployment candidate; procurement, supplier confirmation, integration, and validation pending
+Revision: 2.0  
+Date: 2026-10-09  
+Status: recommended field candidate with lower-cost alternatives; procurement, supplier confirmation, integration, and validation pending
 
 ## Decision
 
-The recommended Phase 1 long-duration deployment candidate is a **Holykell HPT604 Type A submersible level transmitter** ordered with the following provisional configuration:
+The recommended Phase 1 long-duration deployment candidate remains a **low-range submersible pressure transmitter**. The preferred interface is a **Holykell HPT604 Type A** ordered with the following provisional configuration:
 
 - `0–2 mH2O` vented-gauge range;
 - `4–20 mA`, two-wire output;
@@ -16,6 +16,16 @@ The recommended Phase 1 long-duration deployment candidate is a **Holykell HPT60
 - protected 12 V buoy supply.
 
 This exact configuration is a procurement target, not installed or validated hardware. Before payment, the supplier must confirm in writing the complete order code, continuous saltwater suitability, wetted materials, seal material, cable jacket, cable length, range, overload, response time, supply range, and calibration certificate. The final range must also be checked against installation depth, expected dynamic pressure, tide, and overpressure margin.
+
+The cost-reduction alternatives are acceptable only after the same evidence review:
+
+| Alternative | Interface | Planning range | Decision rule |
+| --- | --- | ---: | --- |
+| Generic submersible transmitter | 4–20 mA | PHP 1,690–4,278 | Preferred low-cost field alternative if wetted materials and continuous saltwater use are documented. |
+| Analog submersible transmitter | 0–5 V or 0–10 V | PHP 1,500–4,500 | Use only with input protection, correct voltage scaling, and cable-noise testing. |
+| Industrial digital transmitter | RS485/Modbus | PHP 2,500–6,000 | Use when digital cable integrity and protocol integration justify the added cost. |
+| Blue Robotics Bar sensor | Digital | Higher-cost imported | Marine-oriented option when budget and availability permit. |
+| Bar02 | I2C | Low-cost hobby module | Bench or short supervised comparison only; not the default unattended field sensor. |
 
 The **Blue Robotics Bar02 R2 is reclassified as bench-only / short-duration comparison hardware**. The manufacturer requires its gel sensing element to dry for at least two hours per day and states that it must not remain submerged for more than 24 hours. It therefore cannot be the unattended long-term deployment baseline.
 
@@ -52,7 +62,7 @@ The gauge-reference vent tube must terminate in a dry, breathable location using
 
 The project budget target is **below PHP 10,000 for the sensor**, excluding shipping and import charges. Public marketplace prices are only screening evidence; obtain a dated supplier quotation for the exact configuration. Include the ADS1115, precision shunt, protection, connector/gland, and cable termination as a separate interface allowance. Do not substitute a high-range threaded automotive or pump transducer simply because it is cheaper: excessive range reduces shallow-wave resolution and usually does not solve underwater cable sealing.
 
-If the exact HPT604 configuration cannot be confirmed below the budget, request quotations for an equivalent continuous-submersion 4–20 mA vented-gauge transmitter and apply the same acceptance gates. A KELLER Series 26Y is a future higher-cost alternative, not the current budget baseline.
+If the exact HPT604 configuration cannot be confirmed below the budget, request quotations for an equivalent continuous-submersion 4–20 mA vented-gauge transmitter and apply the same acceptance gates. An analog or RS485 alternative may reduce interface complexity or procurement cost, but it does not remove the need for seawater, sealing, range, and calibration evidence. A KELLER Series 26Y is a future higher-cost alternative, not the current budget baseline.
 
 ## Validation gates
 

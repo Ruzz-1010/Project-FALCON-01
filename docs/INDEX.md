@@ -1,6 +1,6 @@
-# Project FALCON Documentation Index v6.1
+# Project FALCON Documentation Index v9.0
 
-Start with [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md), the current source of truth, then [CURRENT_PROJECT_DOCUMENTATION.md](CURRENT_PROJECT_DOCUMENTATION.md). For the new buoy body and component placement, use [PROTOTYPE_REDESIGN_BASELINE.md](PROTOTYPE_REDESIGN_BASELINE.md).
+Start with [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md), the current source of truth, then [REVISION_2026-10-09.md](REVISION_2026-10-09.md) and [CURRENT_PROJECT_DOCUMENTATION.md](CURRENT_PROJECT_DOCUMENTATION.md). For the new single-tube body and component placement, use [PROTOTYPE_REDESIGN_BASELINE.md](PROTOTYPE_REDESIGN_BASELINE.md).
 
 ## Current adviser-approved specifications
 
@@ -11,12 +11,12 @@ Start with [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md), the current source of truth
 - [ADVISER_REVISION_AUDIT.md](ADVISER_REVISION_AUDIT.md) explains current, legacy, and pending records.
 - [DOCUMENTATION_CLEANUP_AUDIT.md](DOCUMENTATION_CLEANUP_AUDIT.md) records the pre-redesign Markdown cleanup and document authority order.
 - [IMPLEMENTATION_REPORT_V6.md](IMPLEMENTATION_REPORT_V6.md) records delivered code, verification, commands, and remaining work.
-- [Adviser architecture diagram](diagrams/FALCON-01-adviser-architecture.svg) is the current high-level visual; update it with the approved LoRa-primary/Bay-Station-backhaul flow before fabrication release.
+- [Adviser architecture diagram](diagrams/FALCON-01-adviser-architecture.svg) is a historical visual until it is redrawn for the event-driven Wi-Fi/LTE cloud flow.
 
-The canonical thesis file is `THESIS DOCUMENTATION/BayStation.docx`; the V3 filename is a synchronized copy.
+The current equipment and alternatives file is `THESIS DOCUMENTATION/FALCON Revised Event Driven BOM and Sensor Options.docx`. `THESIS DOCUMENTATION/BayStation.docx` and the V3 filename remain earlier thesis records until regenerated against v9.0.
 
 ## Design records on hold
 
 All `fusion360/` component notes, `exports/MODEL_STATUS.md`, existing prototype renders, dashboard 3D models, video prompts, and prototype-specific mechanical dimensions are retained for traceability only. They are not the approved replacement design. Older Wokwi, PCB, motion, IMU, and wiring visuals likewise remain historical until explicitly revised against v6.1 and the selected physical parts.
 
-- [Proposed blueprint package](blueprints/README.md) documents the current Fusion V2 reference geometry and component layout. Every sheet is marked **REFERENCE / NOT FOR FABRICATION** until the redesign acceptance gates are completed.
+- [Proposed blueprint package](blueprints/README.md) documents reference geometry and component layout. Every sheet is marked **REFERENCE / NOT FOR FABRICATION** until the single-tube redesign acceptance gates are completed.

@@ -1,4 +1,4 @@
-# Project FALCON System Test Plan v7.1
+# Project FALCON System Test Plan v8.0
 
 > The detailed sensor procedures, proposed acceptance limits, recording sheets, integrated scenarios and deployment gates are authoritative in [SENSOR_VALIDATION_AND_CALIBRATION_PLAN.md](SENSOR_VALIDATION_AND_CALIBRATION_PLAN.md). The DS18B20 is bench-only; Celsius R2 is the recommended marine water-temperature candidate. Mandatory IMU testing remains removed.
 
@@ -26,8 +26,8 @@ Static checks -> build -> bench -> client matrix -> endurance -> future field te
 - per-sensor identity, disconnect, recovery, reference-comparison and calibration records;
 - pressure-to-wave controlled scenarios and independent reference comparison;
 - GPS scatter/geofence persistence and security false-alarm trials;
-- LoRa range/peak-power, outage, buffering, reconnect and endurance results;
-- Bay Station SIM/4G/5G backhaul coverage, cloud synchronization, remote-access, and Internet-outage results;
+- LTE coverage/peak-power, event-upload latency, outage, buffering, reconnect and endurance results;
+- cloud synchronization, remote-access, data-usage, and Internet-outage results;
 - required AI persistence baseline, chronological held-out evaluation and failure isolation;
 - ingress, thermal, power-autonomy, stability and supervised field evidence;
 - dashboard usability testing with representative older/non-technical operators.

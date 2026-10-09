@@ -1,8 +1,8 @@
-# FALCON-01 Phase 1 Procurement Baseline
+# FALCON-01 Phase 1 Procurement Baseline Revised
 
 > This is a planning BOM, not a fabrication release. Reconfirm quantities, dimensions, connector variants, cable lengths, brackets, enclosure parts, ballast, and solar mounting hardware after the replacement prototype is approved.
 
-Status: budgetary Bay Station baseline, revised 2026-08-30. Prices are shown in
+Status: budgetary event-driven cloud buoy baseline, revised 2026-10-09. Prices are shown in
 Philippine pesos using an indicative rate of **PHP 61.71 per USD**. They are raw
 list-price conversions before shipping, import fees, tax, and Philippine reseller
 markup. Confirm the live exchange rate, stock, revision, and ratings before ordering.
@@ -11,10 +11,11 @@ markup. Confirm the live exchange rate, stock, revision, and ratings before orde
 
 | Qty | Selected item | Budget | Procurement note |
 | ---: | --- | ---: | --- |
-| 1 | Espressif ESP32-DevKitC V4 with ESP32-WROOM-32E, 38-pin | PHP 620–1,235 | Exact carrier reference; do not substitute WROVER because GPIO16/17 are required |
-| 1 | Blue Robotics Bar02 R2 | PHP 4,940–5,555 | Select Bar02, JST-GH lead, bulkhead seal |
-| 1 | Adafruit ADS1115, PID 1085 | PHP 925 | Wind vane direction input; 3.3 V divider |
-| 1 | SparkFun Weather Meter SEN-15901 | PHP 4,935 | Prototype only; salt-exposure maintenance required |
+| 1 | ESP32 DevKit 30/38-pin | PHP 349–500 | Main controller; exact board and regulator remain subject to bench test |
+| 1 | Low-range submersible 4–20 mA pressure transmitter | PHP 1,690–4,278 | Preferred field option; written seawater/material confirmation required |
+| 1 | ADS1115 plus 150 ohm precision shunt | PHP 200–600 | Current-loop interface; include protection and calibration points |
+| 1 | MPU6050/GY-521 | PHP 533–923 | Movement/tilt event input; threshold tuning required |
+| 0–1 | Pulse-output cup anemometer | PHP 1,350–2,500 | Optional wind channel; calibrate before claiming accuracy |
 
 ## Supporting Telemetry and Control
 
@@ -22,14 +23,14 @@ These items support operation, power validation, and security. They are not addi
 
 | Qty | Selected item | Budget | Procurement note |
 | ---: | --- | ---: | --- |
-| 1 | Adafruit Ultimate GPS, PID 746 | PHP 1,850 | Supporting position/time/geofence telemetry; external antenna optional |
-| 2 | Adafruit INA260, PID 4226 | PHP 1,230 | Supporting battery/solar power telemetry; verify current range |
-| 0–1 | Adafruit MCP9808, PID 1782 | PHP 925 | Optional enclosure diagnostic only |
-| 0–1 | Adafruit magnetic contact switch, PID 375 | PHP 100–500 | Optional enclosure security input |
+| 0–1 | NEO-6M GPS module | PHP 208–598 | Supporting position/time/geofence telemetry; omit from bench-only build if not required |
+| 1 | INA219 power monitor | PHP 116–250 | Supporting battery/current telemetry; voltage divider is a lower-cost fallback |
+| 0–1 | DS18B20 waterproof probe | PHP 65–180 | Optional water-temperature context only |
+| 0–1 | Magnetic reed/contact switch | PHP 95–200 | Enclosure security input |
 | 0–1 | Buzzer and driver/protection | PHP 100–500 | Optional local alert output |
-| 1 | Bay Station SIM/4G/5G modem/router + antenna/SIM | TBD; separate shore budget | Bay Station Internet backhaul for cloud upload and remote access; freeze after site coverage, data-plan, interface, antenna and reconnect tests |
-| 1 | LoRa buoy radio module + barangay-hall LoRa gateway/receiver and antennas | TBD | Required target telemetry path; requires legal regional band selection, elevated shore placement, clear-path/range testing, and separate power/enclosure review |
-| 1 | Shore Bay Station mini PC | TBD; separate shore budget | Facility powered; exact model selected from measured database/dashboard/AI workload; never installed on buoy |
+| 1 | A7670E or SIM7600 4G/LTE board + antenna/SIM | PHP 1,100–4,500 | Required for remote cloud path; freeze after coverage, data-plan, interface, antenna and reconnect tests |
+| 0–1 | Wi-Fi access point | Existing or PHP 1,000–2,500 | Laboratory/near-shore path only |
+| 0–1 | microSD module + 8–32 GB card | PHP 250–700 | Local outage buffer; ESP32 flash is a lower-cost short-buffer fallback |
 | 0–1 | Enclosure fan/auxiliary cooling | TBD after thermal test | Include only if the buoy electronics enclosure demonstrates a measured need |
 
 The previous subtotal is obsolete because adviser-approved security parts remain TBD. Recalculate the procurement total only after exact models and current supplier quotations are verified. It excludes fans,
@@ -39,11 +40,10 @@ power, connectors, enclosure, shipping, and optional antenna.
 
 | Qty | Item | Budget | Release condition |
 | ---: | --- | ---: | --- |
-| 1 | 12.8 V 20 Ah LiFePO4 with BMS | PHP 4,940–9,875 | Supplier datasheet and charge limits recorded |
-| 1 | 40 W or 60 W panel candidate | PHP 3,395–7,405 | Final rating follows measured buoy-only load; verify Voc/Isc with MPPT |
+| 1 | 12.8 V 6–10 Ah LiFePO4 with BMS | PHP 2,000–6,000 | Starting candidate for event-driven prototype; size from measured LTE peaks and overnight deficit |
+| 1 | 10 W or 20 W panel candidate | PHP 1,000–3,000 | Final rating follows measured buoy-only load; verify Voc/Isc with charger |
 | 1 | LiFePO4 MPPT controller | PHP 3,085–8,025 | Genuine MPPT; programmable LiFePO4 profile |
-| 1 | LoRa buoy radio regulated branch | TBD | Size from selected radio transmit peaks and brownout test; shore gateway is budgeted separately |
-| 1 | Bay Station SIM/4G/5G backhaul branch | TBD | Separate shore power budget; size from selected modem/router registration and transmit peaks |
+| 1 | LTE modem regulated branch | TBD | Size from modem registration/transmit peaks and brownout test |
 | 1 | ESP32/sensor regulated branch | PHP 620–1,850 | Final voltage/current from complete measured carrier load |
 | lot | Fuses, disconnect, terminals, glands, marine wire | PHP 4,320–9,875 | Rated schedule and ingress review |
 
@@ -56,7 +56,7 @@ harness is pending physical connector inspection. Include matching housings, cor
 contacts, authorized crimp tooling, and spares; verify availability before
 locking the PCB footprints.
 
-The previous total is withdrawn because the LoRa buoy link, Bay Station Internet backhaul, security inputs, final power branches, and enclosure needs are unresolved. Recalculate the buoy and shore budgets separately after exact supplier quotations and measured power requirements exist.
+The previous total is withdrawn because the exact pressure option, LTE/Wi-Fi cloud path, security inputs, final power branches, and enclosure needs are unresolved. Recalculate the reduced buoy budget after exact supplier quotations and measured power requirements exist.
 
 ## Primary Sources
 

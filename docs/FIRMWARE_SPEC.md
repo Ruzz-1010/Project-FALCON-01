@@ -1,6 +1,6 @@
 # Firmware Specification
 
-> Bay Station revision v8.1 governs: pressure and wind inputs plus LoRa-primary telemetry to the barangay-hall Bay Station are required; SIM/4G/5G is Bay Station Internet backhaul only. BNO085/load-cell/onboard-computer logic is not required on the buoy. Required AI prediction runs at the shore Bay Station and cannot block ESP32 acquisition/security. Exact modules, buffering, authentication, cloud endpoint, and connector implementation remain pending approval.
+> Event-driven cloud revision v9.0 governs: pressure input and local ESP32 event detection are required; Wi-Fi is the bench path and 4G/LTE is the remote field path. BNO085/load-cell/onboard-computer/LoRa-gateway logic is not required in the low-cost minimum build. Any prediction runs outside the buoy and cannot block ESP32 acquisition or buffering. Exact modules, buffering, authentication, cloud endpoint, and connector implementation remain pending approval.
 
 ## Purpose
 Specify current observable ESP32 firmware behavior.
@@ -17,10 +17,10 @@ One `PortalServer` service owns `DNSServer`, `WebServer`, startup state, and mon
 ## Implementation
 Startup mounts LittleFS, verifies four assets, configures `192.168.4.1/24`, starts `FALCON-01` on channel 6 for up to four clients, starts wildcard DNS port 53, and HTTP port 80. The loop services DNS/HTTP and delays 2 ms.
 
-Required assets: `/index.html`, `/style.css`, `/app.js`, `/falcon-logo.jpg`. These provide buoy-node setup and diagnostics only; the full dashboard is hosted by the shore Bay Station service. HTML and API are uncached; static assets use a one-hour cache. Monitoring state is volatile. Restart responds, waits 700 ms, then calls `ESP.restart()`.
+Required assets: `/index.html`, `/style.css`, `/app.js`, `/falcon-logo.jpg`. These provide buoy-node setup and diagnostics; the full dashboard may be hosted by the cloud or development edge service. HTML and API are uncached; static assets use a one-hour cache. Monitoring state is volatile. Restart responds, waits 700 ms, then calls `ESP.restart()`.
 
 ## Future Expansion
-Physical sensors, LoRa driver/gateway protocol, packet identity, short-outage buffer, acknowledgement/retry, secure credential provisioning, Bay Station SIM/4G/5G cloud backhaul, structured errors, watchdog, and OTA require approved implementation.
+Physical sensors, event-driven packet identity, short-outage buffer, acknowledgement/retry, LTE modem control, secure credential provisioning, cloud transport, structured errors, watchdog, and OTA require approved implementation.
 
 ## Engineering Notes
 `LittleFS.begin(true)` may format after mount failure. Firmware and filesystem must be uploaded separately.

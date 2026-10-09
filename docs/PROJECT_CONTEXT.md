@@ -1,4 +1,4 @@
-# Project FALCON Master Context v8.1 — Wave and Wind Bay Station Baseline
+# Project FALCON Master Context v9.0 — Event Driven Cloud Buoy Baseline
 
 ## Document control
 
@@ -8,21 +8,21 @@
 | Project type | Solar-powered smart coastal observation buoy |
 | Status | Undergraduate Phase 1 prototype; hardware integration pending |
 | Authority | Master repository source of truth |
-| Bay Station | Shore-based mini PC; exact model TBD, development laptop substitute |
+| Bay Station | Cloud dashboard/API; local laptop may be used for development and offline review |
 | Controller | ESP32 |
 | Primary wave method | Pressure-based estimated wave height |
 | AI | Required Bay Station short-term wave-height prediction; validation pending |
-| Telemetry | LoRa primary from buoy to barangay-hall Bay Station; SIM/4G/5G Internet backhaul from Bay Station to cloud/remote users; exact modules, protocol, antenna, provider, and cloud TBD |
-| Adviser revision | 2026-08-29 |
+| Telemetry | Event-driven Wi-Fi/LTE upload from buoy to cloud; exact modem, protocol, provider, and endpoint TBD |
+| Adviser revision | 2026-10-09 |
 | Physical prototype | UNDER REDESIGN; geometry and placement TBD |
 
-This file supersedes older Orange Pi-on-buoy, USB-only deployment, BNO085, anchor-chain load-cell, and multi-environmental-sensor descriptions. The Bay Station AI predictor is required, but its trained model and accuracy remain unvalidated. Working code remains the authority for implemented behavior. Planned hardware must not be described as installed or field-validated.
+This file supersedes older Orange Pi-on-buoy, LoRa-primary, USB-only deployment, BNO085, anchor-chain load-cell, and multi-environmental-sensor descriptions. The cloud data path and event-driven reporting are the revised architecture. Working code remains the authority for implemented behavior. Planned hardware must not be described as installed or field-validated.
 
 The system-function baseline remains approved, but the physical and visual prototype is being replaced. `PROTOTYPE_REDESIGN_BASELINE.md` governs that work. Existing CAD, renderings, dashboard models, dimensions, enclosure layouts, solar arrangements, and component positions are reference material only until the replacement passes its acceptance checklist.
 
 ## Project definition
 
-Project FALCON is a low-cost, modular, solar-powered coastal observation buoy intended to measure two primary phenomena: pressure-derived wave conditions and wind. An ESP32 buoy node acquires and validates those measurements, adds required supporting telemetry such as timestamps, position, power state, and connection health, transmits compact packets over LoRa to a barangay-hall Bay Station, and buffers records when the LoRa path is unavailable. The Bay Station mini PC stores records, performs pressure-based wave processing and AI prediction, serves the local REST API/dashboard, and uses its SIM/4G/5G Internet connection for cloud upload and authenticated remote access. No mini PC or cellular Internet modem is installed on the buoy.
+Project FALCON is a low-cost, modular, solar-powered coastal observation buoy intended to measure pressure-derived wave conditions and, if retained in the approved scope, wind. An ESP32 buoy node acquires and validates measurements locally, calculates short-window summaries, and sends event-driven packets through Wi-Fi during laboratory tests or a 4G/LTE modem during a remote coastal trial. The buoy buffers records during outages and uploads them after reconnection. The cloud service stores records, serves the dashboard, and may run heavier processing. No mini PC or LoRa gateway is required for the revised minimum build.
 
 The core undergraduate contribution is the integration and evaluation of an accessible local coastal-monitoring prototype. The system estimates wave height from calibrated underwater-pressure variations. It does not claim direct laboratory-grade wave measurement, official forecasting, navigation control, or disaster-warning capability.
 
@@ -32,7 +32,7 @@ The core undergraduate contribution is the integration and evaluation of an acce
 2. Acquire timestamped pressure and wind measurements with supporting position, power, security, and health telemetry.
 3. Filter and calibrate underwater pressure to produce an explicitly labeled estimated wave height.
 4. Detect persistent GPS geofence, vibration/tamper, and enclosure-access events without treating normal wave motion as theft.
-5. Transmit telemetry to a shore Bay Station for SQLite storage, processing, alerts, and a simple four-page dashboard.
+5. Transmit event-driven telemetry to a cloud API for storage, processing, alerts, and a simple dashboard.
 6. Evaluate accuracy, reliability, latency, power use, usability, and false-alert behavior through documented tests.
 7. Develop and evaluate required short-term AI wave prediction against a documented non-AI baseline using chronological held-out data.
 
@@ -43,33 +43,26 @@ Many low-cost educational systems demonstrate individual marine sensors or gener
 ## Approved Phase 1 architecture
 
 ```text
-Pressure / wind sensors
+Pressure / optional wind sensors
                               |
                             ESP32
                               |
-              supporting GPS / power / security telemetry
+              local sampling, summaries, event detection
                               |
-                    LoRa primary buoy link
+                   Wi-Fi (lab) or 4G/LTE (field)
                               |
-                   barangay-hall Bay Station mini PC
-                 +------------+-------------+
-                 |            |             |
-                SQLite       REST API    Web dashboard + AI
-                  |            |             |
-               SIM/4G/5G Internet backhaul
-                     |
-                 cloud upload / remote access
-                                              |
-                                   laptop / tablet / phone
+                    cloud API / database / dashboard
+                              |
+                       laptop / tablet / phone
 ```
 
-The deployed buoy path sends compact telemetry over a verified LoRa link to a powered gateway at the barangay-hall Bay Station. The Bay Station's SIM/4G/5G connection is the Internet backhaul for cloud upload, remote dashboard access, software updates, and external notifications; it is not a buoy telemetry link. If the LoRa path is unavailable, the ESP32 continues acquisition and local security and buffers a defined amount of telemetry for later retransmission. The Bay Station performs ingestion, pressure processing, logging, API/dashboard hosting, alerts, and required AI inference. USB serial remains a bench-development transport only. LoRa range, regional band, gateway placement, Internet availability, cloud endpoint, and authentication require site-specific testing and approval.
+The buoy samples continuously but transmits one-minute summaries every 1–5 minutes during normal operation. It sends an immediate event packet for a significant pressure or movement change, displacement, tamper, low battery, sensor fault, or Internet recovery. If the Wi-Fi/LTE path is unavailable, the ESP32 buffers records locally and preserves original timestamps. The cloud performs ingestion, storage, pressure processing, dashboard presentation, alerts, and optional heavier prediction. Wi-Fi remains a bench transport; LTE coverage, modem power peaks, cloud endpoint, authentication, and data plan require site-specific testing and approval.
 
 ## Sensor baseline
 
 ### Primary project sensors
 
-- Blue Robotics Bar02 or compatible waterproof pressure sensor: raw pressure and pressure-based wave estimation.
+- Approved low-range submersible pressure transmitter: raw pressure and pressure-based wave estimation; 4–20 mA is the preferred field interface, with 0–5 V, 0–10 V, and RS485/Modbus as documented alternatives.
 - Wind-speed sensor: local wind-speed context.
 - Wind-direction sensor: local wind-direction context.
 
@@ -97,7 +90,7 @@ The deployed buoy path sends compact telemetry over a verified LoRa link to a po
 
 - BNO085 IMU: deprecated as a required Phase 1 sensor. Old code/visualization may remain only as a clearly labeled optional historical prototype and must not be required by the API, dashboard, BOM, objectives, or validation plan.
 - Load cell/HX711/anchor-chain tension measurement: removed. FALCON uses passive mooring. Mooring line scope must allow tides, waves, and ordinary movement.
-- On-buoy AI or mini PC: excluded. Required short-term AI prediction runs only at the shore Bay Station.
+- On-buoy AI or mini PC: excluded. Optional prediction runs in the cloud or development computer and must never block acquisition.
 
 ## Pressure-based estimated wave height
 
@@ -169,7 +162,7 @@ Legacy endpoints `/status`, `/wave`, `/gps`, `/battery`, `/solar`, `/ai`, `/logs
 Implemented in the repository:
 
 - ESP32 PlatformIO firmware shell, captive setup/diagnostic portal, and telemetry framing prototype;
-- Python Bay Station service prototype with simulator, bench serial ingestion, SQLite logging, deterministic alerts, REST API, prediction baseline, and static dashboard hosting;
+- Python edge/cloud service prototype with simulator, bench serial ingestion, SQLite logging, deterministic alerts, REST API, prediction baseline, and static dashboard hosting;
 - grouped adviser-approved telemetry endpoint;
 - pressure-data fields and simulated pressure-based wave estimate;
 - GPS geofence and tamper/enclosure simulation states;
@@ -185,7 +178,7 @@ Not yet physically validated:
 - tamper component selection and debounce thresholds;
 - confirmation that excluded environmental channels are absent from the Phase 1 release;
 - full waterproofing, corrosion protection, power autonomy, and coastal endurance;
-- selected LoRa buoy radio, barangay-hall gateway, Bay Station SIM/4G/5G backhaul, and shore Bay Station installation;
+- selected field pressure/wind parts, 4G/LTE modem and antenna, cloud endpoint/data plan, and coastal installation;
 - field-trained or field-validated AI.
 
 ## Validation plan
@@ -195,7 +188,7 @@ Not yet physically validated:
 3. Compare wind speed and direction with suitable reference instruments across the intended operating range.
 4. Survey the GPS deployment reference and test inside/outside geofence persistence.
 5. Test vibration and enclosure inputs under ordinary wave-like motion and deliberate tampering; record false positives/negatives.
-6. Measure LoRa packet loss, latency, range, gateway recovery, buffered retransmission, Bay Station SIM/4G/5G backhaul coverage and reconnect, cloud synchronization, duplicate prevention, stale-data behavior, storage retention, and restart recovery.
+6. Measure Wi-Fi/LTE registration, event upload latency, data usage, reconnect, cloud synchronization, duplicate prevention, stale-data behavior, storage retention, and restart recovery.
 7. Validate battery/solar readings against a calibrated meter and complete an energy budget.
 8. Test dashboard readability and responsiveness on desktop, tablet, and phone.
 9. Validate and improve the required AI wave-prediction feature using traceable calibrated data, while keeping monitoring independent of prediction availability.
@@ -211,9 +204,9 @@ FALCON does not provide tsunami, typhoon, storm, or weather prediction; autonomo
 3. Freeze component placement, pinout, wiring, and PCB only after electrical and physical-fit review.
 4. Implement physical pressure acquisition and a documented calibration routine.
 5. Implement security persistence/debounce on real hardware.
-6. Select and integrate the LoRa buoy radio and barangay-hall gateway, select the Bay Station SIM/4G/5G backhaul, then verify authentication, buffering, cloud synchronization, automatic startup, and recovery.
+6. Select and integrate Wi-Fi for bench work or a 4G/LTE modem for the field buoy, then verify authentication, event-driven reporting, buffering, cloud synchronization, automatic startup, and recovery.
 7. Collect controlled reference data before performance or accuracy claims.
 
 ## Change control
 
-Any document that conflicts with this v8.1 Bay Station context is outdated unless explicitly labeled historical. New sensor, AI, cloud, cellular, LoRa, or mechanical scope requires adviser approval and corresponding updates to requirements, BOM, firmware, API, tests, dashboard, thesis, and risk documentation.
+Any document that conflicts with this v9.0 event-driven cloud context is outdated unless explicitly labeled historical. New sensor, AI, cloud, cellular, LoRa, or mechanical scope requires adviser approval and corresponding updates to requirements, BOM, firmware, API, tests, dashboard, thesis, and risk documentation.

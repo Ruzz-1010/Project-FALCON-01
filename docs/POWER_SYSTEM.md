@@ -1,18 +1,18 @@
-# FALCON Buoy Power System — Bay Station Baseline v2.0
+# FALCON Buoy Power System — Event Driven Cloud Baseline v3.0
 
-The buoy and shore Bay Station are separate power domains. No mini PC is installed on the buoy.
+The buoy and cloud/development computer are separate power domains. No mini PC or LoRa gateway is installed on the buoy.
 
 ## Buoy power path
 
 ```text
 Solar panel -> LiFePO4-compatible MPPT -> 12.8 V LiFePO4 battery
              -> fused disconnect/distribution -> protected regulated rails
-             -> ESP32 + sensors + LoRa radio + security electronics
+             -> ESP32 + sensors + LTE modem/Wi-Fi + security electronics
 ```
 
-The provisional starting point is a 12.8 V 20 Ah LiFePO4 battery (256 Wh nominal), an 80% usable-energy planning limit (204.8 Wh), and either a 40 W or 60 W solar candidate. These are design assumptions—not validated endurance claims.
+The reduced-prototype starting point is a 12.8 V 6–10 Ah LiFePO4 battery (76.8–128 Wh nominal), an 80% usable-energy planning limit, and a 10–20 W solar candidate. These are design assumptions—not validated endurance claims.
 
-| Complete measured average buoy load | Daily energy | Approximate no-solar runtime from 204.8 Wh |
+| Complete measured average buoy load | Daily energy | Approximate no-solar runtime from 80 Wh usable |
 | ---: | ---: | ---: |
 | 2 W | 48 Wh/day | 102.4 h |
 | 4 W | 96 Wh/day | 51.2 h |
@@ -22,34 +22,31 @@ Preliminary solar harvest uses `panel rating × 4 peak-sun-hours × 70% net effi
 
 | Candidate | Planning harvest | Status |
 | --- | ---: | --- |
-| 40 W | 112 Wh/day | Accept only if measured load and modem peaks retain margin |
-| 60 W | 168 Wh/day | Preferred prototype starting candidate pending measurements |
+| 10 W | 28 Wh/day | Accept only if measured load and modem peaks retain margin |
+| 20 W | 56 Wh/day | Preferred low-cost prototype candidate pending measurements |
 
-At the 4 W design-planning load, the 40 W candidate leaves only 16 Wh/day of
-nominal recovery energy, while the 60 W candidate leaves 72 Wh/day. With a 25%
-planning margin, the calculated minimum panel is 42.9 W. Therefore, use **60 W
-as the provisional prototype baseline**, subject to panel Voc/Isc, MPPT,
-mounting, and measured-load verification.
+At the 1.5 W event-driven planning load, the 10 W candidate leaves limited
+recovery margin while the 20 W candidate provides a larger nominal margin.
+Panel Voc/Isc, charger compatibility, mounting, and measured-load verification
+remain release gates.
 
-The 20 Ah battery provides only about 51.2 hours at 4 W. If the project adopts
-a 72-hour no-solar requirement at that load, the calculation requires 28.1 Ah;
-select at least a nominal 30 Ah LiFePO4 battery after verifying its BMS and
-charge limits. Keep 20 Ah only as an early-test option or for a shorter verified
-autonomy requirement.
+The 6–10 Ah battery is intended for supervised short-duration and overnight
+testing. It must not be described as multi-day autonomous operation until the
+event-driven LTE load, night-time deficit, and charging performance are measured.
 
 Detailed nominal, margin, poor-weather, and 72-hour calculations are recorded
 in [POWER_CALCULATIONS.md](POWER_CALCULATIONS.md).
 
 ## Required measurements before release
 
-- 24-hour current log covering sampling, idle, security, network registration, reconnect, and LTE transmit peaks.
+- 24-hour current log covering sampling, idle, security, modem registration, reconnect, and LTE transmit peaks.
 - Converter efficiency, ripple, temperature, voltage drop, and brownout behavior.
 - Battery BMS/charge limits and MPPT compatibility with panel Voc/Isc.
 - Fuse, wire, connector, disconnect, reverse-polarity, and transient-protection ratings.
-- Minimum 72-hour supervised solar-endurance trial.
+- Supervised solar/recovery trial with logged signal, current, charging, and temperature data.
 
-## Bay Station power
+## Cloud/development power
 
-The shore mini PC and SIM/4G/5G Internet backhaul use facility power or a separately engineered UPS. Measure startup, idle, storage, dashboard, AI, and backhaul loads separately. Never include Bay Station energy in the buoy battery/solar calculation.
+The development computer and cloud service use separate infrastructure power. Measure local-host startup, idle, storage, dashboard, and processing loads separately. Never include these loads in the buoy battery/solar calculation.
 
-Final panel, MPPT, battery, converter, fuse, and wire selections remain `TBD` until the LoRa radio and all installed buoy loads are frozen and bench measured. The Bay Station SIM/4G/5G backhaul is a separate shore power domain.
+Final panel, charger, battery, converter, fuse, and wire selections remain `TBD` until the LTE modem and all installed buoy loads are frozen and bench measured.

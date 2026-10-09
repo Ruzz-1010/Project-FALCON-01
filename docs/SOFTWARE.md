@@ -1,14 +1,13 @@
 # Software Architecture v6.1
 
 ```text
-Sensors -> ESP32 acquisition/validation -> LoRa primary
--> barangay-hall gateway/Bay Station -> pressure processing -> SQLite + AI
--> local REST API/dashboard -> SIM/4G/5G Internet -> cloud/remote access
+Sensors -> ESP32 acquisition/validation/event detection -> Wi-Fi/LTE
+-> cloud service -> pressure processing -> storage + dashboard + optional AI
 ```
 
-The ESP32 performs deterministic acquisition, engineering-unit/range checks, security debounce, watchdog handling, versioned telemetry framing, LoRa transport, and short-outage buffering. It sends compact telemetry to the verified barangay-hall gateway and continues sensing/local security while the LoRa path is unavailable. USB serial remains a bench transport until the deployed LoRa link is selected and implemented.
+The ESP32 performs deterministic acquisition, engineering-unit/range checks, event detection, security debounce, watchdog handling, versioned telemetry framing, and short-outage buffering. It sends summaries and immediate event packets through Wi-Fi or LTE and continues sensing/local security while the Internet path is unavailable. USB serial remains a bench transport.
 
-The shore Bay Station performs authenticated LoRa ingestion, stale-data detection, pressure filtering/wave estimation, event aggregation, SQLite storage, API/dashboard hosting, alerts, required isolated AI prediction, and cloud/remote synchronization over its SIM/4G/5G Internet backhaul. The final mini PC, LoRa module/gateway, SIM/provider, cloud endpoint, transport protocol, authentication, and deployment network remain selection gates.
+The cloud/edge service performs authenticated ingestion, stale-data detection, pressure filtering/wave estimation, event logging, storage, API/dashboard hosting, alerts, and optional isolated prediction. The final LTE module, SIM/provider, cloud endpoint, transport protocol, authentication, and deployment network remain selection gates.
 
 Primary software sections follow the grouped schema: `system`, `wave`, `environment`, `gps`, `power`, `security`, `health`, `assistant`, and `alerts`. Missing values stay null. Every value carries or inherits timestamp, source, state, and units.
 

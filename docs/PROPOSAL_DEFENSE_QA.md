@@ -8,7 +8,7 @@ These answers are for proposal defense, adviser consultation, and funding presen
 
 ### 1. What is Project FALCON?
 
-Project FALCON is a proposed affordable, solar-powered coastal observation buoy for localized monitoring of pressure-derived wave conditions and wind. The buoy is planned to send telemetry through LoRa to a barangay-hall Bay Station. The Bay Station will store and process the data, host the dashboard, and use SIM/4G/5G Internet as its proposed backhaul for cloud upload and authorized remote access.
+Project FALCON is a proposed affordable, solar-powered coastal observation buoy for localized monitoring of pressure-derived wave conditions and optional wind. The buoy will sample locally, then send event-driven summaries and alerts through Wi-Fi during testing or 4G/LTE during a remote trial. A cloud service will store the data, host the dashboard, and provide authorized access.
 
 ### 2. What problem does it address?
 
@@ -46,7 +46,7 @@ The Phase 1 scope is intentionally focused. A submerged pressure time series pro
 
 ### 8. What does the wind sensor contribute?
 
-Wind speed and direction provide environmental context alongside the pressure-derived wave estimate. They are primary Phase 1 measurements, but they still require comparison with suitable reference instruments before accuracy claims.
+Wind speed and direction provide environmental context alongside the pressure-derived wave estimate. They are optional/supporting channels in the reduced build and still require comparison with suitable reference instruments before accuracy claims.
 
 ### 9. What sensors are excluded?
 
@@ -54,39 +54,37 @@ Water temperature, salinity, conductivity, BNO085 IMU measurement, and load-cell
 
 ## Architecture and communications
 
-### 10. Why is the Bay Station located at the barangay hall?
+### 10. Why is processing outside the buoy?
 
-The shore-based Bay Station keeps higher-compute processing, storage, dashboard hosting, and AI away from the buoy. This reduces buoy power, heat, waterproofing, and maintenance demands. The exact mini PC and barangay-hall installation remain subject to approval and testing.
+The cloud or development edge service keeps storage, dashboard hosting, and heavier analysis away from the buoy. This reduces buoy power, heat, waterproofing, and maintenance demands. The exact cloud provider or shore computer remains subject to approval and testing.
 
 ### 11. What is the proposed communication path?
 
 The proposed path is:
 
 ```text
-Sensors -> ESP32 -> LoRa -> Barangay-hall Bay Station
-                             -> SQLite/API/dashboard/AI
-                             -> SIM/4G/5G Internet -> cloud/remote access
+Sensors -> ESP32 -> Wi-Fi/LTE -> Cloud API/database/dashboard
 ```
 
-LoRa is the planned buoy-to-Bay-Station telemetry link. SIM/4G/5G is planned at the Bay Station as Internet backhaul. They are two different communication hops.
+Wi-Fi is the planned laboratory link and 4G/LTE is the planned remote field link. The ESP32 needs an external LTE modem because ordinary ESP32 boards do not have built-in cellular connectivity.
 
-### 12. Is LoRa already implemented?
+### 12. Is the cloud link already implemented?
 
-Not yet. The current firmware and edge service support diagnostic and bench telemetry, including USB serial framing. The exact LoRa module, gateway, frequency, packet protocol, authentication, buffering, and range remain selection and implementation gates.
+Not yet. The current firmware and edge service support diagnostic and bench telemetry, including USB serial framing. The exact LTE module, cloud endpoint, protocol, authentication, buffering, and site coverage remain selection and implementation gates.
 
 ### 13. Why not put the SIM/4G/5G modem on the buoy?
 
-The current proposal keeps the cellular Internet modem at the shore Bay Station. This separates buoy telemetry from Internet backhaul and avoids adding modem power peaks, antenna constraints, SIM management, and cellular hardware to the buoy before the design is validated.
+The revised proposal places the LTE modem on the buoy for a direct cloud path. This removes the LoRa gateway requirement, but it adds modem power peaks, antenna constraints, SIM management, and coverage testing.
 
 ### 14. What happens during an outage?
 
-During a LoRa outage, the ESP32 should continue acquisition and local security while buffering records for later retransmission. During a Bay Station Internet outage, local ingestion, storage, dashboard, alerts, and AI should continue; cloud upload and authorized remote access should resume after connectivity returns. These behaviors are proposed acceptance requirements, not yet field evidence.
+During an Internet outage, the ESP32 should continue acquisition and local security while buffering records for later retransmission. Cloud upload and authorized dashboard access should resume after connectivity returns. These behaviors are proposed acceptance requirements, not yet field evidence.
 
 ## Software and AI
 
 ### 15. What has already been developed?
 
-The repository contains an ESP32 firmware shell and diagnostic portal, versioned telemetry framing, a Python Bay Station prototype, simulator, SQLite storage, REST API, deterministic alerts, pressure-based simulated wave processing, prediction baseline, and a four-page dashboard. These demonstrate software workflow, not physical accuracy or deployment readiness.
+The repository contains an ESP32 firmware shell and diagnostic portal, versioned telemetry framing, a Python edge/cloud prototype, simulator, SQLite storage, REST API, deterministic alerts, pressure-based simulated wave processing, prediction baseline, and a four-page dashboard. These demonstrate software workflow, not physical accuracy or deployment readiness.
 
 ### 16. Is the AI already accurate?
 
@@ -116,17 +114,17 @@ FALCON is not an official weather, tsunami, typhoon, storm, navigation, or emerg
 
 ### 22. What must funding enable?
 
-Funding should enable exact component procurement, buoy fabrication, LoRa and gateway integration, Bay Station installation, SIM/4G/5G backhaul setup, pressure and wind calibration, power and waterproofing tests, controlled data collection, AI evaluation, and supervised coastal validation.
+Funding should enable exact component procurement, single-tube buoy fabrication, LTE/cloud integration, pressure and optional wind calibration, power and waterproofing tests, controlled data collection, optional prediction evaluation, and supervised coastal validation.
 
 ## Difficult questions
 
 ### 23. What is innovative about the project?
 
-The proposal does not claim to invent the pressure sensor, LoRa, buoy, or AI algorithm. Its intended contribution is the transparent integration and local evaluation of pressure-based wave estimation, wind monitoring, solar power, shore-based processing, security telemetry, and a clearly labeled dashboard for a defined local use case.
+The proposal does not claim to invent the pressure sensor, buoy, cloud service, or AI algorithm. Its intended contribution is the transparent integration and local evaluation of pressure-based wave estimation, event-driven telemetry, solar power, security telemetry, and a clearly labeled dashboard for a defined local use case.
 
 ### 24. What are the main risks?
 
-The main risks are pressure-to-wave calibration uncertainty, wind-sensor durability, LoRa range and packet loss, Bay Station Internet availability, power autonomy, water ingress, false security alerts, incomplete local data, and insufficient data for AI evaluation. Each risk requires a test, acceptance condition, or explicit limitation.
+The main risks are pressure-to-wave calibration uncertainty, wind-sensor durability, LTE coverage and data cost, cloud availability, power autonomy, water ingress, false security alerts, incomplete local data, and insufficient data for prediction evaluation. Each risk requires a test, acceptance condition, or explicit limitation.
 
 ### 25. What is the most honest conclusion today?
 
@@ -137,8 +135,8 @@ The team has a coherent architecture and software demonstration, but not yet a p
 Use:
 
 - proposed architecture
-- planned LoRa link
-- proposed Bay Station backhaul
+- planned Wi-Fi/LTE cloud link
+- proposed event-driven upload and buffering
 - simulator-generated data
 - pressure-derived estimated wave height
 - calibration required
@@ -151,7 +149,7 @@ Avoid:
 - deployed system
 - production-ready buoy
 - accurate AI forecast
-- guaranteed LoRa range
+- guaranteed LTE coverage or cloud availability
 - live ocean data, when using the simulator
 - certified warning system
 - final mechanical design

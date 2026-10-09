@@ -7,7 +7,7 @@ Define implemented boundaries and future integration points.
 ESP32 firmware, local dashboard, planned sensors, edge AI, and remote systems.
 
 ## Current Status
-The ESP32 acquisition/diagnostic foundation and laptop-hosted Bay Station prototype are implemented. LoRa buoy transport, the Bay Station SIM/4G/5G Internet backhaul, final shore mini PC, and physical sensor integrations remain pending.
+The ESP32 acquisition/diagnostic foundation and laptop-hosted edge/cloud prototype are implemented. Event-driven Wi-Fi/LTE transport, cloud endpoint, and physical sensor integrations remain pending.
 
 ## Architecture
 ```mermaid
@@ -17,7 +17,7 @@ flowchart LR
   ESP32 --> API[Local API]
   ESP32 --> FS[LittleFS setup portal]
   Sensors --> ESP32
-  ESP32 -->|USB/UART bench transport| Edge[Edge service]
+  ESP32 -->|USB/UART bench transport| Edge[Edge/cloud service]
   User -->|Full dashboard| Edge
   Edge --> DB[SQLite]
   Edge -. future sync .-> Cloud
@@ -29,7 +29,7 @@ flowchart LR
 Missing assets return 503; AP/DNS initialization failure stops service; dashboard polling failure shows connection loss.
 
 ## Future Expansion
-Complete physical sensor drivers, LoRa radio/gateway and Bay Station SIM/4G/5G backhaul selection, authenticated cloud/remote deployment, buffering/retransmission, and field validation while keeping ESP32 diagnostics available independently. The UART/Wi-Fi edge path shown above is development-only and is not the deployed buoy communications path.
+Complete physical sensor drivers, event-driven Wi-Fi/LTE cloud transport, authenticated endpoint selection, buffering/retransmission, and field validation while keeping ESP32 diagnostics available independently. Wi-Fi remains the bench path; LTE is the remote field path unless reliable shore Wi-Fi is demonstrated.
 
 The post-approval architecture may add an authenticated on-demand camera,
 calibrated environmental sensors, remote communications, and a conditional

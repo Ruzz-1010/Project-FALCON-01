@@ -1,4 +1,4 @@
-# Provisional Buoy Power Calculations — Bay Station Baseline
+# Provisional Buoy Power Calculations — Event Driven Cloud Baseline
 
 Authority: [POWER_SYSTEM.md](POWER_SYSTEM.md). Values below are planning envelopes only.
 
@@ -7,107 +7,66 @@ Authority: [POWER_SYSTEM.md](POWER_SYSTEM.md). Values below are planning envelop
 | Load | Voltage | Idle | Active | Peak | Duty cycle | Daily Wh | Evidence |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
 | ESP32 controller | TBD | TBD | TBD | TBD | TBD | TBD | 24-hour bench log |
-| Bar02 + approved sensors | TBD | TBD | TBD | TBD | TBD | TBD | Datasheets + bench log |
-| LoRa buoy radio | TBD | TBD | TBD | TBD | TBD | TBD | Gateway registration/reconnect/transmit test |
-| Security electronics | TBD | TBD | TBD | TBD | TBD | TBD | Armed/alarm test |
+| Approved pressure, wind, and movement sensors | TBD | TBD | TBD | TBD | TBD | TBD | Datasheets + bench log |
+| 4G/LTE modem or Wi-Fi radio | TBD | TBD | TBD | TBD | TBD | TBD | Registration/reconnect/event-upload test |
+| Security and local storage | TBD | TBD | TBD | TBD | TBD | TBD | Armed/alarm and buffer test |
 | Conversion losses | — | — | — | — | — | TBD | Measured converter efficiency |
 
 Do not total or finalize the design until exact parts and measured duty cycles exist.
 
-## System-level planning scenarios
+## Event-driven planning scenarios
 
-Because the LoRa radio, Bay Station Internet backhaul, and several auxiliary parts are not yet frozen, the
-following are **whole-buoy planning scenarios**, not component consumption
-claims. They let the team size a safe prototype before the 24-hour bench log is
-available.
+Because the LTE modem, cloud path, and auxiliary parts are not yet frozen, the following are whole-buoy planning scenarios, not component consumption claims. Event-driven reporting lowers average radio duty, but registration and upload create short current peaks.
 
 | Scenario | Average buoy load | Daily demand | Intended use |
 | --- | ---: | ---: | --- |
-| Low | 2 W | 48 Wh/day | Optimistic duty-cycled operation |
-| Design | 4 W | 96 Wh/day | Recommended planning baseline |
-| Stress | 6 W | 144 Wh/day | Continuous/reconnect-heavy upper test case |
+| Low | 0.5 W | 12 Wh/day | Deep sleep and infrequent summaries |
+| Design | 1.5 W | 36 Wh/day | Initial event-driven planning baseline |
+| Stress | 3 W | 72 Wh/day | Frequent reconnects or event uploads |
 
 Formula: `daily demand (Wh/day) = average load (W) × 24 h`.
 
 ## Battery planning
 
-- Nominal provisional battery: `12.8 V × 20 Ah = 256 Wh`.
-- Provisional usable energy at 80%: `256 Wh × 0.80 = 204.8 Wh`.
+- Nominal reduced-prototype candidates: `12.8 V × 6 Ah = 76.8 Wh` and `12.8 V × 10 Ah = 128 Wh`.
+- Provisional usable energy at 80%: `nominal Wh × 0.80`.
 - No-solar runtime: `usable Wh ÷ measured average W`.
+- The regulator must survive the LTE modem's transmit and registration peaks even when average energy use is low.
 
-### Battery results
+| Average load | 6 Ah no-solar runtime | 10 Ah no-solar runtime |
+| ---: | ---: | ---: |
+| 0.5 W | 123 h | 205 h |
+| 1.5 W | 41 h | 68 h |
+| 3 W | 20 h | 34 h |
 
-| Average load | 20 Ah no-solar runtime | 20 Ah autonomy | Nominal capacity required for 72 h at 80% usable |
-| ---: | ---: | ---: | ---: |
-| 2 W | 102.4 h | 4.27 days | 14.1 Ah; select at least 15 Ah |
-| 4 W | 51.2 h | 2.13 days | 28.1 Ah; select at least 30 Ah |
-| 6 W | 34.1 h | 1.42 days | 42.2 Ah; select at least 45 Ah |
-
-Formula: `required Ah = average W × autonomy h ÷ (12.8 V × 0.80)`.
-Therefore, the provisional 20 Ah battery does **not** meet a 72-hour no-solar
-target at the 4 W design load. It is acceptable only as an early prototype
-battery or if the verified autonomy requirement is shorter.
+These are calculations, not field results. A 6 Ah battery is suitable for short supervised tests. A 10 Ah battery is the safer initial candidate for overnight operation. Multi-day no-solar autonomy requires a new measured load budget and is outside the first low-cost baseline.
 
 ## Solar planning
 
 - Preliminary harvest: `panel W × 4 peak-sun-hours × 0.70`.
-- 40 W candidate: `112 Wh/day`.
-- 60 W candidate: `168 Wh/day`.
-- Required margin must cover poor weather, temperature, fouling, orientation, conversion losses, charge limits, and LoRa radio peaks. Bay Station SIM/4G/5G energy is a separate shore budget.
+- 10 W candidate: `28 Wh/day`.
+- 20 W candidate: `56 Wh/day`.
+- Margin must cover poor weather, shading, fouling, orientation, conversion losses, charge limits, and LTE modem peaks.
 
-### Nominal four-peak-sun-hour energy balance
-
-| Average load | Daily demand | 40 W panel balance | 60 W panel balance |
+| Average load | Daily demand | 10 W panel balance | 20 W panel balance |
 | ---: | ---: | ---: | ---: |
-| 2 W | 48 Wh | +64 Wh/day | +120 Wh/day |
-| 4 W | 96 Wh | +16 Wh/day | +72 Wh/day |
-| 6 W | 144 Wh | −32 Wh/day | +24 Wh/day |
+| 0.5 W | 12 Wh | +16 Wh/day | +44 Wh/day |
+| 1.5 W | 36 Wh | −8 Wh/day | +20 Wh/day |
+| 3 W | 72 Wh | −44 Wh/day | −16 Wh/day |
 
-Positive balance means theoretical energy remains for battery recovery after
-serving that day's load. It is not a guaranteed field yield.
-
-For a 25% energy margin, the minimum calculated panel rating is:
-
-| Average load | Break-even panel | Panel with 25% margin |
-| ---: | ---: | ---: |
-| 2 W | 17.1 W | 21.4 W |
-| 4 W | 34.3 W | 42.9 W |
-| 6 W | 51.4 W | 64.3 W |
-
-Formula: `panel W = daily demand ÷ (4 h × 0.70)`; multiply by `1.25` for the
-planning margin. This supports a **60 W minimum prototype recommendation only
-if measured average load remains at or below 4 W**. A 6 W average load requires
-a larger panel to retain the same margin.
-
-### Poor-weather sensitivity
-
-For a deliberately conservative day of `2 peak-sun-hours × 60% net yield`:
-
-| Panel | Harvest | Break-even average load |
-| ---: | ---: | ---: |
-| 40 W | 48 Wh/day | 2 W |
-| 60 W | 72 Wh/day | 3 W |
-
-The battery must supply the daily deficit whenever the measured buoy load is
-above those values. Multi-day weather autonomy must be checked using the actual
-deployment site's solar resource, shading, tilt, salt fouling, and seasonal data.
+Positive balance means theoretical energy remains for battery recovery. It is not a guaranteed field yield.
 
 ## Recommended provisional baseline
 
-- Use the 4 W design scenario until a complete 24-hour log replaces it.
-- Use a 60 W nominal solar candidate for the supervised prototype.
-- Use 20 Ah only for early testing; use at least 30 Ah if the requirement is
-  72 hours without solar at a verified 4 W average load.
-- Select MPPT, panel, battery, converters, wiring, connectors, and fuses only
-  after exact voltage/current limits and LoRa peak behavior are documented. Select the Bay Station SIM/4G/5G backhaul from a separate shore power budget.
-- Do not call this an endurance validation until the 72-hour supervised solar
-  test passes.
+- Use the measured event-driven load as the design scenario after the first 24-hour log.
+- Start with a 12.8 V 6–10 Ah LiFePO₄ battery candidate.
+- Start with a 10–20 W panel candidate for the supervised low-cost prototype.
+- Select the regulator, battery, panel, wiring, connectors, and fuses after the exact LTE peak current and modem sleep/transmit duty cycle are documented.
+- Do not call this endurance validation until a supervised test passes with logged current, charging, temperature, signal state, and recovery data.
 
 ## Measurement worksheet method
 
-For each branch, log timestamp, input voltage, current, operating state, and
-temperature at one-second resolution during registration/reconnect tests and at
-one-minute resolution for the complete 24-hour run. Calculate:
+For each branch, log timestamp, input voltage, current, operating state, network state, and temperature at one-second resolution during modem registration/reconnect tests and at one-minute resolution for the complete 24-hour run. Calculate:
 
 - `instantaneous W = V × A`;
 - `interval Wh = W × interval seconds ÷ 3600`;
@@ -115,16 +74,16 @@ one-minute resolution for the complete 24-hour run. Calculate:
 - `average W = daily Wh ÷ 24`;
 - peak current as the maximum captured value, not the daily average.
 
-The final power budget must use measured converter-input energy so conversion
-losses are included rather than counted twice.
+The final power budget must use measured converter-input energy so conversion losses are included rather than counted twice.
 
-## Bay Station exclusion
+## Cloud infrastructure exclusion
 
-The mini PC is shore based and facility powered or separately backed by a UPS. Its energy use is measured separately and never included in buoy autonomy.
+Cloud hosting and any development computer are separate shore/infrastructure costs. They are not included in buoy autonomy calculations.
 
 ## Acceptance gates
 
-1. No brownout during repeated LoRa radio registration and transmit peaks.
+1. No brownout during repeated LTE modem registration and event-upload peaks.
 2. Every branch fuse and conductor is sized from measured peak/fault requirements.
-3. Battery/MPPT/panel compatibility is documented from exact datasheets.
-4. 24-hour load logging and at least 72-hour supervised solar endurance pass.
+3. Battery, regulator, panel, and modem compatibility is documented from exact datasheets.
+4. A 24-hour load log and a supervised solar/recovery test pass.
+

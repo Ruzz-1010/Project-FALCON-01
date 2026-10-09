@@ -7,7 +7,7 @@ Specify current local networking and constrain future links.
 AP, DNS, HTTP, captive routes, dashboard polling, and future edge/remote protocols.
 
 ## Current Status
-Local Wi-Fi/DNS/HTTP are implemented; the deployed LoRa buoy link, Bay Station SIM/4G/5G backhaul, cloud endpoint, and remote links are not yet implemented.
+Local Wi-Fi/DNS/HTTP are implemented; event-driven LTE cloud upload, endpoint authentication, and remote links are not yet implemented.
 
 ## Architecture
 Client -> FALCON-01 AP -> wildcard DNS `192.168.4.1` -> HTTP dashboard/API.
@@ -42,13 +42,16 @@ python3 -m falcon_edge.service --source serial --serial-port /dev/ttyUSB0
 Install `pyserial` in the edge environment first. HTTP ESP32 input remains an
 alternate development transport.
 
+## Event Driven Cloud Telemetry
+
+The ESP32 samples sensors locally, calculates one-minute summaries, and uploads a summary every 1–5 minutes. It uploads an immediate event for significant pressure or movement changes, displacement, tamper, low battery, sensor failure, or connection recovery. Records are buffered locally while offline. HTTPS or MQTT over TLS remains a selection gate.
+
 ## Future Expansion
 Add checksum/framing beyond newline JSON if field error testing demonstrates the
-need, plus authenticated LoRa transport, explicit gateway/recovery status, Bay
-Station SIM/4G/5G backhaul, and time synchronization. LoRa is the primary buoy
-link; SIM/4G/5G is used at the Bay Station for Internet backhaul and remote access.
-If the LoRa gateway is unreachable, the buoy continues local acquisition and
-buffers telemetry for later retransmission.
+need, plus authenticated HTTPS or MQTT over TLS, explicit modem/recovery status,
+cloud synchronization, and time synchronization. Wi-Fi is the bench path and
+4G/LTE is the remote field path. If the cloud link is unavailable, the buoy
+continues local acquisition and buffers telemetry for later retransmission.
 
 An optional camera requires a separate authenticated streaming path and must not
 delay or congest safety-relevant telemetry. See
