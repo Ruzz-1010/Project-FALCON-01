@@ -1,7 +1,7 @@
 // FALCON Lite Option B — twin-float catamaran preview (procedural, no CAD edit).
 // Two pontoon hulls + deck platform + electronics cabinet with the panel as
 // its roof. Pressure sensor hangs protected between the hulls; mooring on a
-// bow bridle eye. No LoRa gateway in this reduced baseline.
+// bow bridle eye, with GPS and Wi-Fi/LTE placement shown. No LoRa gateway in this reduced baseline.
 // PROPOSED ONLY: illustrative geometry for cost/design review. Not final,
 // not fabrication-ready, not field-validated. V2 GLB used by world.js is untouched.
 import * as THREE from 'three';
@@ -48,6 +48,8 @@ const M = {
   vane: new THREE.MeshStandardMaterial({color:'#20282c', roughness:.55, metalness:.3, side:THREE.DoubleSide}),
   brass: new THREE.MeshStandardMaterial({color:'#d8a94e', roughness:.35, metalness:.7}),
   chain: new THREE.MeshStandardMaterial({color:'#3a3f42', roughness:.6, metalness:.6}),
+  gpsBlue: new THREE.MeshStandardMaterial({color:'#244d75', roughness:.35, metalness:.25}),
+  battery: new THREE.MeshStandardMaterial({color:'#1f3d2b', roughness:.55, metalness:.15}),
 };
 function mesh(geo, mat, x=0, y=0, z=0, name=''){
   const m = new THREE.Mesh(geo, mat);
@@ -92,7 +94,7 @@ for(const sz of [-0.485, 0.485]){
   buoy.add(mesh(new THREE.BoxGeometry(1.10, 0.045, 0.03), M.hull, 0, 0.33, sz, 'TOE_RAIL_END'));
 }
 
-// --- Electronics cabinet amidships (GPS/LoRa/ESP32 live inside it).
+// --- Electronics cabinet amidships (ESP32, power board, battery monitor and buffer live inside it).
 const CAB_H = 0.24, CAB_Y = 0.31, CAB_TOP = CAB_Y + CAB_H/2;
 const cabinet = mesh(new THREE.BoxGeometry(0.44, CAB_H, 0.36), M.cabinet, 0, CAB_Y, 0, 'INSTRUMENT_CABINET');
 buoy.add(cabinet);
@@ -123,6 +125,16 @@ for(const sz of [-0.25, 0.19]){
   roofFrame.add(mesh(new THREE.BoxGeometry(0.66, 0.03, 0.025), M.frame, 0, 0, sz, 'PANEL_END_RAIL'));
 }
 buoy.add(roofFrame);
+
+// Required GPS/security puck and internal power/buffer hints.
+const gps = mesh(new THREE.CylinderGeometry(0.045, 0.050, 0.030, 18), M.gpsBlue, -0.22, CAB_TOP + 0.18, 0.14, 'REQUIRED_GPS_POSITION_SECURITY_PUCK');
+buoy.add(gps);
+const gpsRing = mesh(new THREE.TorusGeometry(0.052, 0.005, 8, 18), M.brass, -0.22, CAB_TOP + 0.198, 0.14, 'GPS_LABEL_RING');
+gpsRing.rotation.x = Math.PI/2;
+buoy.add(gpsRing);
+buoy.add(mesh(new THREE.BoxGeometry(0.20, 0.055, 0.13), M.battery, -0.11, CAB_Y - 0.02, -0.04, 'INTERNAL_BATTERY_SOLAR_POWER_BAY'));
+buoy.add(mesh(new THREE.BoxGeometry(0.070, 0.014, 0.050), M.dark, 0.14, CAB_Y - 0.02, -0.05, 'MICROSD_OR_FLASH_BUFFER'));
+
 // --- Red topmark light on a finial stub at the panel front edge.
 const beaconStub = mesh(new THREE.CylinderGeometry(0.014, 0.014, 0.09, 10), M.frame, 0, CAB_TOP + 0.06, 0.20, 'BEACON_STUB');
 buoy.add(beaconStub);
@@ -175,7 +187,7 @@ nose.rotation.x = Math.PI/2;
 vane.add(nose);
 // Whip on the deck rear corner, far from the rotor (clean mast, clean airflow).
 buoy.add(mesh(new THREE.BoxGeometry(0.06, 0.03, 0.06), M.frame, 0.48, 0.325, -0.42, 'WHIP_FOOT'));
-const whip = mesh(new THREE.CylinderGeometry(0.006, 0.009, 0.35, 8), M.dark, 0.48, 0.515, -0.42, 'WHIP_ANTENNA');
+const whip = mesh(new THREE.CylinderGeometry(0.006, 0.009, 0.35, 8), M.dark, 0.48, 0.515, -0.42, 'WIFI_LTE_WHIP_ANTENNA');
 buoy.add(whip);
 const whipTip = mesh(new THREE.SphereGeometry(0.012, 10, 8), M.brass, 0.48, 0.69, -0.42, 'WHIP_TIP');
 buoy.add(whipTip);
