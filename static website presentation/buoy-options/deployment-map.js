@@ -95,6 +95,7 @@ const $ = id => document.getElementById(id);
 let current = 0;
 function select(id){
   current = BUOYS.findIndex(b => b.id === id);
+  currentId = id;
   render();
 }
 function render(){
@@ -116,8 +117,8 @@ function render(){
     const on = id === b.id, bb = BUOYS.find(x => x.id === id);
     m.core.setAttribute('fill', stateColor(bb.hs));
     m.pulse.setAttribute('stroke', stateColor(bb.hs));
-    const [st2] = stateOf(bb.hs);
-    m.seas.style.display = st2 === 'ROUGH' ? '' : 'none';
+    // Wave animation plays on the clicked (selected) buoy only.
+    m.seas.style.display = id === currentId ? '' : 'none';
     m.g.style.filter = on ? 'drop-shadow(0 0 6px #fff)' : '';
   }
   // Header stats.
@@ -129,9 +130,9 @@ function render(){
   const lbat = BUOYS.reduce((a,x) => x.batt < a.batt ? x : a);
   $('st-batt').textContent = `${lbat.batt.toFixed(0)}% @ ${lbat.id.replace('FALCON-','F-')}`;
 }
-// One rAF loop: wave rings grow+fade smoothly, buoys bob and sway like they
-// actually float. Transform is applied to a wrapper group so the marker keeps
-// its map position (x/y) and only gains vertical + rotational motion.
+// One rAF loop: wave rings grow+fade smoothly around the SELECTED buoy
+// only. Markers stay pinned on the map — no dancing buoys.
+let currentId = BUOYS[0].id;
 let t0 = performance.now();
 function tick(now){
   const t = (now - t0) / 1000;
@@ -141,18 +142,6 @@ function tick(now){
     const opacity = Math.sin(Math.PI * u) * 0.85; // fade in then out
     node.setAttribute('r', (base * scale).toFixed(2));
     node.setAttribute('opacity', Math.max(0, opacity).toFixed(3));
-  }
-  for(const b of BUOYS){
-    const m = markers.get(b.id);
-    const rough = b.hs >= 1.6;
-    // Heavier motion in rough seas, gentle swell in calm.
-    const amp = (rough ? 1.5 : 0.7) * 0.9;
-    const dx = Math.sin(t * (rough ? 1.5 : 1.0) + b.phase) * amp;
-    const dy = Math.cos(t * (rough ? 1.7 : 1.1) + b.phase) * amp * 0.7;
-    const rot = Math.sin(t * (rough ? 1.4 : 0.9) + b.phase) * (rough ? 4 : 1.6);
-    m.wrap.setAttribute('transform',
-      `translate(${(dx).toFixed(2)},${(dy).toFixed(2)}) rotate(${rot.toFixed(2)})`);
-    m.wrap.setAttribute('opacity', rough ? '1' : '0.85');
   }
   requestAnimationFrame(tick);
 }
