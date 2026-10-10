@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="FALCON planned 8-buoy Palawan deployment preview. Stylized map, simulated readings. Proposed only, not validated.">
+  <title>FALCON — 8-Buoy Palawan Deployment Preview (Simulated)</title>
+  <style>
+    :root{color-scheme:dark;--bg:#08141b;--panel:#0e212c;--line:#1e3a47;--txt:#d7e7ee;--dim:#8fb0bd;--gold:#d8a94e;--ok:#8fd694;--warn:#e8c35a;--bad:#e87a7a}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font:14px/1.5 system-ui,sans-serif}
+    header{padding:14px 18px;border-bottom:1px solid var(--line);display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
+    header h1{font-size:17px;margin:0}header p{margin:0;color:var(--dim);font-size:12.5px}
+    nav.opts{display:flex;gap:8px;padding:10px 18px 0;flex-wrap:wrap}
+    nav.opts a{border:1px solid var(--line);border-radius:8px;padding:6px 12px;font-size:12.5px;color:var(--dim);text-decoration:none}
+    nav.opts a.here{color:var(--gold);border-color:var(--gold)}
+    .warn{margin:12px 18px 0;padding:8px 12px;border:1px solid var(--gold);border-radius:8px;color:var(--gold);font-size:12.5px}
+    .stats{display:flex;gap:10px;padding:12px 18px 0;flex-wrap:wrap}
+    .stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 14px;min-width:150px}
+    .stat b{display:block;font-size:18px}.stat small{color:var(--dim)}
+    main{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:12px;padding:12px 18px 24px}
+    #mapwrap{position:relative;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:radial-gradient(120% 100% at 50% 0%,#0d2f3d 0%,#08141b 65%)}
+    #mapwrap svg{display:block;width:100%;height:auto}
+    aside{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;align-self:start}
+    aside h2{font-size:16px;margin:0 0 2px}aside .coords{color:var(--dim);font-size:12.5px}
+    .pill{display:inline-block;border-radius:20px;padding:2px 10px;font-size:11.5px;font-weight:700;letter-spacing:.4px;margin:6px 4px 6px 0;border:1px solid}
+    .pill.sim{color:#9fd8e8;border-color:#2c5a6b;background:#0e2a34}
+    .pill.calm{color:var(--ok);border-color:#315b3a}.pill.mod{color:var(--warn);border-color:#5b4a31}.pill.rough{color:var(--bad);border-color:#5b3131}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+    .card{border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+    .card small{color:var(--dim);display:block;font-size:11px}.card b{font-size:16px}
+    .bar{height:6px;border-radius:4px;background:#1a2f38;margin-top:6px;overflow:hidden}
+    .bar i{display:block;height:100%;background:var(--ok)}
+    .navbtns{display:flex;gap:8px;margin-top:12px}
+    .navbtns button{flex:1;background:#0e212ccc;border:1px solid var(--line);color:var(--txt);border-radius:8px;padding:8px;font-size:13px;cursor:pointer}
+    .buoy{cursor:pointer}
+    .buoy circle.core{stroke:#08141b;stroke-width:2}
+    .buoy text{fill:var(--txt);font-size:11px;font-weight:700}
+    .buoy .pulse{fill:none;stroke-width:2;opacity:.7;transform-box:fill-box;transform-origin:center;animation:ping 2.4s ease-out infinite}
+    @keyframes ping{0%{transform:scale(.4);opacity:.8}80%{transform:scale(1.6);opacity:0}100%{opacity:0}}
+    footer{padding:0 18px 24px;color:var(--dim);font-size:12px}
+    @media(max-width:900px){main{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<header>
+  <h1>8-Buoy Palawan Deployment Preview</h1>
+  <p>Click a buoy marker for its data · drag-free schematic · all readings SIMULATED</p>
+</header>
+<nav class="opts"><a href="./lite-buoy.html">REVISED MAIN · COMPACT CAN</a><a href="./lite-buoy-spar.html">OPTION B · CATAMARAN</a><a class="here" href="./deployment-map.html">DEPLOYMENT MAP (this page)</a></nav>
+<p class="warn"><strong>PLANNED PILOT — NOT DEPLOYED.</strong> Positions and every reading on this page are <strong>SIMULATED</strong> to show what the public deployment map will look like once 8 buoys are in the water. Not final, not field-validated.</p>
+<div class="stats">
+  <div class="stat"><b id="st-count">8 / 8</b><small>buoys reporting (simulated)</small></div>
+  <div class="stat"><b id="st-wind">–</b><small>strongest wind right now</small></div>
+  <div class="stat"><b id="st-sea">–</b><small>highest waves right now</small></div>
+  <div class="stat"><b id="st-batt">–</b><small>lowest battery</small></div>
+</div>
+<main>
+  <div id="mapwrap"><svg id="palawan" viewBox="0 0 560 700" role="img" aria-label="Stylized Palawan map with 8 simulated buoy markers"></svg></div>
+  <aside>
+    <h2 id="b-name">–</h2>
+    <div class="coords" id="b-coords">–</div>
+    <div><span class="pill sim">SIMULATED</span><span class="pill calm" id="b-state">–</span></div>
+    <p id="b-words" style="margin:6px 0 0;color:var(--dim)">–</p>
+    <div class="grid">
+      <div class="card"><small>WIND (10-min mean)</small><b id="b-wind">–</b><div style="font-size:12px;color:var(--dim)" id="b-winddir">–</div></div>
+      <div class="card"><small>WAVE HEIGHT (est.)</small><b id="b-hs">–</b><div style="font-size:12px;color:var(--dim)" id="b-period">–</div></div>
+      <div class="card"><small>BATTERY</small><b id="b-batt">–</b><div class="bar"><i id="b-battbar"></i></div></div>
+      <div class="card"><small>LINK / LAST REPORT</small><b id="b-link">–</b><div style="font-size:12px;color:var(--dim)" id="b-seen">–</div></div>
+    </div>
+    <div class="navbtns"><button id="prev">← Prev buoy</button><button id="next">Next buoy →</button></div>
+    <p style="font-size:12px;color:var(--dim)">Buoys heartbeat every 5–15 min and transmit immediately on wave, drift, or battery events — that is why a small power system is enough.</p>
+  </aside>
+</main>
+<footer>Stylized schematic — not for navigation. Island shapes approximate; buoy positions illustrative. Real deployment needs permits, calibration, and a supervised trial before any public number is shown.</footer>
+<script type="module" src="./deployment-map.js"></script>
+</body>
+</html>
