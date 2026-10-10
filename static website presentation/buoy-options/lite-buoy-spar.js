@@ -44,7 +44,7 @@ const M = {
   solar: new THREE.MeshStandardMaterial({color:'#12283f', roughness:.35, metalness:.55}),
   solarGrid: new THREE.MeshStandardMaterial({color:'#3f6d8f', roughness:.4, metalness:.4}),
   beacon: new THREE.MeshStandardMaterial({color:'#c01616', roughness:.4, metalness:.1, emissive:'#4a0000'}),
-  cup: new THREE.MeshStandardMaterial({color:'#101415', roughness:.5, metalness:.35, side:THREE.DoubleSide}),
+  cup: new THREE.MeshStandardMaterial({color:'#262e34', roughness:.55, metalness:.15, side:THREE.DoubleSide}),
   vane: new THREE.MeshStandardMaterial({color:'#20282c', roughness:.55, metalness:.3, side:THREE.DoubleSide}),
   brass: new THREE.MeshStandardMaterial({color:'#d8a94e', roughness:.35, metalness:.7}),
   chain: new THREE.MeshStandardMaterial({color:'#3a3f42', roughness:.6, metalness:.6}),
@@ -141,35 +141,41 @@ rotor.name = 'WIND_SPEED_DIRECTION_SENSOR';
 buoy.add(rotor);
 const hub = mesh(new THREE.SphereGeometry(0.055, 16, 12), M.dark, 0, 0, 0, 'WIND_HUB');
 rotor.add(hub);
-// 3 open cups: Ø130mm, Ø600mm spacing circle, mouths facing tangentially.
+rotor.add(mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.03, 10), M.brass, 0, 0.06, 0, 'HUB_NUT'));
+// 3 open cups: Ø130mm on a Ø600mm circle. Each cup rides on a pivot rotated
+// about Y so every mouth faces the same tangential direction (convex side
+// forward, like a real drag anemometer) — never hand-angled per cup.
 const cupR = 0.065, armR = 0.30;
 for(let i=0;i<3;i++){
-  const a = (i/3)*Math.PI*2;
-  const arm = mesh(new THREE.CylinderGeometry(0.014, 0.014, armR, 8), M.frame, Math.cos(a)*armR/2, 0, Math.sin(a)*armR/2, 'WIND_ARM');
-  arm.rotation.z = Math.PI/2; arm.rotation.y = -a;
-  rotor.add(arm);
-  const cup = mesh(new THREE.SphereGeometry(cupR, 18, 12, 0, Math.PI*2, 0, Math.PI*0.62), M.cup, Math.cos(a)*armR, 0, Math.sin(a)*armR, 'WIND_CUP');
-  cup.rotation.y = -a + Math.PI/2;
-  cup.rotation.x = Math.PI/2;
-  rotor.add(cup);
+  const pivot = new THREE.Group();
+  pivot.rotation.y = (i/3)*Math.PI*2;
+  rotor.add(pivot);
+  const arm = mesh(new THREE.CylinderGeometry(0.014, 0.014, armR, 8), M.frame, armR/2, 0, 0, 'WIND_ARM');
+  arm.rotation.z = Math.PI/2;
+  pivot.add(arm);
+  const cup = mesh(new THREE.SphereGeometry(cupR, 18, 12, 0, Math.PI*2, 0, Math.PI*0.62), M.cup, armR, 0, 0, 'WIND_CUP');
+  cup.rotation.x = Math.PI/2; // mouth faces local -Z = backward of travel
+  pivot.add(cup);
 }
 // Wind vane on its own turret, 150mm below the rotor.
 const vane = new THREE.Group();
 vane.position.set(WMAST_X, ROTOR_Y - 0.15, WMAST_Z);
 vane.name = 'WIND_VANE';
 buoy.add(vane);
-const vaneMast = mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.12, 8), M.frame, 0, 0, 0, 'VANE_TURRET');
-vane.add(vaneMast);
-const tail = mesh(new THREE.BoxGeometry(0.016, 0.15, 0.11), M.vane, 0, 0.02, -0.12, 'VANE_TAIL');
+const vaneCollar = mesh(new THREE.TorusGeometry(0.024, 0.010, 8, 16), M.frame, 0, 0, 0, 'VANE_COLLAR');
+vaneCollar.rotation.x = Math.PI/2;
+vane.add(vaneCollar);
+const tail = mesh(new THREE.BoxGeometry(0.012, 0.13, 0.10), M.vane, 0, 0.02, -0.11, 'VANE_TAIL');
 vane.add(tail);
-const nose = mesh(new THREE.ConeGeometry(0.025, 0.09, 12), M.brass, 0, 0.02, 0.14, 'VANE_NOSE');
+vane.add(mesh(new THREE.BoxGeometry(0.014, 0.05, 0.02), M.vane, 0, -0.03, -0.05, 'VANE_FIN_ROOT'));
+const nose = mesh(new THREE.ConeGeometry(0.020, 0.07, 12), M.brass, 0, 0.02, 0.12, 'VANE_NOSE');
 nose.rotation.x = Math.PI/2;
 vane.add(nose);
-// Whip on the wind mast, kept below the rotor plane.
-buoy.add(mesh(new THREE.BoxGeometry(0.10, 0.03, 0.03), M.frame, -0.05, ROTOR_Y - 0.42, WMAST_Z, 'WHIP_BRACKET'));
-const whip = mesh(new THREE.CylinderGeometry(0.006, 0.009, 0.30, 8), M.dark, -0.09, ROTOR_Y - 0.27, WMAST_Z, 'WHIP_ANTENNA');
+// Whip on the deck rear corner, far from the rotor (clean mast, clean airflow).
+buoy.add(mesh(new THREE.BoxGeometry(0.06, 0.03, 0.06), M.frame, 0.48, 0.325, -0.42, 'WHIP_FOOT'));
+const whip = mesh(new THREE.CylinderGeometry(0.006, 0.009, 0.35, 8), M.dark, 0.48, 0.515, -0.42, 'WHIP_ANTENNA');
 buoy.add(whip);
-const whipTip = mesh(new THREE.SphereGeometry(0.012, 10, 8), M.brass, -0.09, ROTOR_Y - 0.12, WMAST_Z, 'WHIP_TIP');
+const whipTip = mesh(new THREE.SphereGeometry(0.012, 10, 8), M.brass, 0.48, 0.69, -0.42, 'WHIP_TIP');
 buoy.add(whipTip);
 
 // --- Pressure sensor hung between the hulls (protected + easy service).
