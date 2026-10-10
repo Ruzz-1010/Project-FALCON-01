@@ -12,7 +12,7 @@ const BUOYS = [
   {id:'FALCON-02', name:'El Nido · Bacuit Bay', lon:119.45, lat:11.30, depth:22},
   {id:'FALCON-03', name:'Coron Bay', lon:120.25, lat:12.00, depth:25},
   {id:'FALCON-04', name:'Balabac Strait', lon:116.95, lat:7.85, depth:30},
-  {id:'FALCON-05', name:'San Vicente · Long Beach', lon:119.45, lat:10.60, depth:15},
+  {id:'FALCON-05', name:'San Vicente · Long Beach', lon:119.62, lat:10.60, depth:15},
   {id:'FALCON-06', name:'Ulugan Bay', lon:118.52, lat:10.05, depth:20},
   {id:'FALCON-07', name:'Linapacan Strait', lon:119.95, lat:11.55, depth:28},
   {id:'FALCON-08', name:'Puerto Princesa Bay', lon:118.88, lat:9.66, depth:12},
@@ -26,11 +26,17 @@ function mulberry(seed){
   let a = seed >>> 0;
   return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
 }
+const HN = 24; // history points per buoy (~2h at 5-min heartbeat)
 for(const b of BUOYS){
   const r = mulberry(seedOf(b.id));
   b.windDir = r()*360; b.wind = 8 + r()*22; b.gust = 0;
   b.hs = 0.3 + r()*1.8; b.period = 4 + r()*5; b.batt = 62 + r()*36;
   b.rssi = -95 + r()*40; b.seen = Math.floor(r()*50) + 5; b.phase = r()*6.28;
+  // Backfill a plausible simulated history ending at current values.
+  b.hsHist = []; b.windHist = [];
+  let hw = b.hs, ww = b.wind;
+  for(let i=0;i<HN;i++){ hw = Math.max(.15, Math.min(3.2, hw + (r()-.5)*.3)); ww = Math.max(3, Math.min(55, ww + (r()-.5)*4)); b.hsHist.unshift(hw); b.windHist.unshift(ww); }
+  b.hsHist[HN-1] = b.hs; b.windHist[HN-1] = b.wind;
 }
 const stateOf = hs => hs < 0.6 ? ['CALM','calm'] : hs < 1.6 ? ['MODERATE','mod'] : ['ROUGH','rough'];
 const stateColor = hs => hs < 0.6 ? '#8fd694' : hs < 1.6 ? '#e8c35a' : '#e87a7a';
@@ -92,6 +98,32 @@ for(const b of BUOYS){
 }
 
 const $ = id => document.getElementById(id);
+// Dashboard-style history chart: normalized polyline + last-point dot.
+function drawChart(svgId, data, color, unit){
+  const svgEl = $(svgId);
+  while(svgEl.firstChild) svgEl.removeChild(svgEl.firstChild);
+  const lo = Math.min(...data), hi = Math.max(...data), span = (hi - lo) || 1;
+  const px = i => (i / (data.length - 1) * 196 + 2).toFixed(1);
+  const py = v => (52 - (v - lo) / span * 46).toFixed(1);
+  const NS = 'http://www.w3.org/2000/svg';
+  const pl = document.createElementNS(NS, 'polyline');
+  pl.setAttribute('points', data.map((v,i) => `${px(i)},${py(v)}`).join(' '));
+  pl.setAttribute('fill', 'none'); pl.setAttribute('stroke', color);
+  pl.setAttribute('stroke-width', '2'); pl.setAttribute('stroke-linejoin', 'round');
+  svgEl.appendChild(pl);
+  const last = data[data.length-1];
+  const dot = document.createElementNS(NS, 'circle');
+  dot.setAttribute('cx', px(data.length-1)); dot.setAttribute('cy', py(last));
+  dot.setAttribute('r', '3'); dot.setAttribute('fill', color);
+  svgEl.appendChild(dot);
+  const tx = document.createElementNS(NS, 'text');
+  tx.setAttribute('x', '4'); tx.setAttribute('y', '12');
+  tx.setAttribute('fill', '#8fb0bd'); tx.setAttribute('font-size', '10');
+  tx.setAttribute('stroke', '#0e212c'); tx.setAttribute('stroke-width', '4');
+  tx.setAttribute('paint-order', 'stroke');
+  tx.textContent = `${lo.toFixed(1)}–${hi.toFixed(1)} ${unit}`;
+  svgEl.appendChild(tx);
+}
 let current = 0;
 function select(id){
   current = BUOYS.findIndex(b => b.id === id);
@@ -113,6 +145,8 @@ function render(){
   $('b-battbar').style.background = b.batt < 30 ? '#e87a7a' : '#8fd694';
   $('b-link').textContent = `${'▂▄▆'.slice(0, b.rssi > -80 ? 3 : b.rssi > -95 ? 2 : 1)} ${b.rssi.toFixed(0)} dBm`;
   $('b-seen').textContent = `reported ${b.seen}s ago · heartbeat 5–15 min`;
+  drawChart('b-hschart', b.hsHist, stateColor(b.hs), 'm');
+  drawChart('b-windchart', b.windHist, '#9fd8e8', 'km/h');
   for(const [id, m] of markers){
     const on = id === b.id, bb = BUOYS.find(x => x.id === id);
     m.core.setAttribute('fill', stateColor(bb.hs));
@@ -161,6 +195,8 @@ setInterval(() => {
     b.batt = Math.max(5, Math.min(100, b.batt + (Math.random() > .6 ? .2 : -.15)));
     b.rssi = Math.max(-110, Math.min(-50, b.rssi + (Math.random()-.5)*3));
     b.seen = 3 + Math.floor(Math.random()*40);
+    b.hsHist.push(b.hs); b.hsHist.shift();
+    b.windHist.push(b.wind); b.windHist.shift();
   }
   render();
 }, 4000);
