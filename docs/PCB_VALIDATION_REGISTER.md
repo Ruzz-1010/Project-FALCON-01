@@ -1,6 +1,11 @@
 # FALCON-01 Carrier PCB Validation Register — Historical Revision
 
-> Not manufacturing-ready under the Bay Station baseline. This historical carrier predates the prototype redesign and approved LoRa-primary/Bay-Station-backhaul architecture. Revise only after exact pressure, wind, security, GPS, health, LoRa radio, Bay Station Internet, connectors, and mechanical interfaces are approved.
+
+<!-- FALCON-DOST-REVISION-NOTE:START -->
+> **Current revision note (2026-10-10):** Use the DOST major revision baseline in [`docs/REVISION_2026-10-10.md`](REVISION_2026-10-10.md) unless this file is explicitly archived. The active design is a compact single-tube / small-buoy, ESP32-based, event-driven, cloud-first system. LoRa, large Bay Station hardware, tall tower layouts, and continuous every-second uploads are legacy or optional fallback assumptions.
+<!-- FALCON-DOST-REVISION-NOTE:END -->
+
+> Not manufacturing-ready under the 2026-10-10 DOST baseline. This historical carrier predates the compact event-driven cloud architecture. Revise only after exact pressure, wind, security, GPS, health, Wi-Fi/LTE path, optional LoRa fallback, connectors, and mechanical interfaces are approved.
 
 ## Status
 

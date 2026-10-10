@@ -1,8 +1,13 @@
 # FALCON-01 Phase 1 Procurement Baseline Revised
 
+
+<!-- FALCON-DOST-REVISION-NOTE:START -->
+> **Current revision note (2026-10-10):** Use the DOST major revision baseline in [`docs/REVISION_2026-10-10.md`](REVISION_2026-10-10.md) unless this file is explicitly archived. The active design is a compact single-tube / small-buoy, ESP32-based, event-driven, cloud-first system. LoRa, large Bay Station hardware, tall tower layouts, and continuous every-second uploads are legacy or optional fallback assumptions.
+<!-- FALCON-DOST-REVISION-NOTE:END -->
+
 > This is a planning BOM, not a fabrication release. Reconfirm quantities, dimensions, connector variants, cable lengths, brackets, enclosure parts, ballast, and solar mounting hardware after the replacement prototype is approved.
 
-Status: budgetary event-driven cloud buoy baseline, revised 2026-10-09. Prices are shown in
+Status: budgetary event-driven cloud buoy baseline, revised 2026-10-10. Prices are shown in
 Philippine pesos using an indicative rate of **PHP 61.71 per USD**. They are raw
 list-price conversions before shipping, import fees, tax, and Philippine reseller
 markup. Confirm the live exchange rate, stock, revision, and ratings before ordering.

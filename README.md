@@ -1,6 +1,11 @@
 # Project FALCON-01
 
-## Active design revision 2026-10-09
+
+<!-- FALCON-DOST-REVISION-NOTE:START -->
+> **Current revision note (2026-10-10):** Use the DOST major revision baseline in [`docs/REVISION_2026-10-10.md`](docs/REVISION_2026-10-10.md) unless this file is explicitly archived. The active design is a compact single-tube / small-buoy, ESP32-based, event-driven, cloud-first system. LoRa, large Bay Station hardware, tall tower layouts, and continuous every-second uploads are legacy or optional fallback assumptions.
+<!-- FALCON-DOST-REVISION-NOTE:END -->
+
+## Active design revision 2026-10-10
 
 The current direction is a smaller compact can-buoy with ESP32 local sampling, event-driven summaries and alerts, direct cloud connectivity through Wi-Fi for laboratory work or 4G/LTE for a remote trial, and a reduced battery selected from measured load. LoRa-primary and large Bay Station assumptions are historical unless explicitly marked otherwise.
 

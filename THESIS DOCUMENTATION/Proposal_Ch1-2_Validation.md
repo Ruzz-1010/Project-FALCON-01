@@ -1,6 +1,11 @@
 # Proposal Validation — Chapters 1 & 2
 
-> Architecture revision note 2026-10-09: update Chapters 1 and 2 around the event-driven Wi-Fi/LTE cloud path, compact reference-style buoy, reduced battery, and revised sensor alternatives. The validation findings below remain useful as template checks but do not constitute approval of the revised hardware.
+
+<!-- FALCON-DOST-REVISION-NOTE:START -->
+> **Current revision note (2026-10-10):** Use the DOST major revision baseline in [`docs/REVISION_2026-10-10.md`](../docs/REVISION_2026-10-10.md) unless this file is explicitly archived. The active design is a compact single-tube / small-buoy, ESP32-based, event-driven, cloud-first system. LoRa, large Bay Station hardware, tall tower layouts, and continuous every-second uploads are legacy or optional fallback assumptions.
+<!-- FALCON-DOST-REVISION-NOTE:END -->
+
+> Architecture revision note 2026-10-10: update Chapters 1 and 2 around the event-driven Wi-Fi/LTE cloud path, compact reference-style buoy, reduced battery, and revised sensor alternatives. The validation findings below remain useful as template checks but do not constitute approval of the revised hardware.
 
 Scope: `Chapter1_Introduction_first.docx` and `Chapter2_Methodology_first.docx`
 Benchmark: official template `REVISED-CAPSTONE-IT_CS-PROPOSAL_4.pdf`

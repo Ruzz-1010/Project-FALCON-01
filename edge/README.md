@@ -1,6 +1,11 @@
 # FALCON Edge Service — Current v6.1 Baseline
 
-Shore-based Python Bay Station service for Project FALCON. It receives ESP32 buoy telemetry, validates approved channels, evaluates deterministic alerts, stores operational records in SQLite, performs pressure-based wave processing and short-term prediction, and serves the dashboard. Prediction is isolated from core ingestion and logging. A development laptop currently performs the Bay Station role; the final mini PC is pending approval.
+
+<!-- FALCON-DOST-REVISION-NOTE:START -->
+> **Current revision note (2026-10-10):** Use the DOST major revision baseline in [`docs/REVISION_2026-10-10.md`](../docs/REVISION_2026-10-10.md) unless this file is explicitly archived. The active design is a compact single-tube / small-buoy, ESP32-based, event-driven, cloud-first system. LoRa, large Bay Station hardware, tall tower layouts, and continuous every-second uploads are legacy or optional fallback assumptions.
+<!-- FALCON-DOST-REVISION-NOTE:END -->
+
+Python edge/cloud service for Project FALCON. It receives ESP32 buoy telemetry, validates approved channels, evaluates deterministic alerts, stores operational records in SQLite, performs pressure-based wave processing and short-term prediction, and serves the dashboard. In the 2026-10-10 baseline this service may run on a laptop, edge host, or cloud host; the buoy itself remains ESP32-based.
 
 ## Run the Presentation Simulator
 
@@ -57,7 +62,7 @@ Runtime database files are ignored by Git.
 
 ## Read from the ESP32
 
-Connect the Bay Station development laptop to the configured telemetry endpoint and run:
+Connect the development laptop/edge host to the configured telemetry endpoint and run:
 
 ```powershell
 python -m falcon_edge.service --source esp32 --esp32-url http://192.168.4.1
@@ -65,7 +70,7 @@ python -m falcon_edge.service --source esp32 --esp32-url http://192.168.4.1
 
 ESP32 connection failures are reported explicitly. The service never silently replaces physical-source failures with simulated readings.
 
-For current ESP32 USB serial bench telemetry on Linux (development transport only; deployed LoRa transport and Bay Station Internet backhaul remain pending):
+For current ESP32 USB serial bench telemetry on Linux (development transport only; Wi-Fi/LTE cloud upload and optional LoRa fallback remain pending):
 
 ```bash
 python3 -m pip install -r edge/requirements-hardware.txt

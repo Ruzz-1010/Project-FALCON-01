@@ -1,5 +1,10 @@
 # Dashboard Specification v8.4
 
+
+<!-- FALCON-DOST-REVISION-NOTE:START -->
+> **Current revision note (2026-10-10):** Use the DOST major revision baseline in [`docs/REVISION_2026-10-10.md`](REVISION_2026-10-10.md) unless this file is explicitly archived. The active design is a compact single-tube / small-buoy, ESP32-based, event-driven, cloud-first system. LoRa, large Bay Station hardware, tall tower layouts, and continuous every-second uploads are legacy or optional fallback assumptions.
+<!-- FALCON-DOST-REVISION-NOTE:END -->
+
 ## Current implemented layout — September 11, 2026
 
 The approved coastal design is applied across Overview, Sensors, Buoy Motion, GPS, Logs & Alerts, and Settings. Navigation retains five main entries; Settings remains a header action. The older four-page proposal below is historical and does not describe the current navigation.

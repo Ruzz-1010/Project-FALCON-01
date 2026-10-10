@@ -1,5 +1,10 @@
 # Adviser Revision v6.0 Implementation Report
 
+
+<!-- FALCON-DOST-REVISION-NOTE:START -->
+> **Current revision note (2026-10-10):** Use the DOST major revision baseline in [`docs/REVISION_2026-10-10.md`](REVISION_2026-10-10.md) unless this file is explicitly archived. The active design is a compact single-tube / small-buoy, ESP32-based, event-driven, cloud-first system. LoRa, large Bay Station hardware, tall tower layouts, and continuous every-second uploads are legacy or optional fallback assumptions.
+<!-- FALCON-DOST-REVISION-NOTE:END -->
+
 Date: 2026-08-25
 
 ## Implemented
@@ -50,4 +55,4 @@ python3 scripts/build_thesis_v3.py
 
 ## Honest remaining work
 
-Exact TBD components, final schematic/PCB/wiring, physical Bar02 integration, pressure reference validation, real geofence/tamper thresholds, LoRa gateway and Bay Station SIM/4G/5G backhaul integration, waterproofing, energy validation, and controlled coastal trials remain incomplete. Legacy Wokwi/PCB/motion files are preserved but explicitly classified as historical/optional rather than silently deleted.
+Exact TBD components, final schematic/PCB/wiring, physical Bar02 integration, pressure reference validation, real geofence/tamper thresholds, Wi-Fi/LTE cloud endpoint integration, optional LoRa fallback validation, waterproofing, energy validation, and controlled coastal trials remain incomplete. Legacy Wokwi/PCB/motion files are preserved but explicitly classified as historical/optional rather than silently deleted.

@@ -1,5 +1,10 @@
 # Project FALCON Hardware Baseline v6.2
 
+
+<!-- FALCON-DOST-REVISION-NOTE:START -->
+> **Current revision note (2026-10-10):** Use the DOST major revision baseline in [`docs/REVISION_2026-10-10.md`](REVISION_2026-10-10.md) unless this file is explicitly archived. The active design is a compact single-tube / small-buoy, ESP32-based, event-driven, cloud-first system. LoRa, large Bay Station hardware, tall tower layouts, and continuous every-second uploads are legacy or optional fallback assumptions.
+<!-- FALCON-DOST-REVISION-NOTE:END -->
+
 > Hardware functions remain the Phase 1 baseline. Physical placement, enclosure integration, brackets, harness lengths, and mechanical interfaces are under redesign and remain TBD until the replacement prototype is approved.
 
 Status: adviser-approved design baseline; procurement and physical validation remain pending. [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md) is authoritative.

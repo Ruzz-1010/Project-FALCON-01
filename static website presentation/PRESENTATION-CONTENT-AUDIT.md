@@ -1,5 +1,10 @@
 # Presentation content audit — FALCON-01 web build
 
+
+<!-- FALCON-DOST-REVISION-NOTE:START -->
+> **Current revision note (2026-10-10):** Use the DOST major revision baseline in [`docs/REVISION_2026-10-10.md`](../docs/REVISION_2026-10-10.md) unless this file is explicitly archived. The active design is a compact single-tube / small-buoy, ESP32-based, event-driven, cloud-first system. LoRa, large Bay Station hardware, tall tower layouts, and continuous every-second uploads are legacy or optional fallback assumptions.
+<!-- FALCON-DOST-REVISION-NOTE:END -->
+
 **Date:** 2 October 2026
 **Scope:** all ten scenes (`00`–`09`) of `index.html` and `present.html`, plus every
 string that ships from `story.js`, `acquisition.js`, `inspection.js`,
@@ -8,7 +13,7 @@ string that ships from `story.js`, `acquisition.js`, `inspection.js`,
 **Authority:** `docs/PROJECT_CONTEXT.md` v9.0, `docs/BAY_STATION_ARCHITECTURE.md`,
 `THESIS DOCUMENTATION/FALCON Revised Event Driven BOM and Sensor Options.docx`.
 
-**Revision note 2026-10-09:** the presentation content must use the smaller
+**Revision note 2026-10-10:** the presentation content must use the smaller
 single-tube buoy, event-driven summaries/alerts, direct Wi-Fi/LTE cloud upload,
 and reduced battery baseline. LoRa-primary and large Bay Station claims are
 historical unless explicitly labeled as alternatives.

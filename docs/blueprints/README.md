@@ -1,5 +1,10 @@
 # Project FALCON Blueprint Package
 
+
+<!-- FALCON-DOST-REVISION-NOTE:START -->
+> **Current revision note (2026-10-10):** Use the DOST major revision baseline in [`docs/REVISION_2026-10-10.md`](../../docs/REVISION_2026-10-10.md) unless this file is explicitly archived. The active design is a compact single-tube / small-buoy, ESP32-based, event-driven, cloud-first system. LoRa, large Bay Station hardware, tall tower layouts, and continuous every-second uploads are legacy or optional fallback assumptions.
+<!-- FALCON-DOST-REVISION-NOTE:END -->
+
 Status: **PROPOSED REPLACEMENT PROTOTYPE — REFERENCE / NOT FOR FABRICATION**  
 Source model: `exports/PROJECT FALCON -V2.f3d` and dashboard conversion `dashboard-next/public/models/PROJECT-FALCON-V2.glb`  
 Drawing basis date: 2026-08-30
@@ -43,7 +48,7 @@ Dimensions marked **CAD REF** were recovered from the existing Fusion generator 
 
 ## Architecture correction
 
-The old Fusion electronics layout contains an `ORANGE_PI_MINI_PC_ENVELOPE`. It is explicitly excluded from these drawings. The Orange Pi is not part of the current buoy design; the shore Bay Station receives buoy telemetry through the planned LoRa gateway and uses SIM/4G/5G for Internet backhaul. USB/UART is for bench servicing only.
+The old Fusion electronics layout contains an `ORANGE_PI_MINI_PC_ENVELOPE`. It is explicitly excluded from current drawings. The Orange Pi is not part of the current buoy design. The revised path uses ESP32 local sampling with Wi-Fi for bench testing or LTE/4G for remote cloud upload; LoRa is optional fallback only. USB/UART is for bench servicing only.
 
 ## Release gates
 

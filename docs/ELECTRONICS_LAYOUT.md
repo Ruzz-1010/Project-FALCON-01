@@ -1,6 +1,11 @@
 # Electronics Pod Layout — Revision Pending
 
-> The enclosure and component placement are under redesign. Orange Pi/mini-PC placement below is obsolete: the buoy contains ESP32, sensors/interfaces, LoRa radio, power, and security only; the Bay Station and its SIM/4G/5G Internet backhaul are shore based. Do not use this layout for fabrication or harness-length decisions.
+
+<!-- FALCON-DOST-REVISION-NOTE:START -->
+> **Current revision note (2026-10-10):** Use the DOST major revision baseline in [`docs/REVISION_2026-10-10.md`](REVISION_2026-10-10.md) unless this file is explicitly archived. The active design is a compact single-tube / small-buoy, ESP32-based, event-driven, cloud-first system. LoRa, large Bay Station hardware, tall tower layouts, and continuous every-second uploads are legacy or optional fallback assumptions.
+<!-- FALCON-DOST-REVISION-NOTE:END -->
+
+> The enclosure and component placement are under DOST revision. Orange Pi/mini-PC placement is obsolete: the buoy contains ESP32, sensors/interfaces, power, local buffering, and Wi-Fi or LTE/4G for the selected cloud path. LoRa is fallback/legacy only. Do not use older large Bay Station wiring for fabrication or harness-length decisions.
 
 > These notes preserve the earlier carrier. BNO085 is no longer required, and security/environment interfaces must be added after exact part selection.
 

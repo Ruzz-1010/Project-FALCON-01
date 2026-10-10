@@ -1,13 +1,18 @@
 # Project FALCON Thesis Documentation Register
 
-## Active revision 2026-10-09
+
+<!-- FALCON-DOST-REVISION-NOTE:START -->
+> **Current revision note (2026-10-10):** Use the DOST major revision baseline in [`docs/REVISION_2026-10-10.md`](../docs/REVISION_2026-10-10.md) unless this file is explicitly archived. The active design is a compact single-tube / small-buoy, ESP32-based, event-driven, cloud-first system. LoRa, large Bay Station hardware, tall tower layouts, and continuous every-second uploads are legacy or optional fallback assumptions.
+<!-- FALCON-DOST-REVISION-NOTE:END -->
+
+## Active revision 2026-10-10
 
 The approved direction is a smaller compact can-buoy with ESP32 local sampling, event-driven summaries and alerts, direct cloud connectivity through Wi-Fi for laboratory work or 4G/LTE for a remote trial, and a reduced battery sized from measured modem duty. The active equipment and alternative sensor list is in [FALCON Revised Event Driven BOM and Sensor Options.docx](FALCON%20Revised%20Event%20Driven%20BOM%20and%20Sensor%20Options.docx). The current architecture is maintained in `../docs/PROJECT_CONTEXT.md` and `../docs/BAY_STATION_ARCHITECTURE.md`.
 
 ## Current authority
 
 - `FALCON Revised Event Driven BOM and Sensor Options.docx` — current equipment,
-  alternative-sensor, cost, and procurement baseline after the 2026-10-09 DOST
+  alternative-sensor, cost, and procurement baseline after the 2026-10-10 DOST
   revision.
 - `BayStation.docx` — earlier expanded thesis documentation retained for reference;
   its LoRa/Bay Station assumptions are superseded by the event-driven cloud baseline

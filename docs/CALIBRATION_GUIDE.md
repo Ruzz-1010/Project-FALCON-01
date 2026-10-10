@@ -1,5 +1,10 @@
 # Calibration Guide v7.0
 
+
+<!-- FALCON-DOST-REVISION-NOTE:START -->
+> **Current revision note (2026-10-10):** Use the DOST major revision baseline in [`docs/REVISION_2026-10-10.md`](REVISION_2026-10-10.md) unless this file is explicitly archived. The active design is a compact single-tube / small-buoy, ESP32-based, event-driven, cloud-first system. LoRa, large Bay Station hardware, tall tower layouts, and continuous every-second uploads are legacy or optional fallback assumptions.
+<!-- FALCON-DOST-REVISION-NOTE:END -->
+
 > Use the exact procedures, proposed acceptance limits and recording sheets in [SENSOR_VALIDATION_AND_CALIBRATION_PLAN.md](SENSOR_VALIDATION_AND_CALIBRATION_PLAN.md). Water temperature, conductivity/salinity, and required IMU alignment are excluded from the Phase 1 measurement scope; calibration focuses on pressure-derived wave estimation, wind, supporting telemetry, and security behavior.
 
 ## Purpose

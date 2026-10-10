@@ -1,5 +1,10 @@
 # FALCON AI Wave Prediction and Assistant v6.2
 
+
+<!-- FALCON-DOST-REVISION-NOTE:START -->
+> **Current revision note (2026-10-10):** Use the DOST major revision baseline in [`docs/REVISION_2026-10-10.md`](REVISION_2026-10-10.md) unless this file is explicitly archived. The active design is a compact single-tube / small-buoy, ESP32-based, event-driven, cloud-first system. LoRa, large Bay Station hardware, tall tower layouts, and continuous every-second uploads are legacy or optional fallback assumptions.
+<!-- FALCON-DOST-REVISION-NOTE:END -->
+
 AI wave prediction is a required visible Project FALCON feature. The core monitoring path still acquires, validates, logs, displays, and alerts independently so a prediction error cannot erase live coastal readings.
 
 The `/ai` endpoint produces a 5-, 10-, or 15-minute wave-height estimate from recent pressure-based estimated-wave history. Overview always displays the current estimate, predicted value, expected `CALM`/`MODERATE`/`ROUGH` condition, confidence indicator, sample count, model state, and live or simulated input label. With fewer than eight valid records it displays `COLLECTING` instead of inventing a prediction.

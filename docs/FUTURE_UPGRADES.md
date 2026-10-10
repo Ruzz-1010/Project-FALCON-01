@@ -1,5 +1,10 @@
 # Future Upgrade Roadmap
 
+
+<!-- FALCON-DOST-REVISION-NOTE:START -->
+> **Current revision note (2026-10-10):** Use the DOST major revision baseline in [`docs/REVISION_2026-10-10.md`](REVISION_2026-10-10.md) unless this file is explicitly archived. The active design is a compact single-tube / small-buoy, ESP32-based, event-driven, cloud-first system. LoRa, large Bay Station hardware, tall tower layouts, and continuous every-second uploads are legacy or optional fallback assumptions.
+<!-- FALCON-DOST-REVISION-NOTE:END -->
+
 ## Purpose
 
 This document records possible post-Phase 1 improvements for Project FALCON.
@@ -10,7 +15,7 @@ show a justified need.
 ## Upgrade Principles
 
 - Preserve the ESP32 as the deterministic sensor-acquisition and basic safety controller.
-- Keep compute hardware at the shore Bay Station; select it from measured service requirements.
+- Keep compute hardware outside the buoy; select laptop, edge host, or cloud hosting from measured service requirements.
 - Upgrade only when measurements identify a performance, reliability, or research need.
 - Prefer modular, replaceable interfaces rather than redesigning the complete buoy.
 - Recalculate energy, thermal, enclosure, network, and maintenance requirements before purchase.
@@ -25,20 +30,20 @@ show a justified need.
 | 2 | On-demand viewing camera | Remote visual inspection without continuous recording | Privacy, bandwidth, power, and ingress review |
 | 3 | Additional environmental sensors | Broader coastal research measurements | Research question, calibration method, and reference instrument approved |
 | 4 | Communications resilience | Remote operation beyond local Wi-Fi | Site survey and recurring-service budget approved |
-| 5 | Raspberry Pi 5 4GB Bay Station option | More compute margin for heavier analytics | Bay Station benchmarks demonstrate a real limitation |
+| 5 | Raspberry Pi 5 / edge host option | More compute margin for heavier analytics | Laptop/cloud benchmarks demonstrate a real limitation |
 | 6 | Fleet and advanced analytics | Multi-buoy regional observations | Single-buoy field performance is repeatable |
 
 ## Raspberry Pi 5 4GB Upgrade
 
-The Raspberry Pi 5 4GB is a possible shore Bay Station computer when heavier analytics, higher dashboard load, camera processing, or additional services exceed the final measured requirement. It is never installed on or powered by the buoy.
+The Raspberry Pi 5 4GB is a possible edge host when heavier analytics, higher dashboard load, camera processing, or additional services exceed the final measured laptop/cloud requirement. It is never installed on or powered by the buoy.
 
 Before migration:
 
-1. Benchmark the development/final Bay Station CPU, memory, prediction latency, storage I/O, temperature,
+1. Benchmark the development laptop, edge host, or cloud CPU, memory, prediction latency, storage I/O, temperature,
    boot time, and service recovery under the complete measured workload.
 2. Confirm that optimization cannot meet the requirement more efficiently.
 3. Provide a manufacturer-compliant shore power supply and separately evaluate UPS needs.
-4. Add approved cooling and verify the Bay Station room/enclosure environment.
+4. Add approved cooling only if an edge host is selected and verify its room/enclosure environment.
 5. Revise shore mounting, network, storage, service, and spare-parts plans; do not charge this load to the buoy solar budget.
 6. Re-run software installation, watchdog, brownout, reboot, 24/72-hour endurance,
    and supervised deployment tests.
@@ -53,7 +58,7 @@ output. It is for remote visual inspection only, not Phase 1 measurement or AI.
 
 Proposed behavior:
 
-`Future camera -> authenticated cellular/network path -> shore Bay Station -> dashboard viewer`
+`Future camera -> authenticated Wi-Fi/LTE/network path -> edge/cloud service -> dashboard viewer`
 
 - 720p at approximately 10–15 frames per second;
 - streaming starts only while an authorized user is viewing;
@@ -93,8 +98,8 @@ not automatically produce better predictions.
 
 ## Communications and Platform Upgrades
 
-- SIM/4G/5G at the Bay Station for cloud upload and authorized remote access at sites with verified coverage and a funded data plan;
-- LoRa as the primary low-rate buoy telemetry link to a nearby managed barangay-hall gateway;
+- LTE/4G from the ESP32-side telemetry modem or selected gateway for cloud upload at sites with verified coverage and a funded data plan;
+- LoRa only as an optional fallback low-rate telemetry link if Wi-Fi/LTE is not viable;
 - satellite messaging only for compact priority telemetry where cost is justified;
 - VPN-based remote maintenance rather than exposed device ports;
 - store-and-forward synchronization during outages;

@@ -1,5 +1,10 @@
 # Firmware Specification
 
+
+<!-- FALCON-DOST-REVISION-NOTE:START -->
+> **Current revision note (2026-10-10):** Use the DOST major revision baseline in [`docs/REVISION_2026-10-10.md`](REVISION_2026-10-10.md) unless this file is explicitly archived. The active design is a compact single-tube / small-buoy, ESP32-based, event-driven, cloud-first system. LoRa, large Bay Station hardware, tall tower layouts, and continuous every-second uploads are legacy or optional fallback assumptions.
+<!-- FALCON-DOST-REVISION-NOTE:END -->
+
 > Event-driven cloud revision v9.0 governs: pressure input and local ESP32 event detection are required; Wi-Fi is the bench path and 4G/LTE is the remote field path. BNO085/load-cell/onboard-computer/LoRa-gateway logic is not required in the low-cost minimum build. Any prediction runs outside the buoy and cannot block ESP32 acquisition or buffering. Exact modules, buffering, authentication, cloud endpoint, and connector implementation remain pending approval.
 
 ## Purpose

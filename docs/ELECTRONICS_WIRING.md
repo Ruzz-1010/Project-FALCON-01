@@ -1,5 +1,10 @@
 # Adviser-Revised Electronics Wiring v6.1
 
+
+<!-- FALCON-DOST-REVISION-NOTE:START -->
+> **Current revision note (2026-10-10):** Use the DOST major revision baseline in [`docs/REVISION_2026-10-10.md`](REVISION_2026-10-10.md) unless this file is explicitly archived. The active design is a compact single-tube / small-buoy, ESP32-based, event-driven, cloud-first system. LoRa, large Bay Station hardware, tall tower layouts, and continuous every-second uploads are legacy or optional fallback assumptions.
+<!-- FALCON-DOST-REVISION-NOTE:END -->
+
 > Functional net requirements remain useful, but connector positions, cable lengths, glands, and enclosure routing are under redesign. Verify the exact selected parts and replacement prototype before fabrication.
 
 The previous BNO085-centered wiring drawings are retained only as historical prototype visuals and must not be used as the final Phase 1 harness. Use [PINOUT.md](PINOUT.md) and [HARDWARE.md](HARDWARE.md) for the current baseline.
