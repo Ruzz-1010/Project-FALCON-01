@@ -15,7 +15,7 @@ string that ships from `story.js`, `acquisition.js`, `inspection.js`,
 
 **Revision note 2026-10-10:** the presentation content must use the smaller
 single-tube buoy, event-driven summaries/alerts, direct Wi-Fi/LTE cloud upload,
-and reduced battery baseline. LoRa-primary and large Bay Station claims are
+and reduced battery baseline. Older radio-gateway and large shore-compute claims are
 historical unless explicitly labeled as alternatives.
 
 ---
