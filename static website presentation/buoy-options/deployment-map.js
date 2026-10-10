@@ -42,6 +42,9 @@ const wordsOf = (b, st) => st === 'CALM'
 
 const svgNS = 'http://www.w3.org/2000/svg';
 const svg = document.getElementById('palawan');
+// Smooth sea animation state: one clock drives every buoy's rings + bob so
+// nothing uses CSS transitions (they cannot loop cleanly) and nothing restarts.
+const anim = [];
 function el(tag, attrs, parent){
   const e = document.createElementNS(svgNS, tag);
   for(const [k,v] of Object.entries(attrs)) e.setAttribute(k, v);
@@ -69,19 +72,23 @@ lbl('Puerto Princesa', 118.15, 9.30); lbl('SULU SEA', 119.75, 9.45, 12); lbl('WP
 // Buoy markers.
 const markers = new Map();
 for(const b of BUOYS){
-  const g = el('g',{class:'buoy',tabindex:'0',role:'button','aria-label':`${b.id} ${b.name} simulated data`});
+  // wrap = animated bob/sway (vertical + rotation), g = static map position.
+  const wrap = el('g',{}, svg);
+  const g = el('g',{class:'buoy',tabindex:'0',role:'button','aria-label':`${b.id} ${b.name} simulated data`}, wrap);
   const pulse = el('circle',{class:'pulse',cx:X(b.lon),cy:Y(b.lat),r:13,stroke:stateColor(b.hs)},g);
   // Animated wave rings, visible only while seas are ROUGH at this buoy.
+  // Smooth rolling sea: nested smooth rings that grow + fade on long loops.
+  // CSS transitions alone can't restart reliably, so use Web Animations API.
   const seas = el('g',{class:'seas'},g);
-  for(let k=0;k<3;k++){
-    const w = el('circle',{class:'wave-ring',cx:X(b.lon),cy:Y(b.lat),r:14,stroke:'#e87a7a'},seas);
-    w.style.animationDelay = `${k*0.9}s`;
+  for(let k=0;k<4;k++){
+    const w = el('circle',{class:'wave-ring',cx:X(b.lon),cy:Y(b.lat),r:16,stroke:'#e87a7a'},seas);
+    anim.push({node:w, phase:k/4, base:16});
   }
   const core = el('circle',{class:'core',cx:X(b.lon),cy:Y(b.lat),r:9,fill:stateColor(b.hs)},g);
   const t = el('text',{x:X(b.lon)+14,y:Y(b.lat)+4},g); t.textContent = b.id.replace('FALCON-','F-');
   g.addEventListener('click', () => select(b.id));
   g.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); select(b.id); } });
-  markers.set(b.id, {g, pulse, core, seas});
+  markers.set(b.id, {g, wrap, pulse, core, seas});
 }
 
 const $ = id => document.getElementById(id);
@@ -122,6 +129,35 @@ function render(){
   const lbat = BUOYS.reduce((a,x) => x.batt < a.batt ? x : a);
   $('st-batt').textContent = `${lbat.batt.toFixed(0)}% @ ${lbat.id.replace('FALCON-','F-')}`;
 }
+// One rAF loop: wave rings grow+fade smoothly, buoys bob and sway like they
+// actually float. Transform is applied to a wrapper group so the marker keeps
+// its map position (x/y) and only gains vertical + rotational motion.
+let t0 = performance.now();
+function tick(now){
+  const t = (now - t0) / 1000;
+  for(const {node, phase, base} of anim){
+    const u = (t / 5 + phase) % 1;          // 5s per ring cycle, staggered
+    const scale = 0.55 + u * 2.6;           // smooth grow
+    const opacity = Math.sin(Math.PI * u) * 0.85; // fade in then out
+    node.setAttribute('r', (base * scale).toFixed(2));
+    node.setAttribute('opacity', Math.max(0, opacity).toFixed(3));
+  }
+  for(const b of BUOYS){
+    const m = markers.get(b.id);
+    const rough = b.hs >= 1.6;
+    // Heavier motion in rough seas, gentle swell in calm.
+    const amp = (rough ? 1.5 : 0.7) * 0.9;
+    const dx = Math.sin(t * (rough ? 1.5 : 1.0) + b.phase) * amp;
+    const dy = Math.cos(t * (rough ? 1.7 : 1.1) + b.phase) * amp * 0.7;
+    const rot = Math.sin(t * (rough ? 1.4 : 0.9) + b.phase) * (rough ? 4 : 1.6);
+    m.wrap.setAttribute('transform',
+      `translate(${(dx).toFixed(2)},${(dy).toFixed(2)}) rotate(${rot.toFixed(2)})`);
+    m.wrap.setAttribute('opacity', rough ? '1' : '0.85');
+  }
+  requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+
 $('prev').addEventListener('click', () => select(BUOYS[(current + BUOYS.length - 1) % BUOYS.length].id));
 $('next').addEventListener('click', () => select(BUOYS[(current + 1) % BUOYS.length].id));
 // Simulated live tick every 4s: random-walk every buoy, re-render selection.
