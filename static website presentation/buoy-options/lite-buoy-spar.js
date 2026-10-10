@@ -78,6 +78,8 @@ for(const sx of [-0.42, 0.42]){
   // Deck beams tying each hull to the platform.
   for(const sz of [-0.35, 0.35]){
     buoy.add(mesh(new THREE.BoxGeometry(0.30, 0.05, 0.08), M.frame, sx*0.72, 0.22, sz, 'DECK_BEAM'));
+    // Support post: pontoon top (y=0.09) up into the beam — no floating deck.
+    buoy.add(mesh(new THREE.BoxGeometry(0.06, 0.16, 0.06), M.frame, sx, 0.15, sz, 'HULL_POST'));
   }
 }
 // --- Deck platform + non-slip edge trim.
