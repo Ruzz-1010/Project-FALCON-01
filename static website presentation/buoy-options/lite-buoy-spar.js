@@ -56,6 +56,17 @@ function mesh(geo, mat, x=0, y=0, z=0, name=''){
   return m;
 }
 
+function strut(a, b, r, mat, name=''){
+  const va = new THREE.Vector3(...a), vb = new THREE.Vector3(...b);
+  const dir = vb.clone().sub(va), len = dir.length();
+  const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, len, 8), mat);
+  m.position.copy(va).addScaledVector(dir, 0.5);
+  m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0), dir.normalize());
+  m.castShadow = true; m.receiveShadow = true;
+  if(name) m.name = name;
+  return m;
+}
+
 const buoy = new THREE.Group();
 scene.add(buoy);
 
@@ -72,6 +83,12 @@ for(const sx of [-0.42, 0.42]){
 // --- Deck platform + non-slip edge trim.
 const deck = mesh(new THREE.BoxGeometry(1.10, 0.06, 1.00), M.deck, 0, 0.28, 0, 'DECK_PLATFORM');
 buoy.add(deck);
+for(const sx of [-0.535, 0.535]){
+  buoy.add(mesh(new THREE.BoxGeometry(0.03, 0.045, 1.00), M.hull, sx, 0.33, 0, 'TOE_RAIL_SIDE'));
+}
+for(const sz of [-0.485, 0.485]){
+  buoy.add(mesh(new THREE.BoxGeometry(1.10, 0.045, 0.03), M.hull, 0, 0.33, sz, 'TOE_RAIL_END'));
+}
 
 // --- Electronics cabinet amidships (GPS/LoRa/ESP32 live inside it).
 const CAB_H = 0.24, CAB_Y = 0.31, CAB_TOP = CAB_Y + CAB_H/2;
@@ -79,6 +96,11 @@ const cabinet = mesh(new THREE.BoxGeometry(0.44, CAB_H, 0.36), M.cabinet, 0, CAB
 buoy.add(cabinet);
 const cabTrim = mesh(new THREE.BoxGeometry(0.46, 0.03, 0.38), M.frame, 0, CAB_Y - CAB_H/2 + 0.015, 0, 'CABINET_BASE_TRIM');
 buoy.add(cabTrim);
+buoy.add(mesh(new THREE.BoxGeometry(0.30, 0.18, 0.006), M.deck, 0, CAB_Y, 0.183, 'CABINET_DOOR'));
+for(const hx of [-0.13, 0.13]){
+  buoy.add(mesh(new THREE.BoxGeometry(0.02, 0.04, 0.01), M.frame, hx, CAB_Y + 0.04, 0.186, 'DOOR_HINGE'));
+}
+buoy.add(mesh(new THREE.BoxGeometry(0.03, 0.03, 0.015), M.frame, 0.11, CAB_Y, 0.186, 'DOOR_LATCH'));
 // --- Single 40W-class panel as the cabinet roof, tilted 10°.
 const roof = new THREE.Group();
 roof.position.set(0, CAB_TOP + 0.07, -0.03);
@@ -93,6 +115,12 @@ for(let i=-1;i<=1;i++){
 for(const sx of [-0.18, 0.18]){
   buoy.add(mesh(new THREE.BoxGeometry(0.04, 0.07, 0.36), M.frame, sx, CAB_TOP + 0.035, -0.02, 'ROOF_RAIL'));
 }
+const roofFrame = new THREE.Group();
+roofFrame.position.copy(roof.position); roofFrame.rotation.x = -0.18;
+for(const sz of [-0.25, 0.19]){
+  roofFrame.add(mesh(new THREE.BoxGeometry(0.66, 0.03, 0.025), M.frame, 0, 0, sz, 'PANEL_END_RAIL'));
+}
+buoy.add(roofFrame);
 // --- Red topmark light on a finial stub at the panel front edge.
 const beaconStub = mesh(new THREE.CylinderGeometry(0.014, 0.014, 0.09, 10), M.frame, 0, CAB_TOP + 0.06, 0.20, 'BEACON_STUB');
 buoy.add(beaconStub);
@@ -102,8 +130,8 @@ const beaconDome = mesh(new THREE.SphereGeometry(0.038, 14, 10, 0, Math.PI*2, 0,
 buoy.add(beaconDome);
 
 // --- Wind mast at the deck rear (slim Ø36mm pole straight into the hub).
-const WMAST_X = 0, WMAST_Z = -0.44, DECK_TOP = 0.31, ROTOR_Y = DECK_TOP + 1.10;
-const wmast = mesh(new THREE.CylinderGeometry(0.018, 0.018, 1.10, 12), M.frame, WMAST_X, DECK_TOP + 0.55, WMAST_Z, 'WIND_MAST');
+const WMAST_X = 0, WMAST_Z = -0.44, DECK_TOP = 0.31, ROTOR_Y = DECK_TOP + 0.95;
+const wmast = mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.95, 12), M.frame, WMAST_X, DECK_TOP + 0.475, WMAST_Z, 'WIND_MAST');
 buoy.add(wmast);
 const mastFoot = mesh(new THREE.CylinderGeometry(0.035, 0.045, 0.06, 12), M.frame, WMAST_X, DECK_TOP + 0.03, WMAST_Z, 'MAST_FOOT');
 buoy.add(mastFoot);
@@ -120,7 +148,7 @@ for(let i=0;i<3;i++){
   const arm = mesh(new THREE.CylinderGeometry(0.014, 0.014, armR, 8), M.frame, Math.cos(a)*armR/2, 0, Math.sin(a)*armR/2, 'WIND_ARM');
   arm.rotation.z = Math.PI/2; arm.rotation.y = -a;
   rotor.add(arm);
-  const cup = mesh(new THREE.SphereGeometry(cupR, 18, 12, 0, Math.PI*2, 0, Math.PI*0.55), M.cup, Math.cos(a)*armR, 0, Math.sin(a)*armR, 'WIND_CUP');
+  const cup = mesh(new THREE.SphereGeometry(cupR, 18, 12, 0, Math.PI*2, 0, Math.PI*0.62), M.cup, Math.cos(a)*armR, 0, Math.sin(a)*armR, 'WIND_CUP');
   cup.rotation.y = -a + Math.PI/2;
   cup.rotation.x = Math.PI/2;
   rotor.add(cup);
@@ -132,7 +160,7 @@ vane.name = 'WIND_VANE';
 buoy.add(vane);
 const vaneMast = mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.12, 8), M.frame, 0, 0, 0, 'VANE_TURRET');
 vane.add(vaneMast);
-const tail = mesh(new THREE.BoxGeometry(0.02, 0.18, 0.14), M.vane, 0, 0.02, -0.14, 'VANE_TAIL');
+const tail = mesh(new THREE.BoxGeometry(0.016, 0.15, 0.11), M.vane, 0, 0.02, -0.12, 'VANE_TAIL');
 vane.add(tail);
 const nose = mesh(new THREE.ConeGeometry(0.025, 0.09, 12), M.brass, 0, 0.02, 0.14, 'VANE_NOSE');
 nose.rotation.x = Math.PI/2;
@@ -153,6 +181,9 @@ buoy.add(psens);
 buoy.add(mesh(new THREE.BoxGeometry(0.06, 0.05, 0.20), M.frame, 0, 0.12, 0.50, 'BOW_SPRIT'));
 const bowEye = mesh(new THREE.TorusGeometry(0.05, 0.013, 8, 20), M.chain, 0, 0.12, 0.60, 'BOW_MOORING_EYE');
 buoy.add(bowEye);
+for(const sx of [-0.42, 0.42]){
+  buoy.add(strut([sx, 0.0, 0.72], [0, 0.12, 0.60], 0.010, M.chain, 'BRIDLE_LINE'));
+}
 const chainStub = mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.30, 10), M.chain, 0, -0.05, 0.62, 'MOORING_CHAIN_STUB');
 chainStub.rotation.x = 0.5;
 buoy.add(chainStub);
