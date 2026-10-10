@@ -1,13 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {GLTFLoader} from '../../dashboard-next/node_modules/three/examples/jsm/loaders/GLTFLoader.js';
-import {Box3,Vector3,PerspectiveCamera} from '../../dashboard-next/node_modules/three/build/three.module.js';
+import {GLTFLoader} from '../node_modules/three/examples/jsm/loaders/GLTFLoader.js';
+import {Box3,Vector3,PerspectiveCamera} from '../node_modules/three/build/three.module.js';
 import {instrumentTargets,instrumentInfo} from '../instrument.js';
 import {inspectionFrame,easeInspection} from '../inspection.js';
 
 test('All Page 01 buttons resolve to physical CAD targets, focus and return precisely',async()=>{
-  const bytes=readFileSync(new URL('../../dashboard-next/public/models/PROJECT-FALCON-V2.glb',import.meta.url));
+  const bytes=readFileSync(new URL('../../edge/static/dashboard/models/PROJECT-FALCON-V2.glb',import.meta.url));
   const {scene}=await new GLTFLoader().parseAsync(bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength),'');
   scene.rotation.x=-Math.PI/2;scene.position.y=-2.05;scene.updateMatrixWorld(true);
   const targets=instrumentTargets(scene),full=new Box3().setFromObject(scene).getSize(new Vector3()).length();

@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {GLTFLoader} from '../../dashboard-next/node_modules/three/examples/jsm/loaders/GLTFLoader.js';
-import {Box3,Vector3,PerspectiveCamera} from '../../dashboard-next/node_modules/three/build/three.module.js';
+import {GLTFLoader} from '../node_modules/three/examples/jsm/loaders/GLTFLoader.js';
+import {Box3,Vector3,PerspectiveCamera} from '../node_modules/three/build/three.module.js';
 import {inspections,easeInspection,inspectionFrame} from '../inspection.js';
 import {components} from '../story.js';
 
@@ -18,7 +18,7 @@ test('Camera easing has exact endpoints, bounded monotonic movement and reversib
   let prior=0;for(let i=0;i<=100;i++){const t=i/100,v=easeInspection(t);assert.ok(v>=prior-1e-12);assert.ok(Math.abs(v+easeInspection(1-t)-1)<1e-12);prior=v;}
 });
 test('Every real CAD target is framed outside the panel on desktop, tablet and mobile',async()=>{
-  const bytes=readFileSync(new URL('../../dashboard-next/public/models/PROJECT-FALCON-V2.glb',import.meta.url));
+  const bytes=readFileSync(new URL('../../edge/static/dashboard/models/PROJECT-FALCON-V2.glb',import.meta.url));
   const gltf=await new GLTFLoader().parseAsync(bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength),'');
   gltf.scene.rotation.x=-Math.PI/2;gltf.scene.position.y=-2.05;gltf.scene.updateMatrixWorld(true);
   for(const [id,component] of Object.entries(components)){

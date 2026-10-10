@@ -85,7 +85,7 @@ test('The funding plan is internally consistent and never quoted as a firm price
   for(const phase of phases)assert.match(phase.claim,/./);
 });
 test('All original geometry is shipped byte-identically; no pretend replacement buoy',()=>{
-  const bytes=readFileSync(new URL('../../dashboard-next/public/models/PROJECT-FALCON-V2.glb',import.meta.url));
+  const bytes=readFileSync(new URL('../../edge/static/dashboard/models/PROJECT-FALCON-V2.glb',import.meta.url));
   assert.equal(createHash('sha256').update(bytes).digest('hex'),'d8674ce9415ce4b85b69ddddfd0a33609923146c191cabd915d5a6e8845d30ce');
   const folder=new URL('../dist/assets/',import.meta.url);const name=readdirSync(folder).find(f=>f.endsWith('.glb'));assert.ok(name);assert.deepEqual(readFileSync(new URL(name,folder)),bytes);
   const length=bytes.readUInt32LE(12),gltf=JSON.parse(bytes.subarray(20,20+length).toString('utf8'));

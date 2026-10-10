@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
-import modelUrl from '../dashboard-next/public/models/PROJECT-FALCON-V2.glb?url';
+import modelUrl from '../edge/static/dashboard/models/PROJECT-FALCON-V2.glb?url';
 import {components,CH,chapterCount} from './story.js';
 import {easeInspection,inspectionFrame} from './inspection.js';
 import {createCoast,coastCamera,crossingCamera,RECEIVER} from './coast.js';

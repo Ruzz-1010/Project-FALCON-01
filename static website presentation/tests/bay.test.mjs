@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {fileURLToPath} from 'node:url';
-import {createServer} from '../../dashboard-next/node_modules/vite/dist/node/index.js';
+import {createServer} from '../node_modules/vite/dist/node/index.js';
 import {bayPipeline,arrivalPhase} from '../bay-story.js';
 test('Shore arrival synchronizes receiver, cable and local software stages',()=>{
   const at=phase=>arrivalPhase(phase/.405);
@@ -15,7 +15,7 @@ test('Station cutaway, real cable, selectable functions, focus framing and reset
   try{
     const {createCoast,RECEIVER}=await server.ssrLoadModule('/coast.js');
     const {createBayStation}=await server.ssrLoadModule('/bay-station.js');
-    const {PerspectiveCamera,Vector3,Vector2,Raycaster}=await server.ssrLoadModule('/../dashboard-next/node_modules/three/build/three.module.js');
+    const {PerspectiveCamera,Vector3,Vector2,Raycaster}=await server.ssrLoadModule('/node_modules/three/build/three.module.js');
     const coast=createCoast(),bay=createBayStation(coast);
     for(const id of ['computer','validate','sqlite','processing','ai'])assert.equal(bay.targets.get(id),bay.targets.get('computer'),'Software functions share one physical PC');
     assert.notEqual(bay.targets.get('dashboard'),bay.targets.get('computer'));

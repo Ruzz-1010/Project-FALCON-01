@@ -1,4 +1,4 @@
-import logoUrl from '../dashboard-next/public/falcon-logo.jpg?url';
+import logoUrl from '../data/falcon-logo.jpg?url';
 import {inspections} from './inspection.js';
 import {smooth} from './home.js';
 import {instrumentInfo} from './instrument.js';

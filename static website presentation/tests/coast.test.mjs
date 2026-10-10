@@ -1,13 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {fileURLToPath} from 'node:url';
-import {createServer} from '../../dashboard-next/node_modules/vite/dist/node/index.js';
+import {createServer} from '../node_modules/vite/dist/node/index.js';
 
 test('Coastal geometry, single receiver pole, route endpoints and outage animation',async()=>{
   const server=await createServer({configFile:fileURLToPath(new URL('../vite.config.mjs',import.meta.url)),server:{middlewareMode:true},appType:'custom'});
   try{
     const {createCoast,RECEIVER,STATION,shoreline,coastCamera,crossingCamera}=await server.ssrLoadModule('/coast.js');
-    const {PerspectiveCamera,Vector3}=await server.ssrLoadModule('/../dashboard-next/node_modules/three/build/three.module.js');
+    const {PerspectiveCamera,Vector3}=await server.ssrLoadModule('/node_modules/three/build/three.module.js');
     const coast=createCoast();
     assert.equal(coast.group.userData.poleCount,1);assert.ok(coast.group.userData.houseCount>=10);assert.ok(coast.group.userData.palmCount>=20);
     assert.ok(coast.route.getPoint(1).distanceTo(new Vector3(...RECEIVER))<1e-9);
