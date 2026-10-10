@@ -1,32 +1,21 @@
-// FALCON 8-buoy Palawan deployment preview — stylized SVG map + simulated
-// telemetry. EVERYTHING here is simulated: positions are illustrative and all
-// readings are generated in-page. No fetch, no tiles, no backend.
-const LON0 = 116.7, LON1 = 120.5, LAT0 = 7.6, LAT1 = 12.3, W = 560, H = 700;
+// FALCON 8-buoy Palawan deployment preview — real-coastline SVG map +
+// simulated telemetry. Coastline: GADM v4.1, simplified for display.
+// Positions are illustrative and all readings are generated in-page.
+// No fetch, no tiles, no backend.
+import {ISLANDS} from './palawan-geo.js';
+const LON0 = 116.7, LON1 = 121.2, LAT0 = 7.6, LAT1 = 12.5, W = 560, H = 700;
 const X = lon => (lon - LON0) / (LON1 - LON0) * W;
 const Y = lat => (LAT1 - lat) / (LAT1 - LAT0) * H;
 
-// Stylized Palawan main-island spine (lon/lat, SW -> NE), drawn as a thick
-// round-capped stroke so it reads as an island chain, not survey data.
-const SPINE = [
-  [117.05,7.90],[117.30,8.20],[117.55,8.45],[117.85,8.70],[118.05,8.95],
-  [118.20,9.25],[118.35,9.50],[118.55,9.70],[118.72,9.74],[118.85,9.90],
-  [118.95,10.10],[119.05,10.35],[119.15,10.55],[119.28,10.75],[119.35,11.00],
-  [119.30,11.20],[119.22,11.35],[119.30,11.44]
-];
-// Calamian group (Busuanga/Coron) + Cuyo dots, stylized.
-const CALAMIAN = [[119.85,11.85],[120.05,11.95],[120.25,12.05],[120.35,11.90],[120.15,11.75],[119.90,11.72]];
-const CUYO = [[121.00 - 0.55,10.85],[121.00 - 0.40,10.60]];
-const DUMARAN = [[119.75,10.55]];
-
 const BUOYS = [
-  {id:'FALCON-01', name:'Honda Bay', lon:118.95, lat:9.85, depth:18},
+  {id:'FALCON-01', name:'Honda Bay', lon:119.10, lat:9.88, depth:18},
   {id:'FALCON-02', name:'El Nido · Bacuit Bay', lon:119.45, lat:11.30, depth:22},
   {id:'FALCON-03', name:'Coron Bay', lon:120.25, lat:12.00, depth:25},
   {id:'FALCON-04', name:'Balabac Strait', lon:116.95, lat:7.85, depth:30},
   {id:'FALCON-05', name:'San Vicente · Long Beach', lon:119.45, lat:10.60, depth:15},
-  {id:'FALCON-06', name:'Ulugan Bay', lon:118.65, lat:10.05, depth:20},
+  {id:'FALCON-06', name:'Ulugan Bay', lon:118.52, lat:10.05, depth:20},
   {id:'FALCON-07', name:'Linapacan Strait', lon:119.95, lat:11.55, depth:28},
-  {id:'FALCON-08', name:'Puerto Princesa Bay', lon:118.60, lat:9.70, depth:12},
+  {id:'FALCON-08', name:'Puerto Princesa Bay', lon:118.88, lat:9.66, depth:12},
 ];
 
 const DIRS = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
@@ -66,26 +55,33 @@ for(let i=1;i<8;i++){ el('line',{x1:0,y1:H*i/8,x2:W,y2:H*i/8,stroke:'#12333f','s
 const cx = 70, cy = 620;
 el('circle',{cx,cy,r:26,fill:'none',stroke:'#2c5a6b','stroke-width':1.5});
 el('text',{x:cx,y:cy-32,fill:'#8fb0bd','font-size':12,'text-anchor':'middle'}).textContent = 'N ↑';
-// Islands.
-const pathOf = pts => 'M' + pts.map(([lo,la]) => `${X(lo).toFixed(1)},${Y(la).toFixed(1)}`).join(' L');
-el('path',{d:pathOf(SPINE),fill:'none',stroke:'#1d4a38','stroke-width':22,'stroke-linecap':'round','stroke-linejoin':'round'});
-el('path',{d:pathOf(SPINE),fill:'none',stroke:'#2a6b4f','stroke-width':13,'stroke-linecap':'round','stroke-linejoin':'round'});
-el('polygon',{points:CALAMIAN.map(([lo,la])=>`${X(lo).toFixed(1)},${Y(la).toFixed(1)}`).join(' '),fill:'#2a6b4f',stroke:'#1d4a38','stroke-width':2});
-for(const [lo,la] of [...CUYO, ...DUMARAN]) el('circle',{cx:X(lo),cy:Y(la),r:5,fill:'#2a6b4f',stroke:'#1d4a38','stroke-width':1.5});
+// Real coastline polygons (GADM, simplified): main island + groups.
+for(const ring of ISLANDS){
+  el('polygon',{
+    points: ring.map(([lo,la]) => `${X(lo).toFixed(1)},${Y(la).toFixed(1)}`).join(' '),
+    fill:'#2a6b4f', stroke:'#1d4a38', 'stroke-width':1.5, 'stroke-linejoin':'round'
+  });
+}
 const lbl = (t,lo,la,size=13) => { const e = el('text',{x:X(lo),y:Y(la),fill:'#8fb0bd','font-size':size,'text-anchor':'middle'}); e.textContent = t; };
-lbl('P A L A W A N', 118.55, 9.15, 15);
-lbl('Balabac', 117.35, 7.62); lbl('El Nido', 119.05, 11.62); lbl('Coron', 120.28, 12.22);
-lbl('Puerto Princesa', 118.30, 9.38); lbl('SULU SEA', 119.55, 9.30, 12); lbl('WPS', 117.15, 10.6, 12);
+lbl('P A L A W A N', 118.35, 8.95, 15);
+lbl('Balabac', 117.62, 8.30); lbl('El Nido', 118.95, 11.62); lbl('Coron', 120.32, 12.28);
+lbl('Puerto Princesa', 118.15, 9.30); lbl('SULU SEA', 119.75, 9.45, 12); lbl('WPS', 117.05, 10.35, 12);
 // Buoy markers.
 const markers = new Map();
 for(const b of BUOYS){
   const g = el('g',{class:'buoy',tabindex:'0',role:'button','aria-label':`${b.id} ${b.name} simulated data`});
   const pulse = el('circle',{class:'pulse',cx:X(b.lon),cy:Y(b.lat),r:13,stroke:stateColor(b.hs)},g);
+  // Animated wave rings, visible only while seas are ROUGH at this buoy.
+  const seas = el('g',{class:'seas'},g);
+  for(let k=0;k<3;k++){
+    const w = el('circle',{class:'wave-ring',cx:X(b.lon),cy:Y(b.lat),r:14,stroke:'#e87a7a'},seas);
+    w.style.animationDelay = `${k*0.9}s`;
+  }
   const core = el('circle',{class:'core',cx:X(b.lon),cy:Y(b.lat),r:9,fill:stateColor(b.hs)},g);
   const t = el('text',{x:X(b.lon)+14,y:Y(b.lat)+4},g); t.textContent = b.id.replace('FALCON-','F-');
   g.addEventListener('click', () => select(b.id));
   g.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); select(b.id); } });
-  markers.set(b.id, {g, pulse, core});
+  markers.set(b.id, {g, pulse, core, seas});
 }
 
 const $ = id => document.getElementById(id);
@@ -113,6 +109,8 @@ function render(){
     const on = id === b.id, bb = BUOYS.find(x => x.id === id);
     m.core.setAttribute('fill', stateColor(bb.hs));
     m.pulse.setAttribute('stroke', stateColor(bb.hs));
+    const [st2] = stateOf(bb.hs);
+    m.seas.style.display = st2 === 'ROUGH' ? '' : 'none';
     m.g.style.filter = on ? 'drop-shadow(0 0 6px #fff)' : '';
   }
   // Header stats.
