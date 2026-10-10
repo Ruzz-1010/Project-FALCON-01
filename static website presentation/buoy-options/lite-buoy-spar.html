@@ -35,14 +35,15 @@
 <nav class="opts"><a href="./lite-buoy.html">REVISED MAIN · COMPACT CAN</a><a class="here" href="./lite-buoy-spar.html">OPTION B · CATAMARAN (this page)</a><a href="./deployment-map.html">DEPLOYMENT MAP</a></nav>
 <p class="warn"><strong>BACKUP DESIGN STUDY</strong> — use only if the panel prioritizes stability over smallest body and lowest fabrication count. Equipment and prices are placeholders until BOM validation is complete.</p>
 <main>
-  <div id="stage"><div id="hud"><button data-view="orbit">Overview</button><button data-view="wind">Wind + GPS</button><button data-view="solar">Panel / cabinet</button><button data-view="below">Pressure + mooring</button></div><div id="tip">Option B is a backup stability concept; labels show required core equipment placement, not final part numbers.</div></div>
+  <div id="stage"><div id="hud"><button data-view="orbit">Overview</button><button data-view="wind">Wind + GPS</button><button data-view="solar">Panel / cabinet</button><button data-view="below">Pressure</button><button data-view="mooring">Anchor</button></div><div id="tip">Option B is a backup stability concept; labels show required core equipment placement, not final part numbers.</div></div>
   <aside>
     <h2>When to use Option B</h2>
     <ul>
       <li><span class="tag">Backup</span> choose this only if stability becomes the top concern <small>wide stance, easier deck access</small></li>
       <li>Two pontoon floats + deck <small>more stable but more fasteners, joints, and transport width</small></li>
       <li>Panel roof above cabinet <small>clean layout, but final wattage must follow measured load</small></li>
-      <li>Pressure sensor hangs between hulls <small>easy to service, protected by the pontoon spacing</small></li>
+      <li>Pressure sensor hangs inside a small guard cage between hulls <small>easy to service, protected by the pontoon spacing</small></li>
+      <li>Visible bridle-to-anchor study <small>shows required chain/rope/anchor sizing before field validation</small></li>
       <li class="risk">Trade-off: likely higher fabrication effort than Option A</li>
     </ul>
     <h2>Required core equipment shown</h2>
@@ -54,7 +55,7 @@
       <tr><td>Wi-Fi/LTE antenna on deck corner</td><td class="need">Required path</td></tr>
       <tr><td>Battery + solar charge controller inside cabinet</td><td class="need">Required</td></tr>
       <tr><td>microSD / flash buffer for offline records</td><td class="pending">To validate</td></tr>
-      <tr><td>Bridle, mooring eye, ballast/anchor hardware</td><td class="pending">To size</td></tr>
+      <tr><td>Bridle, chain, anchor/deadweight, recovery hardware</td><td class="pending">To size</td></tr>
     </table>
 
     <h2>Working sensor and equipment budget</h2>
@@ -86,6 +87,7 @@
     <h2>Still owed before approval</h2>
     <ul>
       <li>Mass / displacement / waterline / righting calculation</li>
+      <li>Mooring chain/rope length, anchor/deadweight mass, seabed fit, ballast, and recovery line</li>
       <li>Panel output vs measured load (<code>POWER_CALCULATIONS.md</code>)</li>
       <li>Wind mast vibration and antenna-clearance check</li>
       <li>Dry-fit, leak, flotation, heel, and recovery tests</li>

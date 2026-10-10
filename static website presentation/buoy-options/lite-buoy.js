@@ -29,7 +29,7 @@ rim.position.set(4, 2, -5); scene.add(rim);
 // Sea plane (visual only, no measurement claim).
 const sea = new THREE.Mesh(
   new THREE.PlaneGeometry(120, 120, 60, 60),
-  new THREE.MeshStandardMaterial({color:'#0e3a47', roughness:.85, metalness:.05, transparent:true, opacity:.96})
+  new THREE.MeshStandardMaterial({color:'#0e3a47', roughness:.85, metalness:.05, transparent:true, opacity:.68})
 );
 sea.rotation.x = -Math.PI/2; sea.position.y = 0; sea.receiveShadow = true;
 scene.add(sea);
@@ -50,12 +50,41 @@ const M = {
   vane: new THREE.MeshStandardMaterial({color:'#20282c', roughness:.55, metalness:.3, side:THREE.DoubleSide}),
   gpsBlue: new THREE.MeshStandardMaterial({color:'#244d75', roughness:.35, metalness:.25}),
   battery: new THREE.MeshStandardMaterial({color:'#1f3d2b', roughness:.55, metalness:.15}),
+  rope: new THREE.MeshStandardMaterial({color:'#b58d55', roughness:.8, metalness:.05}),
+  anchor: new THREE.MeshStandardMaterial({color:'#272d31', roughness:.7, metalness:.55}),
+  glass: new THREE.MeshStandardMaterial({color:'#8fc9dc', roughness:.2, metalness:.05, transparent:true, opacity:.28}),
 };
 function mesh(geo, mat, x=0, y=0, z=0, name=''){
   const m = new THREE.Mesh(geo, mat);
   m.position.set(x, y, z); m.castShadow = true; m.receiveShadow = true;
   if(name) m.name = name;
   return m;
+}
+function strut(a, b, r, mat, name=''){
+  const va = new THREE.Vector3(...a), vb = new THREE.Vector3(...b);
+  const dir = vb.clone().sub(va), len = dir.length();
+  const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, len, 8), mat);
+  m.position.copy(va).addScaledVector(dir, 0.5);
+  m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0), dir.normalize());
+  m.castShadow = true; m.receiveShadow = true;
+  if(name) m.name = name;
+  return m;
+}
+function chainBetween(a, b, count, radius=0.030){
+  const g = new THREE.Group();
+  g.name = 'VISIBLE_MOORING_CHAIN_LINKS';
+  const va = new THREE.Vector3(...a), vb = new THREE.Vector3(...b);
+  const dir = vb.clone().sub(va);
+  const q = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0,1,0), dir.clone().normalize());
+  for(let i=0;i<count;i++){
+    const link = mesh(new THREE.TorusGeometry(radius, 0.006, 8, 18), M.chain, 0, 0, 0, 'CHAIN_LINK');
+    link.position.copy(va).addScaledVector(dir, (i+0.5)/count);
+    link.quaternion.copy(q);
+    link.rotateX(Math.PI/2);
+    if(i%2) link.rotateY(Math.PI/2);
+    g.add(link);
+  }
+  return g;
 }
 
 const buoy = new THREE.Group();
@@ -81,11 +110,27 @@ for(let i=0;i<12;i++){
   const a = (i/12)*Math.PI*2;
   buoy.add(mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.02, 8), M.steel, Math.cos(a)*0.36, 0.334, Math.sin(a)*0.36, 'DECK_BOLT'));
 }
-// Mooring eye + chain stub below the hull.
+// Mooring eye, keel ballast, and a visible chain/anchor study below the hull.
 const eye = mesh(new THREE.TorusGeometry(0.045, 0.012, 8, 20), M.chain, 0, -0.27, 0, 'MOORING_EYE');
 buoy.add(eye);
-const chainStub = mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.22, 10), M.chain, 0, -0.40, 0, 'MOORING_CHAIN_STUB');
-buoy.add(chainStub);
+const keel = mesh(new THREE.CylinderGeometry(0.16, 0.20, 0.12, 24), M.anchor, 0, -0.32, 0, 'LOW_KEEL_BALLAST');
+buoy.add(keel);
+const fairlead = mesh(new THREE.TorusGeometry(0.055, 0.010, 8, 20), M.chain, 0.16, -0.21, 0.18, 'SIDE_FAIRLEAD');
+fairlead.rotation.y = Math.PI/4;
+buoy.add(fairlead);
+buoy.add(strut([0.02,-0.31,0.02],[0.16,-0.23,0.18],0.007,M.rope,'SHORT_BRIDLE_TO_FAIRLEAD'));
+const mooring = new THREE.Group();
+mooring.name = 'MOORING_CHAIN_AND_ANCHOR_STUDY';
+mooring.add(chainBetween([0.16,-0.24,0.18],[0.46,-0.76,0.56],9,0.026));
+mooring.add(strut([0.46,-0.76,0.56],[0.66,-0.98,0.82],0.010,M.rope,'SCOPE_ROPE_TO_ANCHOR'));
+const anchorBlock = mesh(new THREE.BoxGeometry(0.34,0.10,0.24), M.anchor, 0.72, -1.03, 0.90, 'CONCRETE_OR_DEADWEIGHT_ANCHOR');
+anchorBlock.rotation.y = 0.35;
+mooring.add(anchorBlock);
+const anchorEye = mesh(new THREE.TorusGeometry(0.045,0.010,8,18), M.chain, 0.59, -0.96, 0.80, 'ANCHOR_EYE');
+anchorEye.rotation.y = Math.PI/2;
+mooring.add(anchorEye);
+mooring.add(mesh(new THREE.BoxGeometry(0.46,0.012,0.012), M.anchor, 0.72, -0.94, 0.90, 'ANCHOR_STOCK'));
+buoy.add(mooring);
 
 // --- Pressure stilling tube on the hull side (open top above waterline).
 const still = mesh(new THREE.CylinderGeometry(0.026, 0.026, 0.42, 14, 1, true), M.steel, 0.45, -0.04, 0.12, 'PRESSURE_STILLING_TUBE');
@@ -115,7 +160,7 @@ for(let k=0;k<4;k++){
   face.add(frame, panel);
   solarGroup.add(face);
 }
-// Top cap plate + dark GPS puck + LTE/Wi-Fi antenna + heartbeat LED.
+// Top cap plate + dark GPS puck + LTE/Wi-Fi antenna + heartbeat LED. Only external fittings are shown; battery/ESP32 stay inside.
 const TOP_Y = HOUS_Y + HOUS_H;
 const plate = mesh(new THREE.BoxGeometry(0.25, 0.025, 0.25), M.deck, 0, TOP_Y + 0.012, 0, 'TOP_PLATE');
 buoy.add(plate);
@@ -167,11 +212,17 @@ const vaneNose = mesh(new THREE.ConeGeometry(0.014, 0.050, 10), M.brass, 0, 0.01
 vaneNose.rotation.x = Math.PI/2;
 vane.add(vaneNose);
 
-// Visual cutaway hints for internal battery/power bay and offline buffer.
-const battery = mesh(new THREE.BoxGeometry(0.18, 0.055, 0.11), M.battery, -0.12, 0.36, -0.12, 'INTERNAL_BATTERY_SOLAR_POWER_BAY');
+// Sealed service bay hints: transparent window on housing, with battery/buffer tucked inside.
+const serviceWindow = mesh(new THREE.BoxGeometry(0.16, 0.10, 0.008), M.glass, -0.18, HOUS_CY - 0.01, -0.18, 'SERVICE_WINDOW_TO_INTERNAL_ELECTRONICS');
+serviceWindow.rotation.y = Math.PI/4;
+buoy.add(serviceWindow);
+const battery = mesh(new THREE.BoxGeometry(0.13, 0.045, 0.08), M.battery, -0.045, HOUS_CY - 0.035, -0.055, 'INTERNAL_BATTERY_SOLAR_POWER_BAY');
 buoy.add(battery);
-const bufferCard = mesh(new THREE.BoxGeometry(0.065, 0.012, 0.050), M.dark, 0.12, 0.35, -0.14, 'MICROSD_OR_FLASH_BUFFER');
+const bufferCard = mesh(new THREE.BoxGeometry(0.050, 0.010, 0.036), M.dark, 0.045, HOUS_CY - 0.025, -0.060, 'MICROSD_OR_FLASH_BUFFER_INSIDE_HOUSING');
 buoy.add(bufferCard);
+for(const gx of [-0.19,-0.14]){
+  buoy.add(mesh(new THREE.CylinderGeometry(0.010,0.010,0.022,10), M.frame, gx, HOUS_Y + 0.025, -0.20, 'SEALED_CABLE_GLAND'));
+}
 
 // --- Camera orbit (manual, no extra addon dependency).
 // HUD views on this page: orbit / cloud / solar / below.
@@ -180,6 +231,7 @@ const views = {
   wind: {yaw:0.52, pitch:0.12, dist:1.45, focus:[WMAST_X,WMAST_BASE+WMAST_H,WMAST_Z]},
   cloud: {yaw:0.4, pitch:0.10, dist:1.6, focus:[ANT_X,ANT_BASE+ANT_H-0.1,ANT_Z]},
   solar: {yaw:0.7, pitch:0.12, dist:1.8, focus:[0,HOUS_CY,0.05]},
+  mooring: {yaw:3.6, pitch:-0.35, dist:2.3, focus:[0.45,-0.62,0.58]},
   below: {yaw:3.6, pitch:-0.25, dist:2.1, focus:[0.14,-0.10,0]},
 };
 let yaw = views.orbit.yaw, pitch = views.orbit.pitch, dist = views.orbit.dist;

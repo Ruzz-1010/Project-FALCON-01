@@ -30,7 +30,7 @@ rim.position.set(4, 2, -5); scene.add(rim);
 // Sea plane (visual only, no measurement claim).
 const sea = new THREE.Mesh(
   new THREE.PlaneGeometry(120, 120, 60, 60),
-  new THREE.MeshStandardMaterial({color:'#0e3a47', roughness:.85, metalness:.05, transparent:true, opacity:.96})
+  new THREE.MeshStandardMaterial({color:'#0e3a47', roughness:.85, metalness:.05, transparent:true, opacity:.68})
 );
 sea.rotation.x = -Math.PI/2; sea.position.y = 0; sea.receiveShadow = true;
 scene.add(sea);
@@ -50,6 +50,9 @@ const M = {
   chain: new THREE.MeshStandardMaterial({color:'#3a3f42', roughness:.6, metalness:.6}),
   gpsBlue: new THREE.MeshStandardMaterial({color:'#244d75', roughness:.35, metalness:.25}),
   battery: new THREE.MeshStandardMaterial({color:'#1f3d2b', roughness:.55, metalness:.15}),
+  rope: new THREE.MeshStandardMaterial({color:'#b58d55', roughness:.8, metalness:.05}),
+  anchor: new THREE.MeshStandardMaterial({color:'#272d31', roughness:.7, metalness:.55}),
+  glass: new THREE.MeshStandardMaterial({color:'#8fc9dc', roughness:.2, metalness:.05, transparent:true, opacity:.28}),
 };
 function mesh(geo, mat, x=0, y=0, z=0, name=''){
   const m = new THREE.Mesh(geo, mat);
@@ -67,6 +70,22 @@ function strut(a, b, r, mat, name=''){
   m.castShadow = true; m.receiveShadow = true;
   if(name) m.name = name;
   return m;
+}
+function chainBetween(a, b, count, radius=0.030){
+  const g = new THREE.Group();
+  g.name = 'VISIBLE_MOORING_CHAIN_LINKS';
+  const va = new THREE.Vector3(...a), vb = new THREE.Vector3(...b);
+  const dir = vb.clone().sub(va);
+  const q = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0,1,0), dir.clone().normalize());
+  for(let i=0;i<count;i++){
+    const link = mesh(new THREE.TorusGeometry(radius, 0.006, 8, 18), M.chain, 0, 0, 0, 'CHAIN_LINK');
+    link.position.copy(va).addScaledVector(dir, (i+0.5)/count);
+    link.quaternion.copy(q);
+    link.rotateX(Math.PI/2);
+    if(i%2) link.rotateY(Math.PI/2);
+    g.add(link);
+  }
+  return g;
 }
 
 const buoy = new THREE.Group();
@@ -126,14 +145,19 @@ for(const sz of [-0.25, 0.19]){
 }
 buoy.add(roofFrame);
 
-// Required GPS/security puck and internal power/buffer hints.
+// Required GPS/security puck and sealed cabinet power/buffer hints.
 const gps = mesh(new THREE.CylinderGeometry(0.045, 0.050, 0.030, 18), M.gpsBlue, -0.22, CAB_TOP + 0.18, 0.14, 'REQUIRED_GPS_POSITION_SECURITY_PUCK');
 buoy.add(gps);
 const gpsRing = mesh(new THREE.TorusGeometry(0.052, 0.005, 8, 18), M.brass, -0.22, CAB_TOP + 0.198, 0.14, 'GPS_LABEL_RING');
 gpsRing.rotation.x = Math.PI/2;
 buoy.add(gpsRing);
-buoy.add(mesh(new THREE.BoxGeometry(0.20, 0.055, 0.13), M.battery, -0.11, CAB_Y - 0.02, -0.04, 'INTERNAL_BATTERY_SOLAR_POWER_BAY'));
-buoy.add(mesh(new THREE.BoxGeometry(0.070, 0.014, 0.050), M.dark, 0.14, CAB_Y - 0.02, -0.05, 'MICROSD_OR_FLASH_BUFFER'));
+const serviceWindow = mesh(new THREE.BoxGeometry(0.22, 0.12, 0.008), M.glass, -0.02, CAB_Y + 0.01, 0.187, 'SERVICE_WINDOW_TO_INTERNAL_ELECTRONICS');
+buoy.add(serviceWindow);
+buoy.add(mesh(new THREE.BoxGeometry(0.16, 0.045, 0.09), M.battery, -0.11, CAB_Y - 0.02, -0.04, 'INTERNAL_BATTERY_SOLAR_POWER_BAY'));
+buoy.add(mesh(new THREE.BoxGeometry(0.056, 0.012, 0.040), M.dark, 0.12, CAB_Y - 0.02, -0.05, 'MICROSD_OR_FLASH_BUFFER_INSIDE_CABINET'));
+for(const gx of [-0.10,0.0,0.10]){
+  buoy.add(mesh(new THREE.CylinderGeometry(0.011,0.011,0.026,10), M.frame, gx, CAB_Y - CAB_H/2 + 0.05, 0.195, 'SEALED_CABLE_GLAND'));
+}
 
 // --- Red topmark light on a finial stub at the panel front edge.
 const beaconStub = mesh(new THREE.CylinderGeometry(0.014, 0.014, 0.09, 10), M.frame, 0, CAB_TOP + 0.06, 0.20, 'BEACON_STUB');
@@ -193,26 +217,46 @@ const whipTip = mesh(new THREE.SphereGeometry(0.012, 10, 8), M.brass, 0.48, 0.69
 buoy.add(whipTip);
 
 // --- Pressure sensor hung between the hulls (protected + easy service).
-const dropCable = mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.35, 8), M.chain, 0, 0.10, 0.10, 'SENSOR_DROP_CABLE');
+const stillingBar = mesh(new THREE.BoxGeometry(0.42,0.026,0.026), M.frame, 0, 0.13, 0.10, 'PRESSURE_SENSOR_SUPPORT_BAR');
+buoy.add(stillingBar);
+const dropCable = mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.36, 8), M.chain, 0, -0.05, 0.10, 'SENSOR_DROP_CABLE');
 buoy.add(dropCable);
-const psens = mesh(new THREE.CylinderGeometry(0.035, 0.035, 0.14, 14), M.dark, 0, -0.14, 0.10, 'WATER_PRESSURE_SENSOR');
+const psens = mesh(new THREE.CylinderGeometry(0.035, 0.035, 0.14, 14), M.dark, 0, -0.28, 0.10, 'WATER_PRESSURE_SENSOR');
 buoy.add(psens);
-// --- Bow mooring eye + chain stub (bridle point for a single anchor line).
+const sensorGuard = new THREE.Group();
+sensorGuard.name = 'PRESSURE_SENSOR_GUARD_CAGE';
+for(const sx of [-0.08,0.08]) sensorGuard.add(strut([sx,-0.08,0.04],[sx,-0.36,0.04],0.006,M.frame,'GUARD_POST'));
+for(const sx of [-0.08,0.08]) sensorGuard.add(strut([sx,-0.08,0.16],[sx,-0.36,0.16],0.006,M.frame,'GUARD_POST'));
+sensorGuard.add(strut([-0.08,-0.36,0.04],[0.08,-0.36,0.04],0.006,M.frame,'GUARD_BOTTOM'));
+sensorGuard.add(strut([-0.08,-0.36,0.16],[0.08,-0.36,0.16],0.006,M.frame,'GUARD_BOTTOM'));
+buoy.add(sensorGuard);
+// --- Bow bridle, visible chain, and anchor/deadweight study.
 buoy.add(mesh(new THREE.BoxGeometry(0.06, 0.05, 0.20), M.frame, 0, 0.12, 0.50, 'BOW_SPRIT'));
 const bowEye = mesh(new THREE.TorusGeometry(0.05, 0.013, 8, 20), M.chain, 0, 0.12, 0.60, 'BOW_MOORING_EYE');
+bowEye.rotation.y = Math.PI/2;
 buoy.add(bowEye);
 for(const sx of [-0.42, 0.42]){
-  buoy.add(strut([sx, 0.0, 0.72], [0, 0.12, 0.60], 0.010, M.chain, 'BRIDLE_LINE'));
+  buoy.add(strut([sx, 0.0, 0.64], [0, 0.12, 0.60], 0.010, M.rope, 'TWIN_HULL_BRIDLE_LINE'));
 }
-const chainStub = mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.30, 10), M.chain, 0, -0.05, 0.62, 'MOORING_CHAIN_STUB');
-chainStub.rotation.x = 0.5;
-buoy.add(chainStub);
+const mooring = new THREE.Group();
+mooring.name = 'MOORING_CHAIN_AND_ANCHOR_STUDY';
+mooring.add(chainBetween([0,0.06,0.62],[0.16,-0.62,0.96],10,0.028));
+mooring.add(strut([0.16,-0.62,0.96],[0.34,-1.00,1.22],0.011,M.rope,'SCOPE_ROPE_TO_ANCHOR'));
+const anchorBlock = mesh(new THREE.BoxGeometry(0.42,0.11,0.28), M.anchor, 0.40, -1.05, 1.30, 'CONCRETE_OR_DEADWEIGHT_ANCHOR');
+anchorBlock.rotation.y = -0.25;
+mooring.add(anchorBlock);
+const anchorEye = mesh(new THREE.TorusGeometry(0.050,0.011,8,18), M.chain, 0.24, -0.98, 1.13, 'ANCHOR_EYE');
+anchorEye.rotation.y = Math.PI/2;
+mooring.add(anchorEye);
+mooring.add(mesh(new THREE.BoxGeometry(0.54,0.012,0.012), M.anchor, 0.40, -0.96, 1.30, 'ANCHOR_STOCK'));
+buoy.add(mooring);
 
 // --- Camera orbit (manual, no extra addon dependency).
 const views = {
   orbit: {yaw:0.7, pitch:0.12, dist:4.4, focus:[0,0.45,0]},
   wind: {yaw:0.3, pitch:0.08, dist:1.9, focus:[WMAST_X,ROTOR_Y-0.12,WMAST_Z]},
   solar: {yaw:0.7, pitch:0.12, dist:2.4, focus:[0,CAB_TOP+0.10,0]},
+  mooring: {yaw:3.3, pitch:-0.34, dist:3.2, focus:[0.22,-0.62,0.92]},
   below: {yaw:3.6, pitch:-0.25, dist:2.8, focus:[0,-0.20,0.15]},
 };
 let yaw = views.orbit.yaw, pitch = views.orbit.pitch, dist = views.orbit.dist;
