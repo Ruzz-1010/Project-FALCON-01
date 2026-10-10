@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="FALCON Lite Option B — spar/can buoy preview. Slim PVC tube, collar float, single rack panel. Proposed only, not validated.">
-  <title>FALCON Lite Option B — Spar Buoy Preview (Proposed)</title>
+  <meta name="description" content="FALCON Lite Option B — twin-float catamaran preview. Deck platform, panel roof, protected sensor well. Proposed only, not validated.">
+  <title>FALCON Lite Option B — Catamaran Preview (Proposed)</title>
   <style>
     :root{color-scheme:dark;--bg:#08141b;--panel:#0e212c;--line:#1e3a47;--txt:#d7e7ee;--dim:#8fb0bd;--gold:#d8a94e}
     *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font:14px/1.5 system-ui,sans-serif}
@@ -29,35 +29,35 @@
 </head>
 <body>
 <header>
-  <h1>Option B — Spar/can buoy preview</h1>
-  <p>Slim PVC tube · collar float · single rack panel · drag to orbit · wheel to zoom</p>
+  <h1>Option B — Catamaran preview</h1>
+  <p>Twin floats · deck platform · panel roof · drag to orbit · wheel to zoom</p>
 </header>
-<nav class="opts"><a href="./lite-buoy.html">OPTION A · DRUM-BUOY</a><a class="here" href="./lite-buoy-spar.html">OPTION B · SPAR (this page)</a></nav>
+<nav class="opts"><a href="./lite-buoy.html">REVISED MAIN · COMPACT CAN</a><a class="here" href="./lite-buoy-spar.html">OPTION B · CATAMARAN (this page)</a></nav>
 <p class="warn"><strong>PROPOSED REPLACEMENT PROTOTYPE</strong> — geometry is illustrative only. Not final, not fabrication-ready, not field-validated. Acceptance per <code>docs/PROTOTYPE_REDESIGN_BASELINE.md</code> still applies.</p>
 <main>
-  <div id="stage"><div id="hud"><button data-view="orbit">Overview</button><button data-view="wind">Wind head</button><button data-view="solar">Solar rack</button><button data-view="below">Keel / mooring</button></div><div id="tip">V2 presentation model untouched — this page is a separate Lite study.</div></div>
+  <div id="stage"><div id="hud"><button data-view="orbit">Overview</button><button data-view="wind">Wind mast</button><button data-view="solar">Panel roof</button><button data-view="below">Sensor + mooring</button></div><div id="tip">V2 presentation model untouched — this page is a separate Lite study.</div></div>
   <aside>
-    <h2>Why a spar (vs Option A drum)</h2>
+    <h2>Why a catamaran (vs the can)</h2>
     <ul>
-      <li>Cheapest hull <small>off-the-shelf Ø250mm PVC pipe + fittings, no molding</small></li>
-      <li>Single 40W panel as cabinet roof <small>tilted 12°, rails only — no heavy frame</small></li>
-      <li>Small collar float + bottom ballast <small>self-righting spar behavior</small></li>
-      <li>Trade-off: taller profile, needs ballast + stability calc <small>best for calm barangay waters</small></li>
+      <li>Two pontoon floats + deck <small>off-the-shelf pipe/fittings, no molding, wide stable stance</small></li>
+      <li>Single 40W panel as cabinet roof <small>tilted 10°, rails only — no heavy frame</small></li>
+      <li>Pressure sensor hangs between hulls <small>protected from slap, easy to service</small></li>
+      <li>Trade-off: wider to transport, more fasteners <small>best where stability matters most</small></li>
     </ul>
-    <h2>Sensor placement (same fixes as A)</h2>
+    <h2>Sensor placement</h2>
     <ul>
-      <li>Rotor on a slim Ø36mm mast <small>hub straight on the pole — no fat tube in the rotor plane</small></li>
+      <li>Wind mast at the deck rear <small>slim Ø36mm pole, hub straight on top — clean airflow</small></li>
       <li>3 open cups Ø130mm, Ø600mm spacing <small>was 200mm / Ø880mm</small></li>
       <li>Wind vane 150mm below rotor <small>speed + direction</small></li>
-      <li>GPS puck + LoRa + controller internal <small>illustrative — clean topside per reference</small></li>
-      <li>Whip + LoRa SMA stub on rack <small>kept clear of the rotor plane</small></li>
+      <li>Electronics inside the cabinet <small>illustrative — clean deck, short wiring</small></li>
+      <li>Whip on the wind mast <small>kept below the rotor plane</small></li>
     </ul>
     <h2>Planning cost (from deck)</h2>
     <table>
       <tr><td>Sensors + embedded (Bar02, budget wind/GPS)</td><td>₱13–18k</td></tr>
       <tr><td>Bay Station: refurb/borrowed PC, LoRa RX, no SIM</td><td>₱4–7k</td></tr>
       <tr><td>Small panel + 12Ah LiFePO4 + PWM (event-driven TX)</td><td>₱7–11k</td></tr>
-      <tr><td>Spar tube + collar + ballast</td><td>₱6–8k</td></tr>
+      <tr><td>Twin pontoons + deck + cabinet</td><td>₱6–8k</td></tr>
       <tr><td>Light mooring + protection</td><td>₱3–5k</td></tr>
       <tr><td>Calibration (borrowed ref) + trial</td><td>₱5–8k</td></tr>
       <tr><td>Transport + spares + thin contingency</td><td>₱7–8k</td></tr>
