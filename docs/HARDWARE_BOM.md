@@ -2,7 +2,7 @@
 
 
 <!-- FALCON-DOST-REVISION-NOTE:START -->
-> **Current revision note (2026-10-10):** Use the DOST major revision baseline in [`docs/REVISION_2026-10-10.md`](REVISION_2026-10-10.md) unless this file is explicitly archived. The active design is a compact single-tube / small-buoy, ESP32-based, event-driven, cloud-first system. LoRa, large Bay Station hardware, tall tower layouts, and continuous every-second uploads are legacy or optional fallback assumptions.
+> **Current revision note (2026-10-10):** Use the DOST major revision baseline in [`docs/REVISION_2026-10-10.md`](REVISION_2026-10-10.md) unless this file is explicitly archived. The active proposal core is a compact ESP32-based buoy with **water pressure sensing, wind speed/direction sensing, GPS for exact position and security, battery + solar power, and Wi-Fi/LTE internet communication**. LoRa, large Bay Station hardware, tall tower layouts, and continuous every-second uploads are legacy or optional fallback assumptions.
 <!-- FALCON-DOST-REVISION-NOTE:END -->
 
 > This is a planning BOM, not a fabrication release. Reconfirm quantities, dimensions, connector variants, cable lengths, brackets, enclosure parts, ballast, and solar mounting hardware after the replacement prototype is approved.
@@ -20,7 +20,7 @@ markup. Confirm the live exchange rate, stock, revision, and ratings before orde
 | 1 | Low-range submersible 4–20 mA pressure transmitter | PHP 1,690–4,278 | Preferred field option; written seawater/material confirmation required |
 | 1 | ADS1115 plus 150 ohm precision shunt | PHP 200–600 | Current-loop interface; include protection and calibration points |
 | 1 | MPU6050/GY-521 | PHP 533–923 | Movement/tilt event input; threshold tuning required |
-| 0–1 | Pulse-output cup anemometer | PHP 1,350–2,500 | Optional wind channel; calibrate before claiming accuracy |
+| 1 | Pulse-output cup anemometer | PHP 1,350–2,500 | Required wind-speed channel; calibrate before claiming accuracy |
 
 ## Supporting Telemetry and Control
 
@@ -28,13 +28,13 @@ These items support operation, power validation, and security. They are not addi
 
 | Qty | Selected item | Budget | Procurement note |
 | ---: | --- | ---: | --- |
-| 0–1 | NEO-6M GPS module | PHP 208–598 | Supporting position/time/geofence telemetry; omit from bench-only build if not required |
+| 1 | NEO-6M GPS module | PHP 208–598 | Required position/security telemetry; bench tests may simulate GPS only when the actual module is unavailable |
 | 1 | INA219 power monitor | PHP 116–250 | Supporting battery/current telemetry; voltage divider is a lower-cost fallback |
 | 0–1 | DS18B20 waterproof probe | PHP 65–180 | Optional water-temperature context only |
 | 0–1 | Magnetic reed/contact switch | PHP 95–200 | Enclosure security input |
 | 0–1 | Buzzer and driver/protection | PHP 100–500 | Optional local alert output |
 | 1 | A7670E or SIM7600 4G/LTE board + antenna/SIM | PHP 1,100–4,500 | Required for remote cloud path; freeze after coverage, data-plan, interface, antenna and reconnect tests |
-| 0–1 | Wi-Fi access point | Existing or PHP 1,000–2,500 | Laboratory/near-shore path only |
+| 1 | Wi-Fi access point or LTE/4G internet module | Existing or PHP 1,000–2,500 | Required internet path: Wi-Fi for lab/near-shore tests or LTE/4G for remote cloud upload |
 | 0–1 | microSD module + 8–32 GB card | PHP 250–700 | Local outage buffer; ESP32 flash is a lower-cost short-buffer fallback |
 | 0–1 | Enclosure fan/auxiliary cooling | TBD after thermal test | Include only if the buoy electronics enclosure demonstrates a measured need |
 

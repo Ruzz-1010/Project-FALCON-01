@@ -2,7 +2,7 @@
 
 
 <!-- FALCON-DOST-REVISION-NOTE:START -->
-> **Current revision note (2026-10-10):** Use the DOST major revision baseline in [`docs/REVISION_2026-10-10.md`](REVISION_2026-10-10.md) unless this file is explicitly archived. The active design is a compact single-tube / small-buoy, ESP32-based, event-driven, cloud-first system. LoRa, large Bay Station hardware, tall tower layouts, and continuous every-second uploads are legacy or optional fallback assumptions.
+> **Current revision note (2026-10-10):** Use the DOST major revision baseline in [`docs/REVISION_2026-10-10.md`](REVISION_2026-10-10.md) unless this file is explicitly archived. The active proposal core is a compact ESP32-based buoy with **water pressure sensing, wind speed/direction sensing, GPS for exact position and security, battery + solar power, and Wi-Fi/LTE internet communication**. LoRa, large Bay Station hardware, tall tower layouts, and continuous every-second uploads are legacy or optional fallback assumptions.
 <!-- FALCON-DOST-REVISION-NOTE:END -->
 
 > The enclosure and component placement are under DOST revision. Orange Pi/mini-PC placement is obsolete: the buoy contains ESP32, sensors/interfaces, power, local buffering, and Wi-Fi or LTE/4G for the selected cloud path. LoRa is fallback/legacy only. Do not use older large Bay Station wiring for fabrication or harness-length decisions.

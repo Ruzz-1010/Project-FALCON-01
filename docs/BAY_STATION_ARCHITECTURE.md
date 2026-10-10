@@ -2,7 +2,7 @@
 
 
 <!-- FALCON-DOST-REVISION-NOTE:START -->
-> **Current revision note (2026-10-10):** Use the DOST major revision baseline in [`docs/REVISION_2026-10-10.md`](REVISION_2026-10-10.md) unless this file is explicitly archived. The active design is a compact single-tube / small-buoy, ESP32-based, event-driven, cloud-first system. LoRa, large Bay Station hardware, tall tower layouts, and continuous every-second uploads are legacy or optional fallback assumptions.
+> **Current revision note (2026-10-10):** Use the DOST major revision baseline in [`docs/REVISION_2026-10-10.md`](REVISION_2026-10-10.md) unless this file is explicitly archived. The active proposal core is a compact ESP32-based buoy with **water pressure sensing, wind speed/direction sensing, GPS for exact position and security, battery + solar power, and Wi-Fi/LTE internet communication**. LoRa, large Bay Station hardware, tall tower layouts, and continuous every-second uploads are legacy or optional fallback assumptions.
 <!-- FALCON-DOST-REVISION-NOTE:END -->
 
 Authority: `PROJECT_CONTEXT.md` and the revised BOM in `THESIS DOCUMENTATION/FALCON Revised Event Driven BOM and Sensor Options.docx`.
@@ -20,7 +20,7 @@ No mini PC, LoRa gateway, database server, or AI runtime is installed on the buo
 
 ## Buoy responsibilities
 
-- Acquire timestamped pressure and approved optional wind, GPS, power, health, and security signals.
+- Acquire timestamped pressure and approved wind, GPS/security, power, health, and internet-status signals.
 - Sample locally at the selected rate and calculate short-window summaries.
 - Detect significant pressure or movement changes, displacement, tamper, low battery, sensor faults, and connection recovery.
 - Frame versioned event and summary telemetry with a unique packet identifier.

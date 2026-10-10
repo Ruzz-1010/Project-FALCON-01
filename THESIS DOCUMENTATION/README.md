@@ -2,7 +2,7 @@
 
 
 <!-- FALCON-DOST-REVISION-NOTE:START -->
-> **Current revision note (2026-10-10):** Use the DOST major revision baseline in [`docs/REVISION_2026-10-10.md`](../docs/REVISION_2026-10-10.md) unless this file is explicitly archived. The active design is a compact single-tube / small-buoy, ESP32-based, event-driven, cloud-first system. LoRa, large Bay Station hardware, tall tower layouts, and continuous every-second uploads are legacy or optional fallback assumptions.
+> **Current revision note (2026-10-10):** Use the DOST major revision baseline in [`docs/REVISION_2026-10-10.md`](../docs/REVISION_2026-10-10.md) unless this file is explicitly archived. The active proposal core is a compact ESP32-based buoy with **water pressure sensing, wind speed/direction sensing, GPS for exact position and security, battery + solar power, and Wi-Fi/LTE internet communication**. LoRa, large Bay Station hardware, tall tower layouts, and continuous every-second uploads are legacy or optional fallback assumptions.
 <!-- FALCON-DOST-REVISION-NOTE:END -->
 
 ## Active revision 2026-10-10
@@ -50,5 +50,5 @@ dashboard, BNO085, load-cell, optional-AI, power, or prototype assumptions.
 - The cloud service performs storage, pressure-wave processing, optional prediction, API/dashboard hosting, and alerts. A development computer may temporarily host the service during bench work.
 - The dashboard has four primary pages: Overview, Buoy Motion, Sensors, and Logs & Alerts.
 - Simulator/build/test results are not physical accuracy, cellular reliability, AI accuracy, or deployment-readiness evidence.
-- The core minimum sensor is pressure-derived wave sensing. Wind speed/direction, GPS, power, timestamps, and security states are supporting or optional channels; water temperature and other environmental sensors are excluded from the low-cost minimum build.
+- The core proposal sensors/modules are water pressure, wind speed/direction, GPS position/security, battery/solar power monitoring, and internet communication. Water temperature and extra environmental sensors are excluded from the low-cost minimum build unless separately approved.
 - The preferred long-duration pressure candidate is the Holykell HPT604 Type A, provisionally 0–2 mH2O vented gauge with 4–20 mA output. Documented 4–20 mA, 0–5 V/0–10 V, RS485/Modbus, and marine digital alternatives remain under the same seawater, sealing, range, and calibration gates. Bar02 is bench-only.

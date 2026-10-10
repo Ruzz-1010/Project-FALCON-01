@@ -2,22 +2,27 @@
 
 
 <!-- FALCON-DOST-REVISION-NOTE:START -->
-> **Current revision note (2026-10-10):** Use the DOST major revision baseline in [`docs/REVISION_2026-10-10.md`](docs/REVISION_2026-10-10.md) unless this file is explicitly archived. The active design is a compact single-tube / small-buoy, ESP32-based, event-driven, cloud-first system. LoRa, large Bay Station hardware, tall tower layouts, and continuous every-second uploads are legacy or optional fallback assumptions.
+> **Current revision note (2026-10-10):** Use the DOST major revision baseline in [`docs/REVISION_2026-10-10.md`](docs/REVISION_2026-10-10.md) unless this file is explicitly archived. The active proposal core is a compact ESP32-based buoy with **water pressure sensing, wind speed/direction sensing, GPS for exact position and security, battery + solar power, and Wi-Fi/LTE internet communication**. LoRa, large Bay Station hardware, tall tower layouts, and continuous every-second uploads are legacy or optional fallback assumptions.
 <!-- FALCON-DOST-REVISION-NOTE:END -->
 
 ## Active design revision 2026-10-10
 
-The current direction is a smaller compact can-buoy with ESP32 local sampling, event-driven summaries and alerts, direct cloud connectivity through Wi-Fi for laboratory work or 4G/LTE for a remote trial, and a reduced battery selected from measured load. LoRa-primary and large Bay Station assumptions are historical unless explicitly marked otherwise.
+The current direction is a smaller compact can-buoy with ESP32 local sampling, water pressure sensing, wind speed/direction sensing, GPS position/security, battery + solar power, event-driven summaries and alerts, direct cloud connectivity through Wi-Fi for laboratory work or 4G/LTE for a remote trial, and a reduced battery selected from measured load. LoRa-primary and large Bay Station assumptions are historical unless explicitly marked otherwise.
 
 cd "/home/ruzz/Documents/PlatformIO/Projects/Project FALCON-01/edge"
 python3 -m falcon_edge.service
 
 **Fullbright College's AI-powered Live Coastal Observation Network**
 
-Project FALCON is a Phase 1 coastal monitoring buoy proposal focused on two primary measurements:
+Project FALCON is a Phase 1 coastal monitoring buoy proposal focused on five core subsystems:
 
-1. pressure-derived wave monitoring; and
-2. wind speed and direction monitoring, with optional short-term wave-height prediction research.
+1. pressure-derived wave/water behavior monitoring;
+2. wind speed and wind direction monitoring;
+3. GPS-based exact position and security/drift monitoring;
+4. battery and solar power monitoring; and
+5. Wi-Fi/LTE internet communication for cloud/dashboard reporting.
+
+Short-term wave-height prediction research remains a software-side analysis option and is not run as heavy processing on the buoy.
 
 The AI scope is limited to short-term wave-height prediction and sea-condition classification as **Calm**, **Moderate**, or **Rough**.
 

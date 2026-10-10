@@ -2,7 +2,7 @@
 
 
 <!-- FALCON-DOST-REVISION-NOTE:START -->
-> **Current revision note (2026-10-10):** Use the DOST major revision baseline in [`docs/REVISION_2026-10-10.md`](REVISION_2026-10-10.md) unless this file is explicitly archived. The active design is a compact single-tube / small-buoy, ESP32-based, event-driven, cloud-first system. LoRa, large Bay Station hardware, tall tower layouts, and continuous every-second uploads are legacy or optional fallback assumptions.
+> **Current revision note (2026-10-10):** Use the DOST major revision baseline in [`docs/REVISION_2026-10-10.md`](REVISION_2026-10-10.md) unless this file is explicitly archived. The active proposal core is a compact ESP32-based buoy with **water pressure sensing, wind speed/direction sensing, GPS for exact position and security, battery + solar power, and Wi-Fi/LTE internet communication**. LoRa, large Bay Station hardware, tall tower layouts, and continuous every-second uploads are legacy or optional fallback assumptions.
 <!-- FALCON-DOST-REVISION-NOTE:END -->
 
 Status: required adviser, supplier, and site-validation gate. `TBD` means not purchased or approved; it must not be presented as installed.
@@ -11,7 +11,7 @@ Status: required adviser, supplier, and site-validation gate. `TBD` means not pu
 | --- | --- | --- |
 | Pressure channel | Exact range, output, wetted materials, cable sealing, saltwater suitability, calibration certificate, supplier, price | Required; 4–20 mA preferred, 0–5 V/0–10 V/RS485 alternatives under review |
 | Movement channel | MPU6050 or equivalent, mounting, sample rate, threshold and calibration method | Required for event detection; exact part TBD |
-| Optional wind channel | Speed/direction sensor, range, output, reference instrument, price | Retain only if adviser confirms it remains in Phase 1 |
+| Required wind channel | Speed/direction sensor, range, output, reference instrument, price | Include in Phase 1 proposal; select low-cost or commercial option after budget approval |
 | Optional position channel | GPS module, fix quality, geofence radius, persistence, data-privacy controls | Supporting telemetry; exact part TBD |
 | Cellular Internet | 4G/LTE modem, supported bands, antenna, regulator, SIM/data plan, coverage and recurring cost | Required for remote field path; exact module/provider TBD |
 | Bench Internet | Wi-Fi access point and credentials | Approved laboratory path |

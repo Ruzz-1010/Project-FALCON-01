@@ -2,7 +2,7 @@
 
 
 <!-- FALCON-DOST-REVISION-NOTE:START -->
-> **Current revision note (2026-10-10):** Use the DOST major revision baseline in [`docs/REVISION_2026-10-10.md`](REVISION_2026-10-10.md) unless this file is explicitly archived. The active design is a compact single-tube / small-buoy, ESP32-based, event-driven, cloud-first system. LoRa, large Bay Station hardware, tall tower layouts, and continuous every-second uploads are legacy or optional fallback assumptions.
+> **Current revision note (2026-10-10):** Use the DOST major revision baseline in [`docs/REVISION_2026-10-10.md`](REVISION_2026-10-10.md) unless this file is explicitly archived. The active proposal core is a compact ESP32-based buoy with **water pressure sensing, wind speed/direction sensing, GPS for exact position and security, battery + solar power, and Wi-Fi/LTE internet communication**. LoRa, large Bay Station hardware, tall tower layouts, and continuous every-second uploads are legacy or optional fallback assumptions.
 <!-- FALCON-DOST-REVISION-NOTE:END -->
 
 Revision: 2.1
@@ -11,13 +11,13 @@ Status: event-driven cloud buoy baseline; not yet a fabrication or deployment re
 
 ## 1 Purpose
 
-This document defines a low-cost sensor scope for a smaller compact can-buoy. The ESP32 samples locally, calculates short-window summaries and event states, and transmits through Wi-Fi for laboratory work or 4G/LTE for a remote field trial. The core research signal is pressure-derived wave estimation. Wind, GPS, temperature, and security channels are supporting or optional channels and require adviser confirmation.
+This document defines a low-cost sensor scope for a smaller compact can-buoy. The ESP32 samples locally, calculates short-window summaries and event states, and transmits through Wi-Fi for laboratory work or 4G/LTE for a remote field trial. The core research signal is pressure-derived wave estimation. Wind and GPS/security are required core channels in the revised proposal. Temperature and tamper-only switches remain optional supporting channels.
 
 ## 2 System signal flow
 
 ```text
 Marine environment
-  -> pressure sensor and optional wind sensor
+  -> pressure sensor and required wind sensor
   -> protected interface
   -> ESP32 local sampling and event detection
   -> local flash/microSD buffer

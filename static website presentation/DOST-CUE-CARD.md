@@ -1,7 +1,7 @@
 # FALCON-01 — 1-Page Cue Card (Taglish, Pang-hawak)
 
 <!-- FALCON-DOST-REVISION-NOTE:START -->
-> **Current revision note (2026-10-10):** Use the DOST major revision baseline in [`docs/REVISION_2026-10-10.md`](../docs/REVISION_2026-10-10.md) unless this file is explicitly archived. The active design is a compact single-tube / small-buoy, ESP32-based, event-driven, cloud-first system. LoRa, large Bay Station hardware, tall tower layouts, and continuous every-second uploads are legacy or optional fallback assumptions.
+> **Current revision note (2026-10-10):** Use the DOST major revision baseline in [`docs/REVISION_2026-10-10.md`](../docs/REVISION_2026-10-10.md) unless this file is explicitly archived. The active proposal core is a compact ESP32-based buoy with **water pressure sensing, wind speed/direction sensing, GPS for exact position and security, battery + solar power, and Wi-Fi/LTE internet communication**. LoRa, large Bay Station hardware, tall tower layouts, and continuous every-second uploads are legacy or optional fallback assumptions.
 <!-- FALCON-DOST-REVISION-NOTE:END -->
 
 > Revision note 2026-10-10: use the smaller single-tube, event-driven cloud direction. Replace LoRa/Bay Station wording below with Wi-Fi for bench tests or 4G/LTE for a remote field path; summaries and alerts are uploaded from the ESP32 and buffered locally during outages.
@@ -13,7 +13,7 @@ Thesis line: *“Affordable, documented, locally-evaluable — integration, hind
 |---|---|---|
 | 0 Ocean | Click `Begin the journey ↓` | “Bawat barangay dito, desisyon malapit sa tubig — wala halos isang numerong sinusukat. Mahal at sarado ang commercial buoy, kaya walang data. Ito ang gap. FALCON-01, Fullbright College: isang maliit na buoy + cloud dashboard, lokal at transparent.” |
 | 1 Objectives | Open objectives list | “Phase 1 = integration + evaluation, hindi invention. 6 objectives: solar buoy, pressure+wind, wave estimate with calibration, event-driven cloud upload, evaluate lahat, AI vs baseline. Hindi tayo gagawa ng bagong sensor, buoy, o AI algorithm.” |
-| 2 Buoy | Click 1 pick (Pressure) → `← Back` | “Ito FALCON-01: ESP32, pressure, optional wind/GPS, battery+solar, local buffer, Wi-Fi for bench or 4G/LTE for field. Walang mini PC sa buoy — ESP32 lang ang controller. Bawat pyesa pinili dahil kayang bilhin, i-wire, at ayusin ng estudyante.” CAD note: legacy names, hindi V4.1. |
+| 2 Buoy | Click 1 pick (Pressure) → `← Back` | “Ito FALCON-01: ESP32, pressure, required wind/GPS, battery+solar, local buffer, Wi-Fi for bench or 4G/LTE for field. Walang mini PC sa buoy — ESP32 lang ang controller. Bawat pyesa pinili dahil kayang bilhin, i-wire, at ayusin ng estudyante.” CAD note: legacy names, hindi V4.1. |
 | 3 Sensors | Click Pressure → Wind | “Dalawa primary: pressure pang-alon, wind pang-hangin. GPS/power/security = supporting lang. Temp/salinity = out of scope, sinadya.” |
 | 4 ESP32 ✂ | Point sa frame | “ESP32 nagbabasa locally, nagti-timestamp, nagva-validate, gumagawa ng 1–5 minute summary, at nagpapadala agad kung may validated event. Ang quality flags ang mahalaga — may marka ang sirang reading, hindi tahimik na ipapadala.” |
 | 5 Event-driven Upload ★DEMO | `Interrupt Internet` → BUFFER ↑ → `Restore Internet` | “Buoy ESP32 → Wi-Fi/LTE → cloud/edge dashboard. Kapag walang internet, buffer muna with timestamps; pagbalik ng connection, upload queued summaries/events without duplicate records.” |
