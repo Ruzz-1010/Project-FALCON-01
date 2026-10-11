@@ -98,7 +98,7 @@ for(const sx of [-0.42, 0.42]){
   buoy.add(hull);
   // Deck beams tying each hull to the platform.
   for(const sz of [-0.35, 0.35]){
-    buoy.add(mesh(new THREE.BoxGeometry(0.30, 0.05, 0.08), M.frame, sx*0.72, 0.22, sz, 'DECK_BEAM'));
+    buoy.add(mesh(new THREE.BoxGeometry(0.30, 0.05, 0.08), M.frame, sx*0.72, 0.225, sz, 'DECK_BEAM'));
     // Support post: pontoon top (y=0.09) up into the beam — no floating deck.
     buoy.add(mesh(new THREE.BoxGeometry(0.06, 0.16, 0.06), M.frame, sx, 0.15, sz, 'HULL_POST'));
   }
@@ -114,7 +114,7 @@ for(const sz of [-0.485, 0.485]){
 }
 
 // --- Electronics cabinet amidships (ESP32, power board, battery monitor and buffer live inside it).
-const CAB_H = 0.24, CAB_Y = 0.31, CAB_TOP = CAB_Y + CAB_H/2;
+const CAB_H = 0.24, CAB_Y = 0.43, CAB_TOP = CAB_Y + CAB_H/2;
 const cabinet = mesh(new THREE.BoxGeometry(0.44, CAB_H, 0.36), M.cabinet, 0, CAB_Y, 0, 'INSTRUMENT_CABINET');
 buoy.add(cabinet);
 const cabTrim = mesh(new THREE.BoxGeometry(0.46, 0.03, 0.38), M.frame, 0, CAB_Y - CAB_H/2 + 0.015, 0, 'CABINET_BASE_TRIM');
@@ -151,6 +151,7 @@ buoy.add(gps);
 const gpsRing = mesh(new THREE.TorusGeometry(0.052, 0.005, 8, 18), M.brass, -0.22, CAB_TOP + 0.198, 0.14, 'GPS_LABEL_RING');
 gpsRing.rotation.x = Math.PI/2;
 buoy.add(gpsRing);
+buoy.add(mesh(new THREE.CylinderGeometry(0.012, 0.014, 0.34, 10), M.frame, -0.22, CAB_TOP + 0.005, 0.14, 'GPS_MAST'));
 const serviceWindow = mesh(new THREE.BoxGeometry(0.22, 0.12, 0.008), M.glass, -0.02, CAB_Y + 0.01, 0.187, 'SERVICE_WINDOW_TO_INTERNAL_ELECTRONICS');
 buoy.add(serviceWindow);
 buoy.add(mesh(new THREE.BoxGeometry(0.16, 0.045, 0.09), M.battery, -0.11, CAB_Y - 0.02, -0.04, 'INTERNAL_BATTERY_SOLAR_POWER_BAY'));
@@ -216,7 +217,7 @@ const whipTip = mesh(new THREE.SphereGeometry(0.012, 10, 8), M.brass, 0.48, 0.69
 buoy.add(whipTip);
 
 // --- Pressure sensor hung between the hulls (protected + easy service).
-const stillingBar = mesh(new THREE.BoxGeometry(0.42,0.026,0.026), M.frame, 0, 0.13, 0.10, 'PRESSURE_SENSOR_SUPPORT_BAR');
+const stillingBar = mesh(new THREE.BoxGeometry(0.72,0.026,0.026), M.frame, 0, 0.05, 0.10, 'PRESSURE_SENSOR_SUPPORT_BAR');
 buoy.add(stillingBar);
 const dropCable = mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.36, 8), M.chain, 0, -0.05, 0.10, 'SENSOR_DROP_CABLE');
 buoy.add(dropCable);
@@ -224,22 +225,20 @@ const psens = mesh(new THREE.CylinderGeometry(0.035, 0.035, 0.14, 14), M.dark, 0
 buoy.add(psens);
 const sensorGuard = new THREE.Group();
 sensorGuard.name = 'PRESSURE_SENSOR_GUARD_CAGE';
-for(const sx of [-0.08,0.08]) sensorGuard.add(strut([sx,-0.08,0.04],[sx,-0.36,0.04],0.006,M.frame,'GUARD_POST'));
-for(const sx of [-0.08,0.08]) sensorGuard.add(strut([sx,-0.08,0.16],[sx,-0.36,0.16],0.006,M.frame,'GUARD_POST'));
-sensorGuard.add(strut([-0.08,-0.36,0.04],[0.08,-0.36,0.04],0.006,M.frame,'GUARD_BOTTOM'));
-sensorGuard.add(strut([-0.08,-0.36,0.16],[0.08,-0.36,0.16],0.006,M.frame,'GUARD_BOTTOM'));
+for(const sx of [-0.08,0.08]) sensorGuard.add(strut([sx,0.05,0.10],[sx,-0.36,0.10],0.006,M.frame,'GUARD_POST'));
+sensorGuard.add(strut([-0.08,-0.36,0.10],[0.08,-0.36,0.10],0.006,M.frame,'GUARD_BOTTOM'));
 buoy.add(sensorGuard);
 // --- Bow bridle, visible chain, and anchor/deadweight study.
-buoy.add(mesh(new THREE.BoxGeometry(0.06, 0.05, 0.20), M.frame, 0, 0.12, 0.50, 'BOW_SPRIT'));
-const bowEye = mesh(new THREE.TorusGeometry(0.05, 0.013, 8, 20), M.chain, 0, 0.12, 0.60, 'BOW_MOORING_EYE');
+buoy.add(mesh(new THREE.BoxGeometry(0.06, 0.05, 0.20), M.frame, 0, 0.28, 0.55, 'BOW_SPRIT'));
+const bowEye = mesh(new THREE.TorusGeometry(0.05, 0.013, 8, 20), M.chain, 0, 0.26, 0.64, 'BOW_MOORING_EYE');
 bowEye.rotation.y = Math.PI/2;
 buoy.add(bowEye);
 for(const sx of [-0.42, 0.42]){
-  buoy.add(strut([sx, 0.0, 0.64], [0, 0.12, 0.60], 0.010, M.rope, 'TWIN_HULL_BRIDLE_LINE'));
+  buoy.add(strut([sx, 0.02, 0.64], [0, 0.26, 0.64], 0.010, M.rope, 'TWIN_HULL_BRIDLE_LINE'));
 }
 const mooring = new THREE.Group();
 mooring.name = 'MOORING_CHAIN_AND_ANCHOR_STUDY';
-mooring.add(chainBetween([0,0.06,0.62],[0.16,-0.62,0.96],10,0.028));
+mooring.add(chainBetween([0,0.22,0.66],[0.16,-0.62,0.96],10,0.028));
 mooring.add(strut([0.16,-0.62,0.96],[0.34,-1.00,1.22],0.011,M.rope,'SCOPE_ROPE_TO_ANCHOR'));
 const anchorBlock = mesh(new THREE.BoxGeometry(0.42,0.11,0.28), M.anchor, 0.40, -1.05, 1.30, 'CONCRETE_OR_DEADWEIGHT_ANCHOR');
 anchorBlock.rotation.y = -0.25;

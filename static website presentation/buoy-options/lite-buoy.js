@@ -117,14 +117,14 @@ const eye = mesh(new THREE.TorusGeometry(0.045, 0.012, 8, 20), M.chain, 0, -0.27
 buoy.add(eye);
 const keel = mesh(new THREE.CylinderGeometry(0.16, 0.20, 0.12, 24), M.anchor, 0, -0.32, 0, 'LOW_KEEL_BALLAST');
 buoy.add(keel);
-const fairlead = mesh(new THREE.TorusGeometry(0.055, 0.010, 8, 20), M.chain, 0.16, -0.21, 0.18, 'SIDE_FAIRLEAD');
+const fairlead = mesh(new THREE.TorusGeometry(0.055, 0.010, 8, 20), M.chain, 0.30, -0.16, 0.30, 'SIDE_FAIRLEAD');
 fairlead.rotation.y = Math.PI/4;
 buoy.add(fairlead);
-buoy.add(strut([0.02,-0.31,0.02],[0.16,-0.23,0.18],0.007,M.rope,'SHORT_BRIDLE_TO_FAIRLEAD'));
+buoy.add(strut([0.05,-0.30,0.05],[0.30,-0.18,0.30],0.007,M.rope,'SHORT_BRIDLE_TO_FAIRLEAD'));
 const mooring = new THREE.Group();
 mooring.name = 'MOORING_CHAIN_AND_ANCHOR_STUDY';
-mooring.add(chainBetween([0.16,-0.24,0.18],[0.46,-0.76,0.56],9,0.026));
-mooring.add(strut([0.46,-0.76,0.56],[0.66,-0.98,0.82],0.010,M.rope,'SCOPE_ROPE_TO_ANCHOR'));
+mooring.add(chainBetween([0.30,-0.20,0.30],[0.52,-0.72,0.60],9,0.026));
+mooring.add(strut([0.52,-0.72,0.60],[0.66,-0.98,0.82],0.010,M.rope,'SCOPE_ROPE_TO_ANCHOR'));
 const anchorBlock = mesh(new THREE.BoxGeometry(0.34,0.10,0.24), M.anchor, 0.72, -1.03, 0.90, 'CONCRETE_OR_DEADWEIGHT_ANCHOR');
 anchorBlock.rotation.y = 0.35;
 mooring.add(anchorBlock);
@@ -178,7 +178,7 @@ const antBand = mesh(new THREE.CylinderGeometry(0.011, 0.011, 0.05, 8), M.tipRed
 buoy.add(antBand);
 const antTip = mesh(new THREE.SphereGeometry(0.011, 10, 8), M.brass, ANT_X, ANT_BASE + ANT_H + 0.005, ANT_Z, 'ANTENNA_TIP');
 buoy.add(antTip);
-const led = mesh(new THREE.SphereGeometry(0.016, 10, 8), M.led, 0, HOUS_CY + 0.04, 0.192, 'HEARTBEAT_LED');
+const led = mesh(new THREE.SphereGeometry(0.016, 10, 8), M.led, 0, HOUS_CY + 0.04, 0.170, 'HEARTBEAT_LED');
 buoy.add(led);
 
 // --- Required compact wind speed + direction sensor on a short mast.
@@ -199,7 +199,7 @@ buoy.add(arrayUnit);
 arrayUnit.add(mesh(new THREE.BoxGeometry(0.055, 0.07, 0.055), M.dark, 0, 0.0, 0, 'ARRAY_POLE_CLAMP'));
 // White main body + sloped nose.
 arrayUnit.add(mesh(new THREE.BoxGeometry(0.24, 0.06, 0.09), M.arrayBody, 0, 0.075, 0, 'ARRAY_BODY'));
-const arrayNose = mesh(new THREE.BoxGeometry(0.07, 0.045, 0.075), M.arrayBody, 0, 0.065, 0.115, 'ARRAY_NOSE');
+const arrayNose = mesh(new THREE.BoxGeometry(0.07, 0.045, 0.075), M.arrayBody, 0, 0.065, 0.075, 'ARRAY_NOSE');
 arrayNose.rotation.x = 0.35;
 arrayUnit.add(arrayNose);
 // Small solar panel on the back.
@@ -232,7 +232,7 @@ vane.position.set(0, 0.02, -0.10);
 vane.name = 'REQUIRED_WIND_DIRECTION_VANE';
 arrayUnit.add(vane);
 vane.add(mesh(new THREE.BoxGeometry(0.008, 0.07, 0.11), M.vane, 0, 0, -0.065, 'VANE_FIN'));
-const vaneNose = mesh(new THREE.ConeGeometry(0.014, 0.06, 10), M.brass, 0, 0, 0.045, 'VANE_NOSE');
+const vaneNose = mesh(new THREE.ConeGeometry(0.014, 0.06, 10), M.brass, 0, 0, 0.02, 'VANE_NOSE');
 vaneNose.rotation.x = Math.PI/2;
 vane.add(vaneNose);
 // Louvered radiation shield stacked under the body front.
@@ -243,15 +243,15 @@ for(let i=0;i<4;i++){
 }
 
 // Sealed service bay hints: transparent window on housing, with battery/buffer tucked inside.
-const serviceWindow = mesh(new THREE.BoxGeometry(0.16, 0.10, 0.008), M.glass, -0.18, HOUS_CY - 0.01, -0.18, 'SERVICE_WINDOW_TO_INTERNAL_ELECTRONICS');
+const serviceWindow = mesh(new THREE.BoxGeometry(0.16, 0.10, 0.008), M.glass, -0.188, HOUS_CY - 0.01, -0.188, 'SERVICE_WINDOW_TO_INTERNAL_ELECTRONICS');
 serviceWindow.rotation.y = Math.PI/4;
 buoy.add(serviceWindow);
 const battery = mesh(new THREE.BoxGeometry(0.13, 0.045, 0.08), M.battery, -0.045, HOUS_CY - 0.035, -0.055, 'INTERNAL_BATTERY_SOLAR_POWER_BAY');
 buoy.add(battery);
 const bufferCard = mesh(new THREE.BoxGeometry(0.050, 0.010, 0.036), M.dark, 0.045, HOUS_CY - 0.025, -0.060, 'MICROSD_OR_FLASH_BUFFER_INSIDE_HOUSING');
 buoy.add(bufferCard);
-for(const gx of [-0.19,-0.14]){
-  buoy.add(mesh(new THREE.CylinderGeometry(0.010,0.010,0.022,10), M.frame, gx, HOUS_Y + 0.025, -0.20, 'SEALED_CABLE_GLAND'));
+for(const [gx,gz] of [[-0.28,-0.28],[-0.22,-0.30]]){
+  buoy.add(mesh(new THREE.CylinderGeometry(0.010,0.010,0.022,10), M.frame, gx, 0.345, gz, 'SEALED_CABLE_GLAND'));
 }
 
 // --- Camera orbit (manual, no extra addon dependency).
