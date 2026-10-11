@@ -169,7 +169,7 @@ buoy.add(gps);
 const gpsRing = mesh(new THREE.TorusGeometry(0.054, 0.005, 8, 20), M.brass, -0.085, TOP_Y + 0.059, 0.065, 'GPS_LABEL_RING');
 gpsRing.rotation.x = Math.PI/2;
 buoy.add(gpsRing);
-const ANT_X = 0.07, ANT_Z = -0.04, ANT_BASE = TOP_Y + 0.025, ANT_H = 0.30;
+const ANT_X = 0.095, ANT_Z = -0.055, ANT_BASE = TOP_Y + 0.025, ANT_H = 0.30;
 const ant = mesh(new THREE.CylinderGeometry(0.007, 0.010, ANT_H, 8), M.dark, ANT_X, ANT_BASE + ANT_H/2, ANT_Z, 'LTE_WIFI_ANTENNA');
 buoy.add(ant);
 const antBand = mesh(new THREE.CylinderGeometry(0.011, 0.011, 0.05, 8), M.tipRed, ANT_X, ANT_BASE + ANT_H - 0.03, ANT_Z, 'ANTENNA_TIP_BAND');
@@ -180,7 +180,7 @@ const led = mesh(new THREE.SphereGeometry(0.016, 10, 8), M.led, 0, HOUS_CY + 0.0
 buoy.add(led);
 
 // --- Required compact wind speed + direction sensor on a short mast.
-const WMAST_X = 0.14, WMAST_Z = 0.14, WMAST_BASE = TOP_Y + 0.018, WMAST_H = 0.42;
+const WMAST_X = 0, WMAST_Z = 0, WMAST_BASE = TOP_Y + 0.018, WMAST_H = 0.42;
 const wmast = mesh(new THREE.CylinderGeometry(0.010, 0.012, WMAST_H, 10), M.frame, WMAST_X, WMAST_BASE + WMAST_H/2, WMAST_Z, 'REQUIRED_WIND_MAST');
 buoy.add(wmast);
 const mastFoot = mesh(new THREE.CylinderGeometry(0.026, 0.033, 0.035, 12), M.frame, WMAST_X, WMAST_BASE + 0.018, WMAST_Z, 'WIND_MAST_FOOT');
