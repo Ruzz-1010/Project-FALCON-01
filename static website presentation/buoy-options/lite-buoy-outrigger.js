@@ -80,7 +80,7 @@ const psens = mesh(new THREE.CylinderGeometry(0.035, 0.035, 0.14, 14), M.dark, 0
 buoy.add(psens);
 
 // --- Through-mast: single pole from inside the ball up past the panel.
-const MAST_R = 0.022, MAST_TOP = 1.28;
+const MAST_R = 0.022, MAST_TOP = 1.20;
 const mast = mesh(new THREE.CylinderGeometry(MAST_R, MAST_R, MAST_TOP - 0.10, 12), M.frame, 0, (MAST_TOP + 0.10)/2, 0, 'THROUGH_MAST');
 buoy.add(mast);
 const mastCollar = mesh(new THREE.TorusGeometry(0.045, 0.016, 8, 20), M.frame, 0, 0.41, 0, 'MAST_COLLAR');
@@ -88,7 +88,7 @@ mastCollar.rotation.x = Math.PI/2;
 buoy.add(mastCollar);
 // --- Small panel clamped on the mast, tilted 15° (single 40W-class).
 const panelG = new THREE.Group();
-panelG.position.set(0, 0.82, 0.0);
+panelG.position.set(0, 0.72, 0.0);
 panelG.rotation.x = -0.26;
 panelG.name = 'MAST_PANEL';
 buoy.add(panelG);
@@ -97,15 +97,13 @@ panelG.add(panelSlab);
 for(let i=-1;i<=1;i++){
   panelG.add(mesh(new THREE.BoxGeometry(0.012, 0.028, 0.38), M.solarGrid, i*0.15, 0, 0.035, 'SOLAR_GRID'));
 }
-buoy.add(mesh(new THREE.BoxGeometry(0.05, 0.05, 0.10), M.frame, 0, 0.82, -0.03, 'PANEL_CLAMP'));
+buoy.add(mesh(new THREE.BoxGeometry(0.05, 0.05, 0.10), M.frame, 0, 0.72, -0.03, 'PANEL_CLAMP'));
 // --- Red beacon band on the mast above the panel.
-const beacon = mesh(new THREE.CylinderGeometry(0.038, 0.038, 0.09, 14), M.beacon, 0, 1.02, 0, 'TOPMARK_BEACON');
-buoy.add(beacon);
-const beaconDome = mesh(new THREE.SphereGeometry(0.038, 14, 10, 0, Math.PI*2, 0, Math.PI/2), M.beacon, 0, 1.065, 0, 'BEACON_DOME');
-buoy.add(beaconDome);
+const tipDome = mesh(new THREE.SphereGeometry(0.032, 14, 10, 0, Math.PI*2, 0, Math.PI/2), M.beacon, 0, MAST_TOP, 0, 'TOPMARK_DOME');
+buoy.add(tipDome);
 
 // --- Compact wind head on the mast top (smaller cups suit the small buoy).
-const ROTOR_Y = 1.22;
+const ROTOR_Y = 1.10;
 const rotor = new THREE.Group();
 rotor.position.set(0, ROTOR_Y, 0);
 rotor.name = 'WIND_SPEED_DIRECTION_SENSOR';
@@ -129,7 +127,7 @@ for(let i=0;i<3;i++){
 }
 // Wind vane on a collar, 120mm below the rotor.
 const vane = new THREE.Group();
-vane.position.set(0, ROTOR_Y - 0.10, 0);
+vane.position.set(0, ROTOR_Y - 0.12, 0);
 vane.name = 'WIND_VANE';
 buoy.add(vane);
 const vaneCollar = mesh(new THREE.TorusGeometry(0.028, 0.010, 8, 16), M.frame, 0, 0, 0, 'VANE_COLLAR');
@@ -151,7 +149,7 @@ buoy.add(whipTip);
 const views = {
   orbit: {yaw:0.7, pitch:0.12, dist:3.6, focus:[0,0.30,0]},
   wind: {yaw:0.3, pitch:0.08, dist:1.7, focus:[0,ROTOR_Y-0.10,0]},
-  solar: {yaw:0.7, pitch:0.12, dist:2.2, focus:[0,0.82,0.05]},
+  solar: {yaw:0.7, pitch:0.12, dist:2.2, focus:[0,0.72,0.05]},
   below: {yaw:3.6, pitch:-0.25, dist:2.6, focus:[0,-0.45,0]},
 };
 let yaw = views.orbit.yaw, pitch = views.orbit.pitch, dist = views.orbit.dist;
