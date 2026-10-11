@@ -1,90 +1,79 @@
 # Project FALCON Pressure Sensor Baseline and Alternatives
 
-
 <!-- FALCON-DOST-REVISION-NOTE:START -->
 > **Current revision note (2026-10-10):** Use the DOST major revision baseline in [`docs/REVISION_2026-10-10.md`](REVISION_2026-10-10.md) unless this file is explicitly archived. The active proposal core is a compact ESP32-based buoy with **water pressure sensing, wind speed/direction sensing, GPS for exact position and security, battery + solar power, and Wi-Fi/LTE internet communication**. LoRa, large Bay Station hardware, tall tower layouts, and continuous every-second uploads are legacy or optional fallback assumptions.
 <!-- FALCON-DOST-REVISION-NOTE:END -->
 
-Revision: 2.1
+Revision: 2.2
 Date: 2026-10-10
 Status: recommended field candidate with lower-cost alternatives; procurement, supplier confirmation, integration, and validation pending
 
 ## Decision
 
-The recommended Phase 1 long-duration deployment candidate remains a **low-range submersible pressure transmitter**. The preferred interface is a **Holykell HPT604 Type A** ordered with the following provisional configuration:
+The recommended Phase 1 pressure sensor is a **low-range submersible water-level or pressure transmitter with 4–20 mA output**. For the revised compact buoy, the target range should be **0–1 mH2O** or **0–2 mH2O**, because shallow coastal wave work needs resolution. A high-range pump or automotive transducer may look cheaper but can waste resolution and may not solve underwater cable sealing.
 
-- `0–2 mH2O` vented-gauge range;
-- `4–20 mA`, two-wire output;
-- `±0.5% full-scale` accuracy or better;
-- 316L-wetted construction;
-- fixed IP68 vented cable, with an anti-corrosive cable option requested;
-- protected 12 V buoy supply.
+The preferred procurement target remains a Holykell HPT604 Type A or equivalent continuous-submersion transmitter with:
 
-This exact configuration is a procurement target, not installed or validated hardware. Before payment, the supplier must confirm in writing the complete order code, continuous saltwater suitability, wetted materials, seal material, cable jacket, cable length, range, overload, response time, supply range, and calibration certificate. The final range must also be checked against installation depth, expected dynamic pressure, tide, and overpressure margin.
+- 4–20 mA two-wire output;
+- 0–1 mH2O or 0–2 mH2O range after depth review;
+- 316L stainless or confirmed marine-compatible wetted material;
+- fixed waterproof cable, preferably vented gauge cable when using gauge measurement;
+- IP68 or equivalent continuous-immersion statement;
+- 7–30 V or 12 V-compatible loop supply;
+- accuracy around ±0.5 percent full scale or better if budget allows.
 
-The cost-reduction alternatives are acceptable only after the same evidence review:
+This is a procurement target, not installed hardware. Before payment, the seller must confirm exact range, output, supply voltage, wetted materials, cable jacket, cable length, venting requirement, response time, overload, saltwater/continuous immersion suitability, and calibration certificate or test record.
 
-| Alternative | Interface | Planning range | Decision rule |
-| --- | --- | ---: | --- |
-| Generic submersible transmitter | 4–20 mA | PHP 1,690–4,278 | Preferred low-cost field alternative if wetted materials and continuous saltwater use are documented. |
-| Analog submersible transmitter | 0–5 V or 0–10 V | PHP 1,500–4,500 | Use only with input protection, correct voltage scaling, and cable-noise testing. |
-| Industrial digital transmitter | RS485/Modbus | PHP 2,500–6,000 | Use when digital cable integrity and protocol integration justify the added cost. |
-| Blue Robotics Bar sensor | Digital | Higher-cost imported | Marine-oriented option when budget and availability permit. |
-| Bar02 | I2C | Low-cost hobby module | Bench or short supervised comparison only; not the default unattended field sensor. |
+## Current option matrix
 
-The **Blue Robotics Bar02 R2 is reclassified as bench-only / short-duration comparison hardware**. The manufacturer requires its gel sensing element to dry for at least two hours per day and states that it must not remain submerged for more than 24 hours. It therefore cannot be the unattended long-term deployment baseline.
+| Option | Interface | Planning range | Recommended use | Decision rule |
+| --- | --- | ---: | --- | --- |
+| Generic low-range submersible transmitter | 4–20 mA | ₱1,997–₱3,444 | First low-cost field candidate | Accept only if range, wetted material, cable sealing, and continuous immersion are documented. |
+| Holykell HPT604 Type A or equivalent quoted unit | 4–20 mA | Supplier quotation required; target below ₱10,000 sensor-only | Preferred documented industrial candidate | Accept if exact configuration and saltwater/material evidence fit the project budget. |
+| Analog submersible transmitter | 0–5 V or 0–10 V | ₱1,500–₱4,500 | Backup if current-loop option is unavailable | Requires cable-noise test, input protection, and ADC scaling. |
+| RS485/Modbus transmitter | RS485 digital | ₱2,500–₱6,000 | Backup for longer cable/digital integrity | Requires RS485 transceiver, protocol test, waterproof connector plan. |
+| Blue Robotics Bar02/Bar30 or MS5837 board | I2C/digital | Higher-cost imported or bench module | Bench comparison and short supervised testing | Do not use as unattended baseline unless immersion limits and sealing are satisfied. |
+| Ultrasonic/radar/float/camera | Non-pressure | TBD | Future research only | Changes the thesis method and requires a separate validation plan. |
 
-## Why this candidate
+## Why 4–20 mA is preferred
 
-The HPT604 is an industrial submersible level transmitter with a fixed vented IP68 cable and 4–20 mA current-loop option. A current loop is more appropriate than a long exposed I2C cable for the buoy-to-pod run because it is less sensitive to cable voltage drop and electrical noise. The Type A manufacturer sheet lists 7–30 V DC for 4–20 mA, response time no greater than 20 ms, typical accuracy no worse than ±0.5% full scale, and medium compatibility with 316L stainless steel. These specifications are promising but do not by themselves prove multi-month seawater durability in the FALCON installation.
+A 4–20 mA loop is practical for a buoy because it can tolerate longer cable runs and electrical noise better than a raw voltage or I2C line. It also gives a live-zero fault clue: around 4 mA means the sensor is alive at the low end; near 0 mA suggests broken wiring or power loss. The trade-off is that the buoy must include loop power, shunt resistor, ADC, protection, and calibration.
 
-## Required electrical interface
+## Required ESP32 interface
 
 ```text
-Protected +12 V
-    -> fuse / resettable protection
-    -> reverse-polarity and surge protection
-    -> HPT604 4–20 mA loop
-    -> 150 ohm, 0.1%, low-tempco shunt resistor
-    -> RC input filter and clamping protection
-    -> ADS1115 differential/single-ended ADC at 3.3 V
-    -> protected I2C -> ESP32
-
-Loop return, ADC ground, and system ground follow the reviewed grounding plan.
+12 V protected supply
+  -> fuse / reverse protection / surge protection
+  -> 4–20 mA pressure transmitter loop
+  -> 150 ohm 0.1 percent shunt resistor
+  -> RC filter and clamp protection
+  -> ADS1115 ADC at 3.3 V
+  -> ESP32 I2C
 ```
 
-Across 150 ohms, 4–20 mA becomes approximately `0.60–3.00 V`, which fits a 3.3 V ADC input with margin. Resistor power at 20 mA is about `0.06 W`; use at least a 0.25 W precision part after tolerance and fault review. The exact TVS, filter, connector, fuse, grounding, and ADC gain must be frozen in the revised schematic and verified on the bench.
+With a 150 ohm shunt, 4 mA is about 0.60 V and 20 mA is about 3.00 V, which fits a 3.3 V ADC path when protected. The resistor should be at least 0.25 W after tolerance and fault review. The interface must be bench-tested with simulated 4 mA, 12 mA, and 20 mA signals before the real probe is connected.
 
-At a 12 V loop supply, the sensor-loop planning load is approximately `0.048–0.240 W` before converter losses. For a 0–2 mH2O range, ±0.5% FS corresponds to about ±10 mm of static water level before installation, temperature, ADC, calibration, dynamic-response, and wave-reconstruction errors. This is not a ±10 mm wave-height accuracy claim.
+## Validation tests
 
-The existing Bar02 JST-GH I2C connector and current carrier PCB are **not electrically compatible** with this 4–20 mA sensor. They must not be adapted by merely changing a label. PCB fabrication remains blocked until the new analog loop input is designed, reviewed, and tested.
+1. Static water-column test at 0, 25, 50, 75, and 100 cm or the selected range equivalent.
+2. Increasing and decreasing depth run to check hysteresis.
+3. Noise test while ESP32, LTE, GPS, wind sensor, and power system are active.
+4. Small-wave/stilling-tube test to confirm the tube does not hide the signal needed for event detection.
+5. Leak, cable strain, vent/desiccant, and saltwater exposure inspection.
+6. Supervised 24-hour wet bench test before any field trial.
+7. Controlled comparison against a reference water-level or pressure measurement before reporting estimated wave-height performance.
 
-## Vented-cable installation rule
+## Dashboard rule
 
-The gauge-reference vent tube must terminate in a dry, breathable location using the supplier-approved desiccant or breather arrangement. Do not block the vent, immerse the cable end, or seal it into trapped pressure. Provide strain relief, drip routing, corrosion protection, a service loop, and a replaceable desiccant/vent inspection schedule inside the dry electronics area.
+The dashboard must show pressure-derived output as **Estimated wave height**, not measured wave height. It must keep raw loop current or pressure, calibration version, quality state, installation depth, and timestamp. Sensor failure must be `INVALID`, `STALE`, or `OFFLINE`, never zero.
 
-## Procurement and budget gate
+## Source direction
 
-The project budget target is **below PHP 10,000 for the sensor**, excluding shipping and import charges. Public marketplace prices are only screening evidence; obtain a dated supplier quotation for the exact configuration. Include the ADS1115, precision shunt, protection, connector/gland, and cable termination as a separate interface allowance. Do not substitute a high-range threaded automotive or pump transducer simply because it is cheaper: excessive range reduces shallow-wave resolution and usually does not solve underwater cable sealing.
-
-If the exact HPT604 configuration cannot be confirmed below the budget, request quotations for an equivalent continuous-submersion 4–20 mA vented-gauge transmitter and apply the same acceptance gates. An analog or RS485 alternative may reduce interface complexity or procurement cost, but it does not remove the need for seawater, sealing, range, and calibration evidence. A KELLER Series 26Y is a future higher-cost alternative, not the current budget baseline.
-
-## Validation gates
-
-1. Supplier confirmation and receiving inspection.
-2. Dry electrical test at 4, 12, and 20 mA simulation points before connecting the probe.
-3. Static water-column calibration at at least five increasing and decreasing depths.
-4. Independent verification run with frozen coefficients.
-5. Controlled dynamic wave comparison with synchronized reference displacement.
-6. Cable, vent, leak, salt-exposure, fouling, corrosion, drift, and temperature checks.
-7. 24-hour integrated bench soak, supervised 72-hour wet trial, then adviser-approved staged field trials.
-8. Maintenance and retrieval interval based on observed drift, fouling, desiccant state, and connector condition.
-
-The dashboard must continue to label the derived value **Estimated wave height**. It must preserve raw loop current/pressure, calibration version, quality state, installation depth, and timestamps. A sensor fault must produce `INVALID`, `STALE`, or `OFFLINE`, never a fabricated zero.
-
-## Primary references
-
-- Holykell, *HPT604 Type A level sensor datasheet*: https://www.holykell.com/wp-content/uploads/2023/08/HPT604A-Level-sensor-Datasheet-Holykell-V26-CS-1.pdf
-- Holykell, *HPT604 product family*: https://www.holykell.com/products/HPT604-H_Water_Level_Sensor_with_Economical_Model.html
-- Blue Robotics, *Bar sensor guide*: https://bluerobotics.com/learn/bar-sensors-guide/
-- KELLER, *Series 26Y standard level probe* (future alternative): https://keller-pressure.com/en/products/level-probes/standard-level-probes/series-26y
+- Shopee Philippines listing for 4–20 mA submersible water level transmitter, observed planning range ₱1,997–₱3,444: https://shopee.ph/Submersible-2-Liquid-Sensor-Tank-Pressure-4-20Ma-Hydrostatic-Water-River-Level-Transmitter-1-4-0M-i.1380515196.26470979857
+- Shopee Philippines listing family for 1 m / 3 m / 5 m 4–20 mA hydrostatic level meter: https://shopee.ph/Water-Level-Transmitter-1m-3m-5m-Liquid-Water-Level-Sensor-4-20mA-Pool-Tank-Hydrostatic-Level-Meter-i.906740842.22061716970
+- Holykell HPT604 Type A level sensor datasheet: https://www.holykell.com/wp-content/uploads/2023/08/HPT604A-Level-sensor-Datasheet-Holykell-V26-CS-1.pdf
+- Blue Robotics Bar sensor guide: https://bluerobotics.com/learn/bar-sensors-guide/
+- Makerlab PH wind speed sensor listing reference: https://makerlab.ph/products/anemometer-wind-speed-0-to-5v-analog
+- SolarCalc PH catalog reference for local solar planning prices, including 100 W panel ₱2,200 as of 2026-03-15: https://solarcalcph.com/catalog/
+- Spark Fruit PH 10 A solar charge controller listing: https://sparkfruit-ph.com/products/20a61c7d5de4e6d0f4c299f51d5bf970
+- Shopee Philippines MPPT charge controller search reference, observed low-cost LiFePO4 MPPT listing around ₱847 in September 2026 crawl: https://shopee.ph/search?keyword=mppt+solar+charge+controller
