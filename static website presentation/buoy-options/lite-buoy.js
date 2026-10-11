@@ -198,22 +198,22 @@ buoy.add(arrayUnit);
 // Pole clamp around the mast top.
 arrayUnit.add(mesh(new THREE.BoxGeometry(0.055, 0.07, 0.055), M.dark, 0, 0.0, 0, 'ARRAY_POLE_CLAMP'));
 // White main body + sloped nose.
-arrayUnit.add(mesh(new THREE.BoxGeometry(0.20, 0.055, 0.085), M.arrayBody, 0, 0.075, 0, 'ARRAY_BODY'));
+arrayUnit.add(mesh(new THREE.BoxGeometry(0.24, 0.06, 0.09), M.arrayBody, 0, 0.075, 0, 'ARRAY_BODY'));
 const arrayNose = mesh(new THREE.BoxGeometry(0.07, 0.045, 0.075), M.arrayBody, 0, 0.065, 0.115, 'ARRAY_NOSE');
 arrayNose.rotation.x = 0.35;
 arrayUnit.add(arrayNose);
 // Small solar panel on the back.
-const arraySolar = mesh(new THREE.BoxGeometry(0.085, 0.008, 0.06), M.solar, -0.045, 0.108, 0.01, 'ARRAY_SOLAR');
+const arraySolar = mesh(new THREE.BoxGeometry(0.10, 0.008, 0.065), M.solar, -0.05, 0.11, 0.01, 'ARRAY_SOLAR');
 arraySolar.rotation.x = -0.3;
 arrayUnit.add(arraySolar);
 // Rotor postlet + 3 black cups on pivots (mouths tangential, convex forward).
-arrayUnit.add(mesh(new THREE.CylinderGeometry(0.008, 0.010, 0.075, 8), M.arrayBody, 0, 0.14, -0.055, 'ARRAY_ROTOR_POST'));
+arrayUnit.add(mesh(new THREE.CylinderGeometry(0.009, 0.011, 0.10, 8), M.arrayBody, 0, 0.155, -0.055, 'ARRAY_ROTOR_POST'));
 const rotor = new THREE.Group();
-rotor.position.set(0, 0.182, -0.055);
+rotor.position.set(0, 0.21, -0.055);
 rotor.name = 'REQUIRED_WIND_SPEED_CUPS';
 arrayUnit.add(rotor);
 rotor.add(mesh(new THREE.SphereGeometry(0.020, 12, 8), M.dark, 0, 0, 0, 'WIND_HUB'));
-const cupR = 0.028, armR = 0.075;
+const cupR = 0.034, armR = 0.095;
 for(let i=0;i<3;i++){
   const pivot = new THREE.Group();
   pivot.rotation.y = (i/3)*Math.PI*2;
@@ -231,14 +231,14 @@ const vane = new THREE.Group();
 vane.position.set(0, 0.02, -0.10);
 vane.name = 'REQUIRED_WIND_DIRECTION_VANE';
 arrayUnit.add(vane);
-vane.add(mesh(new THREE.BoxGeometry(0.006, 0.045, 0.075), M.vane, 0, 0, -0.045, 'VANE_FIN'));
-const vaneNose = mesh(new THREE.ConeGeometry(0.012, 0.045, 10), M.brass, 0, 0, 0.035, 'VANE_NOSE');
+vane.add(mesh(new THREE.BoxGeometry(0.008, 0.07, 0.11), M.vane, 0, 0, -0.065, 'VANE_FIN'));
+const vaneNose = mesh(new THREE.ConeGeometry(0.014, 0.06, 10), M.brass, 0, 0, 0.045, 'VANE_NOSE');
 vaneNose.rotation.x = Math.PI/2;
 vane.add(vaneNose);
 // Louvered radiation shield stacked under the body front.
 arrayUnit.add(mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.05, 8), M.arrayBody, 0, 0.02, 0.06, 'SHIELD_STEM'));
 for(let i=0;i<4;i++){
-  const r = i % 2 === 0 ? 0.034 : 0.028;
+  const r = i % 2 === 0 ? 0.042 : 0.035;
   arrayUnit.add(mesh(new THREE.CylinderGeometry(r, r, 0.010, 16), M.arrayBody, 0, -0.005 - i*0.016, 0.06, 'RADIATION_SHIELD'));
 }
 
@@ -258,7 +258,7 @@ for(const gx of [-0.19,-0.14]){
 // HUD views on this page: orbit / cloud / solar / below.
 const views = {
   orbit: {yaw:0.7, pitch:0.18, dist:3.0, focus:[0,0.24,0]},
-  wind: {yaw:0.52, pitch:0.12, dist:1.45, focus:[WMAST_X,WMAST_BASE+WMAST_H,WMAST_Z]},
+  wind: {yaw:0.52, pitch:0.12, dist:1.15, focus:[WMAST_X,WMAST_BASE+WMAST_H+0.05,WMAST_Z]},
   cloud: {yaw:0.4, pitch:0.10, dist:1.6, focus:[ANT_X,ANT_BASE+ANT_H-0.1,ANT_Z]},
   solar: {yaw:0.7, pitch:0.12, dist:1.8, focus:[0,HOUS_CY,0.05]},
   mooring: {yaw:3.6, pitch:-0.35, dist:2.3, focus:[0.45,-0.62,0.58]},
