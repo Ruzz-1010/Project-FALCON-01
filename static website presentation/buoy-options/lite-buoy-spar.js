@@ -278,8 +278,12 @@ el.addEventListener('pointerup', ()=>{ dragging = false; });
 el.addEventListener('wheel', e=>{ e.preventDefault(); target.dist = Math.max(1.2, Math.min(12, target.dist + e.deltaY*0.003)); }, {passive:false});
 
 function resize(){
-  const w = stage.clientWidth, h = stage.clientHeight;
-  renderer.setSize(w, h, false);
+  // Explicit pixel size (never CSS %): % heights + grid rows feed back into
+  // each other and can blow the stage up to thousands of px in small windows,
+  // which collapses the camera frustum into a closeup.
+  const w = Math.max(2, stage.clientWidth);
+  const h = Math.max(2, Math.min(stage.clientHeight || 560, 720));
+  renderer.setSize(w, h);
   camera.aspect = w/h; camera.updateProjectionMatrix();
 }
 addEventListener('resize', resize); resize();

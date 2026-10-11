@@ -118,12 +118,21 @@ panelG.position.set(0, 0.72, 0.02);
 panelG.rotation.x = -0.26;
 panelG.name = 'MAST_PANEL';
 buoy.add(panelG);
-const panelSlab = mesh(new THREE.BoxGeometry(0.44, 0.025, 0.34), M.solar, 0, 0, 0, 'SOLAR_PANEL');
-panelG.add(panelSlab);
-for(let i=-1;i<=1;i++){
-  panelG.add(mesh(new THREE.BoxGeometry(0.012, 0.028, 0.34), M.solarGrid, i*0.13, 0, 0, 'SOLAR_GRID'));
+// Panel with a center hole: 4 strips around a 0.12m square opening so the
+// mast passes straight through (front/back full-width strips + side strips).
+const HOLE = 0.12, PW = 0.44, PD = 0.34, PT = 0.025;
+const stripD = (PD - HOLE) / 2, stripW = (PW - HOLE) / 2;
+for(const sz of [-(HOLE/2 + stripD/2), HOLE/2 + stripD/2]){
+  panelG.add(mesh(new THREE.BoxGeometry(PW, PT, stripD), M.solar, 0, 0, sz, 'SOLAR_PANEL_STRIP'));
 }
-buoy.add(mesh(new THREE.BoxGeometry(0.05, 0.05, 0.09), M.frame, 0, 0.72, -0.02, 'PANEL_CLAMP'));
+for(const sx of [-(HOLE/2 + stripW/2), HOLE/2 + stripW/2]){
+  panelG.add(mesh(new THREE.BoxGeometry(stripW, PT, HOLE), M.solar, sx, 0, 0, 'SOLAR_PANEL_STRIP'));
+}
+for(const gx of [-0.15, -0.05, 0.05, 0.15]){
+  panelG.add(mesh(new THREE.BoxGeometry(0.012, PT + 0.003, PD), M.solarGrid, gx, 0, 0, 'SOLAR_GRID'));
+}
+// Mount block under the hole, mast passes through both.
+buoy.add(mesh(new THREE.BoxGeometry(0.07, 0.06, 0.07), M.frame, 0, 0.68, 0.02, 'PANEL_CLAMP'));
 // --- Red beacon band on the pole above the panel.
 const beacon = mesh(new THREE.CylinderGeometry(0.032, 0.032, 0.07, 12), M.beacon, 0, 0.98, 0, 'TOPMARK_BEACON');
 buoy.add(beacon);
@@ -196,8 +205,12 @@ el.addEventListener('pointerup', ()=>{ dragging = false; });
 el.addEventListener('wheel', e=>{ e.preventDefault(); target.dist = Math.max(1.0, Math.min(10, target.dist + e.deltaY*0.003)); }, {passive:false});
 
 function resize(){
-  const w = stage.clientWidth, h = stage.clientHeight;
-  renderer.setSize(w, h, false);
+  // Explicit pixel size (never CSS %): % heights + grid rows feed back into
+  // each other and can blow the stage up to thousands of px in small windows,
+  // which collapses the camera frustum into a closeup.
+  const w = Math.max(2, stage.clientWidth);
+  const h = Math.max(2, Math.min(stage.clientHeight || 560, 720));
+  renderer.setSize(w, h);
   camera.aspect = w/h; camera.updateProjectionMatrix();
 }
 addEventListener('resize', resize); resize();
