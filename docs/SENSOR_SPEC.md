@@ -17,3 +17,7 @@
 | Optional context | DS18B20 water temperature | temperature, unit, quality state | LIVE, SIMULATED, or OPTIONAL | Context only; not a primary research result. |
 
 BNO085, salinity/conductivity, pH, dissolved oxygen, turbidity, camera, Raspberry Pi buoy computer, and load-cell mooring tension are excluded from the low-cost minimum build. Pressure alternatives include 0–5 V/0–10 V, RS485/Modbus, and marine digital sensors, subject to the same range, sealing, seawater, and calibration gates. Every active channel requires units, range, sampling target, wiring, calibration, invalid/stale behavior, timestamp, and physical test evidence.
+
+## Approval shopping list
+
+See [`SENSOR_APPROVAL_LIST_2026-10-11.md`](SENSOR_APPROVAL_LIST_2026-10-11.md) for the current one-file sensor approval list with product pictures, price references, supplier links, and optional alternatives.

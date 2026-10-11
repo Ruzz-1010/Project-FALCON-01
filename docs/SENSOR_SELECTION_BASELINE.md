@@ -85,3 +85,7 @@ No sensor is final until the exact model, datasheet, supplier, price, wiring, pr
 - SolarCalc PH catalog reference for local solar planning prices, including 100 W panel ₱2,200 as of 2026-03-15: https://solarcalcph.com/catalog/
 - Spark Fruit PH 10 A solar charge controller listing: https://sparkfruit-ph.com/products/20a61c7d5de4e6d0f4c299f51d5bf970
 - Shopee Philippines MPPT charge controller search reference, observed low-cost LiFePO4 MPPT listing around ₱847 in September 2026 crawl: https://shopee.ph/search?keyword=mppt+solar+charge+controller
+
+## Sensor approval file
+
+The current approval-ready shopping and alternatives list is [`SENSOR_APPROVAL_LIST_2026-10-11.md`](SENSOR_APPROVAL_LIST_2026-10-11.md). It includes pictures, current price references, where-to-buy links, and approval notes for required and optional sensors.
