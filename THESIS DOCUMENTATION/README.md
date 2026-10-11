@@ -5,6 +5,11 @@
 > **Current revision note (2026-10-10):** Use the DOST major revision baseline in [`docs/REVISION_2026-10-10.md`](../docs/REVISION_2026-10-10.md) unless this file is explicitly archived. The active proposal core is a compact ESP32-based buoy with **water pressure sensing, wind speed/direction sensing, GPS for exact position and security, battery + solar power, and Wi-Fi/LTE internet communication**. LoRa, large Bay Station hardware, tall tower layouts, and continuous every-second uploads are legacy or optional fallback assumptions.
 <!-- FALCON-DOST-REVISION-NOTE:END -->
 
+## Presentation workflow visual
+
+- `visuals/falcon-buoy-3d-workflow-slide.png` — approved professional workflow image using the compact 3D buoy view. Use this for validation slides that explain how the buoy collects pressure/wind/GPS/power data, filters it in the ESP32, uploads event packets through Wi-Fi/LTE, and displays alerts/history on the cloud dashboard.
+
+
 ## Active revision 2026-10-10
 
 The approved direction is a smaller compact can-buoy with ESP32 local sampling, event-driven summaries and alerts, direct cloud connectivity through Wi-Fi for laboratory work or 4G/LTE for a remote trial, and a reduced battery sized from measured modem duty. The active equipment and alternative sensor list is in [FALCON Revised Event Driven BOM and Sensor Options.docx](FALCON%20Revised%20Event%20Driven%20BOM%20and%20Sensor%20Options.docx). The current architecture is maintained in `../docs/PROJECT_CONTEXT.md` and `../docs/BAY_STATION_ARCHITECTURE.md`.

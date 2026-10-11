@@ -5,6 +5,11 @@
 > **Current revision note (2026-10-10):** Use the DOST major revision baseline in [`docs/REVISION_2026-10-10.md`](../docs/REVISION_2026-10-10.md) unless this file is explicitly archived. The active proposal core is a compact ESP32-based buoy with **water pressure sensing, wind speed/direction sensing, GPS for exact position and security, battery + solar power, and Wi-Fi/LTE internet communication**. LoRa, large Bay Station hardware, tall tower layouts, and continuous every-second uploads are legacy or optional fallback assumptions.
 <!-- FALCON-DOST-REVISION-NOTE:END -->
 
+## Approved workflow visual
+
+The current professional workflow image is [`../THESIS DOCUMENTATION/visuals/falcon-buoy-3d-workflow-slide.png`](../THESIS%20DOCUMENTATION/visuals/falcon-buoy-3d-workflow-slide.png). Use it for validation slides and reviewer explanations of the compact event-driven cloud buoy.
+
+
 This folder replaces the former `dashboard-next/thesis` presentation. It is a new vanilla HTML/CSS/JavaScript experience, not a restyled version of the former React site. The operational dashboard is unchanged.
 
 ## Run locally
