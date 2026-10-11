@@ -160,12 +160,6 @@ for(const gx of [-0.10,0.0,0.10]){
 }
 
 // --- Red topmark light on a finial stub at the panel front edge.
-const beaconStub = mesh(new THREE.CylinderGeometry(0.014, 0.014, 0.09, 10), M.frame, 0, CAB_TOP + 0.06, 0.20, 'BEACON_STUB');
-buoy.add(beaconStub);
-const beacon = mesh(new THREE.CylinderGeometry(0.038, 0.038, 0.085, 14), M.beacon, 0, CAB_TOP + 0.14, 0.20, 'TOPMARK_BEACON');
-buoy.add(beacon);
-const beaconDome = mesh(new THREE.SphereGeometry(0.038, 14, 10, 0, Math.PI*2, 0, Math.PI/2), M.beacon, 0, CAB_TOP + 0.182, 0.20, 'BEACON_DOME');
-buoy.add(beaconDome);
 
 // --- Wind mast at the deck rear (slim Ø36mm pole straight into the hub).
 const WMAST_X = 0, WMAST_Z = -0.44, DECK_TOP = 0.31, ROTOR_Y = DECK_TOP + 0.95;
@@ -173,6 +167,11 @@ const wmast = mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.95, 12), M.frame, 
 buoy.add(wmast);
 const mastFoot = mesh(new THREE.CylinderGeometry(0.035, 0.045, 0.06, 12), M.frame, WMAST_X, DECK_TOP + 0.03, WMAST_Z, 'MAST_FOOT');
 buoy.add(mastFoot);
+// Masthead beacon on the wind mast, well clear of the panel and vane.
+const beacon = mesh(new THREE.CylinderGeometry(0.030, 0.030, 0.08, 12), M.beacon, WMAST_X, 0.90, WMAST_Z, 'TOPMARK_BEACON');
+buoy.add(beacon);
+const beaconDome = mesh(new THREE.SphereGeometry(0.030, 12, 8, 0, Math.PI*2, 0, Math.PI/2), M.beacon, WMAST_X, 0.94, WMAST_Z, 'BEACON_DOME');
+buoy.add(beaconDome);
 const rotor = new THREE.Group();
 rotor.position.set(WMAST_X, ROTOR_Y, WMAST_Z);
 rotor.name = 'WIND_SPEED_DIRECTION_SENSOR';
