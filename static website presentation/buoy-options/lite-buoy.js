@@ -47,6 +47,8 @@ const M = {
   tipRed: new THREE.MeshStandardMaterial({color:'#c01616', roughness:.4, metalness:.1, emissive:'#4a0000'}),
   led: new THREE.MeshStandardMaterial({color:'#3a2f10', roughness:.4, metalness:.2, emissive:'#d8a94e', emissiveIntensity:.4}),
   cup: new THREE.MeshStandardMaterial({color:'#262e34', roughness:.55, metalness:.15, side:THREE.DoubleSide}),
+  arrayBody: new THREE.MeshStandardMaterial({color:'#eef1f2', roughness:.45, metalness:.05}),
+  arrayCup: new THREE.MeshStandardMaterial({color:'#0b0d0f', roughness:.3, metalness:.2, side:THREE.DoubleSide}),
   vane: new THREE.MeshStandardMaterial({color:'#20282c', roughness:.55, metalness:.3, side:THREE.DoubleSide}),
   gpsBlue: new THREE.MeshStandardMaterial({color:'#244d75', roughness:.35, metalness:.25}),
   battery: new THREE.MeshStandardMaterial({color:'#1f3d2b', roughness:.55, metalness:.15}),
@@ -185,32 +187,60 @@ const wmast = mesh(new THREE.CylinderGeometry(0.010, 0.012, WMAST_H, 10), M.fram
 buoy.add(wmast);
 const mastFoot = mesh(new THREE.CylinderGeometry(0.026, 0.033, 0.035, 12), M.frame, WMAST_X, WMAST_BASE + 0.018, WMAST_Z, 'WIND_MAST_FOOT');
 buoy.add(mastFoot);
+// All-in-one weather array (per selected hardware): white body, black cups
+// up top, direction fin below, small solar on the back, louvered radiation
+// shield underneath, pole clamp at the bottom. Faces +Z, fin trails -Z.
+const AY = WMAST_BASE + WMAST_H;
+const arrayUnit = new THREE.Group();
+arrayUnit.position.set(WMAST_X, AY, WMAST_Z);
+arrayUnit.name = 'WIND_ARRAY_UNIT';
+buoy.add(arrayUnit);
+// Pole clamp around the mast top.
+arrayUnit.add(mesh(new THREE.BoxGeometry(0.055, 0.07, 0.055), M.dark, 0, 0.0, 0, 'ARRAY_POLE_CLAMP'));
+// White main body + sloped nose.
+arrayUnit.add(mesh(new THREE.BoxGeometry(0.20, 0.055, 0.085), M.arrayBody, 0, 0.075, 0, 'ARRAY_BODY'));
+const arrayNose = mesh(new THREE.BoxGeometry(0.07, 0.045, 0.075), M.arrayBody, 0, 0.065, 0.115, 'ARRAY_NOSE');
+arrayNose.rotation.x = 0.35;
+arrayUnit.add(arrayNose);
+// Small solar panel on the back.
+const arraySolar = mesh(new THREE.BoxGeometry(0.085, 0.008, 0.06), M.solar, -0.045, 0.108, 0.01, 'ARRAY_SOLAR');
+arraySolar.rotation.x = -0.3;
+arrayUnit.add(arraySolar);
+// Rotor postlet + 3 black cups on pivots (mouths tangential, convex forward).
+arrayUnit.add(mesh(new THREE.CylinderGeometry(0.008, 0.010, 0.075, 8), M.arrayBody, 0, 0.14, -0.055, 'ARRAY_ROTOR_POST'));
 const rotor = new THREE.Group();
-rotor.position.set(WMAST_X, WMAST_BASE + WMAST_H + 0.025, WMAST_Z);
+rotor.position.set(0, 0.182, -0.055);
 rotor.name = 'REQUIRED_WIND_SPEED_CUPS';
-buoy.add(rotor);
-rotor.add(mesh(new THREE.SphereGeometry(0.028, 12, 8), M.dark, 0, 0, 0, 'WIND_HUB'));
-const cupR = 0.026, armR = 0.115;
+arrayUnit.add(rotor);
+rotor.add(mesh(new THREE.SphereGeometry(0.020, 12, 8), M.dark, 0, 0, 0, 'WIND_HUB'));
+const cupR = 0.028, armR = 0.075;
 for(let i=0;i<3;i++){
   const pivot = new THREE.Group();
   pivot.rotation.y = (i/3)*Math.PI*2;
   rotor.add(pivot);
-  const arm = mesh(new THREE.CylinderGeometry(0.006, 0.006, armR, 8), M.frame, armR/2, 0, 0, 'WIND_ARM');
+  const arm = mesh(new THREE.CylinderGeometry(0.004, 0.004, armR, 8), M.frame, armR/2, 0, 0, 'WIND_ARM');
   arm.rotation.z = Math.PI/2;
   pivot.add(arm);
-  const cup = mesh(new THREE.SphereGeometry(cupR, 14, 10, 0, Math.PI*2, 0, Math.PI*0.62), M.cup, armR, 0, 0, 'WIND_CUP');
+  const cup = mesh(new THREE.SphereGeometry(cupR, 14, 10, 0, Math.PI*2, 0, Math.PI*0.62), M.arrayCup, armR, 0, 0, 'WIND_CUP');
   cup.rotation.x = Math.PI/2;
   pivot.add(cup);
 }
+// Direction fin below the body rear on its own axis.
+arrayUnit.add(mesh(new THREE.CylinderGeometry(0.006, 0.006, 0.05, 8), M.frame, 0, 0.02, -0.10, 'VANE_AXIS'));
 const vane = new THREE.Group();
-vane.position.set(WMAST_X, WMAST_BASE + WMAST_H - 0.075, WMAST_Z);
+vane.position.set(0, 0.02, -0.10);
 vane.name = 'REQUIRED_WIND_DIRECTION_VANE';
-buoy.add(vane);
-const vaneTail = mesh(new THREE.BoxGeometry(0.010, 0.065, 0.058), M.vane, 0, 0.012, -0.055, 'VANE_TAIL');
-vane.add(vaneTail);
-const vaneNose = mesh(new THREE.ConeGeometry(0.014, 0.050, 10), M.brass, 0, 0.012, 0.055, 'VANE_NOSE');
+arrayUnit.add(vane);
+vane.add(mesh(new THREE.BoxGeometry(0.006, 0.045, 0.075), M.vane, 0, 0, -0.045, 'VANE_FIN'));
+const vaneNose = mesh(new THREE.ConeGeometry(0.012, 0.045, 10), M.brass, 0, 0, 0.035, 'VANE_NOSE');
 vaneNose.rotation.x = Math.PI/2;
 vane.add(vaneNose);
+// Louvered radiation shield stacked under the body front.
+arrayUnit.add(mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.05, 8), M.arrayBody, 0, 0.02, 0.06, 'SHIELD_STEM'));
+for(let i=0;i<4;i++){
+  const r = i % 2 === 0 ? 0.034 : 0.028;
+  arrayUnit.add(mesh(new THREE.CylinderGeometry(r, r, 0.010, 16), M.arrayBody, 0, -0.005 - i*0.016, 0.06, 'RADIATION_SHIELD'));
+}
 
 // Sealed service bay hints: transparent window on housing, with battery/buffer tucked inside.
 const serviceWindow = mesh(new THREE.BoxGeometry(0.16, 0.10, 0.008), M.glass, -0.18, HOUS_CY - 0.01, -0.18, 'SERVICE_WINDOW_TO_INTERNAL_ELECTRONICS');
