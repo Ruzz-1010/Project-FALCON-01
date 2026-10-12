@@ -10,34 +10,31 @@ The buoy and cloud/development computer are separate power domains. No mini PC o
 ## Buoy power path
 
 ```text
-Solar panel -> LiFePO4-compatible MPPT -> 12.8 V LiFePO4 battery
+6 x 3 W solar panels -> lithium solar charger -> protected Li-ion/LiPo or 18650 battery pack
              -> fused disconnect/distribution -> protected regulated rails
              -> ESP32 + sensors + LTE modem/Wi-Fi + security electronics
 ```
 
-The reduced-prototype starting point is a 12.8 V 6–10 Ah LiFePO4 battery (76.8–128 Wh nominal), an 80% usable-energy planning limit, and a 10–20 W solar candidate. These are design assumptions—not validated endurance claims.
+The reduced-prototype starting point is a protected lithium battery pack in the 37–74 Wh class, an 80% usable-energy planning limit, and six compact 3 W solar panels for 18 W total nameplate capacity. Final battery voltage must match the charger, regulators, LTE/Wi-Fi module, and any required pressure-sensor loop supply. These are design assumptions, not validated endurance claims.
 
-| Complete measured average buoy load | Daily energy | Approximate no-solar runtime from 80 Wh usable |
-| ---: | ---: | ---: |
-| 2 W | 48 Wh/day | 102.4 h |
-| 4 W | 96 Wh/day | 51.2 h |
-| 6 W | 144 Wh/day | 34.1 h |
+| Complete measured average buoy load | Daily energy | 37 Wh pack at 80% usable | 74 Wh pack at 80% usable |
+| ---: | ---: | ---: | ---: |
+| 0.5 W | 12 Wh/day | 59 h | 118 h |
+| 1.5 W | 36 Wh/day | 20 h | 39 h |
+| 3 W | 72 Wh/day | 10 h | 20 h |
 
 Preliminary solar harvest uses `panel rating × 4 peak-sun-hours × 70% net efficiency`:
 
 | Candidate | Planning harvest | Status |
 | --- | ---: | --- |
-| 10 W | 28 Wh/day | Accept only if measured load and modem peaks retain margin |
-| 20 W | 56 Wh/day | Preferred low-cost prototype candidate pending measurements |
+| 18 W from 6 × 3 W panels | 50.4 Wh/day | Current compact-buoy proposal plan pending measured panel output |
 
-At the 1.5 W event-driven planning load, the 10 W candidate leaves limited
-recovery margin while the 20 W candidate provides a larger nominal margin.
+
+At the 1.5 W event-driven planning load, the 18 W array gives a small theoretical recovery margin. That margin must still be proven because small panels lose output from heat, angle, shading, fouling, charge limits, and weather.
 Panel Voc/Isc, charger compatibility, mounting, and measured-load verification
 remain release gates.
 
-The 6–10 Ah battery is intended for supervised short-duration and overnight
-testing. It must not be described as multi-day autonomous operation until the
-event-driven LTE load, night-time deficit, and charging performance are measured.
+The 37–74 Wh class battery is intended for supervised short-duration and overnight testing. A 37 Wh pack can support 24-hour operation only if the measured average load stays near the low-power case. A 74 Wh pack gives better reserve, but it must not be described as multi-day autonomous operation until the event-driven LTE load, night-time deficit, and charging performance are measured.
 
 Detailed nominal, margin, poor-weather, and 72-hour calculations are recorded
 in [POWER_CALCULATIONS.md](POWER_CALCULATIONS.md).

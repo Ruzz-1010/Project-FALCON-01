@@ -29,10 +29,10 @@ The minimum proposal is a **compact ESP32 buoy** that samples locally and upload
 
 | Group | Item | Qty | Planning cost | Notes |
 | --- | --- | ---: | ---: | --- |
-| Battery | 12.8 V LiFePO4 6–10 Ah with BMS, or smaller pack after measured duty-cycle test | 1 | ₱2,000–₱6,000 | DOST asked to avoid oversized battery; final size follows LTE peak and overnight load. |
-| Solar | 10–30 W compact panel for prototype; 40–100 W only if measured load demands it | 1 | ₱1,000–₱3,000 | Keep small for compact buoy; 100 W local catalog reference is around ₱2,200 but may be physically too large. |
+| Battery | Protected Li-ion/LiPo or 18650 battery pack with BMS, target 37–74 Wh class after measured duty-cycle test | 1 | ₱1,500–₱3,500 | DOST asked to avoid oversized battery; final voltage follows the charger, regulators, LTE peak, and overnight load. |
+| Solar | Six compact 3 W solar panels, 18 W total nameplate capacity | 6 pcs | ₱1,410–₱3,000 | Current compact buoy solar plan; final measured output must account for angle, heat, salt, shading, and charge losses. |
 | Charge control | LiFePO4-compatible PWM/MPPT controller or protected solar charger | 1 | ₱850–₱3,500 | Choose based on battery chemistry and panel voltage; cheap boards require bench verification. |
-| Regulators/protection | 12 V loop branch, 5 V/LTE branch, 3.3 V sensor rail, fuses, TVS, reverse protection | 1 lot | ₱800–₱2,500 | LTE modem branch must survive registration/transmit current peaks. |
+| Regulators/protection | Battery branch, pressure-sensor loop branch if required, 5 V/LTE branch, 3.3 V sensor rail, fuses, TVS, reverse protection | 1 lot | ₱800–₱2,500 | LTE modem branch must survive registration/transmit current peaks; pressure loop supply is separate from the battery-voltage choice. |
 | Enclosure | Waterproof electronics box, cable glands, vent/desiccant if gauge pressure sensor is used | 1 lot | ₱2,500–₱7,000 | Includes sealing hardware; exact size follows layout. |
 | Float body | Compact can buoy body, PVC/HDPE/fiberglass or locally fabricated float | 1 | ₱2,000–₱8,000 | Must pass displacement, ballast, leak, and recovery tests. |
 | Mooring | Eye bolt, chain, rope, shackle, swivel, anchor/deadweight, recovery line | 1 lot | ₱2,000–₱6,000 | Missing item in earlier list; size by depth, current, seabed, and retrieval method. |
