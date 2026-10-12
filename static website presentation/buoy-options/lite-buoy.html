@@ -75,7 +75,7 @@
   <p>Recommended simple body · pressure + wind + GPS + solar · drag to orbit · wheel to zoom</p>
 </header>
 <nav class="opts"><a class="here" href="./lite-buoy.html">REVISED MAIN · COMPACT CAN</a><a href="./lite-buoy-spar.html">OLDER SPAR STUDY</a><a href="./lite-buoy-ring.html">OPTION C · RING</a><a href="./deployment-map.html">DEPLOYMENT MAP</a></nav>
-<p class="warn"><strong>PROPOSED DOST REVISION MODEL</strong> — geometry is illustrative only. Equipment and prices are placeholders until the validated BOM is finalized. Not fabrication-ready or field-validated.</p>
+<p class="warn"><strong>PROPOSED DOST REVISION MODEL</strong> — geometry is illustrative only. Estimated proposal cost is now set at ₱25,000–₱45,000 per buoy option pending seller confirmation. Not fabrication-ready or field-validated.</p>
 <p class="warn status"><strong>REVISION INTENT</strong> — compact single-body buoy with required water pressure, wind, GPS/security, battery/solar, and Wi-Fi/LTE internet modules. Event packets send only after validated threshold changes.</p>
 <main>
   <div id="stage"><div id="hud"><button data-view="orbit">Overview</button><button data-view="wind">Wind + GPS</button><button data-view="cloud">Cloud link</button><button data-view="solar">Solar / battery</button><button data-view="below">Pressure</button><button data-view="mooring">Anchor</button></div><div id="tip">Option A is the recommended simple proposal body; labels show required core equipment placement, not final part numbers.</div></div>
@@ -89,46 +89,48 @@
       <li>Visible chain-to-anchor study <small>shows that the proposal still needs mooring scope and anchor sizing</small></li>
       <li>Small solar faces and sealed internal battery bay <small>external view now shows service ports only; final size depends on measured load</small></li>
     </ul>
-    <h2>Required core equipment shown</h2>
+    <h2>Complete equipment list shown / required</h2>
     <div class="tw">
     <table>
-      <tr><td>Water pressure sensor + stilling tube</td><td class="need">Required</td></tr>
+      <tr><td>ESP32 DevKit controller</td><td class="need">Required</td></tr>
+      <tr><td>Low-range water pressure transmitter + stilling/protection tube</td><td class="need">Required</td></tr>
+      <tr><td>ADS1115 ADC + 150 ohm shunt + RC/protection parts</td><td class="need">Required</td></tr>
       <tr><td>Wind speed cups + wind direction vane</td><td class="need">Required</td></tr>
-      <tr><td>GPS puck for position/security</td><td class="need">Required</td></tr>
-      <tr><td>ESP32 + power board inside sealed housing</td><td class="need">Required</td></tr>
-      <tr><td>Wi-Fi/LTE antenna and internet module</td><td class="need">Required path</td></tr>
-      <tr><td>Battery, solar charge controller, battery monitor</td><td class="need">Required</td></tr>
-      <tr><td>microSD / flash buffer for offline records</td><td class="pending">To validate</td></tr>
-      <tr><td>Mooring eye, chain, anchor/deadweight, sealed cable glands</td><td class="pending">To size</td></tr>
+      <tr><td>GPS / GNSS puck for position and security</td><td class="need">Required</td></tr>
+      <tr><td>INA219 battery/solar power monitor</td><td class="need">Required</td></tr>
+      <tr><td>Battery pack with BMS, fuse, switch, and waterproof connector</td><td class="need">Required</td></tr>
+      <tr><td>Compact solar panel set + solar charge controller</td><td class="need">Required</td></tr>
+      <tr><td>Wi-Fi path; LTE module only if site has no stable Wi-Fi</td><td class="pending">Conditional</td></tr>
+      <tr><td>microSD / flash buffer for offline records</td><td class="pending">Recommended</td></tr>
+      <tr><td>Breadboard, jumper wires, buck converters, perfboard, terminal blocks</td><td class="need">Budgeted</td></tr>
+      <tr><td>Waterproof enclosure, cable glands, epoxy/silicone, stainless hardware</td><td class="need">Budgeted</td></tr>
+      <tr><td>Flashing marine warning light / buoy beacon</td><td class="need">Required</td></tr>
+      <tr><td>Mooring eye, chain, anchor/deadweight, rope, shackles/swivel</td><td class="need">Budgeted</td></tr>
     </table>
     </div>
 
-    <h2>Working sensor and equipment budget</h2>
-    <p class="note">Proposal estimate only. Prices are working ranges from current PH online listings and local electronics stores; final buying list still needs supplier confirmation.</p>
+    <h2>Estimated proposal price</h2>
+    <p class="note"><strong>Target estimate: ₱25,000–₱45,000 per buoy option.</strong> This is the presentation budget band for panel approval. It includes sensors, ESP32/prototyping parts, power, buoy body, waterproofing, mooring, deployment hardware, validation materials, and allowance for price changes.</p>
     <div class="tw">
     <table class="budget">
-      <tr><th>Item</th><th>Use</th><th>Estimate</th></tr>
-      <tr><td>ESP32 DevKit</td><td>main controller</td><td>₱350–600</td></tr>
-      <tr><td>4–20 mA water pressure transmitter</td><td>wave/water pressure input</td><td>₱1,997–3,444</td></tr>
-      <tr><td>ADS1115 + precision shunt/protection</td><td>pressure signal interface</td><td>₱250–500</td></tr>
-      <tr><td>Wind speed + direction sensor</td><td>required wind channel</td><td>₱1,204–2,000</td></tr>
-      <tr><td>NEO-6M GPS module</td><td>position/security</td><td>₱497–800</td></tr>
-      <tr><td>A7670E/SIM7600 LTE module + antenna</td><td>field internet path</td><td>₱1,800–4,500</td></tr>
-      <tr><td>INA219 / battery monitor</td><td>power validation</td><td>₱180–250</td></tr>
-      <tr><td>LiFePO4 battery + solar + charge controller</td><td>power system</td><td>₱3,500–8,500</td></tr>
-      <tr><td>microSD / local buffer</td><td>offline storage</td><td>₱250–700</td></tr>
-      <tr><td>Waterproof enclosure, glands, wire, seals</td><td>marine protection</td><td>₱2,500–7,000</td></tr>
-      <tr><td>Mooring, ballast, rope/chain, eye hardware</td><td>deployment hardware</td><td>₱2,000–6,000</td></tr>
-      <tr><td>Calibration, spares, test materials</td><td>validation allowance</td><td>₱2,000–5,000</td></tr>
-      <tr><td><strong>Option A working total</strong></td><td>with 15% contingency</td><td><strong>₱19k–45k</strong></td></tr>
+      <tr><th>Item / group</th><th>What is included</th><th>Planning allowance</th></tr>
+      <tr><td>Core sensors + controller</td><td>ESP32, water pressure transmitter, ADS1115/shunt/protection, wind speed/direction, GPS, INA219</td><td>₱6,500–9,500</td></tr>
+      <tr><td>Communication + data</td><td>Wi-Fi path, optional A7670E LTE module/antenna, microSD or flash buffer</td><td>₱1,200–2,500</td></tr>
+      <tr><td>Power system</td><td>Battery pack with BMS, compact solar panel set, solar charger, fuse, switch, waterproof power connector</td><td>₱4,000–6,500</td></tr>
+      <tr><td>Prototype electronics</td><td>Breadboard, jumper wires, buck converters, perfboard, terminal blocks, headers, heat shrink, labels</td><td>₱1,300–2,500</td></tr>
+      <tr><td>Buoy body + waterproofing</td><td>Option body material, sealed electronics box, cable glands, epoxy/silicone, stainless bolts/brackets, mast/tube, stilling tube, reflective labels</td><td>₱4,500–7,000</td></tr>
+      <tr><td>Mooring + deployment</td><td>Anchor/deadweight, chain, marine rope, shackles, swivel, thimble, recovery marker</td><td>₱2,000–4,000</td></tr>
+      <tr><td>Safety marker</td><td>Flashing marine warning light / buoy beacon; one needed, two-piece bundle acceptable as spare</td><td>₱500–700</td></tr>
+      <tr><td>Validation + reserve</td><td>SIM/load if LTE is used, printing/transport, spare wires/connectors, leak-test supplies, contingency, seller price changes</td><td>Included in ₱25k–45k total</td></tr>
+      <tr><td><strong>Estimated total</strong></td><td>complete proposal cost band with contingency</td><td><strong>₱25,000–₱45,000</strong></td></tr>
     </table>
     </div>
-    <h2>Source direction</h2>
+    <h2>Buying note</h2>
     <ul class="sources">
-      <li>ESP32 / LTE / GPS: Lazada, Shopee, E-Gizmo, CreateLabz, Erovoutika</li>
-      <li>Pressure transmitter and wind sensor: Shopee/Lazada industrial sensor listings</li>
-      <li>INA219 / ADC: imBento, E-Gizmo, Fu-labs, Lazada/Shopee electronics stores</li>
-      <li>Battery/solar: local solar suppliers or Shopee/Lazada solar categories</li>
+      <li>Existing ESP32 kit, breadboard, jumper wires, and buck converters may be reused for bench validation, but replacement prices remain in the proposal budget.</li>
+      <li>Water pressure sensor must be confirmed first: low range, 4–20 mA output, IP68, cable type, and seawater/material compatibility.</li>
+      <li>Use Wi-Fi first for lab or near-shore tests; buy LTE only if the validation site has no reliable Wi-Fi.</li>
+      <li>Final battery and solar size depends on measured current draw from ESP32, GPS, wind, pressure interface, internet module, and flashing beacon.</li>
     </ul>
     <h2>Still owed before approval</h2>
     <ul>
