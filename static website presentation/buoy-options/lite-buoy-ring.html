@@ -5,7 +5,7 @@
   <meta name="description" content="FALCON Lite Option C — ring-buoy preview. Foam donut float, moon pool, single center pole. Proposed only, not validated.">
   <title>FALCON Lite Option C — Ring Preview (Proposed)</title>
   <style>
-    :root{color-scheme:dark;--bg:#08141b;--panel:#0e212c;--line:#1e3a47;--txt:#d7e7ee;--dim:#8fb0bd;--gold:#d8a94e}
+    :root{color-scheme:dark;--bg:#08141b;--panel:#0e212c;--line:#1e3a47;--txt:#d7e7ee;--dim:#8fb0bd;--gold:#d8a94e;--ok:#8fd694;--bad:#ff9c7d;--blue:#9fd8e8}
     html{-webkit-text-size-adjust:100%;text-size-adjust:100%}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font:14px/1.5 system-ui,sans-serif;overflow-x:hidden}
     header{padding:14px 18px;border-bottom:1px solid var(--line);display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
     header h1{font-size:17px;margin:0}header p{margin:0;color:var(--dim);font-size:12.5px}
@@ -25,8 +25,8 @@
     aside{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px}
     aside h2{font-size:13px;margin:14px 0 6px;color:var(--gold)}aside h2:first-child{margin-top:0}
     aside ul{margin:0;padding-left:18px}aside li{margin:3px 0;font-size:13px}aside li small{color:var(--dim)}
-    table{width:100%;border-collapse:collapse;font-size:12.5px}td{border-top:1px solid var(--line);padding:5px 4px;vertical-align:top}
-    td:last-child{text-align:right;white-space:nowrap}code{color:#9fd8e8}
+    table{width:100%;border-collapse:collapse;font-size:12.5px}.budget th{position:sticky;top:0;background:#18313d;color:#fff;text-align:left}.budget td,.budget th{border-top:1px solid var(--line);padding:6px 4px}.note{margin:0 0 8px;color:var(--dim);font-size:12.2px}.sources li{font-size:12.2px}td{border-top:1px solid var(--line);padding:5px 4px;vertical-align:top}
+    td:last-child{text-align:right;white-space:nowrap}.tag{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:2px 7px;font-size:11px;color:var(--blue)}.need{color:var(--ok);font-weight:700}.pending{color:var(--gold);font-weight:700}.risk{color:var(--bad);font-weight:700}code{color:#9fd8e8}
     @media(max-width:900px){
       main{grid-template-columns:1fr;padding:10px}
       aside{max-height:none}
@@ -73,8 +73,8 @@
   <h1>Option C — Ring preview</h1>
   <p>Foam donut float · moon pool · single center pole · drag to orbit · wheel to zoom</p>
 </header>
-<nav class="opts"><a href="./lite-buoy.html">REVISED MAIN · COMPACT CAN</a><a href="./lite-buoy-spar.html">OPTION B · CATAMARAN</a><a class="here" href="./lite-buoy-ring.html">OPTION C · RING (this page)</a><a href="./deployment-map.html">DEPLOYMENT MAP</a><a href="./how-it-works/">HOW IT WORKS</a></nav>
-<p class="warn"><strong>PROPOSED REPLACEMENT PROTOTYPE</strong> — geometry is illustrative only. Estimated proposal cost is now set at ₱25,000–₱45,000 per buoy option pending seller confirmation. Not fabrication-ready or field-validated.</p>
+<nav class="opts"><a href="./lite-buoy.html">REVISED MAIN · COMPACT CAN</a><a href="./lite-buoy-spar.html">OPTION B · CATAMARAN</a><a class="here" href="./lite-buoy-ring.html">OPTION C · RING (this page)</a><a href="./deployment-map.html">DEPLOYMENT MAP</a></nav>
+<p class="warn"><strong>BACKUP DESIGN STUDY</strong> — ring geometry is illustrative only. Estimated proposal cost remains ₱25,000–₱45,000 pending seller confirmation and validation testing. Not fabrication-ready or field-validated.</p>
 <main>
   <div id="stage"><div id="hud"><button data-view="orbit">Overview</button><button data-view="wind">Wind head</button><button data-view="solar">Panel</button><button data-view="below">Moon pool + mooring</button></div><div id="tip">V2 presentation model untouched — this page is a separate Lite study.</div></div>
   <aside>
@@ -102,8 +102,8 @@
       <tr><td>Wind speed cups + wind direction vane</td><td class="need">Required</td></tr>
       <tr><td>GPS / GNSS puck for position and security</td><td class="need">Required</td></tr>
       <tr><td>INA219 battery/solar power monitor</td><td class="need">Required</td></tr>
-      <tr><td>Battery pack with BMS, fuse, switch, and waterproof connector</td><td class="need">Required</td></tr>
-      <tr><td>Compact solar panel set + solar charge controller</td><td class="need">Required</td></tr>
+      <tr><td>12.8V 10Ah LiFePO4 battery with BMS, fuse, switch, and waterproof connector</td><td class="need">Required</td></tr>
+      <tr><td>6× 3W compact solar panels + solar charge controller</td><td class="need">Required</td></tr>
       <tr><td>Wi-Fi path; LTE module only if site has no stable Wi-Fi</td><td class="pending">Conditional</td></tr>
       <tr><td>microSD / flash buffer for offline records</td><td class="pending">Recommended</td></tr>
       <tr><td>Breadboard, jumper wires, buck converters, perfboard, terminal blocks</td><td class="need">Budgeted</td></tr>
@@ -120,7 +120,7 @@
       <tr><th>Item / group</th><th>What is included</th><th>Planning allowance</th></tr>
       <tr><td>Core sensors + controller</td><td>ESP32, water pressure transmitter, ADS1115/shunt/protection, wind speed/direction, GPS, INA219</td><td>₱6,500–9,500</td></tr>
       <tr><td>Communication + data</td><td>Wi-Fi path, optional A7670E LTE module/antenna, microSD or flash buffer</td><td>₱1,200–2,500</td></tr>
-      <tr><td>Power system</td><td>Battery pack with BMS, compact solar panel set, solar charger, fuse, switch, waterproof power connector</td><td>₱4,000–6,500</td></tr>
+      <tr><td>Power system</td><td>12.8V 10Ah LiFePO4 battery with BMS, 6× 3W compact solar panels, solar charger, fuse, switch, waterproof power connector</td><td>₱4,000–6,500</td></tr>
       <tr><td>Prototype electronics</td><td>Breadboard, jumper wires, buck converters, perfboard, terminal blocks, headers, heat shrink, labels</td><td>₱1,300–2,500</td></tr>
       <tr><td>Buoy body + waterproofing</td><td>Option body material, sealed electronics box, cable glands, epoxy/silicone, stainless bolts/brackets, mast/tube, stilling tube, reflective labels</td><td>₱4,500–7,000</td></tr>
       <tr><td>Mooring + deployment</td><td>Anchor/deadweight, chain, marine rope, shackles, swivel, thimble, recovery marker</td><td>₱2,000–4,000</td></tr>
@@ -134,7 +134,7 @@
       <li>Existing ESP32 kit, breadboard, jumper wires, and buck converters may be reused for bench validation, but replacement prices remain in the proposal budget.</li>
       <li>Water pressure sensor must be confirmed first: low range, 4–20 mA output, IP68, cable type, and seawater/material compatibility.</li>
       <li>Use Wi-Fi first for lab or near-shore tests; buy LTE only if the validation site has no reliable Wi-Fi.</li>
-      <li>Final battery and solar size depends on measured current draw from ESP32, GPS, wind, pressure interface, internet module, and flashing beacon.</li>
+      <li>Baseline power choice is 12.8V 10Ah LiFePO4 with BMS and 6× 3W panels; final runtime still depends on measured current draw.</li>
     </ul>
     <h2>Still owed before approval</h2>
     <ul>

@@ -35,7 +35,7 @@ sea.rotation.x = -Math.PI/2; sea.position.y = 0; sea.receiveShadow = true;
 scene.add(sea);
 
 // Buoy geometry now lives in the shared model module so the orbit preview and
-// the how-it-works cinematic stay identical.
+// other Option A references stay identical.
 import {createCanBuoy} from './buoy-can-model.js';
 
 const model = createCanBuoy();

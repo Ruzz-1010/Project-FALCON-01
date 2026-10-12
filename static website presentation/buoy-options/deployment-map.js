@@ -166,7 +166,7 @@ function render(){
   $('b-battbar').style.width = `${b.batt.toFixed(0)}%`;
   $('b-battbar').style.background = b.batt < 30 ? '#e87a7a' : '#8fd694';
   $('b-link').textContent = `${'▂▄▆'.slice(0, b.rssi > -80 ? 3 : b.rssi > -95 ? 2 : 1)} ${b.rssi.toFixed(0)} dBm`;
-  $('b-seen').textContent = `reported ${b.seen}s ago · heartbeat 5–15 min`;
+  $('b-seen').textContent = `reported ${b.seen}s ago · 2-min packet plan`;
   drawChart('b-hschart', b.hsHist, stateColor(b.hs), 'm');
   drawChart('b-windchart', b.windHist, '#9fd8e8', 'km/h');
   for(const [id, m] of markers){

@@ -1,7 +1,7 @@
 // FALCON Lite — shared compact can-buoy model (Option A geometry).
 //
 // Single source of truth for the Ø0.84 m can buoy, so the orbit preview
-// (../lite-buoy.js) and the how-it-works cinematic (../how-it-works/) cannot
+// (../lite-buoy.js) and any panel-facing Option A references cannot
 // drift apart. Extracted verbatim from the Option A preview; do not hand-edit
 // one copy without the other.
 //

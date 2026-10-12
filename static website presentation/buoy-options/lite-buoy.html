@@ -14,6 +14,10 @@
     nav.opts a.here{color:var(--gold);border-color:var(--gold)}
     .warn{margin:0 18px;margin-top:12px;padding:8px 12px;border:1px solid var(--gold);border-radius:8px;color:var(--gold);font-size:12.5px}
     .status{color:var(--ok);border-color:#315b3a}
+    .approval{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:12px 18px 0}
+    .approval article{background:linear-gradient(180deg,#102733,#0b1b24);border:1px solid var(--line);border-radius:12px;padding:11px 12px;min-height:92px}
+    .approval b{display:block;color:#fff;font-size:13px;margin-bottom:4px}.approval span{display:block;color:var(--dim);font-size:12px;line-height:1.4}
+    .approval strong{color:var(--ok);font-weight:800}
     main{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,380px);gap:12px;padding:12px 18px 24px}
     #stage{position:relative;height:clamp(320px,70vh,620px);border:1px solid var(--line);border-radius:12px;overflow:hidden;background:radial-gradient(120% 90% at 70% 10%,#10394a 0%,#08141b 60%)}
     #stage canvas{display:block;width:100%;height:100%;touch-action:none}
@@ -29,6 +33,7 @@
     td:last-child{text-align:right;white-space:nowrap}.tag{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:2px 7px;font-size:11px;color:var(--blue)}.need{color:var(--ok);font-weight:700}.pending{color:var(--gold);font-weight:700}.risk{color:var(--bad);font-weight:700}code{color:#9fd8e8}
     @media(max-width:900px){
       main{grid-template-columns:1fr;padding:10px}
+      .approval{grid-template-columns:1fr 1fr;margin-left:12px;margin-right:12px}
       aside{max-height:none}
       #stage{height:clamp(300px,58vh,560px)}
       header{padding:12px}
@@ -44,6 +49,8 @@
       nav.opts{padding:8px 10px 0;gap:6px}
       nav.opts a{font-size:11px;padding:5px 9px}
       .warn{font-size:11.8px;line-height:1.4}
+      .approval{grid-template-columns:1fr;margin:10px}
+      .approval article{min-height:0;padding:10px}
       #stage{height:clamp(260px,56vh,440px);border-radius:10px}
       #hud{left:8px;top:8px;right:8px;gap:6px;flex-wrap:nowrap;overflow-x:auto;pointer-events:none;scrollbar-width:none}
       #hud::-webkit-scrollbar{display:none}
@@ -72,22 +79,28 @@
 <body>
 <header>
   <h1>Option A — Compact Can Buoy</h1>
-  <p>Recommended simple body · pressure + wind + GPS + solar · drag to orbit · wheel to zoom</p>
+  <p>Recommended for panel approval · compact body · pressure + wind + GPS + solar · drag to orbit</p>
 </header>
-<nav class="opts"><a class="here" href="./lite-buoy.html">REVISED MAIN · COMPACT CAN</a><a href="./lite-buoy-spar.html">OLDER SPAR STUDY</a><a href="./lite-buoy-ring.html">OPTION C · RING</a><a href="./deployment-map.html">DEPLOYMENT MAP</a><a href="./how-it-works/">HOW IT WORKS</a></nav>
-<p class="warn"><strong>PROPOSED DOST REVISION MODEL</strong> — geometry is illustrative only. Estimated proposal cost is now set at ₱25,000–₱45,000 per buoy option pending seller confirmation. Not fabrication-ready or field-validated.</p>
-<p class="warn status"><strong>REVISION INTENT</strong> — compact single-body buoy with required water pressure, wind, GPS/security, battery/solar, and Wi-Fi/LTE internet modules. Event packets send only after validated threshold changes.</p>
+<nav class="opts"><a class="here" href="./lite-buoy.html">REVISED MAIN · COMPACT CAN</a><a href="./lite-buoy-spar.html">OPTION B · CATAMARAN</a><a href="./lite-buoy-ring.html">OPTION C · RING</a><a href="./deployment-map.html">DEPLOYMENT MAP</a></nav>
+<p class="warn"><strong>PANEL APPROVAL MODEL</strong> — proposed geometry and budget view only. Estimated proposal cost is ₱25,000–₱45,000 pending seller confirmation, load testing, flotation checks, and final sensor selection.</p>
+<p class="warn status"><strong>RECOMMENDED REVISION</strong> — one compact can body with water-pressure sensing, wind speed/direction, GPS/security, 12.8V LiFePO4 battery, 6× small solar panels, and Wi‑Fi/LTE internet upload.</p>
+<section class="approval" aria-label="Panel approval summary">
+  <article><b>Design intent</b><span><strong>Small and simple.</strong> Single-body buoy reduces fabricated parts compared with wider backup concepts.</span></article>
+  <article><b>Data strategy</b><span>Samples locally, then sends one cloud packet every 2 minutes with average, minimum, maximum, and peak values.</span></article>
+  <article><b>Power baseline</b><span>12.8V 10Ah LiFePO4 with BMS + 6× 3W compact solar panels, subject to current-draw validation.</span></article>
+  <article><b>Approval focus</b><span>Panel should approve the form factor, sensor set, budget band, and validation plan before fabrication.</span></article>
+</section>
 <main>
-  <div id="stage"><div id="hud"><button data-view="orbit">Overview</button><button data-view="wind">Wind + GPS</button><button data-view="cloud">Cloud link</button><button data-view="solar">Solar / battery</button><button data-view="below">Pressure</button><button data-view="mooring">Anchor</button></div><div id="tip">Option A is the recommended simple proposal body; labels show required core equipment placement, not final part numbers.</div></div>
+  <div id="stage"><div id="hud"><button data-view="orbit">Overview</button><button data-view="wind">Wind + GPS</button><button data-view="cloud">Cloud link</button><button data-view="solar">Solar / battery</button><button data-view="below">Pressure</button><button data-view="mooring">Anchor</button></div><div id="tip">Recommended panel option: compact single-body buoy. Geometry is illustrative; component labels show required placement and validation scope.</div></div>
   <aside>
-    <h2>Decision status</h2>
+    <h2>Panel decision status</h2>
     <ul>
-      <li><span class="tag">Recommended</span> compact single-body buoy <small>best match for DOST request: smaller, simpler, fewer fabricated parts</small></li>
-      <li>Short wind mast on the top deck <small>required wind speed and direction channel</small></li>
-      <li>GPS puck on the top cap <small>required for exact position, drift, and security validation</small></li>
-      <li>Side stilling tube for water pressure <small>protects pressure sensor from direct slap and impact</small></li>
-      <li>Visible chain-to-anchor study <small>shows that the proposal still needs mooring scope and anchor sizing</small></li>
-      <li>Small solar faces and sealed internal battery bay <small>external view now shows service ports only; final size depends on measured load</small></li>
+      <li><span class="tag">Recommended</span> approve Option A as the main design direction <small>smallest and simplest of the three options</small></li>
+      <li>Short wind mast on the top deck <small>wind speed and direction without a tall tower</small></li>
+      <li>GPS puck on the top cap <small>position reference, drift monitoring, and security tracking</small></li>
+      <li>Side stilling tube for water pressure <small>shields the pressure line from direct wave slap and floating debris</small></li>
+      <li>Visible chain-to-anchor study <small>keeps mooring scope visible for panel review</small></li>
+      <li>Sealed internal electronics bay <small>battery, controller, internet module, fuses, buck converter, and wiring remain protected inside</small></li>
     </ul>
     <h2>Complete equipment list shown / required</h2>
     <div class="tw">
@@ -98,8 +111,8 @@
       <tr><td>Wind speed cups + wind direction vane</td><td class="need">Required</td></tr>
       <tr><td>GPS / GNSS puck for position and security</td><td class="need">Required</td></tr>
       <tr><td>INA219 battery/solar power monitor</td><td class="need">Required</td></tr>
-      <tr><td>Battery pack with BMS, fuse, switch, and waterproof connector</td><td class="need">Required</td></tr>
-      <tr><td>Compact solar panel set + solar charge controller</td><td class="need">Required</td></tr>
+      <tr><td>12.8V 10Ah LiFePO4 battery with BMS, fuse, switch, and waterproof connector</td><td class="need">Required</td></tr>
+      <tr><td>6× 3W compact solar panels + solar charge controller</td><td class="need">Required</td></tr>
       <tr><td>Wi-Fi path; LTE module only if site has no stable Wi-Fi</td><td class="pending">Conditional</td></tr>
       <tr><td>microSD / flash buffer for offline records</td><td class="pending">Recommended</td></tr>
       <tr><td>Breadboard, jumper wires, buck converters, perfboard, terminal blocks</td><td class="need">Budgeted</td></tr>
@@ -110,13 +123,13 @@
     </div>
 
     <h2>Estimated proposal price</h2>
-    <p class="note"><strong>Target estimate: ₱25,000–₱45,000 per buoy option.</strong> This is the presentation budget band for panel approval. It includes sensors, ESP32/prototyping parts, power, buoy body, waterproofing, mooring, deployment hardware, validation materials, and allowance for price changes.</p>
+    <p class="note"><strong>Target estimate: ₱25,000–₱45,000 per buoy option.</strong> This is the presentation budget band for approval, not a final purchase order. It includes sensors, ESP32/prototyping parts, power, buoy body, waterproofing, mooring, deployment hardware, validation materials, and allowance for seller price changes.</p>
     <div class="tw">
     <table class="budget">
       <tr><th>Item / group</th><th>What is included</th><th>Planning allowance</th></tr>
       <tr><td>Core sensors + controller</td><td>ESP32, water pressure transmitter, ADS1115/shunt/protection, wind speed/direction, GPS, INA219</td><td>₱6,500–9,500</td></tr>
       <tr><td>Communication + data</td><td>Wi-Fi path, optional A7670E LTE module/antenna, microSD or flash buffer</td><td>₱1,200–2,500</td></tr>
-      <tr><td>Power system</td><td>Battery pack with BMS, compact solar panel set, solar charger, fuse, switch, waterproof power connector</td><td>₱4,000–6,500</td></tr>
+      <tr><td>Power system</td><td>12.8V 10Ah LiFePO4 battery with BMS, 6× 3W compact solar panels, solar charger, fuse, switch, waterproof power connector</td><td>₱4,000–6,500</td></tr>
       <tr><td>Prototype electronics</td><td>Breadboard, jumper wires, buck converters, perfboard, terminal blocks, headers, heat shrink, labels</td><td>₱1,300–2,500</td></tr>
       <tr><td>Buoy body + waterproofing</td><td>Option body material, sealed electronics box, cable glands, epoxy/silicone, stainless bolts/brackets, mast/tube, stilling tube, reflective labels</td><td>₱4,500–7,000</td></tr>
       <tr><td>Mooring + deployment</td><td>Anchor/deadweight, chain, marine rope, shackles, swivel, thimble, recovery marker</td><td>₱2,000–4,000</td></tr>
@@ -129,14 +142,14 @@
     <ul class="sources">
       <li>Existing ESP32 kit, breadboard, jumper wires, and buck converters may be reused for bench validation, but replacement prices remain in the proposal budget.</li>
       <li>Water pressure sensor must be confirmed first: low range, 4–20 mA output, IP68, cable type, and seawater/material compatibility.</li>
-      <li>Use Wi-Fi first for lab or near-shore tests; buy LTE only if the validation site has no reliable Wi-Fi.</li>
-      <li>Final battery and solar size depends on measured current draw from ESP32, GPS, wind, pressure interface, internet module, and flashing beacon.</li>
+      <li>Use Wi‑Fi first for lab or near-shore tests; buy LTE only if the validation site has no reliable Wi‑Fi.</li>
+      <li>Baseline power choice is 12.8V 10Ah LiFePO4 with BMS and 6× 3W panels; final runtime still depends on measured current draw.</li>
     </ul>
-    <h2>Still owed before approval</h2>
+    <h2>Validation checklist before fabrication</h2>
     <ul>
       <li>Mass, displacement, waterline, ballast, and righting check</li>
       <li>Measured ESP32 + LTE current draw vs battery and solar target</li>
-      <li>Pressure stilling tube calibration and wave-filter threshold test</li>
+      <li>Pressure stilling tube calibration and 2-minute summary test</li>
       <li>Wind mast vibration check and GPS antenna placement check</li>
       <li>Dry-fit, leak, flotation, heel, and recovery tests</li>
     </ul>
