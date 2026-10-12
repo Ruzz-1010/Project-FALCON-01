@@ -263,6 +263,7 @@ let target = {yaw, pitch, dist, focus: focus.clone()};
 document.querySelectorAll('#hud button').forEach(b=>{
   b.addEventListener('click', ()=>{ const v = views[b.dataset.view]; if(v) target = {...v, focus: new THREE.Vector3(...v.focus)}; });
 });
+const DMIN = 1.2, DMAX = 12;
 let dragging = false, px = 0, py = 0;
 const el = renderer.domElement;
 el.addEventListener('pointerdown', e=>{ dragging = true; px = e.clientX; py = e.clientY; el.setPointerCapture(e.pointerId); });
@@ -273,7 +274,29 @@ el.addEventListener('pointermove', e=>{
   px = e.clientX; py = e.clientY;
 });
 el.addEventListener('pointerup', ()=>{ dragging = false; });
-el.addEventListener('wheel', e=>{ e.preventDefault(); target.dist = Math.max(1.2, Math.min(12, target.dist + e.deltaY*0.003)); }, {passive:false});
+// Touch: two-finger pinch to zoom (wheel has no equivalent on phones/tablets).
+const touches = new Map();
+let pinchStart = 0, pinchDist0 = 0;
+el.addEventListener('pointerdown', e=>{ if(e.pointerType === 'touch') touches.set(e.pointerId, e); });
+el.addEventListener('pointermove', e=>{
+  if(e.pointerType !== 'touch' || !touches.has(e.pointerId)) return;
+  touches.set(e.pointerId, e);
+  if(touches.size === 2){
+    const [a, b] = [...touches.values()];
+    const d = Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+    if(pinchDist0 > 0 && d > 0) target.dist = Math.max(DMIN, Math.min(DMAX, pinchDist0 / d * pinchStart));
+  }
+});
+const pinchSync = ()=>{
+  if(touches.size === 2){
+    const [a, b] = [...touches.values()];
+    pinchDist0 = Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+    pinchStart = target.dist;
+  } else { pinchDist0 = 0; }
+};
+['pointerup','pointercancel','pointerleave'].forEach(ev=>
+  el.addEventListener(ev, e=>{ touches.delete(e.pointerId); dragging = false; pinchSync(); }));
+el.addEventListener('wheel', e=>{ e.preventDefault(); target.dist = Math.max(DMIN, Math.min(DMAX, target.dist + e.deltaY*0.003)); }, {passive:false});
 
 function resize(){
   // Explicit pixel size (never CSS %): % heights + grid rows feed back into
