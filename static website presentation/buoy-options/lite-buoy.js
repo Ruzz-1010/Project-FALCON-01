@@ -100,7 +100,7 @@ buoy.add(bottom);
 const bilge = mesh(new THREE.TorusGeometry(0.37, 0.024, 10, 48), M.steel, 0, -0.20, 0, 'BILGE_RING');
 bilge.rotation.x = Math.PI/2;
 buoy.add(bilge);
-const rubband = mesh(new THREE.CylinderGeometry(0.425, 0.425, 0.045, 48, 1, true), M.steel, 0, 0.02, 0, 'RUB_BAND');
+const rubband = mesh(new THREE.CylinderGeometry(0.419, 0.419, 0.045, 48, 1, true), M.steel, 0, 0.02, 0, 'RUB_BAND');
 buoy.add(rubband);
 // Deck disc + rim ring + bolts.
 const deck = mesh(new THREE.CylinderGeometry(0.415, 0.415, 0.04, 48), M.deck, 0, 0.31, 0, 'DECK');
@@ -113,9 +113,10 @@ for(let i=0;i<12;i++){
   buoy.add(mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.02, 8), M.steel, Math.cos(a)*0.36, 0.334, Math.sin(a)*0.36, 'DECK_BOLT'));
 }
 // Mooring eye, keel ballast, and a visible chain/anchor study below the hull.
-const eye = mesh(new THREE.TorusGeometry(0.045, 0.012, 8, 20), M.chain, 0, -0.27, 0, 'MOORING_EYE');
+const eye = mesh(new THREE.TorusGeometry(0.045, 0.012, 8, 20), M.chain, 0, -0.352, 0, 'MOORING_EYE');
 buoy.add(eye);
-const keel = mesh(new THREE.CylinderGeometry(0.16, 0.20, 0.12, 24), M.anchor, 0, -0.32, 0, 'LOW_KEEL_BALLAST');
+// Hull bottom face sits at y=-0.21; the ballast plug must start there or it hangs in open water.
+const keel = mesh(new THREE.CylinderGeometry(0.19, 0.15, 0.13, 24), M.anchor, 0, -0.275, 0, 'LOW_KEEL_BALLAST');
 buoy.add(keel);
 const fairlead = mesh(new THREE.TorusGeometry(0.055, 0.010, 8, 20), M.chain, 0.30, -0.16, 0.30, 'SIDE_FAIRLEAD');
 fairlead.rotation.y = Math.PI/4;
@@ -123,24 +124,30 @@ buoy.add(fairlead);
 buoy.add(strut([0.05,-0.30,0.05],[0.30,-0.18,0.30],0.007,M.rope,'SHORT_BRIDLE_TO_FAIRLEAD'));
 const mooring = new THREE.Group();
 mooring.name = 'MOORING_CHAIN_AND_ANCHOR_STUDY';
-mooring.add(chainBetween([0.30,-0.20,0.30],[0.52,-0.72,0.60],9,0.026));
+mooring.add(chainBetween([0.30,-0.17,0.30],[0.52,-0.72,0.60],9,0.026)); // starts at the fairlead
 mooring.add(strut([0.52,-0.72,0.60],[0.66,-0.98,0.82],0.010,M.rope,'SCOPE_ROPE_TO_ANCHOR'));
 const anchorBlock = mesh(new THREE.BoxGeometry(0.34,0.10,0.24), M.anchor, 0.72, -1.03, 0.90, 'CONCRETE_OR_DEADWEIGHT_ANCHOR');
 anchorBlock.rotation.y = 0.35;
 mooring.add(anchorBlock);
-const anchorEye = mesh(new THREE.TorusGeometry(0.045,0.010,8,18), M.chain, 0.59, -0.96, 0.80, 'ANCHOR_EYE');
-anchorEye.rotation.y = Math.PI/2;
+// Eye sits in the scope-rope eye and in the anchor block, and its plane is
+// turned so the rope actually threads through it instead of clipping its edge.
+const anchorEye = mesh(new THREE.TorusGeometry(0.045,0.010,8,18), M.chain, 0.63, -0.95, 0.80, 'ANCHOR_EYE');
+anchorEye.rotation.y = -1.0036;
 mooring.add(anchorEye);
-mooring.add(mesh(new THREE.BoxGeometry(0.46,0.012,0.012), M.anchor, 0.72, -0.94, 0.90, 'ANCHOR_STOCK'));
+const anchorStock = mesh(new THREE.BoxGeometry(0.46,0.012,0.012), M.anchor, 0.72, -0.974, 0.90, 'ANCHOR_STOCK');
+anchorStock.rotation.y = 0.35;   // must match the block, and rest on its top face
+mooring.add(anchorStock);
 buoy.add(mooring);
 
 // --- Pressure stilling tube on the hull side (open top above waterline).
-const still = mesh(new THREE.CylinderGeometry(0.026, 0.026, 0.42, 14, 1, true), M.steel, 0.45, -0.04, 0.12, 'PRESSURE_STILLING_TUBE');
+// Hull r=0.42: put the tube axis at 0.43 so its wall bites into the shell
+// (0.43-0.026 = 0.404) instead of hovering 2cm clear of it.
+const still = mesh(new THREE.CylinderGeometry(0.026, 0.026, 0.42, 14, 1, true), M.steel, 0.413, -0.04, 0.12, 'PRESSURE_STILLING_TUBE');
 buoy.add(still);
-const stillCap = mesh(new THREE.CylinderGeometry(0.029, 0.029, 0.03, 14), M.dark, 0.45, -0.26, 0.12, 'STILLING_BOTTOM_CAP');
+const stillCap = mesh(new THREE.CylinderGeometry(0.029, 0.029, 0.03, 14), M.dark, 0.413, -0.26, 0.12, 'STILLING_BOTTOM_CAP');
 buoy.add(stillCap);
 for(const sy of [0.08, -0.12]){
-  buoy.add(mesh(new THREE.BoxGeometry(0.07, 0.026, 0.03), M.frame, 0.41, sy, 0.12, 'STILLING_STRAP'));
+  buoy.add(mesh(new THREE.BoxGeometry(0.07, 0.026, 0.03), M.frame, 0.415, sy, 0.12, 'STILLING_STRAP'));
 }
 
 // --- Tapered top housing (4-sided frustum): lower and wider like the reference.
@@ -149,15 +156,27 @@ const housing = mesh(new THREE.CylinderGeometry(0.18, 0.34, HOUS_H, 4, 1), M.hul
 housing.rotation.y = Math.PI/4; // faces look along +-X / +-Z
 buoy.add(housing);
 // Small solar panel on each sloped face.
-const tilt = Math.atan((0.240-0.127)/HOUS_H); // face slope from vertical
+// The housing is a 4-sided frustum turned 45 deg, so its flat faces are NOT at
+// `radius` -- the face midpoints sit at radius/sqrt(2) along +-X and +-Z. Seating
+// the panels on the real face plane is what stops them hovering off the shell.
+const FACE_K = Math.SQRT1_2;
+const housingR = y => 0.34 + (y - HOUS_Y)/HOUS_H * (0.18 - 0.34);
+const faceZ = y => housingR(y) * FACE_K;
+const tilt = Math.atan((0.34 - 0.18) * FACE_K / HOUS_H); // face slope from vertical
+const faceN = new THREE.Vector3(0, Math.sin(tilt), Math.cos(tilt)); // outward normal of the +Z face
 const solarGroup = new THREE.Group();
 solarGroup.name = 'HOUSING_SOLAR_FACES';
 buoy.add(solarGroup);
 for(let k=0;k<4;k++){
   const face = new THREE.Group();
   face.rotation.y = k*Math.PI/2;
-  const frame = mesh(new THREE.BoxGeometry(0.22, 0.23, 0.008), M.solarFrame, 0, HOUS_CY, 0.206, 'HOUSING_PANEL_FRAME');
-  const panel = mesh(new THREE.BoxGeometry(0.20, 0.21, 0.014), M.solar, 0, HOUS_CY, 0.212, 'HOUSING_SOLAR_PANEL');
+  const facePt = new THREE.Vector3(0, HOUS_CY, faceZ(HOUS_CY));
+  const frame = mesh(new THREE.BoxGeometry(0.22, 0.23, 0.008), M.solarFrame, 0, 0, 0, 'HOUSING_PANEL_FRAME');
+  const panel = mesh(new THREE.BoxGeometry(0.20, 0.21, 0.014), M.solar, 0, 0, 0, 'HOUSING_SOLAR_PANEL');
+  // Back of the frame rests on the face (halfDepth 0.004 -> standoff 0.004);
+  // the cell sits 0.002 proud of the frame front.
+  frame.position.copy(facePt).addScaledVector(faceN, 0.004);
+  panel.position.copy(facePt).addScaledVector(faceN, 0.013);
   frame.rotation.x = -tilt; panel.rotation.x = -tilt;
   face.add(frame, panel);
   solarGroup.add(face);
@@ -203,7 +222,7 @@ const arrayNose = mesh(new THREE.BoxGeometry(0.07, 0.045, 0.075), M.arrayBody, 0
 arrayNose.rotation.x = 0.35;
 arrayUnit.add(arrayNose);
 // Small solar panel on the back.
-const arraySolar = mesh(new THREE.BoxGeometry(0.10, 0.008, 0.065), M.solar, -0.05, 0.11, 0.01, 'ARRAY_SOLAR');
+const arraySolar = mesh(new THREE.BoxGeometry(0.10, 0.008, 0.065), M.solar, -0.05, 0.104, 0.01, 'ARRAY_SOLAR');
 arraySolar.rotation.x = -0.3;
 arrayUnit.add(arraySolar);
 // Rotor postlet + 3 black cups on pivots (mouths tangential, convex forward).
@@ -227,6 +246,9 @@ for(let i=0;i<3;i++){
 }
 // Direction fin below the body rear on its own axis.
 arrayUnit.add(mesh(new THREE.CylinderGeometry(0.006, 0.006, 0.05, 8), M.frame, 0, 0.02, -0.10, 'VANE_AXIS'));
+// Rear bracket arm tying the vane pivot back to the body -- without it the
+// fin + pivot float clear of the white housing.
+arrayUnit.add(strut([0, 0.028, -0.038], [0, 0.028, -0.10], 0.006, M.arrayBody, 'VANE_BRACKET_ARM'));
 const vane = new THREE.Group();
 vane.position.set(0, 0.02, -0.10);
 vane.name = 'REQUIRED_WIND_DIRECTION_VANE';
@@ -236,22 +258,28 @@ const vaneNose = mesh(new THREE.ConeGeometry(0.014, 0.06, 10), M.brass, 0, 0, 0.
 vaneNose.rotation.x = Math.PI/2;
 vane.add(vaneNose);
 // Louvered radiation shield stacked under the body front.
-arrayUnit.add(mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.05, 8), M.arrayBody, 0, 0.02, 0.06, 'SHIELD_STEM'));
+// The stem has to run the FULL height of the louver stack (top plate at
+// y=-0.005, bottom at y=-0.058); a short stem leaves plates 2-4 hanging.
+arrayUnit.add(mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.105, 8), M.arrayBody, 0, -0.008, 0.06, 'SHIELD_STEM'));
 for(let i=0;i<4;i++){
   const r = i % 2 === 0 ? 0.042 : 0.035;
   arrayUnit.add(mesh(new THREE.CylinderGeometry(r, r, 0.010, 16), M.arrayBody, 0, -0.005 - i*0.016, 0.06, 'RADIATION_SHIELD'));
 }
 
 // Sealed service bay hints: transparent window on housing, with battery/buffer tucked inside.
-const serviceWindow = mesh(new THREE.BoxGeometry(0.16, 0.10, 0.008), M.glass, -0.188, HOUS_CY - 0.01, -0.188, 'SERVICE_WINDOW_TO_INTERNAL_ELECTRONICS');
-serviceWindow.rotation.y = Math.PI/4;
+// Lay the pane flat on the -Z face; a flat box on the 45 deg corner edge
+// hangs off one side, and a vertical pane on a sloped face lifts at the top.
+const WIN_Y = HOUS_CY - 0.01;
+const serviceWindow = mesh(new THREE.BoxGeometry(0.16, 0.10, 0.008), M.glass, 0, 0, 0, 'SERVICE_WINDOW_TO_INTERNAL_ELECTRONICS');
+serviceWindow.position.set(0, WIN_Y + faceN.y * 0.003, -(faceZ(WIN_Y) + faceN.z * 0.003));
+serviceWindow.rotation.x = -tilt;
 buoy.add(serviceWindow);
 const battery = mesh(new THREE.BoxGeometry(0.13, 0.045, 0.08), M.battery, -0.045, HOUS_CY - 0.035, -0.055, 'INTERNAL_BATTERY_SOLAR_POWER_BAY');
 buoy.add(battery);
 const bufferCard = mesh(new THREE.BoxGeometry(0.050, 0.010, 0.036), M.dark, 0.045, HOUS_CY - 0.025, -0.060, 'MICROSD_OR_FLASH_BUFFER_INSIDE_HOUSING');
 buoy.add(bufferCard);
 for(const [gx,gz] of [[-0.28,-0.28],[-0.22,-0.30]]){
-  buoy.add(mesh(new THREE.CylinderGeometry(0.010,0.010,0.022,10), M.frame, gx, 0.345, gz, 'SEALED_CABLE_GLAND'));
+  buoy.add(mesh(new THREE.CylinderGeometry(0.010,0.010,0.022,10), M.frame, gx, 0.338, gz, 'SEALED_CABLE_GLAND'));
 }
 
 // --- Camera orbit (manual, no extra addon dependency).
