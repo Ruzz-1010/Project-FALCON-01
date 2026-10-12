@@ -37,10 +37,34 @@
 
     <!-- live readouts, top right -->
     <div class="hud">
-      <div class="readout idle" id="ro-link"><small>Link</small><b>—</b></div>
+      <div class="readout idle" id="ro-link"><small>Cloud</small><b>LOCAL</b></div>
       <div class="readout idle" id="ro-wind"><small>Wind</small><b>—</b></div>
-      <div class="readout idle" id="ro-wave"><small>Wave (est.)</small><b>—</b></div>
+      <div class="readout idle" id="ro-wave"><small>Wave est.</small><b>—</b></div>
       <div class="readout idle" id="ro-batt"><small>Battery</small><b>—</b></div>
+    </div>
+
+
+    <!-- professional data journey board -->
+    <aside id="workflow-panel" aria-label="Buoy data journey">
+      <div class="wf-kicker">Professional workflow</div>
+      <h2>From sea data to dashboard</h2>
+      <ol class="wf-steps">
+        <li data-wf="sense"><b>1. Sense</b><span>Pressure · wind · GPS · power</span></li>
+        <li data-wf="window"><b>2. Summarize</b><span>Two-minute window with peak retained</span></li>
+        <li data-wf="packet"><b>3. Upload</b><span>One compact Wi-Fi/LTE packet</span></li>
+        <li data-wf="dashboard"><b>4. Display</b><span>Cloud dashboard and status labels</span></li>
+        <li data-wf="validate"><b>5. Validate</b><span>Power, calibration, waterproofing</span></li>
+      </ol>
+      <div class="packet-card">
+        <small>2-minute packet contains</small>
+        <div class="packet-grid">
+          <span>avg</span><span>min</span><span>max</span><span>peak</span><span>GPS</span><span>batt</span><span>solar</span><span>flags</span>
+        </div>
+      </div>
+    </aside>
+
+    <div id="data-ribbon" aria-hidden="true">
+      <i></i><i></i><i></i><i></i>
     </div>
 
     <!-- sensing clock -->

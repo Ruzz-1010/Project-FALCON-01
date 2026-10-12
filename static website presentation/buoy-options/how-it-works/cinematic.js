@@ -308,6 +308,8 @@ const roLink = document.getElementById('ro-link');
 const roWind = document.getElementById('ro-wind');
 const roWave = document.getElementById('ro-wave');
 const roBatt = document.getElementById('ro-batt');
+const workflowSteps = [...document.querySelectorAll('[data-wf]')];
+const dataRibbon = document.getElementById('data-ribbon');
 
 // Beat ticks on the scrub bar.
 for (const b of BEATS){
@@ -316,6 +318,27 @@ for (const b of BEATS){
   tick.style.left = `${STARTS[BEATS.indexOf(b)] / TOTAL * 100}%`;
   tick.dataset.beat = BEATS.indexOf(b);
   bar.appendChild(tick);
+}
+
+
+function workflowKeyForBeat(id){
+  if (id === 'sense') return 'sense';
+  if (id === 'window') return 'window';
+  if (id === 'transmit') return 'packet';
+  if (id === 'dashboard') return 'dashboard';
+  if (id === 'power') return 'validate';
+  return '';
+}
+function updateWorkflowBoard(){
+  const current = workflowKeyForBeat(BEATS[beat].id);
+  const order = ['sense','window','packet','dashboard','validate'];
+  const currentIndex = order.indexOf(current);
+  workflowSteps.forEach(step => {
+    const idx = order.indexOf(step.dataset.wf);
+    step.classList.toggle('active', idx === currentIndex);
+    step.classList.toggle('done', currentIndex > idx && idx >= 0);
+  });
+  dataRibbon?.classList.toggle('on', current === 'packet' || current === 'dashboard');
 }
 
 function syncBeatUI(){
@@ -333,6 +356,7 @@ function syncBeatUI(){
     : b.tick === 'cloud' ? 'store · visualize · label state'
     : b.tick === 'power' ? 'battery · solar · current log'
     : 'proposal animation · not field data';
+  updateWorkflowBoard();
 }
 
 function setPlaying(on){
