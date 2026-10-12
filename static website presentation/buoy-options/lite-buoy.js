@@ -275,7 +275,7 @@ let dragging = false, px = 0, py = 0;
 const el = renderer.domElement;
 el.addEventListener('pointerdown', e=>{ dragging = true; px = e.clientX; py = e.clientY; el.setPointerCapture(e.pointerId); });
 el.addEventListener('pointermove', e=>{
-  if(!dragging) return;
+  if(!dragging || touches.size >= 2) return; // 2 fingers = pinch, not orbit
   target.yaw -= (e.clientX - px)*0.006;
   target.pitch = Math.max(-0.9, Math.min(1.1, target.pitch + (e.clientY - py)*0.004));
   px = e.clientX; py = e.clientY;
