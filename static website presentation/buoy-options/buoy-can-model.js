@@ -207,14 +207,14 @@ function chainBetween(a, b, count, radius=0.030){
   rotor.position.set(0, 0.195, 0);
   rotor.name = 'REQUIRED_WIND_SPEED_CUPS';
   arrayUnit.add(rotor);
-  rotor.add(mesh(new THREE.SphereGeometry(0.022, 16, 10), M.dark, 0, 0, 0, 'WIND_HUB'));
-  rotor.add(mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.020, 12), M.brass, 0, 0.023, 0, 'WIND_HUB_CAP'));
-  const cupR = 0.038, armR = 0.135;
+  rotor.add(mesh(new THREE.SphereGeometry(0.016, 16, 10), M.dark, 0, 0, 0, 'WIND_HUB'));
+  rotor.add(mesh(new THREE.CylinderGeometry(0.009, 0.009, 0.016, 12), M.brass, 0, 0.018, 0, 'WIND_HUB_CAP'));
+  const cupR = 0.026, armR = 0.092;
   for(let i=0;i<3;i++){
     const pivot = new THREE.Group();
     pivot.rotation.y = (i/3)*Math.PI*2;
     rotor.add(pivot);
-    const arm = mesh(new THREE.CylinderGeometry(0.0045, 0.0045, armR, 10), M.frame, armR/2, 0, 0, 'WIND_ARM');
+    const arm = mesh(new THREE.CylinderGeometry(0.0035, 0.0035, armR, 10), M.frame, armR/2, 0, 0, 'WIND_ARM');
     arm.rotation.z = Math.PI/2;
     pivot.add(arm);
     const cupGroup = new THREE.Group();
@@ -225,7 +225,7 @@ function chainBetween(a, b, count, radius=0.030){
     cup.rotation.x = Math.PI/2;
     cup.rotation.y = Math.PI/2;
     cupGroup.add(cup);
-    const rim = mesh(new THREE.TorusGeometry(cupR*0.82, 0.0035, 8, 20), M.frame, 0, 0, 0, 'WIND_CUP_RIM');
+    const rim = mesh(new THREE.TorusGeometry(cupR*0.82, 0.0028, 8, 20), M.frame, 0, 0, 0, 'WIND_CUP_RIM');
     rim.rotation.y = Math.PI/2;
     cupGroup.add(rim);
   }
@@ -235,22 +235,22 @@ function chainBetween(a, b, count, radius=0.030){
   vane.position.set(0, 0.060, 0);
   vane.name = 'REQUIRED_WIND_DIRECTION_VANE';
   arrayUnit.add(vane);
-  vane.add(strut([0, 0, 0.075], [0, 0, -0.185], 0.006, M.frame, 'WIND_VANE_BOOM'));
-  const vaneNose = mesh(new THREE.ConeGeometry(0.018, 0.070, 14), M.brass, 0, 0, 0.105, 'VANE_NOSE');
+  vane.add(strut([0, 0, 0.055], [0, 0, -0.135], 0.0045, M.frame, 'WIND_VANE_BOOM'));
+  const vaneNose = mesh(new THREE.ConeGeometry(0.014, 0.050, 14), M.brass, 0, 0, 0.078, 'VANE_NOSE');
   vaneNose.rotation.x = Math.PI/2;
   vane.add(vaneNose);
   const finShape = new THREE.Shape();
-  finShape.moveTo(0, 0.060);
-  finShape.lineTo(0, -0.060);
-  finShape.lineTo(0.150, 0);
-  finShape.lineTo(0, 0.060);
+  finShape.moveTo(0, 0.043);
+  finShape.lineTo(0, -0.043);
+  finShape.lineTo(0.110, 0);
+  finShape.lineTo(0, 0.043);
   const fin = new THREE.Mesh(new THREE.ShapeGeometry(finShape), M.vane);
   fin.name = 'VANE_TRIANGULAR_FIN';
-  fin.position.set(-0.075, 0.000, -0.185);
+  fin.position.set(-0.055, 0.000, -0.135);
   fin.rotation.y = Math.PI/2;
   fin.castShadow = true; fin.receiveShadow = true;
   vane.add(fin);
-  const finRib = mesh(new THREE.BoxGeometry(0.006, 0.095, 0.010), M.frame, 0, 0, -0.185, 'VANE_FIN_RIB');
+  const finRib = mesh(new THREE.BoxGeometry(0.005, 0.070, 0.008), M.frame, 0, 0, -0.135, 'VANE_FIN_RIB');
   vane.add(finRib);
 
   // Small shield plates under the head suggest the combined weather-sensor package,

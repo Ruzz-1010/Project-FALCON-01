@@ -1,5 +1,5 @@
-// FALCON 8-buoy Palawan deployment preview — real-coastline SVG map +
-// simulated telemetry. Coastline: GADM v4.1, simplified for display.
+// FALCON proposed Palawan validation map — real-coastline SVG map +
+// simulated 2-minute packet telemetry for panel review. Coastline: GADM v4.1, simplified for display.
 // Positions are illustrative and all readings are generated in-page.
 // No fetch, no tiles, no backend.
 import {ISLANDS} from './palawan-geo.js';
@@ -26,7 +26,7 @@ function mulberry(seed){
   let a = seed >>> 0;
   return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
 }
-const HN = 24; // history points per buoy (~2h at 5-min heartbeat)
+const HN = 30; // history points per buoy (~1h at 2-min packet interval)
 for(const b of BUOYS){
   const r = mulberry(seedOf(b.id));
   b.windDir = r()*360; b.wind = 8 + r()*22; b.gust = 0;
@@ -41,10 +41,10 @@ for(const b of BUOYS){
 const stateOf = hs => hs < 0.6 ? ['CALM','calm'] : hs < 1.6 ? ['MODERATE','mod'] : ['ROUGH','rough'];
 const stateColor = hs => hs < 0.6 ? '#8fd694' : hs < 1.6 ? '#e8c35a' : '#e87a7a';
 const wordsOf = (b, st) => st === 'CALM'
-  ? `Calm water at ${b.name} — light winds, small waves. Good sea day.`
+  ? `Calm simulated condition at ${b.name} — light wind and small pressure/wave estimate.`
   : st === 'MODERATE'
-  ? `Breezy at ${b.name} — moderate winds and noticeable waves. Small craft take care.`
-  : `Windy at ${b.name} — strong winds and rough waves. Not a small-boat day.`;
+  ? `Moderate simulated condition at ${b.name} — wind and pressure/wave estimate are elevated.`
+  : `Rough simulated condition at ${b.name} — high wind and pressure/wave estimate for dashboard demonstration.`;
 
 const svgNS = 'http://www.w3.org/2000/svg';
 const svg = document.getElementById('palawan');
@@ -158,15 +158,15 @@ function render(){
   $('b-coords').textContent = `${b.lat.toFixed(2)}°N ${b.lon.toFixed(2)}°E · ~${b.depth}m site (illustrative)`;
   const pill = $('b-state'); pill.textContent = st; pill.className = 'pill ' + cls;
   $('b-words').textContent = wordsOf(b, st);
-  $('b-wind').textContent = `${b.wind.toFixed(0)} km/h · gust ${b.gust.toFixed(0)}`;
+  $('b-wind').textContent = `${b.wind.toFixed(0)} km/h · peak ${b.gust.toFixed(0)}`;
   $('b-winddir').textContent = `from ${dirName(b.windDir)} (${b.windDir.toFixed(0)}°)`;
-  $('b-hs').textContent = `${b.hs.toFixed(2)} m (est.)`;
+  $('b-hs').textContent = `${b.hs.toFixed(2)} m est.`;
   $('b-period').textContent = `period ~${b.period.toFixed(0)}s · ${st.toLowerCase()} seas`;
   $('b-batt').textContent = `${b.batt.toFixed(0)}% ${b.batt < 30 ? 'LOW' : 'OK'}`;
   $('b-battbar').style.width = `${b.batt.toFixed(0)}%`;
   $('b-battbar').style.background = b.batt < 30 ? '#e87a7a' : '#8fd694';
   $('b-link').textContent = `${'▂▄▆'.slice(0, b.rssi > -80 ? 3 : b.rssi > -95 ? 2 : 1)} ${b.rssi.toFixed(0)} dBm`;
-  $('b-seen').textContent = `reported ${b.seen}s ago · 2-min packet plan`;
+  $('b-seen').textContent = `last simulated packet ${b.seen}s ago · 2-min plan`;
   drawChart('b-hschart', b.hsHist, stateColor(b.hs), 'm');
   drawChart('b-windchart', b.windHist, '#9fd8e8', 'km/h');
   for(const [id, m] of markers){
@@ -178,7 +178,7 @@ function render(){
     m.g.style.filter = on ? 'drop-shadow(0 0 6px #fff)' : '';
   }
   // Header stats.
-  $('st-count').textContent = `${BUOYS.length} / ${BUOYS.length}`;
+  $('st-count').textContent = `${BUOYS.length} sites`;
   const w = BUOYS.reduce((a,x) => x.wind > a.wind ? x : a);
   $('st-wind').textContent = `${w.wind.toFixed(0)} km/h @ ${w.name.split(' ')[0]}`;
   const hmax = BUOYS.reduce((a,x) => x.hs > a.hs ? x : a);

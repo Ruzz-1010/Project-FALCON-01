@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="FALCON planned 8-buoy Palawan deployment preview. Stylized map, simulated readings. Proposed only, not validated.">
-  <title>FALCON — 8-Buoy Palawan Deployment Preview (Simulated)</title>
+  <meta name="description" content="FALCON proposed Palawan validation map. Simulated packet dashboard for panel review only. Proposed only, not deployed or validated.">
+  <title>FALCON — Proposed Palawan Validation Map (Simulated)</title>
   <style>
     :root{color-scheme:dark;--bg:#08141b;--panel:#0e212c;--line:#1e3a47;--txt:#d7e7ee;--dim:#8fb0bd;--gold:#d8a94e;--ok:#8fd694;--warn:#e8c35a;--bad:#e87a7a}
     html{-webkit-text-size-adjust:100%;text-size-adjust:100%}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font:14px/1.5 system-ui,sans-serif;overflow-x:hidden}
@@ -83,16 +83,16 @@
 </head>
 <body>
 <header>
-  <h1>8-Buoy Palawan Deployment Preview</h1>
-  <p>Click a buoy marker for its data · drag-free schematic · all readings SIMULATED</p>
+  <h1>Proposed Palawan Validation Map</h1>
+  <p>Panel preview only · simulated 2-minute packet dashboard · click a marker</p>
 </header>
 <nav class="opts"><a href="./lite-buoy.html">REVISED MAIN · COMPACT CAN</a><a href="./lite-buoy-spar.html">OPTION B · CATAMARAN</a><a href="./lite-buoy-ring.html">OPTION C · RING</a><a class="here" href="./deployment-map.html">DEPLOYMENT MAP (this page)</a></nav>
-<p class="warn"><strong>PLANNED PILOT — NOT DEPLOYED.</strong> Positions and every reading on this page are <strong>SIMULATED</strong> to show what the public deployment map will look like once 8 buoys are in the water. Not final, not field-validated.</p>
+<p class="warn"><strong>PROPOSAL MAP — NOT DEPLOYED.</strong> Buoy positions, wave/wind values, link quality, and history charts are <strong>SIMULATED</strong> for panel approval only. Final deployment count, coordinates, permits, and validation data are still pending.</p>
 <div class="stats">
-  <div class="stat"><b id="st-count">8 / 8</b><small>buoys reporting (simulated)</small></div>
-  <div class="stat"><b id="st-wind">–</b><small>strongest wind right now</small></div>
-  <div class="stat"><b id="st-sea">–</b><small>highest waves right now</small></div>
-  <div class="stat"><b id="st-batt">–</b><small>lowest battery</small></div>
+  <div class="stat"><b id="st-count">8 sites</b><small>proposed validation points</small></div>
+  <div class="stat"><b id="st-wind">–</b><small>highest simulated wind</small></div>
+  <div class="stat"><b id="st-sea">–</b><small>highest simulated wave</small></div>
+  <div class="stat"><b id="st-batt">–</b><small>lowest simulated battery</small></div>
 </div>
 <p id="maphint">Tap a marker to open its data · markers are enlarged on small screens</p>
 <main>
@@ -103,18 +103,18 @@
     <div><span class="pill sim">SIMULATED</span><span class="pill calm" id="b-state">–</span></div>
     <p id="b-words" style="margin:6px 0 0;color:var(--dim)">–</p>
     <div class="grid">
-      <div class="card"><small>WIND (10-min mean)</small><b id="b-wind">–</b><div style="font-size:12px;color:var(--dim)" id="b-winddir">–</div></div>
-      <div class="card"><small>WAVE HEIGHT (est.)</small><b id="b-hs">–</b><div style="font-size:12px;color:var(--dim)" id="b-period">–</div></div>
+      <div class="card"><small>WIND (2-min summary)</small><b id="b-wind">–</b><div style="font-size:12px;color:var(--dim)" id="b-winddir">–</div></div>
+      <div class="card"><small>WAVE / PRESSURE (est.)</small><b id="b-hs">–</b><div style="font-size:12px;color:var(--dim)" id="b-period">–</div></div>
       <div class="card"><small>BATTERY</small><b id="b-batt">–</b><div class="bar"><i id="b-battbar"></i></div></div>
-      <div class="card"><small>LINK / LAST REPORT</small><b id="b-link">–</b><div style="font-size:12px;color:var(--dim)" id="b-seen">–</div></div>
+      <div class="card"><small>LINK / LAST PACKET</small><b id="b-link">–</b><div style="font-size:12px;color:var(--dim)" id="b-seen">–</div></div>
     </div>
-    <div class="card" style="grid-column:1/-1"><small>WAVE HISTORY · last ~2h (simulated)</small><svg id="b-hschart" viewBox="0 0 200 56" style="width:100%;height:auto;display:block"></svg></div>
-    <div class="card" style="grid-column:1/-1"><small>WIND HISTORY · last ~2h (simulated)</small><svg id="b-windchart" viewBox="0 0 200 56" style="width:100%;height:auto;display:block"></svg></div>
+    <div class="card" style="grid-column:1/-1"><small>WAVE/PRESSURE HISTORY · last ~1h (simulated)</small><svg id="b-hschart" viewBox="0 0 200 56" style="width:100%;height:auto;display:block"></svg></div>
+    <div class="card" style="grid-column:1/-1"><small>WIND HISTORY · last ~1h (simulated)</small><svg id="b-windchart" viewBox="0 0 200 56" style="width:100%;height:auto;display:block"></svg></div>
     <div class="navbtns"><button id="prev">← Prev buoy</button><button id="next">Next buoy →</button></div>
-    <p style="font-size:12px;color:var(--dim)">Proposal packet plan: each buoy summarizes local samples and uploads one cloud packet about every 2 minutes, including average, minimum, maximum, and peak readings.</p>
+    <p style="font-size:12px;color:var(--dim)">Packet plan: each proposed buoy summarizes local samples and uploads one cloud packet about every 2 minutes with average, minimum, maximum, and peak readings.</p>
   </aside>
 </main>
-<footer>Coastline: GADM v4.1 province boundary, simplified for display. Schematic — not for navigation. Island shapes approximate; buoy positions illustrative. Real deployment needs permits, calibration, and a supervised trial before any public number is shown.</footer>
+<footer>Coastline: GADM v4.1 province boundary, simplified for display. Schematic — not for navigation. Island shapes approximate; buoy positions illustrative. Final deployment still needs site permits, sensor calibration, flotation/mooring validation, and supervised field testing before real public readings are shown.</footer>
 <script type="module" src="./deployment-map.js"></script>
 </body>
 </html>

@@ -177,18 +177,18 @@ const rotor = new THREE.Group();
 rotor.position.set(WMAST_X, ROTOR_Y, WMAST_Z);
 rotor.name = 'WIND_SPEED_DIRECTION_SENSOR';
 buoy.add(rotor);
-const hub = mesh(new THREE.SphereGeometry(0.055, 16, 12), M.dark, 0, 0, 0, 'WIND_HUB');
+const hub = mesh(new THREE.SphereGeometry(0.035, 16, 12), M.dark, 0, 0, 0, 'WIND_HUB');
 rotor.add(hub);
-rotor.add(mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.03, 10), M.brass, 0, 0.06, 0, 'HUB_NUT'));
+rotor.add(mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.022, 10), M.brass, 0, 0.040, 0, 'HUB_NUT'));
 // 3 open cups: Ø130mm on a Ø600mm circle. Each cup rides on a pivot rotated
 // about Y so every mouth faces the same tangential direction (convex side
 // forward, like a real drag anemometer) — never hand-angled per cup.
-const cupR = 0.065, armR = 0.30;
+const cupR = 0.040, armR = 0.185;
 for(let i=0;i<3;i++){
   const pivot = new THREE.Group();
   pivot.rotation.y = (i/3)*Math.PI*2;
   rotor.add(pivot);
-  const arm = mesh(new THREE.CylinderGeometry(0.014, 0.014, armR, 8), M.frame, armR/2, 0, 0, 'WIND_ARM');
+  const arm = mesh(new THREE.CylinderGeometry(0.008, 0.008, armR, 8), M.frame, armR/2, 0, 0, 'WIND_ARM');
   arm.rotation.z = Math.PI/2;
   pivot.add(arm);
   const cup = mesh(new THREE.SphereGeometry(cupR, 18, 12, 0, Math.PI*2, 0, Math.PI*0.62), M.cup, armR, 0, 0, 'WIND_CUP');
@@ -197,16 +197,16 @@ for(let i=0;i<3;i++){
 }
 // Wind vane on its own turret, 150mm below the rotor.
 const vane = new THREE.Group();
-vane.position.set(WMAST_X, ROTOR_Y - 0.15, WMAST_Z);
+vane.position.set(WMAST_X, ROTOR_Y - 0.115, WMAST_Z);
 vane.name = 'WIND_VANE';
 buoy.add(vane);
 const vaneCollar = mesh(new THREE.TorusGeometry(0.024, 0.010, 8, 16), M.frame, 0, 0, 0, 'VANE_COLLAR');
 vaneCollar.rotation.x = Math.PI/2;
 vane.add(vaneCollar);
-const tail = mesh(new THREE.BoxGeometry(0.012, 0.13, 0.10), M.vane, 0, 0.02, -0.11, 'VANE_TAIL');
+const tail = mesh(new THREE.BoxGeometry(0.009, 0.090, 0.070), M.vane, 0, 0.02, -0.11, 'VANE_TAIL');
 vane.add(tail);
-vane.add(mesh(new THREE.BoxGeometry(0.014, 0.05, 0.02), M.vane, 0, -0.03, -0.05, 'VANE_FIN_ROOT'));
-const nose = mesh(new THREE.ConeGeometry(0.020, 0.07, 12), M.brass, 0, 0.02, 0.12, 'VANE_NOSE');
+vane.add(mesh(new THREE.BoxGeometry(0.010, 0.035, 0.016), M.vane, 0, -0.03, -0.05, 'VANE_FIN_ROOT'));
+const nose = mesh(new THREE.ConeGeometry(0.014, 0.050, 12), M.brass, 0, 0.014, 0.085, 'VANE_NOSE');
 nose.rotation.x = Math.PI/2;
 vane.add(nose);
 // Whip on the deck rear corner, far from the rotor (clean mast, clean airflow).
