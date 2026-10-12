@@ -201,69 +201,86 @@ const led = mesh(new THREE.SphereGeometry(0.016, 10, 8), M.led, 0, HOUS_CY + 0.0
 buoy.add(led);
 
 // --- Required compact wind speed + direction sensor on a short mast.
-const WMAST_X = 0, WMAST_Z = 0, WMAST_BASE = TOP_Y + 0.018, WMAST_H = 0.42;
-const wmast = mesh(new THREE.CylinderGeometry(0.010, 0.012, WMAST_H, 10), M.frame, WMAST_X, WMAST_BASE + WMAST_H/2, WMAST_Z, 'REQUIRED_WIND_MAST');
+// Cleaner mini anemometer assembly: three cup rotor on top, wind vane below,
+// slim mast and clamp. Geometry only; does not change the buoy body design.
+const WMAST_X = 0, WMAST_Z = 0, WMAST_BASE = TOP_Y + 0.018, WMAST_H = 0.46;
+const wmast = mesh(new THREE.CylinderGeometry(0.008, 0.011, WMAST_H, 14), M.frame, WMAST_X, WMAST_BASE + WMAST_H/2, WMAST_Z, 'REQUIRED_WIND_MAST');
 buoy.add(wmast);
-const mastFoot = mesh(new THREE.CylinderGeometry(0.026, 0.033, 0.035, 12), M.frame, WMAST_X, WMAST_BASE + 0.018, WMAST_Z, 'WIND_MAST_FOOT');
+const mastFoot = mesh(new THREE.CylinderGeometry(0.030, 0.040, 0.035, 16), M.frame, WMAST_X, WMAST_BASE + 0.018, WMAST_Z, 'WIND_MAST_FOOT');
 buoy.add(mastFoot);
-// All-in-one weather array (per selected hardware): white body, black cups
-// up top, direction fin below, small solar on the back, louvered radiation
-// shield underneath, pole clamp at the bottom. Faces +Z, fin trails -Z.
+const mastCollar = mesh(new THREE.TorusGeometry(0.022, 0.005, 8, 18), M.steel, WMAST_X, WMAST_BASE + WMAST_H - 0.015, WMAST_Z, 'WIND_MAST_TOP_COLLAR');
+mastCollar.rotation.x = Math.PI / 2;
+buoy.add(mastCollar);
+
 const AY = WMAST_BASE + WMAST_H;
 const arrayUnit = new THREE.Group();
 arrayUnit.position.set(WMAST_X, AY, WMAST_Z);
-arrayUnit.name = 'WIND_ARRAY_UNIT';
+arrayUnit.name = 'WIND_ARRAY_UNIT_REFINED';
 buoy.add(arrayUnit);
-// Pole clamp around the mast top.
-arrayUnit.add(mesh(new THREE.BoxGeometry(0.055, 0.07, 0.055), M.dark, 0, 0.0, 0, 'ARRAY_POLE_CLAMP'));
-// White main body + sloped nose.
-arrayUnit.add(mesh(new THREE.BoxGeometry(0.24, 0.06, 0.09), M.arrayBody, 0, 0.075, 0, 'ARRAY_BODY'));
-const arrayNose = mesh(new THREE.BoxGeometry(0.07, 0.045, 0.075), M.arrayBody, 0, 0.065, 0.075, 'ARRAY_NOSE');
-arrayNose.rotation.x = 0.35;
-arrayUnit.add(arrayNose);
-// Small solar panel on the back.
-const arraySolar = mesh(new THREE.BoxGeometry(0.10, 0.008, 0.065), M.solar, -0.05, 0.104, 0.01, 'ARRAY_SOLAR');
-arraySolar.rotation.x = -0.3;
-arrayUnit.add(arraySolar);
-// Rotor postlet + 3 black cups on pivots (mouths tangential, convex forward).
-arrayUnit.add(mesh(new THREE.CylinderGeometry(0.009, 0.011, 0.10, 8), M.arrayBody, 0, 0.155, -0.055, 'ARRAY_ROTOR_POST'));
+
+// Compact commercial-style head body.
+arrayUnit.add(mesh(new THREE.CylinderGeometry(0.025, 0.030, 0.095, 18), M.arrayBody, 0, 0.030, 0, 'WIND_SENSOR_CENTER_BODY'));
+arrayUnit.add(mesh(new THREE.CylinderGeometry(0.034, 0.034, 0.020, 18), M.dark, 0, -0.030, 0, 'WIND_SENSOR_LOWER_CLAMP'));
+arrayUnit.add(mesh(new THREE.CylinderGeometry(0.010, 0.010, 0.145, 12), M.frame, 0, 0.118, 0, 'WIND_ROTOR_POST'));
+
+// Three-cup rotor: arms are longer and cups have visible rims, so the part reads
+// as an anemometer instead of a generic black blob.
 const rotor = new THREE.Group();
-rotor.position.set(0, 0.21, -0.055);
+rotor.position.set(0, 0.195, 0);
 rotor.name = 'REQUIRED_WIND_SPEED_CUPS';
 arrayUnit.add(rotor);
-rotor.add(mesh(new THREE.SphereGeometry(0.020, 12, 8), M.dark, 0, 0, 0, 'WIND_HUB'));
-const cupR = 0.034, armR = 0.095;
+rotor.add(mesh(new THREE.SphereGeometry(0.022, 16, 10), M.dark, 0, 0, 0, 'WIND_HUB'));
+rotor.add(mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.020, 12), M.brass, 0, 0.023, 0, 'WIND_HUB_CAP'));
+const cupR = 0.038, armR = 0.135;
 for(let i=0;i<3;i++){
   const pivot = new THREE.Group();
   pivot.rotation.y = (i/3)*Math.PI*2;
   rotor.add(pivot);
-  const arm = mesh(new THREE.CylinderGeometry(0.004, 0.004, armR, 8), M.frame, armR/2, 0, 0, 'WIND_ARM');
+  const arm = mesh(new THREE.CylinderGeometry(0.0045, 0.0045, armR, 10), M.frame, armR/2, 0, 0, 'WIND_ARM');
   arm.rotation.z = Math.PI/2;
   pivot.add(arm);
-  const cup = mesh(new THREE.SphereGeometry(cupR, 14, 10, 0, Math.PI*2, 0, Math.PI*0.62), M.arrayCup, armR, 0, 0, 'WIND_CUP');
+  const cupGroup = new THREE.Group();
+  cupGroup.position.set(armR, 0, 0);
+  cupGroup.rotation.z = -0.22;
+  pivot.add(cupGroup);
+  const cup = mesh(new THREE.SphereGeometry(cupR, 20, 12, 0, Math.PI*2, 0, Math.PI*0.62), M.arrayCup, 0, 0, 0, 'WIND_CUP');
   cup.rotation.x = Math.PI/2;
-  pivot.add(cup);
+  cup.rotation.y = Math.PI/2;
+  cupGroup.add(cup);
+  const rim = mesh(new THREE.TorusGeometry(cupR*0.82, 0.0035, 8, 20), M.frame, 0, 0, 0, 'WIND_CUP_RIM');
+  rim.rotation.y = Math.PI/2;
+  cupGroup.add(rim);
 }
-// Direction fin below the body rear on its own axis.
-arrayUnit.add(mesh(new THREE.CylinderGeometry(0.006, 0.006, 0.05, 8), M.frame, 0, 0.02, -0.10, 'VANE_AXIS'));
-// Rear bracket arm tying the vane pivot back to the body -- without it the
-// fin + pivot float clear of the white housing.
-arrayUnit.add(strut([0, 0.028, -0.038], [0, 0.028, -0.10], 0.006, M.arrayBody, 'VANE_BRACKET_ARM'));
+
+// Direction vane: horizontal boom and triangular tail, placed below the rotor.
 const vane = new THREE.Group();
-vane.position.set(0, 0.02, -0.10);
+vane.position.set(0, 0.060, 0);
 vane.name = 'REQUIRED_WIND_DIRECTION_VANE';
 arrayUnit.add(vane);
-vane.add(mesh(new THREE.BoxGeometry(0.008, 0.07, 0.11), M.vane, 0, 0, -0.065, 'VANE_FIN'));
-const vaneNose = mesh(new THREE.ConeGeometry(0.014, 0.06, 10), M.brass, 0, 0, 0.02, 'VANE_NOSE');
+vane.add(strut([0, 0, 0.075], [0, 0, -0.185], 0.006, M.frame, 'WIND_VANE_BOOM'));
+const vaneNose = mesh(new THREE.ConeGeometry(0.018, 0.070, 14), M.brass, 0, 0, 0.105, 'VANE_NOSE');
 vaneNose.rotation.x = Math.PI/2;
 vane.add(vaneNose);
-// Louvered radiation shield stacked under the body front.
-// The stem has to run the FULL height of the louver stack (top plate at
-// y=-0.005, bottom at y=-0.058); a short stem leaves plates 2-4 hanging.
-arrayUnit.add(mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.105, 8), M.arrayBody, 0, -0.008, 0.06, 'SHIELD_STEM'));
-for(let i=0;i<4;i++){
-  const r = i % 2 === 0 ? 0.042 : 0.035;
-  arrayUnit.add(mesh(new THREE.CylinderGeometry(r, r, 0.010, 16), M.arrayBody, 0, -0.005 - i*0.016, 0.06, 'RADIATION_SHIELD'));
+const finShape = new THREE.Shape();
+finShape.moveTo(0, 0.060);
+finShape.lineTo(0, -0.060);
+finShape.lineTo(0.150, 0);
+finShape.lineTo(0, 0.060);
+const fin = new THREE.Mesh(new THREE.ShapeGeometry(finShape), M.vane);
+fin.name = 'VANE_TRIANGULAR_FIN';
+fin.position.set(-0.075, 0.000, -0.185);
+fin.rotation.y = Math.PI/2;
+fin.castShadow = true; fin.receiveShadow = true;
+vane.add(fin);
+const finRib = mesh(new THREE.BoxGeometry(0.006, 0.095, 0.010), M.frame, 0, 0, -0.185, 'VANE_FIN_RIB');
+vane.add(finRib);
+
+// Small shield plates under the head suggest the combined weather-sensor package,
+// but they are kept compact so the wind sensor no longer dominates the buoy.
+arrayUnit.add(mesh(new THREE.CylinderGeometry(0.007, 0.007, 0.070, 8), M.arrayBody, 0, -0.072, 0.035, 'SHIELD_STEM'));
+for(let i=0;i<3;i++){
+  const r = i % 2 === 0 ? 0.036 : 0.031;
+  arrayUnit.add(mesh(new THREE.CylinderGeometry(r, r, 0.007, 18), M.arrayBody, 0, -0.045 - i*0.014, 0.035, 'COMPACT_RADIATION_SHIELD'));
 }
 
 // Sealed service bay hints: transparent window on housing, with battery/buffer tucked inside.
