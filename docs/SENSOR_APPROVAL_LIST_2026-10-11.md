@@ -59,7 +59,7 @@ This list includes sensors, ESP32/prototyping parts, power parts, buoy body, wat
 
 | Item | Qty | Unit price | Subtotal | Source or note |
 | --- | ---: | ---: | ---: | --- |
-| Rechargeable battery pack with BMS | 1 pack | ₱1,500-₱3,500 | ₱1,500-₱3,500 | Protected Li-ion/LiPo or 18650 pack with BMS; target 37-74 Wh class after measured load. |
+| Rechargeable battery pack with BMS | 1 pack | ₱1,500-₱3,500 | ₱1,500-₱3,500 | 12.8 V 10 Ah LiFePO4 battery with built-in BMS; 128 Wh nominal capacity. 12.8 V 12 Ah is acceptable if 10 Ah is unavailable. |
 | Compact solar panel set | 6 pcs x 3 W panels | ₱235-₱500 each | ₱1,410-₱3,000 | Six small 3 W panels for 18 W total nameplate capacity; arrange around buoy body/top faces. |
 | Solar charger / charge controller | 1 pc | ₱189-₱350 | ₱189-₱350 | Match charger to battery chemistry; do not connect solar directly to lithium battery. |
 | BMS/fuse/switch/power protection set | 1 set | ₱250-₱500 | ₱250-₱500 | Battery safety, main switch, and fuse. |

@@ -33,18 +33,18 @@ Formula: `daily demand (Wh/day) = average load (W) × 24 h`.
 
 ## Battery planning
 
-- Nominal reduced-prototype candidates: `3.7 V × 10 Ah = 37 Wh`, `3.7 V × 20 Ah = 74 Wh`, `7.4 V × 5 Ah = 37 Wh`, or `7.4 V × 10 Ah = 74 Wh`; choose final voltage from the charger, regulators, and purchased module requirements.
+- Nominal validation battery candidate: `12.8 V × 10 Ah = 128 Wh`. Acceptable substitute: `12.8 V × 12 Ah = 153.6 Wh` if the 10 Ah pack is unavailable.
 - Provisional usable energy at 80%: `nominal Wh × 0.80`.
 - No-solar runtime: `usable Wh ÷ measured average W`.
 - The regulator must survive the LTE modem's transmit and registration peaks even when average energy use is low.
 
-| Average load | 37 Wh battery no-solar runtime | 74 Wh battery no-solar runtime |
+| Average load | 12.8 V 10 Ah battery at 80% usable | 12.8 V 12 Ah substitute at 80% usable |
 | ---: | ---: | ---: |
-| 0.5 W | 59 h | 118 h |
-| 1.5 W | 20 h | 39 h |
-| 3 W | 10 h | 20 h |
+| 0.5 W | 205 h | 246 h |
+| 1.5 W | 68 h | 82 h |
+| 3 W | 34 h | 41 h |
 
-These are calculations, not field results. A 37 Wh class pack is the minimum candidate for supervised 24-hour validation only if the measured average load is low. A 74 Wh class pack gives better overnight reserve. Multi-day no-solar autonomy requires a new measured load budget and is outside the first low-cost baseline.
+These are calculations, not field results. The 12.8 V 10 Ah LiFePO4 pack is the realistic validation baseline because it gives enough reserve for LTE/GPS peaks, night operation, cloudy periods, and uncertain sensor load. Multi-day autonomy still requires measured load and solar recovery tests.
 
 ## Solar planning
 
@@ -64,7 +64,7 @@ Positive balance means theoretical energy remains for battery recovery. It is no
 ## Recommended provisional baseline
 
 - Use the measured event-driven load as the design scenario after the first 24-hour log.
-- Start with a protected Li-ion/LiPo or 18650 battery pack in the 37-74 Wh class; final voltage follows the charger/regulator and purchased module requirements.
+- Start with a 12.8 V 10 Ah LiFePO4 battery with built-in BMS; use 12.8 V 12 Ah only if the 10 Ah version is unavailable.
 - Start with the current solar plan of six 3 W compact panels, for 18 W total nameplate capacity.
 - Select the regulator, battery, panel, wiring, connectors, and fuses after the exact LTE peak current and modem sleep/transmit duty cycle are documented.
 - Do not call this endurance validation until a supervised test passes with logged current, charging, temperature, signal state, and recovery data.

@@ -29,7 +29,7 @@ The minimum proposal is a **compact ESP32 buoy** that samples locally and upload
 
 | Group | Item | Qty | Planning cost | Notes |
 | --- | --- | ---: | ---: | --- |
-| Battery | Protected Li-ion/LiPo or 18650 battery pack with BMS, target 37–74 Wh class after measured duty-cycle test | 1 | ₱1,500–₱3,500 | DOST asked to avoid oversized battery; final voltage follows the charger, regulators, LTE peak, and overnight load. |
+| Battery | 12.8 V 10 Ah LiFePO4 battery with built-in BMS, 128 Wh nominal capacity | 1 | ₱1,500–₱3,500 | DOST asked to avoid oversized battery, but the realistic validation baseline needs enough reserve for LTE/GPS peaks, night operation, and weak solar recovery. |
 | Solar | Six compact 3 W solar panels, 18 W total nameplate capacity | 6 pcs | ₱1,410–₱3,000 | Current compact buoy solar plan; final measured output must account for angle, heat, salt, shading, and charge losses. |
 | Charge control | LiFePO4-compatible PWM/MPPT controller or protected solar charger | 1 | ₱850–₱3,500 | Choose based on battery chemistry and panel voltage; cheap boards require bench verification. |
 | Regulators/protection | Battery branch, pressure-sensor loop branch if required, 5 V/LTE branch, 3.3 V sensor rail, fuses, TVS, reverse protection | 1 lot | ₱800–₱2,500 | LTE modem branch must survive registration/transmit current peaks; pressure loop supply is separate from the battery-voltage choice. |
