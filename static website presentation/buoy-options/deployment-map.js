@@ -63,7 +63,7 @@ for(let i=1;i<8;i++){ el('line',{x1:0,y1:H*i/8,x2:W,y2:H*i/8,stroke:'#12333f','s
 // Compass rose.
 const cx = 70, cy = 620;
 el('circle',{cx,cy,r:26,fill:'none',stroke:'#2c5a6b','stroke-width':1.5});
-el('text',{x:cx,y:cy-32,fill:'#8fb0bd','font-size':12,'text-anchor':'middle'}).textContent = 'N ↑';
+el('text',{id:'compassLbl',x:cx,y:cy-32,fill:'#8fb0bd','font-size':12,'text-anchor':'middle'}).textContent = 'N ↑';
 // Real coastline polygons (GADM, simplified): main island + groups.
 for(const ring of ISLANDS){
   el('polygon',{
@@ -71,7 +71,7 @@ for(const ring of ISLANDS){
     fill:'#2a6b4f', stroke:'#1d4a38', 'stroke-width':1.5, 'stroke-linejoin':'round'
   });
 }
-const lbl = (t,lo,la,size=13) => { const e = el('text',{x:X(lo),y:Y(la),fill:'#8fb0bd','font-size':size,'text-anchor':'middle'}); e.textContent = t; };
+const lbl = (t,lo,la,size=13) => { const e = el('text',{id:'placeLbl',x:X(lo),y:Y(la),fill:'#8fb0bd','font-size':size,'text-anchor':'middle'}); e.textContent = t; };
 lbl('P A L A W A N', 118.35, 8.95, 15);
 lbl('Balabac', 117.62, 8.30); lbl('El Nido', 118.95, 11.62); lbl('Coron', 120.32, 12.28);
 lbl('Puerto Princesa', 118.15, 9.30); lbl('SULU SEA', 119.75, 9.45, 12); lbl('WPS', 117.05, 10.35, 12);
@@ -90,14 +90,36 @@ for(const b of BUOYS){
     const w = el('circle',{class:'wave-ring',cx:X(b.lon),cy:Y(b.lat),r:16,stroke:'#e87a7a'},seas);
     anim.push({node:w, phase:k/4, base:16});
   }
+  // Transparent hit area: the visible core is only ~10px across once the map is
+  // scaled down to a phone, which is far too small to tap reliably.
+  const hit = el('circle',{class:'hit',cx:X(b.lon),cy:Y(b.lat),r:24},g);
   const core = el('circle',{class:'core',cx:X(b.lon),cy:Y(b.lat),r:9,fill:stateColor(b.hs)},g);
   const t = el('text',{x:X(b.lon)+14,y:Y(b.lat)+4},g); t.textContent = b.id.replace('FALCON-','F-');
   g.addEventListener('click', () => select(b.id));
   g.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); select(b.id); } });
-  markers.set(b.id, {g, wrap, pulse, core, seas});
+  markers.set(b.id, {g, wrap, pulse, core, seas, hit, t, bx: X(b.lon), by: Y(b.lat)});
 }
 
 const $ = id => document.getElementById(id);
+
+// Compact mode: on phones the viewBox shrinks to ~58%, so bump marker radius,
+// label size and offset in SVG user units to keep them legible and tappable.
+const COMPACT = 700;
+function applyCompact(){
+  const on = (svg.getBoundingClientRect().width || 0) < COMPACT;
+  svg.classList.toggle('compact', on);
+  const coreR = on ? 15 : 9, pulseR = on ? 22 : 13, ringR = on ? 26 : 16, dx = on ? 22 : 14;
+  for(const m of markers.values()){
+    m.core.setAttribute('r', coreR);
+    m.pulse.setAttribute('r', pulseR);
+    m.hit.setAttribute('r', on ? 30 : 24);
+    m.t.setAttribute('x', m.bx + dx);
+    m.t.setAttribute('y', m.by + (on ? 6 : 4));
+  }
+  for(const a of anim) a.base = ringR;   // tick() resizes the rings from this
+}
+addEventListener('resize', applyCompact);
+
 // Dashboard-style history chart: normalized polyline + last-point dot.
 function drawChart(svgId, data, color, unit){
   const svgEl = $(svgId);
@@ -201,3 +223,4 @@ setInterval(() => {
   render();
 }, 4000);
 render();
+applyCompact();
