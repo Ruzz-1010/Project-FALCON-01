@@ -163,8 +163,8 @@ for(const gx of [-0.10,0.0,0.10]){
 // --- Red topmark light on a finial stub at the panel front edge.
 
 // --- Wind mast at the deck rear (slim Ø36mm pole straight into the hub).
-const WMAST_X = 0, WMAST_Z = -0.44, DECK_TOP = 0.31, ROTOR_Y = DECK_TOP + 0.95;
-const wmast = mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.95, 12), M.frame, WMAST_X, DECK_TOP + 0.475, WMAST_Z, 'WIND_MAST');
+const WMAST_X = 0, WMAST_Z = -0.44, DECK_TOP = 0.31, MAST_H = 0.74, ROTOR_Y = DECK_TOP + MAST_H;
+const wmast = mesh(new THREE.CylinderGeometry(0.018, 0.018, MAST_H, 12), M.frame, WMAST_X, DECK_TOP + MAST_H/2, WMAST_Z, 'WIND_MAST');
 buoy.add(wmast);
 const mastFoot = mesh(new THREE.CylinderGeometry(0.035, 0.045, 0.06, 12), M.frame, WMAST_X, DECK_TOP + 0.03, WMAST_Z, 'MAST_FOOT');
 buoy.add(mastFoot);

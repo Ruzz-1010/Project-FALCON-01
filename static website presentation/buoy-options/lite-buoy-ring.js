@@ -77,8 +77,8 @@ const strake = mesh(new THREE.TorusGeometry(0.55, 0.022, 10, 56), M.frame, 0, 0.
 strake.rotation.x = Math.PI/2;
 buoy.add(strake);
 // --- Center pole: underwater stem + tower + wind mast in one piece.
-const pole = mesh(new THREE.CylinderGeometry(0.025, 0.035, 1.45, 14), M.frame, 0, 0.575, 0, 'CENTER_POLE');
-buoy.add(pole); // spans y -0.15 .. 1.30
+const pole = mesh(new THREE.CylinderGeometry(0.025, 0.035, 1.22, 14), M.frame, 0, 0.46, 0, 'CENTER_POLE');
+buoy.add(pole); // spans y -0.15 .. 1.07
 // --- Tripod braces: ring inner edge up to the pole (the joint that matters).
 for(let i=0;i<3;i++){
   const a = (i/3)*Math.PI*2 + Math.PI/6;
@@ -137,7 +137,7 @@ buoy.add(mesh(new THREE.BoxGeometry(0.07, 0.06, 0.07), M.frame, 0, 0.68, 0.02, '
 const beacon = mesh(new THREE.CylinderGeometry(0.032, 0.032, 0.07, 12), M.beacon, 0, 0.98, 0, 'TOPMARK_BEACON');
 buoy.add(beacon);
 // --- Compact wind head on the pole top.
-const ROTOR_Y = 1.16;
+const ROTOR_Y = 1.04;
 const rotor = new THREE.Group();
 rotor.position.set(0, ROTOR_Y, 0);
 rotor.name = 'WIND_SPEED_DIRECTION_SENSOR';

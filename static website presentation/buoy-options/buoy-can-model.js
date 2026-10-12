@@ -181,7 +181,7 @@ function chainBetween(a, b, count, radius=0.030){
   // --- Required compact wind speed + direction sensor on a short mast.
   // Cleaner mini anemometer assembly: three cup rotor on top, wind vane below,
   // slim mast and clamp. Geometry only; does not change the buoy body design.
-  const WMAST_X = 0, WMAST_Z = 0, WMAST_BASE = TOP_Y + 0.018, WMAST_H = 0.46;
+  const WMAST_X = 0, WMAST_Z = 0, WMAST_BASE = TOP_Y + 0.018, WMAST_H = 0.34;
   const wmast = mesh(new THREE.CylinderGeometry(0.008, 0.011, WMAST_H, 14), M.frame, WMAST_X, WMAST_BASE + WMAST_H/2, WMAST_Z, 'REQUIRED_WIND_MAST');
   buoy.add(wmast);
   const mastFoot = mesh(new THREE.CylinderGeometry(0.030, 0.040, 0.035, 16), M.frame, WMAST_X, WMAST_BASE + 0.018, WMAST_Z, 'WIND_MAST_FOOT');
