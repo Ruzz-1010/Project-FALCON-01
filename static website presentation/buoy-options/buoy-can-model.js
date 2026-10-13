@@ -181,7 +181,7 @@ function chainBetween(a, b, count, radius=0.030){
   // --- Required compact wind speed + direction sensor on a short mast.
   // Cleaner mini anemometer assembly: three cup rotor on top, wind vane below,
   // slim mast and clamp. Geometry only; does not change the buoy body design.
-  const WMAST_X = 0, WMAST_Z = 0, WMAST_BASE = TOP_Y + 0.018, WMAST_H = 0.34;
+  const WMAST_X = 0, WMAST_Z = 0, WMAST_BASE = TOP_Y + 0.010, WMAST_H = 0.16;
   const wmast = mesh(new THREE.CylinderGeometry(0.008, 0.011, WMAST_H, 14), M.frame, WMAST_X, WMAST_BASE + WMAST_H/2, WMAST_Z, 'REQUIRED_WIND_MAST');
   buoy.add(wmast);
   const mastFoot = mesh(new THREE.CylinderGeometry(0.030, 0.040, 0.035, 16), M.frame, WMAST_X, WMAST_BASE + 0.018, WMAST_Z, 'WIND_MAST_FOOT');
@@ -199,17 +199,17 @@ function chainBetween(a, b, count, radius=0.030){
   // Compact commercial-style head body.
   arrayUnit.add(mesh(new THREE.CylinderGeometry(0.025, 0.030, 0.095, 18), M.arrayBody, 0, 0.030, 0, 'WIND_SENSOR_CENTER_BODY'));
   arrayUnit.add(mesh(new THREE.CylinderGeometry(0.034, 0.034, 0.020, 18), M.dark, 0, -0.030, 0, 'WIND_SENSOR_LOWER_CLAMP'));
-  arrayUnit.add(mesh(new THREE.CylinderGeometry(0.010, 0.010, 0.145, 12), M.frame, 0, 0.118, 0, 'WIND_ROTOR_POST'));
+  arrayUnit.add(mesh(new THREE.CylinderGeometry(0.007, 0.007, 0.095, 12), M.frame, 0, 0.080, 0, 'WIND_ROTOR_POST'));
 
   // Three-cup rotor: arms are longer and cups have visible rims, so the part reads
   // as an anemometer instead of a generic black blob.
   const rotor = new THREE.Group();
-  rotor.position.set(0, 0.195, 0);
+  rotor.position.set(0, 0.105, 0);
   rotor.name = 'REQUIRED_WIND_SPEED_CUPS';
   arrayUnit.add(rotor);
   rotor.add(mesh(new THREE.SphereGeometry(0.016, 16, 10), M.dark, 0, 0, 0, 'WIND_HUB'));
   rotor.add(mesh(new THREE.CylinderGeometry(0.009, 0.009, 0.016, 12), M.brass, 0, 0.018, 0, 'WIND_HUB_CAP'));
-  const cupR = 0.026, armR = 0.092;
+  const cupR = 0.020, armR = 0.070;
   for(let i=0;i<3;i++){
     const pivot = new THREE.Group();
     pivot.rotation.y = (i/3)*Math.PI*2;
@@ -232,7 +232,7 @@ function chainBetween(a, b, count, radius=0.030){
 
   // Direction vane: horizontal boom and triangular tail, placed below the rotor.
   const vane = new THREE.Group();
-  vane.position.set(0, 0.060, 0);
+  vane.position.set(0, 0.038, 0);
   vane.name = 'REQUIRED_WIND_DIRECTION_VANE';
   arrayUnit.add(vane);
   vane.add(strut([0, 0, 0.055], [0, 0, -0.135], 0.0045, M.frame, 'WIND_VANE_BOOM'));

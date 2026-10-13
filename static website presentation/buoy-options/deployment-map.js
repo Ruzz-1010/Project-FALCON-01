@@ -48,9 +48,6 @@ const wordsOf = (b, st) => st === 'CALM'
 
 const svgNS = 'http://www.w3.org/2000/svg';
 const svg = document.getElementById('palawan');
-// Smooth sea animation state: one clock drives every buoy's rings + bob so
-// nothing uses CSS transitions (they cannot loop cleanly) and nothing restarts.
-const anim = [];
 function el(tag, attrs, parent){
   const e = document.createElementNS(svgNS, tag);
   for(const [k,v] of Object.entries(attrs)) e.setAttribute(k, v);
@@ -82,23 +79,12 @@ for(const b of BUOYS){
   const wrap = el('g',{}, svg);
   const g = el('g',{class:'buoy',tabindex:'0',role:'button','aria-label':`${b.id} ${b.name} simulated data`}, wrap);
   const bx = X(b.lon), by = Y(b.lat);
-  const pulse = el('circle',{class:'marker-ring',cx:bx,cy:by,r:10,stroke:stateColor(b.hs)},g);
-  const packet = el('circle',{class:'packet',cx:bx,cy:by,r:2.2},g);
-  // Animated wave rings, visible only around the selected buoy icon.
-  const seas = el('g',{class:'seas'},g);
-  for(let k=0;k<3;k++){
-    const w = el('circle',{class:'wave-ring',cx:bx,cy:by,r:11,stroke:stateColor(b.hs)},seas);
-    anim.push({node:w, phase:k/3, base:11});
-  }
-  // Small realistic map pin/buoy marker, not a large abstract circle.
-  const pin = el('g',{class:'site-pin'},g);
-  const body = el('circle',{class:'pin-head',cx:bx,cy:by,r:4.4,fill:stateColor(b.hs)},pin);
-  el('line',{class:'pin-stem',x1:bx,y1:by+4.8,x2:bx,y2:by+11.5},pin);
+  const body = el('circle',{class:'site-dot',cx:bx,cy:by,r:5.2,fill:stateColor(b.hs)},g);
   const hit = el('circle',{class:'hit',cx:bx,cy:by,r:15},g);
-  const t = el('text',{x:bx+7.2,y:by+3.3},g); t.textContent = b.id.replace('FALCON-','F-');
+  const t = el('text',{x:bx+8,y:by+3.5},g); t.textContent = b.id.replace('FALCON-','F-');
   g.addEventListener('click', () => select(b.id));
   g.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); select(b.id); } });
-  markers.set(b.id, {g, wrap, pulse, body, seas, hit, t, packet, bx, by});
+  markers.set(b.id, {g, wrap, body, hit, t, bx, by});
 }
 
 const $ = id => document.getElementById(id);
@@ -109,14 +95,12 @@ const COMPACT = 700;
 function applyCompact(){
   const on = (svg.getBoundingClientRect().width || 0) < COMPACT;
   svg.classList.toggle('compact', on);
-  const pulseR = on ? 14 : 10, ringR = on ? 15 : 11, dx = on ? 11 : 8.5;
+  const dx = on ? 11 : 8;
   for(const m of markers.values()){
-    m.pulse.setAttribute('r', pulseR);
-    m.hit.setAttribute('r', on ? 21 : 16);
+    m.hit.setAttribute('r', on ? 20 : 15);
     m.t.setAttribute('x', m.bx + dx);
     m.t.setAttribute('y', m.by + (on ? 5 : 3.5));
   }
-  for(const a of anim) a.base = ringR;   // tick() resizes the rings from this
 }
 addEventListener('resize', applyCompact);
 
@@ -158,7 +142,6 @@ function render(animateCard = false){
   $('b-coords').textContent = `${b.lat.toFixed(2)}°N ${b.lon.toFixed(2)}°E · ~${b.depth}m site (illustrative)`;
   const pill = $('b-state'); pill.textContent = st; pill.className = 'pill ' + cls;
   const card = $('site-card'); card.dataset.state = cls;
-  if(animateCard){ card.classList.remove('pop'); void card.offsetWidth; card.classList.add('pop'); }
   $('b-words').textContent = wordsOf(b, st);
   $('b-wind').textContent = `${b.wind.toFixed(0)} km/h · peak ${b.gust.toFixed(0)}`;
   $('b-winddir').textContent = `from ${dirName(b.windDir)} (${b.windDir.toFixed(0)}°)`;
@@ -174,13 +157,9 @@ function render(animateCard = false){
   for(const [id, m] of markers){
     const on = id === b.id, bb = BUOYS.find(x => x.id === id);
     m.body.setAttribute('fill', stateColor(bb.hs));
-    m.pulse.setAttribute('stroke', stateColor(bb.hs));
-    for(const ring of m.seas.querySelectorAll('.wave-ring')) ring.setAttribute('stroke', stateColor(bb.hs));
-    // Wave animation plays on the clicked (selected) buoy only.
-    m.seas.style.display = id === currentId ? '' : 'none';
+    m.body.setAttribute('r', on ? 6.8 : 5.2);
     m.g.classList.toggle('selected', on);
-    m.g.style.filter = on ? 'drop-shadow(0 0 8px #65d8ff)' : '';
-    m.packet.style.display = on ? '' : 'none';
+    m.g.style.filter = on ? 'drop-shadow(0 0 7px #65d8ff)' : '';
   }
   // Header stats.
   $('st-count').textContent = `${BUOYS.length} sites`;
@@ -191,29 +170,6 @@ function render(animateCard = false){
   const lbat = BUOYS.reduce((a,x) => x.batt < a.batt ? x : a);
   $('st-batt').textContent = `${lbat.batt.toFixed(0)}% @ ${lbat.id.replace('FALCON-','F-')}`;
 }
-// One rAF loop: wave rings grow+fade smoothly around the SELECTED buoy
-// only. Markers stay pinned on the map — no dancing buoys.
-let currentId = BUOYS[0].id;
-let t0 = performance.now();
-function tick(now){
-  const t = (now - t0) / 1000;
-  for(const {node, phase, base} of anim){
-    const u = (t / 5 + phase) % 1;          // 5s per ring cycle, staggered
-    const scale = 0.55 + u * 2.6;           // smooth grow
-    const opacity = Math.sin(Math.PI * u) * 0.85; // fade in then out
-    node.setAttribute('r', (base * scale).toFixed(2));
-    node.setAttribute('opacity', Math.max(0, opacity).toFixed(3));
-  }
-  for(const m of markers.values()){
-    const u = (t / 2.8) % 1;
-    const y = m.by - 8 - u * 28;
-    m.packet.setAttribute('cy', y.toFixed(2));
-    m.packet.setAttribute('opacity', (1 - u).toFixed(3));
-  }
-  requestAnimationFrame(tick);
-}
-requestAnimationFrame(tick);
-
 $('prev').addEventListener('click', () => select(BUOYS[(current + BUOYS.length - 1) % BUOYS.length].id));
 $('next').addEventListener('click', () => select(BUOYS[(current + 1) % BUOYS.length].id));
 // Simulated live tick every 4s: random-walk every buoy, re-render selection.

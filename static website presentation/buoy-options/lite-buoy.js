@@ -55,6 +55,7 @@ const views = {
   orbit: {yaw:0.7, pitch:0.18, dist:3.0, focus:[0,0.24,0]},
   wind: {yaw:0.52, pitch:0.12, dist:1.15, focus:[WMAST_X,WMAST_BASE+WMAST_H+0.05,WMAST_Z]},
   cloud: {yaw:0.4, pitch:0.10, dist:1.6, focus:[ANT_X,ANT_BASE+ANT_H-0.1,ANT_Z]},
+  top: {yaw:0.72, pitch:1.42, dist:1.75, focus:[0,HOUS_CY+0.02,0]},
   solar: {yaw:0.7, pitch:0.12, dist:1.8, focus:[0,HOUS_CY,0.05]},
   mooring: {yaw:3.6, pitch:-0.35, dist:2.3, focus:[0.45,-0.62,0.58]},
   below: {yaw:3.6, pitch:-0.25, dist:2.1, focus:[0.14,-0.10,0]},
@@ -72,7 +73,7 @@ el.addEventListener('pointerdown', e=>{ dragging = true; px = e.clientX; py = e.
 el.addEventListener('pointermove', e=>{
   if(!dragging || touches.size >= 2) return; // 2 fingers = pinch, not orbit
   target.yaw -= (e.clientX - px)*0.006;
-  target.pitch = Math.max(-0.9, Math.min(1.1, target.pitch + (e.clientY - py)*0.004));
+  target.pitch = Math.max(-0.9, Math.min(1.48, target.pitch + (e.clientY - py)*0.004));
   px = e.clientX; py = e.clientY;
 });
 el.addEventListener('pointerup', ()=>{ dragging = false; });

@@ -77,8 +77,8 @@ const strake = mesh(new THREE.TorusGeometry(0.55, 0.022, 10, 56), M.frame, 0, 0.
 strake.rotation.x = Math.PI/2;
 buoy.add(strake);
 // --- Center pole: underwater stem + tower + wind mast in one piece.
-const pole = mesh(new THREE.CylinderGeometry(0.025, 0.035, 1.22, 14), M.frame, 0, 0.46, 0, 'CENTER_POLE');
-buoy.add(pole); // spans y -0.15 .. 1.07
+const pole = mesh(new THREE.CylinderGeometry(0.023, 0.032, 1.02, 14), M.frame, 0, 0.36, 0, 'CENTER_POLE');
+buoy.add(pole); // spans y -0.15 .. 0.87
 // --- Tripod braces: ring inner edge up to the pole (the joint that matters).
 for(let i=0;i<3;i++){
   const a = (i/3)*Math.PI*2 + Math.PI/6;
@@ -132,12 +132,12 @@ for(const gx of [-0.15, -0.05, 0.05, 0.15]){
   panelG.add(mesh(new THREE.BoxGeometry(0.012, PT + 0.003, PD), M.solarGrid, gx, 0, 0, 'SOLAR_GRID'));
 }
 // Mount block under the hole, mast passes through both.
-buoy.add(mesh(new THREE.BoxGeometry(0.07, 0.06, 0.07), M.frame, 0, 0.68, 0.02, 'PANEL_CLAMP'));
+buoy.add(mesh(new THREE.BoxGeometry(0.07, 0.06, 0.07), M.frame, 0, 0.60, 0.02, 'PANEL_CLAMP'));
 // --- Red beacon band on the pole above the panel.
-const beacon = mesh(new THREE.CylinderGeometry(0.032, 0.032, 0.07, 12), M.beacon, 0, 0.98, 0, 'TOPMARK_BEACON');
+const beacon = mesh(new THREE.CylinderGeometry(0.026, 0.026, 0.060, 12), M.beacon, 0, 0.69, 0, 'TOPMARK_BEACON');
 buoy.add(beacon);
 // --- Compact wind head on the pole top.
-const ROTOR_Y = 1.04;
+const ROTOR_Y = 0.76;
 const rotor = new THREE.Group();
 rotor.position.set(0, ROTOR_Y, 0);
 rotor.name = 'WIND_SPEED_DIRECTION_SENSOR';
@@ -147,7 +147,7 @@ rotor.add(hub);
 rotor.add(mesh(new THREE.CylinderGeometry(0.010, 0.010, 0.018, 8), M.brass, 0, 0.035, 0, 'HUB_NUT'));
 // 3 open cups on pivots: every mouth faces the same tangential direction
 // (convex side forward, like a real drag anemometer).
-const cupR = 0.035, armR = 0.160;
+const cupR = 0.030, armR = 0.120;
 for(let i=0;i<3;i++){
   const pivot = new THREE.Group();
   pivot.rotation.y = (i/3)*Math.PI*2;
@@ -161,7 +161,7 @@ for(let i=0;i<3;i++){
 }
 // Wind vane on a collar, 120mm below the rotor.
 const vane = new THREE.Group();
-vane.position.set(0, ROTOR_Y - 0.095, 0);
+vane.position.set(0, ROTOR_Y - 0.070, 0);
 vane.name = 'WIND_VANE';
 buoy.add(vane);
 const vaneCollar = mesh(new THREE.TorusGeometry(0.023, 0.007, 8, 16), M.frame, 0, 0, 0, 'VANE_COLLAR');
@@ -181,8 +181,9 @@ buoy.add(whipTip);
 
 // --- Camera orbit (manual, no extra addon dependency).
 const views = {
+  top: {yaw:0.72, pitch:1.42, dist:1.75, focus:[0,0.24,0]},
   orbit: {yaw:0.7, pitch:0.12, dist:3.8, focus:[0,0.20,0]},
-  wind: {yaw:0.3, pitch:0.08, dist:1.7, focus:[0,ROTOR_Y-0.10,0]},
+  wind: {yaw:0.3, pitch:0.08, dist:1.55, focus:[0,ROTOR_Y-0.08,0]},
   solar: {yaw:0.7, pitch:0.12, dist:2.2, focus:[0,0.72,0.05]},
   below: {yaw:3.6, pitch:-0.25, dist:2.6, focus:[0,-0.50,0]},
 };
@@ -199,7 +200,7 @@ el.addEventListener('pointerdown', e=>{ dragging = true; px = e.clientX; py = e.
 el.addEventListener('pointermove', e=>{
   if(!dragging || touches.size >= 2) return; // 2 fingers = pinch, not orbit
   target.yaw -= (e.clientX - px)*0.006;
-  target.pitch = Math.max(-0.9, Math.min(1.1, target.pitch + (e.clientY - py)*0.004));
+  target.pitch = Math.max(-0.9, Math.min(1.48, target.pitch + (e.clientY - py)*0.004));
   px = e.clientX; py = e.clientY;
 });
 el.addEventListener('pointerup', ()=>{ dragging = false; });
