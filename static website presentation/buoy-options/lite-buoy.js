@@ -112,6 +112,73 @@ function resize(){
 }
 addEventListener('resize', resize); resize();
 
+// Fixed approval renders used for screenshots: front, top, bottom and side.
+// They reuse the same Option A model module as the interactive preview so the
+// DOST/panel reference cards stay consistent with the 3D design above.
+function initApprovalViewCards(){
+  const targets = [...document.querySelectorAll('[data-approval-view]')];
+  if(!targets.length) return;
+  const configs = {
+    front: {pos:[0,0.26,3.0], up:[0,1,0], zoom:0.78, focus:[0,0.12,0]},
+    side: {pos:[3.0,0.26,0], up:[0,1,0], zoom:0.78, focus:[0,0.12,0]},
+    top: {pos:[0,3.2,0.001], up:[0,0,-1], zoom:0.72, focus:[0,0.08,0]},
+    bottom: {pos:[0,-3.1,0.001], up:[0,0,1], zoom:1.08, focus:[0,-0.22,0]},
+  };
+  const renderers = [];
+  for(const box of targets){
+    const key = box.dataset.approvalView;
+    const cfg = configs[key];
+    if(!cfg) continue;
+    const r = new THREE.WebGLRenderer({antialias:true, alpha:true, preserveDrawingBuffer:true});
+    r.setPixelRatio(Math.min(devicePixelRatio, 2));
+    r.outputColorSpace = THREE.SRGBColorSpace;
+    box.prepend(r.domElement);
+
+    const sc = new THREE.Scene();
+    sc.background = new THREE.Color('#071720');
+    sc.add(new THREE.HemisphereLight('#d8edf4', '#1d333b', 2.4));
+    const keyLight = new THREE.DirectionalLight('#f6e2b6', 3.0);
+    keyLight.position.set(-3, 4, 5); sc.add(keyLight);
+    const fill = new THREE.DirectionalLight('#80bdd7', 1.4);
+    fill.position.set(4, 2, -4); sc.add(fill);
+
+    const m = createCanBuoy();
+    m.group.rotation.y = key === 'side' ? -Math.PI / 2 : 0;
+    // Keep front/top/side focused on the buoy body. The bottom card keeps the
+    // chain/anchor visible because that is the approval angle for mooring scope.
+    if(key !== 'bottom') m.parts.mooring.visible = false;
+    // Keep the approval cards clean: show design geometry but stop motion.
+    m.moving.rotor.rotation.y = 0.35;
+    m.moving.vane.rotation.y = 0.15;
+    sc.add(m.group);
+
+    const cam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.05, 20);
+    cam.position.set(...cfg.pos);
+    cam.up.set(...cfg.up);
+    cam.lookAt(new THREE.Vector3(...cfg.focus));
+
+    const render = ()=>{
+      const w = Math.max(2, box.clientWidth);
+      const h = Math.max(2, box.clientHeight);
+      r.setSize(w, h, false);
+      const aspect = w / h;
+      const base = cfg.zoom;
+      cam.left = -base * aspect; cam.right = base * aspect;
+      cam.top = base; cam.bottom = -base;
+      cam.updateProjectionMatrix();
+      r.render(sc, cam);
+    };
+    renderers.push({box, render});
+    render();
+  }
+  const ro = new ResizeObserver(entries=>{
+    const changed = new Set(entries.map(e=>e.target));
+    for(const item of renderers) if(changed.has(item.box)) item.render();
+  });
+  for(const item of renderers) ro.observe(item.box);
+}
+initApprovalViewCards();
+
 const clock = new THREE.Clock();
 function frame(){
   requestAnimationFrame(frame);

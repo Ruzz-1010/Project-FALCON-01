@@ -18,6 +18,9 @@
     .approval article{background:linear-gradient(180deg,#102733,#0b1b24);border:1px solid var(--line);border-radius:12px;padding:11px 12px;min-height:92px}
     .approval b{display:block;color:#fff;font-size:13px;margin-bottom:4px}.approval span{display:block;color:var(--dim);font-size:12px;line-height:1.4}
     .approval strong{color:var(--ok);font-weight:800}
+    .design-views{margin:12px 18px 0;border:1px solid var(--line);border-radius:14px;background:linear-gradient(180deg,#102733,#0b1b24);padding:14px}
+    .design-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-end;flex-wrap:wrap;margin-bottom:10px}.design-head h2{font-size:15px;margin:0;color:#fff}.design-head p{margin:3px 0 0;color:var(--dim);font-size:12.2px}.design-chip{border:1px solid var(--gold);color:var(--gold);border-radius:999px;padding:4px 9px;font-size:11px;font-weight:800;white-space:nowrap}
+    .view-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.view-card{border:1px solid #294653;border-radius:12px;background:#071720;overflow:hidden;min-height:250px;display:flex;flex-direction:column}.view-render{height:215px;position:relative;background:radial-gradient(120% 90% at 50% 8%,#173846 0%,#071720 70%)}.view-render canvas{display:block;width:100%;height:100%}.view-title{position:absolute;left:8px;top:8px;border:1px solid #365d6c;background:#06141bcc;border-radius:999px;padding:3px 8px;font-size:10.5px;font-weight:800;color:#fff;letter-spacing:.04em}.view-card .copy{padding:9px 10px 10px}.view-card h3{font-size:12.5px;margin:0 0 5px;color:var(--gold)}.view-card ul{margin:0;padding-left:15px;color:var(--dim);font-size:11.2px;line-height:1.35}.view-card li{margin:2px 0}.screen-note{margin:10px 0 0;color:var(--dim);font-size:11.8px}
     main{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,380px);gap:12px;padding:12px 18px 24px}
     #stage{position:relative;height:clamp(320px,70vh,620px);border:1px solid var(--line);border-radius:12px;overflow:hidden;background:radial-gradient(120% 90% at 70% 10%,#10394a 0%,#08141b 60%)}
     #stage canvas{display:block;width:100%;height:100%;touch-action:none}
@@ -34,6 +37,7 @@
     @media(max-width:900px){
       main{grid-template-columns:1fr;padding:10px}
       .approval{grid-template-columns:1fr 1fr;margin-left:12px;margin-right:12px}
+      .design-views{margin-left:12px;margin-right:12px}.view-grid{grid-template-columns:1fr 1fr}.view-render{height:230px}
       aside{max-height:none}
       #stage{height:clamp(300px,58vh,560px)}
       header{padding:12px}
@@ -50,6 +54,7 @@
       nav.opts a{font-size:11px;padding:5px 9px}
       .warn{font-size:11.8px;line-height:1.4}
       .approval{grid-template-columns:1fr;margin:10px}
+      .design-views{margin:10px;padding:11px}.view-grid{grid-template-columns:1fr}.view-card{min-height:0}.view-render{height:240px}.design-head{align-items:flex-start}.design-chip{white-space:normal}
       .approval article{min-height:0;padding:10px}
       #stage{height:clamp(260px,56vh,440px);border-radius:10px}
       #hud{left:8px;top:8px;right:8px;gap:6px;flex-wrap:nowrap;overflow-x:auto;pointer-events:none;scrollbar-width:none}
@@ -89,6 +94,31 @@
   <article><b>Data strategy</b><span>Samples locally, then sends one cloud packet every 2 minutes with average, minimum, maximum, and peak values.</span></article>
   <article><b>Power baseline</b><span>12.8V 10Ah LiFePO4 with BMS + 6× 3W compact solar panels, subject to current-draw validation.</span></article>
   <article><b>Approval focus</b><span>Panel should approve the form factor, sensor set, budget band, and validation plan before fabrication.</span></article>
+</section>
+<section class="design-views" aria-label="Option A design approval orthographic views">
+  <div class="design-head">
+    <div><h2>Option A design approval views</h2><p>Screenshot-ready 3D reference for DOST review. Same compact can-buoy model, shown from fixed approval angles.</p></div>
+    <span class="design-chip">FRONT · TOP · BOTTOM · SIDE</span>
+  </div>
+  <div class="view-grid">
+    <article class="view-card">
+      <div class="view-render" data-approval-view="front"><span class="view-title">FRONT VIEW</span></div>
+      <div class="copy"><h3>External layout</h3><ul><li>Compact can body</li><li>Top solar housing</li><li>Short wind sensor mast</li><li>GPS + internet antenna on top cap</li></ul></div>
+    </article>
+    <article class="view-card">
+      <div class="view-render" data-approval-view="top"><span class="view-title">TOP VIEW</span></div>
+      <div class="copy"><h3>Top placement</h3><ul><li>Wind speed + direction sensor</li><li>GPS puck for exact position</li><li>LTE/Wi‑Fi antenna</li><li>Four compact solar faces</li></ul></div>
+    </article>
+    <article class="view-card">
+      <div class="view-render" data-approval-view="bottom"><span class="view-title">BOTTOM VIEW</span></div>
+      <div class="copy"><h3>Underwater parts</h3><ul><li>Keel / ballast area</li><li>Center mooring swivel</li><li>Chain and anchor study</li><li>Protected pressure stilling tube</li></ul></div>
+    </article>
+    <article class="view-card">
+      <div class="view-render" data-approval-view="side"><span class="view-title">SIDE VIEW</span></div>
+      <div class="copy"><h3>Sensor profile</h3><ul><li>Low wind mast profile</li><li>Side water-pressure tube</li><li>Sealed internal electronics bay</li><li>Visible mooring clearance</li></ul></div>
+    </article>
+  </div>
+  <p class="screen-note">Use this section for screenshots when asking panel/DOST approval for the recommended compact Option A form factor. Geometry is still illustrative and not fabrication-ready.</p>
 </section>
 <main>
   <div id="stage"><div id="hud"><button data-view="orbit">Overview</button><button data-view="wind">Wind + GPS</button><button data-view="cloud">Cloud link</button><button data-view="solar">Solar / battery</button><button data-view="top">Top view</button><button data-view="below">Pressure</button><button data-view="mooring">Anchor</button></div><div id="tip">Recommended panel option: compact single-body buoy. Geometry is illustrative; component labels show required placement and validation scope.</div></div>

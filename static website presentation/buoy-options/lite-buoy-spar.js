@@ -113,51 +113,97 @@ for(const sz of [-0.485, 0.485]){
   buoy.add(mesh(new THREE.BoxGeometry(1.10, 0.045, 0.03), M.hull, 0, 0.33, sz, 'TOE_RAIL_END'));
 }
 
-// --- Electronics cabinet amidships (ESP32, power board, battery monitor and buffer live inside it).
-const CAB_H = 0.24, CAB_Y = 0.43, CAB_TOP = CAB_Y + CAB_H/2;
-const cabinet = mesh(new THREE.BoxGeometry(0.44, CAB_H, 0.36), M.cabinet, 0, CAB_Y, 0, 'INSTRUMENT_CABINET');
+// --- Electronics enclosure amidships.
+//
+// ROUND TUBE, not a box. On a moored buoy the wind dominates the mooring load
+// (current offshore is weak), so the enclosure is a vertical cylinder: its
+// projected area to horizontal wind is a circle at EVERY heading, with no sharp
+// edges to separate flow and shed vortices. Secondary benefit: a tube is one
+// part plus two discs instead of six panels and twelve welds, so it is cheaper
+// to build and has fewer seams to leak through.
+//
+// Volume is held at parity with the old 0.44 x 0.24 x 0.36 box (38.0 L):
+//   pi * 0.19^2 * 0.34 = 38.5 L
+const CAB_R = 0.19, CAB_H = 0.34;
+const CAB_Y = 0.31 + CAB_H/2, CAB_TOP = CAB_Y + CAB_H/2;   // sits on the deck top
+const cabinet = mesh(new THREE.CylinderGeometry(CAB_R, CAB_R, CAB_H, 40, 1, true), M.cabinet, 0, CAB_Y, 0, 'ROUND_ELECTRONICS_TUBE');
 buoy.add(cabinet);
-const cabTrim = mesh(new THREE.BoxGeometry(0.46, 0.03, 0.38), M.frame, 0, CAB_Y - CAB_H/2 + 0.015, 0, 'CABINET_BASE_TRIM');
-buoy.add(cabTrim);
-buoy.add(mesh(new THREE.BoxGeometry(0.30, 0.18, 0.006), M.deck, 0, CAB_Y, 0.183, 'CABINET_DOOR'));
-for(const hx of [-0.13, 0.13]){
-  buoy.add(mesh(new THREE.BoxGeometry(0.02, 0.04, 0.01), M.frame, hx, CAB_Y + 0.04, 0.186, 'DOOR_HINGE'));
+// Round foot flange that spreads the load onto the deck and closes the bottom.
+const cabFlange = mesh(new THREE.CylinderGeometry(CAB_R + 0.022, CAB_R + 0.030, 0.026, 40), M.frame, 0, CAB_Y - CAB_H/2 + 0.013, 0, 'ROUND_CABINET_FOOT_FLANGE');
+buoy.add(cabFlange);
+buoy.add(mesh(new THREE.CylinderGeometry(CAB_R - 0.004, CAB_R - 0.004, 0.020, 40), M.frame, 0, CAB_Y - CAB_H/2 + 0.010, 0, 'CABINET_BASE_DISC'));
+// Bolted top hatch replaces the hinged side door: one gasket seam on a flat
+// disc is far more reliable to seal than a seam following a curved wall.
+const hatch = mesh(new THREE.CylinderGeometry(CAB_R - 0.012, CAB_R - 0.012, 0.022, 40), M.deck, 0, CAB_TOP + 0.011, 0, 'BOLTED_TOP_HATCH');
+buoy.add(hatch);
+for(let i=0;i<8;i++){
+  const a = (i/8)*Math.PI*2 + Math.PI/8;
+  buoy.add(mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.012, 8), M.brass,
+    Math.cos(a)*(CAB_R - 0.026), CAB_TOP + 0.028, Math.sin(a)*(CAB_R - 0.026), 'HATCH_BOLT'));
 }
-buoy.add(mesh(new THREE.BoxGeometry(0.03, 0.03, 0.015), M.frame, 0.11, CAB_Y, 0.186, 'DOOR_LATCH'));
-// --- Single 40W-class panel as the cabinet roof, tilted 10°.
+buoy.add(mesh(new THREE.BoxGeometry(0.09, 0.010, 0.018), M.frame, 0, CAB_TOP + 0.028, 0.085, 'HATCH_HANDLE'));
+// Dry (pressure-equalising) vent so condensation cannot build up inside.
+const vent = mesh(new THREE.CylinderGeometry(0.012, 0.014, 0.032, 12), M.brass, 0.085, CAB_TOP + 0.038, 0.075, 'DRY_VENT');
+buoy.add(vent);
+// Flanged round inspection port, facing forward.
+const port = mesh(new THREE.CylinderGeometry(0.048, 0.048, 0.012, 24), M.glass, 0, CAB_Y - 0.02, CAB_R - 0.004, 'SERVICE_PORT_TO_INTERNAL_ELECTRONICS');
+port.rotation.x = Math.PI/2;
+buoy.add(port);
+const portRing = mesh(new THREE.TorusGeometry(0.052, 0.007, 8, 24), M.frame, 0, CAB_Y - 0.02, CAB_R + 0.004, 'SERVICE_PORT_FLANGE');
+buoy.add(portRing);
+
+// --- Single 40W-class panel on a tilted frame off a collar band.
+// The panel is wider than the tube, so it rides on two posts instead of lying
+// on a roof. Tilting it 10 deg keeps it clear of its own shadow.
+const COLLAR_Y = CAB_TOP - 0.05;
+const collar = mesh(new THREE.TorusGeometry(CAB_R + 0.006, 0.012, 10, 40), M.frame, 0, COLLAR_Y, 0, 'PANEL_COLLAR_BAND');
+collar.rotation.x = Math.PI/2;
+buoy.add(collar);
+const FRAME_Y = 0.7785, PANEL_TILT = -0.18;
+for(const sx of [-0.19, 0.19]){
+  const h = FRAME_Y - 0.0125 - COLLAR_Y;
+  buoy.add(mesh(new THREE.BoxGeometry(0.03, h, 0.03), M.frame, sx, COLLAR_Y + h/2, -0.03, 'PANEL_SUPPORT_POST'));
+}
+buoy.add(mesh(new THREE.BoxGeometry(0.42, 0.022, 0.028), M.frame, 0, FRAME_Y - 0.023, -0.03, 'PANEL_CROSS_MEMBER'));
 const roof = new THREE.Group();
-roof.position.set(0, CAB_TOP + 0.07, -0.03);
-roof.rotation.x = -0.18;
-roof.name = 'SINGLE_40W_ROOF';
+roof.position.set(0, FRAME_Y, -0.03);
+roof.rotation.x = PANEL_TILT;
+roof.name = 'SINGLE_40W_PANEL_ON_TILTED_FRAME';
 buoy.add(roof);
 const panelSlab = mesh(new THREE.BoxGeometry(0.62, 0.025, 0.48), M.solar, 0, 0, 0, 'SOLAR_PANEL');
 roof.add(panelSlab);
 for(let i=-1;i<=1;i++){
   roof.add(mesh(new THREE.BoxGeometry(0.012, 0.028, 0.48), M.solarGrid, i*0.185, 0, 0, 'SOLAR_GRID'));
 }
-for(const sx of [-0.18, 0.18]){
-  buoy.add(mesh(new THREE.BoxGeometry(0.04, 0.07, 0.36), M.frame, sx, CAB_TOP + 0.035, -0.02, 'ROOF_RAIL'));
-}
 const roofFrame = new THREE.Group();
-roofFrame.position.copy(roof.position); roofFrame.rotation.x = -0.18;
+roofFrame.position.copy(roof.position); roofFrame.rotation.x = PANEL_TILT;
 for(const sz of [-0.25, 0.19]){
   roofFrame.add(mesh(new THREE.BoxGeometry(0.66, 0.03, 0.025), M.frame, 0, 0, sz, 'PANEL_END_RAIL'));
 }
 buoy.add(roofFrame);
 
-// Required GPS/security puck and sealed cabinet power/buffer hints.
-const gps = mesh(new THREE.CylinderGeometry(0.045, 0.050, 0.030, 18), M.gpsBlue, -0.22, CAB_TOP + 0.18, 0.14, 'REQUIRED_GPS_POSITION_SECURITY_PUCK');
+// GPS/security puck moved onto its own short deck post. It used to stand on the
+// old flat roof, which no longer exists, and the panel frame now occupies that
+// space above the tube.
+const GPS_X = -0.30, GPS_Z = 0.26, GPS_POST_H = 0.22;
+buoy.add(mesh(new THREE.CylinderGeometry(0.014, 0.016, GPS_POST_H, 10), M.frame, GPS_X, 0.31 + GPS_POST_H/2, GPS_Z, 'GPS_POST'));
+const gps = mesh(new THREE.CylinderGeometry(0.045, 0.050, 0.030, 18), M.gpsBlue, GPS_X, 0.31 + GPS_POST_H + 0.015, GPS_Z, 'REQUIRED_GPS_POSITION_SECURITY_PUCK');
 buoy.add(gps);
-const gpsRing = mesh(new THREE.TorusGeometry(0.052, 0.005, 8, 18), M.brass, -0.22, CAB_TOP + 0.198, 0.14, 'GPS_LABEL_RING');
+const gpsRing = mesh(new THREE.TorusGeometry(0.052, 0.005, 8, 18), M.brass, GPS_X, 0.31 + GPS_POST_H + 0.033, GPS_Z, 'GPS_LABEL_RING');
 gpsRing.rotation.x = Math.PI/2;
 buoy.add(gpsRing);
-buoy.add(mesh(new THREE.CylinderGeometry(0.012, 0.014, 0.34, 10), M.frame, -0.22, CAB_TOP + 0.005, 0.14, 'GPS_MAST'));
-const serviceWindow = mesh(new THREE.BoxGeometry(0.22, 0.12, 0.008), M.glass, -0.02, CAB_Y + 0.01, 0.187, 'SERVICE_WINDOW_TO_INTERNAL_ELECTRONICS');
-buoy.add(serviceWindow);
-buoy.add(mesh(new THREE.BoxGeometry(0.16, 0.045, 0.09), M.battery, -0.11, CAB_Y - 0.02, -0.04, 'INTERNAL_BATTERY_SOLAR_POWER_BAY'));
+
+// Internal hints (ESP32, power board, battery, buffer) live inside the tube.
+buoy.add(mesh(new THREE.BoxGeometry(0.14, 0.045, 0.08), M.battery, -0.10, CAB_Y - 0.02, -0.03, 'INTERNAL_BATTERY_SOLAR_POWER_BAY'));
 buoy.add(mesh(new THREE.BoxGeometry(0.056, 0.012, 0.040), M.dark, 0.12, CAB_Y - 0.02, -0.05, 'MICROSD_OR_FLASH_BUFFER_INSIDE_CABINET'));
-for(const gx of [-0.10,0.0,0.10]){
-  buoy.add(mesh(new THREE.CylinderGeometry(0.011,0.011,0.026,10), M.frame, gx, CAB_Y - CAB_H/2 + 0.05, 0.195, 'SEALED_CABLE_GLAND'));
+// Cable glands now exit radially through the curved wall.
+for(const ga of [-0.62, 0, 0.62]){
+  const radial = new THREE.Vector3(Math.sin(ga), 0, Math.cos(ga));
+  const g = mesh(new THREE.CylinderGeometry(0.011, 0.011, 0.030, 10), M.frame, 0, 0, 0, 'SEALED_CABLE_GLAND');
+  g.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0), radial);
+  g.position.copy(radial).multiplyScalar(CAB_R + 0.010);
+  g.position.y = CAB_Y - CAB_H/2 + 0.055;
+  buoy.add(g);
 }
 
 // --- Red topmark light on a finial stub at the panel front edge.
@@ -228,18 +274,20 @@ sensorGuard.name = 'PRESSURE_SENSOR_GUARD_CAGE';
 for(const sx of [-0.08,0.08]) sensorGuard.add(strut([sx,0.05,0.10],[sx,-0.36,0.10],0.006,M.frame,'GUARD_POST'));
 sensorGuard.add(strut([-0.08,-0.36,0.10],[0.08,-0.36,0.10],0.006,M.frame,'GUARD_BOTTOM'));
 buoy.add(sensorGuard);
-// --- Bow bridle, visible chain, and anchor/deadweight study.
-buoy.add(mesh(new THREE.BoxGeometry(0.06, 0.05, 0.20), M.frame, 0, 0.28, 0.55, 'BOW_SPRIT'));
-const bowEye = mesh(new THREE.TorusGeometry(0.05, 0.013, 8, 20), M.chain, 0, 0.26, 0.64, 'BOW_MOORING_EYE');
-bowEye.rotation.y = Math.PI/2;
-buoy.add(bowEye);
+// --- Balanced underside bridle, visible chain, and anchor/deadweight study.
+// The anchor load now comes from a center swivel tied back to both hulls,
+// instead of a bow/side-only point that could twist the platform in waves.
+const centerSwivel = mesh(new THREE.TorusGeometry(0.055, 0.013, 8, 20), M.chain, 0, -0.18, 0.32, 'CENTER_MOORING_SWIVEL');
+centerSwivel.rotation.x = Math.PI/2;
+buoy.add(centerSwivel);
 for(const sx of [-0.42, 0.42]){
-  buoy.add(strut([sx, 0.02, 0.64], [0, 0.26, 0.64], 0.010, M.rope, 'TWIN_HULL_BRIDLE_LINE'));
+  buoy.add(strut([sx, -0.04, 0.20], [0, -0.18, 0.32], 0.010, M.rope, 'BALANCED_TWIN_HULL_BRIDLE_LINE'));
+  buoy.add(strut([sx, -0.04, 0.48], [0, -0.18, 0.32], 0.008, M.rope, 'AFT_BALANCE_BRIDLE_LINE'));
 }
 const mooring = new THREE.Group();
 mooring.name = 'MOORING_CHAIN_AND_ANCHOR_STUDY';
-mooring.add(chainBetween([0,0.22,0.66],[0.16,-0.62,0.96],10,0.028));
-mooring.add(strut([0.16,-0.62,0.96],[0.34,-1.00,1.22],0.011,M.rope,'SCOPE_ROPE_TO_ANCHOR'));
+mooring.add(chainBetween([0,-0.18,0.32],[0.12,-0.62,0.78],10,0.028));
+mooring.add(strut([0.12,-0.62,0.78],[0.34,-1.00,1.22],0.011,M.rope,'SCOPE_ROPE_TO_ANCHOR'));
 const anchorBlock = mesh(new THREE.BoxGeometry(0.42,0.11,0.28), M.anchor, 0.40, -1.05, 1.30, 'CONCRETE_OR_DEADWEIGHT_ANCHOR');
 anchorBlock.rotation.y = -0.25;
 mooring.add(anchorBlock);
@@ -254,7 +302,7 @@ const views = {
   top: {yaw:0.72, pitch:1.42, dist:1.9, focus:[0,0.28,0]},
   orbit: {yaw:0.7, pitch:0.12, dist:4.4, focus:[0,0.45,0]},
   wind: {yaw:0.3, pitch:0.08, dist:1.75, focus:[WMAST_X,ROTOR_Y-0.08,WMAST_Z]},
-  solar: {yaw:0.7, pitch:0.12, dist:2.4, focus:[0,CAB_TOP+0.10,0]},
+  solar: {yaw:0.7, pitch:0.12, dist:2.4, focus:[0,CAB_TOP+0.15,0]},
   mooring: {yaw:3.3, pitch:-0.34, dist:3.2, focus:[0.22,-0.62,0.92]},
   below: {yaw:3.6, pitch:-0.25, dist:2.8, focus:[0,-0.20,0.15]},
 };

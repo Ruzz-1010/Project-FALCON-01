@@ -64,6 +64,22 @@ function strut(a, b, r, mat, name=''){
   if(name) m.name = name;
   return m;
 }
+function chainBetween(a, b, count, radius=0.026){
+  const g = new THREE.Group();
+  g.name = 'VISIBLE_MOORING_CHAIN_LINKS';
+  const va = new THREE.Vector3(...a), vb = new THREE.Vector3(...b);
+  const dir = vb.clone().sub(va);
+  const q = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0,1,0), dir.clone().normalize());
+  for(let i=0;i<count;i++){
+    const link = mesh(new THREE.TorusGeometry(radius, 0.006, 8, 18), M.chain, 0, 0, 0, 'CHAIN_LINK');
+    link.position.copy(va).addScaledVector(dir, (i+0.5)/count);
+    link.quaternion.copy(q);
+    link.rotateX(Math.PI/2);
+    if(i%2) link.rotateY(Math.PI/2);
+    g.add(link);
+  }
+  return g;
+}
 
 const buoy = new THREE.Group();
 scene.add(buoy);
@@ -98,10 +114,20 @@ const stem = mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.40, 10), M.frame, 0, 
 buoy.add(stem);
 const plate = mesh(new THREE.CylinderGeometry(0.25, 0.25, 0.03, 28), M.dark, 0, -0.55, 0, 'HEAVE_PLATE');
 buoy.add(plate);
-const eye = mesh(new THREE.TorusGeometry(0.045, 0.012, 8, 20), M.chain, 0, -0.60, 0, 'MOORING_EYE');
+const eye = mesh(new THREE.TorusGeometry(0.045, 0.012, 8, 20), M.chain, 0, -0.60, 0, 'CENTER_MOORING_EYE');
+eye.rotation.x = Math.PI/2;
 buoy.add(eye);
-const chainStub = mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.26, 10), M.chain, 0, -0.75, 0, 'MOORING_CHAIN_STUB');
-buoy.add(chainStub);
+const mooring = new THREE.Group();
+mooring.name = 'MOORING_CHAIN_AND_ANCHOR_STUDY';
+mooring.add(chainBetween([0,-0.60,0],[0.10,-0.86,0.20],7,0.024));
+mooring.add(strut([0.10,-0.86,0.20],[0.30,-1.08,0.52],0.010,M.chain,'SCOPE_LINE_TO_ANCHOR'));
+const anchorBlock = mesh(new THREE.BoxGeometry(0.34,0.10,0.24), M.chain, 0.36, -1.12, 0.60, 'CONCRETE_OR_DEADWEIGHT_ANCHOR');
+anchorBlock.rotation.y = 0.25;
+mooring.add(anchorBlock);
+const anchorEye = mesh(new THREE.TorusGeometry(0.042,0.010,8,18), M.chain, 0.25, -1.05, 0.44, 'ANCHOR_EYE');
+anchorEye.rotation.y = Math.PI/2;
+mooring.add(anchorEye);
+buoy.add(mooring);
 // --- Pressure sensor hanging sheltered in the moon pool.
 buoy.add(mesh(new THREE.BoxGeometry(0.20, 0.02, 0.02), M.frame, 0.10, 0.09, 0.02, 'SENSOR_BOOM'));
 const dropCable = mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.30, 8), M.chain, 0.19, -0.06, 0.02, 'SENSOR_DROP_CABLE');

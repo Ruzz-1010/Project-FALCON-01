@@ -96,14 +96,20 @@ function chainBetween(a, b, count, radius=0.030){
   // Hull bottom face sits at y=-0.21; the ballast plug must start there or it hangs in open water.
   const keel = mesh(new THREE.CylinderGeometry(0.19, 0.15, 0.13, 24), M.anchor, 0, -0.275, 0, 'LOW_KEEL_BALLAST');
   buoy.add(keel);
-  const fairlead = mesh(new THREE.TorusGeometry(0.055, 0.010, 8, 20), M.chain, 0.30, -0.16, 0.30, 'SIDE_FAIRLEAD');
-  fairlead.rotation.y = Math.PI/4;
+  // Balanced bottom mooring: three equally spaced bridle legs meet at a
+  // centered swivel below the keel. This avoids a one-side pull that would
+  // heel the buoy when waves or current load the anchor line.
+  const fairlead = mesh(new THREE.TorusGeometry(0.060, 0.011, 8, 22), M.chain, 0, -0.425, 0, 'CENTER_MOORING_SWIVEL');
+  fairlead.rotation.x = Math.PI/2;
   buoy.add(fairlead);
-  buoy.add(strut([0.05,-0.30,0.05],[0.30,-0.18,0.30],0.007,M.rope,'SHORT_BRIDLE_TO_FAIRLEAD'));
+  for(let i=0;i<3;i++){
+    const a = (i/3)*Math.PI*2 + Math.PI/6;
+    buoy.add(strut([Math.cos(a)*0.22,-0.245,Math.sin(a)*0.22],[0,-0.425,0],0.007,M.rope,'BALANCED_UNDERHULL_BRIDLE_LINE'));
+  }
   const mooring = new THREE.Group();
   mooring.name = 'MOORING_CHAIN_AND_ANCHOR_STUDY';
-  mooring.add(chainBetween([0.30,-0.17,0.30],[0.52,-0.72,0.60],9,0.026)); // starts at the fairlead
-  mooring.add(strut([0.52,-0.72,0.60],[0.66,-0.98,0.82],0.010,M.rope,'SCOPE_ROPE_TO_ANCHOR'));
+  mooring.add(chainBetween([0,-0.43,0],[0.20,-0.78,0.26],8,0.026));
+  mooring.add(strut([0.20,-0.78,0.26],[0.66,-0.98,0.82],0.010,M.rope,'SCOPE_ROPE_TO_ANCHOR'));
   const anchorBlock = mesh(new THREE.BoxGeometry(0.34,0.10,0.24), M.anchor, 0.72, -1.03, 0.90, 'CONCRETE_OR_DEADWEIGHT_ANCHOR');
   anchorBlock.rotation.y = 0.35;
   mooring.add(anchorBlock);
