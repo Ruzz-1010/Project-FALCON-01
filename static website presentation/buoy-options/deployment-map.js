@@ -158,15 +158,7 @@ function render(animateCard = false){
   $('b-coords').textContent = `${b.lat.toFixed(2)}°N ${b.lon.toFixed(2)}°E · ~${b.depth}m site (illustrative)`;
   const pill = $('b-state'); pill.textContent = st; pill.className = 'pill ' + cls;
   const card = $('site-card'); card.dataset.state = cls;
-  const sea = $('sea-visual'); sea.dataset.state = cls;
-  $('sea-label').textContent = `${st} SAMPLE SEA`;
-  $('sea-sub').textContent = cls === 'rough' ? 'strong wave/pressure movement' : cls === 'mod' ? 'moderate wave/pressure movement' : 'small wave/pressure movement';
-  $('sea-trace').setAttribute('d', cls === 'rough'
-    ? 'M4 31 C12 8 22 37 31 16 S52 36 63 14 84 39 116 12'
-    : cls === 'mod'
-    ? 'M4 30 C18 18 28 34 40 24 S62 18 74 27 94 35 116 21'
-    : 'M4 30 C18 27 26 31 38 28 S60 24 72 28 92 34 116 27');
-  if(animateCard){ card.classList.remove('pop'); sea.classList.remove('pop'); void card.offsetWidth; card.classList.add('pop'); sea.classList.add('pop'); }
+  if(animateCard){ card.classList.remove('pop'); void card.offsetWidth; card.classList.add('pop'); }
   $('b-words').textContent = wordsOf(b, st);
   $('b-wind').textContent = `${b.wind.toFixed(0)} km/h · peak ${b.gust.toFixed(0)}`;
   $('b-winddir').textContent = `from ${dirName(b.windDir)} (${b.windDir.toFixed(0)}°)`;
