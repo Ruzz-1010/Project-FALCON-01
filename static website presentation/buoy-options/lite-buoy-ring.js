@@ -119,12 +119,12 @@ eye.rotation.x = Math.PI/2;
 buoy.add(eye);
 const mooring = new THREE.Group();
 mooring.name = 'MOORING_CHAIN_AND_ANCHOR_STUDY';
-mooring.add(chainBetween([0,-0.60,0],[0.10,-0.86,0.20],7,0.024));
-mooring.add(strut([0.10,-0.86,0.20],[0.30,-1.08,0.52],0.010,M.chain,'SCOPE_LINE_TO_ANCHOR'));
-const anchorBlock = mesh(new THREE.BoxGeometry(0.34,0.10,0.24), M.chain, 0.36, -1.12, 0.60, 'CONCRETE_OR_DEADWEIGHT_ANCHOR');
-anchorBlock.rotation.y = 0.25;
+mooring.add(chainBetween([0,-0.60,0],[0,-0.88,0],7,0.024));
+mooring.add(strut([0,-0.88,0],[0.18,-1.08,0.52],0.010,M.chain,'SCOPE_LINE_TO_ANCHOR'));
+const anchorBlock = mesh(new THREE.BoxGeometry(0.34,0.10,0.24), M.chain, 0.24, -1.12, 0.62, 'CONCRETE_OR_DEADWEIGHT_ANCHOR');
+anchorBlock.rotation.y = 0.18;
 mooring.add(anchorBlock);
-const anchorEye = mesh(new THREE.TorusGeometry(0.042,0.010,8,18), M.chain, 0.25, -1.05, 0.44, 'ANCHOR_EYE');
+const anchorEye = mesh(new THREE.TorusGeometry(0.042,0.010,8,18), M.chain, 0.15, -1.05, 0.45, 'ANCHOR_EYE');
 anchorEye.rotation.y = Math.PI/2;
 mooring.add(anchorEye);
 buoy.add(mooring);
@@ -264,6 +264,72 @@ function resize(){
   camera.aspect = w/h; camera.updateProjectionMatrix();
 }
 addEventListener('resize', resize); resize();
+
+// Fixed approval renders for screenshots: front, top, bottom and side.
+// Each card uses a clone of the actual Option C model so the approval views
+// stay consistent with the interactive preview.
+function initApprovalViewCards(){
+  const targets = [...document.querySelectorAll('[data-approval-view]')];
+  if(!targets.length) return;
+  const configs = {
+    front: {pos:[0,0.20,3.2], up:[0,1,0], zoom:0.95, focus:[0,0.05,0]},
+    side: {pos:[3.2,0.20,0], up:[0,1,0], zoom:0.95, focus:[0,0.05,0]},
+    top: {pos:[0,3.5,0.001], up:[0,0,-1], zoom:0.82, focus:[0,0.05,0]},
+    bottom: {pos:[0,-3.5,0.001], up:[0,0,1], zoom:1.05, focus:[0,-0.35,0.10]},
+  };
+  const renderers = [];
+  for(const box of targets){
+    const key = box.dataset.approvalView;
+    const cfg = configs[key];
+    if(!cfg) continue;
+    const r = new THREE.WebGLRenderer({antialias:true, alpha:true, preserveDrawingBuffer:true});
+    r.setPixelRatio(Math.min(devicePixelRatio, 2));
+    r.outputColorSpace = THREE.SRGBColorSpace;
+    box.prepend(r.domElement);
+
+    const sc = new THREE.Scene();
+    sc.background = new THREE.Color('#071720');
+    sc.add(new THREE.HemisphereLight('#d8edf4', '#1d333b', 2.4));
+    const keyLight = new THREE.DirectionalLight('#f6e2b6', 3.0);
+    keyLight.position.set(-3, 4, 5); sc.add(keyLight);
+    const fill = new THREE.DirectionalLight('#80bdd7', 1.4);
+    fill.position.set(4, 2, -4); sc.add(fill);
+
+    const clone = buoy.clone(true);
+    clone.rotation.y = key === 'side' ? -Math.PI / 2 : 0;
+    if(key !== 'bottom') clone.traverse(o=>{ if(o.name === 'MOORING_CHAIN_AND_ANCHOR_STUDY') o.visible = false; });
+    clone.traverse(o=>{
+      if(o.name === 'WIND_SPEED_DIRECTION_SENSOR') o.rotation.y = 0.35;
+      if(o.name === 'WIND_VANE') o.rotation.y = 0.15;
+    });
+    sc.add(clone);
+
+    const cam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.05, 20);
+    cam.position.set(...cfg.pos);
+    cam.up.set(...cfg.up);
+    cam.lookAt(new THREE.Vector3(...cfg.focus));
+
+    const render = ()=>{
+      const w = Math.max(2, box.clientWidth);
+      const h = Math.max(2, box.clientHeight);
+      r.setSize(w, h, false);
+      const aspect = w / h;
+      const base = cfg.zoom;
+      cam.left = -base * aspect; cam.right = base * aspect;
+      cam.top = base; cam.bottom = -base;
+      cam.updateProjectionMatrix();
+      r.render(sc, cam);
+    };
+    renderers.push({box, render});
+    render();
+  }
+  const ro = new ResizeObserver(entries=>{
+    const changed = new Set(entries.map(e=>e.target));
+    for(const item of renderers) if(changed.has(item.box)) item.render();
+  });
+  for(const item of renderers) ro.observe(item.box);
+}
+initApprovalViewCards();
 
 const clock = new THREE.Clock();
 function frame(){
