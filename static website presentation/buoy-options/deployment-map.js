@@ -81,24 +81,26 @@ for(const b of BUOYS){
   // wrap = animated bob/sway (vertical + rotation), g = static map position.
   const wrap = el('g',{}, svg);
   const g = el('g',{class:'buoy',tabindex:'0',role:'button','aria-label':`${b.id} ${b.name} simulated data`}, wrap);
-  const pulse = el('circle',{class:'pulse',cx:X(b.lon),cy:Y(b.lat),r:13,stroke:stateColor(b.hs)},g);
-  const packet = el('circle',{class:'packet',cx:X(b.lon),cy:Y(b.lat),r:3},g);
-  // Animated wave rings, visible only while seas are ROUGH at this buoy.
-  // Smooth rolling sea: nested smooth rings that grow + fade on long loops.
-  // CSS transitions alone can't restart reliably, so use Web Animations API.
+  const bx = X(b.lon), by = Y(b.lat);
+  const pulse = el('circle',{class:'marker-ring',cx:bx,cy:by,r:10,stroke:stateColor(b.hs)},g);
+  const packet = el('circle',{class:'packet',cx:bx,cy:by,r:2.2},g);
+  // Animated wave rings, visible only around the selected buoy icon.
   const seas = el('g',{class:'seas'},g);
-  for(let k=0;k<4;k++){
-    const w = el('circle',{class:'wave-ring',cx:X(b.lon),cy:Y(b.lat),r:16,stroke:'#e87a7a'},seas);
-    anim.push({node:w, phase:k/4, base:16});
+  for(let k=0;k<3;k++){
+    const w = el('circle',{class:'wave-ring',cx:bx,cy:by,r:11,stroke:stateColor(b.hs)},seas);
+    anim.push({node:w, phase:k/3, base:11});
   }
-  // Transparent hit area: the visible core is only ~10px across once the map is
-  // scaled down to a phone, which is far too small to tap reliably.
-  const hit = el('circle',{class:'hit',cx:X(b.lon),cy:Y(b.lat),r:24},g);
-  const core = el('circle',{class:'core',cx:X(b.lon),cy:Y(b.lat),r:9,fill:stateColor(b.hs)},g);
-  const t = el('text',{x:X(b.lon)+14,y:Y(b.lat)+4},g); t.textContent = b.id.replace('FALCON-','F-');
+  // A real buoy-like marker instead of large map circles: body, cap, mast, and light.
+  const icon = el('g',{class:'mini-buoy'},g);
+  const body = el('path',{class:'mini-body',d:`M ${bx-5.2} ${by+4.8} L ${bx-3.5} ${by-2.0} Q ${bx} ${by-5.3} ${bx+3.5} ${by-2.0} L ${bx+5.2} ${by+4.8} Z`,fill:stateColor(b.hs)},icon);
+  const cap = el('ellipse',{class:'mini-cap',cx:bx,cy:by-2.4,rx:3.2,ry:1.4},icon);
+  el('line',{class:'mini-mast',x1:bx,y1:by-3.8,x2:bx,y2:by-9.2},icon);
+  el('circle',{cx:bx,cy:by-10.0,r:1.5,fill:'#ff4b4b',stroke:'#071018','stroke-width':.8},icon);
+  const hit = el('circle',{class:'hit',cx:bx,cy:by,r:16},g);
+  const t = el('text',{x:bx+8.5,y:by+3.5},g); t.textContent = b.id.replace('FALCON-','F-');
   g.addEventListener('click', () => select(b.id));
   g.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); select(b.id); } });
-  markers.set(b.id, {g, wrap, pulse, core, seas, hit, t, packet, bx: X(b.lon), by: Y(b.lat)});
+  markers.set(b.id, {g, wrap, pulse, body, seas, hit, t, packet, bx, by});
 }
 
 const $ = id => document.getElementById(id);
@@ -109,13 +111,12 @@ const COMPACT = 700;
 function applyCompact(){
   const on = (svg.getBoundingClientRect().width || 0) < COMPACT;
   svg.classList.toggle('compact', on);
-  const coreR = on ? 15 : 9, pulseR = on ? 22 : 13, ringR = on ? 26 : 16, dx = on ? 22 : 14;
+  const pulseR = on ? 14 : 10, ringR = on ? 15 : 11, dx = on ? 11 : 8.5;
   for(const m of markers.values()){
-    m.core.setAttribute('r', coreR);
     m.pulse.setAttribute('r', pulseR);
-    m.hit.setAttribute('r', on ? 30 : 24);
+    m.hit.setAttribute('r', on ? 21 : 16);
     m.t.setAttribute('x', m.bx + dx);
-    m.t.setAttribute('y', m.by + (on ? 6 : 4));
+    m.t.setAttribute('y', m.by + (on ? 5 : 3.5));
   }
   for(const a of anim) a.base = ringR;   // tick() resizes the rings from this
 }
@@ -159,7 +160,15 @@ function render(animateCard = false){
   $('b-coords').textContent = `${b.lat.toFixed(2)}°N ${b.lon.toFixed(2)}°E · ~${b.depth}m site (illustrative)`;
   const pill = $('b-state'); pill.textContent = st; pill.className = 'pill ' + cls;
   const card = $('site-card'); card.dataset.state = cls;
-  if(animateCard){ card.classList.remove('pop'); void card.offsetWidth; card.classList.add('pop'); }
+  const sea = $('sea-visual'); sea.dataset.state = cls;
+  $('sea-label').textContent = `${st} SAMPLE SEA`;
+  $('sea-sub').textContent = cls === 'rough' ? 'strong wave/pressure movement' : cls === 'mod' ? 'moderate wave/pressure movement' : 'small wave/pressure movement';
+  $('sea-trace').setAttribute('d', cls === 'rough'
+    ? 'M4 31 C12 8 22 37 31 16 S52 36 63 14 84 39 116 12'
+    : cls === 'mod'
+    ? 'M4 30 C18 18 28 34 40 24 S62 18 74 27 94 35 116 21'
+    : 'M4 30 C18 27 26 31 38 28 S60 24 72 28 92 34 116 27');
+  if(animateCard){ card.classList.remove('pop'); sea.classList.remove('pop'); void card.offsetWidth; card.classList.add('pop'); sea.classList.add('pop'); }
   $('b-words').textContent = wordsOf(b, st);
   $('b-wind').textContent = `${b.wind.toFixed(0)} km/h · peak ${b.gust.toFixed(0)}`;
   $('b-winddir').textContent = `from ${dirName(b.windDir)} (${b.windDir.toFixed(0)}°)`;
@@ -174,8 +183,9 @@ function render(animateCard = false){
   drawChart('b-windchart', b.windHist, '#9fd8e8', 'km/h');
   for(const [id, m] of markers){
     const on = id === b.id, bb = BUOYS.find(x => x.id === id);
-    m.core.setAttribute('fill', stateColor(bb.hs));
+    m.body.setAttribute('fill', stateColor(bb.hs));
     m.pulse.setAttribute('stroke', stateColor(bb.hs));
+    for(const ring of m.seas.querySelectorAll('.wave-ring')) ring.setAttribute('stroke', stateColor(bb.hs));
     // Wave animation plays on the clicked (selected) buoy only.
     m.seas.style.display = id === currentId ? '' : 'none';
     m.g.classList.toggle('selected', on);
