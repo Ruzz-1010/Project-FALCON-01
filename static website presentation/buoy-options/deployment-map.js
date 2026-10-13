@@ -90,14 +90,12 @@ for(const b of BUOYS){
     const w = el('circle',{class:'wave-ring',cx:bx,cy:by,r:11,stroke:stateColor(b.hs)},seas);
     anim.push({node:w, phase:k/3, base:11});
   }
-  // A real buoy-like marker instead of large map circles: body, cap, mast, and light.
-  const icon = el('g',{class:'mini-buoy'},g);
-  const body = el('path',{class:'mini-body',d:`M ${bx-5.2} ${by+4.8} L ${bx-3.5} ${by-2.0} Q ${bx} ${by-5.3} ${bx+3.5} ${by-2.0} L ${bx+5.2} ${by+4.8} Z`,fill:stateColor(b.hs)},icon);
-  const cap = el('ellipse',{class:'mini-cap',cx:bx,cy:by-2.4,rx:3.2,ry:1.4},icon);
-  el('line',{class:'mini-mast',x1:bx,y1:by-3.8,x2:bx,y2:by-9.2},icon);
-  el('circle',{cx:bx,cy:by-10.0,r:1.5,fill:'#ff4b4b',stroke:'#071018','stroke-width':.8},icon);
-  const hit = el('circle',{class:'hit',cx:bx,cy:by,r:16},g);
-  const t = el('text',{x:bx+8.5,y:by+3.5},g); t.textContent = b.id.replace('FALCON-','F-');
+  // Small realistic map pin/buoy marker, not a large abstract circle.
+  const pin = el('g',{class:'site-pin'},g);
+  const body = el('circle',{class:'pin-head',cx:bx,cy:by,r:4.4,fill:stateColor(b.hs)},pin);
+  el('line',{class:'pin-stem',x1:bx,y1:by+4.8,x2:bx,y2:by+11.5},pin);
+  const hit = el('circle',{class:'hit',cx:bx,cy:by,r:15},g);
+  const t = el('text',{x:bx+7.2,y:by+3.3},g); t.textContent = b.id.replace('FALCON-','F-');
   g.addEventListener('click', () => select(b.id));
   g.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); select(b.id); } });
   markers.set(b.id, {g, wrap, pulse, body, seas, hit, t, packet, bx, by});
