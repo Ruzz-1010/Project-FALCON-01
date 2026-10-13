@@ -209,15 +209,15 @@ for(const ga of [-0.62, 0, 0.62]){
 // --- Red topmark light on a finial stub at the panel front edge.
 
 // --- Wind mast at the deck rear (slim Ø36mm pole straight into the hub).
-const WMAST_X = 0, WMAST_Z = -0.44, DECK_TOP = 0.31, MAST_H = 0.38, ROTOR_Y = DECK_TOP + MAST_H;
+const WMAST_X = 0, WMAST_Z = -0.44, DECK_TOP = 0.31, MAST_H = 0.58, ROTOR_Y = DECK_TOP + MAST_H;
 const wmast = mesh(new THREE.CylinderGeometry(0.018, 0.018, MAST_H, 12), M.frame, WMAST_X, DECK_TOP + MAST_H/2, WMAST_Z, 'WIND_MAST');
 buoy.add(wmast);
 const mastFoot = mesh(new THREE.CylinderGeometry(0.035, 0.045, 0.06, 12), M.frame, WMAST_X, DECK_TOP + 0.03, WMAST_Z, 'MAST_FOOT');
 buoy.add(mastFoot);
 // Masthead beacon on the wind mast, well clear of the panel and vane.
-const beacon = mesh(new THREE.CylinderGeometry(0.026, 0.026, 0.065, 12), M.beacon, WMAST_X, 0.57, WMAST_Z, 'TOPMARK_BEACON');
+const beacon = mesh(new THREE.CylinderGeometry(0.026, 0.026, 0.065, 12), M.beacon, WMAST_X, 0.77, WMAST_Z, 'TOPMARK_BEACON');
 buoy.add(beacon);
-const beaconDome = mesh(new THREE.SphereGeometry(0.026, 12, 8, 0, Math.PI*2, 0, Math.PI/2), M.beacon, WMAST_X, 0.602, WMAST_Z, 'BEACON_DOME');
+const beaconDome = mesh(new THREE.SphereGeometry(0.026, 12, 8, 0, Math.PI*2, 0, Math.PI/2), M.beacon, WMAST_X, 0.802, WMAST_Z, 'BEACON_DOME');
 buoy.add(beaconDome);
 const rotor = new THREE.Group();
 rotor.position.set(WMAST_X, ROTOR_Y, WMAST_Z);
@@ -305,7 +305,7 @@ buoy.add(mooring);
 const views = {
   top: {yaw:0.72, pitch:1.42, dist:1.9, focus:[0,0.28,0]},
   orbit: {yaw:0.7, pitch:0.12, dist:4.4, focus:[0,0.45,0]},
-  wind: {yaw:0.3, pitch:0.08, dist:1.75, focus:[WMAST_X,ROTOR_Y-0.08,WMAST_Z]},
+  wind: {yaw:0.3, pitch:0.08, dist:1.85, focus:[WMAST_X,ROTOR_Y-0.08,WMAST_Z]},
   solar: {yaw:0.7, pitch:0.12, dist:2.4, focus:[0,CAB_TOP+0.15,0]},
   mooring: {yaw:3.3, pitch:-0.34, dist:3.2, focus:[0.22,-0.62,0.92]},
   below: {yaw:3.6, pitch:-0.25, dist:2.8, focus:[0,-0.20,0.15]},
