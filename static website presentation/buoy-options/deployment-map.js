@@ -38,13 +38,13 @@ for(const b of BUOYS){
   for(let i=0;i<HN;i++){ hw = Math.max(.15, Math.min(3.2, hw + (r()-.5)*.3)); ww = Math.max(3, Math.min(55, ww + (r()-.5)*4)); b.hsHist.unshift(hw); b.windHist.unshift(ww); }
   b.hsHist[HN-1] = b.hs; b.windHist[HN-1] = b.wind;
 }
-const stateOf = hs => hs < 0.6 ? ['CALM','calm'] : hs < 1.6 ? ['MODERATE','mod'] : ['ROUGH','rough'];
+const stateOf = hs => hs < 0.6 ? ['CALM','calm'] : hs < 1.6 ? ['MODERATE','mod'] : ['MAALON','rough'];
 const stateColor = hs => hs < 0.6 ? '#8fd694' : hs < 1.6 ? '#e8c35a' : '#e87a7a';
 const wordsOf = (b, st) => st === 'CALM'
-  ? `Calm simulated condition at ${b.name} — light wind and small pressure/wave estimate.`
+  ? `Calm simulated condition at ${b.name}. The sample pressure trend suggests small waves and low movement.`
   : st === 'MODERATE'
-  ? `Moderate simulated condition at ${b.name} — wind and pressure/wave estimate are elevated.`
-  : `Rough simulated condition at ${b.name} — high wind and pressure/wave estimate for dashboard demonstration.`;
+  ? `Moderate simulated condition at ${b.name}. The dashboard shows noticeable wave/pressure change for review.`
+  : `Maalon simulated condition at ${b.name}. The selected buoy highlights a higher pressure/wave peak for panel demonstration.`;
 
 const svgNS = 'http://www.w3.org/2000/svg';
 const svg = document.getElementById('palawan');
@@ -82,6 +82,7 @@ for(const b of BUOYS){
   const wrap = el('g',{}, svg);
   const g = el('g',{class:'buoy',tabindex:'0',role:'button','aria-label':`${b.id} ${b.name} simulated data`}, wrap);
   const pulse = el('circle',{class:'pulse',cx:X(b.lon),cy:Y(b.lat),r:13,stroke:stateColor(b.hs)},g);
+  const packet = el('circle',{class:'packet',cx:X(b.lon),cy:Y(b.lat),r:3},g);
   // Animated wave rings, visible only while seas are ROUGH at this buoy.
   // Smooth rolling sea: nested smooth rings that grow + fade on long loops.
   // CSS transitions alone can't restart reliably, so use Web Animations API.
@@ -97,7 +98,7 @@ for(const b of BUOYS){
   const t = el('text',{x:X(b.lon)+14,y:Y(b.lat)+4},g); t.textContent = b.id.replace('FALCON-','F-');
   g.addEventListener('click', () => select(b.id));
   g.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); select(b.id); } });
-  markers.set(b.id, {g, wrap, pulse, core, seas, hit, t, bx: X(b.lon), by: Y(b.lat)});
+  markers.set(b.id, {g, wrap, pulse, core, seas, hit, t, packet, bx: X(b.lon), by: Y(b.lat)});
 }
 
 const $ = id => document.getElementById(id);
@@ -150,13 +151,15 @@ let current = 0;
 function select(id){
   current = BUOYS.findIndex(b => b.id === id);
   currentId = id;
-  render();
+  render(true);
 }
-function render(){
+function render(animateCard = false){
   const b = BUOYS[current], [st, cls] = stateOf(b.hs);
   $('b-name').textContent = `${b.id} · ${b.name}`;
   $('b-coords').textContent = `${b.lat.toFixed(2)}°N ${b.lon.toFixed(2)}°E · ~${b.depth}m site (illustrative)`;
   const pill = $('b-state'); pill.textContent = st; pill.className = 'pill ' + cls;
+  const card = $('site-card'); card.dataset.state = cls;
+  if(animateCard){ card.classList.remove('pop'); void card.offsetWidth; card.classList.add('pop'); }
   $('b-words').textContent = wordsOf(b, st);
   $('b-wind').textContent = `${b.wind.toFixed(0)} km/h · peak ${b.gust.toFixed(0)}`;
   $('b-winddir').textContent = `from ${dirName(b.windDir)} (${b.windDir.toFixed(0)}°)`;
@@ -175,7 +178,9 @@ function render(){
     m.pulse.setAttribute('stroke', stateColor(bb.hs));
     // Wave animation plays on the clicked (selected) buoy only.
     m.seas.style.display = id === currentId ? '' : 'none';
-    m.g.style.filter = on ? 'drop-shadow(0 0 6px #fff)' : '';
+    m.g.classList.toggle('selected', on);
+    m.g.style.filter = on ? 'drop-shadow(0 0 8px #65d8ff)' : '';
+    m.packet.style.display = on ? '' : 'none';
   }
   // Header stats.
   $('st-count').textContent = `${BUOYS.length} sites`;
@@ -198,6 +203,12 @@ function tick(now){
     const opacity = Math.sin(Math.PI * u) * 0.85; // fade in then out
     node.setAttribute('r', (base * scale).toFixed(2));
     node.setAttribute('opacity', Math.max(0, opacity).toFixed(3));
+  }
+  for(const m of markers.values()){
+    const u = (t / 2.8) % 1;
+    const y = m.by - 8 - u * 28;
+    m.packet.setAttribute('cy', y.toFixed(2));
+    m.packet.setAttribute('opacity', (1 - u).toFixed(3));
   }
   requestAnimationFrame(tick);
 }
