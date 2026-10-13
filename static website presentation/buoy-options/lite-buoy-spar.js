@@ -274,27 +274,31 @@ sensorGuard.name = 'PRESSURE_SENSOR_GUARD_CAGE';
 for(const sx of [-0.08,0.08]) sensorGuard.add(strut([sx,0.05,0.10],[sx,-0.36,0.10],0.006,M.frame,'GUARD_POST'));
 sensorGuard.add(strut([-0.08,-0.36,0.10],[0.08,-0.36,0.10],0.006,M.frame,'GUARD_BOTTOM'));
 buoy.add(sensorGuard);
-// --- Balanced underside bridle, visible chain, and anchor/deadweight study.
-// The anchor load now comes from a center swivel tied back to both hulls,
-// instead of a bow/side-only point that could twist the platform in waves.
-const centerSwivel = mesh(new THREE.TorusGeometry(0.055, 0.013, 8, 20), M.chain, 0, -0.18, 0.32, 'CENTER_MOORING_SWIVEL');
+// --- Balanced underside bridle, visible center chain, and anchor/deadweight study.
+// The chain now hangs from the geometric center under the deck. Four bridle
+// legs share the load back to both pontoons so wave/current pull is applied
+// through the middle instead of twisting the catamaran from one side.
+const centerSwivel = mesh(new THREE.TorusGeometry(0.058, 0.013, 8, 22), M.chain, 0, -0.20, 0, 'CENTER_MOORING_SWIVEL');
 centerSwivel.rotation.x = Math.PI/2;
 buoy.add(centerSwivel);
 for(const sx of [-0.42, 0.42]){
-  buoy.add(strut([sx, -0.04, 0.20], [0, -0.18, 0.32], 0.010, M.rope, 'BALANCED_TWIN_HULL_BRIDLE_LINE'));
-  buoy.add(strut([sx, -0.04, 0.48], [0, -0.18, 0.32], 0.008, M.rope, 'AFT_BALANCE_BRIDLE_LINE'));
+  for(const sz of [-0.24, 0.24]){
+    buoy.add(strut([sx, -0.045, sz], [0, -0.20, 0], 0.009, M.rope, 'BALANCED_FOUR_POINT_BRIDLE_LINE'));
+  }
 }
 const mooring = new THREE.Group();
 mooring.name = 'MOORING_CHAIN_AND_ANCHOR_STUDY';
-mooring.add(chainBetween([0,-0.18,0.32],[0.12,-0.62,0.78],10,0.028));
-mooring.add(strut([0.12,-0.62,0.78],[0.34,-1.00,1.22],0.011,M.rope,'SCOPE_ROPE_TO_ANCHOR'));
-const anchorBlock = mesh(new THREE.BoxGeometry(0.42,0.11,0.28), M.anchor, 0.40, -1.05, 1.30, 'CONCRETE_OR_DEADWEIGHT_ANCHOR');
-anchorBlock.rotation.y = -0.25;
+mooring.add(chainBetween([0,-0.20,0],[0,-0.72,0],11,0.028));
+mooring.add(strut([0,-0.72,0],[0.16,-1.00,0.72],0.011,M.rope,'SCOPE_ROPE_TO_ANCHOR'));
+const anchorBlock = mesh(new THREE.BoxGeometry(0.42,0.11,0.28), M.anchor, 0.22, -1.05, 0.82, 'CONCRETE_OR_DEADWEIGHT_ANCHOR');
+anchorBlock.rotation.y = -0.12;
 mooring.add(anchorBlock);
-const anchorEye = mesh(new THREE.TorusGeometry(0.050,0.011,8,18), M.chain, 0.24, -0.98, 1.13, 'ANCHOR_EYE');
+const anchorEye = mesh(new THREE.TorusGeometry(0.050,0.011,8,18), M.chain, 0.12, -0.98, 0.65, 'ANCHOR_EYE');
 anchorEye.rotation.y = Math.PI/2;
 mooring.add(anchorEye);
-mooring.add(mesh(new THREE.BoxGeometry(0.54,0.012,0.012), M.anchor, 0.40, -0.96, 1.30, 'ANCHOR_STOCK'));
+const anchorStock = mesh(new THREE.BoxGeometry(0.54,0.012,0.012), M.anchor, 0.22, -0.96, 0.82, 'ANCHOR_STOCK');
+anchorStock.rotation.y = -0.12;
+mooring.add(anchorStock);
 buoy.add(mooring);
 
 // --- Camera orbit (manual, no extra addon dependency).
@@ -357,6 +361,72 @@ function resize(){
   camera.aspect = w/h; camera.updateProjectionMatrix();
 }
 addEventListener('resize', resize); resize();
+
+// Fixed approval renders for screenshots: front, top, bottom and side.
+// Each card uses a clone of the actual Option B model so the approval views
+// cannot drift from the interactive preview.
+function initApprovalViewCards(){
+  const targets = [...document.querySelectorAll('[data-approval-view]')];
+  if(!targets.length) return;
+  const configs = {
+    front: {pos:[0,0.40,3.5], up:[0,1,0], zoom:1.05, focus:[0,0.22,0]},
+    side: {pos:[3.5,0.36,0], up:[0,1,0], zoom:1.05, focus:[0,0.20,0]},
+    top: {pos:[0,4.0,0.001], up:[0,0,-1], zoom:1.05, focus:[0,0.20,0]},
+    bottom: {pos:[0,-4.0,0.001], up:[0,0,1], zoom:1.20, focus:[0,-0.25,0.08]},
+  };
+  const renderers = [];
+  for(const box of targets){
+    const key = box.dataset.approvalView;
+    const cfg = configs[key];
+    if(!cfg) continue;
+    const r = new THREE.WebGLRenderer({antialias:true, alpha:true, preserveDrawingBuffer:true});
+    r.setPixelRatio(Math.min(devicePixelRatio, 2));
+    r.outputColorSpace = THREE.SRGBColorSpace;
+    box.prepend(r.domElement);
+
+    const sc = new THREE.Scene();
+    sc.background = new THREE.Color('#071720');
+    sc.add(new THREE.HemisphereLight('#d8edf4', '#1d333b', 2.4));
+    const keyLight = new THREE.DirectionalLight('#f6e2b6', 3.0);
+    keyLight.position.set(-3, 4, 5); sc.add(keyLight);
+    const fill = new THREE.DirectionalLight('#80bdd7', 1.4);
+    fill.position.set(4, 2, -4); sc.add(fill);
+
+    const clone = buoy.clone(true);
+    clone.rotation.y = key === 'side' ? -Math.PI / 2 : 0;
+    if(key !== 'bottom') clone.traverse(o=>{ if(o.name === 'MOORING_CHAIN_AND_ANCHOR_STUDY') o.visible = false; });
+    clone.traverse(o=>{
+      if(o.name === 'WIND_SPEED_DIRECTION_SENSOR') o.rotation.y = 0.35;
+      if(o.name === 'WIND_VANE') o.rotation.y = 0.15;
+    });
+    sc.add(clone);
+
+    const cam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.05, 20);
+    cam.position.set(...cfg.pos);
+    cam.up.set(...cfg.up);
+    cam.lookAt(new THREE.Vector3(...cfg.focus));
+
+    const render = ()=>{
+      const w = Math.max(2, box.clientWidth);
+      const h = Math.max(2, box.clientHeight);
+      r.setSize(w, h, false);
+      const aspect = w / h;
+      const base = cfg.zoom;
+      cam.left = -base * aspect; cam.right = base * aspect;
+      cam.top = base; cam.bottom = -base;
+      cam.updateProjectionMatrix();
+      r.render(sc, cam);
+    };
+    renderers.push({box, render});
+    render();
+  }
+  const ro = new ResizeObserver(entries=>{
+    const changed = new Set(entries.map(e=>e.target));
+    for(const item of renderers) if(changed.has(item.box)) item.render();
+  });
+  for(const item of renderers) ro.observe(item.box);
+}
+initApprovalViewCards();
 
 const clock = new THREE.Clock();
 function frame(){
