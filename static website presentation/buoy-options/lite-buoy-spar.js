@@ -290,18 +290,34 @@ buoy.add(whip);
 const whipTip = mesh(new THREE.SphereGeometry(0.012, 10, 8), M.brass, 0.48, 0.69, -0.42, 'WHIP_TIP');
 buoy.add(whipTip);
 
-// --- Pressure sensor hung between the hulls (protected + easy service).
+// --- Pressure sensor inside a stilling tube between the hulls.
+// The open-bottom tube and side exchange ports reduce direct splash and debris
+// impact around the probe. They must be validated so the tube does not distort
+// the pressure response needed for wave estimation.
 const stillingBar = mesh(new THREE.BoxGeometry(0.72,0.026,0.026), M.frame, 0, 0.05, 0.10, 'PRESSURE_SENSOR_SUPPORT_BAR');
 buoy.add(stillingBar);
 const dropCable = mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.36, 8), M.chain, 0, -0.05, 0.10, 'SENSOR_DROP_CABLE');
 buoy.add(dropCable);
 const psens = mesh(new THREE.CylinderGeometry(0.035, 0.035, 0.14, 14), M.dark, 0, -0.28, 0.10, 'WATER_PRESSURE_SENSOR');
 buoy.add(psens);
-const sensorGuard = new THREE.Group();
-sensorGuard.name = 'PRESSURE_SENSOR_GUARD_CAGE';
-for(const sx of [-0.08,0.08]) sensorGuard.add(strut([sx,0.05,0.10],[sx,-0.36,0.10],0.006,M.frame,'GUARD_POST'));
-sensorGuard.add(strut([-0.08,-0.36,0.10],[0.08,-0.36,0.10],0.006,M.frame,'GUARD_BOTTOM'));
-buoy.add(sensorGuard);
+const stillingTube = mesh(new THREE.CylinderGeometry(0.062, 0.062, 0.37, 24, 1, true), M.deck,
+  0, -0.17, 0.10, 'OPEN_BOTTOM_PRESSURE_STILLING_TUBE');
+stillingTube.material = M.deck.clone();
+stillingTube.material.transparent = true;
+stillingTube.material.opacity = 0.72;
+stillingTube.material.side = THREE.DoubleSide;
+buoy.add(stillingTube);
+const tubeTop = mesh(new THREE.CylinderGeometry(0.067, 0.067, 0.018, 24), M.frame,
+  0, 0.024, 0.10, 'STILLING_TUBE_TOP_MOUNT');
+buoy.add(tubeTop);
+for(const angle of [0, Math.PI / 2, Math.PI, Math.PI * 1.5]){
+  const x = Math.cos(angle) * 0.064, z = 0.10 + Math.sin(angle) * 0.064;
+  const port = mesh(new THREE.CylinderGeometry(0.010, 0.010, 0.012, 10), M.dark,
+    x, -0.10, z, 'STILLING_TUBE_WATER_EXCHANGE_PORT');
+  port.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0),
+    new THREE.Vector3(Math.cos(angle), 0, Math.sin(angle)));
+  buoy.add(port);
+}
 // --- Balanced underside bridle, visible center chain, and anchor/deadweight study.
 // The chain now hangs from the geometric center under the deck. Four bridle
 // legs share the load back to both pontoons so wave/current pull is applied
