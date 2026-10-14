@@ -1,0 +1,53 @@
+name: Deploy FALCON presentation to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'static website presentation/**'
+      - 'edge/static/dashboard/models/**'
+      - 'data/falcon-logo.jpg'
+      - '.github/workflows/deploy-presentation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: 'static website presentation/package-lock.json'
+      - name: Install locked dependencies
+        working-directory: static website presentation
+        run: npm ci --no-audit --no-fund
+      - name: Build static presentation
+        working-directory: static website presentation
+        run: npm run build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'static website presentation/dist'
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v5
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
