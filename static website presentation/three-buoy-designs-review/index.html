@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Project FALCON comparison of three proposed buoy designs for DOST review.">
+  <title>FALCON — Three Buoy Design Review</title>
+  <link rel="stylesheet" href="./review.css">
+</head>
+<body>
+  <header class="hero" id="top">
+    <p class="eyebrow">PROJECT FALCON-01 · DOST DESIGN REVIEW</p>
+    <h1>Three Proposed<br><em>Buoy Designs</em></h1>
+    <p class="intro">A short mobile-ready comparison of the compact can, catamaran and ring buoy concepts.</p>
+    <p class="notice"><strong>Decision needed:</strong> choose one design direction for detailed measurements, quotations and controlled prototype testing. None is fabrication-ready or field-deployed.</p>
+    <nav aria-label="Page sections"><a href="#equipment">Equipment</a><a href="#options">Options</a><a href="#compare">Compare</a><a href="#validation">Validate</a></nav>
+  </header>
+
+  <main>
+    <section id="equipment">
+      <p class="eyebrow">01 / SHARED SYSTEM</p>
+      <h2>What stays the same in every option</h2>
+      <div class="grid three">
+        <article><h3>Required sensing</h3><ul><li>1× low-range 4–20 mA pressure transmitter</li><li>ADS1115 + 150 Ω shunt + protection</li><li>Wind speed and direction set</li><li>GNSS / GPS</li></ul></article>
+        <article><h3>Power and data</h3><ul><li>ESP32 controller</li><li>12.8 V 10 Ah LiFePO₄ battery</li><li>6× 3 W solar panels as starting assumption</li><li>Battery/solar monitoring and local buffer</li></ul></article>
+        <article><h3>Protection</h3><ul><li>Gasketed dry enclosure</li><li>Correct glands and tinned wiring</li><li>Stilling / protection tube</li><li>Ballast plus rated mooring hardware</li></ul></article>
+      </div>
+      <aside class="callout"><strong>Conditional only:</strong> LTE module + SIM when the trial site has no reliable Wi-Fi. Tamper/motion and temperature sensors are optional. Raspberry Pi, LoRa/Bay Station, camera and water-quality sensors are outside the minimum build.</aside>
+    </section>
+
+    <section id="options">
+      <p class="eyebrow">02 / DESIGN OPTIONS</p>
+      <h2>Three body concepts</h2>
+      <div class="option-stack">
+        <article class="option option-a">
+          <div class="copy"><p class="tag">OPTION A · CURRENT PROPOSAL RECOMMENDATION</p><h3>Compact can buoy</h3><p class="spec">Main body: <b>Ø840 mm × 500 mm</b><br>Visible top equipment: about <b>930 mm</b> above the model waterline</p><p>Candidate body: UV-stabilized HDPE. Use a gasketed enclosure, corrosion-resistant brackets and a side stilling tube.</p><p><strong>Why consider it:</strong> fewest main parts, smallest transport footprint and lower fabrication complexity.</p><p class="risk"><strong>Validate:</strong> internal fit, ballast position, freeboard and righting behavior.</p><a href="../buoy-options/lite-buoy.html">Open Option A model →</a></div>
+          <img id="option-a-image" alt="Proposed FALCON compact can buoy">
+        </article>
+        <article class="option option-b">
+          <div class="copy"><p class="tag">OPTION B · WIDE PLATFORM BACKUP</p><h3>Catamaran buoy</h3><p class="spec">Overall: about <b>1,500 × 1,100 × 1,000 mm</b><br>Two pontoons: <b>Ø220 mm × 1,500 mm</b></p><p>Candidate body: two rigid HDPE/PE pontoons or engineered marine-FRP floats, with protected aluminum or 316 stainless crossmembers.</p><p><strong>Current model:</strong> drainage deck, solid equipment mounts and an open-bottom pressure stilling tube between the pontoons.</p><p class="risk"><strong>Validate:</strong> pontoon/frame joints, torsion, uneven loading and bridle loads.</p><a href="../buoy-options/lite-buoy-spar.html">Open Option B model →</a></div>
+          <img id="option-b-image" alt="Proposed FALCON catamaran buoy">
+        </article>
+        <article class="option option-c">
+          <div class="copy"><p class="tag">OPTION C · RING BACKUP</p><h3>Ring buoy</h3><p class="spec">Outside diameter: <b>1,100 mm</b><br>Ring tube: <b>260 mm</b><br>Mast/head: about <b>900 mm</b> above the model waterline</p><p>Candidate body: closed-cell marine foam within a protective HDPE or marine-FRP shell, plus a structural center frame.</p><p><strong>Why consider it:</strong> broad waterplane with centered mast and mooring concept.</p><p class="risk"><strong>Validate:</strong> center frame, braces, foam protection and moon-pool pressure response.</p><a href="../buoy-options/lite-buoy-ring.html">Open Option C model →</a></div>
+          <img id="option-c-image" alt="Proposed FALCON ring buoy">
+        </article>
+      </div>
+    </section>
+
+    <section id="compare">
+      <p class="eyebrow">03 / DECISION TABLE</p>
+      <h2>What changes when you choose a body</h2>
+      <div class="table-wrap"><table><thead><tr><th>Decision point</th><th>Option A — Can</th><th>Option B — Catamaran</th><th>Option C — Ring</th></tr></thead><tbody>
+        <tr><th>Fabrication</th><td>Simplest, fewer main parts</td><td>More joints, crossmembers and bridle points</td><td>Ring shell plus structural center frame</td></tr>
+        <tr><th>Transport</th><td>Most compact</td><td>Longest and widest</td><td>Largest round footprint</td></tr>
+        <tr><th>Stability review</th><td>Ballast and righting</td><td>Torsion and uneven loading</td><td>Frame and moon-pool behavior</td></tr>
+        <tr><th>Next action</th><td>Freeze internal layout</td><td>Quote rigid pontoons + frame</td><td>Quote ring + center frame</td></tr>
+      </tbody></table></div>
+      <p class="note">The listed dimensions are proposed visual-model envelopes. They are not construction drawings and do not prove safe payload or field stability.</p>
+    </section>
+
+    <section id="validation">
+      <p class="eyebrow">04 / BEFORE FABRICATION</p>
+      <h2>Validation checklist</h2>
+      <ol class="checks"><li><b>Select one option.</b> Do not fabricate all three or buy duplicate electronic modules.</li><li><b>Freeze real purchased parts.</b> Measure battery, enclosure, sensor, panel, connector and mounting sizes.</li><li><b>Calculate and float-test.</b> Record total mass, waterline, freeboard, center of gravity and heel/righting behavior.</li><li><b>Verify sensing and power.</b> Test 4/12/20 mA pressure inputs and log a full 24-hour power profile, including LTE peaks if LTE is selected.</li><li><b>Test protection and mooring.</b> Leak-test modified enclosures and glands; inspect stilling tube, ballast retention, rated mooring and recovery plan.</li></ol>
+      <div class="final-call"><strong>Meeting outcome to request:</strong> select Option A, B or C and approve detailed design planning. Field deployment requires the validation checks above.</div>
+    </section>
+  </main>
+  <footer><a href="#top">Back to top ↑</a><span>PROJECT FALCON-01 · proposed design review</span></footer>
+  <script type="module" src="./review.js"></script>
+</body>
+</html>
