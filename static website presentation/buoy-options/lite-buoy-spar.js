@@ -103,8 +103,36 @@ for(const sx of [-0.42, 0.42]){
     buoy.add(mesh(new THREE.BoxGeometry(0.06, 0.16, 0.06), M.frame, sx, 0.15, sz, 'HULL_POST'));
   }
 }
-// --- Deck platform + non-slip edge trim.
-const deck = mesh(new THREE.BoxGeometry(1.10, 0.06, 1.00), M.deck, 0, 0.28, 0, 'DECK_PLATFORM');
+// --- Through-slotted deck; solid lands support equipment and cross-beams.
+// Proposed pattern only: stiffness, drainage and wind response need validation.
+const deckOutline = new THREE.Shape();
+deckOutline.moveTo(-0.55,-0.50);
+deckOutline.lineTo(0.55,-0.50);
+deckOutline.lineTo(0.55,0.50);
+deckOutline.lineTo(-0.55,0.50);
+deckOutline.closePath();
+const deckSlots = [];
+for(let col=0; col<9; col++) for(let row=0; row<8; row++){
+  const x=(col-4)*0.112, z=(row-3.5)*0.108;
+  const hw=0.038, hl=0.034, r=0.012;
+  const near=(mx,mz,clearance)=>Math.hypot(
+    Math.max(0,Math.abs(x-mx)-hw),Math.max(0,Math.abs(z-mz)-hl))<clearance;
+  // Cabinet flange, GPS, wind mast, antenna and beam load paths stay solid.
+  if(near(0,0,0.235)||near(-0.30,0.26,0.055)||
+     near(0,-0.44,0.065)||near(0.48,-0.42,0.055)||
+     Math.abs(z-0.35)<hl+0.045||Math.abs(z+0.35)<hl+0.045) continue;
+  const h=new THREE.Path(), y=-z, l=x-hw, right=x+hw, bottom=y-hl, top=y+hl;
+  h.moveTo(l+r,bottom); h.lineTo(right-r,bottom);
+  h.quadraticCurveTo(right,bottom,right,bottom+r); h.lineTo(right,top-r);
+  h.quadraticCurveTo(right,top,right-r,top); h.lineTo(l+r,top);
+  h.quadraticCurveTo(l,top,l,top-r); h.lineTo(l,bottom+r);
+  h.quadraticCurveTo(l,bottom,l+r,bottom); h.closePath();
+  deckOutline.holes.push(h); deckSlots.push({x,z});
+}
+const deckGeometry=new THREE.ExtrudeGeometry(deckOutline,
+  {depth:0.06,bevelEnabled:false,curveSegments:4});
+const deck=mesh(deckGeometry,M.deck,0,0.25,0,'PERFORATED_DRAINAGE_DECK');
+deck.rotation.x=-Math.PI/2;
 buoy.add(deck);
 for(const sx of [-0.535, 0.535]){
   buoy.add(mesh(new THREE.BoxGeometry(0.03, 0.045, 1.00), M.hull, sx, 0.33, 0, 'TOE_RAIL_SIDE'));
