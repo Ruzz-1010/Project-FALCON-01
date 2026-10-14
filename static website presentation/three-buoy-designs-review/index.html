@@ -22,10 +22,10 @@
       <h2>Same equipment for every option</h2>
       <div class="grid three">
         <article><h3>Required sensing</h3><ul><li>1× low-range 4–20 mA pressure transmitter</li><li>ADS1115 + 150 Ω shunt + protection</li><li>Wind speed and direction set</li><li>GNSS / GPS</li></ul></article>
-        <article><h3>Power and data</h3><ul><li>ESP32 controller</li><li>12.8 V 10 Ah LiFePO₄ battery</li><li>6× 3 W solar panels as starting assumption</li><li>Battery/solar monitoring and local buffer</li></ul></article>
+        <article><h3>Power and internet</h3><ul><li>ESP32 controller</li><li><b>A7670E/SIM7600 LTE module + antenna</b></li><li><b>Active SIM card and data plan</b></li><li>12.8 V 10 Ah LiFePO₄ battery</li><li>6× 3 W solar panels as starting assumption</li><li>Battery/solar monitoring and local buffer</li></ul></article>
         <article><h3>Protection</h3><ul><li>Gasketed dry enclosure</li><li>Correct glands and tinned wiring</li><li>Stilling / protection tube</li><li>Ballast plus rated mooring hardware</li></ul></article>
       </div>
-      <aside class="callout"><strong>Only if needed:</strong> LTE module + SIM when the trial site has no reliable Wi-Fi. Tamper/motion and temperature sensors are optional. Do not buy Raspberry Pi, LoRa/Bay Station, camera or water-quality sensors for the minimum build.</aside>
+      <aside class="callout"><strong>Internet requirement:</strong> the remote-field prototype uses an LTE module, antenna, active SIM card and data plan for direct cloud upload. Wi-Fi is the laboratory/near-shore backup path. Tamper/motion and temperature sensors are optional. Do not buy Raspberry Pi, LoRa/Bay Station, camera or water-quality sensors for the minimum build.</aside>
     </section>
 
     <section id="options">
@@ -70,13 +70,13 @@
       <h2>What we will use and the proposal budget</h2>
       <div class="grid two budget-list">
         <article><h3>Electronics and sensors</h3><ul><li>ESP32 DevKit</li><li>Low-range 4–20 mA pressure transmitter</li><li>ADS1115 + 150 Ω shunt + protection</li><li>Wind speed and direction sensor</li><li>GPS / GNSS module</li><li>INA219/INA260 power monitor</li><li>microSD + card or tested flash buffer</li></ul></article>
-        <article><h3>Power and communication</h3><ul><li>12.8 V 10 Ah LiFePO₄ battery with BMS</li><li>6 × 3 W solar panels</li><li>LiFePO₄-compatible solar charger</li><li>Fuse, switch, regulators and protected wiring</li><li>Wi-Fi for lab testing</li><li>LTE module + SIM only when needed for field testing</li></ul></article>
+        <article><h3>Power and internet</h3><ul><li>12.8 V 10 Ah LiFePO₄ battery with BMS</li><li>6 × 3 W solar panels</li><li>LiFePO₄-compatible solar charger</li><li>Fuse, switch, regulators and protected wiring</li><li><b>A7670E/SIM7600 LTE module + LTE antenna</b></li><li><b>Active SIM card + data plan</b></li><li>Wi-Fi for laboratory / near-shore backup</li></ul></article>
         <article><h3>Body and protection</h3><ul><li>One selected buoy body: A, B or C</li><li>Sealed electronics enclosure with gasket</li><li>Cable glands, connectors and tinned wire</li><li>Pressure stilling/protection tube</li><li>Ballast, brackets, 316 fasteners and reflective label</li></ul></article>
         <article><h3>Mooring and safety</h3><ul><li>Anchor or deadweight</li><li>Chain, marine rope, shackles, swivel and thimble</li><li>Recovery line / marker</li><li>Flashing buoy beacon</li><li>Sealant, leak-test and calibration materials</li></ul></article>
       </div>
       <div class="table-wrap"><table><thead><tr><th>Budget group</th><th>Planning allowance</th></tr></thead><tbody>
         <tr><td>Core sensors and controller</td><td>₱6,500–₱9,500</td></tr>
-        <tr><td>Communication and data</td><td>₱1,200–₱2,500</td></tr>
+        <tr><td>LTE internet module, antenna, SIM/data allowance and local buffer</td><td>₱1,200–₱2,500</td></tr>
         <tr><td>Power system</td><td>₱4,000–₱6,500</td></tr>
         <tr><td>Prototype wiring and mounting parts</td><td>₱1,300–₱2,500</td></tr>
         <tr><td>Selected buoy body, enclosure and waterproofing</td><td>₱4,500–₱7,000</td></tr>
