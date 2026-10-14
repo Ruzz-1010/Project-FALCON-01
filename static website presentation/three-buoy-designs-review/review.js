@@ -5,3 +5,6 @@ import optionC from '../../THESIS DOCUMENTATION/visuals/3d buoy need approval/Sc
 document.querySelector('#option-a-image').src = optionA;
 document.querySelector('#option-b-image').src = optionB;
 document.querySelector('#option-c-image').src = optionC;
+document.querySelector('#hero-a-image').src = optionA;
+document.querySelector('#hero-b-image').src = optionB;
+document.querySelector('#hero-c-image').src = optionC;
