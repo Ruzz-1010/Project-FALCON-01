@@ -180,33 +180,61 @@ buoy.add(port);
 const portRing = mesh(new THREE.TorusGeometry(0.052, 0.007, 8, 24), M.frame, 0, CAB_Y - 0.02, CAB_R + 0.004, 'SERVICE_PORT_FLANGE');
 buoy.add(portRing);
 
-// --- Single 40W-class panel on a tilted frame off a collar band.
-// The panel is wider than the tube, so it rides on two posts instead of lying
-// on a roof. Tilting it 10 deg keeps it clear of its own shadow.
+// --- Single 40W-class panel on a tilted, cross-braced frame off a collar band.
+//
+// A 0.62 x 0.48 slab is oversized for 40 W-class, so it is 0.55 x 0.34 (about
+// 0.187 m^2, a realistic 40 W footprint) -- 37% less area to load the frame.
+//
+// Tilt is HELD AT 10 DEG ON PURPOSE. A near-horizontal panel is nearly edge-on to
+// horizontal wind, so its worst-case projected area is 0.187 x sin(10) =
+// 0.033 m^2 against the tube's 0.113 m^2. The round tube therefore still does
+// the aerodynamic work, and the cabinet stays the reason for rounding it.
+// Steepening the panel for "more sun" would invert that (30 deg -> 0.094 m^2,
+// 45 deg -> 0.132 m^2) and would hand the drag duty back to the panel. Aim the
+// panel by AZIMUTH instead, toward the equator. Sun elevation in Palawan is near
+// zenith, so 10 deg still collects well all year.
+//
+// Structure matters more than drag here: a flat plate this wide is a cantilever,
+// and in a storm the panel frame twisting off its posts is the real failure mode.
+// Hence the diagonal gussets and the rounded edge beads below.
 const COLLAR_Y = CAB_TOP - 0.05;
+const FRAME_Y = 0.7785, PANEL_TILT = -0.18;
+const PANEL_W = 0.55, PANEL_D = 0.34;
 const collar = mesh(new THREE.TorusGeometry(CAB_R + 0.006, 0.012, 10, 40), M.frame, 0, COLLAR_Y, 0, 'PANEL_COLLAR_BAND');
 collar.rotation.x = Math.PI/2;
 buoy.add(collar);
-const FRAME_Y = 0.7785, PANEL_TILT = -0.18;
+const postTop = FRAME_Y - 0.0125;
 for(const sx of [-0.19, 0.19]){
-  const h = FRAME_Y - 0.0125 - COLLAR_Y;
+  const h = postTop - COLLAR_Y;
   buoy.add(mesh(new THREE.BoxGeometry(0.03, h, 0.03), M.frame, sx, COLLAR_Y + h/2, -0.03, 'PANEL_SUPPORT_POST'));
+  // Diagonal gussets fore and aft, turning the post + frame into a braced
+  // triangle so the panel cannot swing the posts sideways in a gust.
+  buoy.add(strut([sx, COLLAR_Y + 0.012, -0.03], [sx, postTop + 0.026, 0.117], 0.011, M.frame, 'PANEL_GUSSET_FRONT'));
+  buoy.add(strut([sx, COLLAR_Y + 0.012, -0.03], [sx, postTop - 0.029, -0.177], 0.011, M.frame, 'PANEL_GUSSET_REAR'));
 }
-buoy.add(mesh(new THREE.BoxGeometry(0.42, 0.022, 0.028), M.frame, 0, FRAME_Y - 0.023, -0.03, 'PANEL_CROSS_MEMBER'));
+buoy.add(mesh(new THREE.BoxGeometry(0.38, 0.022, 0.028), M.frame, 0, FRAME_Y - 0.023, -0.03, 'PANEL_CROSS_MEMBER'));
 const roof = new THREE.Group();
 roof.position.set(0, FRAME_Y, -0.03);
 roof.rotation.x = PANEL_TILT;
-roof.name = 'SINGLE_40W_PANEL_ON_TILTED_FRAME';
+roof.name = 'SINGLE_40W_PANEL_ON_BRACED_FRAME';
 buoy.add(roof);
-const panelSlab = mesh(new THREE.BoxGeometry(0.62, 0.025, 0.48), M.solar, 0, 0, 0, 'SOLAR_PANEL');
+const panelSlab = mesh(new THREE.BoxGeometry(PANEL_W, 0.025, PANEL_D), M.solar, 0, 0, 0, 'SOLAR_PANEL');
 roof.add(panelSlab);
 for(let i=-1;i<=1;i++){
-  roof.add(mesh(new THREE.BoxGeometry(0.012, 0.028, 0.48), M.solarGrid, i*0.185, 0, 0, 'SOLAR_GRID'));
+  roof.add(mesh(new THREE.BoxGeometry(0.012, 0.028, PANEL_D), M.solarGrid, i*0.16, 0, 0, 'SOLAR_GRID'));
+}
+// Rounded beads along the two long edges. A sharp slab edge sheds vortices on
+// both sides of the tilt; a half-round bead softens the boundary layer for the
+// cost of two thin cylinders.
+for(const sx of [-PANEL_W/2 + 0.004, PANEL_W/2 - 0.004]){
+  const bead = mesh(new THREE.CylinderGeometry(0.008, 0.008, PANEL_D, 12), M.frame, sx, 0.012, 0, 'PANEL_EDGE_BEAD');
+  bead.rotation.x = Math.PI/2;
+  roof.add(bead);
 }
 const roofFrame = new THREE.Group();
 roofFrame.position.copy(roof.position); roofFrame.rotation.x = PANEL_TILT;
-for(const sz of [-0.25, 0.19]){
-  roofFrame.add(mesh(new THREE.BoxGeometry(0.66, 0.03, 0.025), M.frame, 0, 0, sz, 'PANEL_END_RAIL'));
+for(const sz of [-0.15, 0.15]){
+  roofFrame.add(mesh(new THREE.BoxGeometry(PANEL_W + 0.04, 0.03, 0.025), M.frame, 0, 0, sz, 'PANEL_END_RAIL'));
 }
 buoy.add(roofFrame);
 
@@ -503,3 +531,4 @@ function frame(){
   renderer.render(scene, camera);
 }
 frame();
+window.__audit = {scene, buoy, THREE};
