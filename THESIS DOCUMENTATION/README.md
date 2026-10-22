@@ -38,9 +38,17 @@ Ten documents previously marked LEGACY / SUPERSEDED were moved unchanged to [arc
 
 Three files that duplicated existing records were removed after a content audit. All three are recoverable from Git history if needed:
 
-- `FALCON_Chapters1-2_Compile_first.docx` — superseded by `Design and Development of a Solar.docx`, which is the same Chapters 1–2 document in a newer, expanded revision (identical headings; added text).
-- `Project_FALCON_DOST_Presentation.pptx` — superseded by `Project_FALCON_DOST_Presentation_Wednesday.pptx`, which has identical slide text and a newer revision.
+- `FALCON_Chapters1-2_Compile_first.docx` — superseded by `Design and Development of a Solar.docx`, which was the same Chapters 1–2 document in a newer, expanded revision (identical headings; added text).
+- `Project_FALCON_DOST_Presentation.pptx` — superseded by `Project_FALCON_DOST_Presentation_Wednesday.pptx`, which had identical slide text and a newer revision.
 - `visuals/electronics-wiring-sketch.png` — byte-identical duplicate of `visuals/electronics-wiring.png`.
+
+### Cleanup of obsolete records (2026-10-22)
+
+Removed after a link audit; all are recoverable from Git history if needed:
+
+- `Design and Development of a Solar.docx` — superseded by `Project_FALCON_Chapters_1_and_2_Final.docx`.
+- `Project_FALCON_DOST_Presentation_Wednesday.pptx` — obsolete 2026-08-17 deck.
+- `Chapter1_Introduction_first.docx` and `Chapter2_Methodology_first.docx` were **deliberately kept**: `scripts/build_proposal_ch1_ch2.py` reads both as build inputs (block and figure extraction).
 
 `PROJECT FALCON-01 - V3 Documentation.docx` is intentionally retained because it is the generated sync output of `scripts/build_baystation_thesis.py`, not a duplicate.
 

@@ -194,8 +194,7 @@ Start here:
 5. [AI.md](docs/AI.md) — focused prediction and classification specification;
 6. [DASHBOARD.md](docs/DASHBOARD.md) — approved information architecture;
 7. [API.md](docs/API.md) — approved REST contract and migration status;
-8. [MECHANICAL.md](docs/MECHANICAL.md) — approved buoy mechanical baseline;
-9. [INDEX.md](docs/INDEX.md) — full documentation index.
+8. [INDEX.md](docs/INDEX.md) — full documentation index.
 
 ## Engineering Principles
 

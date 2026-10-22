@@ -9,6 +9,11 @@ Status: **PROPOSED REPLACEMENT PROTOTYPE — REFERENCE / NOT FOR FABRICATION**
 Source model: `exports/PROJECT FALCON -V2.f3d` and dashboard conversion `dashboard-next/public/models/PROJECT-FALCON-V2.glb`  
 Drawing basis date: 2026-08-30
 
+> **Sheet files not present (2026-10-22 audit):** the SVG/PDF drawing files listed
+> below were never committed to this repository; only `Gemini 1.jpeg`, `Gemini2.jpeg`
+> and this README are tracked here. The descriptions are retained as the design
+> intent record. Recover the sheets from a drawing export before relying on them.
+
 ## Current drawing
 
 1. [`FALCON-BP-000-master-assembly-systems.svg`](FALCON-BP-000-master-assembly-systems.svg) — Gemini-style master coordination sheet rebuilt with CAD-projected orthographic views, truthful FALCON architecture, controlled component register, power, mooring, interface matrix, release gates, and drawing-control block. A print/share copy is available as [`FALCON-BP-000-master-assembly-systems.pdf`](FALCON-BP-000-master-assembly-systems.pdf).
