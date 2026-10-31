@@ -1,0 +1,588 @@
+/* Sensor readings page — clear cards, one per sensor group. */
+.sensor-cards-page .page-head {
+  align-items: center;
+  margin-bottom: 18px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #e2e5e3;
+}
+.sensor-cards-page .page-head h1 { margin-top: 5px; font-size: 30px; }
+.sensor-cards-page .page-head p {
+  max-width: 720px;
+  margin-top: 7px;
+  color: #667085;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+/* Summary strip */
+.sensor-cards-page .sensor-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 18px;
+  padding: 14px 18px;
+  border: 1px solid #e2e5e3;
+  border-radius: 14px;
+  background: #fcfcfa;
+}
+.sensor-cards-page .sensor-summary > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #35434a;
+  font-size: 15px;
+  font-weight: 750;
+}
+.sensor-cards-page .sensor-summary > div svg { width: 22px; color: #607c79; }
+.sensor-cards-page .sensor-summary dl { display: flex; align-items: center; gap: 8px; margin: 0; }
+.sensor-cards-page .sensor-summary dl > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 100px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: #f4f6f4;
+}
+.sensor-cards-page .sensor-summary dt { margin: 0; color: #667085; font-size: 12px; }
+.sensor-cards-page .sensor-summary dd { margin: 0; color: #35434a; font-size: 18px; font-weight: 800; }
+.sensor-cards-page .sensor-summary .is-ok dd { color: #2f7a4f; }
+.sensor-cards-page .sensor-summary .is-check dd { color: #9a6c17; }
+.sensor-cards-page .sensor-summary .is-offline dd { color: #b3261e; }
+
+/* Card grid — every card the same height, rows aligned. */
+.sensor-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
+  gap: 16px;
+  align-items: stretch;
+}
+.sensor-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  height: 100%;
+  padding: 18px 18px 16px;
+  border: 1px solid #e4e8e5;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 8px 20px rgba(16, 24, 40, 0.05);
+  transition: box-shadow 0.18s ease, border-color 0.18s ease;
+}
+.sensor-card:hover {
+  border-color: #cfdad6;
+  box-shadow: 0 2px 4px rgba(16, 24, 40, 0.06), 0 12px 26px rgba(16, 24, 40, 0.08);
+}
+.sensor-card::before {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 4px;
+  border-radius: 16px 16px 0 0;
+  background: #2f8f7a;
+  content: "";
+}
+.sensor-card.status-review::before,
+.sensor-card.status-warning::before { background: #e0a51b; }
+.sensor-card.status-offline::before { background: #d92d20; }
+
+/* Card header: icon, title, status */
+.sensor-card-head {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+}
+.sensor-card-icon {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: 12px;
+  color: #0f766e;
+  background: #e8f3f1;
+}
+.sensor-card-icon svg { width: 22px; height: 22px; }
+.sensor-card.status-review .sensor-card-icon,
+.sensor-card.status-warning .sensor-card-icon { color: #97690f; background: #fcf2dc; }
+.sensor-card.status-offline .sensor-card-icon { color: #b3261e; background: #fdedeb; }
+
+.sensor-card-title h2 { margin: 0; color: #101828; font-size: 18px; font-weight: 750; letter-spacing: -0.01em; }
+.sensor-card-title p { margin: 3px 0 0; color: #667085; font-size: 12px; line-height: 1.4; }
+
+.sensor-card-status {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  min-width: 76px;
+  padding: 6px 10px;
+  border: 1px solid #cfe6da;
+  border-radius: 10px;
+  color: #2f7a4f;
+  background: #f0f8f3;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-align: right;
+}
+.sensor-card-status small {
+  color: #5b7a68;
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+.sensor-card.status-review .sensor-card-status,
+.sensor-card.status-warning .sensor-card-status {
+  border-color: #f0e0bd;
+  color: #8a5f0c;
+  background: #fdf6e9;
+}
+.sensor-card.status-review .sensor-card-status small,
+.sensor-card.status-warning .sensor-card-status small { color: #8a7346; }
+.sensor-card.status-offline .sensor-card-status {
+  border-color: #f3d1ce;
+  color: #b3261e;
+  background: #fdf0ef;
+}
+.sensor-card.status-offline .sensor-card-status small { color: #9c625d; }
+
+/* Metrics — equal height tiles so every card lines up. */
+.sensor-card-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
+  gap: 10px;
+}
+/* Odd counts: let the last metric fill the row instead of hanging alone. */
+.sensor-card-metrics.count-3 .sensor-metric:nth-child(3),
+.sensor-card-metrics.count-5 .sensor-metric:nth-child(5) { grid-column: 1 / -1; }
+.sensor-metric {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  min-height: 76px;
+  padding: 12px 14px;
+  border: 1px solid #eef1ef;
+  border-radius: 12px;
+  background: #fafbfa;
+}
+.sensor-metric span {
+  display: block;
+  color: #667085;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  overflow-wrap: anywhere;
+}
+.sensor-metric strong {
+  display: block;
+  margin-top: 5px;
+  color: #101828;
+  font-size: 22px;
+  font-weight: 780;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+}
+.sensor-metric small {
+  display: block;
+  margin-top: 4px;
+  color: #7b8794;
+  font-size: 11px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+/* Calibration note */
+.sensor-card .calibration-badge {
+  display: inline-flex;
+  align-self: flex-start;
+  margin: 0;
+  padding: 6px 10px;
+  border: 1px solid #f0e0bd;
+  border-radius: 8px;
+  color: #8a5f0c;
+  background: #fdf6e9;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* Details toggle — pinned to the bottom so buttons line up across cards. */
+.sensor-card .sensor-details-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: 100%;
+  min-height: 40px;
+  margin-top: auto;
+  padding: 8px 12px;
+  border: 1px solid #e0e5e2;
+  border-radius: 10px;
+  color: #475467;
+  background: #fcfcfb;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.sensor-card .sensor-details-toggle:hover { border-color: #b6c4bf; background: #f3f6f4; }
+.sensor-card .sensor-details-toggle svg { width: 16px; height: 16px; transition: transform 0.2s ease; }
+.sensor-card.is-expanded .sensor-details-toggle svg { transform: rotate(180deg); }
+
+/* Technical details — floating panel, clean sheet with a header. */
+.sensor-card.is-expanded {
+  z-index: 5;
+  border-color: #b9c9c4;
+  box-shadow: 0 4px 8px rgba(16, 24, 40, 0.07), 0 18px 40px rgba(16, 24, 40, 0.14);
+}
+.sensor-card .sensor-technical {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: -1px;
+  right: -1px;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  max-height: 380px;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid #d7e0dc;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 6px 14px rgba(16, 24, 40, 0.08), 0 20px 48px rgba(16, 24, 40, 0.16);
+  animation: sensor-details-in 0.18s ease-out;
+}
+@keyframes sensor-details-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.sensor-card .sensor-technical-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 11px 14px;
+  border-bottom: 1px solid #edf1ee;
+  background: #f8faf9;
+}
+.sensor-card .sensor-technical-head strong {
+  color: #253038;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.sensor-card .sensor-technical-close {
+  display: grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  border: 1px solid #e0e5e2;
+  border-radius: 7px;
+  color: #667085;
+  background: #fff;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.sensor-card .sensor-technical-close:hover { color: #b3261e; background: #fdf0ef; border-color: #f3d1ce; }
+.sensor-card .sensor-technical-close svg { width: 13px; height: 13px; }
+.sensor-card .sensor-technical-note {
+  margin: 0;
+  padding: 11px 14px;
+  border-bottom: 1px solid #edf1ee;
+  color: #5d6b74;
+  background: #fcfdfc;
+  font-size: 11.5px;
+  line-height: 1.5;
+}
+.sensor-card .sensor-technical-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+  margin: 0;
+  padding: 2px 0 4px;
+  overflow: auto;
+}
+.sensor-card .sensor-technical-grid > div {
+  min-width: 0;
+  padding: 9px 14px;
+  border-bottom: 1px solid #f2f5f3;
+}
+.sensor-card .sensor-technical-grid > div:nth-child(odd) { border-right: 1px solid #f2f5f3; }
+.sensor-card .sensor-technical-grid > div:last-child,
+.sensor-card .sensor-technical-grid > div:nth-last-child(2):nth-child(odd) { border-bottom: 0; }
+.sensor-card .sensor-technical-grid dt { margin: 0; color: #707b82; font-size: 10.5px; }
+.sensor-card .sensor-technical-grid dd {
+  margin: 3px 0 0;
+  color: #253038;
+  font-size: 12px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+/* Plain-language status guide. It lets first-time users understand the three
+   decisions this dashboard supports before looking at the detailed cards. */
+.overview-page .plain-status {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0 0 16px;
+}
+.plain-status > div {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-height: 64px;
+  padding: 12px 14px;
+  border: 1px solid #dce8e8;
+  border-radius: 13px;
+  background: rgba(255,255,255,.78);
+}
+.plain-status > div:nth-child(2) { border-color: #d8e8df; }
+.plain-status > div:nth-child(3) { border-color: #e9e1d2; }
+.plain-status span {
+  display: grid;
+  width: 27px;
+  height: 27px;
+  flex: 0 0 27px;
+  place-items: center;
+  border-radius: 50%;
+  color: #0f6e73;
+  background: #e5f5f3;
+  font-size: 12px;
+  font-weight: 800;
+}
+.plain-status > div:nth-child(2) span { color: #2f7a4f; background: #e9f5ed; }
+.plain-status > div:nth-child(3) span { color: #8a5f0c; background: #fdf2dc; }
+.plain-status p { display: flex; flex-direction: column; gap: 1px; margin: 0; color: #60707d; font-size: 12px; }
+.plain-status b { color: #213c4c; font-size: 13px; }
+
+/* Clear hierarchy for the overview: the current wave reading is the focus;
+   conditions and research prediction remain useful but visually secondary. */
+.operator-overview .coastal-wave .chart-heading h3 {
+  color: #314d60;
+  font-size: 14px;
+  font-weight: 700;
+}
+.operator-overview .ai-prediction .prediction-pending {
+  margin-top: 9px;
+  color: #5c6f7d;
+  font-size: 27px;
+  letter-spacing: -.025em;
+}
+.operator-overview .ai-prediction:has(.prediction-pending) {
+  border-color: #e0e6eb;
+  background: #f7fafb;
+}
+.operator-overview .ai-prediction:has(.prediction-pending) p {
+  max-width: 230px;
+  color: #657987;
+}
+
+/* Deliberate overview redesign: one strong primary reading, with supporting
+   status kept separate so a first-time operator knows where to look first. */
+.operator-overview .coastal-wave .coastal-wave-heading {
+  grid-template-columns: minmax(280px, 1.15fr) minmax(190px, .62fr) minmax(250px, .78fr) !important;
+  gap: 14px !important;
+}
+.operator-overview .coastal-wave .wave-hero {
+  min-height: 145px;
+  padding: 20px 22px !important;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #0d3348 0%, #175770 100%);
+  box-shadow: 0 12px 24px rgba(20, 62, 82, .16);
+}
+.operator-overview .coastal-wave .wave-hero h2 { color: #dcecf3 !important; font-size: 14px !important; font-weight: 650 !important; }
+.operator-overview .coastal-wave .coastal-wave-reading > strong { color: #ffffff !important; }
+.operator-overview .coastal-wave .coastal-wave-reading > strong small { color: #a9d4e3 !important; }
+.operator-overview .coastal-wave .wave-hero-caption { color: #b7d0dc !important; }
+.operator-overview .coastal-wave .wave-hero-caption b { color: #ffffff !important; }
+.operator-overview .coastal-wave .sea-condition,
+.operator-overview .coastal-wave .ai-prediction {
+  min-height: 145px;
+  box-sizing: border-box;
+  border-radius: 16px !important;
+}
+.operator-overview .coastal-wave .sea-condition { background: #eef8f3 !important; }
+.operator-overview .coastal-wave .ai-prediction { background: #eef7fa !important; }
+.operator-overview .coastal-wave .chart-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid #e5edf1;
+}
+.operator-overview .coastal-wave .chart-heading::after {
+  content: "Measured + research estimate";
+  color: #728896;
+  font-size: 11px;
+  font-weight: 650;
+}
+.operator-overview .coastal-readings {
+  gap: 12px !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+.operator-overview .coastal-readings > div,
+.operator-overview .coastal-readings > div + div {
+  min-height: 156px;
+  margin: 0 !important;
+  padding: 18px 17px 16px 60px !important;
+  border: 1px solid #e0e9ee !important;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 4px 14px rgba(19, 51, 69, .045);
+}
+.operator-overview .coastal-readings > div::before {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: #e7f4f5;
+  content: "";
+}
+.operator-overview .coastal-readings > div:nth-child(2)::before { background: #eaf1fb; }
+.operator-overview .coastal-readings > div:nth-child(3)::before { background: #eaf6ee; }
+.operator-overview .coastal-readings > div:nth-child(4)::before { background: #fff3df; }
+.operator-overview .coastal-readings svg { z-index: 1; left: 22px !important; top: 22px !important; width: 20px !important; height: 20px !important; }
+.operator-overview .coastal-readings dt { color: #456073; font-size: 13px !important; font-weight: 700; }
+.operator-overview .coastal-readings dd { margin-top: 13px !important; color: #183348; font-size: 31px !important; font-weight: 760 !important; }
+.operator-overview .coastal-readings .reading-note { min-height: 18px; margin-top: 8px !important; color: #718695 !important; font-size: 11px !important; }
+.operator-overview .coastal-readings .reading-state { color: #197068 !important; font-size: 11px !important; font-weight: 750 !important; }
+.operator-overview .coastal-footer {
+  margin-top: 14px;
+  padding: 13px 16px;
+  border: 1px solid #e0e8ed;
+  border-radius: 12px;
+  background: rgba(255,255,255,.8);
+}
+
+/* One design language for all pages: meaningful labels, calm surfaces, and
+   clear attention states. */
+.sensor-cards-page .page-head,
+.gps-page .page-head {
+  margin-bottom: 16px;
+  padding: 13px 16px;
+  border: 1px solid #e1e8ed;
+  border-radius: 12px;
+  background: rgba(255,255,255,.72);
+}
+.sensor-cards-page .page-head p,
+.gps-page .page-head p {
+  max-width: 780px;
+  margin: 4px 0 0;
+  color: #597082;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.sensor-cards-page .page-head span,
+.gps-page .page-head span {
+  color: #39746e;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .07em;
+}
+
+/* Shared header and panel language on every operator page. */
+.settings-page .page-head,
+.alerts-page .page-head,
+.logs-page .page-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding: 13px 16px;
+  border: 1px solid #e1e8ed;
+  border-radius: 12px;
+  background: rgba(255,255,255,.72);
+}
+.settings-page .page-head span,
+.alerts-page .page-head span,
+.logs-page .page-head span { color: #39746e; font-size: 11px; font-weight: 800; letter-spacing: .07em; }
+.settings-page .page-head p,
+.alerts-page .page-head p,
+.logs-page .page-head p { max-width: 780px; margin: 4px 0 0; color: #597082; font-size: 14px; line-height: 1.5; }
+.activity-shell { max-width: 1440px; margin: 0 auto; }
+.activity-shell > .activity-switch { margin-left: 36px !important; }
+
+/* GPS stays map-first, but the supporting safety checks read as one stack. */
+.gps-page .map-panel { padding: 20px !important; border-radius: 16px !important; }
+.gps-page .map-panel > header h2 { font-size: 19px !important; }
+.gps-page .gps-side { gap: 14px !important; }
+.gps-page .coordinates,
+.gps-page .drift-card,
+.gps-page .gps-source { padding: 20px !important; border-radius: 16px !important; }
+.gps-page .coordinates > strong { color: #1c3b4f; font-size: 24px !important; }
+.gps-page .drift-status { border-color: #cfe5dc !important; background: #f1faf5 !important; }
+.gps-page .gps-source { background: #f8fbfc !important; }
+
+/* Settings separates safe display choices from logged maintenance actions. */
+.settings-page .settings-card { padding: 21px !important; border-radius: 16px !important; }
+.settings-page .settings-card header h2 { font-size: 19px !important; }
+.settings-page .setting-field { padding: 14px !important; border-color: #e1e8ed !important; background: #f8fafb !important; }
+.settings-page .setting-field span { font-size: 13px !important; }
+.settings-page .setting-field small { color: #6b8290 !important; font-size: 11px !important; }
+.settings-page .setting-field select { min-height: 38px; font-size: 13px !important; }
+.settings-page .settings-button { min-height: 42px; font-size: 13px !important; }
+.settings-page .maintenance { border-left: 4px solid #4c837c !important; }
+.settings-page .danger-zone { border-left-color: #c35d55 !important; }
+
+@media (max-width: 720px) {
+  .activity-shell > .activity-switch { margin-left: 14px !important; }
+  .settings-page .page-head,
+  .alerts-page .page-head,
+  .logs-page .page-head { align-items: flex-start; flex-direction: column; }
+  .gps-page .map-panel,
+  .gps-page .coordinates,
+  .gps-page .drift-card,
+  .gps-page .gps-source { padding: 16px !important; }
+}
+
+/* Wide / narrow */
+@media (min-width: 1500px) {
+  .sensor-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+  .sensor-card { padding: 20px; }
+  .sensor-metric strong { font-size: 24px; }
+}
+@media (max-width: 1180px) {
+  .sensor-card-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 720px) {
+  .sensor-cards-page .page-head { align-items: flex-start; flex-direction: column; gap: 12px; }
+  .sensor-cards-page .page-head h1 { font-size: 25px; }
+  .sensor-cards-page .page-head p { font-size: 14px; }
+  .sensor-cards-page .sensor-summary { align-items: flex-start; flex-direction: column; gap: 12px; }
+  .sensor-cards-page .sensor-summary dl { width: 100%; }
+  .sensor-cards-page .sensor-summary dl > div { flex: 1; justify-content: space-between; min-width: 0; padding: 8px 10px; }
+  .sensor-card { padding: 16px; }
+  .sensor-card-head { grid-template-columns: 40px minmax(0, 1fr); row-gap: 10px; }
+  .sensor-card-icon { width: 40px; height: 40px; border-radius: 11px; }
+  .sensor-card-title h2 { font-size: 17px; }
+  .sensor-card-status { grid-column: 1 / -1; align-items: flex-start; align-self: flex-start; text-align: left; }
+  .sensor-card-metrics { grid-template-columns: minmax(0, 1fr); }
+  .sensor-card .sensor-technical { max-height: 320px; }
+  .sensor-card .sensor-technical-grid { grid-template-columns: minmax(0, 1fr); }
+  .sensor-card .sensor-technical-grid > div:nth-child(odd) { border-right: 0; }
+  .sensor-metric strong { font-size: 20px; }
+  .overview-page .plain-status { grid-template-columns: 1fr; gap: 8px; }
+  .plain-status > div { min-height: 54px; }
+  .operator-overview .coastal-wave .coastal-wave-heading { grid-template-columns: 1fr !important; }
+  .operator-overview .coastal-wave .wave-hero,
+  .operator-overview .coastal-wave .sea-condition,
+  .operator-overview .coastal-wave .ai-prediction { min-height: 0; }
+  .operator-overview .coastal-readings { gap: 10px !important; }
+}
