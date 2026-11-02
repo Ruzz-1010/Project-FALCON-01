@@ -14,9 +14,9 @@ let selectedId = "FALCON-01";
 
 const palawanBounds = L.latLngBounds([8.55, 117.35], [12.35, 120.7]);
 const testStations = [
-  { id: "FALCON-T02", name: "FALCON-T02", place: "Napsan Test Site, Puerto Princesa", point: [9.77, 118.64], condition: "Moderate", wave: 0.72, wind: 14.1, direction: "NE" },
-  { id: "FALCON-T03", name: "FALCON-T03", place: "Dumaran Test Site, Palawan", point: [10.53, 119.77], condition: "Calm", wave: 0.42, wind: 8.3, direction: "E" },
-  { id: "FALCON-T04", name: "FALCON-T04", place: "Roxas Test Site, Palawan", point: [10.32, 119.35], condition: "Moderate", wave: 1.08, wind: 16.4, direction: "ENE" }
+  { id: "FALCON-T02", name: "FALCON-T02", place: "Dumaran Test Site, Palawan", point: [10.52223748292728, 119.76123377734405], baseWave: 0.72, baseWind: 14.1, direction: "NE" },
+  { id: "FALCON-T03", name: "FALCON-T03", place: "Roxas Test Site, Palawan", point: [10.312598851769618, 119.35198018029728], baseWave: 0.42, baseWind: 8.3, direction: "E" },
+  { id: "FALCON-T04", name: "FALCON-T04", place: "San Vicente Test Site, Palawan", point: [10.60851878308501, 119.31754027686037], baseWave: 1.08, baseWind: 16.4, direction: "ENE" }
 ];
 
 function conditionOf(height) {
@@ -50,7 +50,7 @@ function initializeMap() {
 function renderCard(station) {
   stationNameEl.textContent = station.name;
   stationPlaceEl.textContent = station.place;
-  stationLinkEl.textContent = station.online ? "REPORTING" : "TEST DATA";
+  stationLinkEl.textContent = station.simulated ? "SIMULATED LIVE" : station.online ? "REPORTING" : "OFFLINE";
   stationLinkEl.classList.toggle("is-online", station.online);
   conditionEl.className = `condition is-${station.condition.toLowerCase()}`;
   conditionEl.querySelector("strong").textContent = station.condition;
@@ -68,16 +68,32 @@ function showStation(station) {
   if (marker) map.panTo(marker.getLatLng());
 }
 
+function simulatedLiveStation(station, index, now) {
+  const phase = now / 6000 + index * 1.83;
+  const wave = Math.max(0.1, station.baseWave + Math.sin(phase) * 0.12 + Math.cos(phase * 0.43) * 0.04);
+  const wind = Math.max(0, station.baseWind + Math.sin(phase * 0.72) * 1.8);
+  return {
+    ...station,
+    wave,
+    wind,
+    condition: conditionOf(wave),
+    online: true,
+    simulated: true,
+    updated: new Date(now).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })
+  };
+}
+
 function displayStations(status, wave, gps) {
   const currentWave = wave.valid ? wave.waveHeight : null;
   const online = status.system === "ONLINE";
   const liveStation = {
-    id: "FALCON-01", name: "FALCON-01", place: gps.deploymentName || "Puerto Princesa Test Site, Palawan",
-    point: gps.valid && gps.latitude != null && gps.longitude != null ? [gps.latitude, gps.longitude] : [9.7421, 118.7353],
+    id: "FALCON-01", name: "FALCON-01", place: "Puerto Princesa City Test Site, Palawan",
+    point: [9.748333625985389, 118.78411811953949],
     condition: conditionOf(currentWave), wave: currentWave, wind: status.windSpeed, direction: status.windDirection,
-    online, updated: status.lastUpdate ? new Date(status.lastUpdate).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "Unavailable"
+    online, simulated: String(status.dataSource || "").toLowerCase() === "simulator",
+    updated: status.lastUpdate ? new Date(status.lastUpdate).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" }) : "Unavailable"
   };
-  const stations = [liveStation, ...testStations.map((station) => ({ ...station, online: false, updated: "Test dataset" }))];
+  const stations = [liveStation, ...testStations.map((station, index) => simulatedLiveStation(station, index, Date.now()))];
   const isDemo = String(status.dataSource || "").toLowerCase() === "simulator";
   statusEl.textContent = isDemo ? "DEMO DATA" : online ? "LIVE DATA" : "OFFLINE";
   statusEl.className = `data-status ${online ? "is-online" : "is-offline"}`;
@@ -85,7 +101,7 @@ function displayStations(status, wave, gps) {
     const existing = markers.get(station.id);
     if (!existing) {
       const next = L.marker(station.point, { icon: markerIcon(station.condition), zIndexOffset: 500 }).addTo(map);
-      next.bindTooltip(`${station.name} · ${station.online ? "reporting" : "test station"}`, { direction: "top", offset: [0, -16] });
+      next.bindTooltip(`${station.name} · ${station.simulated ? "simulated live feed" : "reporting"}`, { direction: "top", offset: [0, -16] });
       next.on("click", () => showStation(station));
       markers.set(station.id, next);
     } else {
