@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Public coastal observation map for Project FALCON." />
+    <title>FALCON Public Coastal Map</title>
+    <link rel="preconnect" href="https://unpkg.com" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  </head>
+  <body>
+    <main>
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="FALCON public coastal map">
+          <img src="/falcon-logo.jpg" alt="FALCON logo" />
+          <span><b>FALCON</b><small>Public Coastal Map</small></span>
+        </a>
+        <span id="data-status" class="data-status">CONNECTING</span>
+      </header>
+      <section class="hero">
+        <span class="eyebrow">RESEARCH OBSERVATION</span>
+        <h1>Coastal conditions near FALCON buoy stations.</h1>
+        <p>Choose a station marker to see its latest pressure-derived wave estimate, wind observation, and reporting status.</p>
+      </section>
+      <section class="map-layout" aria-label="Public buoy map and selected station details">
+        <article class="map-card">
+          <header><div><span>FALCON STATIONS</span><h2>Palawan, Philippines</h2></div><em id="map-status">LOADING MAP</em></header>
+          <div id="map" aria-label="Map of FALCON buoy stations"></div>
+          <footer>Only approved station summaries appear on this public map. Exact buoy coordinates, raw data, and operator controls remain protected.</footer>
+        </article>
+        <aside class="station-card">
+          <div class="station-heading"><div><span>SELECTED STATION</span><h2 id="station-name">FALCON-01</h2><p id="station-place">Loading station location…</p></div><em id="station-link">CONNECTING</em></div>
+          <div id="condition" class="condition is-unavailable"><span>Latest estimated condition</span><strong>Loading</strong><p>Waiting for a valid station reading.</p></div>
+          <dl>
+            <div><dt>Wind</dt><dd id="wind">--</dd></div>
+            <div><dt>Last update</dt><dd id="updated">--</dd></div>
+          </dl>
+          <p class="notice">FALCON supports coastal awareness and research. Check official PAGASA and local marine advisories before travel or safety decisions.</p>
+        </aside>
+      </section>
+      <section class="how">
+        <h2>How to use this map</h2>
+        <div><p><b>1. Select a station</b>Each marker represents a FALCON buoy with available data.</p><p><b>2. Read the summary</b>View a simple wave-condition estimate, wind observation, and reporting state.</p><p><b>3. Check official advisories</b>This research display is not an official marine forecast or warning service.</p></div>
+      </section>
+    </main>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
