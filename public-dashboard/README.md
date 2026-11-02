@@ -27,4 +27,4 @@ npm run dev
 
 Open `http://127.0.0.1:5176/`.
 
-The map is designed to list each approved FALCON station as it becomes available. It does not invent additional deployed buoy locations for the demonstration.
+The map is constrained to Palawan and currently contains FALCON-01 plus clearly labelled test-map stations in Napsan, Dumaran, and Roxas. Test markers are a UI demonstration, not a claim of field deployment.
