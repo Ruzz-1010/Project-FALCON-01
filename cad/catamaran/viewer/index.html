@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FALCON-01 — animated buoy</title>
+<style>
+  :root{color-scheme:dark}
+  html,body{margin:0;height:100%;background:#06131b;color:#dcecf3;font:14px/1.5 system-ui,sans-serif;overflow:hidden}
+  #stage{position:fixed;inset:0}
+  canvas{display:block}
+  #hud{position:fixed;left:18px;top:18px;width:258px;background:#0b1f2ad9;border:1px solid #1f4050;border-radius:14px;padding:15px 17px;backdrop-filter:blur(8px);box-shadow:0 12px 34px #0006}
+  #hud h1{font-size:14.5px;margin:0 0 2px;letter-spacing:.2px}
+  #hud p.sub{margin:0 0 12px;color:#8fb0bd;font-size:11.5px}
+  #hud dl{margin:0;display:grid;grid-template-columns:auto auto;gap:4px 12px;font-size:12.5px}
+  #hud dt{color:#8fb0bd}
+  #hud dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}
+  #hud p.warn{margin:12px 0 0;color:#d8a94e;font-size:10.5px;line-height:1.45}
+  #panel{position:fixed;right:18px;top:18px;display:flex;flex-direction:column;gap:7px;width:172px}
+  #panel button{appearance:none;border:1px solid #2b5163;background:#0f2431d9;color:#cfe4ee;padding:9px 11px;border-radius:10px;font:inherit;font-size:12.5px;cursor:pointer;text-align:left;transition:background .15s,border-color .15s}
+  #panel button:hover{background:#16323f}
+  #panel button[aria-pressed=true]{background:#1b6f8c;border-color:#33a3c6;color:#fff}
+  #panel button[aria-pressed=true]::after{content:" ●";color:#ffd27a;font-size:10px}
+  #msg{position:fixed;inset:0;display:grid;place-items:center;color:#8fb0bd;font-size:13px}
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<div id="msg">Loading model…</div>
+<div id="hud" hidden>
+  <h1>FALCON-01 · Catamaran</h1>
+  <p class="sub">Live animation · proposed geometry</p>
+  <dl>
+    <dt>Draft</dt><dd id="v-draft">120.5 mm</dd>
+    <dt>Freeboard</dt><dd id="v-free">203.5 mm</dd>
+    <dt>Heel</dt><dd id="v-heel">0.0°</dd>
+    <dt>Wind</dt><dd id="v-wind">6.0 m/s</dd>
+    <dt>Vane</dt><dd id="v-vane">0°</dd>
+    <dt>Anemometer</dt><dd id="v-rpm">0 rpm</dd>
+    <dt>Line stretch</dt><dd id="v-stretch">0.0 mm</dd>
+  </dl>
+  <p class="warn">Proposed geometry only. Not a fabrication drawing, not field-validated.</p>
+</div>
+<div id="panel">
+  <button id="b-spin" aria-pressed="true">Turntable</button>
+  <button id="b-waves" aria-pressed="true">Waves</button>
+  <button id="b-heel" aria-pressed="true">Heel test</button>
+  <button id="b-light" aria-pressed="true">Marine light</button>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { STLLoader } from 'three/addons/loaders/STLLoader.js';
+
+const stage = document.getElementById('stage');
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 0.78;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+stage.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.Fog('#b7cdd8', 10, 48);
+
+// ------------------------------------------------------------------ sky
+const SUN_DIR = new THREE.Vector3(-0.55, 0.42, 0.72).normalize();
+const sky = new THREE.Mesh(
+  new THREE.SphereGeometry(60, 32, 20),
+  new THREE.ShaderMaterial({
+    side: THREE.BackSide, depthWrite: false,
+    uniforms: {
+      topColor: { value: new THREE.Color('#0d3a58') },
+      horizonColor: { value: new THREE.Color('#b9d3de') },
+      sunColor: { value: new THREE.Color('#ffd9a3') },
+      sunDir: { value: SUN_DIR },
+    },
+    vertexShader: `varying vec3 vW; void main(){ vW = (modelMatrix*vec4(position,1.0)).xyz; gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+    fragmentShader: `
+      uniform vec3 topColor, horizonColor, sunColor, sunDir; varying vec3 vW;
+      void main(){
+        vec3 d = normalize(vW);
+        float h = clamp(d.y, 0.0, 1.0);
+        vec3 col = mix(horizonColor, topColor, pow(h, 0.62));
+        float s = max(dot(d, normalize(sunDir)), 0.0);
+        col += sunColor * pow(s, 900.0) * 1.25;
+        col += sunColor * pow(s, 20.0) * 0.14;
+        gl_FragColor = vec4(col, 1.0);
+      }`,
+  })
+);
+scene.add(sky);
+
+const pmrem = new THREE.PMREMGenerator(renderer);
+const envScene = new THREE.Scene();
+envScene.add(sky.clone());
+const envRT = pmrem.fromScene(envScene, 0, 1, 100);
+scene.environment = envRT.texture;
+scene.environmentIntensity = 0.32;
+
+const camera = new THREE.PerspectiveCamera(40, 1, 0.02, 200);
+camera.position.set(2.45, 1.28, 2.85);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 0.30, 0);
+controls.enableDamping = true;
+controls.dampingFactor = 0.06;
+controls.autoRotate = true;
+controls.autoRotateSpeed = 0.5;
+controls.minDistance = 1.2;
+controls.maxDistance = 14;
+controls.maxPolarAngle = Math.PI * 0.497;
+
+scene.add(new THREE.HemisphereLight('#cfe6ef', '#16323a', 0.50));
+const sun = new THREE.DirectionalLight('#fff0d8', 1.55);
+sun.position.copy(SUN_DIR).multiplyScalar(6);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+sun.shadow.camera.left = -2.2; sun.shadow.camera.right = 2.2;
+sun.shadow.camera.top = 2.2; sun.shadow.camera.bottom = -2.2;
+sun.shadow.camera.near = 1; sun.shadow.camera.far = 14;
+sun.shadow.bias = -0.0012;
+sun.shadow.normalBias = 0.012;
+scene.add(sun);
+const rim = new THREE.DirectionalLight('#9ecbe0', 0.7);
+rim.position.set(3.2, 1.6, -2.8);
+scene.add(rim);
+
+// ---------------------------------------------------------------- water
+const WAVE = { a1: 0.032, a2: 0.018, a3: 0.010, k1: 2.1, k2: 2.7, k3: 1.6, w1: 1.15, w2: 0.85, w3: 1.45 };
+function waveH(x, z, t) {
+  return WAVE.a1 * Math.sin(WAVE.k1 * x + WAVE.w1 * t)
+       + WAVE.a2 * Math.sin(WAVE.k2 * z - WAVE.w2 * t + 1.3)
+       + WAVE.a3 * Math.sin(WAVE.k3 * (x + z) + WAVE.w3 * t);
+}
+
+const waterUniforms = { uTime: { value: 0 }, uAmp: { value: 1 } };
+const waterGeo = new THREE.PlaneGeometry(160, 160, 200, 200).rotateX(-Math.PI / 2);
+const waterMat = new THREE.MeshStandardMaterial({
+  color: '#165a6e', roughness: 0.16, metalness: 0.12,
+  transparent: true, opacity: 0.55, envMapIntensity: 0.9,
+});
+waterMat.onBeforeCompile = (shader) => {
+  shader.uniforms.uTime = waterUniforms.uTime;
+  shader.uniforms.uAmp = waterUniforms.uAmp;
+  shader.vertexShader = shader.vertexShader
+    .replace('#include <common>', `#include <common>
+      uniform float uTime; uniform float uAmp;
+      float waveH(vec2 p, float t){
+        return (0.032*sin(2.1*p.x + 1.15*t)
+              + 0.018*sin(2.7*p.y - 0.85*t + 1.3)
+              + 0.010*sin(1.6*(p.x+p.y) + 1.45*t)) * uAmp;
+      }`)
+    .replace('#include <beginnormal_vertex>', `#include <beginnormal_vertex>
+      {
+        vec2 p = position.xz;
+        float c1 = cos(2.1*p.x + 1.15*uTime);
+        float c2 = cos(2.7*p.y - 0.85*uTime + 1.3);
+        float c3 = cos(1.6*(p.x+p.y) + 1.45*uTime);
+        float dhdx = (0.032*2.1*c1 + 0.010*1.6*c3) * uAmp;
+        float dhdz = (0.018*2.7*c2 + 0.010*1.6*c3) * uAmp;
+        objectNormal = normalize(vec3(-dhdx, 1.0, -dhdz));
+      }`)
+    .replace('#include <begin_vertex>', `#include <begin_vertex>
+      transformed.y += waveH(position.xz, uTime);`);
+};
+const water = new THREE.Mesh(waterGeo, waterMat);
+water.receiveShadow = true;
+water.renderOrder = 2;
+scene.add(water);
+
+// soft contact shadow, so the hulls sit on the water instead of hovering
+function shadowTexture() {
+  const c = document.createElement('canvas');
+  c.width = 256; c.height = 128;
+  const g = c.getContext('2d');
+  const grd = g.createRadialGradient(128, 64, 4, 128, 64, 60);
+  grd.addColorStop(0, 'rgba(0,0,0,0.55)');
+  grd.addColorStop(0.55, 'rgba(0,0,0,0.26)');
+  grd.addColorStop(1, 'rgba(0,0,0,0)');
+  g.save(); g.translate(128, 64); g.scale(1, 0.5); g.translate(-128, -64);
+  g.fillStyle = grd; g.fillRect(0, 0, 256, 128); g.restore();
+  return new THREE.CanvasTexture(c);
+}
+const contactShadow = new THREE.Mesh(
+  new THREE.PlaneGeometry(1, 1).rotateX(-Math.PI / 2),
+  new THREE.MeshBasicMaterial({ map: shadowTexture(), transparent: true, depthWrite: false, opacity: 0.9 })
+);
+contactShadow.scale.set(3.1, 1, 2.1);
+contactShadow.position.y = 0.012;
+contactShadow.renderOrder = 3;
+scene.add(contactShadow);
+
+// seabed, so the anchor sits on something
+const seabed = new THREE.Mesh(
+  new THREE.CircleGeometry(70, 64).rotateX(-Math.PI / 2),
+  new THREE.MeshStandardMaterial({ color: '#445a61', roughness: 1.0, metalness: 0.0 })
+);
+seabed.position.y = -2.05;
+scene.add(seabed);
+
+// ---------------------------------------------------------------- buoy
+const buoy = new THREE.Group();
+scene.add(buoy);
+
+const loader = new STLLoader();
+// High-visibility GRP hulls, drawn in the shader so the bands follow the hull
+// exactly: safety-orange topsides, a white reflective boot stripe and dark
+// antifouling below the waterline.
+function hullMaterial(topsides, antifoul, stripe, lo = 0.062, hi = 0.104, edge = 0.005) {
+  const m = new THREE.MeshStandardMaterial({ color: topsides, roughness: 0.52, metalness: 0.06, envMapIntensity: 0.55 });
+  m.onBeforeCompile = (shader) => {
+    shader.uniforms.uTop = { value: new THREE.Color(topsides) };
+    shader.uniforms.uBottom = { value: new THREE.Color(antifoul) };
+    shader.uniforms.uStripe = { value: new THREE.Color(stripe) };
+    shader.uniforms.uLo = { value: lo };
+    shader.uniforms.uHi = { value: hi };
+    shader.uniforms.uEdge = { value: edge };
+    shader.vertexShader = 'varying float vHullY;\n' + shader.vertexShader.replace(
+      '#include <begin_vertex>',
+      '#include <begin_vertex>\n  vHullY = transformed.y;'
+    );
+    shader.fragmentShader = 'varying float vHullY;\nuniform vec3 uTop;\nuniform vec3 uBottom;\nuniform vec3 uStripe;\nuniform float uLo;\nuniform float uHi;\nuniform float uEdge;\n' + shader.fragmentShader.replace(
+      '#include <color_fragment>',
+      '#include <color_fragment>\n' +
+      '  float aboveAnti = smoothstep(uLo - uEdge, uLo + uEdge, vHullY);\n' +
+      '  float aboveStripe = smoothstep(uHi - uEdge, uHi + uEdge, vHullY);\n' +
+      '  vec3 band = mix(uBottom, uStripe, aboveAnti);\n' +
+      '  diffuseColor.rgb = mix(band, uTop, aboveStripe);'
+    );
+  };
+  return m;
+}
+
+const mats = {
+  pontoon: hullMaterial('#ff5c0f', '#12333f', '#f4f7f8'),
+  deck: new THREE.MeshStandardMaterial({ color: '#eef2f3', roughness: 0.95, metalness: 0.0, envMapIntensity: 0.10 }),
+  tube: new THREE.MeshStandardMaterial({ color: '#d3dde2', roughness: 0.62, metalness: 0.03, envMapIntensity: 0.25 }),
+  gps: new THREE.MeshStandardMaterial({ color: '#242b31', roughness: 0.45, metalness: 0.20 }),
+  anchor: new THREE.MeshStandardMaterial({ color: '#7b8184', roughness: 0.95, metalness: 0.00 }),
+  metal: new THREE.MeshStandardMaterial({ color: '#8d9aa3', roughness: 0.45, metalness: 0.70, envMapIntensity: 0.55 }),
+  whip: new THREE.MeshStandardMaterial({ color: '#12171b', roughness: 0.60, metalness: 0.10 }),
+  panel: new THREE.MeshStandardMaterial({ color: '#1a4c7e', roughness: 0.40, metalness: 0.25, envMapIntensity: 0.45 }),
+  rotor: new THREE.MeshStandardMaterial({ color: '#38424a', roughness: 0.52, metalness: 0.20, envMapIntensity: 0.50 }),
+  vane: new THREE.MeshStandardMaterial({ color: '#ffd21a', roughness: 0.42, metalness: 0.15 }),
+  lens: new THREE.MeshStandardMaterial({ color: '#ffc861', emissive: '#ff8c1a', emissiveIntensity: 0.55, roughness: 0.30, metalness: 0.0 }),
+};
+
+function loadPart(file, material, pivot, attempt = 0) {
+  return new Promise((resolve, reject) => {
+    loader.load(file + '?v=28', (geo) => {
+      geo.computeVertexNormals();
+      geo.scale(0.001, 0.001, 0.001);
+      const group = new THREE.Group();
+      if (pivot) {
+        geo.translate(-pivot[0], -pivot[1], -pivot[2]);
+        group.position.set(pivot[0], pivot[1], pivot[2]);
+      }
+      const mesh = new THREE.Mesh(geo, material);
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      group.add(mesh);
+      buoy.add(group);
+      resolve(group);
+    }, undefined, (err) => {
+      // a backgrounded tab can abort the first request — just ask again
+      if (attempt < 3) {
+        setTimeout(() => loadPart(file, material, pivot, attempt + 1).then(resolve, reject), 350);
+      } else {
+        reject(err);
+      }
+    });
+  });
+}
+
+let rotor = null, vane = null, lens = null;
+Promise.all([
+  loadPart('./anim_pontoon.stl', mats.pontoon),
+  loadPart('./anim_deck.stl', mats.deck),
+  loadPart('./anim_tube.stl', mats.tube),
+  loadPart('./anim_gps.stl', mats.gps),
+  loadPart('./anim_anchor.stl', mats.anchor),
+  loadPart('./anim_metal.stl', mats.metal),
+  loadPart('./anim_whip.stl', mats.whip),
+  loadPart('./anim_panel.stl', mats.panel),
+  loadPart('./anim_rotor.stl', mats.rotor, [-0.56, 0, 0]),
+  loadPart('./anim_vane.stl', mats.vane, [0.66, 0, 0]),
+  loadPart('./anim_lens.stl', mats.lens),
+]).then(([, , , , , , , , r, v, l]) => {
+  rotor = r; vane = v; lens = l;
+  document.getElementById('msg').remove();
+  document.getElementById('hud').hidden = false;
+}).catch((err) => {
+  const m = document.getElementById('msg');
+  if (m) m.textContent = 'Could not load the STL parts — serve this folder over http.';
+  console.error(err);
+});
+
+// ------------------------------------------------- marine light + glow
+const LIGHT = new THREE.Vector3(-0.65, 0.883, 0.42);
+const beaconLight = new THREE.PointLight('#ffb457', 0, 7, 2);
+beaconLight.position.copy(LIGHT);
+buoy.add(beaconLight);
+
+function glowTexture() {
+  const c = document.createElement('canvas');
+  c.width = c.height = 128;
+  const g = c.getContext('2d');
+  const grd = g.createRadialGradient(64, 64, 0, 64, 64, 64);
+  grd.addColorStop(0, 'rgba(255,235,190,1)');
+  grd.addColorStop(0.25, 'rgba(255,196,110,0.55)');
+  grd.addColorStop(1, 'rgba(255,170,70,0)');
+  g.fillStyle = grd;
+  g.fillRect(0, 0, 128, 128);
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  return tex;
+}
+const halo = new THREE.Sprite(new THREE.SpriteMaterial({
+  map: glowTexture(), color: '#ffcf88', transparent: true, opacity: 0,
+  blending: THREE.AdditiveBlending, depthWrite: false,
+}));
+halo.scale.setScalar(0.85);
+halo.position.copy(LIGHT);
+buoy.add(halo);
+
+// ---------------------------------------------------------- live ropes
+const ropeMat = new THREE.MeshStandardMaterial({ color: '#20262b', roughness: 0.8, metalness: 0.1 });
+const cableMat = new THREE.MeshStandardMaterial({ color: '#141a1e', roughness: 0.7, metalness: 0.2 });
+
+class Rope {
+  constructor(radius, material) {
+    this.radius = radius;
+    this.rest = null;
+    this.mesh = new THREE.Mesh(new THREE.BufferGeometry(), material);
+    this.mesh.castShadow = true;
+    this.mesh.frustumCulled = false;
+    scene.add(this.mesh);
+    this.length = 0;
+  }
+  update(points) {
+    const curve = new THREE.CatmullRomCurve3(points);
+    const geo = new THREE.TubeGeometry(curve, 46, this.radius, 7, false);
+    this.mesh.geometry.dispose();
+    this.mesh.geometry = geo;
+    this.length = curve.getLength();
+    if (this.rest === null) this.rest = this.length;
+  }
+}
+
+const ANCHOR_EYE = new THREE.Vector3(0, -1.94, 0);
+const TX_TOP = new THREE.Vector3(0.070, -1.60, 0.100);
+const moorBow = new Rope(0.018, ropeMat);
+const moorStern = new Rope(0.018, ropeMat);
+const txCable = new Rope(0.0075, cableMat);
+
+const tmpA = new THREE.Vector3();
+function ropePoints(bottom, topLocal, sag, t, n = 9) {
+  buoy.localToWorld(tmpA.copy(topLocal));
+  const pts = [];
+  for (let i = 0; i <= n; i++) {
+    const s = i / n;
+    const p = new THREE.Vector3().lerpVectors(bottom, tmpA, s);
+    const bow = Math.sin(Math.PI * s);
+    p.z += bow * (sag + 0.012 * Math.sin(t * 1.1 + s * 3.0));
+    p.x += bow * 0.010 * Math.sin(t * 0.8 + s * 2.2);
+    pts.push(p);
+  }
+  return pts;
+}
+
+// ---------------------------------------------------------------- toggles
+const state = { spin: true, waves: true, heel: true, light: true };
+function bind(id, key) {
+  const b = document.getElementById(id);
+  b.addEventListener('click', () => {
+    state[key] = !state[key];
+    b.setAttribute('aria-pressed', String(state[key]));
+    if (key === 'spin') controls.autoRotate = state.spin;
+  });
+}
+bind('b-spin', 'spin'); bind('b-waves', 'waves'); bind('b-heel', 'heel'); bind('b-light', 'light');
+controls.autoRotate = state.spin;
+
+// ---------------------------------------------------------------- loop
+const HULL_X = 1.10, HULL_Z = 0.475;
+const BOW_EYE = new THREE.Vector3(0.760, 0.259, 0);
+const STERN_EYE = new THREE.Vector3(-0.760, 0.259, 0);
+const TX_DECK = new THREE.Vector3(0.070, 0.339, 0.100);
+// seed the rest length from the neutral (static) pose, so the stretch readout
+// starts at zero instead of whatever the first animated frame happens to be
+buoy.position.set(0, 0, 0);
+buoy.rotation.set(0, 0, 0);
+buoy.updateMatrixWorld(true);
+moorBow.update(ropePoints(ANCHOR_EYE, BOW_EYE, 0.020, 0));
+moorStern.update(ropePoints(ANCHOR_EYE, STERN_EYE, 0.020, 0));
+txCable.update(ropePoints(TX_TOP, TX_DECK, 0.085, 0));
+let t = 0, last = performance.now();
+const vHeel = document.getElementById('v-heel');
+const vWind = document.getElementById('v-wind');
+const vVane = document.getElementById('v-vane');
+const vRpm = document.getElementById('v-rpm');
+const vStretch = document.getElementById('v-stretch');
+let vaneYaw = 0, rotorAngle = 0;
+
+function resize() {
+  const w = innerWidth, h = innerHeight;
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+  renderer.setSize(w, h);
+}
+addEventListener('resize', resize);
+resize();
+
+function animate(now) {
+  const dt = Math.min(0.05, (now - last) / 1000);
+  last = now;
+  t += dt;
+
+  const waveAmp = state.waves ? 1 : 0;
+
+  // water surface (displaced in the shader)
+  waterUniforms.uTime.value = t;
+  waterUniforms.uAmp.value = waveAmp;
+
+  // buoy motion from the same wave field
+  const hc = waveH(0, 0, t) * waveAmp;
+  const hb = waveH(HULL_X, 0, t) * waveAmp;
+  const hs = waveH(-HULL_X, 0, t) * waveAmp;
+  const hp = waveH(0, HULL_Z, t) * waveAmp;
+  const hst = waveH(0, -HULL_Z, t) * waveAmp;
+
+  const heave = (hc + 0.5 * (hb + hs)) * 0.5;
+  const pitch = Math.atan2(hb - hs, 2 * HULL_X) * 0.9;
+  let roll = -Math.atan2(hp - hst, 2 * HULL_Z) * 0.9;
+  if (state.heel) roll += THREE.MathUtils.degToRad(6.0) * Math.sin(t * 0.38);
+
+  // slight surge + sway on the mooring, which is what stretches the line
+  const swayX = 0.045 * Math.sin(t * 0.33) + 0.014 * Math.sin(t * 0.91 + 1.0);
+  const swayZ = 0.028 * Math.sin(t * 0.27 + 2.0);
+  buoy.position.set(swayX, heave, swayZ);
+  buoy.rotation.set(roll, 0, pitch);
+  buoy.updateMatrixWorld(true);
+  contactShadow.position.x = swayX;
+  contactShadow.position.z = swayZ;
+
+  // bridle ropes follow the deck eyes and stretch with the motion
+  moorBow.update(ropePoints(ANCHOR_EYE, BOW_EYE, 0.020, t));
+  moorStern.update(ropePoints(ANCHOR_EYE, STERN_EYE, 0.020, t + 0.8));
+  txCable.update(ropePoints(TX_TOP, TX_DECK, 0.085, t));
+
+  // wind: slowly shifting direction and speed
+  const windSpeed = 6 + 3 * Math.sin(t * 0.21) + 1.2 * Math.sin(t * 0.63 + 2.0);
+  const windFrom = 0.9 * Math.sin(t * 0.07) + 0.35 * Math.sin(t * 0.19 + 1.1);
+
+  const targetYaw = windFrom + 0.05 * Math.sin(t * 2.7);
+  vaneYaw += (targetYaw - vaneYaw) * Math.min(1, dt * 2.2);
+  if (vane) vane.rotation.y = vaneYaw;
+
+  const spin = 2.2 + windSpeed * 0.95;
+  rotorAngle -= dt * spin;
+  if (rotor) rotor.rotation.y = rotorAngle;
+
+  // marine light: one flash every 3 s, soft bloom + point light
+  const phase = t % 3;
+  const on = state.light && phase < 0.6 ? 1 : 0;
+  const pulse = on ? Math.pow(Math.sin((phase / 0.6) * Math.PI), 0.6) : 0;
+  mats.lens.emissiveIntensity = 0.35 + pulse * 7.0;
+  beaconLight.intensity = pulse * 9;
+  halo.material.opacity = pulse * 0.85;
+  halo.scale.setScalar(0.55 + pulse * 0.75);
+
+  vHeel.textContent = `${(THREE.MathUtils.radToDeg(Math.abs(roll))).toFixed(1)}°`;
+  vWind.textContent = `${windSpeed.toFixed(1)} m/s`;
+  vVane.textContent = `${(THREE.MathUtils.radToDeg(((vaneYaw % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI))).toFixed(0)}°`;
+  vRpm.textContent = `${(spin * 9.549).toFixed(0)} rpm`;
+  // the buoy swings between the two lines, so read the line that is actually
+  // taking the load instead of summing the two (the sum cancels out)
+  const stretchMm = Math.max(
+    Math.abs(moorBow.length - moorBow.rest),
+    Math.abs(moorStern.length - moorStern.rest)
+  ) * 1000;
+  vStretch.textContent = `${stretchMm.toFixed(1)} mm`;
+
+  controls.update();
+  renderer.render(scene, camera);
+  requestAnimationFrame(animate);
+}
+requestAnimationFrame(animate);
+window.__falcon = { scene, camera, controls, buoy, waterUniforms, state };
+</script>
+</body>
+</html>

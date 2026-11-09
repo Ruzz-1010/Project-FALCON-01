@@ -7,6 +7,7 @@ on:
       - 'static website presentation/**'
       - 'edge/static/dashboard/models/**'
       - 'data/falcon-logo.jpg'
+      - 'cad/catamaran/viewer/**'
       - '.github/workflows/deploy-presentation.yml'
   workflow_dispatch:
 
@@ -33,6 +34,10 @@ jobs:
       - name: Build static presentation
         working-directory: static website presentation
         run: npm run build
+      - name: Add CAD design viewer
+        run: |
+          mkdir -p "static website presentation/dist/design"
+          cp -r cad/catamaran/viewer/. "static website presentation/dist/design/"
       - uses: actions/upload-pages-artifact@v3
         with:
           path: 'static website presentation/dist'
