@@ -8,6 +8,7 @@ on:
       - 'edge/static/dashboard/models/**'
       - 'data/falcon-logo.jpg'
       - 'cad/catamaran/viewer/**'
+      - 'demo/ai-prediction/**'
       - '.github/workflows/deploy-presentation.yml'
   workflow_dispatch:
 
@@ -38,6 +39,10 @@ jobs:
         run: |
           mkdir -p "static website presentation/dist/design"
           cp -r cad/catamaran/viewer/. "static website presentation/dist/design/"
+      - name: Add AI prediction demo
+        run: |
+          mkdir -p "static website presentation/dist/ai-demo"
+          cp -r demo/ai-prediction/. "static website presentation/dist/ai-demo/"
       - uses: actions/upload-pages-artifact@v3
         with:
           path: 'static website presentation/dist'
