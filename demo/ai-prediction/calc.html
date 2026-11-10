@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FALCON-01 — how the forecast is computed</title>
+<style>
+  :root{
+    --bg:#061620; --panel:#0b2230f2; --line:#1c3d4e; --text:#e8f4fa; --muted:#8fa9b9;
+    --teal:#34b3d4; --amber:#ffc861; --green:#4ee0a0;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;min-height:100%}
+  body{
+    background:radial-gradient(1100px 650px at 15% -15%, #0d2b3c 0%, #061620 55%, #04101a 100%);
+    color:var(--text); font:16px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif;
+    padding:22px 24px 34px; max-width:1180px; margin:0 auto;
+  }
+  header{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  h1{font-size:21px;margin:0;font-weight:700}
+  h1 span{color:var(--teal);font-weight:500}
+  .back{margin-left:auto;font-size:13.5px;color:var(--teal);text-decoration:none;
+    border:1px solid #26556a;background:#0f2b39;padding:8px 12px;border-radius:10px}
+  .back:hover{background:#16394b}
+  .lede{font-size:14.5px;color:var(--muted);margin:10px 0 18px;max-width:92ch}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 20px;
+    box-shadow:0 12px 30px #0005}
+  .top{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:14px}
+  @media (max-width:820px){.top{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  .stat{background:#081d28;border:1px solid #15333f;border-radius:12px;padding:10px 12px}
+  .stat span{display:block;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+  .stat b{font:600 17px ui-monospace,monospace}
+  .work{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:24px;align-items:start}
+  @media (max-width:980px){.work{grid-template-columns:1fr}}
+  .step{padding:10px 0;border-bottom:1px dashed #16323f}
+  .step:last-child{border-bottom:0}
+  .step .lbl{display:flex;gap:10px;align-items:baseline;font-size:14px;font-weight:650;margin:0}
+  .step .lbl i{font-style:normal;flex:0 0 21px;height:21px;border-radius:50%;background:#12303f;
+    border:1px solid #26556a;color:#8fb8cc;font:600 11.5px/20px ui-monospace,monospace;text-align:center}
+  .formula{font:12.5px/1.7 ui-monospace,monospace;color:#9fd6e8;margin:5px 0 2px 31px;overflow-wrap:anywhere}
+  .sub{font:12.5px/1.7 ui-monospace,monospace;color:#f0c98a;margin-left:31px;overflow-wrap:anywhere}
+  .sub b{color:var(--green);font-weight:700}
+  .why{font-size:12.5px;color:var(--muted);margin:3px 0 0 31px;line-height:1.5}
+  h2{font:600 11px/1 ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--muted);margin:0 0 10px}
+  table{width:100%;border-collapse:collapse;font:12px ui-monospace,monospace;margin-top:2px}
+  th{color:var(--muted);font-weight:500;text-align:right;padding:5px 3px 3px;font-size:10.5px}
+  td{text-align:right;padding:4px 3px;border-top:1px solid #122c39;white-space:nowrap}
+  th:first-child,td:first-child{text-align:left}
+  tr.sum td{border-top:1px solid #35708a;color:var(--green)}
+  .note{font-size:12.5px;color:var(--muted);margin:8px 0 0;line-height:1.5}
+  .gloss{display:grid;grid-template-columns:auto 1fr;gap:5px 12px;font-size:12.5px;color:var(--muted);
+    align-items:baseline;margin:10px 0 0}
+  .gloss b{color:#9fd6e8;font:600 12.5px ui-monospace,monospace;white-space:nowrap}
+  footer{margin-top:16px;font-size:12px;color:#7f9aab;line-height:1.55}
+  .mono{font-family:ui-monospace,monospace}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>FALCON-01 <span>· the forecast, line by line</span></h1>
+  <a class="back" href="index.html">← back to the demo</a>
+</header>
+
+<p class="lede">This is the exact calculation behind the forecast number. It runs on the same simulated
+2-minute reading feed, and every figure on this page is recomputed from scratch on each new reading.</p>
+
+<div class="top">
+  <div class="stat"><span>Readings used</span><b id="stat-n">–</b></div>
+  <div class="stat"><span>Latest reading</span><b id="stat-last">–</b></div>
+  <div class="stat"><span>Look-ahead</span><b id="stat-h">15 min</b></div>
+  <div class="stat"><span>Forecast</span><b id="stat-pred">–</b></div>
+</div>
+
+<section class="card">
+  <div class="work">
+    <div id="working"><p class="note">collecting readings…</p></div>
+    <div>
+      <h2>Readings used in the sums</h2>
+      <div id="sampleTable" class="note">–</div>
+      <h2 style="margin-top:18px">Symbols</h2>
+      <div class="gloss">
+        <b>n</b><span>number of readings in the fit window (max 30)</span>
+        <b>x, y</b><span>minutes since the first reading, and wave height in metres</span>
+        <b>x̄, ȳ</b><span>average time and average height of the window</span>
+        <b>m</b><span>trend — how fast the height is changing, m per minute</span>
+        <b>T</b><span>how far ahead we look (5 or 15 min)</span>
+        <b>d</b><span>damping — how much of the trend is trusted at that distance</span>
+        <b>L</b><span>change limit — the biggest jump one forecast may make</span>
+        <b>σ</b><span>spread of the readings around the fitted line</span>
+        <b>c</b><span>confidence, 35–94 %</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Simulated data. The model is a transparent research baseline (a damped linear trend), not a trained or
+  field-validated AI model, and nothing here is a marine forecast.
+</footer>
+
+<script src="model.js"></script>
+<script>
+"use strict";
+const $ = id => document.getElementById(id);
+const horizon = 15;
+
+/* ------------------------------------------------------------- the feed */
+const history = [];
+let lastWorkRender = -1e9;
+
+function tick() {
+  const v = sim.step(SAMPLE_INTERVAL_S);
+  history.push({ t: sim.t, v });
+  if (history.length > 600) history.splice(0, history.length - 600);
+}
+
+/* ------------------------------------------------------ the worked steps */
+function stepHTML(i, label, formula, sub, why) {
+  return `<div class="step"><div class="lbl"><i>${i}</i>${label}</div>` +
+         `<div class="formula">${formula}</div>` +
+         `<div class="sub">${sub}</div>` +
+         (why ? `<div class="why">${why}</div>` : "") + `</div>`;
+}
+
+const sgn = (v, d = 3) => (v >= 0 ? "+" : "−") + Math.abs(v).toFixed(d);
+
+function render() {
+  const recent = history.slice(-WINDOW);
+  if (recent.length < 8) return;
+  const pred = project(recent, horizon);
+  const w = pred.work;
+
+  $("stat-n").textContent = `${w.n}`;
+  $("stat-last").textContent = `${fmt(w.yLast, 2)} m`;
+  $("stat-h").textContent = `${horizon} min`;
+  $("stat-pred").textContent = `${fmt(pred.predicted, 2)} m`;
+
+  const out = [];
+  out.push(stepHTML(1, "Window of readings",
+    `n = min(history, ${WINDOW})`,
+    `n = <b>${w.n}</b> readings · one every ${SAMPLE_LABEL} · span ` +
+      `${Math.round((w.endT - w.startT) / 60)} min ` +
+      `(${clockLabel(w.startT)} → ${clockLabel(w.endT)})`,
+    "Only the newest readings are used, so the trend describes the sea now."));
+
+  out.push(stepHTML(2, "Means of the window",
+    `x̄ = Σx / n &nbsp;·&nbsp; ȳ = Σy / n`,
+    `x̄ = ${grp(w.sumX)} / ${w.n} = <b>${w.mx.toFixed(2)} min</b> · ` +
+      `ȳ = ${w.sumY.toFixed(3)} / ${w.n} = <b>${w.my.toFixed(3)} m</b>`));
+
+  out.push(stepHTML(3, "Slope of the trend (least squares)",
+    `m = Σ(xᵢ − x̄)(yᵢ − ȳ) / Σ(xᵢ − x̄)²`,
+    `m = ${w.num.toFixed(3)} / ${grp(w.den)} = <b>${w.slope.toFixed(4)} m/min</b>`,
+    "This is the straight line that sits closest to all the readings — the current rise or fall."));
+
+  out.push(stepHTML(4, "Look-ahead time",
+    `T = horizon`,
+    `T = <b>${horizon} min</b>`));
+
+  out.push(stepHTML(5, "Damping factor",
+    `d = 1 / (1 + T / 5)      (5 min = 300 s)`,
+    `d = 1 / (1 + ${horizon}/5) = 1 / ${(1 + horizon / 5).toFixed(2)} = <b>${w.damping.toFixed(3)}</b>`,
+    "The further ahead we look, the less the model trusts today's trend."));
+
+  out.push(stepHTML(6, "Raw projection",
+    `ŷ_raw = y_last + m · T · d`,
+    `ŷ_raw = ${w.yLast.toFixed(3)} + ${w.slope.toFixed(4)} × ${horizon} × ${w.damping.toFixed(3)} ` +
+      `= <b>${w.raw.toFixed(3)} m</b>`));
+
+  out.push(stepHTML(7, "Change limit",
+    `L = max(0.08, 0.35 · y_last) · (horizon / 15)^0.7`,
+    `L = max(0.08, 0.35 × ${w.yLast.toFixed(3)}) × (${horizon}/15)^0.7 = <b>${w.maxChange.toFixed(3)} m</b> ` +
+      `→ allowed ${w.lo.toFixed(3)} … ${w.hi.toFixed(3)} m`,
+    "A hard guard: one forecast may not jump further than this, even when the fit is noisy."));
+
+  out.push(stepHTML(8, "Final forecast",
+    `ŷ = clamp(ŷ_raw, y_last − L, y_last + L, 0, 15)`,
+    `ŷ = clamp(${w.raw.toFixed(3)}, ${w.lo.toFixed(3)}, ${w.hi.toFixed(3)}) = ` +
+      `<b>${pred.predicted.toFixed(3)} m</b> ` +
+      (pred.limited ? `<span style="color:#ff9c9c">← limit applied</span>` : `← inside the limit`)));
+
+  out.push(stepHTML(9, "Spread of the readings",
+    `σ = √( Σ(yᵢ − (ȳ + m(xᵢ − x̄)))² / n )`,
+    `σ = √(${w.ssResid.toFixed(4)} / ${w.n}) = <b>${w.vol.toFixed(4)} m</b>`,
+    "How far the readings sit off the fitted line — a small σ means a steady, well-behaved sea."));
+
+  out.push(stepHTML(10, "Confidence",
+    `c = 94 − (σ / max(ȳ, 0.1)) · 60 − 0.8 · horizon`,
+    `c = 94 − (${w.vol.toFixed(4)} / ${Math.max(w.my, 0.1).toFixed(3)}) × 60 − 0.8 × ${horizon} ` +
+      `= ${w.confidenceRaw.toFixed(1)} → <b>${w.confidence}%</b> (clamped to 35–94%)`));
+
+  out.push(stepHTML(11, "Sea condition",
+    `CALM if ŷ &lt; 0.6 · MODERATE if 0.6 ≤ ŷ &lt; 2.5 · ROUGH if ŷ ≥ 2.5`,
+    `ŷ = ${pred.predicted.toFixed(2)} m → <b>${classify(pred.predicted)}</b>`));
+
+  $("working").innerHTML = out.join("");
+
+  /* table of the readings feeding the sums */
+  const n = w.n;
+  const picks = [...new Set([0, 1, Math.round(n * 0.25), Math.round(n * 0.5), n - 2, n - 1])]
+    .filter(i => i >= 0 && i < n).sort((a, b) => a - b);
+  let rows = "";
+  for (const i of picks) {
+    const dx = w.xs[i] - w.mx, dy = w.ys[i] - w.my;
+    rows += `<tr><td>${clockLabel(w.startT + w.xs[i] * 60)}</td>` +
+            `<td>${w.ys[i].toFixed(2)}</td>` +
+            `<td>${sgn(dx)}</td><td>${sgn(dy)}</td>` +
+            `<td>${sgn(dx * dy)}</td><td>${(dx * dx).toFixed(0)}</td></tr>`;
+  }
+  rows += `<tr class="sum"><td>Σ · all ${n} readings</td><td>–</td><td>0</td><td>0</td>` +
+          `<td>${w.num.toFixed(2)}</td><td>${grp(w.den)}</td></tr>`;
+
+  $("sampleTable").innerHTML = `<table>
+      <thead><tr><th>time</th><th>y (m)</th><th>x−x̄</th><th>y−ȳ</th><th>(x−x̄)(y−ȳ)</th><th>(x−x̄)²</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <p class="note">${picks.length} of ${n} readings are listed; the sums run over all of them. x is in
+    minutes and y in metres, so the slope in step 3 comes out as metres per minute. The bottom row is the
+    total that feeds step 3.</p>`;
+}
+
+/* ----------------------------------------------------------------- loop */
+for (let i = 0; i < 40; i++) tick();   // pre-fill one hour
+render();
+
+let acc = 0, last = performance.now();
+function frame(ts) {
+  const dt = Math.min(0.1, (ts - last) / 1000);
+  last = ts;
+  acc += dt;
+  const step = 1 / (60 / SAMPLE_INTERVAL_S);   // 60× playback
+  while (acc >= step) { acc -= step; tick(); render(); }
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

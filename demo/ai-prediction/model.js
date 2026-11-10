@@ -1,0 +1,132 @@
+/* FALCON-01 — shared demo model
+ *
+ * A JavaScript port of edge/falcon_edge/forecast.py: a damped linear trend over
+ * the recent wave-height history, plus the sea-condition classifier.
+ *
+ * The arithmetic here is expressed in minutes (x = minutes, m = m/min). It is
+ * the same least-squares fit as the Python version, which works in seconds.
+ */
+
+const MODEL_NAME = "wave-short-term";
+const MODEL_VERSION = "1.0.0-demo";
+const SAMPLE_INTERVAL_S = 120;   // one buoy reading every 2 minutes
+const WINDOW = 30;               // readings used for the fit (1 hour)
+const SAMPLE_LABEL = "2 min";
+
+const COND_TEXT = {
+  CALM: "calm",
+  MODERATE: "moderate",
+  ROUGH: "rough",
+};
+
+function classify(h) { return h < 0.6 ? "CALM" : h < 2.5 ? "MODERATE" : "ROUGH"; }
+
+function project(points, horizonMin) {
+  const n = points.length;
+  const origin = points[0].t;
+  const xs = points.map(p => (p.t - origin) / 60);   // minutes
+  const ys = points.map(p => p.v);                   // metres
+  const sumX = xs.reduce((a, b) => a + b, 0);
+  const sumY = ys.reduce((a, b) => a + b, 0);
+  const mx = sumX / n;
+  const my = sumY / n;
+
+  let den = 0, num = 0;
+  for (let i = 0; i < n; i++) { den += (xs[i] - mx) ** 2; num += (xs[i] - mx) * (ys[i] - my); }
+  const slope = den === 0 ? 0 : num / den;           // m per minute
+  const horizon = horizonMin;                        // minutes
+  const damping = 1 / (1 + horizon / 5);             // 5 min = 300 s in the Python version
+  const raw = ys[n - 1] + slope * horizon * damping;
+  const maxChange = Math.max(0.08, ys[n - 1] * 0.35) * Math.pow(horizonMin / 15, 0.7);
+
+  let projected = Math.min(ys[n - 1] + maxChange, Math.max(ys[n - 1] - maxChange, raw));
+  projected = Math.max(0, Math.min(15, projected));
+
+  const residuals = xs.map((x, i) => ys[i] - (my + slope * (x - mx)));
+  const ssResid = residuals.reduce((a, r) => a + r * r, 0);
+  const vol = Math.sqrt(ssResid / n);
+  const confidenceRaw = 94 - vol / Math.max(my, 0.1) * 60 - horizonMin * 0.8;
+  const confidence = Math.round(Math.max(35, Math.min(94, confidenceRaw)));
+
+  const work = {
+    n, origin, xs, ys, sumX, sumY, mx, my, num, den, slope, horizon, damping,
+    yLast: ys[n - 1], raw, maxChange,
+    lo: ys[n - 1] - maxChange, hi: ys[n - 1] + maxChange,
+    ssResid, vol, confidenceRaw, confidence,
+    startT: points[0].t, endT: points[n - 1].t,
+  };
+
+  return { predicted: projected, confidence, slope, damping, raw, maxChange, vol,
+           limited: Math.abs(projected - raw) > 0.0005, samples: n, work };
+}
+
+/* Smooth forecast curve between the newest reading and the predicted value. */
+function forecastSeries(points, horizonMin, endpoint, confidence) {
+  const current = points[points.length - 1].v;
+  const recent = points.slice(-24).map(p => p.v);
+  const start = recent[0];
+  const step = (recent[recent.length - 1] - start) / Math.max(1, recent.length - 1);
+  const residuals = recent.map((v, i) => v - (start + step * i));
+  const vol = Math.sqrt(residuals.reduce((a, r) => a + r * r, 0) / Math.max(1, residuals.length));
+  const steps = Math.max(10, horizonMin * 2);
+  const out = [];
+  for (let i = 0; i <= steps; i++) {
+    const progress = i / steps;
+    const eased = progress * progress * (3 - 2 * progress);
+    const baseline = current + (endpoint - current) * eased;
+    const residual = residuals[i % residuals.length];
+    let pred = Math.max(0, baseline + residual * (1 - progress) * Math.sin(Math.PI * progress));
+    const unc = Math.max(0.025, vol * (0.7 + progress) + (100 - confidence) / 1000);
+    if (i === 0) pred = current; else if (i === steps) pred = endpoint;
+    out.push({ p: progress * horizonMin, v: pred, lo: Math.max(0, pred - unc), hi: pred + unc });
+  }
+  return out;
+}
+
+/* ------------------------------------------------------- simulated buoy */
+function mulberry32(a) {
+  return function () {
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    let t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+
+const sim = {
+  t: 0, level: 0.55, mode: "normal", rng: mulberry32(101), squallStart: null,
+  holdLevel: null, holdUntil: 0,
+  setMode(mode) {
+    this.mode = mode;
+    if (mode === "squall") this.squallStart = this.t;
+  },
+  step(dt) {
+    this.t += dt;
+    if (this.mode === "squall" && this.t - this.squallStart > 30 * 60) this.mode = "normal";
+    const slow = Math.sin(this.t / (55 * 60)), swell = Math.sin(this.t / (16 * 60)),
+          chop = Math.sin(this.t / (6 * 60) + 1.1);
+    let target, tau = 11 * 60;
+    if (this.holdLevel != null && this.t >= this.holdUntil) this.holdLevel = null;
+    if (this.holdLevel != null) {
+      target = this.holdLevel; tau = 3 * 60;
+    } else if (this.mode === "normal") {
+      target = 0.48 + slow * 0.07 + Math.abs(swell) * 0.12 + chop * 0.018;
+    } else if (this.mode === "rough") {
+      target = 3.0 + Math.abs(swell) * 0.72 + chop * 0.12; tau = 9 * 60;
+    } else if (this.mode === "squall") {
+      target = 3.4 + Math.abs(swell) * 0.5 + chop * 0.1; tau = 4 * 60;
+    } else {
+      target = 0.22 + chop * 0.02; tau = 5 * 60;
+    }
+    this.level += (target - this.level) * (1 - Math.exp(-dt / tau));
+    return Math.max(0.05, this.level + (this.rng() - 0.5) * 0.022);
+  }
+};
+
+/* --------------------------------------------------------------- helpers */
+const fmt = (v, d = 2) => (v == null || Number.isNaN(v)) ? "–" : v.toFixed(d);
+const clockLabel = t => {
+  const m = Math.floor(t / 60);
+  return m >= 60 ? `${Math.floor(m / 60)}h${String(m % 60).padStart(2, "0")}m` : `${m}m`;
+};
+const grp = v => Math.round(v).toLocaleString("en-US");
