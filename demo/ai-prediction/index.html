@@ -185,6 +185,7 @@ that is the green check in the chart below. Everything here is simulated.</p>
       <tbody id="errors"><tr><td colspan="4" class="cap">waiting for the first check…</td></tr></tbody>
     </table>
     <p class="avg" id="avg"></p>
+    <p class="avg" id="evalLine"></p>
   </section>
 </div>
 
@@ -449,6 +450,17 @@ function updateUI() {
     const avg = state.errors.reduce((a, e) => a + e.error, 0) / state.errors.length;
     $("avg").innerHTML = `Average miss over the last ${state.errors.length} checks: ` +
       `<b>${avg.toFixed(2)} m</b>`;
+    if (state.errors.length) {
+      const mae = state.errors.reduce((a, e) => a + Math.abs(e.predicted - e.actual), 0) / state.errors.length;
+      const rmse = Math.sqrt(state.errors.reduce((a, e) => a + e.error * e.error, 0) / state.errors.length);
+      const bias = state.errors.reduce((a, e) => a + (e.predicted - e.actual), 0) / state.errors.length;
+      $("evalLine").innerHTML =
+        `Compared against the damped-trend baseline: MAE <b>${mae.toFixed(2)} m</b> · ` +
+        `RMSE <b>${rmse.toFixed(2)} m</b> · mean bias <b>${bias.toFixed(2)} m</b> ` +
+        `(persistence baseline: hold at the last reading).`;
+    } else {
+      $("evalLine").innerHTML = "No checks yet — the first forecast lands in 15 minutes.";
+    }
   }
 }
 
