@@ -83,46 +83,6 @@ function forecastSeries(points, horizonMin, endpoint, confidence) {
   return out;
 }
 
-/* ------------------------------------------------------- simulated buoy */
-function mulberry32(a) {
-  return function () {
-    a |= 0; a = a + 0x6D2B79F5 | 0;
-    let t = Math.imul(a ^ a >>> 15, 1 | a);
-    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
-    return ((t ^ t >>> 14) >>> 0) / 4294967296;
-  };
-}
-
-const sim = {
-  t: 0, level: 0.55, mode: "normal", rng: mulberry32(101), squallStart: null,
-  holdLevel: null, holdUntil: 0,
-  setMode(mode) {
-    this.mode = mode;
-    if (mode === "squall") this.squallStart = this.t;
-  },
-  step(dt) {
-    this.t += dt;
-    if (this.mode === "squall" && this.t - this.squallStart > 30 * 60) this.mode = "normal";
-    const slow = Math.sin(this.t / (55 * 60)), swell = Math.sin(this.t / (16 * 60)),
-          chop = Math.sin(this.t / (6 * 60) + 1.1);
-    let target, tau = 11 * 60;
-    if (this.holdLevel != null && this.t >= this.holdUntil) this.holdLevel = null;
-    if (this.holdLevel != null) {
-      target = this.holdLevel; tau = 3 * 60;
-    } else if (this.mode === "normal") {
-      target = 0.48 + slow * 0.07 + Math.abs(swell) * 0.12 + chop * 0.018;
-    } else if (this.mode === "rough") {
-      target = 3.0 + Math.abs(swell) * 0.72 + chop * 0.12; tau = 9 * 60;
-    } else if (this.mode === "squall") {
-      target = 3.4 + Math.abs(swell) * 0.5 + chop * 0.1; tau = 4 * 60;
-    } else {
-      target = 0.22 + chop * 0.02; tau = 5 * 60;
-    }
-    this.level += (target - this.level) * (1 - Math.exp(-dt / tau));
-    return Math.max(0.05, this.level + (this.rng() - 0.5) * 0.022);
-  }
-};
-
 /* --------------------------------------------------------------- helpers */
 const fmt = (v, d = 2) => (v == null || Number.isNaN(v)) ? "–" : v.toFixed(d);
 const clockLabel = t => {

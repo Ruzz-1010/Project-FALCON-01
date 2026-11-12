@@ -1,27 +1,33 @@
-# FALCON-01 — AI wave forecast demo
+# FALCON-01 — AI wave forecast dashboard
 
 Interactive demo for the `wave-short-term` estimator used by the edge service
 (`edge/falcon_edge/forecast.py`).
 
 **Pages**
 
-- `index.html` — the demo. Simulates a buoy that reports every **2 minutes**, forecasts the wave
-  height **15 minutes ahead**, and then checks whether the forecast was right when the time came.
-- `calc.html` — the full calculation, step by step, with the numbers from the live simulated feed.
+- `index.html` — the demo dashboard. You type the **lowest and highest water level** of a
+  2-minute buoy window and send the pair. The reading is the paper's pressure-derived estimate
+  **H = max(η) − min(η)**. After 8 sent readings the model forecasts H **15 minutes ahead**;
+  later readings show whether the forecast was right.
+- `calc.html` — the full calculation, step by step, using exactly the pairs sent on the demo page.
+  It does not simulate or auto-run.
 - `model.js` — the JavaScript port of the estimator.
+- `app.js` — dashboard drawing, score table, and manual-input wiring.
+- `calc.js` — read-only calculation page logic.
 
-**What the demo shows (the short version)**
+**Important behaviour**
 
-1. Buoy reading now (wave height in metres, one reading every 2 min).
-2. Forecast for the next 15 minutes (sea condition: calm / moderate / rough, plus confidence).
-3. Chart: measured readings, the forecast the model made earlier, and the actual reading that
-   arrived — the gap between forecast and actual is the error.
+- **Nothing moves until you send a pair.** There is no timer, playback, or auto-generated feed.
+- Each 2-minute record is only a minimum and a maximum. The wave height used by the model is
+  `H = max − min`, following the pressure-to-wave procedure in the research proposal.
+- The forecast unlocks after 8 readings (the model needs a short history).
+- The score table compares each forecast with the first reading at or after its 15-minute target.
 
 **Demo caveats**
 
-- The feed is simulated; no real buoy is connected.
+- The inputs are simulated; no real buoy is connected.
 - The model is a transparent research baseline (damped linear trend), **not** a trained or field-validated AI.
-- The error table is measured against the same simulated feed — it shows the mechanism, not real sea accuracy.
+- The error table is measured against the same simulated inputs — it shows the mechanism, not real sea accuracy.
 - The deployed edge service samples every 2 s with a 120-reading window; this demo uses the field
   reporting cadence (2 min / reading, 30-reading window) so the numbers stay readable.
 
