@@ -27,7 +27,6 @@ function loadReadings() {
   let payload = null;
   try { payload = JSON.parse(localStorage.getItem("falcon-readings") || "null"); } catch (e) { /* ignore */ }
   const history = payload && Array.isArray(payload.history) ? payload.history : [];
-  if (payload && [5, 10, 15].includes(Number(payload.horizon))) horizon = Number(payload.horizon);
   if (history.length < MIN_READINGS) { showEmpty(history.length); return; }
   const recent = history.slice(-WINDOW);
   render(project(recent, horizon), recent);
@@ -55,7 +54,7 @@ function render(pred, points) {
 
   const out = [];
   out.push(stepHTML(1, "Wave height for one 2-minute window",
-    `H = max(η) − min(η)`,
+    `H = highest − lowest`,
     pair && pair.lo != null
       ? `latest pair: H = ${signed2(pair.hi)} − ${pair.lo < 0 ? `(${signed2(pair.lo)})` : signed2(pair.lo)} = <b>${pair.v.toFixed(3)} m</b>`
       : `latest reading: H = <b>${w.yLast.toFixed(3)} m</b>`,
@@ -139,8 +138,8 @@ function render(pred, points) {
       <tbody>${rows}</tbody>
     </table>
     <p class="note">${picks.length} of ${n} readings are listed; the sums run over all of them. x is in
-    minutes and y in metres, with <b>y = H = max − min</b> for each 2-minute window. The bottom row is the
-    total that feeds the slope in step 4.</p>`;
+    minutes and y in metres, with <b>y = H = highest − lowest</b> for each 2-minute window. The bottom row
+    is the total that feeds the slope in step 4.</p>`;
 }
 
 window.addEventListener("storage", e => {

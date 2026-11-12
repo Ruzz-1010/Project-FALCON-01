@@ -12,7 +12,7 @@ any change: `npm run build` in this folder, then publish `dist/` to `gh-pages`.
 - Presenter build: https://ruzz-1010.github.io/Project-FALCON-01/present.html
 - Projector mode (weak projector / bright room): https://ruzz-1010.github.io/Project-FALCON-01/present.html?big=1
 - 3-D design viewer (11 coloured parts, rotatable): https://ruzz-1010.github.io/Project-FALCON-01/design/
-- AI short-term wave prediction demo (simulated feed, not field-validated): https://ruzz-1010.github.io/Project-FALCON-01/ai-demo/
+- AI short-term wave prediction demo (manual simulated input, not field-validated): https://ruzz-1010.github.io/Project-FALCON-01/ai-demo/
 
 Notes for viewers:
 - Page 09 shows a static snapshot online. The live dashboard needs the edge

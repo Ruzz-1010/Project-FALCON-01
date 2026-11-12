@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>FALCON-01 — how the forecast is computed</title>
+<title>FALCON-01 — the math behind the forecast</title>
 <style>
   :root{
     --bg:#061620; --panel:#0b2230f2; --line:#1c3d4e; --text:#e8f4fa; --muted:#8fa9b9;
@@ -59,17 +59,17 @@
 <body>
 
 <header>
-  <h1>FALCON-01 <span>· the forecast, line by line</span></h1>
+  <h1>FALCON-01 <span>· the math behind the forecast</span></h1>
   <a class="back" href="index.html">← back to the demo</a>
 </header>
 
-<p class="lede">This is the exact calculation behind the forecast number. It reads the same <b>min / max
-pairs</b> you send on the demo page and recomputes every figure from scratch. <b>It does not simulate or run on
-its own.</b> If nothing is stored yet, send at least 8 readings on the <a href="index.html">demo page</a> first.</p>
+<p class="lede">This page shows the full calculation for the same <b>lowest / highest</b> pairs you add on
+the demo page. Every figure is recomputed from those readings. <b>It does not run on its own.</b> Add at least
+8 readings on the <a href="index.html">demo page</a> first.</p>
 
 <div class="top">
   <div class="stat"><span>Readings used</span><b id="stat-n">–</b></div>
-  <div class="stat"><span>Latest H</span><b id="stat-last">–</b></div>
+  <div class="stat"><span>Latest wave height</span><b id="stat-last">–</b></div>
   <div class="stat"><span>Look-ahead</span><b id="stat-h">15 min</b></div>
   <div class="stat"><span>Forecast</span><b id="stat-pred">–</b></div>
 </div>
@@ -82,13 +82,13 @@ its own.</b> If nothing is stored yet, send at least 8 readings on the <a href="
       <div id="sampleTable" class="note">–</div>
       <h2 style="margin-top:18px">Symbols</h2>
       <div class="gloss">
-        <b>η</b><span>water-level displacement from the calm baseline, in metres</span>
-        <b>H</b><span>one 2-minute reading: H = max(η) − min(η)</span>
+        <b>η</b><span>water level measured from the buoy's zero mark, in metres</span>
+        <b>H</b><span>one 2-minute reading: H = highest − lowest, i.e. max(η) − min(η)</span>
         <b>n</b><span>number of readings in the fit window (max 30)</span>
         <b>x, y</b><span>minutes since the first reading, and H in metres</span>
         <b>x̄, ȳ</b><span>average time and average H of the window</span>
         <b>m</b><span>trend — how fast H is changing, m per minute</span>
-        <b>T</b><span>how far ahead we look (5 or 15 min)</span>
+        <b>T</b><span>how far ahead we look (15 min)</span>
         <b>d</b><span>damping — how much of the trend is trusted at that distance</span>
         <b>L</b><span>change limit — the biggest jump one forecast may make</span>
         <b>σ</b><span>spread of the readings around the fitted line</span>
@@ -99,11 +99,11 @@ its own.</b> If nothing is stored yet, send at least 8 readings on the <a href="
 </section>
 
 <footer>
-  Simulated data. The model is a transparent research baseline (a damped linear trend), not a trained or
+  Simulated input. The model is a transparent research baseline (a damped linear trend), not a trained or
   field-validated AI model, and nothing here is a marine forecast.
 </footer>
 
-<script src="model.js"></script>
-<script src="calc.js"></script>
+<script src="model.js?v=2"></script>
+<script src="calc.js?v=2"></script>
 </body>
 </html>

@@ -60,29 +60,6 @@ function project(points, horizonMin) {
            limited: Math.abs(projected - raw) > 0.0005, samples: n, work };
 }
 
-/* Smooth forecast curve between the newest reading and the predicted value. */
-function forecastSeries(points, horizonMin, endpoint, confidence) {
-  const current = points[points.length - 1].v;
-  const recent = points.slice(-24).map(p => p.v);
-  const start = recent[0];
-  const step = (recent[recent.length - 1] - start) / Math.max(1, recent.length - 1);
-  const residuals = recent.map((v, i) => v - (start + step * i));
-  const vol = Math.sqrt(residuals.reduce((a, r) => a + r * r, 0) / Math.max(1, residuals.length));
-  const steps = Math.max(10, horizonMin * 2);
-  const out = [];
-  for (let i = 0; i <= steps; i++) {
-    const progress = i / steps;
-    const eased = progress * progress * (3 - 2 * progress);
-    const baseline = current + (endpoint - current) * eased;
-    const residual = residuals[i % residuals.length];
-    let pred = Math.max(0, baseline + residual * (1 - progress) * Math.sin(Math.PI * progress));
-    const unc = Math.max(0.025, vol * (0.7 + progress) + (100 - confidence) / 1000);
-    if (i === 0) pred = current; else if (i === steps) pred = endpoint;
-    out.push({ p: progress * horizonMin, v: pred, lo: Math.max(0, pred - unc), hi: pred + unc });
-  }
-  return out;
-}
-
 /* --------------------------------------------------------------- helpers */
 const fmt = (v, d = 2) => (v == null || Number.isNaN(v)) ? "–" : v.toFixed(d);
 const clockLabel = t => {
