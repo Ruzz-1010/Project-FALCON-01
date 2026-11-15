@@ -2,6 +2,9 @@
  *
  * Read-only: it takes the min/max pairs stored by the dashboard and recomputes
  * the forecast. It never simulates or generates readings.
+ *
+ * The first three steps follow the paper's pressure-derived wave-height
+ * procedure; the remaining steps are the damped linear-trend baseline.
  */
 "use strict";
 
@@ -15,12 +18,14 @@ function showEmpty(count) {
   $("stat-h").textContent = `${horizon} min`;
   $("stat-pred").textContent = "–";
   const need = Math.max(0, MIN_READINGS - count);
+  $("working").className = "empty";
   $("working").innerHTML =
     `<p class="note">No calculation yet. ` +
     (count ? `${count} reading(s) stored; send ${need} more.`
            : `Send at least ${MIN_READINGS} readings on the demo page.`) +
     ` The calculation appears here automatically after that.</p>`;
   $("sampleTable").innerHTML = `<p class="note">–</p>`;
+  $("sums").hidden = true;
 }
 
 function loadReadings() {
@@ -40,6 +45,11 @@ function stepHTML(i, label, formula, sub, why) {
          (why ? `<div class="why">${why}</div>` : "") + `</div>`;
 }
 
+function phaseHTML(tag, title, sub, first) {
+  return `<div class="phase${first ? " first" : ""}"><span class="phase-tag">${tag}</span>` +
+         `<div><b>${title}</b><small>${sub}</small></div></div>`;
+}
+
 const sgn = (v, d = 3) => (v >= 0 ? "+" : "−") + Math.abs(v).toFixed(d);
 const signed2 = v => (v < 0 ? "−" : "") + Math.abs(v).toFixed(2);
 
@@ -47,73 +57,98 @@ function render(pred, points) {
   const w = pred.work;
   const pair = points[points.length - 1];
 
+  $("working").className = "";
+  $("sums").hidden = false;
   $("stat-n").textContent = `${w.n}`;
   $("stat-last").textContent = `${fmt(w.yLast, 2)} m`;
   $("stat-h").textContent = `${horizon} min`;
   $("stat-pred").textContent = `${fmt(pred.predicted, 2)} m`;
 
   const out = [];
-  out.push(stepHTML(1, "Wave height for one 2-minute window",
-    `H = highest − lowest`,
+
+  /* -------------------------------------------------- A. paper formula */
+  out.push(phaseHTML("A", "Pressure → wave height", "Paper · pressure-derived estimate", true));
+
+  out.push(stepHTML(1, "Pressure change at the sensor",
+    `ΔP<sub>i</sub> = P<sub>i</sub> − P<sub>base</sub>`,
+    `P<sub>i</sub> = pressure at sample i · P<sub>base</sub> = still-water baseline at the fixed depth`,
+    "The transmitter stays submerged at one depth, so the change against the pre-window baseline isolates the wave signal."));
+
+  out.push(stepHTML(2, "Pressure change → water-level displacement",
+    `η<sub>i</sub> = ΔP<sub>i</sub> / (ρg)`,
+    `ρ = adopted seawater density · g = 9.81 m/s²`,
+    "Hydrostatic relation: pressure change divided by the weight density ρg gives the equivalent water-level change in metres."));
+
+  out.push(stepHTML(3, "Wave height for one 2-minute window",
+    `H<sub>est</sub> = max(η<sub>i</sub>) − min(η<sub>i</sub>)`,
     pair && pair.lo != null
       ? `latest pair: H = ${signed2(pair.hi)} − ${pair.lo < 0 ? `(${signed2(pair.lo)})` : signed2(pair.lo)} = <b>${pair.v.toFixed(3)} m</b>`
       : `latest reading: H = <b>${w.yLast.toFixed(3)} m</b>`,
-    "The buoy sends only the lowest and highest water level in the window; their difference is the pressure-derived estimate used by the model."));
+    "The paper takes the highest minus the lowest displacement in the window. The console starts at this line: you type those two η values, so H = highest − lowest."));
 
-  out.push(stepHTML(2, "Window of readings",
+  out.push(`<p class="bridge">The console starts at <b>step 3</b> — every pair you add is already the
+    lowest / highest η of one 2-minute record. Steps 1–2 are how the pressure sensor produces those values.
+    The forecast below is the paper's <b>damped linear-trend baseline</b>, the comparison method — not the
+    trained AI model.</p>`);
+
+  /* ------------------------------------------- B. damped trend baseline */
+  out.push(phaseHTML("B", "Wave height → 15-minute forecast", "Damped linear-trend baseline · v1.0-demo", false));
+
+  out.push(stepHTML(4, "Window of readings",
     `n = min(history, ${WINDOW})`,
     `n = <b>${w.n}</b> readings · one every ${SAMPLE_LABEL} · span ` +
       `${Math.round((w.endT - w.startT) / 60)} min ` +
       `(${clockLabel(w.startT)} → ${clockLabel(w.endT)})`,
     "Only the newest readings are used, so the trend describes the sea now."));
 
-  out.push(stepHTML(3, "Means of the window",
+  out.push(stepHTML(5, "Means of the window",
     `x̄ = Σx / n &nbsp;·&nbsp; ȳ = Σy / n`,
     `x̄ = ${grp(w.sumX)} / ${w.n} = <b>${w.mx.toFixed(2)} min</b> · ` +
       `ȳ = ${w.sumY.toFixed(3)} / ${w.n} = <b>${w.my.toFixed(3)} m</b>`));
 
-  out.push(stepHTML(4, "Slope of the trend (least squares)",
-    `m = Σ(xᵢ − x̄)(yᵢ − ȳ) / Σ(xᵢ − x̄)²`,
+  out.push(stepHTML(6, "Slope of the trend (least squares)",
+    `m = Σ(x<sub>i</sub> − x̄)(y<sub>i</sub> − ȳ) / Σ(x<sub>i</sub> − x̄)²`,
     `m = ${w.num.toFixed(3)} / ${grp(w.den)} = <b>${w.slope.toFixed(4)} m/min</b>`,
     "This is the straight line that sits closest to all the readings — the current rise or fall."));
 
-  out.push(stepHTML(5, "Look-ahead time",
+  out.push(stepHTML(7, "Look-ahead time",
     `T = horizon`,
     `T = <b>${horizon} min</b>`));
 
-  out.push(stepHTML(6, "Damping factor",
-    `d = 1 / (1 + T / 5)      (5 min = 300 s)`,
-    `d = 1 / (1 + ${horizon}/5) = 1 / ${(1 + horizon / 5).toFixed(2)} = <b>${w.damping.toFixed(3)}</b>`,
-    "The further ahead we look, the less the model trusts today's trend."));
+  out.push(stepHTML(8, "Damping factor",
+    `d = 1 / (1 + T / 5)`,
+    `d = 1 / (1 + ${horizon}/5) = 1 / ${(1 + horizon / 5).toFixed(2)} = <b>${w.damping.toFixed(3)}</b> ` +
+      `· damping constant = 5 min`,
+    "The further ahead we look, the less the baseline trusts today's trend."));
 
-  out.push(stepHTML(7, "Raw projection",
+  out.push(stepHTML(9, "Raw projection",
     `ŷ_raw = y_last + m · T · d`,
     `ŷ_raw = ${w.yLast.toFixed(3)} + ${w.slope.toFixed(4)} × ${horizon} × ${w.damping.toFixed(3)} ` +
       `= <b>${w.raw.toFixed(3)} m</b>`));
 
-  out.push(stepHTML(8, "Change limit",
+  out.push(stepHTML(10, "Change limit",
     `L = max(0.08, 0.35 · y_last) · (horizon / 15)^0.7`,
     `L = max(0.08, 0.35 × ${w.yLast.toFixed(3)}) × (${horizon}/15)^0.7 = <b>${w.maxChange.toFixed(3)} m</b> ` +
       `→ allowed ${w.lo.toFixed(3)} … ${w.hi.toFixed(3)} m`,
     "A hard guard: one forecast may not jump further than this, even when the fit is noisy."));
 
-  out.push(stepHTML(9, "Final forecast",
+  out.push(stepHTML(11, "Final forecast",
     `ŷ = clamp(ŷ_raw, y_last − L, y_last + L, 0, 15)`,
     `ŷ = clamp(${w.raw.toFixed(3)}, ${w.lo.toFixed(3)}, ${w.hi.toFixed(3)}) = ` +
       `<b>${pred.predicted.toFixed(3)} m</b> ` +
       (pred.limited ? `<span style="color:#ff9c9c">← limit applied</span>` : `← inside the limit`)));
 
-  out.push(stepHTML(10, "Spread of the readings",
-    `σ = √( Σ(yᵢ − (ȳ + m(xᵢ − x̄)))² / n )`,
+  out.push(stepHTML(12, "Spread of the readings",
+    `σ = √( Σ(y<sub>i</sub> − (ȳ + m(x<sub>i</sub> − x̄)))² / n )`,
     `σ = √(${w.ssResid.toFixed(4)} / ${w.n}) = <b>${w.vol.toFixed(4)} m</b>`,
     "How far the readings sit off the fitted line — a small σ means a steady, well-behaved sea."));
 
-  out.push(stepHTML(11, "Confidence",
+  out.push(stepHTML(13, "Confidence",
     `c = 94 − (σ / max(ȳ, 0.1)) · 60 − 0.8 · horizon`,
     `c = 94 − (${w.vol.toFixed(4)} / ${Math.max(w.my, 0.1).toFixed(3)}) × 60 − 0.8 × ${horizon} ` +
       `= ${w.confidenceRaw.toFixed(1)} → <b>${w.confidence}%</b> (clamped to 35–94%)`));
 
-  out.push(stepHTML(12, "Sea condition",
+  out.push(stepHTML(14, "Sea condition",
     `CALM if ŷ &lt; 0.6 · MODERATE if 0.6 ≤ ŷ &lt; 2.5 · ROUGH if ŷ ≥ 2.5`,
     `ŷ = ${pred.predicted.toFixed(2)} m → <b>${classify(pred.predicted)}</b>`));
 
@@ -134,12 +169,12 @@ function render(pred, points) {
           `<td>${w.num.toFixed(2)}</td><td>${grp(w.den)}</td></tr>`;
 
   $("sampleTable").innerHTML = `<table>
-      <thead><tr><th>time</th><th>y (m)</th><th>x−x̄</th><th>y−ȳ</th><th>(x−x̄)(y−ȳ)</th><th>(x−x̄)²</th></tr></thead>
+      <thead><tr><th>time</th><th>y (m)</th><th>dx</th><th>dy</th><th>dx·dy</th><th>dx²</th></tr></thead>
       <tbody>${rows}</tbody>
     </table>
     <p class="note">${picks.length} of ${n} readings are listed; the sums run over all of them. x is in
-    minutes and y in metres, with <b>y = H = highest − lowest</b> for each 2-minute window. The bottom row
-    is the total that feeds the slope in step 4.</p>`;
+    minutes and y in metres, with <b>y = H<sub>est</sub> = highest − lowest</b>. Here
+    <b>dx = x − x̄</b> and <b>dy = y − ȳ</b>. The bottom row is the total that feeds the slope in step 6.</p>`;
 }
 
 window.addEventListener("storage", e => {

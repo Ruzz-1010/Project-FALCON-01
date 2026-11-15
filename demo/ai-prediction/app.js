@@ -1,30 +1,33 @@
-/* FALCON-01 — simple wave forecast dashboard
+/* FALCON-01 — wave forecast console
  *
  * Nothing runs on a timer. A reading is added only when the user sends a
  * lowest / highest pair. The wave height is the paper's estimate:
  *
- *     H = highest - lowest
+ *     H_est = max(eta) - min(eta) = highest - lowest
  *
- * The forecast itself is the shared damped-linear-trend baseline in model.js.
+ * The forecast itself is the shared damped-linear-trend baseline in model.js,
+ * the paper's comparison method (not the trained AI model).
  */
 "use strict";
 
 const state = {
   history: [],   // {t, v, lo, hi} — t in seconds, v = H = hi - lo
   pending: [],   // forecasts waiting for their 15-minute check
-  errors: [],    // completed checks, newest first
+  checks: [],    // completed checks, newest first
 };
 
 const $ = id => document.getElementById(id);
 const MIN_READINGS = 8;
 const HORIZON_MIN = 15;
-const MAX_H = 15;
+const MAX_LEVEL = 15;
+
+let shownForecast = null;
 
 /* --------------------------------------------------------------- readings */
 function addReading(lo, hi) {
   const last = state.history[state.history.length - 1];
   const t = last ? last.t + SAMPLE_INTERVAL_S : 0;
-  const v = Math.max(0, Math.min(MAX_H, hi - lo));
+  const v = Math.max(0, Math.min(MAX_LEVEL, hi - lo));
 
   state.history.push({ t, v, lo, hi });
   if (state.history.length > 600) state.history.shift();
@@ -34,13 +37,13 @@ function addReading(lo, hi) {
     const p = state.pending[i];
     if (p.targetT > t) continue;
     state.pending.splice(i, 1);
-    state.errors.unshift({
+    state.checks.unshift({
       ...p,
       actualT: t,
       actual: v,
       error: Math.abs(p.predicted - v),
     });
-    if (state.errors.length > 5) state.errors.pop();
+    if (state.checks.length > 5) state.checks.pop();
   }
 
   /* Only start forecasting once the short history exists. */
@@ -78,7 +81,7 @@ function currentPrediction() {
   };
 }
 
-function readingsUntilFirstCheck() {
+function readingsUntilNextCheck() {
   const last = state.history[state.history.length - 1];
   const first = state.pending[0];
   if (!last || !first) return 0;
@@ -88,6 +91,27 @@ function readingsUntilFirstCheck() {
 /* ------------------------------------------------------------------ chart */
 const canvas = $("chart");
 const ctx = canvas.getContext("2d");
+
+const C = {
+  grid: "rgba(160,196,205,.10)",
+  gridBase: "rgba(160,196,205,.22)",
+  axisInk: "#5b707a",
+  axisInkSoft: "#8298a2",
+  reading: "#63a9b2",
+  readingDot: "#8fd3d9",
+  forecast: "#c39b5f",
+  forecastInk: "#e2c79a",
+  actual: "#7fbf96",
+  now: "rgba(99,169,178,.45)",
+  target: "rgba(195,155,95,.4)",
+};
+
+function niceStep(value) {
+  const pow = Math.pow(10, Math.floor(Math.log10(value)));
+  const norm = value / pow;
+  const mult = norm <= 1 ? 1 : norm <= 2 ? 2 : norm <= 5 ? 5 : 10;
+  return mult * pow;
+}
 
 function resize() {
   const dpr = Math.min(2, window.devicePixelRatio || 1);
@@ -101,17 +125,10 @@ window.addEventListener("resize", () => { resize(); draw(); });
 function draw() {
   const W = canvas.clientWidth, H = canvas.clientHeight;
   if (!W || !H) return;
-  const padL = 44, padR = 64, padT = 18, padB = 32;
+  const padL = 42, padR = 62, padT = 18, padB = 32;
   ctx.clearRect(0, 0, W, H);
 
-  if (!state.history.length) {
-    ctx.fillStyle = "#7f9aab";
-    ctx.font = "14px system-ui, sans-serif";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText("Add your first reading to start the chart.", W / 2, H / 2);
-    return;
-  }
+  if (!state.history.length) return;
 
   const points = state.history.slice(-WINDOW);
   const firstT = points[0].t;
@@ -120,78 +137,106 @@ function draw() {
   const span = Math.max(1, targetT - firstT);
 
   const pred = currentPrediction();
-  const shownErrors = state.errors.slice(0, 2);
+  const shownChecks = state.checks.slice(0, 2);
 
-  let maxV = 0.8;
+  let maxV = 0;
   for (const p of points) maxV = Math.max(maxV, p.v);
   if (pred) maxV = Math.max(maxV, pred.predicted);
-  for (const e of shownErrors) maxV = Math.max(maxV, e.predicted, e.actual);
-  const yMax = Math.max(0.8, Math.ceil(maxV * 1.15 * 10) / 10);
+  for (const c of shownChecks) maxV = Math.max(maxV, c.predicted, c.actual);
+
+  const targetMax = Math.max(0.6, maxV * 1.12);
+  const step = niceStep(targetMax / 5);
+  const intervals = Math.ceil(targetMax / step);
+  const yMax = step * intervals;
+  const tickDigits = step < 1 ? 1 : 0;
 
   const X = t => padL + (t - firstT) / span * (W - padL - padR);
   const Y = v => H - padB - (v / yMax) * (H - padT - padB);
 
   /* horizontal grid and height labels */
-  ctx.font = "11.5px ui-monospace, monospace";
+  ctx.font = "10.5px 'IBM Plex Mono', ui-monospace, monospace";
   ctx.textBaseline = "middle";
-  for (let i = 0; i <= 3; i++) {
-    const v = yMax * i / 3, y = Y(v);
-    ctx.strokeStyle = i === 0 ? "#1d4051" : "#122c39";
+  for (let i = 0; i <= intervals; i++) {
+    const v = step * i, y = Y(v);
+    ctx.strokeStyle = i === 0 ? C.gridBase : C.grid;
+    ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(W - padR, y); ctx.stroke();
-    ctx.fillStyle = "#5f7f90"; ctx.textAlign = "right";
-    ctx.fillText(v.toFixed(1), padL - 8, y);
+    ctx.fillStyle = C.axisInk; ctx.textAlign = "right";
+    ctx.fillText(v.toFixed(tickDigits), padL - 8, y);
   }
+  ctx.textAlign = "left";
+  ctx.textBaseline = "top";
+  ctx.fillStyle = C.axisInk;
+  ctx.fillText("m", 10, 1);
 
   /* time markers: now and the forecast target */
-  ctx.textBaseline = "top";
-  for (const [t, label, strong] of [[now, "now", true], [targetT, `+${HORIZON_MIN} min`, false]]) {
+  const marker = (t, label, strong) => {
     const x = X(t);
-    ctx.strokeStyle = strong ? "#2f6a82" : "#3b5563";
+    ctx.strokeStyle = strong ? C.now : C.target;
     ctx.setLineDash(strong ? [] : [3, 4]);
     ctx.beginPath(); ctx.moveTo(x, padT); ctx.lineTo(x, H - padB); ctx.stroke();
     ctx.setLineDash([]);
-    ctx.fillStyle = strong ? "#8fb8cc" : "#ffb98a";
+    ctx.fillStyle = strong ? C.axisInkSoft : C.forecast;
     ctx.textAlign = "center";
-    ctx.fillText(label, x, H - padB + 9);
-  }
+    ctx.fillText(label, Math.min(Math.max(x, padL + 16), W - padR + 16), H - padB + 9);
+  };
+  marker(now, "now", true);
+  if (pred) marker(targetT, `+${HORIZON_MIN} min`, false);
 
   /* measured readings */
   if (points.length > 1) {
-    ctx.strokeStyle = "#5aa9c8";
-    ctx.lineWidth = 2;
+    const grad = ctx.createLinearGradient(0, padT, 0, H - padB);
+    grad.addColorStop(0, "rgba(99,169,178,.22)");
+    grad.addColorStop(1, "rgba(99,169,178,0)");
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    points.forEach((p, i) => {
+      const x = X(p.t), y = Y(p.v);
+      i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+    });
+    ctx.lineTo(X(now), H - padB);
+    ctx.lineTo(X(firstT), H - padB);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.strokeStyle = C.reading;
+    ctx.lineWidth = 1.8;
     ctx.beginPath();
     points.forEach((p, i) => i ? ctx.lineTo(X(p.t), Y(p.v)) : ctx.moveTo(X(p.t), Y(p.v)));
     ctx.stroke();
   }
-  ctx.fillStyle = "#7fc3dc";
+  ctx.fillStyle = C.readingDot;
   for (const p of points) {
-    ctx.beginPath(); ctx.arc(X(p.t), Y(p.v), 2.6, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(X(p.t), Y(p.v), 2.5, 0, Math.PI * 2); ctx.fill();
   }
   ctx.lineWidth = 1;
 
   /* forecasts that have already been checked */
-  for (const e of shownErrors) {
-    const x = X(e.actualT);
-    ctx.strokeStyle = "rgba(78,224,160,0.6)";
+  for (const c of shownChecks) {
+    const x = X(c.actualT);
+    ctx.strokeStyle = "rgba(127,191,150,.55)";
     ctx.lineWidth = 2;
-    ctx.beginPath(); ctx.moveTo(x, Y(e.predicted)); ctx.lineTo(x, Y(e.actual)); ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(X(c.targetT), Y(c.predicted));
+    ctx.lineTo(x, Y(c.actual));
+    ctx.stroke();
     ctx.lineWidth = 1;
 
-    ctx.fillStyle = "#ffb98a";
-    ctx.beginPath(); ctx.arc(X(e.targetT), Y(e.predicted), 3.2, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = C.forecast;
+    ctx.beginPath(); ctx.arc(X(c.targetT), Y(c.predicted), 3, 0, Math.PI * 2); ctx.fill();
 
-    ctx.fillStyle = "#4ee0a0";
-    ctx.strokeStyle = "#061620";
+    ctx.fillStyle = C.actual;
+    ctx.strokeStyle = "#08131a";
     ctx.lineWidth = 2;
-    ctx.beginPath(); ctx.arc(x, Y(e.actual), 5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.arc(x, Y(c.actual), 4.6, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
     ctx.lineWidth = 1;
   }
 
   /* live forecast */
   if (pred) {
-    ctx.strokeStyle = "#ff8a3d";
-    ctx.lineWidth = 2.5;
-    ctx.setLineDash([7, 4]);
+    ctx.strokeStyle = C.forecast;
+    ctx.lineWidth = 2;
+    ctx.setLineDash([6, 4]);
     ctx.beginPath();
     ctx.moveTo(X(now), Y(pred.points[pred.points.length - 1].v));
     ctx.lineTo(X(targetT), Y(pred.predicted));
@@ -199,33 +244,126 @@ function draw() {
     ctx.setLineDash([]);
     ctx.lineWidth = 1;
 
-    ctx.fillStyle = "#ff8a3d";
-    ctx.beginPath(); ctx.arc(X(targetT), Y(pred.predicted), 4.5, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = C.forecast;
+    ctx.beginPath(); ctx.arc(X(targetT), Y(pred.predicted), 4, 0, Math.PI * 2); ctx.fill();
 
-    ctx.fillStyle = "#ffd0a8";
+    ctx.fillStyle = C.forecastInk;
     ctx.textAlign = "left";
     ctx.textBaseline = "middle";
-    ctx.font = "600 13px ui-monospace, monospace";
-    ctx.fillText(fmt(pred.predicted, 2) + " m", X(targetT) + 9, Y(pred.predicted));
+    ctx.font = "600 12.5px 'IBM Plex Mono', ui-monospace, monospace";
+    ctx.fillText(fmt(pred.predicted, 2) + " m", X(targetT) + 8, Y(pred.predicted));
   }
 }
 
 /* -------------------------------------------------------------------- UI */
 function renderProgress(count) {
-  $("dots").innerHTML = Array.from({ length: MIN_READINGS }, (_, i) =>
-    `<i class="${i < count ? (count >= MIN_READINGS ? "all" : "on") : ""}"></i>`).join("");
+  const filled = Math.min(count, MIN_READINGS);
+  $("dots").innerHTML = Array.from({ length: MIN_READINGS }, (_, i) => {
+    const on = i < filled;
+    const cls = on ? (count >= MIN_READINGS ? "all" : "on") : "";
+    return `<i class="${cls}"></i>`;
+  }).join("");
 
-  const shown = Math.min(count, MIN_READINGS);
+  $("progressCount").textContent = `${filled} / ${MIN_READINGS}`;
+
   let text;
-  if (count === 0) text = `0 of ${MIN_READINGS} readings — add one to begin`;
+  if (count === 0) text = "Add one reading to begin";
   else if (count < MIN_READINGS) {
     const left = MIN_READINGS - count;
-    text = `${shown} of ${MIN_READINGS} readings — ${left} more to unlock`;
+    text = `${count} of ${MIN_READINGS} readings — ${left} more to unlock`;
   } else {
-    text = `${MIN_READINGS} of ${MIN_READINGS} readings — forecast unlocked ✓`;
+    const next = readingsUntilNextCheck();
+    text = next
+      ? `Forecast unlocked — next check in ${next} reading${next === 1 ? "" : "s"}`
+      : "Forecast unlocked — add readings to check it";
   }
-  $("progressText").textContent = text;
-  $("progressText").classList.toggle("done", count >= MIN_READINGS);
+  const el = $("progressText");
+  el.textContent = text;
+  el.classList.toggle("done", count >= MIN_READINGS);
+}
+
+function updateForecast(pred, last) {
+  const locked = !pred;
+  $("forecastLocked").hidden = !locked;
+  $("forecastLive").hidden = locked;
+  $("condition").hidden = locked;
+  $("trendNote").hidden = locked;
+
+  if (locked) {
+    const need = Math.max(0, MIN_READINGS - state.history.length);
+    $("lockRemaining").textContent = String(need);
+    return;
+  }
+
+  const value = fmt(pred.predicted, 2);
+  if (value !== shownForecast) {
+    const el = $("forecast");
+    el.firstElementChild.textContent = value;
+    el.classList.remove("bump");
+    void el.offsetWidth;
+    el.classList.add("bump");
+    shownForecast = value;
+  }
+
+  const cls = classify(pred.predicted);
+  $("condition").textContent = cls;
+  $("condition").className = "condition " + cls;
+
+  const delta = pred.predicted - last.v;
+  const trend = $("trendNote");
+  if (delta > 0.02) {
+    trend.textContent = "Rising";
+    trend.className = "trend rising";
+  } else if (delta < -0.02) {
+    trend.textContent = "Falling";
+    trend.className = "trend falling";
+  } else {
+    trend.textContent = "Steady";
+    trend.className = "trend steady";
+  }
+
+  $("forecastNote").innerHTML = `Trend baseline · <b>${pred.work.n}</b> readings · ${HORIZON_MIN} min ahead`;
+}
+
+function updateScore(pred) {
+  const has = state.checks.length > 0;
+  $("scoreEmpty").hidden = has;
+  $("scoreBody").hidden = !has;
+
+  if (!has) {
+    if (pred) {
+      const next = readingsUntilNextCheck();
+      $("scoreEmptyNote").textContent =
+        `First check in ${next} more reading${next === 1 ? "" : "s"}.`;
+    } else {
+      $("scoreEmptyNote").textContent =
+        "A forecast is checked by the reading at +15 minutes.";
+    }
+    return;
+  }
+
+  const latest = state.checks[0];
+  const n = state.checks.length;
+  const mae = state.checks.reduce((a, c) => a + c.error, 0) / n;
+
+  $("scoreValue").textContent = fmt(latest.error, 2);
+  $("scoreForecast").textContent = `${fmt(latest.predicted, 2)} m`;
+  $("scoreActual").textContent = `${fmt(latest.actual, 2)} m`;
+  $("scoreAvg").textContent =
+    `MAE ${fmt(mae, 2)} m over ${n} check${n === 1 ? "" : "s"}.`;
+}
+
+function updateReadouts() {
+  const last = state.history[state.history.length - 1];
+  if (last) {
+    $("reading").innerHTML = `${fmt(last.v, 2)}<small>m</small>`;
+    $("readingPair").innerHTML = `${fmt(last.lo, 2)} / ${fmt(last.hi, 2)}<small>m</small>`;
+    $("readingCount").textContent = String(state.history.length);
+  } else {
+    $("reading").textContent = "—";
+    $("readingPair").textContent = "—";
+    $("readingCount").textContent = "0";
+  }
 }
 
 function updateUI() {
@@ -233,56 +371,11 @@ function updateUI() {
   const last = state.history[state.history.length - 1];
   const count = state.history.length;
 
-  if (last) {
-    $("reading").innerHTML = `${fmt(last.v, 2)}<small>m</small>`;
-    $("readingNote").innerHTML =
-      `Reading ${count} · lowest <b>${fmt(last.lo, 2)} m</b> · ` +
-      `highest <b>${fmt(last.hi, 2)} m</b>`;
-  } else {
-    $("reading").textContent = "–";
-    $("readingNote").textContent = "No readings yet.";
-  }
-
-  if (pred) {
-    const cls = classify(pred.predicted);
-    $("forecast").innerHTML = `${fmt(pred.predicted, 2)}<small>m</small>`;
-    $("condition").hidden = false;
-    $("condition").textContent = cls;
-    $("condition").className = "pill " + cls;
-    $("forecastNote").innerHTML = `Based on <b>${pred.work.n}</b> readings.`;
-  } else {
-    $("forecast").textContent = "–";
-    $("condition").hidden = true;
-    const need = Math.max(0, MIN_READINGS - count);
-    $("forecastNote").textContent = `Locked — ${need} more reading${need === 1 ? "" : "s"} needed.`;
-  }
-
+  $("chartEmpty").hidden = count > 0;
   renderProgress(count);
-
-  const tbody = $("errors");
-  if (!state.errors.length) {
-    $("scoreBody").hidden = true;
-    $("verdict").textContent = pred
-      ? `No check yet. The first check appears after about ${readingsUntilFirstCheck()} more readings.`
-      : "No checks yet. A forecast is checked when the reading 15 minutes later arrives.";
-  } else {
-    $("scoreBody").hidden = false;
-    const latest = state.errors[0];
-    $("verdict").innerHTML =
-      `The forecast said <b>${fmt(latest.predicted, 2)} m</b>. ` +
-      `The reading 15 minutes later was <b>${fmt(latest.actual, 2)} m</b>. ` +
-      `Off by: <b>${fmt(latest.error, 2)} m</b>.`;
-
-    tbody.innerHTML = state.errors.map(e =>
-      `<tr><td>${fmt(e.predicted, 2)} m</td>` +
-      `<td>${fmt(e.actual, 2)} m</td>` +
-      `<td>${fmt(e.error, 2)} m</td></tr>`).join("");
-
-    const n = state.errors.length;
-    const mae = state.errors.reduce((a, e) => a + e.error, 0) / n;
-    $("avg").innerHTML =
-      `Average miss: <b>${mae.toFixed(2)} m</b> over ${n} check${n === 1 ? "" : "s"}.`;
-  }
+  updateForecast(pred, last);
+  updateReadouts();
+  updateScore(pred);
 }
 
 function render() {
@@ -302,6 +395,7 @@ function readPair() {
   if (!filled) message = "Enter both water levels.";
   else if (!Number.isFinite(lo) || !Number.isFinite(hi)) message = "Enter a number in both boxes.";
   else if (lo < 0 || hi < 0) message = "Water levels cannot be negative here.";
+  else if (hi > MAX_LEVEL || lo > MAX_LEVEL) message = `Keep both levels at ${MAX_LEVEL} m or below.`;
   else if (hi < lo) message = "Highest must be at least the lowest.";
 
   return { lo, hi, valid: !message, h: Math.max(0, hi - lo), message };
@@ -309,15 +403,20 @@ function readPair() {
 
 function updatePairPreview() {
   const p = readPair();
-  $("pairHeight").textContent = p.valid ? p.h.toFixed(2) : "–";
+  $("pairHeight").textContent = p.valid ? p.h.toFixed(2) : "—";
   $("pairError").textContent = p.message;
   $("pairError").hidden = p.valid;
   $("sendReading").disabled = !p.valid;
 }
 
-$("sendReading").addEventListener("click", () => {
+$("readingForm").addEventListener("submit", e => {
+  e.preventDefault();
   const p = readPair();
-  if (!p.valid) return;
+  if (!p.valid) {
+    updatePairPreview();
+    $("minValue").focus();
+    return;
+  }
   addReading(p.lo, p.hi);
 });
 
@@ -337,18 +436,12 @@ document.querySelectorAll(".preset").forEach(btn => {
 
 $("minValue").addEventListener("input", updatePairPreview);
 $("maxValue").addEventListener("input", updatePairPreview);
-for (const id of ["minValue", "maxValue"]) {
-  $(id).addEventListener("keydown", e => {
-    if (e.key !== "Enter") return;
-    e.preventDefault();
-    $("sendReading").click();
-  });
-}
 
 $("reset").addEventListener("click", () => {
   state.history.length = 0;
   state.pending.length = 0;
-  state.errors.length = 0;
+  state.checks.length = 0;
+  shownForecast = null;
   $("minValue").value = "0.10";
   $("maxValue").value = "0.50";
   updatePairPreview();
@@ -360,3 +453,6 @@ $("reset").addEventListener("click", () => {
 resize();
 updatePairPreview();
 render();
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(() => { resize(); draw(); });
+}
