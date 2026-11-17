@@ -8,7 +8,7 @@
  */
 
 const MODEL_NAME = "wave-short-term";
-const MODEL_VERSION = "1.0.0-demo";
+const MODEL_VERSION = "1.1.0-demo";
 const SAMPLE_INTERVAL_S = 120;   // one buoy reading every 2 minutes
 const WINDOW = 30;               // readings used for the fit (1 hour)
 const SAMPLE_LABEL = "2 min";

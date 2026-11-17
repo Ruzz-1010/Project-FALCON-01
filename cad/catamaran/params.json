@@ -1,0 +1,108 @@
+{
+  "_comment": "FALCON Option B (catamaran) parametric design baseline, revision 4. First-pass analysis only - not a fabrication drawing.",
+  "revision": "2026-11-09",
+  "option": "B - catamaran (twin hull), 12-inch hulls, GRP deck",
+  "geometry": {
+    "pontoon_diameter_m": 0.324,
+    "pontoon_length_m": 2.2,
+    "pontoon_beam_m": 0.95,
+    "deck_length_m": 1.7,
+    "deck_width_m": 1.32,
+    "deck_thickness_m": 0.006,
+    "deck_top_above_waterline_m": 0.345,
+    "electronics_tube_diameter_m": 0.42,
+    "electronics_tube_height_m": 0.36,
+    "enclosure_wall_m": 0.008,
+    "battery_pack_count": 4,
+    "battery_pack_length_m": 0.15,
+    "battery_pack_width_m": 0.1,
+    "battery_pack_height_m": 0.065,
+    "solar_panel_rows": 2,
+    "solar_panel_cols": 3,
+    "solar_panel_cell_width_m": 0.15,
+    "solar_panel_cell_depth_m": 0.15,
+    "solar_panel_gap_m": 0.012,
+    "solar_panel_thickness_m": 0.01,
+    "solar_panel_tilt_deg": -10.0,
+    "solar_frame_height_above_waterline_m": 0.83,
+    "mast_height_m": 0.62,
+    "mast_x_offset_m": -0.5,
+    "gps_post_height_m": 0.24,
+    "mooring_depth_m": 2.0,
+    "mooring_line_diameter_m": 0.018,
+    "anchor_block_length_m": 0.36,
+    "anchor_block_width_m": 0.26,
+    "anchor_block_height_m": 0.2,
+    "transmitter_riser_height_m": 0.2,
+    "transmitter_body_height_m": 0.2,
+    "transmitter_body_diameter_m": 0.076,
+    "transmitter_cable_diameter_m": 0.01
+  },
+  "environment": {
+    "water_density_kg_m3": 1025.0,
+    "water_type": "seawater"
+  },
+  "mass_budget": [
+    {
+      "item": "2x 12-inch uPVC pontoon, 324 x 2200 mm, capped",
+      "mass_kg": 71.7,
+      "height_above_waterline_m": 0.04
+    },
+    {
+      "item": "Deck, moulded GRP sandwich, 6 mm, 1700 x 1320",
+      "mass_kg": 12.0,
+      "height_above_waterline_m": 0.3
+    },
+    {
+      "item": "2 deck cross beams + 4 pontoon saddles",
+      "mass_kg": 6.0,
+      "height_above_waterline_m": 0.27
+    },
+    {
+      "item": "Dry enclosure tube, top cover, bulkhead, hatch, glands, desiccant",
+      "mass_kg": 4.8,
+      "height_above_waterline_m": 0.4
+    },
+    {
+      "item": "LiFePO4 12.8 V 40 Ah (4x 10 Ah pack) + BMS + fuse",
+      "mass_kg": 4.5,
+      "height_above_waterline_m": 0.4
+    },
+    {
+      "item": "ESP32 + ADS1115 + INA260 + LTE + SD + terminal blocks + tray",
+      "mass_kg": 1.2,
+      "height_above_waterline_m": 0.48
+    },
+    {
+      "item": "MPPT charge controller + regulators",
+      "mass_kg": 0.5,
+      "height_above_waterline_m": 0.45
+    },
+    {
+      "item": "6x 3 W panel (3S2P) + frame",
+      "mass_kg": 2.6,
+      "height_above_waterline_m": 0.5
+    },
+    {
+      "item": "Mast, wind sensor set, GNSS, LTE antenna, beacon",
+      "mass_kg": 2.8,
+      "height_above_waterline_m": 0.65
+    },
+    {
+      "item": "Fasteners, glands, cable, misc",
+      "mass_kg": 1.5,
+      "height_above_waterline_m": 0.28
+    },
+    {
+      "item": "Trim ballast, sealed low in pontoon bilge",
+      "mass_kg": 3.0,
+      "height_above_waterline_m": -0.09
+    },
+    {
+      "item": "Mooring vertical load, anchor + rope, taut worst case",
+      "mass_kg": 12.0,
+      "height_above_waterline_m": 0.34
+    }
+  ],
+  "_mass_note": "Estimated masses. The pressure transmitter hangs on the anchor, not on the buoy; only the mooring line tension is counted as buoy load. Replace with measured component masses before fabrication release."
+}

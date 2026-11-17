@@ -6,9 +6,10 @@ from datetime import datetime, timedelta
 from typing import Any
 
 
-SUPPORTED_HORIZONS = (5, 10, 15)
+SUPPORTED_HORIZONS = (15,)
 MODEL_NAME = "wave-short-term"
-MODEL_VERSION = "1.0.0-demo"
+MODEL_VERSION = "1.1.0-demo"
+SUMMARY_WINDOW_SECONDS = 120
 
 
 def _timestamp(record: dict[str, Any]) -> float:
@@ -20,6 +21,44 @@ def _wave(record: dict[str, Any]) -> float | None:
     return float(value) if isinstance(value, (int, float)) and not isinstance(value, bool) else None
 
 
+def summarize_wave_records(records: list[dict[str, Any]],
+                           window_seconds: int = SUMMARY_WINDOW_SECONDS) -> list[tuple[float, float]]:
+    """Return completed two-minute wave-height summaries for forecasting.
+
+    The edge service stores raw simulator or sensor telemetry more frequently
+    than the reporting interval.  Forecasting must not treat every raw frame as
+    a separate two-minute observation.  Inputs that are already spaced at least
+    one minute apart are treated as completed summary packets; faster streams
+    are averaged into complete, epoch-aligned two-minute windows.
+    """
+    ordered = sorted(((_timestamp(item), value) for item in records
+                      if (value := _wave(item)) is not None), key=lambda item: item[0])
+    if len(ordered) < 2:
+        return ordered
+
+    intervals = [ordered[index][0] - ordered[index - 1][0] for index in range(1, len(ordered))
+                 if ordered[index][0] > ordered[index - 1][0]]
+    median_interval = sorted(intervals)[len(intervals) // 2] if intervals else float(window_seconds)
+    if median_interval >= window_seconds / 2:
+        return ordered
+
+    buckets: dict[int, list[tuple[float, float]]] = {}
+    for timestamp, value in ordered:
+        bucket = math.floor(timestamp / window_seconds)
+        buckets.setdefault(bucket, []).append((timestamp, value))
+
+    expected_samples = max(2, round(window_seconds / max(median_interval, 0.001)))
+    minimum_samples = max(2, math.floor(expected_samples * 0.75))
+    summaries: list[tuple[float, float]] = []
+    for bucket in sorted(buckets):
+        samples = buckets[bucket]
+        if len(samples) < minimum_samples:
+            continue
+        bucket_end = (bucket + 1) * window_seconds
+        summaries.append((bucket_end, sum(value for _, value in samples) / len(samples)))
+    return summaries
+
+
 def classify_sea_condition(wave_height: float) -> str:
     if wave_height < 0.6:
         return "CALM"
@@ -28,7 +67,7 @@ def classify_sea_condition(wave_height: float) -> str:
     return "ROUGH"
 
 
-def _project(points: list[tuple[float, float]], horizon_minutes: int) -> tuple[float, int, dict[str, Any]]:
+def _project(points: list[tuple[float, float]], horizon_minutes: float) -> tuple[float, int, dict[str, Any]]:
     origin = points[0][0]
     xs = [timestamp - origin for timestamp, _ in points]
     ys = [value for _, value in points]
@@ -62,30 +101,18 @@ def _project(points: list[tuple[float, float]], horizon_minutes: int) -> tuple[f
 
 def _forecast_series(points: list[tuple[float, float]], horizon_minutes: int, endpoint: float,
                      confidence: int, generated: datetime) -> list[dict[str, Any]]:
-    """Build a transparent demo trajectory, anchored to the verified endpoint.
-
-    Recent detrended residuals supply the short wave-like variation. Their
-    influence decays to zero at the selected horizon, so the final series value
-    always equals the primary endpoint returned by ``_project``.
-    """
+    """Project each displayed lead time with the same transparent baseline."""
     current = round(points[-1][1], 2)
-    recent = [value for _, value in points[-24:]]
-    baseline_start = recent[0]
-    baseline_step = (recent[-1] - baseline_start) / max(1, len(recent) - 1)
-    residuals = [value - (baseline_start + baseline_step * index) for index, value in enumerate(recent)]
-    volatility = math.sqrt(sum(value * value for value in residuals) / max(1, len(residuals)))
+    _, _, endpoint_details = _project(points, horizon_minutes)
+    volatility = endpoint_details["residualVolatility"]
     steps = max(10, horizon_minutes * 2)
     series: list[dict[str, Any]] = []
     for index in range(steps + 1):
         progress = index / steps
-        eased = progress * progress * (3.0 - 2.0 * progress)
-        baseline = current + (endpoint - current) * eased
-        residual = residuals[index % len(residuals)] if residuals else 0.0
-        predicted = max(0.0, baseline + residual * (1.0 - progress) * math.sin(math.pi * progress))
+        lead_minutes = progress * horizon_minutes
+        predicted = current if index == 0 else _project(points, lead_minutes)[0]
         uncertainty = max(0.025, volatility * (0.7 + progress) + (100 - confidence) / 1000.0)
-        if index == 0:
-            predicted = current
-        elif index == steps:
+        if index == steps:
             predicted = endpoint
         series.append({
             "minutesAhead": round(progress * horizon_minutes, 2),
@@ -125,17 +152,19 @@ def _historical_prediction_series(points: list[tuple[float, float]]) -> list[dic
 def build_wave_prediction(records: list[dict[str, Any]], horizon_minutes: int = 15) -> dict[str, Any]:
     inference_started = time.perf_counter()
     if horizon_minutes not in SUPPORTED_HORIZONS:
-        raise ValueError("Unsupported horizon; use 5, 10, or 15 minutes")
+        raise ValueError("Unsupported horizon; Project FALCON uses a fixed 15-minute research horizon")
     ordered = sorted(records, key=_timestamp)
-    points = [(_timestamp(item), value) for item in ordered if (value := _wave(item)) is not None]
+    points = summarize_wave_records(ordered)
     generated = datetime.fromtimestamp(points[-1][0] if points else datetime.now().timestamp()).astimezone()
     source = str(ordered[-1].get("source", "sensor")) if ordered else "sensor"
     base = {
         "generatedAt": generated.isoformat(), "targetAt": None, "horizonMinutes": horizon_minutes,
         "currentWaveHeight": points[-1][1] if points else None, "predictedWaveHeight": None,
         "unit": "m", "change": None, "direction": None, "confidence": None,
-        "confidenceMeaning": "model quality indicator", "seaCondition": None,
+        "confidenceMeaning": "heuristic stability score; not validated forecast accuracy", "seaCondition": None,
         "model": MODEL_NAME, "modelVersion": MODEL_VERSION, "sampleCount": len(points),
+        "rawSampleCount": sum(1 for item in ordered if _wave(item) is not None),
+        "summaryWindowSeconds": SUMMARY_WINDOW_SECONDS,
         "lastTrainingDate": None, "inferenceTimeMs": None,
         "status": "UNAVAILABLE", "dataSource": source, "unavailableReason": "INSUFFICIENT_HISTORY",
         "forecastSeries": [],
@@ -158,7 +187,7 @@ def build_wave_prediction(records: list[dict[str, Any]], horizon_minutes: int = 
         "historicalPredictionSeries": _historical_prediction_series(points),
         "explanation": {
             "method": "damped linear trend over recent wave-height history",
-            "input": "calibrated wave-height estimates derived from underwater pressure variations",
+            "input": "completed two-minute pressure-derived wave-height summaries",
             "steps": ["validate wave samples", "fit recent linear trend", "project to selected horizon",
                       "dampen long-horizon movement", "apply short-horizon change limit", "classify sea condition"],
             "details": details,
@@ -178,26 +207,42 @@ def build_forecast(records: list[dict[str, Any]], horizons: tuple[int, ...] = SU
 
 
 def evaluate_forecast(records: list[dict[str, Any]]) -> dict[str, Any]:
-    """Small wave-only one-step backtest retained for transparent demo validation."""
-    ordered = sorted(records, key=_timestamp)
+    """Chronological 15-minute backtest against later two-minute summaries."""
+    points = summarize_wave_records(records)
     rows: list[dict[str, Any]] = []
-    for index in range(max(8, len(ordered) - 30), len(ordered)):
-        actual = _wave(ordered[index])
-        training = ordered[max(0, index - 20):index]
-        points = [(_timestamp(item), value) for item in training if (value := _wave(item)) is not None]
-        if actual is None or len(points) < 2:
-            continue
-        elapsed_minutes = max(0.01, (_timestamp(ordered[index]) - points[-1][0]) / 60)
-        predicted, confidence, _ = _project(points, min(15, max(5, round(elapsed_minutes))))
-        rows.append({"recordedAt": ordered[index]["recordedAt"], "predicted": round(predicted, 2),
-                     "actual": round(actual, 2), "error": round(abs(predicted - actual), 3), "confidence": confidence})
+    for origin_index in range(7, len(points)):
+        training = points[max(0, origin_index - 29):origin_index + 1]
+        target_time = training[-1][0] + 15 * 60
+        actual_row = next(((timestamp, value) for timestamp, value in points[origin_index + 1:]
+                           if timestamp >= target_time), None)
+        if actual_row is None:
+            break
+        actual_time, actual = actual_row
+        predicted, stability, _ = _project(training, 15)
+        persistence = training[-1][1]
+        error = predicted - actual
+        rows.append({
+            "generatedAt": datetime.fromtimestamp(training[-1][0]).astimezone().isoformat(),
+            "targetAt": datetime.fromtimestamp(target_time).astimezone().isoformat(),
+            "actualAt": datetime.fromtimestamp(actual_time).astimezone().isoformat(),
+            "predicted": round(predicted, 3), "persistence": round(persistence, 3),
+            "actual": round(actual, 3), "error": round(error, 3),
+            "absoluteError": round(abs(error), 3), "stabilityScore": stability,
+        })
     if not rows:
-        return {"status": "COLLECTING", "sampleCount": len(ordered), "overallScore": None,
+        return {"status": "COLLECTING", "sampleCount": len(points), "overallScore": None,
                 "metrics": {}, "comparisons": {}}
-    mae = sum(row["error"] for row in rows) / len(rows)
+    mae = sum(row["absoluteError"] for row in rows) / len(rows)
+    rmse = math.sqrt(sum(row["error"] ** 2 for row in rows) / len(rows))
+    bias = sum(row["error"] for row in rows) / len(rows)
+    persistence_mae = sum(abs(row["persistence"] - row["actual"]) for row in rows) / len(rows)
+    skill = None if persistence_mae == 0 else 1.0 - mae / persistence_mae
     score = round(max(0.0, 100.0 - mae / 0.5 * 100.0))
-    metric = {"label": "Wave height", "unit": "m", "mae": round(mae, 3), "score": score,
-              "evaluatedSamples": len(rows)}
-    return {"status": "READY", "sampleCount": len(ordered), "overallScore": score,
+    metric = {"label": "15-minute wave-height estimate", "unit": "m", "mae": round(mae, 3),
+              "rmse": round(rmse, 3), "bias": round(bias, 3),
+              "persistenceMae": round(persistence_mae, 3),
+              "skillVersusPersistence": None if skill is None else round(skill, 3),
+              "score": score, "evaluatedSamples": len(rows)}
+    return {"status": "READY", "sampleCount": len(points), "overallScore": score,
             "metrics": {"waveLevel": metric}, "comparisons": {"waveLevel": rows},
-            "method": "wave-only rolling backtest"}
+            "method": "chronological 15-minute rolling-origin backtest on two-minute summaries"}

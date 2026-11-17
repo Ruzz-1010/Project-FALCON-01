@@ -1,19 +1,22 @@
 import unittest
 from datetime import datetime, timedelta, timezone
 
-from falcon_edge.forecast import build_forecast, build_wave_prediction, classify_sea_condition, evaluate_forecast
+from falcon_edge.forecast import (
+    build_forecast, build_wave_prediction, classify_sea_condition,
+    evaluate_forecast, summarize_wave_records,
+)
 
 
 def records(count: int = 20):
     started = datetime(2026, 1, 1, tzinfo=timezone.utc)
-    return [{"recordedAt": (started + timedelta(seconds=index * 2)).isoformat(),
-             "source": "simulator", "waveLevel": 0.4 + index * 0.001} for index in range(count)]
+    return [{"recordedAt": (started + timedelta(minutes=index * 2)).isoformat(),
+             "source": "simulator", "waveLevel": 0.4 + index * 0.01} for index in range(count)]
 
 
 class ForecastTest(unittest.TestCase):
     def test_ai_history_covers_visible_wave_window(self):
         source = records(120)
-        series = build_wave_prediction(source, 10)["historicalPredictionSeries"]
+        series = build_wave_prediction(source, 15)["historicalPredictionSeries"]
         self.assertEqual(len(series), 60)
         self.assertEqual(
             [datetime.fromisoformat(row["at"]) for row in series],
@@ -21,27 +24,27 @@ class ForecastTest(unittest.TestCase):
         )
 
     def test_ai_history_preserves_warmup(self):
-        self.assertEqual(build_wave_prediction(records(8), 10)["historicalPredictionSeries"], [])
-        self.assertEqual(len(build_wave_prediction(records(10), 10)["historicalPredictionSeries"]), 2)
+        self.assertEqual(build_wave_prediction(records(8), 15)["historicalPredictionSeries"], [])
+        self.assertEqual(len(build_wave_prediction(records(10), 15)["historicalPredictionSeries"]), 2)
 
     def test_historical_estimate_does_not_use_target_or_future_readings(self):
         source = records(120)
-        original = build_wave_prediction(source, 10)["historicalPredictionSeries"][0]
+        original = build_wave_prediction(source, 15)["historicalPredictionSeries"][0]
         changed = [dict(row) for row in source]
         for row in changed[60:]:
             row["waveLevel"] = 3.0
-        updated = build_wave_prediction(changed, 10)["historicalPredictionSeries"][0]
+        updated = build_wave_prediction(changed, 15)["historicalPredictionSeries"][0]
         self.assertEqual(updated, original)
 
     def test_only_approved_horizons_are_returned(self):
         result = build_forecast(records())
-        self.assertEqual(set(result["horizons"]), {"5", "10", "15"})
+        self.assertEqual(set(result["horizons"]), {"15"})
         self.assertEqual(result["horizons"]["15"]["horizonMinutes"], 15)
-        self.assertNotIn("30", result["horizons"])
+        self.assertNotIn("10", result["horizons"])
 
-    def test_ten_minute_presentation_horizon(self):
-        result = build_wave_prediction(records(), 10)
-        self.assertEqual(result["horizonMinutes"], 10)
+    def test_fixed_fifteen_minute_research_horizon(self):
+        result = build_wave_prediction(records(), 15)
+        self.assertEqual(result["horizonMinutes"], 15)
         self.assertIsNone(result["lastTrainingDate"])
         self.assertIsInstance(result["inferenceTimeMs"], float)
         self.assertGreaterEqual(result["inferenceTimeMs"], 0)
@@ -64,12 +67,25 @@ class ForecastTest(unittest.TestCase):
 
     def test_invalid_horizon_is_rejected(self):
         with self.assertRaises(ValueError):
-            build_wave_prediction(records(), 30)
+            build_wave_prediction(records(), 10)
 
     def test_wave_only_backtest(self):
-        result = evaluate_forecast(records())
+        result = evaluate_forecast(records(30))
         self.assertEqual(set(result["metrics"]), {"waveLevel"})
         self.assertEqual(set(result["comparisons"]), {"waveLevel"})
+        self.assertEqual(result["status"], "READY")
+        self.assertIn("rmse", result["metrics"]["waveLevel"])
+        self.assertIn("bias", result["metrics"]["waveLevel"])
+        self.assertIn("persistenceMae", result["metrics"]["waveLevel"])
+
+    def test_fast_telemetry_is_aggregated_into_complete_two_minute_windows(self):
+        started = datetime(2026, 1, 1, tzinfo=timezone.utc)
+        raw = [{"recordedAt": (started + timedelta(seconds=index * 2)).isoformat(),
+                "waveLevel": 0.4 + (index % 5) * 0.01} for index in range(181)]
+        summaries = summarize_wave_records(raw)
+        self.assertEqual(len(summaries), 3)
+        self.assertTrue(all(summaries[index][0] - summaries[index - 1][0] == 120
+                            for index in range(1, len(summaries))))
 
     def test_sea_condition_thresholds(self):
         self.assertEqual(classify_sea_condition(0.4), "CALM")

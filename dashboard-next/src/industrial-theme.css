@@ -1,0 +1,44 @@
+/* Coastal Instrument theme — restrained colors, no neon or gaming glow. */
+:root{
+  --bg:#091820;--panel:#10242d;--panel2:#142b34;--line:rgba(169,192,199,.18);
+  --text:#e7edef;--muted:#91a4aa;--cyan:#5f9fa4;--green:#6fa381;--amber:#d39a55;
+  --blue:#6f91aa;--violet:#8c819f;--aqua:#609da0;--lime:#739a7e;--gold:#c49355;
+  --coral:#bd6d63;--indigo:#788ba9;--shadow-panel:0 10px 26px rgba(0,8,12,.2);
+}
+body{background:linear-gradient(135deg,rgba(7,21,29,.97),rgba(12,35,43,.94)),url('/ocean-dashboard-bg.png') center/cover fixed}
+.sidebar{background:linear-gradient(180deg,#081a22,#07161d);box-shadow:8px 0 24px rgba(0,7,10,.2)}
+.brand img{border-color:#496d78;box-shadow:0 5px 14px rgba(0,0,0,.28)}
+.topbar{background:rgba(8,25,33,.94);box-shadow:0 1px rgba(255,255,255,.02)}
+.panel,.summary article{border-color:rgba(166,190,197,.18);background:linear-gradient(145deg,rgba(17,39,48,.97),rgba(12,31,39,.97));box-shadow:0 10px 26px rgba(0,8,12,.18),inset 0 1px rgba(255,255,255,.025)}
+.panel:hover{border-color:rgba(166,190,197,.26)}
+
+/* Flat, equipment-style icon buttons. */
+.nav-item>svg{border-color:rgba(162,188,195,.2);border-radius:9px;background:#132a33;box-shadow:none;stroke-width:1.65}
+.nav-item:nth-child(1){color:#88a2ad}.nav-item:nth-child(2){color:#72a5a7}.nav-item:nth-child(3){color:#9a8da7}.nav-item:nth-child(4){color:#7da08a}.nav-item:nth-child(5){color:#c49a61}.nav-item:nth-child(6){color:#7899ae}.nav-item:nth-child(7){color:#bd756d}.nav-item:nth-child(8){color:#8092ad}.nav-item:nth-child(9){color:#94a3a8}
+.nav-item.is-active{border-color:#406874;background:#122d37;box-shadow:inset 3px 0 #6d9fa3}
+.nav-item.is-active:before{display:none}.nav-item.is-active>svg{border-color:#547e87;background:#193742;box-shadow:none}.nav-item:hover{background:#0f2730}
+.summary article:before{width:2px;opacity:.72}.summary article svg,.content[class$="-page"] .panel header>svg,.wave-page .panel header>svg,.alert-summary svg,.log-summary svg{border-color:rgba(162,188,195,.22);border-radius:9px;background:rgba(137,166,173,.08);box-shadow:none;filter:none}
+.summary article:nth-child(1){color:#759b80}.summary article:nth-child(2){color:#6f9fa2}.summary article:nth-child(3){color:#8c829d}.summary article:nth-child(4){color:#ba8d58}
+
+/* Remove luminous effects throughout the system. */
+.side-foot>i.online,.sensor-chip i,.ai-summary li i{box-shadow:none}.pro-line{filter:none}.input-track em{background:#6e9c91;box-shadow:none}.input-row:nth-child(3) .input-track em{background:#6d909d}.confidence-bar i{background:#729b8d}.nav-item.is-active>svg,.collapse:hover{box-shadow:none}
+.wave-line{filter:none}.forecast-dot{filter:none}.current-dot{filter:none}
+
+/* Restrained semantic status colors. */
+.good,.live.is-online{color:#80ad8c!important}.warn{color:#d2a05f!important}.danger{color:#c96f66!important}
+.wave-page{--page-accent:#72a5a7;--page-soft:rgba(83,125,130,.055)}.motion-page{--page-accent:#978aa4;--page-soft:rgba(130,116,145,.055)}.gps-page{--page-accent:#7b9f87;--page-soft:rgba(105,143,117,.055)}.power-page{--page-accent:#c39760;--page-soft:rgba(170,125,70,.055)}.system-page{--page-accent:#7597ac;--page-soft:rgba(101,138,161,.055)}.alerts-page{--page-accent:#bd756d;--page-soft:rgba(168,91,83,.055)}.logs-page{--page-accent:#8191aa;--page-soft:rgba(109,125,151,.055)}.settings-page{--page-accent:#85999d;--page-soft:rgba(117,141,145,.055)}
+.wave-page .forecast-result,.wave-page .report-chart,.wave-page .ai-summary,.wave-page .report-confidence,.wave-page .prediction-timeline,.wave-page .prediction-quality{border-top-width:1px;border-top-color:rgba(166,190,197,.23)}
+.wave-page .forecast-result{border-left:3px solid #6f9fa2}.wave-page .report-chart{border-left:3px solid #718fa5}.wave-page .ai-summary{border-left:3px solid #8d819b}.wave-page .report-confidence{border-left:3px solid #789a82}.wave-page .prediction-timeline{border-left:3px solid #b58b59}.wave-page .prediction-quality{border-left:3px solid #7e8da5}
+
+.collapse,.mobile-menu,.top-actions button{border-color:rgba(160,187,194,.2);background:#102832;color:#9db0b5}.collapse:hover,.top-actions button:hover{border-color:#587d85;color:#dce7e8;background:#18323c}
+.panel em,.sensor-chip,.live{border-color:rgba(157,185,192,.22);color:#a9bbc0;background:rgba(124,151,158,.06)}
+.therefore{border-color:rgba(190,144,85,.3);background:rgba(178,128,65,.055)}
+.forecast-zone{fill:rgba(190,145,83,.04);stroke:rgba(190,145,83,.18)}.pro-forecast{stroke:#c49355}.forecast-value,.forecast-zone-label{fill:#c49355}
+
+html[data-theme=light]{--text:#24363d;--muted:#687b82;--panel:#f1f4f3;--panel2:#e7edeb;--line:rgba(54,77,84,.17);--cyan:#477d81;--green:#517b60;--amber:#9f6f34}
+html[data-theme=light] body{background:linear-gradient(135deg,rgba(225,232,230,.97),rgba(211,222,220,.95)),url('/ocean-dashboard-bg.png') center/cover fixed}
+html[data-theme=light] .sidebar{background:linear-gradient(180deg,#e7edeb,#dce5e2);box-shadow:6px 0 20px rgba(37,57,62,.1)}
+html[data-theme=light] .topbar{background:rgba(231,238,236,.95)}
+html[data-theme=light] .panel,html[data-theme=light] .summary article,html[data-theme=light] .content[class$="-page"] .panel,html[data-theme=light] .wave-page .panel{border-color:rgba(52,77,83,.16);background:linear-gradient(145deg,rgba(246,248,247,.97),rgba(230,237,235,.97));box-shadow:0 8px 22px rgba(40,62,67,.08)}
+html[data-theme=light] .nav-item>svg{border-color:rgba(54,79,84,.16);background:#d8e3e0}html[data-theme=light] .nav-item.is-active{border-color:#799a9d;background:#d3e3e0;box-shadow:inset 3px 0 #477d81}html[data-theme=light] .nav-item.is-active>svg{background:#c9ddda;box-shadow:none}
+html[data-theme=light] .collapse,html[data-theme=light] .mobile-menu,html[data-theme=light] .top-actions button{background:#e1e9e7;color:#526d73}

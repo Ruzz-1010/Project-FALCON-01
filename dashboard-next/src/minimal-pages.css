@@ -1,0 +1,30 @@
+/* Cohesive minimalist system for all post-Overview pages. */
+:is(.wave-page,.motion-page,.gps-page,.power-page,.system-page,.alerts-page,.logs-page,.settings-page){--minimal-card:rgba(13,34,42,.96);padding-top:28px;animation:minimal-page-in .48s cubic-bezier(.2,.75,.2,1) both}
+:is(.wave-page,.motion-page,.gps-page,.power-page,.system-page,.alerts-page,.logs-page,.settings-page) .page-head{align-items:center;margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid rgba(157,181,188,.12)}
+:is(.wave-page,.motion-page,.gps-page,.power-page,.system-page,.alerts-page,.logs-page,.settings-page) .page-head>div:first-child>span{color:#89a7ac;font-size:10px;letter-spacing:.12em}
+:is(.wave-page,.motion-page,.gps-page,.power-page,.system-page,.alerts-page,.logs-page,.settings-page) .page-head h1{margin-top:6px;font-size:29px;font-weight:650;letter-spacing:-.035em}
+:is(.wave-page,.motion-page,.gps-page,.power-page,.system-page,.alerts-page,.logs-page,.settings-page) .page-head p{max-width:680px;margin-top:7px;color:#9aadb1;font-size:12px;line-height:1.6}
+:is(.wave-page,.motion-page,.gps-page,.power-page,.system-page,.alerts-page,.logs-page,.settings-page) .panel{border:1px solid rgba(157,181,188,.14);border-radius:12px;background:var(--minimal-card);box-shadow:0 9px 24px rgba(0,8,12,.13);transition:border-color .2s ease,transform .2s ease}
+:is(.wave-page,.motion-page,.gps-page,.power-page,.system-page,.alerts-page,.logs-page,.settings-page) .panel:hover{border-color:rgba(117,169,173,.28);transform:translateY(-1px)}
+:is(.wave-page,.motion-page,.gps-page,.power-page,.system-page,.alerts-page,.logs-page,.settings-page) .panel header span{color:#91a8ad;font-size:10px;letter-spacing:.1em}
+:is(.wave-page,.motion-page,.gps-page,.power-page,.system-page,.alerts-page,.logs-page,.settings-page) .panel h2{font-size:18px;font-weight:650;letter-spacing:-.02em}
+:is(.wave-page,.motion-page,.gps-page,.power-page,.system-page,.alerts-page,.logs-page,.settings-page) .panel header>svg{width:38px;height:38px;padding:9px;border:0;border-radius:10px;background:rgba(117,169,173,.1);color:#86b0b3;stroke-width:1.7}
+:is(.wave-page,.motion-page,.gps-page,.power-page,.system-page,.alerts-page,.logs-page,.settings-page) .panel em,.sensor-chip{border-radius:20px;font-size:9px;letter-spacing:.02em}
+.sensor-chip{padding:9px 12px}
+.wave-controls label,.alert-actions label,.alert-actions button,.log-tabs button,.log-tools button,.log-tools label{min-height:38px;border-radius:9px;font-size:10px}
+.wave-controls select,.alert-actions select,.log-tools input{font-size:10px}
+.wave-report-grid,.motion-layout,.gps-layout,.power-grid,.system-grid,.settings-grid{gap:12px}
+.forecast-result .result-core>span,.result-metrics dt,.prediction-quality dt,.coordinates dt,.drift-card dt,.electrical dt{font-size:10px}
+.forecast-result .result-core>strong{font-weight:650;letter-spacing:-.045em}
+.result-metrics dd,.prediction-quality dd,.coordinates dd,.drift-card dd,.electrical dd{font-size:12px}
+.ai-summary li,.report-confidence p,.prediction-quality footer,.twin-panel footer,.map-panel footer,.power-history footer,.connectivity footer,.diagnostics footer,.logs-table-panel footer,.settings-card p,.settings-footer{font-size:10px;line-height:1.55}
+.pose-readout dt,.axes span,.resource-grid span,.system-node span,.setting-field span,.notification-setting span{font-size:11px}
+.pose-readout dd{font-weight:650}.settings-button{min-height:40px;font-size:10px}.setting-field{padding:14px}.setting-field small,.notification-setting small{font-size:9px;line-height:1.45}
+.alert-summary,.log-summary{gap:10px;border:0;background:transparent;overflow:visible}.alert-summary article,.log-summary article{min-height:92px;border:1px solid rgba(157,181,188,.14);border-radius:12px;background:var(--minimal-card)}.alert-summary span,.log-summary span{font-size:10px}.alert-summary b,.log-summary b{font-weight:650}
+.history-item,.system-node,.resource-grid article{border-color:rgba(157,181,188,.13);border-radius:10px}.history-item b,.history-item p{font-size:10px}.history-item small{font-size:9px}.log-table-scroll th,.log-table-scroll td{padding:13px;font-size:10px}.log-table-scroll th{font-size:9px}
+html[data-theme=light] :is(.wave-page,.motion-page,.gps-page,.power-page,.system-page,.alerts-page,.logs-page,.settings-page){--minimal-card:rgba(244,247,246,.96)}
+html[data-theme=light] :is(.wave-page,.motion-page,.gps-page,.power-page,.system-page,.alerts-page,.logs-page,.settings-page) .panel,html[data-theme=light] .alert-summary article,html[data-theme=light] .log-summary article{border-color:rgba(55,79,85,.13);background:var(--minimal-card);box-shadow:0 7px 20px rgba(43,62,66,.065)}
+@keyframes minimal-page-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:900px){:is(.wave-page,.motion-page,.gps-page,.power-page,.system-page,.alerts-page,.logs-page,.settings-page) .page-head{align-items:flex-start;flex-direction:column;gap:12px}.wave-controls{width:100%;flex-wrap:wrap}.wave-controls label{flex:1}}
+@media(max-width:720px){:is(.wave-page,.motion-page,.gps-page,.power-page,.system-page,.alerts-page,.logs-page,.settings-page){padding-top:17px}:is(.wave-page,.motion-page,.gps-page,.power-page,.system-page,.alerts-page,.logs-page,.settings-page) .page-head h1{font-size:25px}:is(.wave-page,.motion-page,.gps-page,.power-page,.system-page,.alerts-page,.logs-page,.settings-page) .page-head p{font-size:11px}:is(.wave-page,.motion-page,.gps-page,.power-page,.system-page,.alerts-page,.logs-page,.settings-page) .panel{padding:17px}.alert-summary,.log-summary{gap:8px}.log-tools{width:100%}.log-tools label{min-width:100%}}
+@media(prefers-reduced-motion:reduce){:is(.wave-page,.motion-page,.gps-page,.power-page,.system-page,.alerts-page,.logs-page,.settings-page){animation:none}}

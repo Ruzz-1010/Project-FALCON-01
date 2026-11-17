@@ -30,8 +30,8 @@ function markerIcon(condition) {
   return L.divIcon({
     className: "",
     html: `<span class="station-pin is-${condition.toLowerCase()}"><i></i></span>`,
-    iconSize: [38, 38],
-    iconAnchor: [19, 19]
+    iconSize: [30, 30],
+    iconAnchor: [15, 15]
   });
 }
 

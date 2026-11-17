@@ -1,0 +1,25 @@
+{
+  "total_mass_kg": 122.6,
+  "capacity_kg": 353.59,
+  "draft_m": 0.1205,
+  "draft_mm": 120.5,
+  "freeboard_m": 0.2035,
+  "freeboard_mm": 203.5,
+  "submerged_fraction": 0.3718,
+  "reserve_buoyancy_fraction": 0.6533,
+  "waterplane_area_m2": 1.3307,
+  "waterplane_inertia_m4": 0.31085,
+  "bm_m": 2.599,
+  "kb_m": 0.07,
+  "kg_m": 0.283,
+  "gm_m": 2.386,
+  "roll_period_s": 0.62,
+  "payload_extra_kg": 0.0,
+  "geometry": {
+    "pontoon_diameter_m": 0.324,
+    "pontoon_length_m": 2.2,
+    "pontoon_beam_m": 0.95,
+    "deck_length_m": 1.7,
+    "deck_width_m": 1.32
+  }
+}

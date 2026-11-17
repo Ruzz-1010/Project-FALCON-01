@@ -28,19 +28,20 @@ This URL serves the bundled production build of `dashboard-next`. Rebuild it wit
 - `GET /gps`
 - `GET /battery`
 - `GET /solar`
-- `GET /ai?horizon=5`
 - `GET /ai?horizon=15`
 - `POST /restart`
 - `POST /calibrate`
 
 Dashboard v5 presentation extensions:
 
-- `GET /prediction?horizon=10`
+- `GET /prediction?horizon=15`
 - `GET /logs?limit=60`
 
-The route remains `GET /ai`; `horizon` selects one of the two approved prediction windows. Legacy `/api/...` routes remain temporarily for presentation compatibility. The dashboard uses `/api/scenario` only for the clearly labeled virtual sensor lab.
+The route remains `GET /ai`; the thesis implementation uses one fixed 15-minute research horizon. Legacy `/api/...` routes remain temporarily for presentation compatibility. The dashboard uses `/api/scenario` only for the clearly labeled virtual sensor lab.
 
-The AI predicts wave height only. It returns current and predicted values, confidence, model status, and Calm, Moderate, or Rough classification. It does not predict other sensors and is not validated for safety decisions.
+The prediction module estimates wave height only. It consumes completed two-minute wave-height summaries and returns the current value, 15-minute estimate, heuristic stability score, model status, and Calm, Moderate, or Rough classification. The stability score is not validated forecast accuracy. The module does not predict other sensors and is not validated for safety decisions.
+
+When an ESP32 telemetry frame includes `pressureSamplesKpa`, the service applies a median noise filter, converts pressure difference to displacement using `eta = deltaP / (rho*g*Kp)`, and computes the window estimate as `H_est = max(eta) - min(eta)`. `Kp` defaults to 1 only for controlled testing; field output remains `CALIBRATION REQUIRED` until a validated `pressureResponseFactor` is supplied.
 
 Presentation scenarios use gradual state transitions. Rough Sea ramps pressure-based estimated wave height and related wind context over multiple samples and settles gradually when Normal operation is restored. Buoy Motion also provides separate local visual presets that never overwrite telemetry.
 
@@ -55,7 +56,7 @@ The default database is `edge/data/falcon.db`. Startup performs a non-destructiv
 
 - `telemetry` — raw timestamped source payloads
 - `alerts` — deterministic alerts linked to telemetry
-- `wave_predictions` — stored 5- and 15-minute predictions
+- `wave_predictions` — stored 15-minute research estimates
 - `system_events` — audited restart and calibration requests
 
 Runtime database files are ignored by Git.
@@ -86,4 +87,4 @@ cd edge
 python -m unittest discover -s tests -v
 ```
 
-The test suite covers the two approved prediction horizons, wave-only output, sea-condition classification, invalid horizons, wave backtesting, sensor validation, and presentation alert scenarios.
+The test suite covers the fixed 15-minute horizon, two-minute aggregation, pressure-to-wave conversion, chronological backtesting with MAE/RMSE/bias and persistence comparison, sensor validation, and presentation alert scenarios.

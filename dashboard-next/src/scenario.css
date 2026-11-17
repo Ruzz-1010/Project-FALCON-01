@@ -1,0 +1,37 @@
+.scenario-progress {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 12px;
+  padding: 11px 13px;
+  border: 1px solid color-mix(in srgb, var(--cyan) 32%, var(--line));
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--cyan) 7%, var(--panel));
+  color: var(--muted);
+  font-size: 9px;
+}
+
+.scenario-progress svg {
+  width: 20px;
+  color: var(--cyan);
+  animation: scenario-pulse 1.5s ease-in-out infinite;
+}
+
+.scenario-progress span,
+.scenario-progress b {
+  display: block;
+}
+
+.scenario-progress b {
+  margin-bottom: 3px;
+  color: var(--text);
+  font-size: 10px;
+}
+
+@keyframes scenario-pulse {
+  50% { transform: scale(1.08); opacity: .65; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scenario-progress svg { animation: none; }
+}

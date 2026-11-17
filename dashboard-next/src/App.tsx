@@ -71,7 +71,7 @@ function geofenceLabel(state:string|undefined){
   return titleCase(state);
 }
 export default function App(){
-  const [data,setData]=useState<DashboardData|null>(null),[error,setError]=useState<string|null>(null),[page,setPage]=useState<Page>("overview"),[sidebarOpen,setSidebarOpen]=useState(false),[collapsed,setCollapsed]=useState(false),[horizon,setHorizon]=useState(10),[refreshToken,setRefreshToken]=useState(0);
+  const [data,setData]=useState<DashboardData|null>(null),[error,setError]=useState<string|null>(null),[page,setPage]=useState<Page>("overview"),[sidebarOpen,setSidebarOpen]=useState(false),[collapsed,setCollapsed]=useState(false),[horizon,setHorizon]=useState(15),[refreshToken,setRefreshToken]=useState(0);
   const [pollInterval,setPollInterval]=useState(()=>Number(localStorage.getItem("falcon-next-poll"))||2000);
   const [alertToast,setAlertToast]=useState<{code:string;message:string;severity:string}|null>(null),knownAlerts=useRef<Set<string>|null>(null);
   useEffect(()=>{document.documentElement.dataset.theme="light"},[]);
@@ -116,11 +116,11 @@ export default function App(){
             <div className={`ai-prediction is-${data.ai.status.toLowerCase()}`}>
               <span>Research estimate in {data.ai.horizonMinutes||horizon} minutes</span>
               {data.ai.status==="READY"?<strong>{n(data.ai.predictedWaveHeight,2)}<small>m</small></strong>:<strong className="prediction-pending">Not ready</strong>}
-              <p>{data.ai.status==="READY"?"Research estimate, not an official forecast":"Waiting for enough readings to create an estimate."}</p>
+              <p>{data.ai.status==="READY"?`Uses ${data.ai.sampleCount} completed 2-minute summaries · research only`:`Collecting completed 2-minute summaries (${data.ai.sampleCount}/8).`}</p>
               <button className="model-chip" onClick={()=>setPage("settings")} title="Open model and prediction settings">About estimate</button>
             </div>
           </div>
-          <div className="chart-heading"><h3>Measured wave height and research estimate</h3></div>
+          <div className="chart-heading"><h3>Pressure-derived wave height and 15-minute research estimate</h3></div>
           <OverviewTrend data={data}/>
         </article>
         <dl className="coastal-readings" aria-label="Current station readings">

@@ -106,6 +106,15 @@
   .process-step b{display:block;font-size:13px;font-weight:600;color:var(--ink);line-height:1.3}
   .process-step small{display:block;font-size:11.5px;color:var(--muted);margin-top:2px;line-height:1.35}
   .process-line{height:1px;min-width:24px;background:linear-gradient(90deg,var(--line),transparent)}
+  .formula-preview{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+  .formula-preview article{padding:13px 14px;border:1px solid var(--line);border-radius:12px;
+    background:rgba(9,20,27,.7)}
+  .formula-preview span{display:block;color:var(--muted);font:600 9px/1 var(--mono);
+    letter-spacing:.12em;text-transform:uppercase}
+  .formula-preview b{display:block;margin-top:8px;color:var(--sea-bright);font:600 12px/1.5 var(--mono)}
+  .formula-preview small{display:block;margin-top:6px;color:var(--muted);font-size:10.5px;line-height:1.45}
+  .formula-link{display:inline-flex;margin-top:12px;color:var(--sea-bright);font-size:12px;text-decoration:none;
+    border-bottom:1px dotted var(--sea-line)}
 
   /* ---------------------------------------------------------------- dashboard */
   .dashboard{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
@@ -305,6 +314,7 @@
     .chart-panel .panel-head{flex-direction:column;align-items:flex-start;gap:10px}
     .chart-panel .legend{width:100%}
     .footer-sep{display:none}
+    .formula-preview{grid-template-columns:1fr}
   }
   @media (max-width:520px){
     .brand-mark{width:42px;height:42px}
@@ -354,21 +364,21 @@
     <section class="intro" aria-labelledby="page-title">
       <span class="eyebrow">Phase 1 · Wave estimation</span>
       <h1 id="page-title">Wave height, <em>15 minutes ahead.</em></h1>
-      <p class="lede">The buoy's record for each 2-minute window is a <b>lowest</b> and a <b>highest</b>
-        water level. Type a pair to get the wave height, <b>H = highest − lowest</b>. After eight
-        readings, the console opens a 15-minute forecast and compares it with the reading that actually
-        arrives. This forecast is the paper's <b>damped linear-trend baseline</b> — a transparent
-        comparison method, not the trained AI model.</p>
+      <p class="lede">For every 2-minute window, the pressure readings are converted into water-level
+        movement in metres. This demo starts after that conversion: enter the <b>lowest</b> and
+        <b>highest converted movement</b>, then the system computes
+        <b>wave height = highest − lowest</b>. After eight wave-height records, it produces a
+        15-minute research estimate using the paper's transparent trend baseline.</p>
 
       <div class="process" aria-label="How the console works">
         <div class="process-step">
           <span class="step-num">01</span>
-          <div><b>Measure</b><small>Lowest + highest water level</small></div>
+          <div><b>Enter</b><small>Lowest + highest converted movement</small></div>
         </div>
         <span class="process-line" aria-hidden="true"></span>
         <div class="process-step">
           <span class="step-num">02</span>
-          <div><b>Subtract</b><small>H = highest − lowest</small></div>
+          <div><b>Compute</b><small>Wave height = highest − lowest</small></div>
         </div>
         <span class="process-line" aria-hidden="true"></span>
         <div class="process-step">
@@ -376,6 +386,25 @@
           <div><b>Forecast</b><small>+15 min after 8 readings</small></div>
         </div>
       </div>
+
+      <div class="formula-preview" aria-label="Formula preview">
+        <article>
+          <span>1 · Pressure difference</span>
+          <b>ΔPᵢ = Pᵢ − Pbase</b>
+          <small>115.65 − 115.15 = 0.50 kPa = 500 Pa</small>
+        </article>
+        <article>
+          <span>2 · Convert to movement</span>
+          <b>ηᵢ = ΔPᵢ ÷ (ρ × g)</b>
+          <small>500 ÷ (1,025 × 9.81) = 0.0497 m</small>
+        </article>
+        <article>
+          <span>3 · Wave height</span>
+          <b>Hest = max(ηᵢ) − min(ηᵢ)</b>
+          <small>(+0.25) − (−0.25) = 0.50 m</small>
+        </article>
+      </div>
+      <a class="formula-link" href="calc.html">Open the complete step-by-step computation →</a>
     </section>
 
     <div class="dashboard">
@@ -389,12 +418,12 @@
           </div>
           <span class="mini-tag">2 min window</span>
         </div>
-        <p class="panel-note">Type the lowest and highest level from the same 2-minute record.</p>
+        <p class="panel-note">Enter the lowest and highest converted movement from one 2-minute window.</p>
 
         <form id="readingForm" novalidate>
           <div class="pair-fields">
             <label class="field">
-              <span class="field-label">Lowest water level</span>
+              <span class="field-label">Lowest converted movement</span>
               <span class="input-shell">
                 <input id="minValue" type="number" min="0" max="15" step="0.01" value="0.10"
                        inputmode="decimal" aria-describedby="pairError" />
@@ -402,7 +431,7 @@
               </span>
             </label>
             <label class="field">
-              <span class="field-label">Highest water level</span>
+              <span class="field-label">Highest converted movement</span>
               <span class="input-shell">
                 <input id="maxValue" type="number" min="0" max="15" step="0.01" value="0.50"
                        inputmode="decimal" aria-describedby="pairError" />
@@ -414,7 +443,7 @@
           <div class="result-strip">
             <div>
               <span class="result-label">Wave height</span>
-              <span class="result-formula">highest − lowest</span>
+              <span class="result-formula">H_est = highest − lowest</span>
             </div>
             <div class="result-number"><strong id="pairHeight">0.40</strong><em>m</em></div>
           </div>

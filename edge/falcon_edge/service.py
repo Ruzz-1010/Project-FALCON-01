@@ -6,7 +6,7 @@ import mimetypes
 import signal
 import threading
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Any
@@ -14,6 +14,7 @@ from urllib.parse import parse_qs, urlparse
 
 from .rules import analyze
 from .forecast import build_forecast, build_wave_prediction, evaluate_forecast
+from .wave_estimation import apply_pressure_window
 from .sources import Esp32Source, SerialJsonSource, SimulatorSource
 from .storage import TelemetryStore
 
@@ -49,6 +50,7 @@ class EdgeRuntime:
 
     def collect_once(self) -> dict[str, Any]:
         payload = self.source.read()
+        apply_pressure_window(payload)
         self._apply_security_persistence(payload)
         alerts = [alert.as_dict() for alert in analyze(payload)]
         recorded_at = datetime.now(timezone.utc).isoformat()
@@ -59,10 +61,9 @@ class EdgeRuntime:
             self.last_error = None
         now = time.monotonic()
         if now - self._last_prediction_save >= 30.0:
-            history = self.forecast_records(120)
-            # Persist every supported horizon for forecast-versus-actual history.
-            for horizon in (5, 10, 15):
-                self.store.save_prediction(telemetry_id, build_wave_prediction(history, horizon))
+            history = self.forecast_records(500)
+            # The thesis evaluates one fixed 15-minute research horizon.
+            self.store.save_prediction(telemetry_id, build_wave_prediction(history, 15))
             self._last_prediction_save = now
         return snapshot
 
@@ -129,10 +130,18 @@ class EdgeRuntime:
         data = latest.get("data", {})
         value = data.get("waveLevel")
         valid = isinstance(value, (int, float)) and not isinstance(value, bool)
-        recent = sorted(self.forecast_records(60), key=lambda item: item["recordedAt"])
+        recent = sorted(self.forecast_records(500), key=lambda item: item["recordedAt"])
+        # The overview chart compares pressure-derived estimates against the
+        # fixed 15-minute research estimate. Keep roughly fifteen minutes so the
+        # estimate stays the focus of the chart instead of the forecast tail.
+        if recent:
+            newest = datetime.fromisoformat(recent[-1]["recordedAt"])
+            cutoff = newest - timedelta(minutes=15)
+            recent = [item for item in recent if datetime.fromisoformat(item["recordedAt"]) >= cutoff]
+        stride = max(1, len(recent) // 70)
         wave_history = [{"recordedAt": item["recordedAt"], "waveHeight": item.get("waveLevel"),
                          "rawPressure": item.get("waterPressure"), "filteredPressure": item.get("filteredPressure")}
-                        for item in recent]
+                        for item in recent[::stride]]
         return {"recordedAt": latest.get("recordedAt"), "waveHeight": value if valid else None,
                 "waveHeightUnit": "m", "waveHeightState": "SIMULATED" if latest.get("source") == "simulator" else "ESTIMATED",
                 "estimationMethod": "pressure-calibration-v1", "pressure": data.get("waterPressure"),
@@ -240,7 +249,7 @@ class EdgeRuntime:
         result["aiState"] = "READY"
         return result
 
-    def forecast_records(self, limit: int = 120) -> list[dict[str, Any]]:
+    def forecast_records(self, limit: int = 500) -> list[dict[str, Any]]:
         records = self.store.recent(limit)
         # Never fit or display a continuous trace across a stopped service or
         # radio outage. Older sessions remain available in the stored logs.
