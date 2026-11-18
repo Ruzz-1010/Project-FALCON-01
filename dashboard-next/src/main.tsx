@@ -36,5 +36,6 @@ import "./falcon-clean.css";
 import "./redesign.css";
 import "./sensor-cards.css";
 import "./logs-alerts.css";
+import "./organized-clean.css";
 
 createRoot(document.getElementById("root")!).render(<StrictMode><App /></StrictMode>);

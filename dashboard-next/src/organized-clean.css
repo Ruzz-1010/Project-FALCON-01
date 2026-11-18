@@ -1,0 +1,178 @@
+/* Final organization pass shared by every operator-dashboard breakpoint. */
+:root {
+  --organized-gap: clamp(12px, 1.35vw, 18px);
+  --organized-border: #dfe9ee;
+  --organized-shadow: 0 12px 30px rgba(15, 43, 58, 0.065);
+}
+
+.topbar {
+  min-height: 92px !important;
+  border-bottom: 1px solid var(--organized-border) !important;
+}
+
+.topbar .title h1 { line-height: 1.08 !important; }
+.topbar .coastal-subtitle { margin-top: 6px !important; }
+
+.operator-overview {
+  display: grid !important;
+  gap: var(--organized-gap) !important;
+  align-content: start;
+}
+
+.overview-page .plain-status {
+  gap: var(--organized-gap) !important;
+  margin: 0 !important;
+}
+
+.plain-status > div {
+  min-height: 66px !important;
+  padding: 12px 16px !important;
+  border: 1px solid var(--organized-border) !important;
+  border-radius: 14px !important;
+  background: #fff !important;
+  box-shadow: 0 7px 18px rgba(15, 43, 58, 0.035) !important;
+}
+
+.plain-status > div > span {
+  display: grid !important;
+  width: 34px !important;
+  height: 34px !important;
+  flex: 0 0 34px;
+  place-items: center;
+  border-radius: 10px !important;
+}
+
+.plain-status > div > span svg {
+  width: 17px;
+  height: 17px;
+  stroke-width: 1.9;
+}
+
+.plain-status > div:nth-child(1) > span { color: #2369aa; background: #eaf2fb !important; }
+.plain-status > div:nth-child(2) > span { color: #17775b; background: #e9f6ef !important; }
+.plain-status > div:nth-child(3) > span { color: #9b6817; background: #fff5e3 !important; }
+.plain-status p { line-height: 1.35 !important; }
+.plain-status b { margin-bottom: 3px !important; }
+
+.operator-overview .coastal-wave {
+  margin: 0 !important;
+  border: 1px solid var(--organized-border) !important;
+  box-shadow: var(--organized-shadow) !important;
+}
+
+.coastal-wave .coastal-wave-heading {
+  grid-template-columns: minmax(280px, 1.25fr) minmax(190px, 0.68fr) minmax(250px, 0.86fr) !important;
+  gap: var(--organized-gap) !important;
+  align-items: stretch !important;
+}
+
+.wave-hero,
+.sea-condition,
+.ai-prediction {
+  min-width: 0;
+  border-radius: 15px !important;
+}
+
+.ai-prediction {
+  display: flex !important;
+  min-height: 158px !important;
+  flex-direction: column;
+  justify-content: flex-start !important;
+  padding: 19px 20px !important;
+  overflow: hidden;
+}
+
+.ai-prediction-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.ai-prediction-head > span {
+  min-width: 0;
+  color: #0f6a6b;
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
+.ai-prediction .model-chip {
+  position: static !important;
+  inset: auto !important;
+  min-height: 30px !important;
+  flex: 0 0 auto;
+  padding: 0 10px !important;
+  border-radius: 999px !important;
+  white-space: nowrap;
+  font-size: 10px !important;
+}
+
+.ai-prediction-value {
+  min-width: 0;
+  margin-top: 12px;
+}
+
+.ai-prediction-value strong,
+.ai-prediction .prediction-pending {
+  display: block !important;
+  max-width: 100%;
+  margin: 0 !important;
+  overflow-wrap: anywhere;
+  font-size: clamp(26px, 2.25vw, 36px) !important;
+  line-height: 1 !important;
+}
+
+.ai-prediction > p {
+  max-width: 100% !important;
+  margin: 10px 0 0 !important;
+  line-height: 1.4 !important;
+}
+
+.chart-heading {
+  margin-top: 2px !important;
+}
+
+.operator-overview dl.coastal-readings {
+  gap: var(--organized-gap) !important;
+  margin: 0 !important;
+}
+
+.operator-overview .coastal-readings > div.reading-card {
+  min-width: 0;
+  border-color: var(--organized-border) !important;
+  box-shadow: 0 8px 22px rgba(15, 43, 58, 0.045) !important;
+}
+
+.coastal-footer {
+  margin: 0 !important;
+  border-color: var(--organized-border) !important;
+  box-shadow: 0 6px 16px rgba(15, 43, 58, 0.03) !important;
+}
+
+.overview-tip {
+  max-width: 1050px;
+  margin: -5px 2px 0 !important;
+  line-height: 1.5 !important;
+}
+
+@media (max-width: 1120px) {
+  .coastal-wave .coastal-wave-heading {
+    grid-template-columns: minmax(260px, 1.1fr) minmax(180px, 0.8fr) !important;
+  }
+  .coastal-wave .ai-prediction { grid-column: 1 / -1; min-height: 0 !important; }
+}
+
+@media (max-width: 720px) {
+  .topbar { min-height: 78px !important; }
+  .coastal-wave .coastal-wave-heading { grid-template-columns: 1fr !important; }
+  .coastal-wave .ai-prediction { grid-column: auto; }
+  .ai-prediction-head { align-items: center; }
+  .overview-page .plain-status { grid-template-columns: 1fr !important; }
+  .plain-status > div { min-height: 58px !important; }
+}
+
+@media (max-width: 420px) {
+  .ai-prediction-head { align-items: flex-start; flex-direction: column; }
+  .ai-prediction .model-chip { align-self: flex-start; }
+}

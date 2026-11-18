@@ -51,9 +51,9 @@ function PlainStatus({data}:{data:DashboardData}){
   const location=geofenceLabel(data.current.security.geofenceState);
   const power=data.battery.percentage==null?"Battery reading unavailable":`${n(data.battery.percentage,0)}% battery`;
   return <section className="plain-status" aria-label="How to read this dashboard">
-    <div><span>1</span><p><b>Water</b>{wave}</p></div>
-    <div><span>2</span><p><b>Safety</b>{location}</p></div>
-    <div><span>3</span><p><b>Power</b>{power}</p></div>
+    <div><span><Waves aria-hidden="true"/></span><p><b>Water</b>{wave}</p></div>
+    <div><span><Navigation aria-hidden="true"/></span><p><b>Safety</b>{location}</p></div>
+    <div><span><BatteryCharging aria-hidden="true"/></span><p><b>Power</b>{power}</p></div>
   </section>;
 }
 function SeaCondition({height}:{height:number|null|undefined}){
@@ -114,10 +114,9 @@ export default function App(){
             </div>
             <SeaCondition height={data.wave.valid?data.wave.waveHeight:null}/>
             <div className={`ai-prediction is-${data.ai.status.toLowerCase()}`}>
-              <span>Research estimate in {data.ai.horizonMinutes||horizon} minutes</span>
-              {data.ai.status==="READY"?<strong>{n(data.ai.predictedWaveHeight,2)}<small>m</small></strong>:<strong className="prediction-pending">Not ready</strong>}
+              <div className="ai-prediction-head"><span>Research estimate in {data.ai.horizonMinutes||horizon} minutes</span><button className="model-chip" onClick={()=>setPage("settings")} title="Open model and prediction settings">How it works</button></div>
+              <div className="ai-prediction-value">{data.ai.status==="READY"?<strong>{n(data.ai.predictedWaveHeight,2)}<small>m</small></strong>:<strong className="prediction-pending">Not ready</strong>}</div>
               <p>{data.ai.status==="READY"?`Uses ${data.ai.sampleCount} completed 2-minute summaries · research only`:`Collecting completed 2-minute summaries (${data.ai.sampleCount}/8).`}</p>
-              <button className="model-chip" onClick={()=>setPage("settings")} title="Open model and prediction settings">About estimate</button>
             </div>
           </div>
           <div className="chart-heading"><h3>Pressure-derived wave height and 15-minute research estimate</h3></div>

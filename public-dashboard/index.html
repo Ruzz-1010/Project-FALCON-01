@@ -20,20 +20,21 @@
         <span id="data-status" class="data-status">CONNECTING</span>
       </header>
       <section class="hero">
-        <span class="eyebrow">RESEARCH OBSERVATION</span>
-        <h1>Coastal conditions near FALCON buoy stations.</h1>
-        <p>Choose a station marker to see its latest pressure-derived wave estimate, wind observation, and reporting status.</p>
+        <div><span class="eyebrow">PALAWAN COASTAL OBSERVATION</span>
+        <h1>Check conditions at FALCON buoy stations.</h1>
+        <p>Select a station to view its latest pressure-derived wave estimate, wind observation, and reporting status.</p></div>
+        <div class="hero-summary" aria-label="Dashboard coverage"><span><b>4</b> test stations</span><span><b>15 min</b> refresh window</span><span><b>Read only</b> public view</span></div>
       </section>
       <section class="map-layout" aria-label="Public buoy map and selected station details">
         <article class="map-card">
-          <header><div><span>FALCON STATIONS</span><h2>Palawan, Philippines</h2></div><em id="map-status">LOADING MAP</em></header>
+          <header><div><span>FALCON STATIONS</span><h2>Palawan station map</h2></div><em id="map-status">LOADING MAP</em></header>
           <div id="map" aria-label="Map of FALCON buoy stations"></div>
           <footer>Palawan test map: Puerto Princesa, Dumaran, Roxas, and San Vicente. Each station card refreshes as a live test feed; simulated feeds are clearly marked until physical buoy endpoints are connected.</footer>
         </article>
         <aside class="station-card selected-panel">
           <div class="selected-label"><span class="live-dot"></span> SELECTED STATION <em id="station-link">CONNECTING</em></div><div class="station-heading"><div><h2 id="station-name">FALCON-01</h2><p id="station-place">Loading station location…</p></div></div>
           <div id="condition" class="condition is-unavailable"><div class="condition-title"><span>SEA CONDITION</span><span class="measurement-label">PRESSURE-DERIVED</span></div><strong>Loading</strong><p>Waiting for a valid station reading.</p><div class="sea-motion" aria-hidden="true"><svg viewBox="0 0 1600 150" preserveAspectRatio="none"><defs><filter id="water-distortion" x="-10%" y="-20%" width="120%" height="150%"><feTurbulence type="fractalNoise" baseFrequency="0.012 0.045" numOctaves="2" seed="9" result="noise"><animate attributeName="baseFrequency" dur="9s" values="0.012 0.045;0.018 0.06;0.012 0.045" repeatCount="indefinite"/></feTurbulence><feDisplacementMap in="SourceGraphic" in2="noise" scale="10" xChannelSelector="R" yChannelSelector="G"/></filter></defs><path filter="url(#water-distortion)" class="wave-back" d="M0 78 C55 47 105 111 160 78 S265 47 320 78 S425 111 480 78 S585 47 640 78 S745 111 800 78 S905 47 960 78 S1065 111 1120 78 S1225 47 1280 78 S1385 111 1440 78 S1545 47 1600 78 V150 H0Z"/><path filter="url(#water-distortion)" class="wave-mid" d="M0 95 C65 53 130 137 195 95 S325 53 390 95 S520 137 585 95 S715 53 780 95 S910 137 975 95 S1105 53 1170 95 S1300 137 1365 95 S1495 53 1560 95 S1590 115 1600 95 V150 H0Z"/><path filter="url(#water-distortion)" class="wave-front" d="M0 110 C42 65 84 151 126 110 S210 65 252 110 S336 151 378 110 S462 65 504 110 S588 151 630 110 S714 65 756 110 S840 151 882 110 S966 65 1008 110 S1092 151 1134 110 S1218 65 1260 110 S1344 151 1386 110 S1470 65 1512 110 S1570 144 1600 110 V150 H0Z"/></svg><b class="whitecaps">• • •</b></div></div>
-          <dl>
+          <dl class="station-metrics">
             <div><dt>Wind speed / direction</dt><dd id="wind">--</dd></div>
             <div><dt>Last reported</dt><dd id="updated">--</dd></div>
           </dl>
