@@ -124,6 +124,8 @@ Current `/api/...` endpoints are prototype compatibility routes and require a co
 
 ## Development Setup
 
+For a complete Windows walkthrough covering the operator dashboard, public dashboard, AI calculation demo, and optional thesis presentation, see [Project FALCON dashboards — Windows run guide](docs/WINDOWS_DASHBOARD_RUN_GUIDE.md).
+
 ### ESP32 Firmware
 
 ```powershell
