@@ -7,6 +7,7 @@ const stationLinkEl = byId("station-link");
 const conditionEl = byId("condition");
 const windEl = byId("wind");
 const updatedEl = byId("updated");
+const stationListEl = byId("station-list");
 
 let map;
 const markers = new Map();
@@ -59,6 +60,9 @@ function renderCard(station) {
     : `${station.wave.toFixed(2)} m pressure-derived wave estimate`;
   windEl.textContent = station.wind == null ? "Unavailable" : `${station.wind.toFixed(1)} km/h ${station.direction || ""}`;
   updatedEl.textContent = station.updated;
+  stationListEl.querySelectorAll("button").forEach((button) => {
+    button.classList.toggle("is-selected", button.dataset.stationId === station.id);
+  });
 }
 
 function showStation(station) {
@@ -83,6 +87,22 @@ function simulatedLiveStation(station, index, now) {
   };
 }
 
+function renderStationList(stations) {
+  const existing = new Map(Array.from(stationListEl.querySelectorAll("button")).map((button) => [button.dataset.stationId, button]));
+  stations.forEach((station) => {
+    let button = existing.get(station.id);
+    if (!button) {
+      button = document.createElement("button");
+      button.type = "button";
+      button.dataset.stationId = station.id;
+      stationListEl.append(button);
+    }
+    button.className = `station-option is-${station.condition.toLowerCase()}${station.id === selectedId ? " is-selected" : ""}`;
+    button.innerHTML = `<span><i></i>${station.place.replace(" Test Site, Palawan", "").replace(" City", "")}</span><b>${station.wave == null ? "--" : station.wave.toFixed(2)} m</b><small>${station.condition} · ${station.simulated ? "Simulated" : station.online ? "Reporting" : "Offline"}</small>`;
+    button.onclick = () => showStation(station);
+  });
+}
+
 function displayStations(status, wave, gps) {
   const currentWave = wave.valid ? wave.waveHeight : null;
   const online = status.system === "ONLINE";
@@ -97,6 +117,7 @@ function displayStations(status, wave, gps) {
   const isDemo = String(status.dataSource || "").toLowerCase() === "simulator";
   statusEl.textContent = isDemo ? "DEMO DATA" : online ? "LIVE DATA" : "OFFLINE";
   statusEl.className = `data-status ${online ? "is-online" : "is-offline"}`;
+  renderStationList(stations);
   stations.forEach((station) => {
     const existing = markers.get(station.id);
     if (!existing) {
